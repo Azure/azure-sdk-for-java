@@ -6,14 +6,14 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
@@ -21,23 +21,23 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Objects;
 
-class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
+class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     static final int AES_BLOCK_SIZE = 16;
 
-    private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
+    private final ClientLogger logger = new ClientLogger(AesKeyCryptographyClient.class);
 
     private byte[] key;
 
     /**
-     * Creates a {@link SymmetricKeyCryptographyClient} to perform local cryptography operations.
+     * Creates a {@link AesKeyCryptographyClient} to perform local cryptography operations.
      *
      * @param serviceClient The client to route the requests through.
      */
-    SymmetricKeyCryptographyClient(CryptographyServiceClient serviceClient) {
+    AesKeyCryptographyClient(CryptographyServiceClient serviceClient) {
         super(serviceClient);
     }
 
-    SymmetricKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
+    AesKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
         super(serviceClient);
         this.key = key.toAes().getEncoded();
     }
@@ -51,6 +51,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context, JsonWebKey jsonWebKey) {
+        if (isGcm(encryptParameters.getAlgorithm())) {
+            return Mono.error(
+                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
+        }
+
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -111,6 +116,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context, JsonWebKey jsonWebKey) {
+        if (isGcm(decryptParameters.getAlgorithm())) {
+            return Mono.error(
+                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
+        }
+
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -162,13 +172,13 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
-        return Mono.error(new UnsupportedOperationException("Sign operation not supported for OCT/Symmetric key"));
+        return Mono.error(new UnsupportedOperationException("Sign operation not supported for OCT/Symmetric key."));
     }
 
     @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context,
                                    JsonWebKey key) {
-        return Mono.error(new UnsupportedOperationException("Verify operation not supported for OCT/Symmetric key"));
+        return Mono.error(new UnsupportedOperationException("Verify operation not supported for OCT/Symmetric key."));
     }
 
     @Override
@@ -271,5 +281,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
             || encryptionAlgorithm == EncryptionAlgorithm.A128CBCPAD
             || encryptionAlgorithm == EncryptionAlgorithm.A192CBCPAD
             || encryptionAlgorithm == EncryptionAlgorithm.A256CBCPAD);
+    }
+
+    private boolean isGcm(EncryptionAlgorithm encryptionAlgorithm) {
+        return (encryptionAlgorithm == EncryptionAlgorithm.A128GCM
+            || encryptionAlgorithm == EncryptionAlgorithm.A192GCM
+            || encryptionAlgorithm == EncryptionAlgorithm.A256GCM);
     }
 }

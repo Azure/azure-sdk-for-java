@@ -145,6 +145,13 @@ public final class KeyVaultAccessControlClientBuilder {
         policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -156,13 +163,6 @@ public final class KeyVaultAccessControlClientBuilder {
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
-
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
