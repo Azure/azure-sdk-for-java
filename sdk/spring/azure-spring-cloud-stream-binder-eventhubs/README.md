@@ -68,8 +68,6 @@ it uses the configuration with the format of `spring.cloud.stream.bindings.<chan
 The system will obtain the parameter `PartitionSupply` to send the message, 
 the following is the process of obtaining the priority of the partition ID and key:
 
-**Create PartitionSupply parameter process**:
-
 ![Create PartitionSupply parameter process](resource/create-partition-supply-process.png)
 
 The following are configuration items related to the producer:
