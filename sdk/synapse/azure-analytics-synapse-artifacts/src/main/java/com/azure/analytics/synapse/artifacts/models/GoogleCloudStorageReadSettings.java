@@ -43,10 +43,33 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     private Object prefix;
 
     /*
+     * Point to a text file that lists each file (relative path to the path
+     * configured in the dataset) that you want to copy. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "fileListPath")
+    private Object fileListPath;
+
+    /*
      * Indicates whether to enable partition discovery.
      */
     @JsonProperty(value = "enablePartitionDiscovery")
     private Boolean enablePartitionDiscovery;
+
+    /*
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /*
+     * Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
+     */
+    @JsonProperty(value = "deleteFilesAfterCompletion")
+    private Object deleteFilesAfterCompletion;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with
@@ -151,6 +174,28 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     }
 
     /**
+     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @return the fileListPath value.
+     */
+    public Object getFileListPath() {
+        return this.fileListPath;
+    }
+
+    /**
+     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @param fileListPath the fileListPath value to set.
+     * @return the GoogleCloudStorageReadSettings object itself.
+     */
+    public GoogleCloudStorageReadSettings setFileListPath(Object fileListPath) {
+        this.fileListPath = fileListPath;
+        return this;
+    }
+
+    /**
      * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
      *
      * @return the enablePartitionDiscovery value.
@@ -167,6 +212,50 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      */
     public GoogleCloudStorageReadSettings setEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the partitionRootPath value.
+     */
+    public Object getPartitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set.
+     * @return the GoogleCloudStorageReadSettings object itself.
+     */
+    public GoogleCloudStorageReadSettings setPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
+        return this;
+    }
+
+    /**
+     * Get the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the deleteFilesAfterCompletion value.
+     */
+    public Object getDeleteFilesAfterCompletion() {
+        return this.deleteFilesAfterCompletion;
+    }
+
+    /**
+     * Set the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set.
+     * @return the GoogleCloudStorageReadSettings object itself.
+     */
+    public GoogleCloudStorageReadSettings setDeleteFilesAfterCompletion(Object deleteFilesAfterCompletion) {
+        this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
         return this;
     }
 

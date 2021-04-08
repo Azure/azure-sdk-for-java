@@ -7,12 +7,14 @@ import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
+import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
+
 import java.net.URL
 import java.util.Locale
-
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
 
 import java.time.{Duration, Instant}
@@ -31,21 +33,44 @@ import scala.collection.JavaConverters._
 //case class CosmosBatchWriteConfig()
 
 private object CosmosConfig {
+  def getEffectiveConfig
+  (
+    databaseName: Option[String],
+    containerName: Option[String],
+    sparkConf: SparkConf,
+    // spark application config
+    userProvidedOptions: Map[String, String] // user provided config
+  ) : Map[String, String] = {
 
-  def getEffectiveConfig(sparkConf: SparkConf, // spark application config
-                         userProvidedOptions: Map[String, String] // user provided config
-                        ) : Map[String, String] = {
+    var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
+
+    if (databaseName.isDefined) {
+      effectiveUserConfig += (CosmosContainerConfig.DATABASE_NAME_KEY -> databaseName.get)
+    }
+
+    if (containerName.isDefined) {
+      effectiveUserConfig += (CosmosContainerConfig.CONTAINER_NAME_KEY -> containerName.get)
+    }
+
     val conf = sparkConf.clone()
-    conf.setAll(userProvidedOptions).getAll.toMap
+    conf.setAll(effectiveUserConfig.toMap).getAll.toMap
   }
 
   @throws[IllegalStateException] // if there is no active spark session
-  def getEffectiveConfig(userProvidedOptions: Map[String, String] = Map().empty) : Map[String, String] = {
+  def getEffectiveConfig
+  (
+    databaseName: Option[String],
+    containerName: Option[String],
+    userProvidedOptions: Map[String, String] = Map().empty
+  ) : Map[String, String] = {
+
     val session = SparkSession.active
 
     // TODO: moderakh we should investigate how spark sql config should be merged:
     // TODO: session.conf.getAll, // spark sql runtime config
     getEffectiveConfig(
+      databaseName,
+      containerName,
       session.sparkContext.getConf, // spark application config
       userProvidedOptions) // user provided config
   }
@@ -117,19 +142,91 @@ private object CosmosAccountConfig {
   }
 }
 
-private case class CosmosReadConfig(forceEventualConsistency: Boolean)
+private case class CosmosReadConfig(forceEventualConsistency: Boolean,
+                                    schemaConversionMode: SchemaConversionMode)
+
+private object SchemaConversionModes extends Enumeration {
+  type SchemaConversionMode = Value
+
+  val Relaxed: SchemaConversionModes.Value = Value("Relaxed")
+  val Strict: SchemaConversionModes.Value = Value("Strict")
+}
 
 private object CosmosReadConfig {
+  private val DefaultSchemaConversionMode: SchemaConversionMode = SchemaConversionModes.Relaxed
+
   private val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.forceEventualConsistency",
     mandatory = false,
     defaultValue = Some(true),
     parseFromStringFunction = value => value.toBoolean,
     helpMessage = "Makes the client use Eventual consistency for read operations")
 
+  private val JsonSchemaConversion = CosmosConfigEntry[SchemaConversionMode](
+    key = "spark.cosmos.read.schemaConversionMode",
+    mandatory = false,
+    defaultValue = Some(DefaultSchemaConversionMode),
+    parseFromStringFunction = value => validateJsonSchemaConversion(value),
+    helpMessage = "Defines whether to throw on inconsistencies between schema definition and json attribute " +
+      "types (Strict) or to return null values (Relaxed).")
+
+  private def validateJsonSchemaConversion(mode: String): SchemaConversionMode = {
+    Option(mode).fold(DefaultSchemaConversionMode)(p => {
+      val modeName = p.trim
+
+      if (modeName.isEmpty) {
+        DefaultSchemaConversionMode
+      } else {
+        SchemaConversionModes
+          .values
+          .find(_.toString.equalsIgnoreCase(modeName))
+          .getOrElse(throw new IllegalArgumentException(s"Invalid json schema conversion mode '$modeName'"))
+      }
+    })
+  }
+
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+    val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
 
-    CosmosReadConfig(forceEventualConsistency.get)
+    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get)
+  }
+}
+
+private case class CosmosViewRepositoryConfig(metaDataPath: Option[String])
+
+private object CosmosViewRepositoryConfig {
+  val MetaDataPathKeyName = "spark.cosmos.views.repositoryPath"
+  val IsCosmosViewKeyName = "isCosmosView"
+  private val MetaDataPath = CosmosConfigEntry[String](key = MetaDataPathKeyName,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => value,
+    helpMessage = "The path to the hive metadata store used to store the view definitions")
+
+  private val IsCosmosView = CosmosConfigEntry[Boolean](key = "isCosmosView",
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = value => value.toBoolean,
+    helpMessage = "Identifies that a new Catalog table is getting added for a view - not as a physical container")
+
+  def parseCosmosViewRepositoryConfig(cfg: Map[String, String]): CosmosViewRepositoryConfig = {
+    val metaDataPath = CosmosConfigEntry.parse(cfg, MetaDataPath)
+
+    CosmosViewRepositoryConfig(metaDataPath)
+  }
+
+  def isCosmosView(cfg: Map[String, String]): Boolean = {
+    val isView = CosmosConfigEntry.parse(cfg, IsCosmosView).getOrElse(false)
+
+    if (!isView &&
+        CosmosConfigEntry.parse(cfg, CosmosContainerConfig.optionalContainerNameSupplier).isDefined) {
+
+      throw new IllegalArgumentException(
+        s"Table property '$IsCosmosViewKeyName' must be set to 'True' when defining a Cosmos view.")
+    }
+
+    isView
   }
 }
 
@@ -204,8 +301,8 @@ private object CosmosWriteConfig {
 }
 
 private object CosmosContainerConfig {
-  private val DATABASE_NAME_KEY = "spark.cosmos.database"
-  private val CONTAINER_NAME_KEY = "spark.cosmos.container"
+  private[spark] val DATABASE_NAME_KEY = "spark.cosmos.database"
+  private[spark] val CONTAINER_NAME_KEY = "spark.cosmos.container"
 
   private val databaseNameSupplier = CosmosConfigEntry[String](key = DATABASE_NAME_KEY,
     mandatory = true,
@@ -214,6 +311,11 @@ private object CosmosContainerConfig {
 
   private val containerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
     mandatory = true,
+    parseFromStringFunction = container => container,
+    helpMessage = "Cosmos DB container name")
+
+  val optionalContainerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
+    mandatory = false,
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 

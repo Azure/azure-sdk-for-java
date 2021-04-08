@@ -26,7 +26,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.test.CustomQueryPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
@@ -53,8 +52,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexersManagementSyncTests extends SearchTestBase {
     private static final String TARGET_INDEX_NAME = "indexforindexers";
-    private static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY =
-        new CustomQueryPipelinePolicy("mock_status", "inProgress");
+    private static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY = (context, next) -> {
+        String url = context.getHttpRequest().getUrl().toString();
+        String separator = url.contains("?") ? "&" : "?";
+        context.getHttpRequest()
+            .setUrl(url + separator + "mock_status=inProgress");
+        return next.process();
+    };
 
     private final List<String> dataSourcesToDelete = new ArrayList<>();
     private final List<String> indexersToDelete = new ArrayList<>();
@@ -255,25 +259,24 @@ public class IndexersManagementSyncTests extends SearchTestBase {
 
     @Test
     public void canRunIndexerAndGetIndexerStatus() {
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndex(), createDataSource());
+
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
         // returning a well-known mock response
-        searchIndexerClient = getSearchIndexerClientBuilder(MOCK_STATUS_PIPELINE_POLICY).buildClient();
-        searchIndexClient = getSearchIndexClientBuilder().addPolicy(MOCK_STATUS_PIPELINE_POLICY).buildClient();
+        SearchIndexerClient mockStatusClient = getSearchIndexerClientBuilder(MOCK_STATUS_PIPELINE_POLICY).buildClient();
 
-        SearchIndexer indexer = createBaseTestIndexerObject(createIndex(), createDataSource());
-
-        searchIndexerClient.createIndexer(indexer);
+        mockStatusClient.createIndexer(indexer);
         indexersToDelete.add(indexer.getName());
 
-        SearchIndexerStatus indexerExecutionInfo = searchIndexerClient.getIndexerStatus(indexer.getName());
+        SearchIndexerStatus indexerExecutionInfo = mockStatusClient.getIndexerStatus(indexer.getName());
         assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
 
-        Response<Void> indexerRunResponse = searchIndexerClient.runIndexerWithResponse(indexer.getName(),
+        Response<Void> indexerRunResponse = mockStatusClient.runIndexerWithResponse(indexer.getName(),
             Context.NONE);
         assertEquals(HttpResponseStatus.ACCEPTED.code(), indexerRunResponse.getStatusCode());
 
-        indexerExecutionInfo = searchIndexerClient.getIndexerStatus(indexer.getName());
+        indexerExecutionInfo = mockStatusClient.getIndexerStatus(indexer.getName());
 
         assertValidSearchIndexerStatus(indexerExecutionInfo);
     }

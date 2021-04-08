@@ -4,7 +4,8 @@ azure:
     tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
     client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
-    # managed-identity:  # The user-assigned managed identity object-id to use.
+    # managed-identity:  # The user-assigned managed identity client-id to use.
+    # If the above 4 properties are empty, then system-assigned managed identity will be used.
 server:
   port: 8443
   ssl:

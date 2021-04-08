@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
-    @GetMapping("/file")
+    @GetMapping("/webapiB")
     @ResponseBody
-    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
+    @PreAuthorize("hasAuthority('SCOPE_WebApiB.ExampleScope')")
     public String file() {
-        return "File read success.";
+        return "Response from WebApiB.";
     }
 
     @GetMapping("/user")

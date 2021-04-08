@@ -54,6 +54,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
+import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -112,25 +113,27 @@ final class Transforms {
             }
         } else {
             extractedFormList = new ArrayList<>();
-            forEachWithIndex(pageResults, ((index, pageResultItem) -> {
-                StringBuilder formType = new StringBuilder("form-");
-                int pageNumber = pageResultItem.getPage();
-                Integer clusterId = pageResultItem.getClusterId();
-                if (clusterId != null) {
-                    formType.append(clusterId);
-                }
-                Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
-                    pageResultItem, pageNumber);
+            if (!CoreUtils.isNullOrEmpty(pageResults)) {
+                forEachWithIndex(pageResults, ((index, pageResultItem) -> {
+                    StringBuilder formType = new StringBuilder("form-");
+                    int pageNumber = pageResultItem.getPage();
+                    Integer clusterId = pageResultItem.getClusterId();
+                    if (clusterId != null) {
+                        formType.append(clusterId);
+                    }
+                    Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
+                        pageResultItem, pageNumber);
 
-                final RecognizedForm recognizedForm = new RecognizedForm(
-                    extractedFieldMap,
-                    formType.toString(),
-                    new FormPageRange(pageNumber, pageNumber),
-                    Collections.singletonList(formPages.get(index)));
+                    final RecognizedForm recognizedForm = new RecognizedForm(
+                        extractedFieldMap,
+                        formType.toString(),
+                        new FormPageRange(pageNumber, pageNumber),
+                        Collections.singletonList(formPages.get(index)));
 
-                RecognizedFormHelper.setModelId(recognizedForm, modelId);
-                extractedFormList.add(recognizedForm);
-            }));
+                    RecognizedFormHelper.setModelId(recognizedForm, modelId);
+                    extractedFormList.add(recognizedForm);
+                }));
+            }
         }
         return extractedFormList;
     }
@@ -402,6 +405,14 @@ final class Transforms {
                 }
                 value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                     FieldValueType.SELECTION_MARK_STATE);
+                break;
+            case GENDER:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueGender(),
+                    FieldValueType.GENDER);
+                break;
+            case COUNTRY:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountry(),
+                    FieldValueType.COUNTRY);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));

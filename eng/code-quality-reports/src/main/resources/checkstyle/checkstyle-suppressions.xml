@@ -323,16 +323,24 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="."
             files=".*[/\\]azure-quantum-jobs[/\\]src[/\\]main[/\\]java[/\\]"/>
 
+<suppress checks="."
+            files=".*[/\\]webpubsub[/\\]implementation[/\\]"/>
+
   <!-- Suppress ConfigurationCredentialsPolicy for HttpPipelinePolicyCheck.
    This suppression need to be deleted after AzConfig using AAD credential.
    Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/5131 -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.data.appconfiguration.implementation.SyncTokenPolicy.java"/>
 
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]test[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]storage[/\\].*samples[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*"/>
+
+  <!-- FIXME temp -->
+  <suppress checks="ServiceClient" files="com.azure.messaging.webpubsub.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>

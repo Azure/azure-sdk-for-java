@@ -24,15 +24,18 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.search.documents.implementation.models.Answers;
 import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
+import com.azure.search.documents.implementation.models.QueryLanguage;
 import com.azure.search.documents.implementation.models.RequestOptions;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchOptions;
 import com.azure.search.documents.implementation.models.SearchRequest;
+import com.azure.search.documents.implementation.models.Speller;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
@@ -101,6 +104,9 @@ public final class DocumentsImpl {
                 @QueryParam("scoringParameter") String scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("searchFields") String searchFields,
+                @QueryParam("queryLanguage") QueryLanguage queryLanguage,
+                @QueryParam("speller") Speller speller,
+                @QueryParam("answers") Answers answers,
                 @QueryParam("searchMode") SearchMode searchMode,
                 @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
                 @QueryParam("sessionId") String sessionId,
@@ -320,6 +326,21 @@ public final class DocumentsImpl {
             searchFieldsInternal = searchOptions.getSearchFields();
         }
         List<String> searchFields = searchFieldsInternal;
+        QueryLanguage queryLanguageInternal = null;
+        if (searchOptions != null) {
+            queryLanguageInternal = searchOptions.getQueryLanguage();
+        }
+        QueryLanguage queryLanguage = queryLanguageInternal;
+        Speller spellerInternal = null;
+        if (searchOptions != null) {
+            spellerInternal = searchOptions.getSpeller();
+        }
+        Speller speller = spellerInternal;
+        Answers answersInternal = null;
+        if (searchOptions != null) {
+            answersInternal = searchOptions.getAnswers();
+        }
+        Answers answers = answersInternal;
         SearchMode searchModeInternal = null;
         if (searchOptions != null) {
             searchModeInternal = searchOptions.getSearchMode();
@@ -383,6 +404,9 @@ public final class DocumentsImpl {
                 scoringParametersConverted,
                 scoringProfile,
                 searchFieldsConverted,
+                queryLanguage,
+                speller,
+                answers,
                 searchMode,
                 scoringStatistics,
                 sessionId,

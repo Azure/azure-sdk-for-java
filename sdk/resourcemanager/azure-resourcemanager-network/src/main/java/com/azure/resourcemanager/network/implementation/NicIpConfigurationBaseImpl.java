@@ -4,8 +4,11 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -22,6 +25,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import reactor.core.publisher.Flux;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -168,5 +173,20 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
             rules.add(loadBalancer.inboundNatRules().get(ruleName));
         }
         return Collections.unmodifiableList(rules);
+    }
+
+    @Override
+    public List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups() {
+        if (CoreUtils.isNullOrEmpty(this.innerModel().applicationSecurityGroups())) {
+            return Collections.emptyList();
+        }
+
+        List<ApplicationSecurityGroup> applicationSecurityGroups = Flux
+            .fromStream(this.innerModel().applicationSecurityGroups().stream().map(ApplicationSecurityGroupInner::id))
+            .flatMapSequential(id -> this.networkManager.applicationSecurityGroups().getByIdAsync(id))
+            .collectList().block();
+        return applicationSecurityGroups == null
+            ? Collections.emptyList()
+            : Collections.unmodifiableList(applicationSecurityGroups);
     }
 }

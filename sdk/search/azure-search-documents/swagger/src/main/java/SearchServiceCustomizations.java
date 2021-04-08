@@ -53,15 +53,30 @@ public class SearchServiceCustomizations extends Customization {
 
     private static final String SCORING_PROFILE = "ScoringProfile";
 
+    private static final String SEARCH_INDEXER_SKILL = "SearchIndexerSkill";
+    private static final String CONDITIONAL_SKILL = "ConditionalSkill";
+    private static final String KEY_PHRASE_EXTRACTION_SKILL = "KeyPhraseExtractionSkill";
+    private static final String OCR_SKILL = "OcrSkill";
+    private static final String IMAGE_ANALYSIS_SKILL = "ImageAnalysisSkill";
+    private static final String LANGUAGE_DETECTION_SKILL = "LanguageDetectionSkill";
+    private static final String SHAPER_SKILL = "ShaperSkill";
+    private static final String MERGE_SKILL = "MergeSkill";
+    private static final String ENTITY_RECOGNITION_SKILL = "EntityRecognitionSkill";
+    private static final String SENTIMENT_SKILL = "SentimentSkill";
+    private static final String SPLIT_SKILL = "SplitSkill";
+    private static final String CUSTOM_ENTITY_LOOKUP_SKILL = "CustomEntityLookupSkill";
+    private static final String TEXT_TRANSLATION_SKILL = "TextTranslationSkill";
+    private static final String DOCUMENT_EXTRACTION_SKILL = "DocumentExtractionSkill";
+    private static final String WEB_API_SKILL = "WebApiSkill";
+
+    private static final String CUSTOM_NORMALIZER = "CustomNormalizer";
+
+    private static final String SEARCH_FIELD = "SearchField";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization) {
-        customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
         customizeModelsPackage(libraryCustomization.getPackage(MODELS));
-    }
-
-    private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
-        packageCustomization.getClass("AnalyzeRequest")
-            .getMethod("public AnalyzeRequest setTokenFilters(List<TokenFilterName> tokenFilters) {");
+        customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
     }
 
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
@@ -91,6 +106,27 @@ public class SearchServiceCustomizations extends Customization {
 
         // Customize CognitiveServicesAccountKey.
         customizeCognitiveServicesAccountKey(packageCustomization.getClass(COGNITIVE_SERVICES_ACCOUNT_KEY));
+
+        // Customize SearchIndexerSkills.
+        changeClassModifier(packageCustomization.getClass(SEARCH_INDEXER_SKILL), PUBLIC_ABSTRACT);
+        changeClassModifier(packageCustomization.getClass(CONDITIONAL_SKILL), PUBLIC_FINAL);
+        changeClassModifier(packageCustomization.getClass(KEY_PHRASE_EXTRACTION_SKILL), PUBLIC_FINAL);
+        customizeOcrSkill(packageCustomization.getClass(OCR_SKILL));
+        customizeImageAnalysisSkill(packageCustomization.getClass(IMAGE_ANALYSIS_SKILL));
+        changeClassModifier(packageCustomization.getClass(LANGUAGE_DETECTION_SKILL), PUBLIC_FINAL);
+        changeClassModifier(packageCustomization.getClass(SHAPER_SKILL), PUBLIC_FINAL);
+        changeClassModifier(packageCustomization.getClass(MERGE_SKILL), PUBLIC_FINAL);
+        customizeEntityRecognitionSkill(packageCustomization.getClass(ENTITY_RECOGNITION_SKILL));
+        changeClassModifier(packageCustomization.getClass(SENTIMENT_SKILL), PUBLIC_FINAL);
+        changeClassModifier(packageCustomization.getClass(SPLIT_SKILL), PUBLIC_FINAL);
+        customizeCustomEntityLookupSkill(packageCustomization.getClass(CUSTOM_ENTITY_LOOKUP_SKILL));
+        changeClassModifier(packageCustomization.getClass(TEXT_TRANSLATION_SKILL), PUBLIC_FINAL);
+        changeClassModifier(packageCustomization.getClass(DOCUMENT_EXTRACTION_SKILL), PUBLIC_FINAL);
+        changeClassModifier(packageCustomization.getClass(WEB_API_SKILL), PUBLIC_FINAL);
+
+        customizeCustomNormalizer(packageCustomization.getClass(CUSTOM_NORMALIZER));
+
+        customizeSearchField(packageCustomization.getClass(SEARCH_FIELD));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -133,6 +169,64 @@ public class SearchServiceCustomizations extends Customization {
         );
     }
 
+    private void customizeOcrSkill(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+
+        JavadocCustomization javadocToCopy = classCustomization.getMethod("isShouldDetectOrientation")
+            .getJavadoc();
+
+        JavadocCustomization newJavadoc = classCustomization.addMethod(
+            "public Boolean setShouldDetectOrientation() {\n" +
+            "    return this.shouldDetectOrientation;\n" +
+            "}")
+            .addAnnotation("@Deprecated")
+            .getJavadoc();
+
+        copyJavadocs(javadocToCopy, newJavadoc)
+            .setDeprecated("Use {@link #isShouldDetectOrientation()} instead.");
+    }
+
+    private void customizeEntityRecognitionSkill(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        classCustomization.getMethod("setIncludeTypelessEntities").rename("setTypelessEntitiesIncluded");
+        classCustomization.getMethod("isIncludeTypelessEntities").rename("areTypelessEntitiesIncluded");
+        addVarArgsOverload(classCustomization, "categories", "EntityCategory");
+    }
+
+    private void customizeImageAnalysisSkill(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "visualFeatures", "VisualFeature");
+        addVarArgsOverload(classCustomization, "details", "ImageDetail");
+    }
+
+    private void customizeCustomEntityLookupSkill(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "inlineEntitiesDefinition", "CustomEntity");
+    }
+
+    private void customizeCustomNormalizer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
+        addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
+    }
+
+    private void customizeSearchField(ClassCustomization classCustomization) {
+        classCustomization.getMethod("setHidden")
+            .replaceBody(
+                "this.hidden = (hidden == null) ? null : !hidden;" +
+                    "return this;"
+            );
+
+        classCustomization.getMethod("isHidden")
+            .replaceBody("return (this.hidden == null) ? null : !this.hidden;");
+
+        addVarArgsOverload(classCustomization, "fields", "SearchField");
+        addVarArgsOverload(classCustomization, "synonymMapNames", "String");
+    }
+
+    private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
+    }
+
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,
         String... classNames) {
         if (classNames == null) {
@@ -164,14 +258,22 @@ public class SearchServiceCustomizations extends Customization {
             parameterType, parameterName, parameterName, parameterName, parameterName);
 
         JavadocCustomization newJavadocs = classCustomization.addMethod(varargMethod).getJavadoc();
+        copyJavadocs(copyJavadocs, newJavadocs);
+    }
 
-        newJavadocs.setDescription(copyJavadocs.getDescription())
-            .setReturn(copyJavadocs.getReturn())
-            .setSince(copyJavadocs.getSince())
-            .setDeprecated(copyJavadocs.getDeprecated());
+    /*
+     * This helper function copies Javadocs from one customization to another.
+     */
+    private static JavadocCustomization copyJavadocs(JavadocCustomization from, JavadocCustomization to) {
+        to.setDescription(from.getDescription())
+            .setReturn(from.getReturn())
+            .setSince(from.getSince())
+            .setDeprecated(from.getDeprecated());
 
-        copyJavadocs.getParams().forEach(newJavadocs::setParam);
-        copyJavadocs.getThrows().forEach(newJavadocs::addThrows);
-        copyJavadocs.getSees().forEach(newJavadocs::addSee);
+        from.getParams().forEach(to::setParam);
+        from.getThrows().forEach(to::addThrows);
+        from.getSees().forEach(to::addSee);
+
+        return to;
     }
 }

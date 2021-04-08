@@ -20,7 +20,6 @@ import com.azure.core.util.BinaryData;
  * </p>
  *
  * <p><strong>Reading the response of a HTTP GET request to get a pet from a petId</strong></p>
- *
  * The structure of the JSON response for the GET call is shown below:
  * <pre>{@code
  * {
@@ -44,22 +43,8 @@ import com.azure.core.util.BinaryData;
  * }</pre>
  *
  * This sample shows how to read the JSON response from the service and inspecting specific properties of the response.
- * <pre>{@code
- * DynamicResponse response = dynamicRequest
- *          .setUrl("https://petstore.example.com/pet/{petId}") // may already be set if request is created from a client
- *          .setPathParam("petId", 2343245)
- *          .send(); // makes the service call
  *
- * // Check the HTTP status
- * int statusCode = response.getStatusCode();
- * if(statusCode == 200) {
- *     BinaryData responseBody = response.getBody();
- *     String responseBodyStr = responseBody.toString();
- *     JsonObject deserialized = Json.createReader(new StringReader(responseBodyStr)).readObject();
- *     int id = deserialized.getInt("id");
- *     String firstTag = deserialized.getJsonArray("tags").get(0).asJsonObject().getString("name");
- * }
- * }</pre>
+ * {@codesnippet com.azure.core.experimental.http.dynamicresponse.readresponse}
  */
 public final class DynamicResponse {
     private final HttpResponse response;
@@ -67,7 +52,6 @@ public final class DynamicResponse {
 
     /**
      * Creates an instance of the DynamicResponse.
-     *
      * @param response the underlying HTTP response
      * @param body the full HTTP response body
      */
@@ -78,7 +62,6 @@ public final class DynamicResponse {
 
     /**
      * Returns the HTTP status code of the response.
-     *
      * @return the HTTP status code of the response
      */
     public int getStatusCode() {
@@ -87,7 +70,6 @@ public final class DynamicResponse {
 
     /**
      * Returns the HTTP headers of the response.
-     *
      * @return the HTTP headers of the response
      */
     public HttpHeaders getHeaders() {
@@ -96,7 +78,6 @@ public final class DynamicResponse {
 
     /**
      * Returns the original HTTP request sent to the service.
-     *
      * @return the original HTTP request sent to get this response
      */
     public HttpRequest getRequest() {
@@ -105,7 +86,6 @@ public final class DynamicResponse {
 
     /**
      * Returns the HTTP response body represented as a {@link BinaryData}.
-     *
      * @return the response body
      */
     public BinaryData getBody() {
