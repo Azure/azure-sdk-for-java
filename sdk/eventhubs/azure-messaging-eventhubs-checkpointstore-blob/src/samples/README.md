@@ -6,7 +6,7 @@ products:
   - azure
   - azure-event-hubs
   - azure-storage
-urlFragment: event-hubs-java
+urlFragment: event-hubs-checkpoint-store-blob-samples
 ---
 
 # Azure Event Hubs Checkpoint Store client library samples for Java
