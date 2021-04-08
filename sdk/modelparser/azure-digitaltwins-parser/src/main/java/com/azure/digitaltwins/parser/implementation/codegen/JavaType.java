@@ -199,14 +199,14 @@ public class JavaType extends JavaDeclaration implements JavaFile {
 
         if (this.extend != null || this.implement != null) {
             if (this.extend == null) {
-                codeWriter.writeLine(this.getDecoratedName() + " implements " + this.implement, true);
+                codeWriter.writeLine(this.getDecoratedName(null) + " implements " + this.implement, true);
             } else if (implement == null) {
-                codeWriter.writeLine(this.getDecoratedName() + " extends " + this.extend, true);
+                codeWriter.writeLine(this.getDecoratedName(null) + " extends " + this.extend, true);
             } else {
-                codeWriter.writeLine(this.getDecoratedName() + " extends " + this.extend + " implements " + this.implement, true);
+                codeWriter.writeLine(this.getDecoratedName(null) + " extends " + this.extend + " implements " + this.implement, true);
             }
         } else {
-            codeWriter.writeLine(this.getDecoratedName(), true);
+            codeWriter.writeLine(this.getDecoratedName(null), true);
         }
 
         codeWriter.openScope();

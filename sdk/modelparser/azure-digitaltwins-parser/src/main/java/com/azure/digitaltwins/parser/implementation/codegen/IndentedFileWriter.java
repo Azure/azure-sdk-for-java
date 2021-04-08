@@ -47,7 +47,7 @@ class IndentedFileWriter {
 
     void writeLineWithNoIndent(String input) throws IOException {
         if (this.isDebug) {
-            this.stringBuilder.append(input);
+            this.stringBuilder.append(input).append("\r\n");
         }
         fileWriter.append(input).append("\r\n");
     }

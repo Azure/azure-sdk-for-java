@@ -144,12 +144,7 @@ public class CodeWriter {
     public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank, boolean outdent) throws IOException {
         if (nextTextNeedsBlank) {
             if (!suppressBlank) {
-                if (suppressLineBreak) {
-                    indentedFileWriter.writeWithIndent("");
-                } else {
-                    indentedFileWriter.writeLineWithNoIndent("");
-                }
-
+                indentedFileWriter.writeLineWithNoIndent("");
             }
 
             nextTextNeedsBlank = false;

@@ -403,28 +403,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
     }
 
     /**
-     * No files are generated.
-     *
-     * @throws IOException IOException.
-     */
-    @Test
-    public void publicClassWithInvalidFields() throws IOException {
-        final String typeName = "NoOpType";
-
-        JavaClass javaClass = new JavaClass(
-            Access.PUBLIC,
-            Novelty.NORMAL,
-            typeName,
-            Multiplicity.INSTANCE,
-            null,
-            null);
-
-        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PRIVATE, "String", "field5", null, Multiplicity.STATIC, Mutability.FINAL, "field 5 description."));
-        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field5", null, Multiplicity.INSTANCE, Mutability.FINAL, "field 5 description."));
-        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field5", null, Multiplicity.STATIC, Mutability.MUTABLE, "field 5 description."));
-    }
-
-    /**
      * Find the expected output in "src/test/resources/ClassTestResources/PublicClassWithFields.expected"
      * Find the generated file in "src/test/resources/ClassTestResources/PublicClassWithFields.temp.generated"
      *
@@ -479,6 +457,8 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
+        javaClass.addField(Access.PRIVATE, "String", "field1", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "field 1 description.");
+
         JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
@@ -488,7 +468,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         constructor.param("int", "secondParam", "This is my second parameter.");
 
         JavaScope body = new JavaScope(null);
-        body.addStatement(new JavaLine("this.field = firstParam;"));
+        body.addStatement(new JavaLine("this.field1 = firstParam;"));
         constructor.setBody(body);
 
         javaClass.generateCode(codeWriter);
@@ -498,6 +478,151 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
     }
 
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/PublicClassWithSimpleEmptyMethods.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/PublicClassWithSimpleEmptyMethods.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithEmptyMethods() throws IOException {
+        final String typeName = "PublicClassWithSimpleEmptyMethods";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE);
+        javaClass.addMethod(Access.PRIVATE, Novelty.NORMAL, "int", "getNothing2", Multiplicity.STATIC);
+        javaClass.addMethod(Access.PRIVATE, Novelty.ABSTRACT, "void", "getNothing3", Multiplicity.INSTANCE);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodsAndParameters.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodsAndParameters.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodsAndParameters() throws IOException {
+        final String typeName = "ClassWithMethodsAndParameters";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE);
+        javaMethod.addSummary("This is method summary.");
+        javaMethod.addRemarks("This is remarks.");
+        javaMethod.param("String", "name", "Name of the thing.");
+        javaMethod.param("int", "howMany", null);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithParametersAndTypeParametersMethods.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithParametersAndTypeParametersMethods.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithParametersAndTypeParametersMethods() throws IOException {
+        final String typeName = "ClassWithParametersAndTypeParametersMethods";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE);
+        javaMethod.addSummary("This is method summary.");
+        javaMethod.addRemarks("This is remarks.");
+        javaMethod.typeParam("T", "Generic Type of the thing.");
+        javaMethod.param("T", "name", "Name of the thing.");
+        javaMethod.param("int", "howMany", "Really, how many.");
+
+        JavaMethod javaMethod2 = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "int", "getNothing2", Multiplicity.INSTANCE);
+        javaMethod2.addSummary("This is method 2 summary.");
+        javaMethod2.addRemarks("This is remarks.");
+        javaMethod2.typeParam("T", "Generic Type of the thing.");
+        javaMethod2.typeParam("T2", "2nd generic Type of the thing.");
+        javaMethod2.param("T", "name", "Name of the thing.");
+        javaMethod2.param("T2", "howMany", "Really, how many.");
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodsIfStatement.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodsIfStatement.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodsIfStatement() throws IOException {
+        final String typeName = "ClassWithMethodsIfStatement";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC);
+        javaMethod.addSummary("Converts string to upper case.");
+        javaMethod.param("String", "input", "String to convert case.");
+        javaMethod.returns("Input in upper case.");
+        JavaScope body = new JavaScope(null);
+
+        JavaIf ifStatement = body.addIf("input != null");
+
+        ifStatement.line("return input.toUpperCase();");
+        body.line("return null;");
+
+        javaMethod.setBody(body);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
 
     // NEGATIVE TEST CASES.
 
@@ -518,5 +643,40 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         Assertions.assertThrows(StyleException.class, () -> javaClass.addSummary("This is code comments with no period"));
         Assertions.assertThrows(StyleException.class, () -> javaClass.addRemarks("This is code remarks with no period"));
+    }
+
+    /**
+     * No file will be generated.
+     */
+    @Test
+    public void typeParameterDoesNotStartWithT() {
+        final String typeName = "NoOpType";
+        JavaMethod javaMethod = new JavaMethod(true, Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE, Mutability.MUTABLE);
+
+        Assertions.assertThrows(StyleException.class, () -> javaMethod.typeParam("T", "Description missing period"));
+        // All generic Types should start with T
+        Assertions.assertThrows(StyleException.class, () -> javaMethod.typeParam("K", null));
+    }
+
+    /**
+     * No files are generated.
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithInvalidFieldCasing() throws IOException {
+        final String typeName = "NoOpType";
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PRIVATE, "String", "field", null, Multiplicity.STATIC, Mutability.FINAL, "field description."));
+        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field", null, Multiplicity.INSTANCE, Mutability.FINAL, "field description."));
+        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field", null, Multiplicity.STATIC, Mutability.MUTABLE, "field description."));
     }
 }
