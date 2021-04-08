@@ -181,7 +181,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                 }
             }
 
-            
+
         }
         catch (Exception e)
         {

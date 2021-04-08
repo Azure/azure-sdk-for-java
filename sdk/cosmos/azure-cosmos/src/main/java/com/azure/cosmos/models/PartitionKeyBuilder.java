@@ -22,31 +22,58 @@ public class PartitionKeyBuilder {
         this.partitionKeyValues = new ArrayList<Object>();
     }
 
+    /**
+     * Adds partition value of type string
+     * @param value The value of type string to be used as partition key
+     * @return The current PartitionKeyBuilder object
+     */
     public PartitionKeyBuilder add(String value) {
         this.partitionKeyValues.add(value);
         return this;
     }
 
+    /**
+     * Adds partition value of type double
+     * @param value The value of type double to be used as partition key
+     * @return The current PartitionKeyBuilder object
+     */
     public PartitionKeyBuilder add(double value) {
         this.partitionKeyValues.add(value);
         return this;
     }
 
+    /**
+     * Adds partition value of type boolean
+     * @param value The value of type boolean to be used as partition key
+     * @return The current PartitionKeyBuilder object
+     */
     public PartitionKeyBuilder add(boolean value) {
         this.partitionKeyValues.add(value);
         return this;
     }
 
+    /**
+     * Adds a null partition key value
+     * @return The current PartitionKeyBuilder object
+     */
     public PartitionKeyBuilder addNullValue() {
         this.partitionKeyValues.add(null);
         return this;
     }
 
+    /**
+     * Adds a None Partition Key
+     * @return The current PartitionKeyBuilder object
+     */
     public PartitionKeyBuilder addNoneValue() {
         this.partitionKeyValues.add(PartitionKey.NONE);
         return this;
     }
 
+    /**
+     * Builds a new instance of the type PartitionKey with the specified Partition Key values.
+     * @return PartitionKey object
+     */
     public PartitionKey build() {
         // Why these checks?
         // These changes are being added for SDK to support multiple paths in a partition key.
