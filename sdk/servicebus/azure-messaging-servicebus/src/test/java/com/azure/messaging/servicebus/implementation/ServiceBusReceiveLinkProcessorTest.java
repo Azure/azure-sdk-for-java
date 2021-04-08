@@ -464,15 +464,15 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void doNotRetryWhenParentConnectionIsClosed() {
         // Arrange
-        final TestPublisher<ServiceBusReceiveLink> linkGenerator = TestPublisher.create();
+        final TestPublisher<ServiceBusReceiveLink> linkGenerator = TestPublisher.createCold();
         final ServiceBusReceiveLinkProcessor processor = linkGenerator.flux().subscribeWith(linkProcessor);
-        final TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.create();
-        final TestPublisher<Message> messages = TestPublisher.create();
+        final TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.createCold();
+        final TestPublisher<Message> messages = TestPublisher.createCold();
 
         when(link1.getEndpointStates()).thenReturn(endpointStates.flux());
         when(link1.receive()).thenReturn(messages.flux());
 
-        final TestPublisher<AmqpEndpointState> endpointStates2 = TestPublisher.create();
+        final TestPublisher<AmqpEndpointState> endpointStates2 = TestPublisher.createCold();
         when(link2.getEndpointStates()).thenReturn(endpointStates2.flux());
         when(link2.receive()).thenReturn(Flux.never());
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
@@ -485,8 +485,10 @@ class ServiceBusReceiveLinkProcessorTest {
                 messages.next(message1);
             })
             .expectNext(message1)
-            .then(linkGenerator::complete)
-            .then(endpointStates::complete)
+            .then(() -> {
+                linkGenerator.complete();
+                endpointStates.complete();
+            })
             .expectComplete()
             .verify();
 
