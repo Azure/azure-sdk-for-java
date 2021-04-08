@@ -10,7 +10,6 @@ import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -37,7 +36,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      * The base class for Azure Formrecognizer tests.
      *
      * @param options the configurable options for performing perf testing on this class.
-     * 
+     *
      * @throws RuntimeException if "AZURE_FORMRECOGNIZER_API_KEY" or "AZURE_FORMRECOGNIZER_ENDPOINT" is null or empty.
      */
     public ServiceTest(TOptions options) {
@@ -78,9 +77,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             }
             SyncPoller<FormRecognizerOperationResult, CustomFormModel>
                 syncPoller = formTrainingAsyncClient
-                .beginTraining(trainingDocumentsUrl,
-                    true,
-                    new TrainingOptions().setModelName("labeled-perf-model"))
+                .beginTraining(trainingDocumentsUrl, true)
                 .getSyncPoller();
             modelId = syncPoller.getFinalResult().getModelId();
             return Mono.empty();
