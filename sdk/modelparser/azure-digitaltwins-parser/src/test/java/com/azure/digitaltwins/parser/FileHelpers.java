@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileHelpers {
+class FileHelpers {
     public static String getTestResourceFilePath(String subDirectoryName, String fileName) {
         Path resourceDirectory = Paths.get("src", "test", "resources", subDirectoryName);
         return resourceDirectory.toFile().getAbsolutePath() + "/" + fileName;

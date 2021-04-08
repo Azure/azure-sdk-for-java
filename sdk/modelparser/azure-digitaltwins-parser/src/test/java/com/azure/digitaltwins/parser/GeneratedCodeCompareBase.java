@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
 
-public class GeneratedCodeCompareBase {
+class GeneratedCodeCompareBase {
     private static final String DASH_SEPARATOR = "------------------------------------------------------------------------------------------------------------------------";
     private static final String EXPECTED_CODE_FILE_EXTENSION = ".expected";
     private static final String GENERATED_CODE_FILE_EXTENSION = ".temp.generated";

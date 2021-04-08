@@ -15,7 +15,7 @@ import java.io.IOException;
  * - Each test has a field called: "typeName" which will dictate the name of each class.
  * - Each test expects an existing file with the "typeName" and ".expected" extension in the src/test/resources/ClassTestResources
  * - Each test will have a code comment with the path to the target files.
- * - Each test generates a file with ".temp.generated" extension. generated files will be deleted after the test pass.
+ * - Each test generates a file with ".temp.generated" extension. Generated files will be deleted after the test pass.
  * - In case of test failure, the generated file will remain in the directory for further inspection.
  */
 public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
