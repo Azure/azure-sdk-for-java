@@ -22,10 +22,19 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
 
     private Converter<Jwt, Collection<GrantedAuthority>> converter;
 
+    private String principalClaimName;
+
+    /**
+     * Use AADJwtGrantedAuthoritiesConverter, it can resolve the access token of scp and roles.
+     */
     public AADJwtBearerTokenAuthenticationConverter() {
         this.converter = new AADJwtGrantedAuthoritiesConverter();
     }
 
+    /**
+     * Use JwtGrantedAuthoritiesConverter, it can resolve the access token of scp or roles.
+     * @param authoritiesClaimName authorities claim name
+     */
     public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
         this(authoritiesClaimName, DEFAULT_AUTHORITY_PREFIX);
     }
@@ -48,13 +57,24 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
         OAuth2AccessToken accessToken = new OAuth2AccessToken(
             OAuth2AccessToken.TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt());
         Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-        AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(
-            jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
+        if (this.principalClaimName == null) {
+            AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(
+                jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
+            return new BearerTokenAuthentication(principal, accessToken, authorities);
+        }
+        String name = jwt.getClaim(this.principalClaimName);
+        AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(jwt.getHeaders(),
+            jwt.getClaims(), authorities, jwt.getTokenValue(), name);
         return new BearerTokenAuthentication(principal, accessToken, authorities);
     }
 
     public void setJwtGrantedAuthoritiesConverter(
         Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
         this.converter = jwtGrantedAuthoritiesConverter;
+    }
+
+    public void setPrincipalClaimName(String principalClaimName) {
+        Assert.hasText(principalClaimName, "principalClaimName cannot be empty");
+        this.principalClaimName = principalClaimName;
     }
 }
