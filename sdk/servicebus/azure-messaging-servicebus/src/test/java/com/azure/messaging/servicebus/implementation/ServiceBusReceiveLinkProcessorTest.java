@@ -46,7 +46,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -119,15 +118,13 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void createNewLink() throws InterruptedException {
         // Arrange
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
         when(link1.getCredits()).thenReturn(1);
-
-        doAnswer((invocation) -> {
+        when(link1.addCredits(eq(PREFETCH - 1))).thenAnswer(invocation -> {
             countDownLatch.countDown();
             return Mono.empty();
-        }).when(link1).addCredits(eq(PREFETCH - 1));
+        });
 
-
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
@@ -571,11 +568,10 @@ class ServiceBusReceiveLinkProcessorTest {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         when(link1.getCredits()).thenReturn(0);
-
-        doAnswer((i) -> {
+        when(link1.addCredits(eq(PREFETCH))).thenAnswer(invocation -> {
             countDownLatch.countDown();
             return Mono.empty();
-        }).when(link1).addCredits(eq(PREFETCH));
+        });
 
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
