@@ -23,11 +23,11 @@ public class FindAndPurchasePhoneNumber {
 
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
-            .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode(areaCode).setQuantity(1);
+            .setSms(PhoneNumberCapabilityType.NONE);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("833").setQuantity(5);
 
         PhoneNumberSearchResult searchResult = phoneNumberClient
-            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE)
+            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.GEOGRAPHIC, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE)
             .getFinalResult();
 
         System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());
