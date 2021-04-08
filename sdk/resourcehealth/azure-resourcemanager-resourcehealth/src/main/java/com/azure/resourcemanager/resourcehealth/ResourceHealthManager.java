@@ -22,15 +22,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcehealth.fluent.MicrosoftResourceHealth;
 import com.azure.resourcemanager.resourcehealth.implementation.AvailabilityStatusesImpl;
-import com.azure.resourcemanager.resourcehealth.implementation.ChildAvailabilityStatusesImpl;
-import com.azure.resourcemanager.resourcehealth.implementation.ChildResourcesImpl;
 import com.azure.resourcemanager.resourcehealth.implementation.EmergingIssuesImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.EventsOperationsImpl;
 import com.azure.resourcemanager.resourcehealth.implementation.MicrosoftResourceHealthBuilder;
 import com.azure.resourcemanager.resourcehealth.implementation.OperationsImpl;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatuses;
-import com.azure.resourcemanager.resourcehealth.models.ChildAvailabilityStatuses;
-import com.azure.resourcemanager.resourcehealth.models.ChildResources;
 import com.azure.resourcemanager.resourcehealth.models.EmergingIssues;
+import com.azure.resourcemanager.resourcehealth.models.EventsOperations;
 import com.azure.resourcemanager.resourcehealth.models.Operations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -40,11 +38,9 @@ import java.util.Objects;
 
 /** Entry point to ResourceHealthManager. The Resource Health Client. */
 public final class ResourceHealthManager {
+    private EventsOperations eventsOperations;
+
     private AvailabilityStatuses availabilityStatuses;
-
-    private ChildAvailabilityStatuses childAvailabilityStatuses;
-
-    private ChildResources childResources;
 
     private Operations operations;
 
@@ -213,29 +209,20 @@ public final class ResourceHealthManager {
         }
     }
 
+    /** @return Resource collection API of EventsOperations. */
+    public EventsOperations eventsOperations() {
+        if (this.eventsOperations == null) {
+            this.eventsOperations = new EventsOperationsImpl(clientObject.getEventsOperations(), this);
+        }
+        return eventsOperations;
+    }
+
     /** @return Resource collection API of AvailabilityStatuses. */
     public AvailabilityStatuses availabilityStatuses() {
         if (this.availabilityStatuses == null) {
             this.availabilityStatuses = new AvailabilityStatusesImpl(clientObject.getAvailabilityStatuses(), this);
         }
         return availabilityStatuses;
-    }
-
-    /** @return Resource collection API of ChildAvailabilityStatuses. */
-    public ChildAvailabilityStatuses childAvailabilityStatuses() {
-        if (this.childAvailabilityStatuses == null) {
-            this.childAvailabilityStatuses =
-                new ChildAvailabilityStatusesImpl(clientObject.getChildAvailabilityStatuses(), this);
-        }
-        return childAvailabilityStatuses;
-    }
-
-    /** @return Resource collection API of ChildResources. */
-    public ChildResources childResources() {
-        if (this.childResources == null) {
-            this.childResources = new ChildResourcesImpl(clientObject.getChildResources(), this);
-        }
-        return childResources;
     }
 
     /** @return Resource collection API of Operations. */

@@ -11,8 +11,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of AvailabilityStatuses. */
 public interface AvailabilityStatuses {
     /**
-     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
-     * response to get the next page of availability statuses.
+     * Lists the current availability status for all the resources in the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -21,8 +20,7 @@ public interface AvailabilityStatuses {
     PagedIterable<AvailabilityStatus> listBySubscriptionId();
 
     /**
-     * Lists the current availability status for all the resources in the subscription. Use the nextLink property in the
-     * response to get the next page of availability statuses.
+     * Lists the current availability status for all the resources in the subscription.
      *
      * @param filter The filter to apply on the operation. For more information please see
      *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
@@ -36,8 +34,7 @@ public interface AvailabilityStatuses {
     PagedIterable<AvailabilityStatus> listBySubscriptionId(String filter, String expand, Context context);
 
     /**
-     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
-     * the response to get the next page of availability statuses.
+     * Lists the current availability status for all the resources in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,8 +45,7 @@ public interface AvailabilityStatuses {
     PagedIterable<AvailabilityStatus> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists the current availability status for all the resources in the resource group. Use the nextLink property in
-     * the response to get the next page of availability statuses.
+     * Lists the current availability status for all the resources in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. For more information please see
@@ -100,8 +96,7 @@ public interface AvailabilityStatuses {
         String resourceUri, String filter, String expand, Context context);
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
-     * property in the response to get the next page of availability status.
+     * Lists all historical availability transitions and impacting events for a single resource.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
@@ -116,8 +111,7 @@ public interface AvailabilityStatuses {
     PagedIterable<AvailabilityStatus> list(String resourceUri);
 
     /**
-     * Lists all historical availability transitions and impacting events for a single resource. Use the nextLink
-     * property in the response to get the next page of availability status.
+     * Lists all historical availability transitions and impacting events for a single resource.
      *
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
      *     Currently the API support not nested and one nesting level resource types :
