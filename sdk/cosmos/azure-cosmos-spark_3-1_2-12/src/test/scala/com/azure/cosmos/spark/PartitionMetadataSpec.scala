@@ -17,7 +17,7 @@ class PartitionMetadataSpec extends UnitSpec {
     UUID.randomUUID().toString,
     useGatewayMode = false,
     useEventualConsistency = true,
-    Array())
+    Option.empty)
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
   private[this] val lLsn = rnd.nextInt()
@@ -45,7 +45,7 @@ class PartitionMetadataSpec extends UnitSpec {
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
-      Array())
+      Option.empty)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt()
@@ -107,7 +107,7 @@ class PartitionMetadataSpec extends UnitSpec {
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
-      Array())
+      Option.empty)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt()
@@ -153,7 +153,7 @@ class PartitionMetadataSpec extends UnitSpec {
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
-      Array())
+      Option.empty)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt()
