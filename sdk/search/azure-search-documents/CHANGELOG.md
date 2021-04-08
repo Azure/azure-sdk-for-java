@@ -1,6 +1,6 @@
 # Release History
 
-## 11.3.1 (2021-04-07)
+## 11.3.1 (2021-04-08)
 
 ### Dependency Updates
 
