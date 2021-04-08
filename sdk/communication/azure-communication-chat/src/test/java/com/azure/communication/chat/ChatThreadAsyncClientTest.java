@@ -30,7 +30,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
@@ -62,7 +61,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|chat).*"));
+        assumeTrue(shouldEnableChatTests());
     }
 
     @Override

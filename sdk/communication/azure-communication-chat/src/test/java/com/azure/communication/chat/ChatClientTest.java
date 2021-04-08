@@ -19,7 +19,6 @@ import com.azure.communication.chat.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -44,7 +43,7 @@ public class ChatClientTest extends ChatClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|chat).*"));
+        assumeTrue(shouldEnableChatTests());
     }
 
     @Override

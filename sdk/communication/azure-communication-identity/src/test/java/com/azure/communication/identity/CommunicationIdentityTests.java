@@ -16,7 +16,6 @@ import com.azure.communication.identity.models.CommunicationUserIdentifierAndTok
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +27,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|identity).*"));
+        assumeTrue(shouldEnableIdentityTests());
     }
 
     @ParameterizedTest

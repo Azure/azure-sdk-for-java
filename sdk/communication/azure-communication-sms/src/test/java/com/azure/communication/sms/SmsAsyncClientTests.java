@@ -12,7 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Configuration;
 
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -27,7 +26,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|sms).*"));
+        assumeTrue(shouldEnableSmsTests());
     }
 
     @ParameterizedTest

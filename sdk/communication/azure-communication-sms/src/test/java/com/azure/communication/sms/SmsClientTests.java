@@ -9,7 +9,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +27,7 @@ public class SmsClientTests extends SmsTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|sms).*"));
+        assumeTrue(shouldEnableSmsTests());
     }
 
     @ParameterizedTest

@@ -15,7 +15,6 @@ import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -35,7 +34,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|phonenumbers).*"));
+        assumeTrue(shouldEnablePhoneNumbersTests());
     }
 
     @ParameterizedTest

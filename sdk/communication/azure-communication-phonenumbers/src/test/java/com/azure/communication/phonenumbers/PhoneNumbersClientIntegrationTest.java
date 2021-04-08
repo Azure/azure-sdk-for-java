@@ -16,7 +16,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -36,7 +35,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|phonenumbers).*"));
+        assumeTrue(shouldEnablePhoneNumbersTests());
     }
 
     @ParameterizedTest
