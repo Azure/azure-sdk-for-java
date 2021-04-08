@@ -117,10 +117,10 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void createNewLink() {
         // Arrange
+        when(link1.getCredits()).thenReturn(1);
+
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
-
-        when(link1.getCredits()).thenReturn(1);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -226,12 +226,9 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnClose() {
         // Arrange
-        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
-
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
 
-        final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final TestPublisher<AmqpEndpointState> connection2EndpointProcessor = TestPublisher.create();
 
         when(link2.getEndpointStates()).thenReturn(connection2EndpointProcessor.flux());
@@ -248,6 +245,9 @@ class ServiceBusReceiveLinkProcessorTest {
         when(link1.getCredits()).thenReturn(1);
         when(link2.getCredits()).thenReturn(1);
         when(link3.getCredits()).thenReturn(1);
+
+        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
+        final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -558,9 +558,9 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void receivesFromFirstLink() {
         // Arrange
-        ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
-
         when(link1.getCredits()).thenReturn(0);
+
+        final ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
         // Act & Assert
         StepVerifier.create(processor)
