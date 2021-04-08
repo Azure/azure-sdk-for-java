@@ -6,23 +6,21 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.PartitionKind;
-import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.*;
+
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.http.HttpStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -82,15 +80,15 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         pkIds.add("Redmond");
         pkIds.add("98052");
 
-        Object[] pkValue = new Object[2];
-        pkValue[0] = pkIds.get(0);
-        pkValue[1] = pkIds.get(1);
-
-        PartitionKey partitionKey = new PartitionKey(pkValue);
+        PartitionKey partitionKey =
+            new PartitionKeyBuilder()
+            .add(pkIds.get(0))
+            .add(pkIds.get(1))
+            .build();
 
         String documentId = UUID.randomUUID().toString();
         ObjectNode properties =  getItem(documentId, pkIds);
-        createdMultiHashContainer.createItem(properties);
+         createdMultiHashContainer.createItem(properties);
 
         CosmosItemResponse<ObjectNode> readResponse1 = createdMultiHashContainer.readItem(
                                                         documentId, partitionKey, ObjectNode.class);
@@ -104,8 +102,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         String json = String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"city\": \"%s\", "
-                + "\"zipcode\": \"%s\", "
-                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "\"zipcode\": \"%s\" "
                 + "}"
             , documentId, pkIds.get(0), pkIds.get(1));
         return
@@ -127,5 +124,69 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(expectedId);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    private void validateQueryForMultiHash() throws Exception {
+
+        try {
+            ArrayList<Document> docs = new ArrayList<Document>(3);
+
+            Document doc = new Document();
+            doc.setId(UUID.randomUUID().toString());
+            doc.set("city", "Redmond");
+            doc.set("zipcode", "98052");
+            docs.add(doc);
+
+            Document doc1 = new Document();
+            doc1.setId(UUID.randomUUID().toString());
+            doc1.set("city", "Pittsburgh");
+            doc1.set("zipcode", "15232");
+            docs.add(doc1);
+
+            Document doc2 = new Document();
+            doc2.setId(UUID.randomUUID().toString());
+            doc2.set("city", "Stonybrook");
+            doc2.set("zipcode", "11790");
+            docs.add(doc2);
+
+            //Document Create
+            {
+                createdMultiHashContainer.createItem(doc);
+                createdMultiHashContainer.createItem(doc1);
+                createdMultiHashContainer.createItem(doc2);
+            }
+            //Document Create - Negative test
+            {
+                PartitionKey partitionKey =
+                    new PartitionKeyBuilder()
+                        .add("Redmond")
+                        .build();
+                CosmosItemResponse<Document> response =
+                    createdMultiHashContainer.createItem(doc, partitionKey, new CosmosItemRequestOptions());
+
+                assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_BAD_REQUEST);
+            }
+
+            //Document Read
+            {
+                for (int i = 0; i < docs.size(); i++) {
+                    Document doc_current = docs.get(i);
+                    PartitionKey partitionKey = new PartitionKeyBuilder()
+                        .add(doc_current.getString("city"))
+                        .add(doc_current.getString("zipcode"))
+                        .build();
+                    CosmosItemResponse<Document> response = createdMultiHashContainer.readItem(doc_current.getId(), partitionKey, Document.class);
+                    assertThat(doc_current.toJson()).isEqualTo(response.getItem().toJson());
+                }
+            }
+
+            
+        }
+        catch (Exception e)
+        {
+            assertThat(false);
+        }
+
     }
 }
