@@ -8,8 +8,16 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.*;
 
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
