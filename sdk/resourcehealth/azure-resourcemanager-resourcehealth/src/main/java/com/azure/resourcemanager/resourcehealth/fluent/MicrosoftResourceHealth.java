@@ -46,25 +46,18 @@ public interface MicrosoftResourceHealth {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the EventsOperationsClient object to access its operations.
+     *
+     * @return the EventsOperationsClient object.
+     */
+    EventsOperationsClient getEventsOperations();
+
+    /**
      * Gets the AvailabilityStatusesClient object to access its operations.
      *
      * @return the AvailabilityStatusesClient object.
      */
     AvailabilityStatusesClient getAvailabilityStatuses();
-
-    /**
-     * Gets the ChildAvailabilityStatusesClient object to access its operations.
-     *
-     * @return the ChildAvailabilityStatusesClient object.
-     */
-    ChildAvailabilityStatusesClient getChildAvailabilityStatuses();
-
-    /**
-     * Gets the ChildResourcesClient object to access its operations.
-     *
-     * @return the ChildResourcesClient object.
-     */
-    ChildResourcesClient getChildResources();
 
     /**
      * Gets the OperationsClient object to access its operations.

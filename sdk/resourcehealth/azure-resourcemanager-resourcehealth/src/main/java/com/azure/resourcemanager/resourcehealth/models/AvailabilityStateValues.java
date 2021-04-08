@@ -4,47 +4,37 @@
 
 package com.azure.resourcemanager.resourcehealth.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for AvailabilityStateValues. */
-public enum AvailabilityStateValues {
-    /** Enum value Available. */
-    AVAILABLE("Available"),
+public final class AvailabilityStateValues extends ExpandableStringEnum<AvailabilityStateValues> {
+    /** Static value Available for AvailabilityStateValues. */
+    public static final AvailabilityStateValues AVAILABLE = fromString("Available");
 
-    /** Enum value Unavailable. */
-    UNAVAILABLE("Unavailable"),
+    /** Static value Unavailable for AvailabilityStateValues. */
+    public static final AvailabilityStateValues UNAVAILABLE = fromString("Unavailable");
 
-    /** Enum value Unknown. */
-    UNKNOWN("Unknown");
+    /** Static value Degraded for AvailabilityStateValues. */
+    public static final AvailabilityStateValues DEGRADED = fromString("Degraded");
 
-    /** The actual serialized value for a AvailabilityStateValues instance. */
-    private final String value;
-
-    AvailabilityStateValues(String value) {
-        this.value = value;
-    }
+    /** Static value Unknown for AvailabilityStateValues. */
+    public static final AvailabilityStateValues UNKNOWN = fromString("Unknown");
 
     /**
-     * Parses a serialized value to a AvailabilityStateValues instance.
+     * Creates or finds a AvailabilityStateValues from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AvailabilityStateValues object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding AvailabilityStateValues.
      */
     @JsonCreator
-    public static AvailabilityStateValues fromString(String value) {
-        AvailabilityStateValues[] items = AvailabilityStateValues.values();
-        for (AvailabilityStateValues item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static AvailabilityStateValues fromString(String name) {
+        return fromString(name, AvailabilityStateValues.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known AvailabilityStateValues values. */
+    public static Collection<AvailabilityStateValues> values() {
+        return values(AvailabilityStateValues.class);
     }
 }

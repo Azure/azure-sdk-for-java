@@ -22,9 +22,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resourcehealth.fluent.AvailabilityStatusesClient;
-import com.azure.resourcemanager.resourcehealth.fluent.ChildAvailabilityStatusesClient;
-import com.azure.resourcemanager.resourcehealth.fluent.ChildResourcesClient;
 import com.azure.resourcemanager.resourcehealth.fluent.EmergingIssuesClient;
+import com.azure.resourcemanager.resourcehealth.fluent.EventsOperationsClient;
 import com.azure.resourcemanager.resourcehealth.fluent.MicrosoftResourceHealth;
 import com.azure.resourcemanager.resourcehealth.fluent.OperationsClient;
 import java.io.IOException;
@@ -118,6 +117,18 @@ public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealt
         return this.defaultPollInterval;
     }
 
+    /** The EventsOperationsClient object to access its operations. */
+    private final EventsOperationsClient eventsOperations;
+
+    /**
+     * Gets the EventsOperationsClient object to access its operations.
+     *
+     * @return the EventsOperationsClient object.
+     */
+    public EventsOperationsClient getEventsOperations() {
+        return this.eventsOperations;
+    }
+
     /** The AvailabilityStatusesClient object to access its operations. */
     private final AvailabilityStatusesClient availabilityStatuses;
 
@@ -128,30 +139,6 @@ public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealt
      */
     public AvailabilityStatusesClient getAvailabilityStatuses() {
         return this.availabilityStatuses;
-    }
-
-    /** The ChildAvailabilityStatusesClient object to access its operations. */
-    private final ChildAvailabilityStatusesClient childAvailabilityStatuses;
-
-    /**
-     * Gets the ChildAvailabilityStatusesClient object to access its operations.
-     *
-     * @return the ChildAvailabilityStatusesClient object.
-     */
-    public ChildAvailabilityStatusesClient getChildAvailabilityStatuses() {
-        return this.childAvailabilityStatuses;
-    }
-
-    /** The ChildResourcesClient object to access its operations. */
-    private final ChildResourcesClient childResources;
-
-    /**
-     * Gets the ChildResourcesClient object to access its operations.
-     *
-     * @return the ChildResourcesClient object.
-     */
-    public ChildResourcesClient getChildResources() {
-        return this.childResources;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -201,10 +188,9 @@ public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealt
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-07-01";
+        this.apiVersion = "2018-07-01";
+        this.eventsOperations = new EventsOperationsClientImpl(this);
         this.availabilityStatuses = new AvailabilityStatusesClientImpl(this);
-        this.childAvailabilityStatuses = new ChildAvailabilityStatusesClientImpl(this);
-        this.childResources = new ChildResourcesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.emergingIssues = new EmergingIssuesClientImpl(this);
     }
