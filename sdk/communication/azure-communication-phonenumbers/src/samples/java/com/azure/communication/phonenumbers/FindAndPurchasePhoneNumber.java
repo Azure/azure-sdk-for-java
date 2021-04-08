@@ -9,20 +9,16 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 
 public class FindAndPurchasePhoneNumber {
     public static void main(String[] args) {
-        String endpoint = System.getenv("AZURE_COMMUNICATION_ENDPOINT");
-        String accessKey = System.getenv("AZURE_COMMUNICATION_KEY");
+        String connectionString = System.getenv("COMMUNICATION_CONNECTION_STRING");
         String areaCode = System.getenv("AZURE_COMMUNICATION_AREA_CODE");
-        AzureKeyCredential keyCredential = new AzureKeyCredential(accessKey);
 
         PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
-            .endpoint(endpoint)
-            .credential(keyCredential)
+            .connectionString(connectionString)
             .buildClient();
 
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()

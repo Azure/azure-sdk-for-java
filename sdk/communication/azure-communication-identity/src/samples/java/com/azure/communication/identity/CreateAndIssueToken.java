@@ -5,19 +5,14 @@ package com.azure.communication.identity;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.AzureKeyCredential;
 import java.util.Arrays;
 import java.util.List;
 
 public class CreateAndIssueToken {
     public static void main(String[] args) {
-        String endpoint = System.getenv("AZURE_COMMUNICATION_ENDPOINT");
-        String accessKey = System.getenv("AZURE_COMMUNICATION_KEY");
-        AzureKeyCredential keyCredential = new AzureKeyCredential(accessKey);
-
+        String connectionString = System.getenv("COMMUNICATION_CONNECTION_STRING");
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-            .endpoint(endpoint)
-            .credential(keyCredential)
+            .connectionString(connectionString)
             .buildClient();
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
