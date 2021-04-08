@@ -38,7 +38,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -64,6 +63,8 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
 
     private static final Type MAP_STRING_STRING = TypeUtil.createParameterizedType(Map.class, String.class,
         String.class);
+    private static final TypeReference<Map<String, String>> TYPE_REFERENCE = new TypeReference<Map<String, String>>() {
+    };
 
     private final SerializerAdapter serializer;
     private final String rawHost;
@@ -433,7 +434,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
             Object body = swaggerMethodArguments[bodyContentMethodParameterIndex];
 
-            result =  (ContentType.APPLICATION_X_WWW_FORM_URLENCODED.equals(bodyContentType))
+            result = (ContentType.APPLICATION_X_WWW_FORM_URLENCODED.equals(bodyContentType))
                 ? turnBodyObjectIntoUrlEncodedString(serializer, body, logger)
                 : body;
         }
@@ -459,10 +460,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
 
             // Generally the serializer will be a JacksonAdapter and it has more performant APIs available.
             if (serializer instanceof JacksonAdapter) {
-                ObjectMapper mapper = ((JacksonAdapter) serializer).serializer();
-
-                bodyAsTree = ((JacksonAdapter) serializer).serializer()
-                    .convertValue(body, new TypeReference<Map<String, String>>() { });
+                bodyAsTree = ((JacksonAdapter) serializer).serializer().convertValue(body, TYPE_REFERENCE);
             } else {
                 String objectAsJson = serializer.serialize(body, SerializerEncoding.JSON);
                 bodyAsTree = serializer.deserialize(objectAsJson, MAP_STRING_STRING, SerializerEncoding.JSON);
