@@ -3,9 +3,13 @@ package com.azure.storage.blob
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.models.ParallelTransferOptions
+import com.azure.storage.blob.options.BlobInputStreamOptions
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import org.junit.Ignore
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -137,6 +141,33 @@ class BlobOutputStreamTest extends APISpec {
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+    }
+
+    @Ignore // Uncomment and run in VMs with good network bandwidth
+    def "BlockBlob output stream large"() {
+        setup:
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def options = new BlockBlobOutputStreamOptions().setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(64 * Constants.MB).setMaxSingleUploadSizeLong(64 * Constants.MB).setMaxConcurrency(1))
+        def blockBlobOS = blockBlobClient.getBlobOutputStream(options)
+        def os = new DataOutputStream(new BufferedOutputStream(blockBlobOS))
+
+        when:
+        for(long i = 0; i < size / 8; i++) {
+            os.writeLong(i)
+        }
+        os.close()
+
+        then:
+        blockBlobClient.getProperties().getBlobSize() == size
+        def is = new DataInputStream(new BufferedInputStream(blockBlobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(32 * Constants.MB))))
+        for(long i = 0; i < size / 8; i++) {
+            assert is.readLong() == i
+        }
+
+        where:
+        size             || _
+        Constants.GB     || _
+        5 * Constants.GB || _ /* Run this with a heap size of 3GB locally. */
     }
 
     @Requires({ liveMode() })
