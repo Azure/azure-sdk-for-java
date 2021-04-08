@@ -23,7 +23,6 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     static final String CIPHER_NAME = "AESWrap";
 
     static class AesKwDecryptor implements ICryptoTransform {
-
         final Cipher cipher;
 
         AesKwDecryptor(byte[] key, byte[] iv, Provider provider)
@@ -36,9 +35,8 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
                 cipher = Cipher.getInstance(CIPHER_NAME, provider);
             }
 
-            // The default provider does not support the specification of IV. This
-            // is guarded by the CreateEncrypter wrapper method and the iv parameter
-            // can be ignored when using the default provider
+            // The default provider does not support the specification of IV. This is guarded by the CreateEncryptor
+            // wrapper method and the iv parameter can be ignored when using the default provider.
             if (provider == null) {
                 cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
@@ -56,7 +54,6 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     }
 
     static class AesKwEncryptor implements ICryptoTransform {
-
         final Cipher cipher;
 
         AesKwEncryptor(byte[] key, byte[] iv, Provider provider)
@@ -69,9 +66,8 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
                 cipher = Cipher.getInstance(CIPHER_NAME, provider);
             }
 
-            // The default provider does not support the specification of IV. This
-            // is guarded by the CreateEncrypter wrapper method and the iv parameter
-            // can be ignored when using the default provider
+            // The default provider does not support the specification of IV. This is guarded by the CreateEncryptor
+            // wrapper method and the iv parameter can be ignored when using the default provider.
             if (provider == null) {
                 cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
@@ -167,6 +163,7 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv)
         throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
         InvalidAlgorithmParameterException {
+
         return createDecryptor(key, iv, null);
     }
 
@@ -182,7 +179,6 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
             throw logger.logExceptionAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
         }
-
 
         if (iv != null) {
             // iv length must be 64 bits

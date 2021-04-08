@@ -17,7 +17,7 @@ import java.util.Map;
 /** Pipeline resource type. */
 @JsonFlatten
 @Fluent
-public class PipelineResource extends AzureEntityResource {
+public class PipelineResource extends SubResource {
     /*
      * The description of the pipeline.
      */

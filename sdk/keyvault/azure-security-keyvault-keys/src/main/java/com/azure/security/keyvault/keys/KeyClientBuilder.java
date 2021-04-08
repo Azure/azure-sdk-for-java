@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link KeyAsyncClient
@@ -64,8 +63,10 @@ public final class KeyClientBuilder {
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+
     private final List<HttpPipelinePolicy> policies;
     private final Map<String, String> properties;
+
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private URL vaultUrl;
@@ -96,8 +97,9 @@ public final class KeyClientBuilder {
      * KeyClientBuilder#vaultUrl(String) key vault url} are required to build the {@link KeyClient client}.</p>
      *
      * @return A {@link KeyClient} with the options set from the builder.
+     *
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
-     *     {@link KeyClientBuilder#vaultUrl(String)} have not been set.
+     * {@link KeyClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyClient buildClient() {
         return new KeyClient(buildAsyncClient());
@@ -114,8 +116,9 @@ public final class KeyClientBuilder {
      * key vault url are required to build the {@link KeyAsyncClient client}.}</p>
      *
      * @return A {@link KeyAsyncClient} with the options set from the builder.
+     *
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
-     *     {@link KeyClientBuilder#vaultUrl(String)} have not been set.
+     * {@link KeyClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
@@ -127,6 +130,7 @@ public final class KeyClientBuilder {
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings
                     .getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
+
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
 
         if (pipeline != null) {
@@ -162,11 +166,13 @@ public final class KeyClientBuilder {
     }
 
     /**
-     * Sets the vault url to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to.
      *
      * @param vaultUrl The vault url is used as destination on Azure to send requests to.
-     * @return the updated ServiceClientBuilder object.
-     * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
+     *
+     * @throws IllegalArgumentException If {@code vaultUrl} cannot be parsed into a valid URL.
      */
     public KeyClientBuilder vaultUrl(String vaultUrl) {
         try {
@@ -182,12 +188,18 @@ public final class KeyClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated {@link KeyClientBuilder} object.
-     * @throws NullPointerException if {@code credential} is {@code null}.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public KeyClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential);
+        if (credential == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+        }
+
         this.credential = credential;
+
         return this;
     }
 
@@ -197,10 +209,12 @@ public final class KeyClientBuilder {
      * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return the updated {@link KeyClientBuilder} object.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
+
         return this;
     }
 
@@ -209,12 +223,18 @@ public final class KeyClientBuilder {
      * KeyClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated {@link KeyClientBuilder} object.
-     * @throws NullPointerException if {@code policy} is {@code null}.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public KeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
+        if (policy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+        }
+
         policies.add(policy);
+
         return this;
     }
 
@@ -222,12 +242,16 @@ public final class KeyClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated {@link KeyClientBuilder} object.
-     * @throws NullPointerException If {@code client} is {@code null}.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client);
+        if (client == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
+        }
+
         this.httpClient = client;
+
         return this;
     }
 
@@ -238,11 +262,16 @@ public final class KeyClientBuilder {
      * {@link KeyClientBuilder#vaultUrl(String) vaultUrl} to build {@link KeyClient} or {@link KeyAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return the updated {@link KeyClientBuilder} object.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
+        if (pipeline == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
+        }
+
         this.pipeline = pipeline;
+
         return this;
     }
 
@@ -254,10 +283,12 @@ public final class KeyClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link KeyServiceVersion} of the service to be used when making requests.
-     * @return The updated KeyClientBuilder object.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder serviceVersion(KeyServiceVersion version) {
         this.version = version;
+
         return this;
     }
 
@@ -267,11 +298,13 @@ public final class KeyClientBuilder {
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
-     * @param configuration The configuration store used to
-     * @return The updated KeyClientBuilder object.
+     * @param configuration The configuration store used to get configuration details.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+
         return this;
     }
 
@@ -281,12 +314,16 @@ public final class KeyClientBuilder {
      * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated KeyClientBuilder object.
-     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        if (retryPolicy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
+        }
+
         this.retryPolicy = retryPolicy;
+
         return this;
     }
 

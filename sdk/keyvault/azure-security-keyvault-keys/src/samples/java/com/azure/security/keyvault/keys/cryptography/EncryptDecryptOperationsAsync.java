@@ -4,9 +4,12 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
 import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * Sample demonstrates how to set, get, update and delete a key.
@@ -30,16 +33,19 @@ public class EncryptDecryptOperationsAsync {
             .keyIdentifier("<Your-Key-Id-From-Keyvault>")
             .buildAsyncClient();
 
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
 
         // Let's encrypt a simple plain text of size 100 bytes.
-        cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
-            .subscribe(encryptResult -> {
-                System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
+        cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
+            .subscribe((Consumer<? super EncryptResult>) encryptResult -> {
+                System.out.printf("Returned ciphertext size is %d bytes with algorithm %s\n",
+                    encryptResult.getCipherText().length, encryptResult.getAlgorithm());
                 //Let's decrypt the encrypted response.
                 cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText())
-                    .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.getPlainText().length));
+                    .subscribe((Consumer<? super DecryptResult>) decryptResult ->
+                        System.out.printf("Returned plaintext size is %d bytes\n",
+                            decryptResult.getPlainText().length));
             });
 
         Thread.sleep(5000);

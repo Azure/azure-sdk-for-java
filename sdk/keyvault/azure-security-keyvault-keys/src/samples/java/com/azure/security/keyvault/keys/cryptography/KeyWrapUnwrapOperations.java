@@ -4,18 +4,16 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 
 import java.util.Random;
-
 
 /**
  * Sample demonstrates how to set, get, update and delete a key.
  */
 public class KeyWrapUnwrapOperations {
-
     /**
      * Authenticates with the key vault and shows how to set, get, update and delete a key in the key vault.
      *
@@ -24,7 +22,6 @@ public class KeyWrapUnwrapOperations {
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException, IllegalArgumentException {
-
         // Instantiate a key client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
@@ -33,12 +30,13 @@ public class KeyWrapUnwrapOperations {
             .keyIdentifier("<Your-Key-Id-From-Keyvault")
             .buildClient();
 
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
 
         // Let's wrap a simple dummy key content.
-        WrapResult wrapResult = cryptoClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plainText);
-        System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", wrapResult.getEncryptedKey().length, wrapResult.getAlgorithm().toString());
+        WrapResult wrapResult = cryptoClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plaintext);
+        System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n",
+            wrapResult.getEncryptedKey().length, wrapResult.getAlgorithm());
 
         //Let's unwrap the encrypted key response.
         UnwrapResult unwrapResult = cryptoClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, wrapResult.getEncryptedKey());

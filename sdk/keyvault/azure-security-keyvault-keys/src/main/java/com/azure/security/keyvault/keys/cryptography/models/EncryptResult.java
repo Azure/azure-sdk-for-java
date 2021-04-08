@@ -14,7 +14,7 @@ public final class EncryptResult {
     /**
      * The encrypted content.
      */
-    private final byte[] cipherText;
+    private final byte[] ciphertext;
 
     /**
      * The algorithm used for the encryption operation.
@@ -28,12 +28,12 @@ public final class EncryptResult {
 
     /**
      * Creates the instance of Encrypt Result holding encryption operation response information.
-     * @param cipherText The encrypted content.
+     * @param ciphertext The encrypted content.
      * @param algorithm The algorithm used to encrypt the content.
      * @param keyId The identifier of the key usd for the encryption operation.
      */
-    public EncryptResult(byte[] cipherText, EncryptionAlgorithm algorithm, String keyId) {
-        this.cipherText = CoreUtils.clone(cipherText);
+    public EncryptResult(byte[] ciphertext, EncryptionAlgorithm algorithm, String keyId) {
+        this.ciphertext = CoreUtils.clone(ciphertext);
         this.algorithm = algorithm;
         this.keyId = keyId;
     }
@@ -51,7 +51,7 @@ public final class EncryptResult {
      * @return The encrypted content.
      */
     public byte[] getCipherText() {
-        return CoreUtils.clone(cipherText);
+        return CoreUtils.clone(ciphertext);
     }
 
     /**

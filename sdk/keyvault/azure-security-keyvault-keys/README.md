@@ -226,12 +226,12 @@ CryptographyClient cryptoClient = new CryptographyClientBuilder()
     .keyIdentifier("<your-key-id-from-key-vault")
     .buildClient();
 
-byte[] plainText = new byte[100];
-new Random(0x1234567L).nextBytes(plainText);
+byte[] plaintext = new byte[100];
+new Random(0x1234567L).nextBytes(plaintext);
 
 // Let's encrypt a simple plain text of size 100 bytes.
-EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
+System.out.printf("Returned ciphertext size is %d bytes with algorithm \"%s\"%n",
     encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
 ```
 
@@ -239,13 +239,13 @@ System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n"
 Decrypt encrypted content by calling `decrypt`.
 
 ```java
-byte[] plainText = new byte[100];
-new Random(0x1234567L).nextBytes(plainText);
-EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
+byte[] plaintext = new byte[100];
+new Random(0x1234567L).nextBytes(plaintext);
+EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
 
 //Let's decrypt the encrypted result.
 DecryptResult decryptionResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText());
-System.out.printf("Returned plainText size is %d bytes%n", decryptionResult.getPlainText().length);
+System.out.printf("Returned plaintext size is %d bytes%n", decryptionResult.getPlainText().length);
 ```
 
 ### Async API
@@ -346,13 +346,13 @@ CryptographyAsyncClient cryptoAsyncClient = new CryptographyClientBuilder()
     .keyIdentifier("<your-key-id-from-key-vault>")
     .buildAsyncClient();
 
-byte[] plainText = new byte[100];
-new Random(0x1234567L).nextBytes(plainText);
+byte[] plaintext = new byte[100];
+new Random(0x1234567L).nextBytes(plaintext);
 
 // Let's encrypt a simple plain text of size 100 bytes.
-cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
+cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+        System.out.printf("Returned ciphertext size is %d bytes with algorithm \"%s\"%n",
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
     });
 ```
@@ -361,18 +361,18 @@ cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
 Decrypt encrypted content by calling `decrypt`.
 
 ```java
-byte[] plainText = new byte[100];
-new Random(0x1234567L).nextBytes(plainText);
+byte[] plaintext = new byte[100];
+new Random(0x1234567L).nextBytes(plaintext);
 
 // Let's encrypt a simple plain text of size 100 bytes.
-cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
+cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+        System.out.printf("Returned ciphertext size is %d bytes with algorithm \"%s\"%n",
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
         //Let's decrypt the encrypted response.
         cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText())
             .subscribe(decryptionResult ->
-                System.out.printf("Returned plainText size is %d bytes%n", decryptionResult.getPlainText().length));
+                System.out.printf("Returned plaintext size is %d bytes%n", decryptionResult.getPlainText().length));
     });
 ```
 

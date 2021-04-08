@@ -1,5 +1,12 @@
 # Release History
 
+## 12.0.0-beta.6 (Unreleased)
+
+### Breaking Changes
+
+- All clients and batch classes now throw a public TableServiceErrorException instead of the one in the implementation package.
+- `TableClientBuilder` fluent setters now throw an `IllegalArgumentException` instead of `NullPointerException` when given invalid arguments.
+
 ## 12.0.0-beta.5 (2021-03-10)
 
 ### New Features

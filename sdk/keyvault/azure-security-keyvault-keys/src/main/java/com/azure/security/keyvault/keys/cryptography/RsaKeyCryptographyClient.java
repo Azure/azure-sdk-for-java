@@ -5,12 +5,12 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -38,6 +38,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     RsaKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
         super(serviceClient);
+
         keyPair = key.toRsa(key.hasPrivateKey());
     }
 
@@ -45,6 +46,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (keyPair == null) {
             keyPair = key.toRsa(key.hasPrivateKey());
         }
+
         return keyPair;
     }
 
@@ -60,6 +62,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.encrypt(algorithm, plaintext, context);
             }
+
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -69,6 +72,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.encrypt(algorithm, plaintext, context);
             }
+
             return Mono.error(new IllegalArgumentException(
                 "Public portion of the key not available to perform encrypt operation"));
         }
@@ -85,6 +89,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             | NoSuchPaddingException
             | IllegalBlockSizeException
             | BadPaddingException e) {
+
             return Mono.error(e);
         }
     }
@@ -101,6 +106,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.decrypt(algorithm, cipherText, context);
             }
+
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -110,6 +116,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (serviceCryptoAvailable()) {
                 return serviceClient.decrypt(algorithm, cipherText, context);
             }
+
             return Mono.error(new IllegalArgumentException(
                 "Private portion of the key not available to perform decrypt operation"));
         }
@@ -126,20 +133,19 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
             | NoSuchPaddingException
             | IllegalBlockSizeException
             | BadPaddingException e) {
+
             return Mono.error(e);
         }
     }
 
     @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
-
         return serviceClient.sign(algorithm, digest, context);
     }
 
     @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context,
                                    JsonWebKey key) {
-
         return serviceClient.verify(algorithm, digest, signature, context);
         // do a service call for now.
     }

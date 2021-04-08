@@ -51,6 +51,7 @@ public class TestUtils {
     public static RxDocumentServiceRequest mockDocumentServiceRequest(DiagnosticsClientContext clientContext) {
         RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext.retryContext = Mockito.mock(RetryContext.class);
         Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
 
         return dsr;

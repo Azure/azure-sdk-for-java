@@ -3,7 +3,10 @@
 
 package com.azure.communication.sms.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** The SmsSendResult model. */
+@Immutable
 public final class SmsSendResult {
     private final String to;
     private final String messageId;

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
@@ -13,9 +12,10 @@ import com.azure.resourcemanager.netapp.models.ReplicationStatus;
 public final class ReplicationStatusImpl implements ReplicationStatus {
     private ReplicationStatusInner innerObject;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    ReplicationStatusImpl(ReplicationStatusInner innerObject, NetAppFilesManager serviceManager) {
+    ReplicationStatusImpl(
+        ReplicationStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -44,7 +44,7 @@ public final class ReplicationStatusImpl implements ReplicationStatus {
         return this.innerObject;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 }

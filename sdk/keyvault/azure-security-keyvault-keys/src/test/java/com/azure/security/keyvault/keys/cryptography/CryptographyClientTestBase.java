@@ -34,7 +34,12 @@ import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -106,7 +111,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     public abstract void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
-    public abstract void wrapUnwraptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+    public abstract void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
 
     @Test
     public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
@@ -138,8 +143,8 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            ? "http://localhost:8080"
+            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

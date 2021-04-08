@@ -10,63 +10,74 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
-import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
+import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+import java.util.function.Consumer;
 
 /**
- * This class contains code samples for generating javadocs through doclets for {@link KeyAsyncClient}
+ * This class contains code samples for generating javadocs through doclets for {@link KeyAsyncClient}.
  */
 public final class CryptographyAsyncClientJavaDocCodeSnippets {
-
     private String key1 = "key1";
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
 
     /**
-     * Generates code sample for creating a {@link KeyAsyncClient}
-     * @return An instance of {@link KeyAsyncClient}
+     * Generates code sample for creating a {@link KeyAsyncClient}.
+     *
+     * @return An instance of {@link KeyAsyncClient}.
+     */
+    public CryptographyAsyncClient createAsyncClient() {
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
+            .keyIdentifier("<YOUR-KEY-ID>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation
+        return cryptographyAsyncClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link KeyAsyncClient} with a given {@link HttpClient}.
+     *
+     * @return An instance of {@link KeyAsyncClient}.
      */
     public CryptographyAsyncClient createAsyncClientWithHttpClient() {
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.withhttpclient.instantiation
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<Your-Key-ID>")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.withhttpclient.instantiation
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation
         return cryptographyAsyncClient;
     }
 
     /**
-     * Generates code sample for creating a {@link KeyAsyncClient}
-     * @return An instance of {@link KeyAsyncClient}
-     */
-    public CryptographyAsyncClient createAsyncClient() {
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation
-        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
-            .keyIdentifier("<YOUR-KEY-ID>")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.instantiation
-        return cryptographyAsyncClient;
-    }
-
-    /**
-     * Generates code sample for creating a {@link KeyAsyncClient}
-     * @return An instance of {@link KeyAsyncClient}
+     * Generates code sample for creating a {@link KeyAsyncClient} with a given {@link HttpPipeline}.
+     *
+     * @return An instance of {@link KeyAsyncClient}.
      */
     public CryptographyAsyncClient createAsyncClientWithPipeline() {
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.pipeline.instantiation
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
             .build();
@@ -74,40 +85,39 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
             .pipeline(pipeline)
             .keyIdentifier("<YOUR-KEY-ID")
             .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.pipeline.instantiation
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation
         return cryptographyAsyncClient;
     }
 
-
     /**
-     * Generates a code sample for using {@link CryptographyAsyncClient#getKeyWithResponse()}
-     */
-    public void getKeyWithResponseSnippets() {
-        CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse
-        cryptographyAsyncClient.getKeyWithResponse()
-            .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(keyResponse ->  System.out.printf("Key is returned with name %s and id %s \n",
-                keyResponse.getValue().getName(), keyResponse.getValue().getId()));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse
-    }
-
-    /**
-     * Generates a code sample for using {@link CryptographyAsyncClient#getKey()}
+     * Generates a code sample for using {@link CryptographyAsyncClient#getKey()}.
      */
     public void getKeySnippets() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKey
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKey
         cryptographyAsyncClient.getKey()
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(key ->  System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId()));
-        // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKey
+            .subscribe((Consumer<? super KeyVaultKey>) key ->
+                System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId()));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKey
     }
 
+    /**
+     * Generates a code sample for using {@link CryptographyAsyncClient#getKeyWithResponse()}.
+     */
+    public void getKeyWithResponseSnippets() {
+        CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKeyWithResponse
+        cryptographyAsyncClient.getKeyWithResponse()
+            .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
+            .subscribe((Consumer<Response<KeyVaultKey>>) keyResponse ->
+                System.out.printf("Key is returned with name %s and id %s \n", keyResponse.getValue().getName(),
+                    keyResponse.getValue().getId()));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKeyWithResponse
+    }
 
     /**
-     * Generates a code sample for using {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])}
+     * Generates a code sample for using {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])}.
      */
     public void encrypt() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
@@ -122,15 +132,14 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(plainText);
         cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(encryptResult ->
+            .subscribe((Consumer<? super EncryptResult>) encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
     }
 
     /**
-     * Generates a code sample for using {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])}
+     * Generates a code sample for using {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])}.
      */
     public void decrypt() {
         CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
@@ -139,14 +148,14 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(plainText);
         cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(decryptResult ->
+            .subscribe((Consumer<? super DecryptResult>) decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
     }
 
     /**
      * Generates a code sample for using {@link CryptographyAsyncClient#sign(SignatureAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#verify(SignatureAlgorithm, byte[], byte[])}
+     * {@link CryptographyAsyncClient#verify(SignatureAlgorithm, byte[], byte[])}.
      *
      * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
      */
@@ -161,43 +170,17 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         byte[] digest = md.digest();
         cryptographyAsyncClient.sign(SignatureAlgorithm.ES256, digest)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(signResult ->
-                System.out.printf("Received signature of length %d with algorithm %s", signResult.getSignature().length));
+            .subscribe((Consumer<? super SignResult>) signResult ->
+                System.out.printf("Received signature of length %d with algorithm %s",
+                    signResult.getSignature().length, signResult.getAlgorithm()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte
         cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, digest, signature)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(verifyResult ->
+            .subscribe((Consumer<? super VerifyResult>) verifyResult ->
                 System.out.printf("Verification status %s", verifyResult.isValid()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte
-    }
-
-
-    /**
-     * Generates a code sample for using {@link CryptographyAsyncClient#signData(SignatureAlgorithm, byte[])} and
-     * {@link CryptographyAsyncClient#verifyData(SignatureAlgorithm, byte[], byte[])}
-     *
-     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
-     */
-    public void signDataVerifyData() throws NoSuchAlgorithmException {
-        CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
-        byte[] signature = new byte[100];
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
-        byte[] data = new byte[100];
-        new Random(0x1234567L).nextBytes(data);
-        cryptographyAsyncClient.sign(SignatureAlgorithm.ES256, data)
-            .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(signResult ->
-                System.out.printf("Received signature of length %d with algorithm %s", signResult.getSignature().length));
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
-
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
-        cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, data, signature)
-            .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(verifyResult ->
-                System.out.printf("Verification status %s", verifyResult.isValid()));
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
     }
 
     /**
@@ -212,7 +195,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(key);
         cryptographyAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, key)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(keyWrapResult ->
+            .subscribe((Consumer<? super WrapResult>) keyWrapResult ->
                 System.out.printf("Received encypted key of length %d with algorithm %s",
                     keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm().toString()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte
@@ -220,14 +203,43 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte
         cryptographyAsyncClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, encryptedKey)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(keyUnwrapResult ->
+            .subscribe((Consumer<? super UnwrapResult>) keyUnwrapResult ->
                 System.out.printf("Received key of length %d", keyUnwrapResult.getKey().length));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte
     }
 
     /**
-     * Implementation not provided for this method
-     * @return {@code null}
+     * Generates a code sample for using {@link CryptographyAsyncClient#signData(SignatureAlgorithm, byte[])} and
+     * {@link CryptographyAsyncClient#verifyData(SignatureAlgorithm, byte[], byte[])}.
+     *
+     * @throws NoSuchAlgorithmException when the specified algorithm doesn't exist.
+     */
+    public void signDataVerifyData() throws NoSuchAlgorithmException {
+        CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
+        byte[] signature = new byte[100];
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
+        byte[] data = new byte[100];
+        new Random(0x1234567L).nextBytes(data);
+
+        cryptographyAsyncClient.sign(SignatureAlgorithm.ES256, data)
+            .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
+            .subscribe((Consumer<? super SignResult>) signResult ->
+                System.out.printf("Received signature of length %d with algorithm %s",
+                    signResult.getSignature().length, signResult.getAlgorithm()));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
+        cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, data, signature)
+            .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
+            .subscribe((Consumer<? super VerifyResult>) verifyResult ->
+                System.out.printf("Verification status %s", verifyResult.isValid()));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
+    }
+
+    /**
+     * Implementation not provided for this method.
+     *
+     * @return {@code null}.
      */
     private TokenCredential getKeyVaultCredential() {
         return null;

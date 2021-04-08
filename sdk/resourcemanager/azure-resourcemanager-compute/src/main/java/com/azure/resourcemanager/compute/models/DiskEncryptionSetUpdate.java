@@ -24,6 +24,13 @@ public class DiskEncryptionSetUpdate {
     private Map<String, String> tags;
 
     /*
+     * The managed identity for the disk encryption set. It should be given
+     * permission on the key vault before it can be used to encrypt disks.
+     */
+    @JsonProperty(value = "identity")
+    private EncryptionSetIdentity identity;
+
+    /*
      * The type of key used to encrypt the data of the disk.
      */
     @JsonProperty(value = "properties.encryptionType")
@@ -35,6 +42,13 @@ public class DiskEncryptionSetUpdate {
      */
     @JsonProperty(value = "properties.activeKey")
     private KeyForDiskEncryptionSet activeKey;
+
+    /*
+     * Set this flag to true to enable auto-updating of this disk encryption
+     * set to the latest key version.
+     */
+    @JsonProperty(value = "properties.rotationToLatestKeyVersionEnabled")
+    private Boolean rotationToLatestKeyVersionEnabled;
 
     /**
      * Get the tags property: Resource tags.
@@ -53,6 +67,28 @@ public class DiskEncryptionSetUpdate {
      */
     public DiskEncryptionSetUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
+     * key vault before it can be used to encrypt disks.
+     *
+     * @return the identity value.
+     */
+    public EncryptionSetIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed identity for the disk encryption set. It should be given permission on the
+     * key vault before it can be used to encrypt disks.
+     *
+     * @param identity the identity value to set.
+     * @return the DiskEncryptionSetUpdate object itself.
+     */
+    public DiskEncryptionSetUpdate withIdentity(EncryptionSetIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -99,11 +135,36 @@ public class DiskEncryptionSetUpdate {
     }
 
     /**
+     * Get the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @return the rotationToLatestKeyVersionEnabled value.
+     */
+    public Boolean rotationToLatestKeyVersionEnabled() {
+        return this.rotationToLatestKeyVersionEnabled;
+    }
+
+    /**
+     * Set the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
+     * @return the DiskEncryptionSetUpdate object itself.
+     */
+    public DiskEncryptionSetUpdate withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
+        this.rotationToLatestKeyVersionEnabled = rotationToLatestKeyVersionEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (activeKey() != null) {
             activeKey().validate();
         }

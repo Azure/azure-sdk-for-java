@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -97,8 +96,9 @@ public final class SecretClientBuilder {
      * client}.</p>
      *
      * @return A {@link SecretClient} with the options set from the builder.
+     *
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
-     *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
+     * {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
     public SecretClient buildClient() {
         return new SecretClient(buildAsyncClient());
@@ -116,8 +116,9 @@ public final class SecretClientBuilder {
      * SecretAsyncClient client}.</p>
      *
      * @return A {@link SecretAsyncClient} with the options set from the builder.
+     *
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
-     *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
+     * {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
     public SecretAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
@@ -129,6 +130,7 @@ public final class SecretClientBuilder {
                 new IllegalStateException(
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
+
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
@@ -164,11 +166,11 @@ public final class SecretClientBuilder {
     }
 
     /**
-     * Sets the vault url to send HTTP requests to.
+     * Sets the vault URL to send HTTP requests to.
      *
      * @param vaultUrl The vault url is used as destination on Azure to send requests to.
-     * @return the updated {@link SecretClientBuilder} object.
-     * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
+     * @return The updated {@link SecretClientBuilder} object.
+     * @throws IllegalArgumentException If {@code vaultUrl} is null or it cannot be parsed into a valid URL.
      */
     public SecretClientBuilder vaultUrl(String vaultUrl) {
         try {
@@ -177,6 +179,7 @@ public final class SecretClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "The Azure Key Vault url is malformed.", e));
         }
+
         return this;
     }
 
@@ -184,12 +187,18 @@ public final class SecretClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated {@link SecretClientBuilder} object.
-     * @throws NullPointerException if {@code credential} is {@code null}.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public SecretClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential);
+        if (credential == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+        }
+
         this.credential = credential;
+
         return this;
     }
 
@@ -199,10 +208,12 @@ public final class SecretClientBuilder {
      * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return the updated {@link SecretClientBuilder} object.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
      */
     public SecretClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
+
         return this;
     }
 
@@ -211,12 +222,16 @@ public final class SecretClientBuilder {
      * {@link SecretAsyncClient} or {@link SecretClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated {@link SecretClientBuilder} object.
-     * @throws NullPointerException if {@code policy} is {@code null}.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public SecretClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
-        policies.add(policy);
+        if (policy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+        }
+
         return this;
     }
 
@@ -224,12 +239,18 @@ public final class SecretClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated {@link SecretClientBuilder} object.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
+     *
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public SecretClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client);
+        if (client == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'client' cannot be null."));
+        }
+
         this.httpClient = client;
+
         return this;
     }
 
@@ -240,11 +261,18 @@ public final class SecretClientBuilder {
      * {@link SecretClientBuilder#vaultUrl(String) vaultUrl} to build {@link SecretAsyncClient} or {@link SecretClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return the updated {@link SecretClientBuilder} object.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code pipeline} is {@code null}.
      */
     public SecretClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
+        if (pipeline == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'pipeline' cannot be null."));
+        }
+
         this.pipeline = pipeline;
+
         return this;
     }
 
@@ -255,10 +283,12 @@ public final class SecretClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated SecretClientBuilder object.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
      */
     public SecretClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+
         return this;
     }
 
@@ -270,10 +300,12 @@ public final class SecretClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link SecretServiceVersion} of the service API used when making requests.
-     * @return The updated SecretClientBuilder object.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
      */
     public SecretClientBuilder serviceVersion(SecretServiceVersion version) {
         this.version = version;
+
         return this;
     }
 
@@ -283,12 +315,18 @@ public final class SecretClientBuilder {
      * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated SecretClientBuilder object.
-     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
+     *
+     * @throws NullPointerException If the specified {@code retryPolicy} is {@code null}.
      */
     public SecretClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        if (retryPolicy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
+        }
+
         this.retryPolicy = retryPolicy;
+
         return this;
     }
 

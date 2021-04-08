@@ -134,6 +134,12 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-encryption/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/local-emulator.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/quick-start.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/dev/README.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
   - ['sdk/deviceupdate/azure-iot-deviceupdate/swagger/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
@@ -170,7 +176,6 @@ known_content_issues:
   - ['sdk/synapse/azure-analytics-synapse-managedprivateendpoints/swagger/README.md', '#3113']
   - ['sdk/synapse/azure-analytics-synapse-monitoring/swagger/README.md', '#3113']
   - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
-  - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:

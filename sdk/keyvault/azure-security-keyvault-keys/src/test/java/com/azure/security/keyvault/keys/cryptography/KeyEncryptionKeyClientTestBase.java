@@ -63,7 +63,8 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), serviceVersion));
+        policies.add(
+            new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
@@ -92,8 +93,8 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            ? "http://localhost:8080"
+            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

@@ -51,7 +51,7 @@ public class GeoArrayTests {
 
     @Test
     public void lineCoordinates() {
-        GeoLine line = new GeoLine(Arrays.asList(
+        GeoLineString line = new GeoLineString(Arrays.asList(
             new GeoPosition(1, 2), new GeoPosition(3, 4), new GeoPosition(5, 6)
         ));
 
@@ -69,9 +69,9 @@ public class GeoArrayTests {
 
     @Test
     public void lineCollectionCoordinates() {
-        GeoLineCollection lineCollection = new GeoLineCollection(Arrays.asList(
-            new GeoLine(Arrays.asList(new GeoPosition(1, 2), new GeoPosition(3, 4))),
-            new GeoLine(Arrays.asList(new GeoPosition(5, 6), new GeoPosition(7, 8)))
+        GeoLineStringCollection lineCollection = new GeoLineStringCollection(Arrays.asList(
+            new GeoLineString(Arrays.asList(new GeoPosition(1, 2), new GeoPosition(3, 4))),
+            new GeoLineString(Arrays.asList(new GeoPosition(5, 6), new GeoPosition(7, 8)))
         ));
 
         assertEquals(2, lineCollection.getCoordinates().size());

@@ -192,7 +192,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://ortestsaccountcbn1.blob.core.windows.net?prefix=jtcgetpropertiesors&comp=list",
+    "Uri" : "https://ortestsaccountcbn1.blob.core.windows.net?comp=list&prefix=jtcgetpropertiesors",
     "Headers" : {
       "x-ms-version" : "2019-10-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",

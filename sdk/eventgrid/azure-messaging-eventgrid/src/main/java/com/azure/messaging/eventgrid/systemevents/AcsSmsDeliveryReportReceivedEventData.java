@@ -36,6 +36,12 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
     @JsonProperty(value = "receivedTimestamp")
     private OffsetDateTime receivedTimestamp;
 
+    /*
+     * Customer Content
+     */
+    @JsonProperty(value = "tag")
+    private String tag;
+
     /**
      * Get the deliveryStatus property: Status of Delivery.
      *
@@ -114,6 +120,26 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
      */
     public AcsSmsDeliveryReportReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
+        return this;
+    }
+
+    /**
+     * Get the tag property: Customer Content.
+     *
+     * @return the tag value.
+     */
+    public String getTag() {
+        return this.tag;
+    }
+
+    /**
+     * Set the tag property: Customer Content.
+     *
+     * @param tag the tag value to set.
+     * @return the AcsSmsDeliveryReportReceivedEventData object itself.
+     */
+    public AcsSmsDeliveryReportReceivedEventData setTag(String tag) {
+        this.tag = tag;
         return this;
     }
 

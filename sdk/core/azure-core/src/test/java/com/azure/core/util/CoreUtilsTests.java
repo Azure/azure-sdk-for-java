@@ -12,8 +12,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -68,6 +73,66 @@ public class CoreUtilsTests {
         assertNotNull(CoreUtils.getProperties("foo.properties"));
         assertTrue(CoreUtils.getProperties("foo.properties").isEmpty());
         assertNull(CoreUtils.getProperties("azure-core.properties").get("foo"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("cloneIntArraySupplier")
+    public void cloneIntArray(int[] intArray, int[] expected) {
+        assertArrayEquals(expected, CoreUtils.clone(intArray));
+    }
+
+    private static Stream<Arguments> cloneIntArraySupplier() {
+        return Stream.of(
+            Arguments.of(null, null),
+            Arguments.of(new int[0], new int[0]),
+            Arguments.of(new int[] { 1, 2, 3}, new int[] { 1, 2, 3})
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("cloneGenericArraySupplier")
+    public <T> void cloneGenericArray(T[] genericArray, T[] expected) {
+        assertArrayEquals(expected, CoreUtils.clone(genericArray));
+    }
+
+    private static Stream<Arguments> cloneGenericArraySupplier() {
+        return Stream.of(
+            Arguments.of(null, null),
+            Arguments.of(new String[0], new String[0]),
+            Arguments.of(new String[] { "1", "2", "3"}, new String[] { "1", "2", "3" })
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("isNullOrEmptyCollectionSupplier")
+    public void isNullOrEmptyCollection(Collection<?> collection, boolean expected) {
+        assertEquals(expected, CoreUtils.isNullOrEmpty(collection));
+    }
+
+    private static Stream<Arguments> isNullOrEmptyCollectionSupplier() {
+        return Stream.of(
+            Arguments.of(null, true),
+            Arguments.of(new ArrayList<>(), true),
+            Arguments.of(Collections.singletonList(1), false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("arrayToStringSupplier")
+    public <T> void arrayToString(T[] array, Function<T, String> mapper, String expected) {
+        assertEquals(expected, CoreUtils.arrayToString(array, mapper));
+    }
+
+    private static Stream<Arguments> arrayToStringSupplier() {
+        Function<?, String> toStringFunction = String::valueOf;
+
+        return Stream.of(
+            Arguments.of(null, null, null),
+            Arguments.of(new String[0], toStringFunction, null),
+            Arguments.of(new String[] { "" }, toStringFunction, ""),
+            Arguments.of(new String[] { "Hello world!" }, toStringFunction, "Hello world!"),
+            Arguments.of(new String[] { "1", "2", "3" }, toStringFunction, "1,2,3")
+        );
     }
 
     @ParameterizedTest

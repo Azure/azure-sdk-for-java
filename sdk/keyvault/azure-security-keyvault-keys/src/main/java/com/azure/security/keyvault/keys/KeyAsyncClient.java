@@ -76,7 +76,6 @@ public final class KeyAsyncClient {
     private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
 
-
     /**
      * Creates a KeyAsyncClient that uses {@code pipeline} to service requests
      *
