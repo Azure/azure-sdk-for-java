@@ -3,6 +3,13 @@
 ### New Features
 - Added updateSyncToken() to be able to provide external synchronization tokens to both
   `ConfigurationAsyncClient` and `ConfigurationClient` clients.
+- Added new convenience overload APIs that takes `ConfigurationSetting`:
+  `addConfigurationSetting(ConfigurationSetting setting)`
+  `getConfigurationSetting(ConfigurationSetting setting)`
+  `setConfigurationSetting(ConfigurationSetting setting)`
+  `deleteConfigurationSetting(ConfigurationSetting setting)`
+  `setReadOnly(ConfigurationSetting setting, boolean isReadOnly)`
+- Added a new method that accept `ClientOptions` to `ConfigurationClientBuilder`.
 
 ## 1.1.10 (2021-03-09)
 ### Dependency updates
