@@ -7,6 +7,7 @@ spring:
       client-secret: ${SPRING_CLIENT_SECRET}
       tenant-id: ${SPRING_TENANT_ID}
       resource-group: ${SPRING_RESOURCE_GROUP}
+      subscription-id: ${SPRING_SUBSCRIPTION_ID}
       eventhub:
         namespace: ${EVENTHUB_NAMESPACE_NAME}
     stream:
