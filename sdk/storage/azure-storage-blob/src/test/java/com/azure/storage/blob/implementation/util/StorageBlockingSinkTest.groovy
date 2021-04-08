@@ -22,7 +22,7 @@ class StorageBlockingSinkTest extends Specification {
         def blockingSink = new StorageBlockingSink()
 
         when:
-        blockingSink.tryEmitNextOrThrow(ByteBuffer.wrap(new byte[0]))
+        blockingSink.tryEmitNext(ByteBuffer.wrap(new byte[0]))
         blockingSink.tryEmitCompleteOrThrow()
 
         then:
@@ -51,7 +51,7 @@ class StorageBlockingSinkTest extends Specification {
         // timer around this and do math to check blocking happened.
         def timeStart = new Date()
         for(int i = 0; i < num; i++) {
-            blockingSink.tryEmitNextOrThrow(ByteBuffer.allocate(8).putLong(i))
+            blockingSink.tryEmitNext(ByteBuffer.allocate(8).putLong(i))
         }
         blockingSink.tryEmitCompleteOrThrow()
         def timeStop = new Date()
