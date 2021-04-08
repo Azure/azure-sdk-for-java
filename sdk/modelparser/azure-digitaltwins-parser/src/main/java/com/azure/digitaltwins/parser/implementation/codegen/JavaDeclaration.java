@@ -95,6 +95,7 @@ public class JavaDeclaration {
     /**
      * Gets the value of the name decorated with appropriate keywords.
      *
+     * @param typeParams Compiled list of all typed parameters for declaration. i.e. <T1, T2>
      * @return The value of the name decorated with appropriate keywords.
      */
     public String getDecoratedName(String typeParams) {
