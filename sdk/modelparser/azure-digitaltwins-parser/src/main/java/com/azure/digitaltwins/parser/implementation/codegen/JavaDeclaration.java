@@ -20,10 +20,10 @@ public class JavaDeclaration {
 
     private final String type;
     private final String name;
-    private boolean inheritDoc;
-    private final List<String> summaryLines;
-    private final List<String> remarksLines;
-    private final List<String> attributes;
+    protected boolean inheritDoc;
+    protected final List<String> summaryLines;
+    protected final List<String> remarksLines;
+    protected final List<String> attributes;
 
     /**
      * Initializes a new instance of the {@link JavaDeclaration} class.
@@ -114,7 +114,7 @@ public class JavaDeclaration {
                 decoratedName.append("private ");
                 break;
             default:
-                logger.logThrowableAsError(new IllegalStateException("Unexpected value: " + access));
+                throw logger.logExceptionAsError(new IllegalStateException("Unexpected value: " + access));
         }
 
         if (multiplicity == Multiplicity.STATIC) {
@@ -145,7 +145,7 @@ public class JavaDeclaration {
      */
     public void addSummary(String text) {
         if (!text.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
+            throw logger.logExceptionAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.summaryLines.add(text);
@@ -158,7 +158,7 @@ public class JavaDeclaration {
      */
     public void addRemarks(String text) {
         if (!text.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
+            throw logger.logExceptionAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.remarksLines.add(text);
@@ -196,16 +196,18 @@ public class JavaDeclaration {
             codeWriter.writeLine("/**");
 
             for (String summaryLine : summaryLines) {
-                codeWriter.writeLine("* " + summaryLine);
+                codeWriter.writeLine(" * " + summaryLine);
             }
 
-            codeWriter.writeLine("* <p>");
-            for (String remarksLine : remarksLines) {
-                codeWriter.writeLine("* " + remarksLine);
+            if (!remarksLines.isEmpty()) {
+                codeWriter.writeLine(" * <p>");
+                for (String remarksLine : remarksLines) {
+                    codeWriter.writeLine(" * " + remarksLine);
+                }
+                codeWriter.writeLine(" * </p>");
             }
 
-            codeWriter.writeLine("* </p>");
-            codeWriter.writeLine("*/");
+            codeWriter.writeLine(" */");
         }
     }
 

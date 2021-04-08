@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Generator for a java class
+ * Generator for a java class.
  */
 public class JavaType extends JavaDeclaration implements JavaFile {
 
@@ -32,10 +32,10 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      *
      * @param access       Access level of class.
      * @param novelty      Novelty of the class.
-     * @param typeName     The name of the class or struct being declared.
+     * @param typeName     The name of the type being declared.
      * @param multiplicity Static or Instance.
-     * @param extend       Interfaces extended by this interface.
-     * @param implement    Interfaces implemented by this interface.
+     * @param extend       Interfaces extended by this type.
+     * @param implement    Interfaces implemented by this type.
      */
     public JavaType(Access access, Novelty novelty, String typeName, Multiplicity multiplicity, String extend, String implement) {
         super(access, novelty, "class", typeName, multiplicity, Mutability.MUTABLE);
@@ -53,6 +53,18 @@ public class JavaType extends JavaDeclaration implements JavaFile {
         this.methods = new ArrayList<>();
     }
 
+    /**
+     * Add a java field to the type.
+     *
+     * @param access       Access level of field.
+     * @param type         Type of field.
+     * @param name         Name of field.
+     * @param value        Optional value for field.
+     * @param multiplicity Static or Instance.
+     * @param mutability   Mutability of the type.
+     * @param description  Optional text description of the field.
+     * @return The {@link JavaField} object added.
+     */
     public JavaField addField(
         Access access,
         String type,
@@ -63,26 +75,26 @@ public class JavaType extends JavaDeclaration implements JavaFile {
         String description) {
 
         if (access != Access.PRIVATE && (multiplicity != Multiplicity.STATIC || mutability != Mutability.FINAL)) {
-            logger.logThrowableAsError(new StyleException("Field '" + name + "' must be private unless it's static and final. --SA1401."));
+            throw logger.logExceptionAsError(new StyleException("Field '" + name + "' must be private unless it's static and final. --SA1401."));
         }
 
         if (multiplicity == Multiplicity.STATIC && mutability == Mutability.FINAL) {
             if (!name.toUpperCase(Locale.getDefault()).equals(name)) {
-                logger.logThrowableAsError(new StyleException("Static final field name '" + name + "' must be all uppercase letters. --SA13311"));
+                throw logger.logExceptionAsError(new StyleException("Static final field name '" + name + "' must be all uppercase letters. --SA13311"));
             }
         } else {
             if (name.charAt(0) < 'a' || name.charAt(0) > 'z') {
-                logger.logThrowableAsError(new StyleException("Field name '" + name + "' must begin with a lowercase letter. --SA1306."));
+                throw logger.logExceptionAsError(new StyleException("Field name '" + name + "' must begin with a lowercase letter. --SA1306."));
             }
         }
 
         if (description != null && !description.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Documentation text of field '" + name + "' must end with a period. -- SA1629."));
+            throw logger.logExceptionAsError(new StyleException("Documentation text of field '" + name + "' must end with a period. -- SA1629."));
         }
 
         JavaField field = new JavaField(access, type, name, value, multiplicity, mutability);
         if (description != null) {
-            this.addSummary(description);
+            field.addSummary(description);
         }
 
         this.fields.add(field);
@@ -187,14 +199,14 @@ public class JavaType extends JavaDeclaration implements JavaFile {
 
         if (this.extend != null || this.implement != null) {
             if (this.extend == null) {
-                codeWriter.writeLine(this.getDecoratedName() + "implements " + this.implement);
+                codeWriter.writeLine(this.getDecoratedName() + " implements " + this.implement, true);
             } else if (implement == null) {
-                codeWriter.writeLine(this.getDecoratedName() + "extends " + this.extend);
+                codeWriter.writeLine(this.getDecoratedName() + " extends " + this.extend, true);
             } else {
-                codeWriter.writeLine(this.getDecoratedName() + "extends " + this.extend + " implements " + this.implement);
+                codeWriter.writeLine(this.getDecoratedName() + " extends " + this.extend + " implements " + this.implement, true);
             }
         } else {
-            codeWriter.writeLine(this.getDecoratedName());
+            codeWriter.writeLine(this.getDecoratedName(), true);
         }
 
         codeWriter.openScope();

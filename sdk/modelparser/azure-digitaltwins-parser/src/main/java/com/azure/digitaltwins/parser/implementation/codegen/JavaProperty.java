@@ -32,7 +32,7 @@ public class JavaProperty extends JavaStatement {
     public JavaProperty(Access access, String propertyName, String propertyType) {
         // propertyName should start with a lowercase character.
         if (!Character.isLowerCase(propertyName.charAt(0))) {
-            logger.logThrowableAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character"));
+            throw logger.logExceptionAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character"));
         }
 
         this.propertyName = propertyName;
@@ -66,7 +66,7 @@ public class JavaProperty extends JavaStatement {
 
         if (description != null) {
             if (!description.endsWith(".")) {
-                logger.logThrowableAsError(new StyleException("Documentation text of method '" + getterMethodName + "' must end with a period. -- SA1629"));
+                throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + getterMethodName + "' must end with a period. -- SA1629"));
             }
 
             setterMethod.addSummary(description);
@@ -97,7 +97,7 @@ public class JavaProperty extends JavaStatement {
 
         if (description != null) {
             if (!description.endsWith(".")) {
-                logger.logThrowableAsError(new StyleException("Documentation text of method '" + setterMethodName + "' must end with a period. -- SA1629"));
+                throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + setterMethodName + "' must end with a period. -- SA1629"));
             }
 
             setterMethod.addSummary(description);

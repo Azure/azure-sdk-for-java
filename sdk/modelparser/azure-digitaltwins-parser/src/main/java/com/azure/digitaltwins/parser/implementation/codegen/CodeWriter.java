@@ -28,7 +28,20 @@ public class CodeWriter {
     public CodeWriter(String filePath) throws IOException {
         FileOutputStream fileStream = new FileOutputStream(filePath);
         this.fileWriter = new OutputStreamWriter(fileStream, StandardCharsets.UTF_8);
-        this.indentedFileWriter = new IndentedFileWriter(fileWriter, INDENTATION);
+        this.indentedFileWriter = new IndentedFileWriter(fileWriter, INDENTATION, false);
+    }
+
+    /**
+     * Initializes a new instance of {@link CodeWriter}.
+     *
+     * @param filePath Full path of file to be generated.
+     * @param isDebug  Boolean indicating whether or not debug mode is on or not.
+     * @throws IOException
+     */
+    public CodeWriter(String filePath, boolean isDebug) throws IOException {
+        FileOutputStream fileStream = new FileOutputStream(filePath);
+        this.fileWriter = new OutputStreamWriter(fileStream, StandardCharsets.UTF_8);
+        this.indentedFileWriter = new IndentedFileWriter(fileWriter, INDENTATION, isDebug);
     }
 
     /**
@@ -37,6 +50,7 @@ public class CodeWriter {
      * @throws IOException
      */
     public void close() throws IOException {
+        this.indentedFileWriter.close();
         this.fileWriter.flush();
         this.fileWriter.close();
     }
@@ -57,7 +71,7 @@ public class CodeWriter {
      * @throws IOException
      */
     public void openScope() throws IOException {
-        indentedFileWriter.writeLineWithIndent("{");
+        indentedFileWriter.writeLineWithNoIndent("{");
         this.increaseIndent();
         nextTextNeedsBlank = false;
         lastLineWasText = false;
@@ -70,7 +84,7 @@ public class CodeWriter {
      */
     public void closeScope() throws IOException {
         indentedFileWriter.decreaseIndent();
-        indentedFileWriter.writeWithIndent("}");
+        indentedFileWriter.writeLineWithIndent("}");
         nextTextNeedsBlank = true;
         lastLineWasText = false;
     }
@@ -95,30 +109,47 @@ public class CodeWriter {
      * @param text Code text to write.
      */
     public void writeLine(String text) throws IOException {
-        writeLine(text, false, false);
+        writeLine(text, false, false, false);
+    }
+
+    /**
+     * Writes a line of code.
+     *
+     * @param text              Code text to write.
+     * @param suppressLineBreak True if the line should not end with a line break.
+     */
+    public void writeLine(String text, boolean suppressLineBreak) throws IOException {
+        writeLine(text, suppressLineBreak, false, false);
     }
 
     /**
      * Writes a line of code
      *
-     * @param text          Code text to write.
-     * @param suppressBlank True if there should be no blank line preceding the text.
+     * @param text              Code text to write.
+     * @param suppressLineBreak True if the line should not end with a line break.
+     * @param suppressBlank     True if there should be no blank line preceding the text.
      */
-    public void writeLine(String text, boolean suppressBlank) throws IOException {
-        writeLine(text, suppressBlank, false);
+    public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank) throws IOException {
+        writeLine(text, suppressLineBreak, suppressBlank, false);
     }
 
     /**
      * Writes a line of code
      *
-     * @param text          Code text to write.
-     * @param suppressBlank True if there should be no blank line preceding the text.
-     * @param outdent       True if the line should be out-dented one level.
+     * @param text              Code text to write.
+     * @param suppressLineBreak True if the text should not be followed by a new line.
+     * @param suppressBlank     True if there should be no blank line preceding the text.
+     * @param outdent           True if the line should be out-dented one level.
      */
-    public void writeLine(String text, boolean suppressBlank, boolean outdent) throws IOException {
+    public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank, boolean outdent) throws IOException {
         if (nextTextNeedsBlank) {
             if (!suppressBlank) {
-                indentedFileWriter.writeLineWithIndent("");
+                if (suppressLineBreak) {
+                    indentedFileWriter.writeWithIndent("");
+                } else {
+                    indentedFileWriter.writeLineWithNoIndent("");
+                }
+
             }
 
             nextTextNeedsBlank = false;
@@ -128,7 +159,11 @@ public class CodeWriter {
             decreaseIndent();
         }
 
-        this.indentedFileWriter.writeLineWithIndent(text);
+        if (suppressLineBreak) {
+            indentedFileWriter.writeWithIndent(text + " ");
+        } else {
+            indentedFileWriter.writeLineWithIndent(text);
+        }
 
         if (outdent) {
             increaseIndent();

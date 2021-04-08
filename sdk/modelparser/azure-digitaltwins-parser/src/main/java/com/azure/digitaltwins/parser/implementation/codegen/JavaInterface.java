@@ -67,14 +67,14 @@ public class JavaInterface extends JavaDeclaration implements JavaFile {
 
         if (this.extend != null || this.implement != null) {
             if (this.extend == null) {
-                codeWriter.writeLine(this.getDecoratedName() + "implements " + this.implement);
+                codeWriter.writeLine(this.getDecoratedName() + " implements " + this.implement, true);
             } else if (implement == null) {
-                codeWriter.writeLine(this.getDecoratedName() + "extends " + this.extend);
+                codeWriter.writeLine(this.getDecoratedName() + " extends " + this.extend, true);
             } else {
-                codeWriter.writeLine(this.getDecoratedName() + "extends " + this.extend + " implements " + this.implement);
+                codeWriter.writeLine(this.getDecoratedName() + " extends " + this.extend + " implements " + this.implement, true);
             }
         } else {
-            codeWriter.writeLine(this.getDecoratedName());
+            codeWriter.writeLine(this.getDecoratedName(), true);
         }
 
         codeWriter.openScope();

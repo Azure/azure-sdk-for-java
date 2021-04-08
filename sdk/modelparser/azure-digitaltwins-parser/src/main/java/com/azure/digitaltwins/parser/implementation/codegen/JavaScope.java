@@ -215,7 +215,6 @@ public class JavaScope extends JavaStatement implements StatementAdder {
         if (this.getDoubleIndent()) {
             codeWriter.decreaseIndent();
         }
-
         codeWriter.closeScope();
     }
 
