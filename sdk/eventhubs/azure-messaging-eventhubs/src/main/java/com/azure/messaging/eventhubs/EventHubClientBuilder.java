@@ -621,12 +621,6 @@ public class EventHubClientBuilder {
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
-        final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-            connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-
         final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
             sink.onRequest(request -> {
 
@@ -640,6 +634,12 @@ public class EventHubClientBuilder {
 
                 final String connectionId = StringUtil.getRandomString("MF");
                 logger.info("connectionId[{}]: Emitting a single connection.", connectionId);
+
+                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                    ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+                final ReactorProvider provider = new ReactorProvider();
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
                     connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider,
