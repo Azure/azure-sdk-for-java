@@ -2,7 +2,7 @@ trigger: none
 
 parameters:
   - name: TestPackagesEnabled
-    displayName: Test Packges Enabled
+    displayName: Test Packages Enabled
     type: string
     default: all
     values:
