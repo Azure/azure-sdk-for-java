@@ -4,6 +4,7 @@
 package com.azure.spring.test.eventhubs.stream.binder;
 
 import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +24,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest(classes = EventHubBinderSyncModeIT.TestConfig.class)
-@TestPropertySource(properties = "spring.cloud.stream.eventhub.bindings.input.producer.sync=true")
+@TestPropertySource(properties =
+    {
+        "spring.cloud.stream.eventhub.bindings.input.producer.sync=true",
+        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-sync",
+        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-sync",
+        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-sync"
+    })
 public class EventHubBinderSyncModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderManualModeIT.class);
@@ -51,10 +56,7 @@ public class EventHubBinderSyncModeIT {
         @Bean
         public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
-                             .doOnNext(m -> {
-                                 count.addAndGet(1);
-                                 LOGGER.info("Manually sending message {}", m.getPayload());
-                             })
+                             .doOnNext(m -> LOGGER.info("Manually sending message {}", m.getPayload()))
                              .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
@@ -62,16 +64,17 @@ public class EventHubBinderSyncModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("New message received: '{}'", message.getPayload());
-                assertThat(message.getPayload().equals(EventHubBinderSyncModeIT.message)).isTrue();
+                Assertions.assertEquals(message.getPayload(), EventHubBinderSyncModeIT.message);
+                count.addAndGet(1);
             };
         }
     }
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
+        Thread.sleep(15000);
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-//        assertReceivedLog(capture, String.format("New message received: '%s'", message));
         Thread.sleep(6000);
-        assertThat(count.get() == 1).isTrue();
+        Assertions.assertEquals(1, count.get());
     }
 }

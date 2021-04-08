@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
+import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
@@ -25,6 +26,12 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SpringBootTest(classes = EventHubBinderConsumeErrorIT.TestConfig.class)
+@TestPropertySource(properties =
+    {
+        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub",
+        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub",
+        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub"
+    })
 public class EventHubBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderConsumeErrorIT.class);
@@ -73,10 +80,10 @@ public class EventHubBinderConsumeErrorIT {
     }
 
     @Test
-    @Timeout(60)
+    @Timeout(70)
     void integrationTest() throws InterruptedException {
         // Wait for eventhub initialization to complete
-        Thread.sleep(16000);
+        Thread.sleep(15000);
         one.emitValue(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
         String msg = TestConfig.EXCHANGER.exchange(MESSAGE);
         Assertions.assertEquals(MESSAGE, msg);

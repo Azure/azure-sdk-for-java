@@ -67,6 +67,62 @@
       }
     },
     {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-batch')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 1,
+        "status": "Active"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-manual')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 1,
+        "status": "Active"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-record')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 1,
+        "status": "Active"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-sync')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 1,
+        "status": "Active"
+      }
+    },
+    {
       "type": "Microsoft.EventHub/namespaces/networkRuleSets",
       "apiVersion": "2018-01-01-preview",
       "name": "[concat(variables('eventHubsNamespaceName'), '/default')]",
@@ -84,6 +140,50 @@
       "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
       "apiVersion": "2017-04-01",
       "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-batch/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-manual/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-record/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-sync/$Default')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub')]",
@@ -166,6 +266,54 @@
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountName'), '/default/test-eventhub')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-batch')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-manual')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-record')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-sync')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"

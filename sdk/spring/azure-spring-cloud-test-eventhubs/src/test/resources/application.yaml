@@ -5,16 +5,12 @@ spring:
         connection-string: ${EVENTHUB_CONNECTION_STRING}
         checkpoint-storage-account: ${STORAGE_ACCOUNT}
         checkpoint-access-key: ${STORAGE_ACCOUNT_KEY}
-        checkpoint-container: test-eventhub
     stream:
       function:
         definition: consume;supply
       bindings:
         consume-in-0:
-          destination: test-eventhub
           group: $Default
-        supply-out-0:
-          destination: test-eventhub
       eventhub:
         bindings:
           consume-in-0:
