@@ -180,7 +180,7 @@ public class ConfigurationSetting {
      * @return tags Gets tags for this configuration setting.
      */
     public Map<String, String> getTags() {
-        return tags == null ? Collections.unmodifiableMap(new HashMap<>()) : tags;
+        return tags == null ? Collections.emptyMap() : tags;
     }
 
     /**
