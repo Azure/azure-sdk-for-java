@@ -98,6 +98,18 @@ public class AADResourceServerClientConfigurationTest {
             });
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void clientWhichGrantTypeIsOboButOnDemandExceptionTest() {
+        this.contextRunner
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
+                + "on-behalf-of")
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.on-demand = true")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
     @Test
     public void testExistCustomAndGraphClient() {
         this.contextRunner

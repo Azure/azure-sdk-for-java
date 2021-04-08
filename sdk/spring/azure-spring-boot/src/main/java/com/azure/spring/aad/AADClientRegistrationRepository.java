@@ -71,8 +71,8 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
             clientRegistration.getClientName());
     }
 
-    public boolean isClientCredentials(String clientId) {
-        return Optional.ofNullable(allClients.get(clientId))
+    public boolean isClientCredentials(String registrationId) {
+        return Optional.ofNullable(allClients.get(registrationId))
              .map(ClientRegistration::getAuthorizationGrantType)
              .map(AuthorizationGrantType::getValue)
              .map(v -> v.equals(AADAuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))

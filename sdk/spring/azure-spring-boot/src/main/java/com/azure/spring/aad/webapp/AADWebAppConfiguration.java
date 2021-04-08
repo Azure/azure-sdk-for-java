@@ -100,11 +100,16 @@ public class AADWebAppConfiguration {
         Set<String> result = accessTokenScopes();
         for (AuthorizationClientProperties authProperties : properties.getAuthorizationClients().values()) {
             if (!authProperties.isOnDemand()
-                && !AADAuthorizationGrantType.CLIENT_CREDENTIALS.equals(authProperties.getAuthorizationGrantType())) {
+                && isDefaultAuthorizationGrantType(authProperties)) {
                 result.addAll(authProperties.getScopes());
             }
         }
         return result;
+    }
+
+    private boolean isDefaultAuthorizationGrantType(AuthorizationClientProperties authProperties) {
+        return authProperties.getAuthorizationGrantType() == null
+            || AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(authProperties.getAuthorizationGrantType());
     }
 
     private Set<String> accessTokenScopes() {

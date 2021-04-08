@@ -158,7 +158,6 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
                 "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of"
             )
             .run(context -> {
@@ -171,8 +170,7 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
-                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of",
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true"
             )
             .run(context -> {

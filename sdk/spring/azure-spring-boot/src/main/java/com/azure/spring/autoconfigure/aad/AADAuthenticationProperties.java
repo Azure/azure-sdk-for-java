@@ -364,12 +364,12 @@ public class AADAuthenticationProperties implements InitializingBean {
         authorizationClients.values()
                             .stream()
                             .filter(AuthorizationClientProperties::isOnDemand)
-                            .filter(v -> Objects.nonNull(v.getAuthorizationGrantType()))
-                            .forEach(v -> {
-                                if (!AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(
-                                    v.getAuthorizationGrantType())) {
-                                    throw new IllegalStateException("onDemand only support authorization_code grant type");
-                                }
+                            .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                            .filter(Objects::nonNull)
+                            .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
+                            .findAny()
+                            .ifPresent(notUsed -> {
+                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
                             });
     }
 
