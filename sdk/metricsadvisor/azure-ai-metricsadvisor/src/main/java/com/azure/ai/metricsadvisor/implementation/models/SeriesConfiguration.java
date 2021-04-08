@@ -25,7 +25,7 @@ public final class SeriesConfiguration {
      * should be specified when combining multiple detection conditions
      */
     @JsonProperty(value = "conditionOperator")
-    private SeriesConfigurationConditionOperator conditionOperator;
+    private AnomalyDetectionConfigurationLogicType conditionOperator;
 
     /*
      * The smartDetectionCondition property.
@@ -72,7 +72,7 @@ public final class SeriesConfiguration {
      *
      * @return the conditionOperator value.
      */
-    public SeriesConfigurationConditionOperator getConditionOperator() {
+    public AnomalyDetectionConfigurationLogicType getConditionOperator() {
         return this.conditionOperator;
     }
 
@@ -84,7 +84,7 @@ public final class SeriesConfiguration {
      * @param conditionOperator the conditionOperator value to set.
      * @return the SeriesConfiguration object itself.
      */
-    public SeriesConfiguration setConditionOperator(SeriesConfigurationConditionOperator conditionOperator) {
+    public SeriesConfiguration setConditionOperator(AnomalyDetectionConfigurationLogicType conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
     }

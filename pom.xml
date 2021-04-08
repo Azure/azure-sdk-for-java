@@ -122,8 +122,6 @@
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
 
-        <!-- Web Pub Sub -->
-        <module>sdk/webpubsub/azure-messaging-webpubsub</module>
       </modules>
 
       <distributionManagement>
@@ -585,7 +583,6 @@
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
                     -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
                   </additionalOptions>
                   <aggregate>true</aggregate>
                   <doclint>all</doclint>
@@ -674,6 +671,7 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
+        <module>sdk/databricks</module>
         <module>sdk/datadog</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deviceupdate</module>
@@ -704,6 +702,7 @@
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
         <module>sdk/resourcegraph</module>
+        <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
@@ -716,7 +715,6 @@
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
-        <module>sdk/webpubsub</module>
       </modules>
     </profile>
   </profiles>

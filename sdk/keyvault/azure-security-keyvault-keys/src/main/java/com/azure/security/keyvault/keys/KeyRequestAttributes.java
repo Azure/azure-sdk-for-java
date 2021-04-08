@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -12,38 +12,41 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 class KeyRequestAttributes {
-
     /**
-     * Creates an instance of KeyRequestAttributes. Reads keyProperties.getNotBefore, keyProperties.getExpires and keyProperties.setEnabled fields
-     * from {@code keyProperties}
-     * @param keyProperties the {@link KeyProperties} object with populated attributes
+     * Creates an instance of {@link KeyRequestAttributes}. Reads {@link KeyProperties#getNotBefore()},
+     * {@link KeyProperties#getExpiresOn()} and {@link KeyProperties#isEnabled()} fields from {@link KeyProperties}.
+     *
+     * @param keyProperties The {@link KeyProperties} object with populated attributes.
      */
     KeyRequestAttributes(KeyProperties keyProperties) {
         if (keyProperties.getNotBefore() != null) {
             this.notBefore = keyProperties.getNotBefore().toEpochSecond();
         }
+
         if (keyProperties.getExpiresOn() != null) {
             this.expires = keyProperties.getExpiresOn().toEpochSecond();
         }
+
         this.enabled = keyProperties.isEnabled();
-        this.exportable = keyProperties.isExportable();
     }
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.getNotBefore, KeyCreateOptions.getExpires and
-     * KeyCreateOptions.isEnabled fields
-     * from {@code keyOptions}
-     * @param keyOptions the {@link CreateKeyOptions} object with populated attributes
+     * Creates an instance of {@link KeyRequestAttributes}. Reads {@link CreateKeyOptions#getNotBefore()},
+     * {@link CreateKeyOptions#getExpiresOn()} and {@link CreateKeyOptions#isEnabled()} fields
+     * from {@link CreateKeyOptions}.
+     *
+     * @param keyOptions The {@link CreateKeyOptions} object with populated attributes.
      */
     KeyRequestAttributes(CreateKeyOptions keyOptions) {
         if (keyOptions.getNotBefore() != null) {
             this.notBefore = keyOptions.getNotBefore().toEpochSecond();
         }
+
         if (keyOptions.getExpiresOn() != null) {
             this.expires = keyOptions.getExpiresOn().toEpochSecond();
         }
+
         this.enabled = keyOptions.isEnabled();
-        this.exportable = keyOptions.isExportable();
     }
 
     /**
@@ -77,48 +80,46 @@ class KeyRequestAttributes {
     private Long updated;
 
     /**
-     * Indicates if the private key can be exported.
-     */
-    @JsonProperty(value = "exportable")
-    private Boolean exportable;
-
-    /**
      * Get the enabled value.
      *
-     * @return the enabled value
+     * @return The enabled value.
      */
     public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set the enabled value.
+     * Set a value that indicates if the key is enabled.
      *
-     * @param enabled the enabled value to set
-     * @return the Attributes object itself.
+     * @param enabled The enabled value to set.
+     *
+     * @return The updated {@link KeyRequestAttributes} object.
      */
     public KeyRequestAttributes setEnabled(Boolean enabled) {
         this.enabled = enabled;
+
         return this;
     }
 
     /**
-     * Get the notBefore value.
+     * Get the {@link OffsetDateTime key's notBefore time} in UTC.
      *
-     * @return the notBefore value
+     * @return The {@link OffsetDateTime key's notBefore time} in UTC.
      */
     public OffsetDateTime getNotBefore() {
         if (this.notBefore == null) {
             return null;
         }
+
         return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.notBefore * 1000L), ZoneOffset.UTC);
     }
 
     /**
-     * Set the notBefore value.
+     * Set the {@link OffsetDateTime key's notBefore time} in UTC.
      *
-     * @param notBefore the notBefore value to set
-     * @return the Attributes object itself.
+     * @param notBefore The {@link OffsetDateTime key's notBefore time} in UTC.
+     *
+     * @return The updated {@link KeyRequestAttributes} object.
      */
     public KeyRequestAttributes setNotBefore(OffsetDateTime notBefore) {
         if (notBefore == null) {
@@ -126,26 +127,29 @@ class KeyRequestAttributes {
         } else {
             this.notBefore = OffsetDateTime.ofInstant(notBefore.toInstant(), ZoneOffset.UTC).toEpochSecond();
         }
+
         return this;
     }
 
     /**
-     * Get the expires value.
+     * Get the {@link OffsetDateTime key expiration time} in UTC.
      *
-     * @return the expires value
+     * @return The {@link OffsetDateTime key expiration time} in UTC.
      */
     public OffsetDateTime getExpires() {
         if (this.expires == null) {
             return null;
         }
+
         return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.expires * 1000L), ZoneOffset.UTC);
     }
 
     /**
-     * Set the expires value.
+     * Set the {@link OffsetDateTime key expiration time} in UTC.
      *
-     * @param expires the expires value to set
-     * @return the Attributes object itself.
+     * @param expires The {@link OffsetDateTime key expiration time} in UTC.
+     *
+     * @return The updated {@link CreateKeyOptions} object.
      */
     public KeyRequestAttributes setExpires(OffsetDateTime expires) {
         if (expires == null) {
@@ -153,50 +157,33 @@ class KeyRequestAttributes {
         } else {
             this.expires = OffsetDateTime.ofInstant(expires.toInstant(), ZoneOffset.UTC).toEpochSecond();
         }
+
         return this;
     }
 
     /**
-     * Get the created value.
+     * Get the {@link OffsetDateTime time at which key was created} in UTC.
      *
-     * @return the created value
+     * @return The {@link OffsetDateTime time at which key was created} in UTC.
      */
     public OffsetDateTime getCreated() {
         if (this.created == null) {
             return null;
         }
-        return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.created * 1000L), ZoneOffset.UTC);
+
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.created * 1000L), ZoneOffset.UTC);
     }
 
     /**
-     * Get the updated value.
+     * Get the {@link OffsetDateTime time at which key was last updated} in UTC.
      *
-     * @return the updated value
+     * @return The {@link OffsetDateTime time at which key was last updated} in UTC.
      */
     public OffsetDateTime getUpdated() {
         if (this.updated == null) {
             return null;
         }
-        return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
-    }
 
-    /**
-     * Indicates if the private key can be exported.
-     *
-     * @return The exportable value.
-     */
-    public Boolean isExportable() {
-        return this.exportable;
-    }
-
-    /**
-     * Set a value that indicates if the private key can be exported.
-     *
-     * @param exportable The exportable value to set.
-     * @return The updated {@link KeyRequestAttributes} object.
-     */
-    public KeyRequestAttributes setExportable(Boolean exportable) {
-        this.exportable = exportable;
-        return this;
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
     }
 }
