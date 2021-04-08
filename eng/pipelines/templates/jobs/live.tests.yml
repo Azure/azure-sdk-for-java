@@ -106,11 +106,10 @@ jobs:
           publishJUnitResults: false
 
       - task: Maven@3
-        displayName: 'Again Build and Install, JDK Version: $(JavaTestVersion)'
+        displayName: 'To View Dependency Tree, JDK Version: $(JavaTestVersion)'
         inputs:
           mavenPomFile: pom.xml
-          goals: 'install'
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl ,com.azure.spring:azure-spring-boot-test-application -am'
+          options: ' dependency:tree -pl ,sdk/spring/azure-spring-boot-test-application,sdk/spring/azure-spring-boot-test-core,sdk/spring/azure-spring-boot-test-cosmos'
           mavenOptions: '$(MemoryOptions) -Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
