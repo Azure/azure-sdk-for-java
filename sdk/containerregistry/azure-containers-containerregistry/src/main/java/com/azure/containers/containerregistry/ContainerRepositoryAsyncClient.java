@@ -9,6 +9,8 @@ import com.azure.containers.containerregistry.implementation.ContainerRegistryIm
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryRepositoriesImpl;
 import com.azure.containers.containerregistry.implementation.Utils;
+import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
+import com.azure.containers.containerregistry.implementation.models.ManifestAttributesManifestReferences;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
@@ -107,7 +109,6 @@ public final class ContainerRepositoryAsyncClient {
     Mono<Response<DeleteRepositoryResult>> deleteWithResponse(Context context) {
         try {
             return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
-                .map(res -> Utils.mapResponse(res, Utils::mapDeleteRepositoryResult))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -226,7 +227,6 @@ public final class ContainerRepositoryAsyncClient {
                 return monoError(logger, new NullPointerException("'context' cannot be null."));
             }
             return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context)
-                .map(res -> Utils.mapResponse(res, Utils::mapRepositoryProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -268,11 +268,39 @@ public final class ContainerRepositoryAsyncClient {
 
             return getTagMono
                 .flatMap(digest -> this.serviceClient.getRegistryArtifactPropertiesWithResponseAsync(repositoryName, digest))
-                .map(res -> Utils.mapResponse(res, Utils::mapArtifactProperties))
+                .map(res -> Utils.mapResponse(res, this::mapArtifactProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * We want both the list artifacts call and the get artifact call share the same model.
+     * which the swagger does not.
+     * As a result we need to ensure that the we can map one implementation to the other.
+     * Also, we want to customize the type of one of the fields to ensure minimum models are exposed.
+     * @param propsImpl implementation model for this type.
+     * @return public model for propsImpl
+     */
+    public RegistryArtifactProperties mapArtifactProperties(com.azure.containers.containerregistry.implementation.models.RegistryArtifactProperties propsImpl) {
+        if (propsImpl == null) {
+            return null;
+        }
+
+        List<RegistryArtifactProperties> registryArtifacts = getRegistryArtifacts(propsImpl.getReferences());
+
+        return new RegistryArtifactProperties(
+            propsImpl.getRepository(),
+            propsImpl.getDigest(),
+            propsImpl.getWriteableProperties(),
+            registryArtifacts,
+            propsImpl.getCpuArchitecture(),
+            propsImpl.getOperatingSystem(),
+            propsImpl.getCreatedOn(),
+            propsImpl.getLastUpdatedOn(),
+            propsImpl.getTags(),
+            propsImpl.getSize());
     }
 
     /**
@@ -327,7 +355,7 @@ public final class ContainerRepositoryAsyncClient {
             }
 
             return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderBy, context)
-                .map(res -> Utils.getPagedResponseWithContinuationToken(res, Utils::getRegistryArtifactsProperties))
+                .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getRegistryArtifactsProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -337,13 +365,53 @@ public final class ContainerRepositoryAsyncClient {
     Mono<PagedResponse<RegistryArtifactProperties>> listRegistryArtifactsNextSinglePageAsync(String nextLink, Context context) {
         try {
             return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context)
-                .map(res -> Utils.getPagedResponseWithContinuationToken(res, Utils::getRegistryArtifactsProperties))
+                .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getRegistryArtifactsProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
+    private List<RegistryArtifactProperties> getRegistryArtifactsProperties(List<ManifestAttributesBase> baseArtifacts) {
+        if (baseArtifacts == null) {
+            return null;
+        }
+
+        return baseArtifacts.stream().map(value -> new RegistryArtifactProperties(
+                repositoryName,
+                value.getDigest(),
+                value.getWriteableProperties(),
+                getRegistryArtifacts(value.getReferences()),
+                value.getCpuArchitecture(),
+                value.getOperatingSystem(),
+                value.getCreatedOn(),
+                value.getLastUpdatedOn(),
+                value.getTags(),
+                value.getSize()
+            )
+
+        ).collect(Collectors.toList());
+    }
+
+    private List<RegistryArtifactProperties> getRegistryArtifacts(List<ManifestAttributesManifestReferences> artifacts) {
+        if (artifacts == null) {
+            return null;
+        }
+
+        return artifacts.stream()
+            .map(artifact -> new RegistryArtifactProperties(
+                repositoryName,
+                artifact.getDigest(),
+                null,
+                null,
+                artifact.getCpuArchitecture(),
+                artifact.getOperatingSystem(),
+                null,
+                null,
+                null,
+                null
+            )).collect(Collectors.toList());
+    }
 
     /**
      * Get tag properties
@@ -365,7 +433,6 @@ public final class ContainerRepositoryAsyncClient {
             }
 
             return this.serviceClient.getTagPropertiesWithResponseAsync(repositoryName, tag, context)
-                .map(res -> Utils.mapResponse(res, Utils::mapTagProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

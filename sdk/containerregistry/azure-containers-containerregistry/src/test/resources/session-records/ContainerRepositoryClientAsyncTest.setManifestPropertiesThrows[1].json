@@ -4,12 +4,12 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknownTag",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "522105a3-449e-4e13-b592-5e3ef0e46c5e",
+      "x-ms-client-request-id" : "933f4e0f-76e7-4d78-81ee-8e6fec9ffd1f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "7c044afe-65a5-492b-a43c-af4f9a89f2ca",
+      "X-Ms-Correlation-Request-Id" : "00a4b88e-4bab-496f-baed-1c2f5c513480",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -18,7 +18,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 08 Apr 2021 19:22:28 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:00 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null

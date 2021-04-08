@@ -14,26 +14,14 @@ public final class DeleteRepositoryResult {
     /*
      * SHA of the deleted image
      */
-    @JsonProperty(value = "manifestsDeleted")
+    @JsonProperty(value = "manifestsDeleted", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> deletedRegistryArtifactDigests;
 
     /*
      * Tag of the deleted image
      */
-    @JsonProperty(value = "tagsDeleted")
+    @JsonProperty(value = "tagsDeleted", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> deletedTags;
-
-    /**
-     * Initializes an instance of the deleted repository result.
-     * @param deletedRegistryArtifactDigests deleted registry artifact digests.
-     * @param deletedTags deleted tags.
-     */
-    public DeleteRepositoryResult(
-        List<String> deletedRegistryArtifactDigests,
-        List<String> deletedTags) {
-        this.deletedRegistryArtifactDigests = deletedRegistryArtifactDigests;
-        this.deletedTags = deletedTags;
-    }
 
     /**
      * Get the deletedRegistryArtifactDigests property: SHA of the deleted image.

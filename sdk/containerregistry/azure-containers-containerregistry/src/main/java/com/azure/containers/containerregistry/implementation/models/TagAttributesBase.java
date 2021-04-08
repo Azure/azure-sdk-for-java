@@ -5,41 +5,41 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Tag attribute details. */
-@Fluent
+@Immutable
 public final class TagAttributesBase {
     /*
      * Tag name
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Tag digest
      */
-    @JsonProperty(value = "digest")
+    @JsonProperty(value = "digest", access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * Tag created time
      */
-    @JsonProperty(value = "createdTime", required = true)
+    @JsonProperty(value = "createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Tag last update time
      */
-    @JsonProperty(value = "lastUpdateTime", required = true)
+    @JsonProperty(value = "lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * Writeable properties of the resource
      */
-    @JsonProperty(value = "changeableAttributes")
+    @JsonProperty(value = "changeableAttributes", access = JsonProperty.Access.WRITE_ONLY)
     private ContentProperties writeableProperties;
 
     /**
@@ -52,34 +52,12 @@ public final class TagAttributesBase {
     }
 
     /**
-     * Set the name property: Tag name.
-     *
-     * @param name the name value to set.
-     * @return the TagAttributesBase object itself.
-     */
-    public TagAttributesBase setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the digest property: Tag digest.
      *
      * @return the digest value.
      */
     public String getDigest() {
         return this.digest;
-    }
-
-    /**
-     * Set the digest property: Tag digest.
-     *
-     * @param digest the digest value to set.
-     * @return the TagAttributesBase object itself.
-     */
-    public TagAttributesBase setDigest(String digest) {
-        this.digest = digest;
-        return this;
     }
 
     /**
@@ -92,17 +70,6 @@ public final class TagAttributesBase {
     }
 
     /**
-     * Set the createdOn property: Tag created time.
-     *
-     * @param createdOn the createdOn value to set.
-     * @return the TagAttributesBase object itself.
-     */
-    public TagAttributesBase setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
-    }
-
-    /**
      * Get the lastUpdatedOn property: Tag last update time.
      *
      * @return the lastUpdatedOn value.
@@ -112,33 +79,11 @@ public final class TagAttributesBase {
     }
 
     /**
-     * Set the lastUpdatedOn property: Tag last update time.
-     *
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @return the TagAttributesBase object itself.
-     */
-    public TagAttributesBase setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-        return this;
-    }
-
-    /**
      * Get the writeableProperties property: Writeable properties of the resource.
      *
      * @return the writeableProperties value.
      */
     public ContentProperties getWriteableProperties() {
         return this.writeableProperties;
-    }
-
-    /**
-     * Set the writeableProperties property: Writeable properties of the resource.
-     *
-     * @param writeableProperties the writeableProperties value to set.
-     * @return the TagAttributesBase object itself.
-     */
-    public TagAttributesBase setWriteableProperties(ContentProperties writeableProperties) {
-        this.writeableProperties = writeableProperties;
-        return this;
     }
 }

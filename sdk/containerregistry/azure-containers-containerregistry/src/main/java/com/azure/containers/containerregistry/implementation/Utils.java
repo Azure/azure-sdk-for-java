@@ -5,13 +5,6 @@ package com.azure.containers.containerregistry.implementation;
 
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
-import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
-import com.azure.containers.containerregistry.implementation.models.ManifestAttributesManifestReferences;
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.RegistryArtifactProperties;
-import com.azure.containers.containerregistry.models.RepositoryProperties;
-import com.azure.containers.containerregistry.models.TagProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -47,8 +40,10 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
+/**
+ * This is the utility class that includes helper methods used across our clients.
+ */
 public final class Utils {
     private static final String CONTINUATIONLINK_HEADER_NAME;
     private static final Pattern CONTINUATIONLINK_PATTERN;
@@ -166,146 +161,6 @@ public final class Utils {
     }
 
     /**
-     * Generated models are fluent models vs the public models are immutable.
-     * Since the serialization requires public setters the implementation models have to remain as-is.
-     * TODO (pallavit): It will be worth exposing a way  in auto-gen to support this.
-     * */
-    public static DeleteRepositoryResult mapDeleteRepositoryResult(com.azure.containers.containerregistry.implementation.models.DeleteRepositoryResult resultImpl) {
-        if (resultImpl == null) {
-            return null;
-        }
-
-        return new DeleteRepositoryResult(resultImpl.getDeletedRegistryArtifactDigests(), resultImpl.getDeletedTags());
-    }
-
-    /**
-     * Generated models are fluent models vs the public models are immutable.
-     * Since the serialization requires public setters the implementation models have to remain as-is.
-     * TODO (pallavit): It will be worth exposing a way  in auto-gen to support this.
-     * */
-    public static RepositoryProperties mapRepositoryProperties(com.azure.containers.containerregistry.implementation.models.RepositoryProperties propsImpl) {
-        if (propsImpl == null) {
-            return null;
-        }
-
-        ContentProperties writeableProps = mapContentProperties(propsImpl.getWriteableProperties());
-
-        return new RepositoryProperties(
-            propsImpl.getName(),
-            propsImpl.getRegistryArtifactCount(),
-            propsImpl.getTagCount(),
-            writeableProps,
-            propsImpl.getCreatedOn(),
-            propsImpl.getLastUpdatedOn()
-        );
-    }
-
-    /**
-     * Generated models are fluent models vs the public models are immutable.
-     * Also, the field manifest is exposed as a different model-type but for simplicity we wanted that to be also RegistryArtifactProperties.
-     * Since the serialization requires public setters the implementation models have to remain as-is.
-     * TODO (pallavit): It will be worth exposing a way  in auto-gen to support this.
-     */
-    public static RegistryArtifactProperties mapArtifactProperties(com.azure.containers.containerregistry.implementation.models.RegistryArtifactProperties propsImpl) {
-        if (propsImpl == null) {
-            return null;
-        }
-
-        List<RegistryArtifactProperties> registryArtifacts = getRegistryArtifacts(propsImpl.getRegistryArtifacts());
-
-        return new RegistryArtifactProperties(
-            propsImpl.getDigest(),
-            propsImpl.getManifestProperties(),
-            registryArtifacts,
-            propsImpl.getCpuArchitecture(),
-            propsImpl.getOperatingSystem(),
-            propsImpl.getCreatedOn(),
-            propsImpl.getLastUpdatedOn(),
-            propsImpl.getTags(),
-            propsImpl.getSize());
-    }
-
-    /**
-     * Generated models are fluent models vs the public models are immutable.
-     * Since the serialization requires public setters the implementation models have to remain as-is.
-     * TODO (pallavit): It will be worth exposing a way  in auto-gen to support this.
-     * */
-    public static ContentProperties mapContentProperties(com.azure.containers.containerregistry.implementation.models.ContentProperties props) {
-
-        if (props == null) {
-            return null;
-        }
-
-        return new ContentProperties()
-            .setCanDelete(props.isCanDelete())
-            .setCanList(props.isCanList())
-            .setCanRead(props.isCanRead())
-            .setCanWrite(props.isCanWrite());
-    }
-
-    public static List<RegistryArtifactProperties> getRegistryArtifacts(List<ManifestAttributesManifestReferences> artifacts) {
-        if (artifacts == null) {
-            return null;
-        }
-
-        return artifacts.stream()
-            .map(artifact -> new RegistryArtifactProperties(
-                artifact.getDigest(),
-                null,
-                null,
-                artifact.getCpuArchitecture(),
-                artifact.getOperatingSystem(),
-                null,
-                null,
-                null,
-                null
-            )).collect(Collectors.toList());
-    }
-
-    public static List<RegistryArtifactProperties> getRegistryArtifactsProperties(List<ManifestAttributesBase> baseArtifacts)
-    {
-        if (baseArtifacts == null) {
-            return null;
-        }
-
-        return baseArtifacts.stream().map(value -> new RegistryArtifactProperties(
-                value.getDigest(),
-                value.getWriteableProperties(),
-                getRegistryArtifacts(value.getReferences()),
-                value.getCpuArchitecture(),
-                value.getOperatingSystem(),
-                value.getCreatedOn(),
-                value.getLastUpdatedOn(),
-                value.getTags(),
-                value.getSize()
-            )
-
-        ).collect(Collectors.toList());
-    }
-
-    /**
-    * Generated models are fluent models vs the public models are immutable.
-    * Since the serialization requires public setters the implementation models have to remain as-is.
-    * TODO (pallavit): It will be worth exposing a way  in auto-gen to support this.
-    * */
-    public static TagProperties mapTagProperties(com.azure.containers.containerregistry.implementation.models.TagProperties props) {
-        if (props == null) {
-            return null;
-        }
-
-        ContentProperties contentProperties = mapContentProperties(props.getWriteableProperties());
-
-        return new TagProperties(
-            props.getName(),
-            props.getRepository(),
-            props.getDigest(),
-            contentProperties,
-            props.getCreatedOn(),
-            props.getLastUpdatedOn()
-        );
-    }
-
-    /**
      * This method builds the httpPipeline for the builders.
      * @param clientOptions The client options
      * @param logOptions http log options.
@@ -360,8 +215,7 @@ public final class Utils {
         return httpPipeline;
     }
 
-    private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies)
-    {
+    private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
         ArrayList<HttpPipelinePolicy> clonedPolicy = new ArrayList<>();
         for (HttpPipelinePolicy policy:policies) {
             clonedPolicy.add(policy);

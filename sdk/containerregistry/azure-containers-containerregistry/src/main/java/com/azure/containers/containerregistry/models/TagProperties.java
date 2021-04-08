@@ -16,38 +16,40 @@ public final class TagProperties {
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName", required = true)
-    private final String repository;
+    @JsonProperty(value = "imageName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String repository;
 
     /*
      * Tag name
      */
-    @JsonProperty(value = "tag.name")
-    private final String name;
+    @JsonProperty(value = "tag.name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
 
     /*
      * Tag digest
      */
-    @JsonProperty(value = "tag.digest")
-    private final String digest;
+    @JsonProperty(value = "tag.digest", access = JsonProperty.Access.WRITE_ONLY)
+    private String digest;
 
     /*
      * Tag created time
      */
-    @JsonProperty(value = "tag.createdTime", required = true)
-    private final OffsetDateTime createdOn;
+    @JsonProperty(value = "tag.createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdOn;
 
     /*
      * Tag last update time
      */
-    @JsonProperty(value = "tag.lastUpdateTime", required = true)
-    private final OffsetDateTime lastUpdatedOn;
+    @JsonProperty(value = "tag.lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastUpdatedOn;
 
     /*
      * Writeable properties of the resource
      */
-    @JsonProperty(value = "tag.changeableAttributes")
-    private final ContentProperties writeableProperties;
+    @JsonProperty(value = "tag.changeableAttributes", access = JsonProperty.Access.WRITE_ONLY)
+    private ContentProperties writeableProperties;
+
+    private TagProperties() { }
 
     /**
      * Initialized an instance of TagProperties.
