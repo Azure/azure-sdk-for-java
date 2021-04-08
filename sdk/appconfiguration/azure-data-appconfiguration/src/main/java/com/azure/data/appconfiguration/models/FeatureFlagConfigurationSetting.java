@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * {@link FeatureFlagConfigurationSetting} model.
+ * {@link FeatureFlagConfigurationSetting} enable to customize your own feature flags to dynamically administer a
+ * feature's lifecycle. The feature flags triggers whether the code block runs.
  */
 public final class FeatureFlagConfigurationSetting extends ConfigurationSetting {
     private final String featureId;
@@ -28,7 +29,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * The constructor for a feature flag configuration setting.
      *
      * @param featureId A feature flag identification value that used to construct in setting's key. The key of setting
-     *   is {@code KEY_PREFIX} concatenate featureId.
+     *   is {@code KEY_PREFIX} concatenate {@code featureId}.
      * @param isEnabled A boolean value to turn on/off the feature flag setting.
      */
     public FeatureFlagConfigurationSetting(String featureId, boolean isEnabled) {
@@ -182,7 +183,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      *
      * @return the feature flag filters of this configuration setting.
      */
-    public List<FeatureFlagFilter> getClientFilters() {
+    public Iterable<FeatureFlagFilter> getClientFilters() {
         return Collections.unmodifiableList(clientFilters);
     }
 

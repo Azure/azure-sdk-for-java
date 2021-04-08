@@ -8,7 +8,8 @@ import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /**
- * {@link SecretReferenceConfigurationSetting} model.
+ * {@link SecretReferenceConfigurationSetting} model. It represents a configuration setting that references as
+ * KeyVault secret.
  */
 @Fluent
 public final class SecretReferenceConfigurationSetting extends ConfigurationSetting {

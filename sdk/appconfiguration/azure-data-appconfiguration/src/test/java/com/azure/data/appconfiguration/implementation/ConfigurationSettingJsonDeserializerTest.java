@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -48,7 +50,7 @@ public class ConfigurationSettingJsonDeserializerTest {
     private static final ObjectMapper MAPPER;
 
     static {
-        MAPPER = new ObjectMapper().registerModule(ConfigurationSettingJsonDeserializer.MODULE);
+        MAPPER = new ObjectMapper().registerModule(ConfigurationSettingJsonDeserializer.getModule());
     }
 
     @ParameterizedTest
@@ -125,14 +127,19 @@ public class ConfigurationSettingJsonDeserializerTest {
         assertClientFilters(expect.getClientFilters(), actual.getClientFilters());
     }
 
-    private static void assertClientFilters(List<FeatureFlagFilter> expect, List<FeatureFlagFilter> actual) {
+    private static void assertClientFilters(Iterable<FeatureFlagFilter> expect, Iterable<FeatureFlagFilter> actual) {
         if (expect == null || actual == null) {
             assertEquals(expect, actual);
         }
-        assertEquals(expect.size(), actual.size());
-        for (int i = 0; i < expect.size(); i++) {
-            final FeatureFlagFilter expectFilter = expect.get(i);
-            final FeatureFlagFilter actualFilter = actual.get(i);
+
+        final List<FeatureFlagFilter> expectList = StreamSupport.stream(expect.spliterator(), false)
+                                                       .collect(Collectors.toList());
+        final List<FeatureFlagFilter> actualList = StreamSupport.stream(actual.spliterator(), false)
+                                                       .collect(Collectors.toList());
+        assertEquals(expectList.size(), actualList.size());
+        for (int i = 0; i < expectList.size(); i++) {
+            final FeatureFlagFilter expectFilter = expectList.get(i);
+            final FeatureFlagFilter actualFilter = actualList.get(i);
             assertEquals(expectFilter.getName(), actualFilter.getName());
             assertEquals(expectFilter.getParameters(), actualFilter.getParameters());
         }

@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -13,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
@@ -33,15 +33,12 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.DESCRIPTION;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.DISPLAY_NAME;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.ENABLED;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.ETAG;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.ID;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.KEY;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.LABEL;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.LAST_MODIFIED;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.LOCKED;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.NAME;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.PARAMETERS;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.TAGS;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.URI;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.VALUE;
 
@@ -57,24 +54,20 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
     private static final String SECRET_REFERENCE_CONTENT_TYPE =
         "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
-    static final SimpleModule MODULE;
-    private static final ObjectMapper MAPPER;
-
+    private static final JacksonAdapter MAPPER;
+    private static final SimpleModule MODULE;
     static {
-        MAPPER = new ObjectMapper();
-    }
-
-    public static SimpleModule getModule() {
-        return MODULE;
-    }
-
-    static {
+        MAPPER = new JacksonAdapter();
         MODULE = new SimpleModule()
                      .addDeserializer(ConfigurationSetting.class, new ConfigurationSettingJsonDeserializer())
                      .addDeserializer(SecretReferenceConfigurationSetting.class,
                          configurationSettingSubclassDeserializer(SecretReferenceConfigurationSetting.class))
                      .addDeserializer(FeatureFlagConfigurationSetting.class,
                          configurationSettingSubclassDeserializer(FeatureFlagConfigurationSetting.class));
+    }
+
+    public static SimpleModule getModule() {
+        return MODULE;
     }
 
     @Override
@@ -95,23 +88,24 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
             contentType = contentTypeNode.asText();
         }
 
+        final ConfigurationSetting baseSetting = readConfigurationSetting(node);
         try {
             if (key != null && key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
                     && FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
-                return readFeatureFlagConfigurationSetting(node, contentType);
+                return readFeatureFlagConfigurationSetting(node, baseSetting);
             } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {
-                return readSecretReferenceConfigurationSetting(node, contentType);
+                return readSecretReferenceConfigurationSetting(node, baseSetting);
             }
         } catch (Exception exception) {
-            LOGGER.info("Can't parse Configuration setting, error is " + exception.getMessage());
+            LOGGER.info(String.format(
+                "The setting is neither a 'FeatureFlagConfigurationSetting' nor 'SecretReferenceConfigurationSetting'"
+                    + ", return the setting as 'ConfigurationSetting', error is ", exception));
         }
-        return readConfigurationSetting(node, contentType);
+        return baseSetting;
     }
 
     private static SecretReferenceConfigurationSetting readSecretReferenceConfigurationSetting(JsonNode settingNode,
-        String contentType)
-        throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        final ConfigurationSetting baseSetting = readConfigurationSetting(settingNode, contentType);
+        ConfigurationSetting baseSetting) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
 
         final JsonNode valueNode = settingNode.get(VALUE);
         String settingValue = null;
@@ -142,59 +136,16 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
         return secretReferenceConfigurationSetting;
     }
 
-    private static ConfigurationSetting readConfigurationSetting(JsonNode setting, String contentType) {
-        String value = null;
-        final JsonNode settingValueNode = setting.get(VALUE);
-        if (settingValueNode != null && !settingValueNode.isNull()) {
-            value = settingValueNode.asText();
-        }
-
-        final JsonNode keyNode = setting.get(KEY);
-
-        String key = null;
-        if (keyNode != null && !keyNode.isNull()) {
-            key = keyNode.asText();
-        }
-
-        final JsonNode labelNode = setting.get(LABEL);
-        String label = null;
-        if (labelNode != null && !labelNode.isNull()) {
-            label = labelNode.asText();
-        }
-
-        final JsonNode etagNode = setting.get(ETAG);
-        String etag = null;
-        if (etagNode != null && !etagNode.isNull()) {
-            etag = etagNode.asText();
-        }
-
-        final JsonNode tagsNode = setting.get(TAGS);
-        Map<String, String> tagsMap = null;
-        if (tagsNode != null && !tagsNode.isNull()) {
-            tagsMap = readTags(tagsNode);
-        }
-
-        final ConfigurationSetting configurationSetting =
-            new ConfigurationSetting()
-                .setKey(key)
-                .setValue(value)
-                .setLabel(label)
-                .setETag(etag)
-                .setContentType(contentType)
-                .setTags(tagsMap);
+    private static ConfigurationSetting readConfigurationSetting(JsonNode setting) {
         try {
-            configurationSettingSubclassReflection(ConfigurationSetting.class, configurationSetting, setting);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException exception) {
-            LOGGER.info("Can't do the reflection on private properties of `ConfiguratioSetting`, "  + exception);
+            return MAPPER.serializer().treeToValue(setting, ConfigurationSetting.class);
+        } catch (JsonProcessingException exception) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(exception));
         }
-        return configurationSetting;
     }
 
     private static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSetting(JsonNode settingNode,
-        String contentType)
-        throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        final ConfigurationSetting baseSetting = readConfigurationSetting(settingNode, contentType);
-
+        ConfigurationSetting baseSetting) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         final JsonNode valueNode = settingNode.get(VALUE);
         String settingValue = null;
         if (valueNode != null && !valueNode.isNull()) {
@@ -246,20 +197,6 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
             lastModifiedField.set(setting, OffsetDateTime.parse(lastModified, DateTimeFormatter.ISO_DATE_TIME));
         }
         return setting;
-    }
-
-    private static Map<String, String> readTags(JsonNode node) {
-        Map<String, String> tags = null;
-        Iterator<Map.Entry<String, JsonNode>> fieldsIterator = node.fields();
-        while (fieldsIterator.hasNext()) {
-            Map.Entry<String, JsonNode> field = fieldsIterator.next();
-            String propertyName = field.getKey();
-            if (tags == null) {
-                tags = new HashMap<>();
-            }
-            tags.put(propertyName, field.getValue().asText());
-        }
-        return tags;
     }
 
     private static FeatureFlagConfigurationSetting readFeatureFlagConfigurationSettingValue(String settingValue) {
@@ -395,9 +332,9 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
     private static JsonNode toJsonNode(String settingValue) {
         JsonNode settingValueNode;
         try {
-            settingValueNode = MAPPER.readTree(settingValue);
+            settingValueNode = MAPPER.serializer().readTree(settingValue);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
         return settingValueNode;
     }

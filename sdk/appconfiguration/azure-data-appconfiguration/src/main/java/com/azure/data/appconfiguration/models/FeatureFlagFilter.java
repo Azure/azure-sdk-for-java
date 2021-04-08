@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Filters in {@link FeatureFlagConfigurationSetting} that can be returned from GET queries.
+ * Filters in {@link FeatureFlagConfigurationSetting} that can be returned from GET queries. A filter is a rule
+ * for evaluating the state of a feature flag.
  */
 public final class FeatureFlagFilter {
     private final String name;

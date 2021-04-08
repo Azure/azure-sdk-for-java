@@ -4,7 +4,6 @@
 package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -17,6 +16,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -24,7 +24,6 @@ import java.util.Map;
  * {@link SecretReferenceConfigurationSetting} and {@link FeatureFlagConfigurationSetting}.
  */
 public final class ConfigurationSettingJsonSerializer extends JsonSerializer<ConfigurationSetting>  {
-    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationSettingJsonSerializer.class);
 
     static final String ID = "id";
     static final String DESCRIPTION = "description";
@@ -63,10 +62,10 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
     }
 
     private static void write(ConfigurationSetting value, JsonGenerator gen) throws IOException {
-        final JsonFactory factory = new JsonFactory();
+        gen.writeStartObject();
+        // setting's Value
         final StringWriter jsonObjectWriter = new StringWriter();
-        final JsonGenerator generator = factory.createGenerator(jsonObjectWriter);
-
+        final JsonGenerator generator = new JsonFactory().createGenerator(jsonObjectWriter);
         String settingValue;
         if (value instanceof FeatureFlagConfigurationSetting) {
             writeFeatureFlagConfigurationSetting((FeatureFlagConfigurationSetting) value, generator);
@@ -77,15 +76,14 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         } else {
             settingValue = value.getValue();
         }
+        gen.writeStringField(VALUE, settingValue);
 
-        gen.writeStartObject();
         gen.writeStringField(KEY, value.getKey());
 
         if (!CoreUtils.isNullOrEmpty(value.getLabel())) {
             gen.writeStringField(LABEL, value.getLabel());
         }
 
-        gen.writeStringField(VALUE, settingValue);
         gen.writeStringField(CONTENT_TYPE, value.getContentType());
         gen.writeStringField(ETAG, value.getETag());
         gen.writeBooleanField(LOCKED, value.isReadOnly());
@@ -95,7 +93,7 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         gen.writeEndObject();
 
         if (value.getLastModified() != null) {
-            gen.writeStringField(LAST_MODIFIED, value.getLastModified().toString());
+            gen.writeStringField(LAST_MODIFIED, value.getLastModified().format(DateTimeFormatter.ISO_DATE_TIME));
         }
         gen.writeEndObject();
         gen.close();
