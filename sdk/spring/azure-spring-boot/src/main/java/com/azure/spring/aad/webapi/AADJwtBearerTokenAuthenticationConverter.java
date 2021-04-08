@@ -19,10 +19,10 @@ import java.util.Collection;
 public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
+    private static final String DEFAULT_PRINCIPAL_CLAIM_NAME = "sub";
 
     private Converter<Jwt, Collection<GrantedAuthority>> converter;
-
-    private String principalClaimName;
+    private String principalClaimName = DEFAULT_PRINCIPAL_CLAIM_NAME;
 
     /**
      * Use AADJwtGrantedAuthoritiesConverter, it can resolve the access token of scp and roles.
@@ -57,14 +57,8 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
         OAuth2AccessToken accessToken = new OAuth2AccessToken(
             OAuth2AccessToken.TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt());
         Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-        if (this.principalClaimName == null) {
-            AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(
-                jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
-            return new BearerTokenAuthentication(principal, accessToken, authorities);
-        }
-        String name = jwt.getClaim(this.principalClaimName);
-        AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(jwt.getHeaders(),
-            jwt.getClaims(), authorities, jwt.getTokenValue(), name);
+        AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(
+            jwt.getHeaders(),jwt.getClaims(), authorities, jwt.getTokenValue(), principalClaimName);
         return new BearerTokenAuthentication(principal, accessToken, authorities);
     }
 
