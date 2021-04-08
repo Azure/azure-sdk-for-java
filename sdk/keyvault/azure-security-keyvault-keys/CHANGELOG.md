@@ -2,7 +2,8 @@
 
 ## 4.2.7 (2021-04-08)
 
-### Changed
+### Breaking Changes
+#### Behavioral Changes
 - `NullPointerException`s thrown by client builders when setting configuration properties are now properly logger at the `ERROR` level.
 
 ### Dependency Updates
