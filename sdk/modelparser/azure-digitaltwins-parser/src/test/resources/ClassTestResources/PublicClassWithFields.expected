@@ -1,0 +1,32 @@
+public class PublicClassWithFields {
+    /**
+     * field 1 description.
+     */
+    private static final String FIELD_1 = "default string value";
+
+    /**
+     * field 2 description.
+     */
+    private String field2;
+
+    /**
+     * field 3 description.
+     */
+    private int field3 = 2;
+
+    /**
+     * field 4 description.
+     */
+    private boolean field4 = false;
+
+    /**
+     * field 5 description.
+     */
+    private String field5 = "default string value";
+
+    /**
+     * Initializes a new instance of the {@link PublicClassWithFields} class.
+     */
+    public PublicClassWithFields() {
+    }
+}

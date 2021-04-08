@@ -94,7 +94,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
 
         JavaField field = new JavaField(access, type, name, value, multiplicity, mutability);
         if (description != null) {
-            this.addSummary(description);
+            field.addSummary(description);
         }
 
         this.fields.add(field);

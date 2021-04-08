@@ -147,7 +147,7 @@ public class CodeWriter {
                 if (suppressLineBreak) {
                     indentedFileWriter.writeWithIndent("");
                 } else {
-                    indentedFileWriter.writeLineWithIndent("");
+                    indentedFileWriter.writeLineWithNoIndent("");
                 }
 
             }

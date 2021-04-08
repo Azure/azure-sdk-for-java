@@ -342,7 +342,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
      * @throws IOException IOException.
      */
     @Test
-    public void publicClassWithConstructorAndParam() throws IOException {
+    public void publicClassWithConstructorAndOneParam() throws IOException {
         final String typeName = "PublicClassWithConstructorAndOneParam";
 
         CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
@@ -367,6 +367,137 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
     }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/PublicClassWithConstructorAndTwoParams.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/PublicClassWithConstructorAndTwoParams.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithConstructorAndTwoParams() throws IOException {
+        final String typeName = "PublicClassWithConstructorAndTwoParams";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        constructor.addSummary("This is more information.");
+        constructor.addSummary("This is even more information.");
+        constructor.addRemarks("This is remarks.");
+
+        constructor.param("String", "firstParam", "This is my first parameter.");
+        constructor.param("int", "secondParam", "This is my second parameter.");
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * No files are generated.
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithInvalidFields() throws IOException {
+        final String typeName = "NoOpType";
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PRIVATE, "String", "field5", null, Multiplicity.STATIC, Mutability.FINAL, "field 5 description."));
+        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field5", null, Multiplicity.INSTANCE, Mutability.FINAL, "field 5 description."));
+        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field5", null, Multiplicity.STATIC, Mutability.MUTABLE, "field 5 description."));
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/PublicClassWithFields.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/PublicClassWithFields.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithFields() throws IOException {
+        final String typeName = "PublicClassWithFields";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        javaClass.addField(Access.PRIVATE, "String", "FIELD_1", "\"default string value\"", Multiplicity.STATIC, Mutability.FINAL, "field 1 description.");
+        javaClass.addField(Access.PRIVATE, "String", "field2", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "field 2 description.");
+        javaClass.addField(Access.PRIVATE, "int", "field3", "2", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 3 description.");
+        javaClass.addField(Access.PRIVATE, "boolean", "field4", "false", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 4 description.");
+        javaClass.addField(Access.PRIVATE, "String", "field5", "\"default string value\"", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 5 description.");
+
+        javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/PublicClassWithConstructorAndSimpleBody.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/PublicClassWithConstructorAndSimpleBody.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithConstructorAndSimpleBody() throws IOException {
+        final String typeName = "PublicClassWithConstructorAndSimpleBody";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        constructor.addSummary("This is more information.");
+        constructor.addSummary("This is even more information.");
+        constructor.addRemarks("This is remarks.");
+
+        constructor.param("String", "firstParam", "This is my first parameter.");
+        constructor.param("int", "secondParam", "This is my second parameter.");
+
+        JavaScope body = new JavaScope(null);
+        body.addStatement(new JavaLine("this.field = firstParam;"));
+        constructor.setBody(body);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
 
     // NEGATIVE TEST CASES.
 
