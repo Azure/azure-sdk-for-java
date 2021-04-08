@@ -348,15 +348,6 @@ class ServiceBusReceiveLinkProcessorTest {
         // Verify that we get the first connection.
         StepVerifier.create(processor)
             .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                System.out.println("Emitting first message.");
-                messagePublisher.next(message1);
-            })
-            .assertNext(message -> {
-                System.out.println("Asserting first message.");
-                assertSame(message1, message);
-            })
-            .then(() -> {
                 System.out.println("Outputting exception.");
                 endpointProcessor.error(amqpException);
             })
@@ -482,9 +473,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .then(() -> {
                 linkGenerator.next(link1);
                 endpointStates.next(AmqpEndpointState.ACTIVE);
-                messages.next(message1);
             })
-            .expectNext(message1)
             .then(() -> {
                 linkGenerator.complete();
                 endpointStates.complete();
