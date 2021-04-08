@@ -40,21 +40,15 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
     public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers,
                                            Map<String, Object> attributes,
                                            Collection<GrantedAuthority> authorities,
-                                           String tokenValue) {
-        this(headers, attributes, authorities, tokenValue, null);
-    }
-
-    public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers,
-                                           Map<String, Object> attributes,
-                                           Collection<GrantedAuthority> authorities,
-                                           String tokenValue, String name) {
+                                           String tokenValue,
+                                           String principalClaimName) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;
         this.tokenValue = tokenValue;
         this.attributes = Collections.unmodifiableMap(attributes);
         this.authorities = authorities == null ? NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
-        this.name = (name != null) ? name : (String) this.attributes.get("sub");
+        this.name = (String) this.attributes.get(principalClaimName);
         toJwtClaimsSet(attributes);
     }
 
