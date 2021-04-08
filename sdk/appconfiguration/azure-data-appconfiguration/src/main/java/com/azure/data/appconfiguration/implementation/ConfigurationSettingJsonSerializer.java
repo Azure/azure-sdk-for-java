@@ -96,7 +96,6 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
             gen.writeStringField(LAST_MODIFIED, value.getLastModified().format(DateTimeFormatter.ISO_DATE_TIME));
         }
         gen.writeEndObject();
-        gen.close();
     }
 
     private static void writeSecretReferenceConfigurationSetting(SecretReferenceConfigurationSetting setting,
@@ -115,8 +114,8 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         gen.writeStringField(DESCRIPTION, setting.getDescription());
         gen.writeStringField(DISPLAY_NAME, setting.getDisplayName());
         gen.writeBooleanField(ENABLED, setting.isEnabled());
-        gen.writeObjectFieldStart(CONDITIONS);
 
+        gen.writeObjectFieldStart(CONDITIONS);
         gen.writeArrayFieldStart(CLIENT_FILTERS);
         for (FeatureFlagFilter filter : setting.getClientFilters()) {
             gen.writeStartObject();
@@ -127,8 +126,8 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
             gen.writeEndObject(); // each filter object
         }
         gen.writeEndArray();
-
         gen.writeEndObject();
+
         gen.writeEndObject();
         gen.close();
     }
