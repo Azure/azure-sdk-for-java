@@ -27,7 +27,6 @@ public final class ContainerRegistryClient {
      * List repositories.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -40,7 +39,6 @@ public final class ContainerRegistryClient {
      *
      * @param name Name of the image (including the namespace).
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
      * @return deleted repository.
      */
@@ -55,7 +53,6 @@ public final class ContainerRegistryClient {
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
      * @return deleted repository.
      */

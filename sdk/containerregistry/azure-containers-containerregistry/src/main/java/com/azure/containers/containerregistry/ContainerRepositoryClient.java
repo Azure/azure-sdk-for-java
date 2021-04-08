@@ -160,7 +160,10 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Get registry attributes.
+     * <p>Get registry artifact properties.</p>
+     *
+     * <p>This method can take in both a digest as well as a tag.<br>
+     * In case a tag is provided it calls the service to get the digest associated with it.</p>
      *
      * @param digest Digest of a BLOB.
      * @param context Context associated with the operation.
@@ -174,7 +177,10 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Get registry attributes.
+     * <p>Get registry artifact properties.</p>
+     *
+     * <p>This method can take in both a digest as well as a tag.<br>
+     * In case a tag is provided it calls the service to get the digest associated with it.</p>
      *
      * @param digest Digest of a BLOB.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
@@ -265,7 +271,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Update the attribute identified by `name` where `reference` is the name of the repository.
+     * Update the content properties of the repository.
      *
      * @param value Repository attribute value.
      * @param context Context associated with the operation.
@@ -279,7 +285,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Update the attribute identified by `name` where `reference` is the name of the repository.
+     * Update the content properties of the repository.
      *
      * @param value Repository attribute value.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.

@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.implementation.ContainerRegistries
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryRepositoriesImpl;
+import com.azure.containers.containerregistry.implementation.Utils;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
@@ -26,8 +27,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -48,14 +49,13 @@ public final class ContainerRepositoryAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(ContainerRepositoryAsyncClient.class);
 
-    ContainerRepositoryAsyncClient(String repositoryName, HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    ContainerRepositoryAsyncClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         if (repositoryName == null) {
             throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null"));
         }
 
         ContainerRegistryImpl registryImpl = new ContainerRegistryImplBuilder()
             .pipeline(httpPipeline)
-            .serializerAdapter(serializerAdapter)
             .url(endpoint).buildClient();
 
         this.endpoint = endpoint;
@@ -111,10 +111,6 @@ public final class ContainerRepositoryAsyncClient {
      */
     Mono<Response<DeleteRepositoryResult>> deleteWithResponse(Context context) {
         try {
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
             return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
                 .map(res -> Utils.mapResponse(res, Utils::mapDeleteRepositoryResult))
                 .onErrorMap(Utils::mapException);
@@ -126,20 +122,18 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Delete repository.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteRepositoryResult> delete() {
-        return this.deleteWithResponse().map(Response::getValue);
+        return this.deleteWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
      * Delete registry artifact.
      *
      * @param digest Digest name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
@@ -155,10 +149,6 @@ public final class ContainerRepositoryAsyncClient {
                 return monoError(logger, new NullPointerException("'digest' cannot be null"));
             }
 
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
             return this.serviceClient.deleteManifestWithResponseAsync(repositoryName, digest, context)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
@@ -170,22 +160,19 @@ public final class ContainerRepositoryAsyncClient {
      * Delete registry artifact.
      *
      * @param digest digest to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRegistryArtifact(String digest) {
-        return this.deleteRegistryArtifactWithResponse(digest)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return this.deleteRegistryArtifactWithResponse(digest).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Delete tag.
      *
      * @param tag tag name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
@@ -201,10 +188,6 @@ public final class ContainerRepositoryAsyncClient {
                 return monoError(logger, new NullPointerException("'digest' cannot be null"));
             }
 
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
             return this.serviceClient.deleteTagWithResponseAsync(repositoryName, tag, context)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
@@ -216,15 +199,13 @@ public final class ContainerRepositoryAsyncClient {
      * Delete tag.
      *
      * @param tag Tag name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTag(String tag) {
-        return this.deleteTagWithResponse(tag)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return this.deleteTagWithResponse(tag).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -261,14 +242,15 @@ public final class ContainerRepositoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RepositoryProperties> getProperties() {
-        return this.getPropertiesWithResponse().map(Response::getValue);
+        return this.getPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Get registry artifact properties.
+     * <p>Get registry artifact properties.</p>
      *
+     * <p>This method can take in both a digest as well as a tag.<br>
+     * In case a tag is provided it calls the service to get the digest associated with it.</p>
      * @param tagOrDigest tag or digest associated with the blob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return registry artifact properties.
@@ -280,14 +262,9 @@ public final class ContainerRepositoryAsyncClient {
 
     Mono<Response<RegistryArtifactProperties>> getRegistryArtifactPropertiesWithResponse(String tagOrDigest, Context context) {
         try {
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
-            Mono<String> getTagMono = Mono.defer(
-                () -> tagOrDigest.contains(":")
-                    ? Mono.just(tagOrDigest)
-                    : this.getTagProperties(tagOrDigest).map(a -> a.getDigest()));
+            Mono<String> getTagMono = tagOrDigest.contains(":")
+                ? Mono.just(tagOrDigest)
+                : this.getTagProperties(tagOrDigest).map(a -> a.getDigest());
 
             return getTagMono
                 .flatMap(tag -> this.serviceClient.getRegistryArtifactPropertiesWithResponseAsync(repositoryName, tag))
@@ -299,23 +276,23 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Get registry artifact properties.
+     * <p>Get registry artifact properties.</p>
      *
+     * <p>This method can take in both a digest as well as a tag.<br>
+     * In case a tag is provided it calls the service to get the digest associated with it.</p>
      * @param tagOrDigest tag or digest associated with the blob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return registry artifact properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RegistryArtifactProperties> getRegistryArtifactProperties(String tagOrDigest) {
-        return this.getRegistryArtifactPropertiesWithResponse(tagOrDigest).map(Response::getValue);
+        return this.getRegistryArtifactPropertiesWithResponse(tagOrDigest).flatMap(FluxUtil::toMono);
     }
 
     /**
      * List registry artifacts based of a repository.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return manifest attributes.
@@ -329,7 +306,6 @@ public final class ContainerRepositoryAsyncClient {
      * List manifests of a repository.
      *
      * @param options the options associated with the list registy operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return manifest attributes.
@@ -345,10 +321,6 @@ public final class ContainerRepositoryAsyncClient {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
-            }
-
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
             }
 
             String orderBy = null;
@@ -379,7 +351,6 @@ public final class ContainerRepositoryAsyncClient {
      * Get tag properties
      *
      * @param tag Tag name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return tag attributes by tag.
@@ -394,9 +365,6 @@ public final class ContainerRepositoryAsyncClient {
             if (tag == null) {
                 return monoError(logger, new NullPointerException("'tag' cannot be null."));
             }
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
 
             return this.serviceClient.getTagPropertiesWithResponseAsync(repositoryName, tag, context)
                 .map(res -> Utils.mapResponse(res, Utils::mapTagProperties))
@@ -410,20 +378,18 @@ public final class ContainerRepositoryAsyncClient {
      * Get tag attributes.
      *
      * @param tag Tag name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return tag attributes by tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagProperties> getTagProperties(String tag) {
-        return this.getTagPropertiesWithResponse(tag).map(Response::getValue);
+        return this.getTagPropertiesWithResponse(tag).flatMap(FluxUtil::toMono);
     }
 
     /**
      * List tags of a repository.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return list of tag details.
@@ -437,7 +403,6 @@ public final class ContainerRepositoryAsyncClient {
      * List tags of a repository.
      *
      * @param options tagOptions to be used for the given operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return list of tag details.
@@ -455,10 +420,6 @@ public final class ContainerRepositoryAsyncClient {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
             String orderBy = null;
             if (options != null && options.getTagOrderBy() != null) {
                 orderBy = options.getTagOrderBy().toString();
@@ -472,8 +433,7 @@ public final class ContainerRepositoryAsyncClient {
         }
     }
 
-    private List<TagProperties> getTagProperties(List<TagAttributesBase> baseValues)
-    {
+    private List<TagProperties> getTagProperties(List<TagAttributesBase> baseValues) {
         Objects.requireNonNull(baseValues);
 
         return baseValues.stream().map(value -> new TagProperties(
@@ -496,10 +456,9 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Update the attribute identified by `name` where `reference` is the name of the repository.
+     * Update the content properties of the repository.
      *
      * @param value Repository attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
@@ -515,10 +474,6 @@ public final class ContainerRepositoryAsyncClient {
                 return monoError(logger, new NullPointerException("'value' cannot be null."));
             }
 
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
             return this.serviceClient.setPropertiesWithResponseAsync(repositoryName, value, context)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
@@ -527,18 +482,16 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Update the attribute identified by `name` where `reference` is the name of the repository.
+     * Update the content properties of the repository.
      *
      * @param value Repository attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(ContentProperties value) {
-        return this.setPropertiesWithResponse(value)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return this.setPropertiesWithResponse(value).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -546,7 +499,6 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param tag Tag name.
      * @param value Repository attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
@@ -568,10 +520,6 @@ public final class ContainerRepositoryAsyncClient {
                 return monoError(logger, new NullPointerException("'value' cannot be null."));
             }
 
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
             return this.serviceClient.updateTagAttributesWithResponseAsync(repositoryName, tag, value, context)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
@@ -584,15 +532,13 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param tag Tag name.
      * @param value Repository attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setTagProperties(String tag, ContentProperties value) {
-        return this.setTagPropertiesWithResponse(tag, value)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return this.setTagPropertiesWithResponse(tag, value).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -600,7 +546,6 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param digest Digest of a BLOB.
      * @param value Repository attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
@@ -621,10 +566,6 @@ public final class ContainerRepositoryAsyncClient {
                 return monoError(logger, new NullPointerException("'value' cannot be null."));
             }
 
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
-
             return this.serviceClient.updateManifestAttributesWithResponseAsync(repositoryName, digest, value, context)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
@@ -637,14 +578,12 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param digest Digest of a BLOB.
      * @param value Repository attribute value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setManifestProperties(String digest, ContentProperties value) {
-        return this.setManifestPropertiesWithResponse(digest, value)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return this.setManifestPropertiesWithResponse(digest, value).flatMap(FluxUtil::toMono);
     }
 }

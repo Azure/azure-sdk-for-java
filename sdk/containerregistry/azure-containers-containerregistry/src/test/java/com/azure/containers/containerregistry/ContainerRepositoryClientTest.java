@@ -130,7 +130,6 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
         assertThrows(NullPointerException.class, () -> client.getRegistryArtifactProperties(null));
         assertThrows(NullPointerException.class, () -> client.getRegistryArtifactPropertiesWithResponse(null, Context.NONE));
-        assertThrows(NullPointerException.class, () -> client.getRegistryArtifactPropertiesWithResponse(LATEST_TAG_NAME, null));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -141,7 +140,6 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 
         String digest = "some:digest";
         assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifactWithResponse(null, Context.NONE));
-        assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifactWithResponse(digest, null));
 
         assertThrows(HttpResponseException.class, () -> client.deleteRegistryArtifact("unknownDigest"));
         assertThrows(HttpResponseException.class, () -> client.deleteRegistryArtifactWithResponse("someValue", Context.NONE));
@@ -177,14 +175,6 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         client.listRegistryArtifacts().iterableByPage(PAGESIZE_2).forEach(res -> res.getValue().forEach(repo -> artifacts.add(repo)));
         validateListArtifacts(artifacts);
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithInvalidPageSize(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        assertThrows(IllegalArgumentException.class, () -> client.listRegistryArtifacts().iterableByPage(-1).forEach(res -> res.getValue()));
-    }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
@@ -237,13 +227,6 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         ArrayList<TagProperties> tags = new ArrayList<>();
         client.listTags().iterableByPage(PAGESIZE_2).forEach(res -> res.getValue().forEach(repo -> tags.add(repo)));
         validateListTags(tags);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithInvalidPageSize(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        assertThrows(IllegalArgumentException.class, () -> client.listRegistryArtifacts().iterableByPage(-1).forEach(res -> res.getValue()));
     }
 
 
@@ -305,7 +288,6 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 
         assertThrows(NullPointerException.class, () -> client.getTagProperties(null));
-        assertThrows(NullPointerException.class, () -> client.getTagPropertiesWithResponse(LATEST_TAG_NAME, null));
 
         assertThrows(ResourceNotFoundException.class, () -> client.getTagProperties("unknown"));
         assertThrows(ResourceNotFoundException.class, () -> client.getTagPropertiesWithResponse("unknown", Context.NONE));

@@ -62,7 +62,6 @@ public class ReadmeSamples {
             .repository(repository)
             .credential(credential)
             .buildClient();
-
         try {
             client.getProperties();
         } catch (HttpResponseException exception) {

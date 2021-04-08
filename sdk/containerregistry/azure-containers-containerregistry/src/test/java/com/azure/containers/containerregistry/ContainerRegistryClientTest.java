@@ -50,14 +50,6 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void listRepositoriesWithInvalidPageSize(HttpClient httpClient) {
-        client = getContainerRegistryClient(httpClient);
-
-        assertThrows(IllegalArgumentException.class, () -> client.listRepositories().iterableByPage(-1).forEach(a -> a.getValue()));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
     public void deleteRepositoryThrows(HttpClient httpClient) {
         client = getContainerRegistryClient(httpClient);
         assertThrows(NullPointerException.class, () -> client.deleteRepository(null));

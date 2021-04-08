@@ -162,10 +162,6 @@ public class ContainerRepositoryClientAsyncTest extends ContainerRegistryClients
             .expectError(NullPointerException.class)
             .verify();
 
-        StepVerifier.create(client.deleteRegistryArtifactWithResponse(digest, null))
-            .expectError(NullPointerException.class)
-            .verify();
-
         StepVerifier.create(client.deleteRegistryArtifact("unknown:Digest"))
             .expectError(ResourceNotFoundException.class)
             .verify();

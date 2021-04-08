@@ -4,32 +4,20 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
+import com.azure.containers.containerregistry.implementation.Utils;
 import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -63,7 +51,6 @@ public final class ContainerRegistryClientBuilder {
     private TokenCredential credential;
     private HttpPipeline httpPipeline;
     private HttpLogOptions httpLogOptions;
-    private SerializerAdapter serializerAdapter;
     private RetryPolicy retryPolicy;
     private ContainerRegistryServiceVersion version;
 
@@ -71,6 +58,7 @@ public final class ContainerRegistryClientBuilder {
      * Sets Registry login URL.
      *
      * @param endpoint the endpoint value.
+     * @throws IllegalArgumentException if the endpoint is a malformed URL.
      * @return the ContainerRegistryBuilder.
      */
     public ContainerRegistryClientBuilder endpoint(String endpoint) {
@@ -88,6 +76,7 @@ public final class ContainerRegistryClientBuilder {
      * Sets Registry login URL.
      *
      * @param credential the credential to use to access registry.
+     * @throws NullPointerException if the credentials are null.
      * @return the ContainerRegistryBuilder.
      */
     public ContainerRegistryClientBuilder credential(TokenCredential credential) {
@@ -103,10 +92,6 @@ public final class ContainerRegistryClientBuilder {
      * @return the ContainerRegistryBuilder.
      */
     public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
-        if (this.httpPipeline != null && httpPipeline == null) {
-            logger.verbose("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-
         this.httpPipeline = httpPipeline;
         return this;
     }
@@ -118,9 +103,6 @@ public final class ContainerRegistryClientBuilder {
      * @return the ContainerRegistryBuilder.
      */
     public ContainerRegistryClientBuilder httpClient(HttpClient httpClient) {
-        if (this.httpClient != null && httpClient == null) {
-            logger.error("'httpClient' is being set to 'null' when it was previously configured.");
-        }
         this.httpClient = httpClient;
         return this;
     }
@@ -154,7 +136,7 @@ public final class ContainerRegistryClientBuilder {
      * @return the ContainerRegistryBuilder.
      */
     public ContainerRegistryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        this.httpLogOptions = Objects.requireNonNull(httpLogOptions, "'logOptions' cannot be null.");
+        this.httpLogOptions = httpLogOptions;
         return this;
     }
 
@@ -172,6 +154,7 @@ public final class ContainerRegistryClientBuilder {
 
     /**
      * Sets the service version that will be targeted by the client.
+     * If the version is not set the latest version is used by default.
      *
      * @param version the service version to target.
      * @return the ContainerRegistryBuilder.
@@ -184,11 +167,12 @@ public final class ContainerRegistryClientBuilder {
     /**
      * Adds a custom Http httpPipeline policy.
      *
+     * @throws NullPointerException if custom policy is null.
      * @param customPolicy The custom Http httpPipeline policy to add.
      * @return the ContainerRegistryBuilder.
      */
     public ContainerRegistryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        Objects.requireNonNull(customPolicy, "'pipelinePolicy' cannot be null.");
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
 
         if (customPolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
             perCallPolicies.add(customPolicy);
@@ -199,79 +183,39 @@ public final class ContainerRegistryClientBuilder {
         return this;
     }
 
-    private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(
-                new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
-        policies.add(new RequestIdPolicy());
-
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        if (clientOptions != null) {
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-        }
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-
-        policies.addAll(perCallPolicies);
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        policies.add(new CookiePolicy());
-        policies.add(new AddDatePolicy());
-
-        policies.addAll(this.perRetryPolicies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        if (credential != null) {
-            policies.add(new ContainerRegistryCredentialsPolicy(
-                credential,
-                endpoint,
-                new HttpPipelineBuilder()
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .httpClient(httpClient)
-                    .build(),
-                serializerAdapter
-                ));
-        }
-
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
-
-        return httpPipeline;
-    }
-
     /**
      * Builds an instance of ContainerRegistryAsyncClient.
      *
      * @return an instance of ContainerRegistryAsyncClient.
      */
     public ContainerRegistryAsyncClient buildAsyncClient() {
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-
-        if (httpPipeline == null) {
-            this.httpPipeline = createHttpPipeline();
-        }
-
         // Service version
         ContainerRegistryServiceVersion serviceVersion = (version != null)
             ? version
             : ContainerRegistryServiceVersion.getLatest();
 
-        ContainerRegistryAsyncClient client = new ContainerRegistryAsyncClient(httpPipeline, serializerAdapter, endpoint, serviceVersion.getVersion());
+        HttpPipeline pipeline = getHttpPipeline();
+
+        ContainerRegistryAsyncClient client = new ContainerRegistryAsyncClient(pipeline, endpoint, serviceVersion.getVersion());
         return client;
+    }
+
+    private HttpPipeline getHttpPipeline() {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return Utils.buildHttpPipeline(
+            this.clientOptions,
+            this.httpLogOptions,
+            this.configuration,
+            this.retryPolicy,
+            this.credential,
+            this.perCallPolicies,
+            this.perRetryPolicies,
+            this.httpClient,
+            this.endpoint);
     }
 
     /**
