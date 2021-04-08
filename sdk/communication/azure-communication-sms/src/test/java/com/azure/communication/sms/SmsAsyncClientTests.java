@@ -12,18 +12,22 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Configuration;
 
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 public class SmsAsyncClientTests extends SmsTestBase {
     private SmsAsyncClient asyncClient;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
+        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|sms).*"));
     }
 
     @ParameterizedTest

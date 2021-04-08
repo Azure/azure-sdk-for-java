@@ -6,6 +6,7 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.azure.core.exception.HttpResponseException;
@@ -27,6 +28,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -56,6 +58,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
+        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|chat).*"));
     }
 
     @Override
