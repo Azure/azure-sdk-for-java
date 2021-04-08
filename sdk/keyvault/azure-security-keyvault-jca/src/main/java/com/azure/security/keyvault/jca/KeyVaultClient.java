@@ -8,12 +8,11 @@ import com.azure.security.keyvault.jca.model.CertificateListResult;
 import com.azure.security.keyvault.jca.model.CertificatePolicy;
 import com.azure.security.keyvault.jca.model.KeyProperties;
 import com.azure.security.keyvault.jca.model.SecretBundle;
-import java.io.BufferedReader;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -154,8 +153,8 @@ class KeyVaultClient extends DelegateRestClient {
             } else {
                 accessToken = authClient.getAccessToken(resource, managedIdentity);
             }
-        } catch (UnsupportedEncodingException uee) {
-            LOGGER.log(WARNING, "Unsupported encoding", uee);
+        } catch (Throwable throwable) {
+            LOGGER.log(WARNING, "Unsupported encoding or missing Httpclient", throwable);
         }
         LOGGER.exiting("KeyVaultClient", "getAccessToken", accessToken);
         return accessToken;

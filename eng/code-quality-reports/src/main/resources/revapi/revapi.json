@@ -59,6 +59,47 @@
       },
       {
         "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class javax\\.servlet\\.ServletContextEvent",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.ServletContextCleaner"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.avalon\\.framework\\.logger\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.AvalonLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.AvalonLogger"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.log\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.LogKitLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.LogKitLogger"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.log4j\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.Log4JLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.Log4JLogger"
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "class org.apache.http.impl.client.HttpRequestTaskCallable<V extends java.lang.Object>",
+        "justification": "We allow this in org.apache.http.impl.client.HttpRequestFutureTask<V>"
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
+        "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
+        "justification": "We allow this in org.apache.http.HttpClientConnection>"
+      },
+      {
+        "regex": true,
         "code": "java.class.nonPublicPartOfAPI",
         "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.com\\..*",
         "justification": "skip check for third party files."

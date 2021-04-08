@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AlertResult model. */
+/** The AnomalyAlert model. */
 @Immutable
 public final class AnomalyAlert {
     /*
