@@ -59,7 +59,9 @@ private[spark] object CosmosClientCache {
           builder = builder.gatewayMode()
         }
 
-        builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.toList.asJava)
+        if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
+          builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.get.toList.asJava)
+        }
 
         cosmosClientStateHandle match {
           case Some(handle) =>

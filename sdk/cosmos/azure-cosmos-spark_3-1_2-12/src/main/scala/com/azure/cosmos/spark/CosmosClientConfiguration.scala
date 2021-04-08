@@ -10,7 +10,7 @@ private[spark] case class CosmosClientConfiguration (
                                                       applicationName: String,
                                                       useGatewayMode: Boolean,
                                                       useEventualConsistency: Boolean,
-                                                      preferredRegionsList: Array[String])
+                                                      preferredRegionsList: Option[Array[String]])
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -33,7 +33,7 @@ private[spark] object CosmosClientConfiguration {
       applicationName,
       cosmosAccountConfig.useGatewayMode,
       useEventualConsistency,
-      cosmosAccountConfig.preferredRegionsList.getOrElse(Array[String]()))
+      cosmosAccountConfig.preferredRegionsList)
   }
 
   private[this] def runtimeInformation(): Option[String] = {
