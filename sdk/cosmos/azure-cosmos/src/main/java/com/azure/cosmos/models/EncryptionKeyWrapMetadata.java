@@ -19,7 +19,8 @@ public final class EncryptionKeyWrapMetadata {
     /**
      * For JSON deserialize
      */
-    EncryptionKeyWrapMetadata() {
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public EncryptionKeyWrapMetadata() {
     }
 
     /**
