@@ -12,7 +12,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 
-public class FindAndPurchasePhoneNumber {
+public class FindAndPurchasePhoneNumberExample {
     public static void main(String[] args) {
         String connectionString = System.getenv("COMMUNICATION_CONNECTION_STRING");
         String areaCode = System.getenv("AZURE_COMMUNICATION_AREA_CODE");

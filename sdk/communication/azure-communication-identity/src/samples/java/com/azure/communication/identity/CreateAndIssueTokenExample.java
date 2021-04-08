@@ -8,7 +8,7 @@ import com.azure.core.credential.AccessToken;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreateAndIssueToken {
+public class CreateAndIssueTokenExample {
     public static void main(String[] args) {
         String connectionString = System.getenv("COMMUNICATION_CONNECTION_STRING");
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()

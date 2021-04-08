@@ -13,7 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateChatThread {
+public class CreateChatThreadExample {
     public static void main(String[] args) {
         String endpoint = System.getenv("AZURE_COMMUNICATION_ENDPOINT");
         String token = System.getenv("AZURE_COMMUNICATION_TOKEN");
