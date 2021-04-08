@@ -43,7 +43,7 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
      */
     public JavaEnum value(String name, String description) {
         if (description != null && !description.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Documentation text of enum value '" + name + "' must end with a period. -- SA1629."));
+            throw logger.logExceptionAsError(new StyleException("Documentation text of enum value '" + name + "' must end with a period. -- SA1629."));
         }
 
         this.enumValues.add(

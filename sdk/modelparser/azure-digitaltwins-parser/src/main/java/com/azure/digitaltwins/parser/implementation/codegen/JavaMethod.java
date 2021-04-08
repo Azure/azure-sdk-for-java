@@ -89,11 +89,11 @@ public class JavaMethod extends JavaDeclaration {
      */
     public JavaMethod typeParam(String name, String description) {
         if (name.charAt(0) != 'T') {
-            logger.logThrowableAsError(new StyleException("Type parameter name `" + name + "' of method '" + this.getName() + "' must begin with a 'T' -- SA1314"));
+            throw logger.logExceptionAsError(new StyleException("Type parameter name `" + name + "' of method '" + this.getName() + "' must begin with a 'T' -- SA1314"));
         }
 
         if (description != null && !description.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
+            throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
         this.typeParameters.add(
@@ -114,7 +114,7 @@ public class JavaMethod extends JavaDeclaration {
      */
     public JavaMethod param(String type, String name, String description) {
         if (description != null && !description.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
+            throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
         this.parameters.add(
@@ -134,11 +134,11 @@ public class JavaMethod extends JavaDeclaration {
      */
     public JavaMethod returns(String returnDescription) {
         if (this.getType().equals("void")) {
-            logger.logThrowableAsError(new StyleException("Void return value of method '" + this.getName() + "' must not be documented. -- SA1617"));
+            throw logger.logExceptionAsError(new StyleException("Void return value of method '" + this.getName() + "' must not be documented. -- SA1617"));
         }
 
         if (!returnDescription.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period. -- SA1629"));
+            throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period. -- SA1629"));
         }
 
         this.returnDescription = returnDescription;
@@ -151,26 +151,6 @@ public class JavaMethod extends JavaDeclaration {
     @Override
     public void generateCode(CodeWriter codeWriter) throws IOException {
         this.writeSummaryAndRemarks(codeWriter);
-
-        codeWriter.writeLine("/**");
-
-        for (TypeParameter typeParam : this.typeParameters) {
-            if (typeParam.description != null) {
-                codeWriter.writeLine("* @param " + typeParam.name + " " + typeParam.description);
-            }
-        }
-
-        for (Parameter param : this.parameters) {
-            if (param.description != null) {
-                codeWriter.writeLine("* @param " + param.name + " " + param.description);
-            }
-        }
-
-        if (this.returnDescription != null) {
-            codeWriter.writeLine("* @return " + this.returnDescription);
-        }
-
-        codeWriter.writeLine("*/");
 
         this.writeAttributes(codeWriter);
 
@@ -187,7 +167,7 @@ public class JavaMethod extends JavaDeclaration {
             terminator = ";";
         }
 
-        codeWriter.writeLine(this.getDecoratedName() + typeParams + "(" + paramList + ")" + terminator);
+        codeWriter.writeLine(this.getDecoratedName() + typeParams + "(" + paramList + ")" + terminator, true);
 
         if (!this.preambleTexts.isEmpty()) {
             codeWriter.increaseIndent();
@@ -202,6 +182,50 @@ public class JavaMethod extends JavaDeclaration {
             this.body.generateCode(codeWriter);
         } else {
             codeWriter.blank();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
+        codeWriter.blank();
+
+        if (this.inheritDoc) {
+            codeWriter.writeLine("/** {@inheritDoc} */");
+        } else if (!summaryLines.isEmpty() || !remarksLines.isEmpty() || !parameters.isEmpty() || !typeParameters.isEmpty()) {
+            codeWriter.writeLine("/**");
+
+            for (String summaryLine : summaryLines) {
+                codeWriter.writeLine(" * " + summaryLine);
+            }
+
+            if (!remarksLines.isEmpty()) {
+                codeWriter.writeLine(" * <p>");
+                for (String remarksLine : remarksLines) {
+                    codeWriter.writeLine(" * " + remarksLine);
+                }
+                codeWriter.writeLine(" * </p>");
+            }
+
+            for (TypeParameter typeParam : this.typeParameters) {
+                if (typeParam.description != null) {
+                    codeWriter.writeLine(" * @param " + typeParam.name + " " + typeParam.description);
+                }
+            }
+
+            for (Parameter param : this.parameters) {
+                if (param.description != null) {
+                    codeWriter.writeLine(" * @param " + param.name + " " + param.description);
+                }
+            }
+
+            if (this.returnDescription != null) {
+                codeWriter.writeLine(" * @return " + this.returnDescription);
+            }
+
+            codeWriter.writeLine(" */");
         }
     }
 

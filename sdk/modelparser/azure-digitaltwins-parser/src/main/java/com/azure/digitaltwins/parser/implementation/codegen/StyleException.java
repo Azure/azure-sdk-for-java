@@ -6,7 +6,7 @@ package com.azure.digitaltwins.parser.implementation.codegen;
 /**
  * Indicates violation of style rules.
  */
-public class StyleException extends Exception {
+public class StyleException extends RuntimeException {
 
     /**
      * Initializes a new instance of the {@link StyleException} class.

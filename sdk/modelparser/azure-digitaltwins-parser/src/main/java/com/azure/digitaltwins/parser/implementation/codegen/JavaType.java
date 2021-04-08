@@ -75,21 +75,21 @@ public class JavaType extends JavaDeclaration implements JavaFile {
         String description) {
 
         if (access != Access.PRIVATE && (multiplicity != Multiplicity.STATIC || mutability != Mutability.FINAL)) {
-            logger.logThrowableAsError(new StyleException("Field '" + name + "' must be private unless it's static and final. --SA1401."));
+            throw logger.logExceptionAsError(new StyleException("Field '" + name + "' must be private unless it's static and final. --SA1401."));
         }
 
         if (multiplicity == Multiplicity.STATIC && mutability == Mutability.FINAL) {
             if (!name.toUpperCase(Locale.getDefault()).equals(name)) {
-                logger.logThrowableAsError(new StyleException("Static final field name '" + name + "' must be all uppercase letters. --SA13311"));
+                throw logger.logExceptionAsError(new StyleException("Static final field name '" + name + "' must be all uppercase letters. --SA13311"));
             }
         } else {
             if (name.charAt(0) < 'a' || name.charAt(0) > 'z') {
-                logger.logThrowableAsError(new StyleException("Field name '" + name + "' must begin with a lowercase letter. --SA1306."));
+                throw logger.logExceptionAsError(new StyleException("Field name '" + name + "' must begin with a lowercase letter. --SA1306."));
             }
         }
 
         if (description != null && !description.endsWith(".")) {
-            logger.logThrowableAsError(new StyleException("Documentation text of field '" + name + "' must end with a period. -- SA1629."));
+            throw logger.logExceptionAsError(new StyleException("Documentation text of field '" + name + "' must end with a period. -- SA1629."));
         }
 
         JavaField field = new JavaField(access, type, name, value, multiplicity, mutability);

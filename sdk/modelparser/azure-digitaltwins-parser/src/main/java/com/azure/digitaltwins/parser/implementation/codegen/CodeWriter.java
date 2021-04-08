@@ -28,7 +28,20 @@ public class CodeWriter {
     public CodeWriter(String filePath) throws IOException {
         FileOutputStream fileStream = new FileOutputStream(filePath);
         this.fileWriter = new OutputStreamWriter(fileStream, StandardCharsets.UTF_8);
-        this.indentedFileWriter = new IndentedFileWriter(fileWriter, INDENTATION);
+        this.indentedFileWriter = new IndentedFileWriter(fileWriter, INDENTATION, false);
+    }
+
+    /**
+     * Initializes a new instance of {@link CodeWriter}.
+     *
+     * @param filePath Full path of file to be generated.
+     * @param isDebug  Boolean indicating whether or not debug mode is on or not.
+     * @throws IOException
+     */
+    public CodeWriter(String filePath, boolean isDebug) throws IOException {
+        FileOutputStream fileStream = new FileOutputStream(filePath);
+        this.fileWriter = new OutputStreamWriter(fileStream, StandardCharsets.UTF_8);
+        this.indentedFileWriter = new IndentedFileWriter(fileWriter, INDENTATION, isDebug);
     }
 
     /**
@@ -58,7 +71,7 @@ public class CodeWriter {
      * @throws IOException
      */
     public void openScope() throws IOException {
-        indentedFileWriter.writeLineWithIndent("{");
+        indentedFileWriter.writeLineWithNoIndent("{");
         this.increaseIndent();
         nextTextNeedsBlank = false;
         lastLineWasText = false;
@@ -71,7 +84,7 @@ public class CodeWriter {
      */
     public void closeScope() throws IOException {
         indentedFileWriter.decreaseIndent();
-        indentedFileWriter.writeWithIndent("}");
+        indentedFileWriter.writeLineWithIndent("}");
         nextTextNeedsBlank = true;
         lastLineWasText = false;
     }

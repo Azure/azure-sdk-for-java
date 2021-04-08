@@ -1,0 +1,11 @@
+/**
+ * This is code comments.
+ * This is another line of comments.
+ * <p>
+ * This is remarks.
+ * This is more remarks.
+ * </p>
+ */
+public class EmptyPublicClassWithCodeCommentsAndRemarks {
+}
+

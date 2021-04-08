@@ -14,21 +14,21 @@ public class GeneratedCodeCompareBase {
     private static final String GENERATED_CODE_FILE_EXTENSION = ".temp.generated";
 
     public CodeWriter getCodeWriter(String subDirectoryName, String typeName) throws IOException {
-        return new CodeWriter(FileHelpers.getTestResourceFilePath(subDirectoryName, typeName + GENERATED_CODE_FILE_EXTENSION));
+        return new CodeWriter(FileHelpers.getTestResourceFilePath(subDirectoryName, typeName + GENERATED_CODE_FILE_EXTENSION), true);
     }
 
     public void compareGeneratedCodeWithExpected(String subDirectoryName, String typeName) throws IOException {
         String expectedFileContents = FileHelpers.getFileContentsByFileName(subDirectoryName, typeName + EXPECTED_CODE_FILE_EXTENSION);
         String generatedFileContents = FileHelpers.getFileContentsByFileName(subDirectoryName, typeName + GENERATED_CODE_FILE_EXTENSION);
 
-        expectedFileContents = expectedFileContents.replaceAll("\r\n", "\n");
-        generatedFileContents = generatedFileContents.replaceAll("\r\n", "\n");
+        expectedFileContents = expectedFileContents.trim().replaceAll("\r\n", "\n");
+        generatedFileContents = generatedFileContents.trim().replaceAll("\r\n", "\n");
 
         Assertions.assertEquals(
             expectedFileContents,
             generatedFileContents,
             String.format(
-                "Expected \n%s\n%s%s\nwith %s characters, but found \n%s\n%s%s\nwith %s characters.",
+                "Expected \n%s\n%s\n%s\nwith %s characters, but found \n%s\n%s\n%s\nwith %s characters.",
                 DASH_SEPARATOR,
                 expectedFileContents,
                 DASH_SEPARATOR,

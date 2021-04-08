@@ -1,0 +1,2 @@
+public class EmptyPublicExtendsImplementsClass extends TestType implements TestType {
+}
