@@ -3,29 +3,23 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
-import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
 public class AADOAuth2AuthorizedOboClientRepositoryTest {
@@ -37,13 +31,18 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         "eyJ0eXAiOiJKV1QiLCJub25jZSI6IkV2OUJILXNUcGdGYUwxTG5NSEVERGFUWDhVYmpuWmdVSEM4SF9BTmpUaXMiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zMDhkZjA4YS0xMzMyLTRhMTUtYmIwNi0yYWQ3ZThiNzFiY2YvIiwiaWF0IjoxNjA3NTg4NTMwLCJuYmYiOjE2MDc1ODg1MzAsImV4cCI6MTYwNzU5MjQzMCwiYWNjdCI6MCwiYWNyIjoiMSIsImFjcnMiOlsidXJuOnVzZXI6cmVnaXN0ZXJzZWN1cml0eWluZm8iLCJ1cm46bWljcm9zb2Z0OnJlcTEiLCJ1cm46bWljcm9zb2Z0OnJlcTIiLCJ1cm46bWljcm9zb2Z0OnJlcTMiLCJjMSIsImMyIiwiYzMiLCJjNCIsImM1IiwiYzYiLCJjNyIsImM4IiwiYzkiLCJjMTAiLCJjMTEiLCJjMTIiLCJjMTMiLCJjMTQiLCJjMTUiLCJjMTYiLCJjMTciLCJjMTgiLCJjMTkiLCJjMjAiLCJjMjEiLCJjMjIiLCJjMjMiLCJjMjQiLCJjMjUiXSwiYWlvIjoiQVNRQTIvOFJBQUFBcVJFS29VQ0I2aFFoVmQxN0I3ZFhVb1NSbDlDZHpkL01yQjJZcWdRTXJXTT0iLCJhbXIiOlsicHdkIl0sImFwcF9kaXNwbGF5bmFtZSI6IkphdmEtd2ViYXBpIiwiYXBwaWQiOiIyYzQ3YjgzMS1kODM4LTQ2NGYtYTY4NC1mYTc5Y2JkNjRmMjAiLCJhcHBpZGFjciI6IjAiLCJoYXN3aWRzIjoidHJ1ZSIsImlkdHlwIjoidXNlciIsImlwYWRkciI6IjE2Ny4yMjAuMjU1LjExMSIsIm5hbWUiOiJBQURfVEVTVF9HWkgiLCJvaWQiOiJhMzlkMDEwMy0yZjBhLTQ1ZjAtYTEwNy1mOWZhZGVkYmQyNjgiLCJwbGF0ZiI6IjMiLCJwdWlkIjoiMTAwMzIwMDBFNjM0ODE1NyIsInJoIjoiMC5BQUFBaXZDTk1ESVRGVXE3QmlyWDZMY2J6ekc0Unl3NDJFOUdwb1Q2ZWN2V1R5QjFBQ3cuIiwic2NwIjoiVXNlci5SZWFkIFVzZXIuUmVhZC5BbGwgcHJvZmlsZSBvcGVuaWQgZW1haWwiLCJzdWIiOiJPenlvOUZkVzIyMWh0QjBOc0ZnR1VseGg3UnQ1UUFDaExYek9UdDlTQWU0IiwidGVuYW50X3JlZ2lvbl9zY29wZSI6Ik5BIiwidGlkIjoiMzA4ZGYwOGEtMTMzMi00YTE1LWJiMDYtMmFkN2U4YjcxYmNmIiwidW5pcXVlX25hbWUiOiJhYWRfdGVzdF9nemhAY29udG9zb3JnMjIyLm9ubWljcm9zb2Z0LmNvbSIsInVwbiI6ImFhZF90ZXN0X2d6aEBjb250b3NvcmcyMjIub25taWNyb3NvZnQuY29tIiwidXRpIjoiWXVzOU1pY2oxRTZqcW1XbWVPUU5BQSIsInZlciI6IjEuMCIsInhtc19zdCI6eyJzdWIiOiJiN3FKY3kyUUpqUFNOc3lWMTBscFQ3RDRieGVlM1NVQjVmV1p4WHZmZG1vIn0sInhtc190Y2R0IjoxNjAwODQ0ODg0fQ.t9qmH_o7kEPwtr42IBU1mddPiOF_V_CX8IOYW2CJVDwwn0aVCyt9H1vWcV67k5R2Pc29hBZaFJbU6oUFWqhLvzg15mwaI4LNUYrJaXGB-oTFmKFItNjtJ3pi4OsZutvth-EmYAoaeYvqbX2irX7br_ipMqQ5YLq9gf1F3PfV1EqdMuphZoirFYUhEioEM8DA3Qp6qSWMljXBEFDY4eAzT-h-p_7YQI0XH5R72P_4ERNgQ2j_B9ulCUWOGTO61NY3RU1IVwW-w17GLlCGjsakkf4V40_p8fgK8QArwYWlX-WlCt6fGWqjY2c4gvMoCM7bsqBJ9yREgcHzQZNc9N5Rxw";
 
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
+    public static final String FAKE_GRAPH = "fake-graph";
+    public static final String FAKE_PRINCIPAL_NAME = "fake-principal-name";
+    public static final String FAKE_TOKEN_VALUE = "fake-token-value";
 
     private InMemoryClientRegistrationRepository clientRegistrationsRepo;
     private OAuth2AuthorizedClient client;
-    private IAuthenticationResult authenticationResult;
     private AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo;
     private JwtAuthenticationToken jwtAuthenticationToken;
     private MockHttpServletRequest mockHttpServletRequest;
+
+    private OAuth2AuthorizedClient mockOAuth2AuthorizedClient;
+    private OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
     @BeforeEach
     public void setup() {
@@ -60,25 +59,19 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         context.refresh();
 
         clientRegistrationsRepo = context.getBean(InMemoryClientRegistrationRepository.class);
+        setupForAzureAuthorizedClient();
     }
 
     @SuppressWarnings("unchecked")
-    public void setupForAzureAuthorizedClient() throws ExecutionException, InterruptedException {
-        ConfidentialClientApplication confidentialClientApplication = mock(ConfidentialClientApplication.class);
+    public void setupForAzureAuthorizedClient() {
 
-        CompletableFuture<IAuthenticationResult> acquireTokenFuture = mock(CompletableFuture.class);
-        authenticationResult = mock(IAuthenticationResult.class);
+        OAuth2AccessToken mockAccessToken = mock(OAuth2AccessToken.class);
+        when(mockAccessToken.getTokenValue()).thenReturn(OBO_ACCESS_TOKEN_1);
 
-        when(acquireTokenFuture.get()).thenReturn(authenticationResult);
-        when(authenticationResult.accessToken()).thenReturn(OBO_ACCESS_TOKEN_1);
+        InMemoryClientRegistrationRepository mockClientRegistrationsRepo = mock(InMemoryClientRegistrationRepository.class);
 
-        when(confidentialClientApplication.acquireToken(any(OnBehalfOfParameters.class)))
-            .thenReturn(acquireTokenFuture);
-
-        InMemoryClientRegistrationRepository clientRegistrationsRepo = mock(InMemoryClientRegistrationRepository.class);
-
-        when(clientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
-            .withRegistrationId("fake-graph")
+        when(mockClientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
+            .withRegistrationId(FAKE_GRAPH)
             .authorizationGrantType(new AuthorizationGrantType("on-behalf-of"))
             .redirectUri("{baseUrl}/login/oauth2/code/")
             .tokenUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2.0/token")
@@ -87,26 +80,30 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
                 + ".0/authorize")
             .scope("User.read")
             .clientId("2c47b831-d838-464f-a684-fa79cbd64f20").build());
-        authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
-            clientRegistrationsRepo) {
 
-            @Override
-            ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
-                if ("fake-graph".equals(clientRegistration.getRegistrationId())) {
-                    return confidentialClientApplication;
-                } else {
-                    return null;
-                }
-            }
+        ClientRegistration mockClientRegistration = mock(ClientRegistration.class);
+        when(mockClientRegistration.getRegistrationId()).thenReturn(FAKE_GRAPH);
+
+        mockOAuth2AuthorizedClient = mock(OAuth2AuthorizedClient.class);
+        when(mockOAuth2AuthorizedClient.getClientRegistration()).thenReturn(mockClientRegistration);
+        when(mockOAuth2AuthorizedClient.getAccessToken()).thenReturn(mockAccessToken);
+
+        oAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(mockClientRegistrationsRepo);
+        Authentication mockPrinciple = mock(Authentication.class);
+        when(mockPrinciple.getName()).thenReturn(FAKE_PRINCIPAL_NAME);
+        oAuth2AuthorizedClientService.saveAuthorizedClient(mockOAuth2AuthorizedClient, mockPrinciple);
+        authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
+            oAuth2AuthorizedClientService,
+            mockClientRegistrationsRepo) {
         };
 
         final Jwt mockJwt = mock(Jwt.class);
-        when(mockJwt.getTokenValue()).thenReturn("fake-token-value");
-        when(mockJwt.getSubject()).thenReturn("fake-principal-name");
+        when(mockJwt.getTokenValue()).thenReturn(FAKE_TOKEN_VALUE);
+        when(mockJwt.getSubject()).thenReturn(FAKE_PRINCIPAL_NAME);
 
         jwtAuthenticationToken = new JwtAuthenticationToken(mockJwt);
         mockHttpServletRequest = new MockHttpServletRequest();
-        client = authorizedRepo.loadAuthorizedClient("fake-graph",
+        client = authorizedRepo.loadAuthorizedClient(FAKE_GRAPH,
             jwtAuthenticationToken,
             mockHttpServletRequest
         );
@@ -114,33 +111,31 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testLoadAzureAuthorizedClient() throws ExecutionException, InterruptedException {
-        setupForAzureAuthorizedClient();
+    public void testLoadAzureAuthorizedClient() {
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testAuthorizedClientRequestLevelCache() throws ExecutionException, InterruptedException {
-        setupForAzureAuthorizedClient();
+    public void testAuthorizedClientCache() {
 
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
-        when(authenticationResult.accessToken()).thenReturn(OBO_ACCESS_TOKEN_2);
-        client = authorizedRepo.loadAuthorizedClient("fake-graph",
+
+        client = authorizedRepo.loadAuthorizedClient(FAKE_GRAPH,
             jwtAuthenticationToken,
             mockHttpServletRequest
         );
 
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
-        Assertions.assertNotEquals(OBO_ACCESS_TOKEN_2, client.getAccessToken().getTokenValue());
+        Assertions.assertEquals(mockOAuth2AuthorizedClient, client);
     }
-
 
     @Test
     @SuppressWarnings("unchecked")
     public void testLoadNotExistClientRegistration() {
 
         AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
+            oAuth2AuthorizedClientService,
             clientRegistrationsRepo);
 
         final Jwt mockJwt = mock(Jwt.class);
@@ -151,35 +146,17 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testUnsupportedTokenImplementation() {
-
-        AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
-            clientRegistrationsRepo);
-
-        PreAuthenticatedAuthenticationToken preToken = mock(PreAuthenticatedAuthenticationToken.class);
-        try {
-            authorizedRepo.loadAuthorizedClient("fake-graph",
-                preToken, new MockHttpServletRequest());
-            fail("Expected an IllegalStateException to be thrown");
-        } catch (IllegalStateException e) {
-        }
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
     public void testNotExistClientApplication() {
 
         AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(
+            oAuth2AuthorizedClientService,
             clientRegistrationsRepo) {
-            @Override
-            ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
-                return null;
-            }
         };
 
         final Jwt mockJwt = mock(Jwt.class);
-        when(mockJwt.getTokenValue()).thenReturn("fake-token-value");
-        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient("fake-graph", new
+        when(mockJwt.getTokenValue()).thenReturn(FAKE_TOKEN_VALUE);
+        when(mockJwt.getSubject()).thenReturn("not-exist-client");
+        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(FAKE_GRAPH, new
             JwtAuthenticationToken(mockJwt), new MockHttpServletRequest());
         Assertions.assertNull(client);
     }
