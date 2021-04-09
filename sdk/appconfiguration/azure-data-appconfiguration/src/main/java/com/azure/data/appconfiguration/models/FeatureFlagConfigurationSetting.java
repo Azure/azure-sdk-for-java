@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * {@link FeatureFlagConfigurationSetting} enable to customize your own feature flags to dynamically administer a
- * feature's lifecycle. The feature flags triggers whether the code block runs.
+ * feature's lifecycle. Feature flags can be used to enable or disable features.
  */
 public final class FeatureFlagConfigurationSetting extends ConfigurationSetting {
     private final String featureId;
