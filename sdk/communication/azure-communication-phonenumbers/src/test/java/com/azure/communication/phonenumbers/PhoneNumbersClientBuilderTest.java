@@ -45,7 +45,7 @@ public class PhoneNumbersClientBuilderTest {
     void setUp() {
         this.httpClient = mock(HttpClient.class);
         this.clientBuilder = Mockito.spy(new PhoneNumbersClientBuilder());
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "").matches(".*(all|phonenumbers).*"));
+        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "all").matches("all|phonenumbers"));
     }
 
     @AfterEach
