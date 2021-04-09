@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.eventhubs;
+package com.azure.spring.eventhubs;
 
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
