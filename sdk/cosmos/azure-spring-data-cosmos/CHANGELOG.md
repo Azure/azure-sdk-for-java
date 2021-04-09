@@ -1,6 +1,15 @@
 ## Release History
 
-### 3.6.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
+
+
+### 3.6.0 (2021-04-06)
+#### New Features
+* Updated `azure-cosmos` to version 4.14.0.
+
+### 3.5.1 (2021-03-24)
+#### Key Bug Fixes
+* Updated `azure-cosmos` to hotfix version 4.13.1.
 
 ### 3.5.0 (2021-03-11)
 #### NOTE: THIS RELEASE SUPPORTS SPRING BOOT 2.4.3 AND ABOVE

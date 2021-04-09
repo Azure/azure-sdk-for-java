@@ -16,6 +16,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import org.junit.jupiter.api.Disabled;
@@ -98,6 +100,43 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete());
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        addConfigurationSettingRunner(
+            (expected) ->
+                StepVerifier.create(client.addConfigurationSetting(expected))
+                    .assertNext(response -> assertConfigurationEquals(expected, response))
+                    .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        addFeatureFlagConfigurationSettingRunner(
+            (expected) ->
+                StepVerifier.create(client.addConfigurationSetting(expected))
+                    .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                        (FeatureFlagConfigurationSetting) response))
+                    .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        addSecretReferenceConfigurationSettingRunner(
+            (expected) ->
+                StepVerifier.create(client.addConfigurationSetting(expected))
+                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                        (SecretReferenceConfigurationSetting) response))
+                    .verifyComplete());
+    }
+
     /**
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
@@ -167,6 +206,43 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        setConfigurationSettingRunner(
+            (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
+                                      .assertNext(response -> assertConfigurationEquals(expected, response))
+                                      .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        setFeatureFlagConfigurationSettingRunner(
+            (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
+                                      .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(
+                                          expected,
+                                          (FeatureFlagConfigurationSetting) response))
+                                      .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        setSecretReferenceConfigurationSettingRunner(
+            (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
+                                      .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
+                                          expected,
+                                          (SecretReferenceConfigurationSetting) response))
+                                      .verifyComplete());
     }
 
     /**
@@ -255,6 +331,46 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete());
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        getConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(
+                client.addConfigurationSetting(expected).then(
+                    client.getConfigurationSetting(expected)))
+                              .assertNext(response -> assertConfigurationEquals(expected, response))
+                              .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        getFeatureFlagConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(
+                client.addConfigurationSetting(expected).then(
+                    client.getConfigurationSetting(expected)))
+                              .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                                  (FeatureFlagConfigurationSetting) response))
+                              .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        getSecretReferenceConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(
+                client.addConfigurationSetting(expected).then(
+                    client.getConfigurationSetting(expected)))
+                              .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                                  (SecretReferenceConfigurationSetting) response))
+                              .verifyComplete());
+    }
+
     /**
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
@@ -298,6 +414,70 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(expected, null, false))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        deleteConfigurationSettingRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+
+            StepVerifier.create(client.getConfigurationSetting(expected))
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        deleteFeatureFlagConfigurationSettingRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+
+            StepVerifier.create(client.getConfigurationSetting(expected))
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        deleteSecretReferenceConfigurationSettingRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+
+            StepVerifier.create(client.getConfigurationSetting(expected))
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -370,30 +550,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can not be deleted after set the setting to read-only.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-
-        lockUnlockRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // read-only setting
-            StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel(), true))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // unsuccessfully delete
-            StepVerifier.create(client.deleteConfigurationSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
-        });
-    }
-
-    /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -428,29 +584,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can not be deleted after set the setting to read-only.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        lockUnlockRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // read-only setting
-            StepVerifier.create(client.setReadOnlyWithResponse(expected, true))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
-
-            // unsuccessfully delete
-            StepVerifier.create(client.deleteConfigurationSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
-        });
-    }
-
-    /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -479,6 +612,107 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // successfully deleted
             StepVerifier.create(client.deleteConfigurationSettingWithResponse(expected, false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        lockUnlockRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+
+            // read-only setting
+            StepVerifier.create(client.setReadOnly(expected, true))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+
+            // unsuccessfully delete
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
+
+            // clear read-only setting and delete
+            StepVerifier.create(client.setReadOnly(expected, false))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+
+            // successfully deleted
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        lockUnlockFeatureFlagRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+
+            // read-only setting
+            StepVerifier.create(client.setReadOnly(expected, true))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+
+            // unsuccessfully delete
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
+
+            // clear read-only setting and delete
+            StepVerifier.create(client.setReadOnly(expected, false))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+
+            // successfully deleted
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        lockUnlockSecretReferenceRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+
+            // read-only setting
+            StepVerifier.create(client.setReadOnly(expected, true))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+
+            // unsuccessfully delete
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
+
+            // clear read-only setting and delete
+            StepVerifier.create(client.setReadOnly(expected, false))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+
+            // successfully deleted
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
                 .verifyComplete();
         });
     }
@@ -861,7 +1095,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
-        SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
+        SettingSelector options = new SettingSelector().setKeyFilter(keyName)
+                                      .setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listRevisions(options))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
@@ -1026,6 +1261,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
             }).blockLast();
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addHeadersFromContextPolicyTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {

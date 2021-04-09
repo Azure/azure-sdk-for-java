@@ -55,13 +55,13 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptOptions options, Context context, JsonWebKey key) {
+    Mono<EncryptResult> encryptAsync(EncryptParameters options, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(DecryptOptions options, Context context, JsonWebKey key) {
+    Mono<DecryptResult> decryptAsync(DecryptParameters options, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Decrypt operation is not supported for EC key"));
     }

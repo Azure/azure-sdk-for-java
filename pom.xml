@@ -84,6 +84,9 @@
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
 
+        <!-- Remote Rendering -->
+        <module>sdk/remoterendering/azure-mixedreality-remoterendering</module>
+
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
         <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
@@ -119,8 +122,6 @@
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
 
-        <!-- Remote Rendering -->
-        <module>sdk/remoterendering/azure-mixedreality-remoterendering</module>
       </modules>
 
       <distributionManagement>
@@ -264,7 +265,7 @@
                     <title>Azure Key Vault</title>
                     <packages>com.azure.security.keyvault*</packages>
                   </group>
-				  <group>
+                  <group>
                     <title>Azure Container Registry</title>
                     <packages>com.azure.containers.containerregistry*</packages>
                   </group>
@@ -321,6 +322,10 @@
                     <packages>com.azure.ai.textanalytics*</packages>
                   </group>
                   <group>
+                    <title>Azure Web Pub Sub</title>
+                    <package>com.azure.messaging.webpubsub*</package>
+                  </group>
+                  <group>
                     <title>Azure Mixed Reality Authentication</title>
                     <packages>com.azure.mixedreality.authentication*</packages>
                   </group>
@@ -333,13 +338,70 @@
                     <packages>com.azure.communication.*</packages>
                   </group>
                 </groups>
-                <links>
+                <links combine.children="append">
+                  <!-- JDK APIs -->
                   <link>https://docs.oracle.com/javase/8/docs/api/</link>
-                  <link>https://projectreactor.io/docs/core/release/api/</link>
+
+                  <!-- Reactor APIs -->
+                  <link>https://projectreactor.io/docs/core/release/api/</link> <!-- TODO (alzimmer): We need to version this. Right now it is always going to point to latest which may be wrong -->
+                  <link>https://projectreactor.io/docs/netty/release/api/</link>
+
+                  <!-- Jackson APIs -->
+                  <link>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</link>
+                  <link>https://fasterxml.github.io/jackson-core/javadoc/2.12/</link>
+                  <link>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</link>
+
+                  <!-- Netty APIs -->
                   <link>https://netty.io/4.1/api/</link>
-                  <link>http://reactivex.io/RxJava/javadoc/</link>
+
+                  <!-- Avro APIs -->
+                  <link>https://avro.apache.org/docs/current/api/java/</link>
                 </links>
-                <isOffline>false</isOffline>
+                <detectJavaApiLink>false</detectJavaApiLink>
+                <isOffline>true</isOffline>
+                <offlineLinks>
+                  <!-- JDK APIs -->
+                  <offlineLink>
+                    <url>https://docs.oracle.com/javase/8/docs/api/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/java8/</location>
+                  </offlineLink>
+
+                  <!-- Reactor APIs -->
+                  <offlineLink>
+                    <url>https://projectreactor.io/docs/core/release/api/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/reactor-core/</location>
+                  </offlineLink>
+                  <offlineLink>
+                    <url>https://projectreactor.io/docs/netty/release/api/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/reactor-netty/</location>
+                  </offlineLink>
+
+                  <!-- Jackson APIs -->
+                  <offlineLink>
+                    <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/jackson-annotations/</location>
+                  </offlineLink>
+                  <offlineLink>
+                    <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/jackson-core/</location>
+                  </offlineLink>
+                  <offlineLink>
+                    <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/jackson-databind/</location>
+                  </offlineLink>
+
+                  <!-- Netty APIs -->
+                  <offlineLink>
+                    <url>https://netty.io/4.1/api/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/netty/</location>
+                  </offlineLink>
+
+                  <!-- Avro APIs -->
+                  <offlineLink>
+                    <url>https://avro.apache.org/docs/current/api/java/</url>
+                    <location>${project.basedir}/eng/javadoc-package-lists/apache-avro/</location>
+                  </offlineLink>
+                </offlineLinks>
                 <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
                 <docletArtifact>
                   <groupId>org.apidesign.javadoc</groupId>
@@ -374,53 +436,53 @@
         <!--  https://github.com/JonathanGiles/DependencyChecker/pull/14
               https://github.com/JonathanGiles/whitelistgenerator/pull/1 -->
 
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>net.jonathangiles.tools</groupId>-->
-<!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-<!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
-<!--            <inherited>false</inherited>-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <id>generateReport</id>-->
-<!--                <phase>verify</phase>-->
-<!--                <goals>-->
-<!--                  <goal>check</goal>-->
-<!--                </goals>-->
-<!--                <configuration>-->
-<!--                  <reporters>html</reporters>-->
-<!--                  <showAll>true</showAll>-->
-<!--                  <dependencyManagement>true</dependencyManagement>-->
-<!--                </configuration>-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--          </plugin>-->
-<!--          <plugin>-->
-<!--            <groupId>net.jonathangiles.tools</groupId>-->
-<!--            <artifactId>whitelistgenerator-maven-plugin</artifactId>-->
-<!--            <version>1.0.2</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} &ndash;&gt;-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <id>generateAllowlistReport</id>-->
-<!--                <phase>verify</phase>-->
-<!--                <goals>-->
-<!--                  <goal>report</goal>-->
-<!--                </goals>-->
-<!--                <configuration>-->
-<!--                  <baseDir>.</baseDir>-->
-<!--                  <reportFile>target/dependency-allowlist.json</reportFile>-->
-<!--                  <ignoredGA>-->
-<!--                    <param>com.azure:azure-cosmos-benchmark</param>-->
-<!--                    <param>com.azure:azure-core-test</param>-->
-<!--                    <param>com.azure:azure-e2e</param>-->
-<!--                    <param>com.azure:azure-storage-perf</param>-->
-<!--                    <param>com.azure:perf-test-core</param>-->
-<!--                  </ignoredGA>-->
-<!--                </configuration>-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
+        <!--        <plugins>-->
+        <!--          <plugin>-->
+        <!--            <groupId>net.jonathangiles.tools</groupId>-->
+        <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
+        <!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+        <!--            <inherited>false</inherited>-->
+        <!--            <executions>-->
+        <!--              <execution>-->
+        <!--                <id>generateReport</id>-->
+        <!--                <phase>verify</phase>-->
+        <!--                <goals>-->
+        <!--                  <goal>check</goal>-->
+        <!--                </goals>-->
+        <!--                <configuration>-->
+        <!--                  <reporters>html</reporters>-->
+        <!--                  <showAll>true</showAll>-->
+        <!--                  <dependencyManagement>true</dependencyManagement>-->
+        <!--                </configuration>-->
+        <!--              </execution>-->
+        <!--            </executions>-->
+        <!--          </plugin>-->
+        <!--          <plugin>-->
+        <!--            <groupId>net.jonathangiles.tools</groupId>-->
+        <!--            <artifactId>whitelistgenerator-maven-plugin</artifactId>-->
+        <!--            <version>1.0.2</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} &ndash;&gt;-->
+        <!--            <executions>-->
+        <!--              <execution>-->
+        <!--                <id>generateAllowlistReport</id>-->
+        <!--                <phase>verify</phase>-->
+        <!--                <goals>-->
+        <!--                  <goal>report</goal>-->
+        <!--                </goals>-->
+        <!--                <configuration>-->
+        <!--                  <baseDir>.</baseDir>-->
+        <!--                  <reportFile>target/dependency-allowlist.json</reportFile>-->
+        <!--                  <ignoredGA>-->
+        <!--                    <param>com.azure:azure-cosmos-benchmark</param>-->
+        <!--                    <param>com.azure:azure-core-test</param>-->
+        <!--                    <param>com.azure:azure-e2e</param>-->
+        <!--                    <param>com.azure:azure-storage-perf</param>-->
+        <!--                    <param>com.azure:perf-test-core</param>-->
+        <!--                  </ignoredGA>-->
+        <!--                </configuration>-->
+        <!--              </execution>-->
+        <!--            </executions>-->
+        <!--          </plugin>-->
+        <!--        </plugins>-->
       </build>
 
       <reporting>
@@ -448,13 +510,13 @@
                   <report>checkstyle</report>
                 </reports>
               </reportSet>
-<!--              <reportSet>-->
-<!--                <id>aggregate</id>-->
-<!--                <inherited>false</inherited>-->
-<!--                <reports>-->
-<!--                  <report>checkstyle-aggregate</report>-->
-<!--                </reports>-->
-<!--              </reportSet>-->
+              <!--              <reportSet>-->
+              <!--                <id>aggregate</id>-->
+              <!--                <inherited>false</inherited>-->
+              <!--                <reports>-->
+              <!--                  <report>checkstyle-aggregate</report>-->
+              <!--                </reports>-->
+              <!--              </reportSet>-->
             </reportSets>
           </plugin>
           <plugin>
@@ -500,14 +562,14 @@
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
-<!--                    -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java-->
-<!--                    -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java-->
-<!--                    -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java-->
-<!--                    -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java-->
                     -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                     -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
-<!--                    -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
@@ -599,8 +661,10 @@
         <module>sdk/appconfiguration</module>
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
+        <module>sdk/automation</module>
         <module>sdk/batch</module>
         <module>sdk/boms</module>
+        <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
         <module>sdk/confluent</module>
@@ -608,12 +672,16 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
+        <module>sdk/databoxedge</module>
+        <module>sdk/databricks</module>
         <module>sdk/datadog</module>
+        <module>sdk/delegatednetwork</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
+        <module>sdk/frontdoor</module>
         <module>sdk/hdinsight</module>
         <module>sdk/healthbot</module>
         <module>sdk/hybridkubernetes</module>
@@ -637,6 +705,7 @@
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
         <module>sdk/resourcegraph</module>
+        <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
@@ -652,5 +721,4 @@
       </modules>
     </profile>
   </profiles>
-
 </project>

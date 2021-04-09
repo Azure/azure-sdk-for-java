@@ -1,0 +1,65 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "f838f220-7131-45f1-94d3-6ac4e4ebb41b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "070b55a4-c2bc-4c86-a960-6f367db8d345",
+      "x-envoy-upstream-service-time" : "845",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "070b55a4-c2bc-4c86-a960-6f367db8d345",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 30 Mar 2021 15:57:50 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/0e498ae1-5a13-45eb-82f5-c07cc755f1d5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds/0e498ae1-5a13-45eb-82f5-c07cc755f1d5",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "1bef2d74-9747-4638-8095-b6b4d62dc42e"
+    },
+    "Response" : {
+      "x-request-id" : "9dd7818b-78d9-4c76-86dc-cfaf54d3f4f8",
+      "x-envoy-upstream-service-time" : "104",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "9dd7818b-78d9-4c76-86dc-cfaf54d3f4f8",
+      "retry-after" : "0",
+      "Content-Length" : "1317",
+      "StatusCode" : "200",
+      "Body" : "{\"dataFeedId\":\"0e498ae1-5a13-45eb-82f5-c07cc755f1d5\",\"dataFeedName\":\"java_create_data_feed_test_sample9bbb6a58-8b72-422c-9ef4-7a5c165806fd\",\"metrics\":[{\"metricId\":\"51d9f40f-e2d0-400f-80fc-8f19b0eaf0fe\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"e8bc1146-30fc-4c1f-b182-40f1ea3adfc1\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"AzureBlob\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"f850650c-1fcf-4489-b46f-71af2e30d360\"],\"viewers\":[],\"creator\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"status\":\"Active\",\"createdTime\":\"2021-03-30T15:57:50Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"container\":\"adsample\",\"connectionString\":\"REDACTED\",\"blobTemplate\":\"%Y/%m/%d/%h/JsonFormatV2.json\"},\"authenticationType\":\"Basic\"}",
+      "Date" : "Tue, 30 Mar 2021 15:57:50 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds/0e498ae1-5a13-45eb-82f5-c07cc755f1d5",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "d76ec601-fa87-4b07-8ffd-f2e9358f531e"
+    },
+    "Response" : {
+      "x-request-id" : "c4d0f628-f032-4894-9b29-86c868f9aa9f",
+      "x-envoy-upstream-service-time" : "578",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c4d0f628-f032-4894-9b29-86c868f9aa9f",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 30 Mar 2021 15:57:50 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

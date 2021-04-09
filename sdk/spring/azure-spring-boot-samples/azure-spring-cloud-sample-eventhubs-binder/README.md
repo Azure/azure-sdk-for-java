@@ -46,6 +46,8 @@ Event Hub. You can choose anyone of them.
             checkpoint-access-key: [checkpoint-access-key]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [eventhub-name]
@@ -88,6 +90,8 @@ Event Hub. You can choose anyone of them.
             checkpoint-storage-account: [checkpoint-storage-account]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [eventhub-name]
@@ -137,6 +141,8 @@ Please follow [create managed identity][create-managed-identity] to set up manag
             checkpoint-storage-account: [checkpoint-storage-account]
             checkpoint-container: [checkpoint-container]
         stream:
+          function:
+            definition: consume;supply
           bindings:
             consume-in-0:
               destination: [eventhub-name]

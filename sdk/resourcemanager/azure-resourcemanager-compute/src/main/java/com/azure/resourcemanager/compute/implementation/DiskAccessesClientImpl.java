@@ -41,6 +41,7 @@ import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.DiskAccessList;
 import com.azure.resourcemanager.compute.models.DiskAccessUpdate;
 import com.azure.resourcemanager.compute.models.PrivateEndpointConnectionListResult;
+import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -318,7 +319,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -333,7 +334,7 @@ public final class DiskAccessesClientImpl
                             diskAccess,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -377,7 +378,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -597,7 +598,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         DiskAccessUpdate diskAccess = new DiskAccessUpdate();
         diskAccess.withTags(tags);
@@ -614,7 +615,7 @@ public final class DiskAccessesClientImpl
                             diskAccess,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -653,7 +654,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         DiskAccessUpdate diskAccess = new DiskAccessUpdate();
         diskAccess.withTags(tags);
@@ -911,7 +912,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -925,7 +926,7 @@ public final class DiskAccessesClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -963,7 +964,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1071,7 +1072,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1085,7 +1086,7 @@ public final class DiskAccessesClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1123,7 +1124,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1315,7 +1316,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1337,7 +1338,7 @@ public final class DiskAccessesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1369,7 +1370,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1474,7 +1475,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1490,7 +1491,7 @@ public final class DiskAccessesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1516,7 +1517,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1619,7 +1620,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1633,7 +1634,7 @@ public final class DiskAccessesClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1671,7 +1672,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1756,8 +1757,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1768,7 +1769,7 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1794,16 +1795,13 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
-        } else {
-            privateEndpointConnection.validate();
+        if (privateLinkServiceConnectionState != null) {
+            privateLinkServiceConnectionState.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
+        PrivateEndpointConnectionInner privateEndpointConnection = new PrivateEndpointConnectionInner();
+        privateEndpointConnection.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return FluxUtil
             .withContext(
                 context ->
@@ -1818,7 +1816,7 @@ public final class DiskAccessesClientImpl
                             privateEndpointConnection,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1830,8 +1828,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1843,7 +1841,7 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1870,16 +1868,13 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
-        } else {
-            privateEndpointConnection.validate();
+        if (privateLinkServiceConnectionState != null) {
+            privateLinkServiceConnectionState.validate();
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
+        PrivateEndpointConnectionInner privateEndpointConnection = new PrivateEndpointConnectionInner();
+        privateEndpointConnection.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         context = this.client.mergeContext(context);
         return service
             .updateAPrivateEndpointConnection(
@@ -1903,8 +1898,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1916,10 +1911,10 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateEndpointConnectionInner privateEndpointConnection) {
+            PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAPrivateEndpointConnectionWithResponseAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection);
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState);
         return this
             .client
             .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
@@ -1939,8 +1934,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1953,12 +1948,16 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateEndpointConnectionInner privateEndpointConnection,
+            PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
             Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAPrivateEndpointConnectionWithResponseAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context);
+                resourceGroupName,
+                diskAccessName,
+                privateEndpointConnectionName,
+                privateLinkServiceConnectionState,
+                context);
         return this
             .client
             .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
@@ -1978,8 +1977,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1991,9 +1990,9 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateEndpointConnectionInner privateEndpointConnection) {
+            PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
             .getSyncPoller();
     }
 
@@ -2006,8 +2005,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2020,10 +2019,14 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateEndpointConnectionInner privateEndpointConnection,
+            PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
             Context context) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
+                resourceGroupName,
+                diskAccessName,
+                privateEndpointConnectionName,
+                privateLinkServiceConnectionState,
+                context)
             .getSyncPoller();
     }
 
@@ -2036,8 +2039,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2048,9 +2051,9 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2064,8 +2067,32 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        final PrivateLinkServiceConnectionState privateLinkServiceConnectionState = null;
+        return beginUpdateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2077,10 +2104,14 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
         Context context) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
+                resourceGroupName,
+                diskAccessName,
+                privateEndpointConnectionName,
+                privateLinkServiceConnectionState,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2094,8 +2125,8 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2106,9 +2137,9 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         return updateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
             .block();
     }
 
@@ -2121,8 +2152,31 @@ public final class DiskAccessesClientImpl
      *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
-     *     endpoint connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner updateAPrivateEndpointConnection(
+        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
+        final PrivateLinkServiceConnectionState privateLinkServiceConnectionState = null;
+        return updateAPrivateEndpointConnectionAsync(
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
+            .block();
+    }
+
+    /**
+     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
+     * private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     name length is 80 characters.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
+     *     DiskAccess and Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2134,10 +2188,14 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
         Context context) {
         return updateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
+                resourceGroupName,
+                diskAccessName,
+                privateEndpointConnectionName,
+                privateLinkServiceConnectionState,
+                context)
             .block();
     }
 
@@ -2182,7 +2240,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2197,7 +2255,7 @@ public final class DiskAccessesClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2242,7 +2300,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2368,7 +2426,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2383,7 +2441,7 @@ public final class DiskAccessesClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2428,7 +2486,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2653,7 +2711,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2676,7 +2734,7 @@ public final class DiskAccessesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2714,7 +2772,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-30";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2848,7 +2906,7 @@ public final class DiskAccessesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2920,7 +2978,7 @@ public final class DiskAccessesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2994,7 +3052,7 @@ public final class DiskAccessesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

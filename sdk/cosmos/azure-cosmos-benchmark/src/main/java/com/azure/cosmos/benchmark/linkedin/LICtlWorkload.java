@@ -11,6 +11,9 @@ import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.InvitationsEntityConfiguration;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
+import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
+import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.google.common.base.Preconditions;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
@@ -25,7 +28,8 @@ public class LICtlWorkload {
      */
     public enum Scenario {
         GET,
-        QUERY
+        QUERY,
+        COMPOSITE_READ
     }
 
     private final Configuration _configuration;
@@ -55,6 +59,13 @@ public class LICtlWorkload {
     }
 
     public void setup() throws CosmosException {
+        if (_configuration.isEnableJvmStats()) {
+            LOGGER.info("Enabling JVM stats collection");
+            _metricsRegistry.register("gc", new GarbageCollectorMetricSet());
+            _metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
+            _metricsRegistry.register("memory", new MemoryUsageGaugeSet());
+        }
+
         LOGGER.info("Creating resources");
         _resourceManager.createResources();
 
@@ -63,6 +74,8 @@ public class LICtlWorkload {
 
         LOGGER.info("Data loading completed");
         _bulkLoadClient.close();
+
+        _testRunner.init();
     }
 
     public void run() {
@@ -89,6 +102,8 @@ public class LICtlWorkload {
         switch (scenario) {
             case QUERY:
                 return new QueryTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+            case COMPOSITE_READ:
+                return new CompositeReadTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
             case GET:
             default:
                 return new GetTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);

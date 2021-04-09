@@ -18,14 +18,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -42,10 +40,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -82,7 +82,7 @@ public class DataLakeFileSystemAsyncClient {
     private static final String ROOT_DIRECTORY_NAME = "";
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
-    private final DataLakeStorageClientImpl azureDataLakeStorage;
+    private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
     private final BlobContainerAsyncClient blobContainerAsyncClient;
 
     private final String accountName;
@@ -101,11 +101,12 @@ public class DataLakeFileSystemAsyncClient {
      */
     DataLakeFileSystemAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient) {
-        this.azureDataLakeStorage = new DataLakeStorageClientBuilder()
+        this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
+            .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -133,10 +134,8 @@ public class DataLakeFileSystemAsyncClient {
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
             null).getBlockBlobAsyncClient();
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(fileName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), fileName,
-            blockBlobAsyncClient);
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), fileName, blockBlobAsyncClient);
     }
 
     /**
@@ -158,10 +157,8 @@ public class DataLakeFileSystemAsyncClient {
 
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
-        return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(directoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), directoryName,
-            blockBlobAsyncClient);
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient);
     }
 
     /**
@@ -181,12 +178,21 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureDataLakeStorage.getUrl();
+    }
+
+    /**
      * Gets the URL of the file system represented by this client.
      *
      * @return the URL.
      */
     public String getFileSystemUrl() {
-        return azureDataLakeStorage.getUrl();
+        return azureDataLakeStorage.getUrl() + "/" + fileSystemName;
     }
 
     /**
@@ -449,17 +455,41 @@ public class DataLakeFileSystemAsyncClient {
 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<Path>>> func =
-            marker -> listPathsSegment(marker, options, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
-                    response.getDeserializedHeaders()));
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
+            (marker, pageSize) ->
+            {
+                ListPathsOptions finalOptions;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListPathsOptions().setMaxResults(pageSize);
+                    } else {
+                        finalOptions = new ListPathsOptions()
+                            .setMaxResults(pageSize)
+                            .setPath(options.getPath())
+                            .setRecursive(options.isRecursive())
+                            .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned());
+                    }
+                } else {
+                    finalOptions = options;
+                }
+                return listPathsSegment(marker, finalOptions, timeout)
+                    .map(response -> {
+                        List<PathItem> value = response.getValue() == null
+                            ? Collections.emptyList()
+                            : response.getValue().getPaths().stream()
+                            .map(Transforms::toPathItem)
+                            .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
+                        return new PagedResponseBase<>(
+                            response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            value,
+                            response.getDeserializedHeaders().getXMsContinuation(),
+                            response.getDeserializedHeaders());
+                    });
+            };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker,
@@ -467,9 +497,9 @@ public class DataLakeFileSystemAsyncClient {
         options = options == null ? new ListPathsOptions() : options;
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                options.isRecursive(), marker, options.getPath(), options.getMaxResults(),
-                options.isUserPrincipalNameReturned(), null, null, Context.NONE), timeout);
+            this.azureDataLakeStorage.getFileSystems().listPathsWithResponseAsync(options.isRecursive(), null, null,
+                marker, options.getPath(), options.getMaxResults(),
+                options.isUserPrincipalNameReturned(),  Context.NONE), timeout);
     }
 
     /**

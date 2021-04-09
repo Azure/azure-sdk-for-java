@@ -17,6 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class QuickBooksLinkedService extends LinkedService {
     /*
+     * Properties used to connect to QuickBooks. It is mutually exclusive with
+     * any other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /*
      * The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com)
      */
     @JsonProperty(value = "typeProperties.endpoint", required = true)
@@ -66,6 +73,28 @@ public class QuickBooksLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with
+     * any other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object getConnectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with
+     * any other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the QuickBooksLinkedService object itself.
+     */
+    public QuickBooksLinkedService setConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the endpoint property: The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com).

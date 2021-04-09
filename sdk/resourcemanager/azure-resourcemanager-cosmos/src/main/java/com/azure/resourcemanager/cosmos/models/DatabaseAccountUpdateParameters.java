@@ -122,9 +122,18 @@ public class DatabaseAccountUpdateParameters {
     private String keyVaultKeyUri;
 
     /*
+     * The default identity for accessing key vault used in features like
+     * customer managed keys. The default identity needs to be explicitly set
+     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
+     * and more.
+     */
+    @JsonProperty(value = "properties.defaultIdentity")
+    private String defaultIdentity;
+
+    /*
      * Whether requests from Public Network are allowed
      */
-    @JsonProperty(value = "properties.publicNetworkAccess", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
@@ -490,12 +499,47 @@ public class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @return the defaultIdentity value.
+     */
+    public String defaultIdentity() {
+        return this.defaultIdentity;
+    }
+
+    /**
+     * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @param defaultIdentity the defaultIdentity value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDefaultIdentity(String defaultIdentity) {
+        this.defaultIdentity = defaultIdentity;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
      *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
     }
 
     /**

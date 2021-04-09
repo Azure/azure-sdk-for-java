@@ -51,6 +51,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -530,6 +531,18 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return collectionDefinition;
     }
 
+    static protected CosmosContainerProperties getCollectionDefinitionForHashV2(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
         return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/id"));
     }
@@ -906,22 +919,27 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirect() {
-        return simpleClientBuildersWithDirect(true, true, toArray(protocols));
+        return simpleClientBuildersWithDirect(true, true, true, toArray(protocols));
     }
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirectHttps() {
-        return simpleClientBuildersWithDirect(true, true, Protocol.HTTPS);
+        return simpleClientBuildersWithDirect(true, true, true, Protocol.HTTPS);
     }
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirectTcp() {
-        return simpleClientBuildersWithDirect(true, true, Protocol.TCP);
+        return simpleClientBuildersWithDirect(true, true, true, Protocol.TCP);
+    }
+
+    @DataProvider
+    public static Object[][] simpleClientBuildersWithJustDirectTcp() {
+        return simpleClientBuildersWithDirect(false, true, true, Protocol.TCP);
     }
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirectTcpWithContentResponseOnWriteDisabled() {
-        return simpleClientBuildersWithDirect(false, true, Protocol.TCP);
+        return simpleClientBuildersWithDirect(false, true, true, Protocol.TCP);
     }
 
     @DataProvider
@@ -932,7 +950,19 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
-    private static Object[][] simpleClientBuildersWithDirect(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
+    private static Object[][] simpleClientBuildersWithDirect(
+        boolean contentResponseOnWriteEnabled,
+        Protocol... protocols) {
+
+        return simpleClientBuildersWithDirect(true, contentResponseOnWriteEnabled, true, protocols);
+    }
+
+    private static Object[][] simpleClientBuildersWithDirect(
+        boolean includeGateway,
+        boolean contentResponseOnWriteEnabled,
+        boolean retryOnThrottledRequests,
+        Protocol... protocols) {
+
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
 
@@ -960,7 +990,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             );
         });
 
-        cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, contentResponseOnWriteEnabled, retryOnThrottledRequests));
+        if (includeGateway) {
+            cosmosConfigurations.add(
+                createGatewayRxDocumentClient(
+                    ConsistencyLevel.SESSION,
+                    false,
+                    null,
+                    contentResponseOnWriteEnabled,
+                    retryOnThrottledRequests));
+        }
 
         return cosmosConfigurations.stream().map(b -> new Object[]{b}).collect(Collectors.toList()).toArray(new Object[0][]);
     }
