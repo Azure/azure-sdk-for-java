@@ -6,7 +6,7 @@ package com.azure.core.amqp.implementation;
 import reactor.core.publisher.Mono;
 
 /**
- * Asynchronous class to close.
+ * Asynchronous class to close resources.
  */
 public interface AsyncAutoCloseable extends AutoCloseable {
 
@@ -18,7 +18,7 @@ public interface AsyncAutoCloseable extends AutoCloseable {
     Mono<Void> closeAsync();
 
     /**
-     * Synchronous close operation. Blocks until the entire operation is complete.closesWhenNoLongerAuthorized
+     * Synchronous close operation. Blocks until the entire operation is complete.
      */
     @Override
     void close();
