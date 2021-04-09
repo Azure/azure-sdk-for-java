@@ -19,7 +19,8 @@ public final class EncryptionKeyWrapMetadata {
     /**
      * For JSON deserialize
      */
-    EncryptionKeyWrapMetadata() {
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public EncryptionKeyWrapMetadata() {
     }
 
     /**
@@ -45,11 +46,7 @@ public final class EncryptionKeyWrapMetadata {
         this("custom", name, value, null);
     }
 
-    EncryptionKeyWrapMetadata(String type, String name, String value) {
-        this(type, name, value, null);
-    }
-
-    EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
+    private EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
         this.type = type;
@@ -60,19 +57,19 @@ public final class EncryptionKeyWrapMetadata {
 
     @JsonProperty("type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    String type;
+    private String type;
 
     @JsonProperty("algorithm")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    String algorithm;
+    private String algorithm;
 
     @JsonProperty("value")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    String value;
+    private String value;
 
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    String name;
+    private String name;
 
     /**
      * Serialized form of metadata.

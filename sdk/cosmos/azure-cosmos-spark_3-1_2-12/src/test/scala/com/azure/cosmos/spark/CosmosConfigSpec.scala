@@ -8,20 +8,25 @@ import java.time.Instant
 class CosmosConfigSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
 
+  private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
+
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
-      "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",
       "spark.cosmos.applicationName" -> "myapp",
-      "spark.cosmos.useGatewayMode" -> "true"
+      "spark.cosmos.useGatewayMode" -> "true",
+      "spark.cosmos.preferredRegionsList" -> "[west us, eastus1]"
     )
 
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
-    endpointConfig.endpoint shouldEqual "https://localhsot:8081"
+    endpointConfig.endpoint shouldEqual sampleProdEndpoint
     endpointConfig.key shouldEqual "xyz"
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
+    endpointConfig.preferredRegionsList.isDefined shouldEqual true
+    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
   }
 
   it should "validate account endpoint" in {
@@ -39,6 +44,107 @@ class CosmosConfigSpec extends UnitSpec {
           " Config description: Cosmos DB Account Endpoint Uri"
     }
   }
+
+  it should "validate preferred regions" in {
+    var userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "a.b"
+    )
+
+    try {
+      CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+      fail("invalid preferred region list")
+    } catch {
+      case e: Exception => {
+        e.getMessage shouldEqual
+          "invalid configuration for spark.cosmos.preferredRegionsList:a.b. Config description: Preferred Region List"
+      }
+    }
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[westus, eastus"
+    )
+
+    try {
+      CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+      fail("invalid preferred region list")
+    } catch {
+      case e: Exception => {
+        e.getMessage shouldEqual
+          "invalid configuration for spark.cosmos.preferredRegionsList:[westus, eastus. Config description: Preferred Region List"
+      }
+    }
+  }
+
+  it should "preferred regions parsing" in {
+    var userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[eastus, west us1]"
+    )
+
+    var config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "eastus, west us1"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> " eastus , west us1 "
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> " [ eastus , west us1 ] "
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "west us1"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[west us1]"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[]"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array[String]()
+
+  }
+
 
   it should "complain if mandatory config is missing" in {
     val userConfig = Map(
@@ -166,18 +272,6 @@ class CosmosConfigSpec extends UnitSpec {
 
     config.partitioningStrategy shouldEqual PartitioningStrategies.Custom
     config.targetedPartitionCount.get shouldEqual 8
-  }
-
-  it should "parse partitioning config with correct empty strategy" in {
-    val partitioningConfig = Map(
-      "spark.cosmos.partitioning.STRATEGY" -> "",
-      "spark.cosmos.partitioning.tarGETedCount" -> "8"
-    )
-
-    val config = CosmosPartitioningConfig.parseCosmosPartitioningConfig(partitioningConfig)
-
-    config.partitioningStrategy shouldEqual PartitioningStrategies.Default
-    config.targetedPartitionCount shouldEqual None
   }
 
   it should "parse partitioning config without strategy" in {

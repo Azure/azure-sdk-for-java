@@ -471,6 +471,18 @@
         "code": "java.method.defaultMethodAddedToInterface",
         "new": "method byte[] com.azure.core.util.serializer.SerializerAdapter::serializeToBytes(java.lang.Object, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
         "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "@interface com.azure.core.annotation.ServiceClient",
+        "new": "@interface com.azure.core.annotation.ServiceClient",
+        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "@interface com.azure.core.annotation.ServiceMethod",
+        "new": "@interface com.azure.core.annotation.ServiceMethod",
+        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
       }
     ]
   }

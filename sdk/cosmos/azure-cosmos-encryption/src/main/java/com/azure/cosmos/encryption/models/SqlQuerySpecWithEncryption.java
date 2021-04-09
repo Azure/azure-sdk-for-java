@@ -63,7 +63,7 @@ public final class SqlQuerySpecWithEncryption {
 
                             try {
                                 byte[] valueByte =
-                                    EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(),
+                                    EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(),
                                     sqlParameter.getValue(Object.class));
                                 JsonNode itemJObj = Utils.parse(valueByte, JsonNode.class);
                                 Pair<EncryptionProcessor.TypeMarker, byte[]> typeMarkerPair =

@@ -8,22 +8,34 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
+import java.util.List;
 
 /**
  * The ReadInStreamOptionalParameter model.
  */
 public class ReadInStreamOptionalParameter {
     /**
-     * The BCP-47 language code of the text to be detected in the image. In
-     * future versions, when language parameter is not passed, language
-     * detection will be used to determine the language. However, in the
-     * current version, missing language parameter will cause English to be
-     * used. To ensure that your document is always parsed in English without
-     * the use of language detection in the future, pass “en” in the language
-     * parameter. Possible values include: 'en', 'es', 'fr', 'de', 'it', 'nl',
-     * 'pt'.
+     * The BCP-47 language code of the text in the document. Read supports auto
+     * language identification and multi-language documents, so only provide a
+     * language code if you would like to force the document to be processed in
+     * that specific language. See https://aka.ms/ocr-languages for list of
+     * supported languages. Possible values include: 'af', 'ast', 'bi', 'br',
+     * 'ca', 'ceb', 'ch', 'co', 'crh', 'cs', 'csb', 'da', 'de', 'en', 'es',
+     * 'et', 'eu', 'fi', 'fil', 'fj', 'fr', 'fur', 'fy', 'ga', 'gd', 'gil',
+     * 'gl', 'gv', 'hni', 'hsb', 'ht', 'hu', 'ia', 'id', 'it', 'iu', 'ja',
+     * 'jv', 'kaa', 'kac', 'kea', 'kha', 'kl', 'ko', 'ku', 'kw', 'lb', 'ms',
+     * 'mww', 'nap', 'nl', 'no', 'oc', 'pl', 'pt', 'quc', 'rm', 'sco', 'sl',
+     * 'sq', 'sv', 'sw', 'tet', 'tr', 'tt', 'uz', 'vo', 'wae', 'yua', 'za',
+     * 'zh-Hans', 'zh-Hant', 'zu'.
      */
     private OcrDetectionLanguage language;
+
+    /**
+     * Custom page numbers for multi-page documents(PDF/TIFF), input the number
+     * of the pages you want to get OCR result. For a range of pages, use a
+     * hyphen. Separate each page or range with a comma.
+     */
+    private List<String> pages;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -47,6 +59,26 @@ public class ReadInStreamOptionalParameter {
      */
     public ReadInStreamOptionalParameter withLanguage(OcrDetectionLanguage language) {
         this.language = language;
+        return this;
+    }
+
+    /**
+     * Get the pages value.
+     *
+     * @return the pages value
+     */
+    public List<String> pages() {
+        return this.pages;
+    }
+
+    /**
+     * Set the pages value.
+     *
+     * @param pages the pages value to set
+     * @return the ReadInStreamOptionalParameter object itself.
+     */
+    public ReadInStreamOptionalParameter withPages(List<String> pages) {
+        this.pages = pages;
         return this;
     }
 

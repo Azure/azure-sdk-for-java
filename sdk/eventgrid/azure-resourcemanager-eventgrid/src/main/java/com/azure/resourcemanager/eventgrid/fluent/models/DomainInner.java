@@ -7,15 +7,13 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.ResourceSku;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -28,18 +26,6 @@ public class DomainInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
 
     /*
-     * The Sku pricing tier for the domain.
-     */
-    @JsonProperty(value = "sku")
-    private ResourceSku sku;
-
-    /*
-     * Identity information for the resource.
-     */
-    @JsonProperty(value = "identity")
-    private IdentityInfo identity;
-
-    /*
      * The system metadata relating to Domain resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
@@ -48,7 +34,7 @@ public class DomainInner extends Resource {
     /*
      * List of private endpoint connections.
      */
-    @JsonProperty(value = "properties.privateEndpointConnections")
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
@@ -101,46 +87,6 @@ public class DomainInner extends Resource {
     private List<InboundIpRule> inboundIpRules;
 
     /**
-     * Get the sku property: The Sku pricing tier for the domain.
-     *
-     * @return the sku value.
-     */
-    public ResourceSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The Sku pricing tier for the domain.
-     *
-     * @param sku the sku value to set.
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withSku(ResourceSku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the identity property: Identity information for the resource.
-     *
-     * @return the identity value.
-     */
-    public IdentityInfo identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: Identity information for the resource.
-     *
-     * @param identity the identity value to set.
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withIdentity(IdentityInfo identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Get the systemData property: The system metadata relating to Domain resource.
      *
      * @return the systemData value.
@@ -156,17 +102,6 @@ public class DomainInner extends Resource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
-    }
-
-    /**
-     * Set the privateEndpointConnections property: List of private endpoint connections.
-     *
-     * @param privateEndpointConnections the privateEndpointConnections value to set.
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.privateEndpointConnections = privateEndpointConnections;
-        return this;
     }
 
     /**
@@ -306,15 +241,6 @@ public class DomainInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
-        }
-        if (systemData() != null) {
-            systemData().validate();
-        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
