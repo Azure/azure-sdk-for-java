@@ -183,9 +183,6 @@ public class CodeWriter {
             case WRITE_LINE_WITH_NO_INDENT:
                 this.indentedFileWriter.writeLineWithNoIndent(text);
                 break;
-            case WRITE_LINE_WITH_INDENT:
-                this.indentedFileWriter.writeLineWithIndent(text);
-                break;
             case WRITE_WITH_INDENT:
                 this.indentedFileWriter.writeWithIndent(text);
                 break;
@@ -193,7 +190,8 @@ public class CodeWriter {
                 this.indentedFileWriter.writeWithNoIndent(text);
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + writeMode);
+                this.indentedFileWriter.writeLineWithIndent(text);
+                break;
         }
     }
 
