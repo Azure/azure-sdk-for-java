@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * {@link FeatureFlagConfigurationSetting} enable to customize your own feature flags to dynamically administer a
+ * {@link FeatureFlagConfigurationSetting} allows you to customize your own feature flags to dynamically administer a
  * feature's lifecycle. Feature flags can be used to enable or disable features.
  */
 public final class FeatureFlagConfigurationSetting extends ConfigurationSetting {
