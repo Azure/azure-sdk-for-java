@@ -1,5 +1,5 @@
 # Release History
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2021-04-09)
 ### New Features
 - Added updateSyncToken() to be able to provide external synchronization tokens to both
   `ConfigurationAsyncClient` and `ConfigurationClient` clients.
