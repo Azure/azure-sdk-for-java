@@ -1,15 +1,18 @@
 # Release History
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2021-04-09)
 ### New Features
 - Added updateSyncToken() to be able to provide external synchronization tokens to both
   `ConfigurationAsyncClient` and `ConfigurationClient` clients.
-- Added new convenience overload APIs that takes `ConfigurationSetting`:
+- Added new `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting`
+  types to represent configuration settings that references KeyVault Secret reference and
+  feature flag respectively.
+- Added new convenience overload APIs that take `ConfigurationSetting`:
   `addConfigurationSetting(ConfigurationSetting setting)`
   `getConfigurationSetting(ConfigurationSetting setting)`
   `setConfigurationSetting(ConfigurationSetting setting)`
   `deleteConfigurationSetting(ConfigurationSetting setting)`
   `setReadOnly(ConfigurationSetting setting, boolean isReadOnly)`
-- Added a new method that accept `ClientOptions` to `ConfigurationClientBuilder`.
+- Added a new method that accepts `ClientOptions` in `ConfigurationClientBuilder`.
 
 ## 1.1.10 (2021-03-09)
 ### Dependency updates
