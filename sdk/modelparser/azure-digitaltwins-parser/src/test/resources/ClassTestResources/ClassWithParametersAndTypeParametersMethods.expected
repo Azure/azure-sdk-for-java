@@ -1,0 +1,26 @@
+public class ClassWithParametersAndTypeParametersMethods {
+    /**
+     * This is method summary.
+     * <p>
+     * This is remarks.
+     * </p>
+     * @param <T> Generic Type of the thing.
+     * @param name Name of the thing.
+     * @param howMany Really, how many.
+     */
+    public <T> String getNothing(T name, int howMany) {
+    }
+
+    /**
+     * This is method 2 summary.
+     * <p>
+     * This is remarks.
+     * </p>
+     * @param <T> Generic Type of the thing.
+     * @param <T2> 2nd generic Type of the thing.
+     * @param name Name of the thing.
+     * @param howMany Really, how many.
+     */
+    public <T, T2> int getNothing2(T name, T2 howMany) {
+    }
+}

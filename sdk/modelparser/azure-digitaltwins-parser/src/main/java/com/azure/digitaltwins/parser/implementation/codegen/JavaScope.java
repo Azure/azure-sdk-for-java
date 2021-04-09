@@ -199,7 +199,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
     @Override
     public void generateCode(CodeWriter codeWriter) throws IOException {
         if (this.headText != null) {
-            codeWriter.writeLine(headText, getSuppressBreak(), false);
+            codeWriter.writeLine(headText, true, getSuppressBreak(), false);
         }
 
         codeWriter.openScope();

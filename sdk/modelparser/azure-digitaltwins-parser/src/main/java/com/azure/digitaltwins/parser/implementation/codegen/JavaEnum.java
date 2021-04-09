@@ -70,7 +70,7 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
         this.writeSummaryAndRemarks(codeWriter);
         this.writeAttributes(codeWriter);
 
-        codeWriter.writeLine(this.getDecoratedName());
+        codeWriter.writeLine(this.getDecoratedName(null));
         codeWriter.openScope();
 
         if (this.isSorted) {

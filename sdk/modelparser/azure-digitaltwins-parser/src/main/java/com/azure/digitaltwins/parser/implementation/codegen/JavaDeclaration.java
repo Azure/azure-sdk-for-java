@@ -95,9 +95,10 @@ public class JavaDeclaration {
     /**
      * Gets the value of the name decorated with appropriate keywords.
      *
+     * @param typeParams Compiled list of all typed parameters for declaration.
      * @return The value of the name decorated with appropriate keywords.
      */
-    public String getDecoratedName() {
+    public String getDecoratedName(String typeParams) {
         StringBuilder decoratedName = new StringBuilder();
 
         switch (access) {
@@ -115,6 +116,10 @@ public class JavaDeclaration {
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected value: " + access));
+        }
+
+        if (typeParams != null && !typeParams.isEmpty()) {
+            decoratedName.append(typeParams + " ");
         }
 
         if (multiplicity == Multiplicity.STATIC) {

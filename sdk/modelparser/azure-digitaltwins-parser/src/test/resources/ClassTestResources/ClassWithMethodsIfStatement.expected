@@ -1,0 +1,14 @@
+public class ClassWithMethodsIfStatement {
+    /**
+     * Converts string to upper case.
+     * @param input String to convert case.
+     * @return Input in upper case.
+     */
+    public static String toUpper(String input) {
+        if (input != null) {
+            return input.toUpperCase();
+        }
+
+        return null;
+    }
+}

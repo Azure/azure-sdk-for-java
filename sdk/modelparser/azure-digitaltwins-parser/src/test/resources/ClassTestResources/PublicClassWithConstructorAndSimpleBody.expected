@@ -1,5 +1,10 @@
 public class PublicClassWithConstructorAndSimpleBody {
     /**
+     * field 1 description.
+     */
+    private String field1;
+
+    /**
      * Initializes a new instance of the {@link PublicClassWithConstructorAndSimpleBody} class.
      * This is more information.
      * This is even more information.
@@ -10,6 +15,6 @@ public class PublicClassWithConstructorAndSimpleBody {
      * @param secondParam This is my second parameter.
      */
     public PublicClassWithConstructorAndSimpleBody(String firstParam, int secondParam) {
-        this.field = firstParam;
+        this.field1 = firstParam;
     }
 }

@@ -167,7 +167,11 @@ public class JavaMethod extends JavaDeclaration {
             terminator = ";";
         }
 
-        codeWriter.writeLine(this.getDecoratedName() + typeParams + "(" + paramList + ")" + terminator, true);
+        if (this.body == null) {
+            codeWriter.writeLine(this.getDecoratedName(typeParams) + "(" + paramList + ")" + ";");
+        } else {
+            codeWriter.writeLine(this.getDecoratedName(typeParams) + "(" + paramList + ")", true);
+        }
 
         if (!this.preambleTexts.isEmpty()) {
             codeWriter.increaseIndent();
@@ -211,7 +215,7 @@ public class JavaMethod extends JavaDeclaration {
 
             for (TypeParameter typeParam : this.typeParameters) {
                 if (typeParam.description != null) {
-                    codeWriter.writeLine(" * @param " + typeParam.name + " " + typeParam.description);
+                    codeWriter.writeLine(" * @param <" + typeParam.name + "> " + typeParam.description);
                 }
             }
 

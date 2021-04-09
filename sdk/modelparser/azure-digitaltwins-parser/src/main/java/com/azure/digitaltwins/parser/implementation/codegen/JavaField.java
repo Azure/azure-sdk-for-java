@@ -35,9 +35,9 @@ public class JavaField extends JavaDeclaration {
         this.writeAttributes(codeWriter);
 
         if (this.value != null) {
-            codeWriter.writeLine(getDecoratedName() + " = " + this.value + ";");
+            codeWriter.writeLine(getDecoratedName(null) + " = " + this.value + ";");
         } else {
-            codeWriter.writeLine(this.getDecoratedName() + ";");
+            codeWriter.writeLine(this.getDecoratedName(null) + ";");
         }
     }
 }

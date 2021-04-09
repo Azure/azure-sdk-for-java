@@ -1,0 +1,9 @@
+public class PublicClassWithSimpleEmptyMethods {
+    public String getNothing() {
+    }
+
+    private static int getNothing2() {
+    }
+
+    private abstract void getNothing3();
+}
