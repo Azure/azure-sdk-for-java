@@ -11,9 +11,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
-import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
+import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
-import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
@@ -55,6 +54,18 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.endpoint;
     }
 
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -91,30 +102,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.defaultPollInterval;
     }
 
-    /** The OpenShiftManagedClustersClient object to access its operations. */
-    private final OpenShiftManagedClustersClient openShiftManagedClusters;
-
-    /**
-     * Gets the OpenShiftManagedClustersClient object to access its operations.
-     *
-     * @return the OpenShiftManagedClustersClient object.
-     */
-    public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
-        return this.openShiftManagedClusters;
-    }
-
-    /** The ContainerServicesClient object to access its operations. */
-    private final ContainerServicesClient containerServices;
-
-    /**
-     * Gets the ContainerServicesClient object to access its operations.
-     *
-     * @return the ContainerServicesClient object.
-     */
-    public ContainerServicesClient getContainerServices() {
-        return this.containerServices;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -137,6 +124,18 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public ManagedClustersClient getManagedClusters() {
         return this.managedClusters;
+    }
+
+    /** The MaintenanceConfigurationsClient object to access its operations. */
+    private final MaintenanceConfigurationsClient maintenanceConfigurations;
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     *
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
+        return this.maintenanceConfigurations;
     }
 
     /** The AgentPoolsClient object to access its operations. */
@@ -211,10 +210,10 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.openShiftManagedClusters = new OpenShiftManagedClustersClientImpl(this);
-        this.containerServices = new ContainerServicesClientImpl(this);
+        this.apiVersion = "2021-03-01";
         this.operations = new OperationsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
+        this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);

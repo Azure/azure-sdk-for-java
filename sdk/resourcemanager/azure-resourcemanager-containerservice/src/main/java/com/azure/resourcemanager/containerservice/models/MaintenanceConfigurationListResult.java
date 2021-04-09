@@ -6,50 +6,50 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerservice.fluent.models.ContainerServiceInner;
+import com.azure.resourcemanager.containerservice.fluent.models.MaintenanceConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List Container Services operation. */
+/** The response from the List maintenance configurations operation. */
 @Fluent
-public final class ContainerServiceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceListResult.class);
+public final class MaintenanceConfigurationListResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationListResult.class);
 
     /*
-     * The list of container services.
+     * The list of maintenance configurations.
      */
     @JsonProperty(value = "value")
-    private List<ContainerServiceInner> value;
+    private List<MaintenanceConfigurationInner> value;
 
     /*
-     * The URL to get the next set of container service results.
+     * The URL to get the next set of maintenance configuration results.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Get the value property: The list of container services.
+     * Get the value property: The list of maintenance configurations.
      *
      * @return the value value.
      */
-    public List<ContainerServiceInner> value() {
+    public List<MaintenanceConfigurationInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: The list of container services.
+     * Set the value property: The list of maintenance configurations.
      *
      * @param value the value value to set.
-     * @return the ContainerServiceListResult object itself.
+     * @return the MaintenanceConfigurationListResult object itself.
      */
-    public ContainerServiceListResult withValue(List<ContainerServiceInner> value) {
+    public MaintenanceConfigurationListResult withValue(List<MaintenanceConfigurationInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of container service results.
+     * Get the nextLink property: The URL to get the next set of maintenance configuration results.
      *
      * @return the nextLink value.
      */

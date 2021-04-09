@@ -25,6 +25,13 @@ public interface ContainerServiceManagementClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -39,20 +46,6 @@ public interface ContainerServiceManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the OpenShiftManagedClustersClient object to access its operations.
-     *
-     * @return the OpenShiftManagedClustersClient object.
-     */
-    OpenShiftManagedClustersClient getOpenShiftManagedClusters();
-
-    /**
-     * Gets the ContainerServicesClient object to access its operations.
-     *
-     * @return the ContainerServicesClient object.
-     */
-    ContainerServicesClient getContainerServices();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -65,6 +58,13 @@ public interface ContainerServiceManagementClient {
      * @return the ManagedClustersClient object.
      */
     ManagedClustersClient getManagedClusters();
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     *
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    MaintenanceConfigurationsClient getMaintenanceConfigurations();
 
     /**
      * Gets the AgentPoolsClient object to access its operations.
