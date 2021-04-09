@@ -1313,50 +1313,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscConfigurationInner> updateAsync(
-        String resourceGroupName, String automationAccountName, String configurationName) {
-        final DscConfigurationUpdateParameters parameters = null;
-        return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(
-                (Response<DscConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscConfigurationInner update(
-        String resourceGroupName, String automationAccountName, String configurationName) {
-        final DscConfigurationUpdateParameters parameters = null;
-        return updateAsync(resourceGroupName, automationAccountName, configurationName, parameters).block();
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
      * @param parameters The create or update parameters for configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
