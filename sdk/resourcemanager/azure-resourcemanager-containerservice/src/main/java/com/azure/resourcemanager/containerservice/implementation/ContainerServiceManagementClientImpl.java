@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
+import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
@@ -52,18 +53,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -186,6 +175,18 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.resolvePrivateLinkServiceIds;
     }
 
+    /** The ContainerServicesClient object to access its operations. */
+    private final ContainerServicesClient containerServices;
+
+    /**
+     * Gets the ContainerServicesClient object to access its operations.
+     *
+     * @return the ContainerServicesClient object.
+     */
+    public ContainerServicesClient getContainerServices() {
+        return this.containerServices;
+    }
+
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
      *
@@ -210,7 +211,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
         this.operations = new OperationsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
@@ -218,5 +218,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
+        this.containerServices = new ContainerServicesClientImpl(this);
     }
 }

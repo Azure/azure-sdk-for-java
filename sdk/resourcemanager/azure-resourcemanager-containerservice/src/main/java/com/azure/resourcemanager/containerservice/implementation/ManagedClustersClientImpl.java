@@ -421,6 +421,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -428,7 +429,7 @@ public final class ManagedClustersClientImpl
                     service
                         .getOSOptions(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             location,
                             resourceType,
@@ -466,12 +467,13 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getOSOptions(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 location,
                 resourceType,
@@ -579,17 +581,13 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<ManagedClusterInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -626,15 +624,11 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -731,6 +725,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -738,7 +733,7 @@ public final class ManagedClustersClientImpl
                     service
                         .listByResourceGroup(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accept,
@@ -785,12 +780,13 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accept,
@@ -904,6 +900,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -911,7 +908,7 @@ public final class ManagedClustersClientImpl
                     service
                         .getUpgradeProfile(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -953,12 +950,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getUpgradeProfile(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -1064,6 +1062,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1071,7 +1070,7 @@ public final class ManagedClustersClientImpl
                     service
                         .getAccessProfile(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -1124,12 +1123,13 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getAccessProfile(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -1248,6 +1248,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1255,7 +1256,7 @@ public final class ManagedClustersClientImpl
                     service
                         .listClusterAdminCredentials(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -1297,12 +1298,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listClusterAdminCredentials(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -1398,6 +1400,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1405,7 +1408,7 @@ public final class ManagedClustersClientImpl
                     service
                         .listClusterUserCredentials(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -1447,12 +1450,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listClusterUserCredentials(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -1547,6 +1551,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1554,7 +1559,7 @@ public final class ManagedClustersClientImpl
                     service
                         .listClusterMonitoringUserCredentials(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -1596,12 +1601,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listClusterMonitoringUserCredentials(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -1697,6 +1703,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1704,7 +1711,7 @@ public final class ManagedClustersClientImpl
                     service
                         .getByResourceGroup(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -1746,12 +1753,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -1852,6 +1860,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1859,7 +1868,7 @@ public final class ManagedClustersClientImpl
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -1908,12 +1917,13 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -2114,6 +2124,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
@@ -2123,7 +2134,7 @@ public final class ManagedClustersClientImpl
                     service
                         .updateTags(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -2167,6 +2178,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
@@ -2174,7 +2186,7 @@ public final class ManagedClustersClientImpl
         return service
             .updateTags(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -2405,6 +2417,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2412,7 +2425,7 @@ public final class ManagedClustersClientImpl
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -2454,12 +2467,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -2638,6 +2652,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2645,7 +2660,7 @@ public final class ManagedClustersClientImpl
                     service
                         .resetServicePrincipalProfile(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -2697,12 +2712,13 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resetServicePrincipalProfile(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -2913,6 +2929,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2920,7 +2937,7 @@ public final class ManagedClustersClientImpl
                     service
                         .resetAadProfile(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -2969,12 +2986,13 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resetAadProfile(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -3165,6 +3183,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3172,7 +3191,7 @@ public final class ManagedClustersClientImpl
                     service
                         .rotateClusterCertificates(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -3214,12 +3233,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .rotateClusterCertificates(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -3397,6 +3417,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3404,7 +3425,7 @@ public final class ManagedClustersClientImpl
                     service
                         .stop(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -3446,12 +3467,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .stop(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -3623,6 +3645,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3630,7 +3653,7 @@ public final class ManagedClustersClientImpl
                     service
                         .start(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -3672,12 +3695,13 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .start(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -3856,6 +3880,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3863,7 +3888,7 @@ public final class ManagedClustersClientImpl
                     service
                         .runCommand(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -3912,12 +3937,13 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .runCommand(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
@@ -4121,6 +4147,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4128,7 +4155,7 @@ public final class ManagedClustersClientImpl
                     service
                         .getCommandResult(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
@@ -4175,12 +4202,13 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getCommandResult(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,

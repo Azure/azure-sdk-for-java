@@ -20,7 +20,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxy
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesIdentityProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesIdentityProfileValue;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
@@ -208,7 +208,7 @@ public class ManagedClusterInner extends Resource {
      * Identities associated with the cluster.
      */
     @JsonProperty(value = "properties.identityProfile")
-    private Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile;
+    private Map<String, ManagedClusterPropertiesIdentityProfileValue> identityProfile;
 
     /*
      * Private link resources associated with the cluster.
@@ -718,7 +718,7 @@ public class ManagedClusterInner extends Resource {
      *
      * @return the identityProfile value.
      */
-    public Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile() {
+    public Map<String, ManagedClusterPropertiesIdentityProfileValue> identityProfile() {
         return this.identityProfile;
     }
 
@@ -729,7 +729,7 @@ public class ManagedClusterInner extends Resource {
      * @return the ManagedClusterInner object itself.
      */
     public ManagedClusterInner withIdentityProfile(
-        Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile) {
+        Map<String, ManagedClusterPropertiesIdentityProfileValue> identityProfile) {
         this.identityProfile = identityProfile;
         return this;
     }

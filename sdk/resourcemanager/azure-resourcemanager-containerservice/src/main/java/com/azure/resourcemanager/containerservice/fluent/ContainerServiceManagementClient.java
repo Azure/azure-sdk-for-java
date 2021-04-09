@@ -25,13 +25,6 @@ public interface ContainerServiceManagementClient {
     String getEndpoint();
 
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -93,4 +86,11 @@ public interface ContainerServiceManagementClient {
      * @return the ResolvePrivateLinkServiceIdsClient object.
      */
     ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds();
+
+    /**
+     * Gets the ContainerServicesClient object to access its operations.
+     *
+     * @return the ContainerServicesClient object.
+     */
+    ContainerServicesClient getContainerServices();
 }
