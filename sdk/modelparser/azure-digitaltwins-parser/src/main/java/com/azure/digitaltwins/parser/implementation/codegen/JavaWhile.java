@@ -15,6 +15,7 @@ public class JavaWhile extends JavaScope {
      */
     public JavaWhile(String whileText) {
         super("while (" + whileText + ")");
+        this.setSuppressNewLine(true);
     }
 
     /**

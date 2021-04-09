@@ -907,6 +907,46 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
     }
 
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithWhileLoop.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithWhileLoop.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithWhileLoop() throws IOException {
+        final String typeName = "ClassWithWhileLoop";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass
+            .addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toLower", Multiplicity.INSTANCE)
+            .addParameter("String", "input", "String input.");
+
+        javaMethod.addSummary("Converts input to lowercase.");
+        javaMethod.addReturnComment("Converted input in lowercase.");
+
+        JavaScope methodBody = new JavaScope(null);
+        JavaWhile javaWhile = methodBody.addWhile("input.size() > 0");
+        javaWhile.addIf("input != null").line("continue;");
+        javaWhile.line("input = input.substring(1);");
+
+        javaMethod.setBody(methodBody);
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
     // NEGATIVE TEST CASES.
 
     /**
