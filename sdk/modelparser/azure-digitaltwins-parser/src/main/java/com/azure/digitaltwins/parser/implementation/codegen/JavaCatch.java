@@ -17,9 +17,11 @@ public class JavaCatch extends JavaScope {
      * @param parent    The scope that is the parent of this {@link JavaCatch} object.
      */
     public JavaCatch(String catchText, StatementAdder parent) {
-        super("catch (" + catchText + ")");
+        super("catch(" + catchText + ")");
         this.parent = parent;
         this.setSuppressBlank(true);
+        this.setSuppressNewLine(true);
+        this.setOutDent(true);
     }
 
     /**

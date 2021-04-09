@@ -1,0 +1,18 @@
+public class ClassWithTryCatch {
+    /**
+     * Converts input to lowercase.
+     * @param input String input.
+     * @return Converted input in lowercase.
+     */
+    public String toLower(String input) {
+        try {
+            if (input != null) {
+                return input.toLowerCase();
+            } else {
+                return input;
+            }
+        } catch(Exception ex) {
+            return null;
+        }
+    }
+}

@@ -1,0 +1,55 @@
+public class ClassWithProperty {
+    private int intProp;
+
+    /**
+     * Set intProp property.
+     * @param value Property value.
+     */
+    protected void setIntProp(int value) {
+        this.intProp = value;
+    }
+
+    /**
+     * Get the intProp property.
+     * @return intProp.
+     */
+    protected int getIntProp() {
+        return this.intProp
+    }
+
+    private String privateStringProp;
+
+    /**
+     * Set privateStringProp property.
+     * @param value Property value.
+     */
+    private void setPrivateStringProp(String value) {
+        this.privateStringProp = value;
+    }
+
+    /**
+     * Get the privateStringProp property.
+     * @return privateStringProp.
+     */
+    private String getPrivateStringProp() {
+        return this.privateStringProp
+    }
+
+    private String stringProp;
+
+    /**
+     * Set stringProp property.
+     * @param value Property value.
+     */
+    public void setStringProp(String value) {
+        this.stringProp = value;
+    }
+
+    /**
+     * Get the stringProp property.
+     * @return stringProp.
+     */
+    public String getStringProp() {
+        return this.stringProp
+    }
+}

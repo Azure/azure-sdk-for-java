@@ -125,8 +125,8 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      */
     public JavaProperty addProperty(Access access, String type, String name) {
         JavaProperty javaProperty = new JavaProperty(access, name, type)
-            .setter(access, "Set " + name + " property")
-            .getter(access, "Get the " + name + " property");
+            .setter(access, "Set " + name + " property.")
+            .getter(access, "Get the " + name + " property.");
         this.properties.add(javaProperty);
         return javaProperty;
     }

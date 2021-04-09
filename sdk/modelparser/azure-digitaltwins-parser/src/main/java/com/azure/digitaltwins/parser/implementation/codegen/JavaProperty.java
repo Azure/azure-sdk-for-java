@@ -32,7 +32,7 @@ public class JavaProperty extends JavaStatement {
     public JavaProperty(Access access, String propertyName, String propertyType) {
         // propertyName should start with a lowercase character.
         if (!Character.isLowerCase(propertyName.charAt(0))) {
-            throw logger.logExceptionAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character"));
+            throw logger.logExceptionAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character."));
         }
 
         this.propertyName = propertyName;
@@ -60,7 +60,7 @@ public class JavaProperty extends JavaStatement {
      * @param description Getter method description.
      * @return The {@link JavaProperty} object itself.
      */
-    public JavaProperty getter(Access access, String description) {
+    JavaProperty getter(Access access, String description) {
         String getterMethodName = getMethodName(this.propertyName, "get");
         JavaMethod setterMethod = new JavaMethod(true, access, Novelty.NORMAL, propertyType, getterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
 
@@ -70,7 +70,7 @@ public class JavaProperty extends JavaStatement {
             }
 
             setterMethod.addSummary(description);
-            setterMethod.returns(propertyName);
+            setterMethod.addReturnComment(propertyName + ".");
         }
 
         JavaScope bodyScope = new JavaScope(null);
@@ -91,7 +91,7 @@ public class JavaProperty extends JavaStatement {
      * @param description Setter method description.
      * @return The {@link JavaProperty} object itself.
      */
-    public JavaProperty setter(Access access, String description) {
+    JavaProperty setter(Access access, String description) {
         String setterMethodName = getMethodName(this.propertyName, "set");
         JavaMethod setterMethod = new JavaMethod(true, access, Novelty.NORMAL, "void", setterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
 
@@ -103,7 +103,7 @@ public class JavaProperty extends JavaStatement {
             setterMethod.addSummary(description);
         }
 
-        setterMethod.param(this.propertyType, "value", "Property value.");
+        setterMethod.addParameter(this.propertyType, "value", "Property value.");
         JavaScope bodyScope = new JavaScope(null);
         bodyScope.addStatement(
             new JavaLine("this." + this.propertyName + " = value;"));
