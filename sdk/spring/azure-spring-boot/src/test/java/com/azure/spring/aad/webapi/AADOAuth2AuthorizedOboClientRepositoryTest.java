@@ -83,8 +83,8 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
         Authentication mockPrinciple = mock(Authentication.class);
         when(mockPrinciple.getName()).thenReturn(FAKE_PRINCIPAL_NAME);
 
-        inMemoryOAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(clientRegistrationsRepo) ;
-        inMemoryOAuth2AuthorizedClientService.saveAuthorizedClient(mockOAuth2AuthorizedClient,mockPrinciple);
+        inMemoryOAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(clientRegistrationsRepo);
+        inMemoryOAuth2AuthorizedClientService.saveAuthorizedClient(mockOAuth2AuthorizedClient, mockPrinciple);
 
         final Jwt mockJwt = mock(Jwt.class);
         when(mockJwt.getTokenValue()).thenReturn(FAKE_TOKEN_VALUE);
