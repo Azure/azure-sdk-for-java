@@ -107,3 +107,15 @@ stages:
                 az logout
             condition: always()
             displayName: 'Delete On-demand test user'
+
+          - task: Maven@3
+            displayName: 'To View Dependency Tree, JDK Version: $(JavaTestVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: ''
+              options: ' dependency:tree -pl $(ProjectList)'
+              mavenOptions: '$(MemoryOptions) --no-transfer-progress -Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn '
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaTestVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
