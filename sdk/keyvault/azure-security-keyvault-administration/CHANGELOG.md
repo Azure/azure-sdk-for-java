@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.6 (Unreleased)
+## 4.0.0-beta.6 (2021-04-09)
 
 ### New features
 - Added support for service version `7.2`.
