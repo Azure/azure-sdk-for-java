@@ -46,7 +46,7 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
  * Custom JSON deserializer for {@link ConfigurationSetting} and its derived classes,
  * {@link SecretReferenceConfigurationSetting} and {@link FeatureFlagConfigurationSetting}.
  */
-public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<ConfigurationSetting> {
+public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer<ConfigurationSetting> {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationSettingJsonDeserializer.class);
     private static final String CONFIGURATION_SETTING_PATH =
         "com.azure.data.appconfiguration.models.ConfigurationSetting";
@@ -330,12 +330,10 @@ public class ConfigurationSettingJsonDeserializer extends JsonDeserializer<Confi
     }
 
     private static JsonNode toJsonNode(String settingValue) {
-        JsonNode settingValueNode;
         try {
-            settingValueNode = MAPPER.serializer().readTree(settingValue);
+            return MAPPER.serializer().readTree(settingValue);
         } catch (JsonProcessingException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
-        return settingValueNode;
     }
 }
