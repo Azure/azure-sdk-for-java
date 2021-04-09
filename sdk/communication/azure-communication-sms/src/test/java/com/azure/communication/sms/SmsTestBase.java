@@ -47,7 +47,7 @@ public class SmsTestBase extends TestBase {
         .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
 
     private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
-        .get("TEST_PACKAGES_ENABLED", "");
+        .get("TEST_PACKAGES_ENABLED", "all");
 
     protected static final String MESSAGE = "Hello";
 

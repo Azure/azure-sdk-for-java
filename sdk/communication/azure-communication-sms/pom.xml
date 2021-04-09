@@ -43,7 +43,7 @@
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
   <dependencies>
@@ -137,31 +137,45 @@
 
   <profiles>
     <profile>
-      <id>enable-coverage-all</id>
+      <id>disable-coverage-if-identity</id>
       <activation>
         <property>
           <name>env.TEST_PACKAGES_ENABLED</name>
-          <value>all</value>
+          <value>identity</value>
         </property>
       </activation>
       <properties>
         <src.dir>src/main</src.dir>
         <test.dir>src/test</test.dir>
-        <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
       </properties>
     </profile>
      <profile>
-      <id>enable-coverage-sms</id>
+      <id>disable-coverage-if-phonenumbers</id>
       <activation>
         <property>
           <name>env.TEST_PACKAGES_ENABLED</name>
-          <value>sms</value>
+          <value>phonenumbers</value>
         </property>
       </activation>
       <properties>
         <src.dir>src/main</src.dir>
         <test.dir>src/test</test.dir>
-        <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+    <profile>
+      <id>disable-coverage-if-chat</id>
+      <activation>
+        <property>
+          <name>env.TEST_PACKAGES_ENABLED</name>
+          <value>chat</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
       </properties>
     </profile>
   </profiles>

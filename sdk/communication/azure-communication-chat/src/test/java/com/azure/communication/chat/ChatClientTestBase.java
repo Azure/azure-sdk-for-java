@@ -47,7 +47,7 @@ public class ChatClientTestBase extends TestBase {
         .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
 
     private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
-        .get("TEST_PACKAGES_ENABLED", "");
+        .get("TEST_PACKAGES_ENABLED", "all");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
