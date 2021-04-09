@@ -41,13 +41,13 @@ private object RowSerializerPool {
     }
   }
 
-  def returnSerializerToPool(schema: StructType, serializer: ExpressionEncoder.Serializer[Row]): Unit = {
+  def returnSerializerToPool(schema: StructType, serializer: ExpressionEncoder.Serializer[Row]): Boolean = {
     schemaScopedSerializerMap.get(schema) match {
       case Some(objectPool) => objectPool.returnSerializer(serializer)
       case None =>
         val newQueue = new RowSerializerQueue()
         newQueue.returnSerializer(serializer)
-        schemaScopedSerializerMap.putIfAbsent(schema, newQueue)
+        !schemaScopedSerializerMap.putIfAbsent(schema, newQueue).isDefined
     }
   }
 
