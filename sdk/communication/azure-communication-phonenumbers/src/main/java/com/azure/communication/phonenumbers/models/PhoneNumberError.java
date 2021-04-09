@@ -18,22 +18,18 @@ public final class PhoneNumberError {
 
     private final List<PhoneNumberError> details;
 
-    private final PhoneNumberError innerError;
-
     /**
      * Constructs a new PhoneNumberError
      * @param message The message of the original error
      * @param code The error code
      * @param target The target of the error
      * @param details Additional details
-     * @param innerError The inner error
      */
-    public PhoneNumberError(String message, String code, String target, List<PhoneNumberError> details, PhoneNumberError innerError) {
+    public PhoneNumberError(String message, String code, String target, List<PhoneNumberError> details) {
         this.message = message;
         this.code = code;
         this.target = target;
         this.details = details;
-        this.innerError = innerError;
     }
 
     /**
@@ -71,14 +67,4 @@ public final class PhoneNumberError {
     public List<PhoneNumberError> getDetails() {
         return this.details;
     }
-
-    /**
-     * Get the innerError property: The inner error if any.
-     *
-     * @return the innerError value.
-     */
-    public PhoneNumberError getInnerError() {
-        return this.innerError;
-    }
-
 }
