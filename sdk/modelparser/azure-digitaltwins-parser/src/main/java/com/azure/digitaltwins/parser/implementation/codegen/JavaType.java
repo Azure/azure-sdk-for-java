@@ -216,7 +216,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
             javaField.generateCode(codeWriter);
         }
 
-        codeWriter.blank();
+        codeWriter.addNewLine();
 
         this.constructors.sort(Comparator.comparing(JavaConstructor::getName));
         for (JavaConstructor javaConstructor : this.constructors) {

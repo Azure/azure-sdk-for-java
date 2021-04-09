@@ -184,8 +184,6 @@ public class JavaMethod extends JavaDeclaration {
 
         if (this.body != null) {
             this.body.generateCode(codeWriter);
-        } else {
-            codeWriter.blank();
         }
     }
 
@@ -194,7 +192,7 @@ public class JavaMethod extends JavaDeclaration {
      */
     @Override
     public void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
-        codeWriter.blank();
+        codeWriter.addNewLine();
 
         if (this.inheritDoc) {
             codeWriter.writeLine("/** {@inheritDoc} */");

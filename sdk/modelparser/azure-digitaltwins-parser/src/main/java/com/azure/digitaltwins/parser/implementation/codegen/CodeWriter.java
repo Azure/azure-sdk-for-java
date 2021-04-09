@@ -16,8 +16,9 @@ public class CodeWriter {
     private final OutputStreamWriter fileWriter;
     private final IndentedFileWriter indentedFileWriter;
 
-    private boolean nextTextNeedsBlank;
+    private boolean nextLineNeedsBlank;
     private boolean lastLineWasText;
+    private boolean lastLineWasCloseScope;
 
     /**
      * Initializes a new instance of {@link CodeWriter}.
@@ -58,9 +59,9 @@ public class CodeWriter {
     /**
      * Indicates that a blank line is appropriate between lines of code.
      */
-    public void blank() {
+    public void addNewLine() {
         if (lastLineWasText) {
-            nextTextNeedsBlank = true;
+            nextLineNeedsBlank = true;
             lastLineWasText = false;
         }
     }
@@ -73,7 +74,7 @@ public class CodeWriter {
     public void openScope() throws IOException {
         indentedFileWriter.writeLineWithNoIndent("{");
         this.increaseIndent();
-        nextTextNeedsBlank = false;
+        nextLineNeedsBlank = false;
         lastLineWasText = false;
     }
 
@@ -84,9 +85,16 @@ public class CodeWriter {
      */
     public void closeScope() throws IOException {
         indentedFileWriter.decreaseIndent();
-        indentedFileWriter.writeLineWithIndent("}");
-        nextTextNeedsBlank = true;
+        if (nextLineNeedsBlank) {
+            indentedFileWriter.writeLineWithIndent("\n}");
+        } else {
+            indentedFileWriter.writeWithIndent("}");
+            lastLineWasCloseScope = true;
+        }
+
+        nextLineNeedsBlank = true;
         lastLineWasText = false;
+
     }
 
     /**
@@ -104,9 +112,10 @@ public class CodeWriter {
     }
 
     /**
-     * Writes a line of code
+     * Writes a line of code.
      *
      * @param text Code text to write.
+     * @throws IOException IOException.
      */
     public void writeLine(String text) throws IOException {
         writeLine(text, false, false, false);
@@ -116,7 +125,8 @@ public class CodeWriter {
      * Writes a line of code.
      *
      * @param text              Code text to write.
-     * @param suppressLineBreak True if the line should not end with a line break.
+     * @param suppressLineBreak True if the text should not be followed by a new line.
+     * @throws IOException IOException
      */
     public void writeLine(String text, boolean suppressLineBreak) throws IOException {
         writeLine(text, suppressLineBreak, false, false);
@@ -126,44 +136,71 @@ public class CodeWriter {
      * Writes a line of code
      *
      * @param text              Code text to write.
-     * @param suppressLineBreak True if the line should not end with a line break.
-     * @param suppressBlank     True if there should be no blank line preceding the text.
-     */
-    public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank) throws IOException {
-        writeLine(text, suppressLineBreak, suppressBlank, false);
-    }
-
-    /**
-     * Writes a line of code
-     *
-     * @param text              Code text to write.
      * @param suppressLineBreak True if the text should not be followed by a new line.
      * @param suppressBlank     True if there should be no blank line preceding the text.
-     * @param outdent           True if the line should be out-dented one level.
+     * @param outDent           True if the line should be out-dented one level.
      */
-    public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank, boolean outdent) throws IOException {
-        if (nextTextNeedsBlank) {
-            if (!suppressBlank) {
-                indentedFileWriter.writeLineWithNoIndent("");
-            }
-
-            nextTextNeedsBlank = false;
-        }
-
-        if (outdent) {
-            decreaseIndent();
-        }
+    public void writeLine(String text, boolean suppressLineBreak, boolean suppressBlank, boolean outDent) throws IOException {
+        WriteMode writeMode = WriteMode.WRITE_LINE_WITH_INDENT;
 
         if (suppressLineBreak) {
-            indentedFileWriter.writeWithIndent(text + " ");
-        } else {
-            indentedFileWriter.writeLineWithIndent(text);
+            text = text + " ";
+            writeMode = WriteMode.WRITE_WITH_INDENT;
         }
 
-        if (outdent) {
-            increaseIndent();
+        if (suppressBlank) {
+            if (nextLineNeedsBlank) {
+                text = " " + text;
+            }
+            nextLineNeedsBlank = false;
         }
 
+        if (outDent) {
+            if (writeMode == WriteMode.WRITE_LINE_WITH_INDENT) {
+                writeMode = WriteMode.WRITE_LINE_WITH_NO_INDENT;
+            } else {
+                writeMode = WriteMode.WRITE_WITH_NO_INDENT;
+            }
+        }
+
+        // If next line needs to be blank, write a line with no indent.
+        if (nextLineNeedsBlank) {
+            if (lastLineWasCloseScope) {
+                this.indentedFileWriter.writeLineWithNoIndent("");
+            }
+
+            this.indentedFileWriter.writeLineWithNoIndent("");
+            nextLineNeedsBlank = false;
+        }
+
+        writeToFile(text, writeMode);
         lastLineWasText = true;
+        lastLineWasCloseScope = false;
+    }
+
+    private void writeToFile(String text, WriteMode writeMode) throws IOException {
+        switch (writeMode) {
+            case WRITE_LINE_WITH_NO_INDENT:
+                this.indentedFileWriter.writeLineWithNoIndent(text);
+                break;
+            case WRITE_LINE_WITH_INDENT:
+                this.indentedFileWriter.writeLineWithIndent(text);
+                break;
+            case WRITE_WITH_INDENT:
+                this.indentedFileWriter.writeWithIndent(text);
+                break;
+            case WRITE_WITH_NO_INDENT:
+                this.indentedFileWriter.writeWithNoIndent(text);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + writeMode);
+        }
+    }
+
+    private enum WriteMode {
+        WRITE_LINE_WITH_NO_INDENT,
+        WRITE_LINE_WITH_INDENT,
+        WRITE_WITH_NO_INDENT,
+        WRITE_WITH_INDENT,
     }
 }

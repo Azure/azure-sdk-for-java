@@ -26,6 +26,6 @@ public class JavaCase extends JavaStatement {
      */
     @Override
     public void generateCode(CodeWriter codeWriter) throws IOException {
-        codeWriter.writeLine("case " + this.value + ":", false, true);
+        codeWriter.writeLine("case " + this.value + ":", false, false, false);
     }
 }

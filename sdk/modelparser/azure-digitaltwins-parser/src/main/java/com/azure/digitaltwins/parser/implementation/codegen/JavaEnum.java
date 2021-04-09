@@ -82,7 +82,7 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
             codeWriter.writeLine("* " + enumVal.getDescription());
             codeWriter.writeLine("*/");
             codeWriter.writeLine(enumVal.getName());
-            codeWriter.blank();
+            codeWriter.addNewLine();
         }
 
         codeWriter.closeScope();

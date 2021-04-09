@@ -129,10 +129,10 @@ public class JavaProperty extends JavaStatement {
     @Override
     public void generateCode(CodeWriter codeWriter) throws IOException {
         this.field.generateCode(codeWriter);
-        codeWriter.blank();
+        codeWriter.addNewLine();
         for (JavaMethod method : listOfMethods) {
             method.generateCode(codeWriter);
-            codeWriter.blank();
+            codeWriter.addNewLine();
         }
     }
 

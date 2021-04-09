@@ -21,6 +21,6 @@ public class JavaBreak extends JavaStatement {
      */
     @Override
     public void generateCode(CodeWriter codeWriter) {
-        codeWriter.blank();
+        codeWriter.addNewLine();
     }
 }

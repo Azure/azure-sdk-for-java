@@ -18,6 +18,7 @@ public class JavaIf extends JavaScope {
     public JavaIf(String ifText, StatementAdder parent) {
         super("if (" + ifText + ")");
         this.parent = parent;
+        this.setSuppressNewLine(true);
     }
 
     /**

@@ -13,7 +13,9 @@ public class JavaElse extends JavaScope {
      */
     public JavaElse() {
         super("else");
-        this.setSuppressBreak(true);
+        this.setSuppressBlank(true);
+        this.setSuppressNewLine(true);
+        this.setOutDent(true);
     }
 
     /**

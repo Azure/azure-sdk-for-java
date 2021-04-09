@@ -19,7 +19,7 @@ public class JavaCatch extends JavaScope {
     public JavaCatch(String catchText, StatementAdder parent) {
         super("catch (" + catchText + ")");
         this.parent = parent;
-        this.setSuppressBreak(true);
+        this.setSuppressBlank(true);
     }
 
     /**

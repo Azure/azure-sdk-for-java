@@ -193,8 +193,7 @@ public class JavaDeclaration {
      * @throws IOException
      */
     protected void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
-        codeWriter.blank();
-
+        codeWriter.addNewLine();
         if (this.inheritDoc) {
             codeWriter.writeLine("/** {@inheritDoc} */");
         } else if (!summaryLines.isEmpty()) {

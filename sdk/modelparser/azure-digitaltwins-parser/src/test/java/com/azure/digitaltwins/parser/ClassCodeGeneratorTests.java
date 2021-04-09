@@ -624,6 +624,47 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
     }
 
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodsIfAndElseStatements.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodsIfAndElseStatements.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodsIfAndElseStatements() throws IOException {
+        final String typeName = "ClassWithMethodsIfAndElseStatements";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC);
+        javaMethod.addSummary("Converts string to upper case.");
+        javaMethod.param("String", "input", "String to convert case.");
+        javaMethod.returns("Input in upper case.");
+        JavaScope body = new JavaScope(null);
+
+        JavaIf ifStatement = body.addIf("input != null");
+        JavaElse elseStatment = ifStatement.addElse();
+        elseStatment.line("return input;");
+        ifStatement.line("return input.toUpperCase();");
+        body.line("return null;");
+
+        javaMethod.setBody(body);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
     // NEGATIVE TEST CASES.
 
     /**
