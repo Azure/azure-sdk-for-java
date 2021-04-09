@@ -9,11 +9,11 @@
 
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-postgresql</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-postgresql;current} -->
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-postgresql;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for PostgreSql Management</name>
-    <description>This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-2020-01-01. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
+    <description>This package contains Microsoft Azure SDK for PostgreSql Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-2020-01-01.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <licenses>
@@ -41,6 +41,11 @@
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core</artifactId>
+            <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+        </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-management</artifactId>
