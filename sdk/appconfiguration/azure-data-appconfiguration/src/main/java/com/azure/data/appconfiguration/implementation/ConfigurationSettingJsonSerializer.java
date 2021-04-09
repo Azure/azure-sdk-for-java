@@ -63,7 +63,9 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
 
     private static void write(ConfigurationSetting value, JsonGenerator gen) throws IOException {
         gen.writeStartObject();
-        // setting's Value
+        // The setting's value is expected to be a JSON string for the FeatureFlagConfigurationSetting and
+        // SecretReferenceConfigurationSetting, so it is better to use another JSON generator
+        // to constructor the value as JSON string, flush into the StringWriter.
         final StringWriter jsonObjectWriter = new StringWriter();
         final JsonGenerator generator = new JsonFactory().createGenerator(jsonObjectWriter);
         String settingValue;
@@ -89,7 +91,7 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         gen.writeBooleanField(LOCKED, value.isReadOnly());
 
         gen.writeObjectFieldStart(TAGS);
-        writeTagsProperties(value.getTags(), gen);
+        writeMapProperties(value.getTags(), gen);
         gen.writeEndObject();
 
         if (value.getLastModified() != null) {
@@ -121,7 +123,7 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
             gen.writeStartObject();
             gen.writeStringField(NAME, filter.getName());
             gen.writeObjectFieldStart(PARAMETERS);
-            writeAdditionalProperties(filter.getParameters(), gen);
+            writeMapProperties(filter.getParameters(), gen);
             gen.writeEndObject(); // parameters object
             gen.writeEndObject(); // each filter object
         }
@@ -132,27 +134,15 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
         gen.close();
     }
 
-    private static void writeAdditionalProperties(Map<String, Object> properties, JsonGenerator gen)
+    private static void writeMapProperties(Map<String, ? extends Object> properties, JsonGenerator gen)
         throws IOException {
         if (CoreUtils.isNullOrEmpty(properties)) {
             return;
         }
 
-        for (Map.Entry<String, Object> property : properties.entrySet()) {
+        for (Map.Entry<String, ? extends Object> property : properties.entrySet()) {
             gen.writeFieldName(property.getKey());
             gen.writeObject(property.getValue().toString());
-        }
-    }
-
-    private static void writeTagsProperties(Map<String, String> properties, JsonGenerator gen)
-        throws IOException {
-        if (CoreUtils.isNullOrEmpty(properties)) {
-            return;
-        }
-
-        for (Map.Entry<String, String> property : properties.entrySet()) {
-            gen.writeFieldName(property.getKey());
-            gen.writeObject(property.getValue());
         }
     }
 }
