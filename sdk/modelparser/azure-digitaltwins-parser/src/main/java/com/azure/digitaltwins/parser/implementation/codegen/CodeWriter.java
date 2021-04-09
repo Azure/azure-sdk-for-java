@@ -86,7 +86,8 @@ public class CodeWriter {
     public void closeScope() throws IOException {
         indentedFileWriter.decreaseIndent();
         if (nextLineNeedsBlank) {
-            indentedFileWriter.writeLineWithIndent("\n}");
+            indentedFileWriter.writeWithNoIndent("\n");
+            indentedFileWriter.writeWithIndent("}");
         } else {
             indentedFileWriter.writeWithIndent("}");
             lastLineWasCloseScope = true;

@@ -1,0 +1,18 @@
+public class ClassWithMethodsIfElseIfStatement {
+    /**
+     * Converts string to upper case.
+     * @param input String to convert case.
+     * @return Input in upper case.
+     */
+    public static String toUpper(String input) {
+        if (input != null) {
+            return input.toUpperCase();
+        } else if (input.startsWith("a")) {
+            return null;
+        } else {
+            return "";
+        }
+
+        return null;
+    }
+}
