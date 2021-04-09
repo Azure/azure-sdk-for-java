@@ -71,7 +71,7 @@ public class ClientTelemetry {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private ClientTelemetryInfo clientTelemetryInfo;
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
     private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
         new DaemonThreadFactory());
     private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
