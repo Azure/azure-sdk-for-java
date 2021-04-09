@@ -67,6 +67,20 @@
       }
     },
     {
+      "type": "Microsoft.EventHub/namespaces/networkRuleSets",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "defaultAction": "Deny",
+        "virtualNetworkRules": [],
+        "ipRules": []
+      }
+    },
+    {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2017-04-01",
       "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-batch')]",
@@ -120,20 +134,6 @@
         "messageRetentionInDays": 1,
         "partitionCount": 1,
         "status": "Active"
-      }
-    },
-    {
-      "type": "Microsoft.EventHub/namespaces/networkRuleSets",
-      "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/default')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
-      ],
-      "properties": {
-        "defaultAction": "Deny",
-        "virtualNetworkRules": [],
-        "ipRules": []
       }
     },
     {
