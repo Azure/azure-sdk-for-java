@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -72,6 +74,7 @@ public class StorageBlockingSink {
                 case FAIL_CANCELLED: // Flux got a cancellation signal.
                 case FAIL_NON_SERIALIZED: // Concurrent calls to tryEmitNext.
                 case FAIL_ZERO_SUBSCRIBER: // No one ever subscribed to Flux. This should not happen since we manage the subscribe process in the constructor.
+                default: // This case shouldnt get hit - Would it be better to do nothing in this case?
                     return new IOException("Faulted stream due to underlying sink write failure, "
                         + "result:" + writeResult, null);
             }

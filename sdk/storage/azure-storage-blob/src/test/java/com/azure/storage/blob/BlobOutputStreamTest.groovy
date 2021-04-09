@@ -1,5 +1,6 @@
 package com.azure.storage.blob
 
+
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
@@ -9,10 +10,10 @@ import com.azure.storage.blob.options.BlockBlobOutputStreamOptions
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-import org.junit.Ignore
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
@@ -143,7 +144,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
-    @Ignore // Uncomment and run in VMs with good network bandwidth
+    @Ignore
     def "BlockBlob output stream large"() {
         setup:
         def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -167,7 +168,7 @@ class BlobOutputStreamTest extends APISpec {
         where:
         size             || _
         Constants.GB     || _
-        5 * Constants.GB || _ /* Run this with a heap size of 3GB locally. */
+//        5 * Constants.GB || _ /* Run this with a heap size of 3GB locally. */
     }
 
     @Requires({ liveMode() })
