@@ -161,11 +161,6 @@ public class JavaMethod extends JavaDeclaration {
         }
 
         String paramList = this.parameters.stream().map(p -> p.getType() + " " + p.getName()).collect(Collectors.joining(", "));
-        String terminator = "";
-
-        if (this.body == null) {
-            terminator = ";";
-        }
 
         if (this.body == null) {
             codeWriter.writeLine(this.getDecoratedName(typeParams) + "(" + paramList + ")" + ";");
