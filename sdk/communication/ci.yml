@@ -46,3 +46,6 @@ extends:
       - name: azure-resourcemanager-communication
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercommunication
+    EnvVars:
+      TEST_PACKAGES_ENABLED: all
+
