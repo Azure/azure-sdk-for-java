@@ -93,7 +93,6 @@ public class AADResourceServerClientConfiguration {
      * Use InMemoryClientRegistrationRepository and ClientRegistrationRepository to create
      * AADResourceServerOAuth2AuthorizedClientRepository
      *
-     * @param repo client registration
      * @param oAuth2AuthorizedClientService authorized client repository
      * @return AADResourceServerOAuth2AuthorizedClientRepository Bean
      */
