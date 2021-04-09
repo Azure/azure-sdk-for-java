@@ -5,6 +5,15 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
+    },
+    "tenantId": {
+      "type": "String"
+    },
+    "testApplicationId": {
+      "type": "String"
+    },
+    "testApplicationSecret": {
+      "type": "String"
     }
   },
   "functions": [],
@@ -75,6 +84,26 @@
     "EVENTHUB_NAMESPACE_NAME": {
       "type": "string",
       "value": "[variables('eventHubsNamespaceName')]"
+    },
+    "SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
+    "SPRING_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationId')]"
+    },
+    "SPRING_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "SPRING_RESOURCE_GROUP": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    },
+    "SPRING_SUBSCRIPTION_ID": {
+      "type": "string",
+      "value": "[subscription().subscriptionId]"
     }
   }
 }
