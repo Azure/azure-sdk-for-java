@@ -5,6 +5,7 @@ package com.azure.storage.blob
 
 import com.azure.core.credential.AzureSasCredential
 import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.paging.ContinuablePage
@@ -84,7 +85,7 @@ class ServiceAPITest extends APISpec {
     def "SAS Sanitization"() {
         given:
         def identifier = "id with spaces"
-        def blobName = UUID.randomUUID().toString()
+        def blobName = generateBlobName()
         cc.setAccessPolicy(null, Arrays.asList(new BlobSignedIdentifier()
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
@@ -97,9 +98,9 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Endpoint with SAS built in"
-        new BlobContainerClientBuilder()
+        optionalRecordingPolicy(new BlobContainerClientBuilder()
             .httpClient(getHttpClient())
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getBlobClient(blobName)
             .downloadContent()
@@ -117,10 +118,10 @@ class ServiceAPITest extends APISpec {
 
         when: "Connection string with SAS"
         def connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas
-        new BlobContainerClientBuilder()
+        optionalRecordingPolicy(new BlobContainerClientBuilder()
             .httpClient(getHttpClient())
             .connectionString(connectionString)
-            .containerName(cc.getBlobContainerName())
+            .containerName(cc.getBlobContainerName()))
             .buildClient()
             .getBlobClient(blobName)
             .downloadContent()
@@ -132,6 +133,13 @@ class ServiceAPITest extends APISpec {
         _ | unsanitize
         _ | true
         _ | false
+    }
+
+    BlobContainerClientBuilder optionalRecordingPolicy(BlobContainerClientBuilder builder) {
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+        return builder
     }
 
     def "List containers"() {

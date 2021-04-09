@@ -57,11 +57,11 @@ public class StorageConnectionStringTest {
         Assertions.assertEquals(StorageAuthenticationSettings.Type.SAS_TOKEN,
                 authSettings.getType());
         Assertions.assertNotNull(authSettings.getSasToken());
-        assertSasTokensEqual(authSettings.getSasToken(),SAS_TOKEN);
+        assertSasTokensEqual(authSettings.getSasToken(), SAS_TOKEN);
         Assertions.assertNull(storageConnectionString.getAccountName());
     }
 
-    private static void assertSasTokensEqual(String left, String right){
+    private static void assertSasTokensEqual(String left, String right) {
         Map<String, String[]> leftMap = SasImplUtils.parseQueryString(left);
         Map<String, String[]> rightMap = SasImplUtils.parseQueryString(right);
 
