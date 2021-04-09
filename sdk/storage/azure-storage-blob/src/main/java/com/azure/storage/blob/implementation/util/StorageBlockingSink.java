@@ -8,9 +8,7 @@ import reactor.core.publisher.Sinks;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This is a lightweight wrapper around Sinks.Many to implement a Sink backed by a LinkedBlockingQueue, effectively
@@ -25,6 +23,7 @@ public class StorageBlockingSink {
     */
     private final Sinks.Many<ByteBuffer> writeSink;
     private static final int WRITE_RETRY_IN_SECONDS = 3;
+    LinkedBlockingQueue<ByteBuffer> writeLimitQueue;
 
     /**
      * Create a new StorageBlockingSink.
@@ -35,7 +34,7 @@ public class StorageBlockingSink {
         backpressure from downstream. Its capacity is 1 to keep the buffer as small as possible, as downstream
         implementations do their own buffering.
         */
-        Queue<ByteBuffer> writeLimitQueue = new LinkedBlockingQueue<>(1);
+        this.writeLimitQueue = new LinkedBlockingQueue<>(1);
         this.writeSink = Sinks.many().unicast().onBackpressureBuffer(writeLimitQueue);
     }
 
@@ -45,41 +44,35 @@ public class StorageBlockingSink {
      * @param buffer {@link ByteBuffer} to emit.
      * @return an optional IOException if an unrecoverable error was thrown.
      */
-    public IOException tryEmitNext(ByteBuffer buffer) {
+    public void tryEmitNext(ByteBuffer buffer) throws Exception {
         /*
         tryEmitNext returns a Sinks.EmitResult that indicates different success/error cases we can
         potentially handle (in case we want to retry transmission).
         */
-        boolean shouldRetry = false;
-        do {
-            final Sinks.EmitResult writeResult = this.writeSink.tryEmitNext(buffer);
-
-            switch (writeResult) {
-                case OK: // Success
-                    return null;
-                case FAIL_OVERFLOW: { // When queue overflows. This indicates there is backpressure.
-                    shouldRetry = true;
-                    try {
-                        TimeUnit.SECONDS.sleep(WRITE_RETRY_IN_SECONDS);
-                    } catch (InterruptedException e) {
-                        /*
-                        Just throw the error and do not populate the error field since a customer can recover from
-                        this error
-                        */
-                        throw logger.logExceptionAsError(new RuntimeException(e));
-                    }
-                    break;
+        final Sinks.EmitResult writeResult = this.writeSink.tryEmitNext(buffer);
+        switch (writeResult) {
+            case OK: // Success
+                return;
+            case FAIL_OVERFLOW: { // When queue overflows. This indicates there is backpressure.
+                try {
+                    this.writeLimitQueue.put(buffer);
+                } catch (InterruptedException e) {
+                    /*
+                    Just throw the error and do not populate the error field since a customer can recover from
+                    this error
+                    */
+                    throw logger.logExceptionAsError(new RuntimeException(e));
                 }
-                case FAIL_TERMINATED: // Flux already emitted completion signal. We implicitly save customer from hitting this state by calling checkStreamState before write.
-                case FAIL_CANCELLED: // Flux got a cancellation signal.
-                case FAIL_NON_SERIALIZED: // Concurrent calls to tryEmitNext.
-                case FAIL_ZERO_SUBSCRIBER: // No one ever subscribed to Flux. This should not happen since we manage the subscribe process in the constructor.
-                default: // This case shouldnt get hit - Would it be better to do nothing in this case?
-                    return new IOException("Faulted stream due to underlying sink write failure, "
-                        + "result:" + writeResult, null);
+                break;
             }
-        } while (shouldRetry);
-        return null;
+            case FAIL_TERMINATED: // Flux already emitted completion signal. We implicitly save customer from hitting this state by calling checkStreamState before write.
+            case FAIL_CANCELLED: // Flux got a cancellation signal.
+            case FAIL_NON_SERIALIZED: // Concurrent calls to tryEmitNext.
+            case FAIL_ZERO_SUBSCRIBER: // No one ever subscribed to Flux. This should not happen since we manage the subscribe process in the constructor.
+            default: // This case shouldnt get hit - Would it be better to do nothing in this case?
+                throw logger.logThrowableAsError(new IOException("Faulted stream due to underlying sink write failure, "
+                    + "result:" + writeResult, null));
+        }
     }
 
     /**
