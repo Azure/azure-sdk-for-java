@@ -226,6 +226,7 @@ com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.1;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
