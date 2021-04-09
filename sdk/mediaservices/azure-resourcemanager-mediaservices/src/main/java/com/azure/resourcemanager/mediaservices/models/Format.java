@@ -22,8 +22,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Format")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ImageFormat", value = ImageFormat.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.JpgFormat", value = JpgFormat.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.PngFormat", value = PngFormat.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.MultiBitrateFormat", value = MultiBitrateFormat.class)
 })
 @JsonFlatten
