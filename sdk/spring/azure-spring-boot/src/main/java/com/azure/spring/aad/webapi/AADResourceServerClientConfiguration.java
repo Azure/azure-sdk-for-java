@@ -103,10 +103,20 @@ public class AADResourceServerClientConfiguration {
         return new AADResourceServerOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService, repo);
     }
 
+    /**
+     * Create clients based on configuration items
+     *
+     * @throws IllegalStateException throw if AuthorizationGrantType is authorization_code
+     * @return result of created Clients
+     */
     public List<ClientRegistration> createClients() {
         List<ClientRegistration> result = new ArrayList<>();
         for (String id : properties.getAuthorizationClients().keySet()) {
             AuthorizationClientProperties authorizationProperties = properties.getAuthorizationClients().get(id);
+            if (AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(authorizationProperties.getAuthorizationGrantType())) {
+                throw new IllegalStateException("Web Api do not support authorization_code grant type. id = "
+                    + id + ".");
+            }
             // The default is null in order to be compatible with previous OBO flow.
             if (authorizationProperties.getAuthorizationGrantType() == null || AADAuthorizationGrantType.ON_BEHALF_OF
                 .equals(authorizationProperties.getAuthorizationGrantType())) {

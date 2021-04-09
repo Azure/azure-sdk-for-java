@@ -18,7 +18,7 @@ com.microsoft.azure.cognitiveservices:azure-cognitiveservices-newssearch;1.1.0-b
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-videosearch;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-visualsearch;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-websearch;1.1.0-beta.1;1.1.0-beta.1
-com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;1.0.5-beta;1.0.6-beta
+com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;1.0.6-beta;1.0.7-beta
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-contentmoderator;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customvision-prediction;1.1.0-beta.3;1.1.0-beta.3
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customvision-training;1.1.0-beta.3;1.1.0-beta.3

@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -358,6 +360,17 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
                 + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
         }
+
+        authorizationClients.values()
+                            .stream()
+                            .filter(AuthorizationClientProperties::isOnDemand)
+                            .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                            .filter(Objects::nonNull)
+                            .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
+                            .findAny()
+                            .ifPresent(notUsed -> {
+                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
+                            });
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

@@ -671,6 +671,8 @@
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
+        <module>sdk/databoxedge</module>
+        <module>sdk/databricks</module>
         <module>sdk/datadog</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deviceupdate</module>
@@ -678,6 +680,7 @@
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
+        <module>sdk/frontdoor</module>
         <module>sdk/hdinsight</module>
         <module>sdk/healthbot</module>
         <module>sdk/hybridkubernetes</module>
@@ -701,6 +704,7 @@
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
         <module>sdk/resourcegraph</module>
+        <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
