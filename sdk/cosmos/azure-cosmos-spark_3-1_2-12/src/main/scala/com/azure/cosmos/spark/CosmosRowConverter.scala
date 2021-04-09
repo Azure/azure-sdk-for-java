@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, Obj
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.catalyst.encoders.RowEncoder
+import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
 
 import java.time.{OffsetDateTime, ZoneOffset}
@@ -42,10 +42,11 @@ private object CosmosRowConverter
         .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
 
     def fromObjectNodeToInternalRow(schema: StructType,
+                                    rowSerializer: ExpressionEncoder.Serializer[Row],
                                     objectNode: ObjectNode,
                                     schemaConversionMode: SchemaConversionMode): InternalRow = {
         val row = fromObjectNodeToRow(schema, objectNode, schemaConversionMode)
-        RowEncoder(schema).createSerializer().apply(row)
+        rowSerializer.apply(row)
     }
 
     def fromObjectNodeToRow(schema: StructType,
