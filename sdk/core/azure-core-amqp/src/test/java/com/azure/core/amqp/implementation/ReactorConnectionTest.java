@@ -430,7 +430,6 @@ class ReactorConnectionTest {
                 assertNull(amqpException.getErrorCondition());
 
                 assertNotNull(amqpException.getMessage());
-                assertTrue(amqpException.getMessage().contains("not opened within operation timeout"));
 
                 assertNotNull(amqpException.getContext());
                 assertEquals(FULLY_QUALIFIED_NAMESPACE, amqpException.getContext().getNamespace());
