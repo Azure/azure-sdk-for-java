@@ -18,7 +18,7 @@
   },
   "functions": [],
   "variables": {
-    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-eventhub')]",
+    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-kafka-eventhub')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
     "location": "[resourceGroup().location]"
   },
@@ -81,27 +81,27 @@
     }
   ],
   "outputs": {
-    "EVENTHUB_NAMESPACE_NAME": {
+    "EVENTHUB_NAMESPACE_NAME_KAFKA": {
       "type": "string",
       "value": "[variables('eventHubsNamespaceName')]"
     },
-    "SPRING_TENANT_ID": {
+    "SPRING_TENANT_ID_KAFKA": {
       "type": "string",
       "value": "[parameters('tenantId')]"
     },
-    "SPRING_CLIENT_ID": {
+    "SPRING_CLIENT_ID_KAFKA": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
-    "SPRING_CLIENT_SECRET": {
+    "SPRING_CLIENT_SECRET_KAFKA": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "SPRING_RESOURCE_GROUP": {
+    "SPRING_RESOURCE_GROUP_KAFKA": {
       "type": "string",
       "value": "[resourceGroup().name]"
     },
-    "SPRING_SUBSCRIPTION_ID": {
+    "SPRING_SUBSCRIPTION_ID_KAFKA": {
       "type": "string",
       "value": "[subscription().subscriptionId]"
     }

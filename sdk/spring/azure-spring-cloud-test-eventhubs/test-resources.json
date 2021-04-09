@@ -13,9 +13,9 @@
   },
   "functions": [],
   "variables": {
-    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-cloud-eventhub')]",
+    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-test-eventhub')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
-    "storageAccountName": "[concat(substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 19), 'could')]",
+    "storageAccountName": "[concat(substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 20), 'test')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -324,15 +324,15 @@
     }
   ],
   "outputs": {
-    "STORAGE_ACCOUNT": {
+    "STORAGE_ACCOUNT_TEST_EVENTHUBS": {
       "type": "string",
       "value": "[variables('storageAccountName')]"
     },
-    "STORAGE_ACCOUNT_KEY": {
+    "STORAGE_ACCOUNT_KEY_TEST_EVENTHUBS": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value]"
     },
-    "EVENTHUB_CONNECTION_STRING": {
+    "EVENTHUB_CONNECTION_STRING_TEST_EVENTHUBS": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), '2017-04-01').primaryConnectionString]"
     }
