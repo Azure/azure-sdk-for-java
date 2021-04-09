@@ -29,7 +29,7 @@ public final class HttpRequestParameter {
     private String httpMethod;
 
     /*
-     * HTTP reuqest body
+     * HTTP request body
      */
     @JsonProperty(value = "payload", required = true)
     private String payload;
@@ -95,7 +95,7 @@ public final class HttpRequestParameter {
     }
 
     /**
-     * Get the payload property: HTTP reuqest body.
+     * Get the payload property: HTTP request body.
      *
      * @return the payload value.
      */
@@ -104,7 +104,7 @@ public final class HttpRequestParameter {
     }
 
     /**
-     * Set the payload property: HTTP reuqest body.
+     * Set the payload property: HTTP request body.
      *
      * @param payload the payload value to set.
      * @return the HttpRequestParameter object itself.

@@ -16,62 +16,17 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for ComputerVisionErrorCodes.
  */
 public final class ComputerVisionErrorCodes extends ExpandableStringEnum<ComputerVisionErrorCodes> {
-    /** Static value InvalidImageFormat for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes INVALID_IMAGE_FORMAT = fromString("InvalidImageFormat");
+    /** Static value InvalidRequest for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_REQUEST = fromString("InvalidRequest");
 
-    /** Static value UnsupportedMediaType for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes UNSUPPORTED_MEDIA_TYPE = fromString("UnsupportedMediaType");
-
-    /** Static value InvalidImageUrl for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes INVALID_IMAGE_URL = fromString("InvalidImageUrl");
-
-    /** Static value NotSupportedFeature for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes NOT_SUPPORTED_FEATURE = fromString("NotSupportedFeature");
-
-    /** Static value NotSupportedImage for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes NOT_SUPPORTED_IMAGE = fromString("NotSupportedImage");
-
-    /** Static value Timeout for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes TIMEOUT = fromString("Timeout");
+    /** Static value InvalidArgument for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes INVALID_ARGUMENT = fromString("InvalidArgument");
 
     /** Static value InternalServerError for ComputerVisionErrorCodes. */
     public static final ComputerVisionErrorCodes INTERNAL_SERVER_ERROR = fromString("InternalServerError");
 
-    /** Static value InvalidImageSize for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes INVALID_IMAGE_SIZE = fromString("InvalidImageSize");
-
-    /** Static value BadArgument for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes BAD_ARGUMENT = fromString("BadArgument");
-
-    /** Static value DetectFaceError for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes DETECT_FACE_ERROR = fromString("DetectFaceError");
-
-    /** Static value NotSupportedLanguage for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes NOT_SUPPORTED_LANGUAGE = fromString("NotSupportedLanguage");
-
-    /** Static value InvalidThumbnailSize for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes INVALID_THUMBNAIL_SIZE = fromString("InvalidThumbnailSize");
-
-    /** Static value InvalidDetails for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes INVALID_DETAILS = fromString("InvalidDetails");
-
-    /** Static value InvalidModel for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes INVALID_MODEL = fromString("InvalidModel");
-
-    /** Static value CancelledRequest for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes CANCELLED_REQUEST = fromString("CancelledRequest");
-
-    /** Static value NotSupportedVisualFeature for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes NOT_SUPPORTED_VISUAL_FEATURE = fromString("NotSupportedVisualFeature");
-
-    /** Static value FailedToProcess for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes FAILED_TO_PROCESS = fromString("FailedToProcess");
-
-    /** Static value Unspecified for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes UNSPECIFIED = fromString("Unspecified");
-
-    /** Static value StorageException for ComputerVisionErrorCodes. */
-    public static final ComputerVisionErrorCodes STORAGE_EXCEPTION = fromString("StorageException");
+    /** Static value ServiceUnavailable for ComputerVisionErrorCodes. */
+    public static final ComputerVisionErrorCodes SERVICE_UNAVAILABLE = fromString("ServiceUnavailable");
 
     /**
      * Creates or finds a ComputerVisionErrorCodes from its string representation.

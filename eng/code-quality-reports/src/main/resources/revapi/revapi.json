@@ -59,6 +59,47 @@
       },
       {
         "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class javax\\.servlet\\.ServletContextEvent",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.ServletContextCleaner"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.avalon\\.framework\\.logger\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.AvalonLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.AvalonLogger"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.log\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.LogKitLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.LogKitLogger"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.log4j\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.Log4JLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.Log4JLogger"
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "class org.apache.http.impl.client.HttpRequestTaskCallable<V extends java.lang.Object>",
+        "justification": "We allow this in org.apache.http.impl.client.HttpRequestFutureTask<V>"
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
+        "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
+        "justification": "We allow this in org.apache.http.HttpClientConnection>"
+      },
+      {
+        "regex": true,
         "code": "java.class.nonPublicPartOfAPI",
         "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.com\\..*",
         "justification": "skip check for third party files."
@@ -415,6 +456,33 @@
         "old": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
         "new": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
         "justification": "Correct the event type defined in swagger file"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.ProxyOptions com.azure.core.http.ProxyOptions::fromConfiguration(com.azure.core.util.Configuration, boolean)",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method <T> T com.azure.core.util.serializer.SerializerAdapter::deserialize(byte[], java.lang.reflect.Type, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method byte[] com.azure.core.util.serializer.SerializerAdapter::serializeToBytes(java.lang.Object, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "@interface com.azure.core.annotation.ServiceClient",
+        "new": "@interface com.azure.core.annotation.ServiceClient",
+        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "@interface com.azure.core.annotation.ServiceMethod",
+        "new": "@interface com.azure.core.annotation.ServiceMethod",
+        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
       }
     ]
   }
