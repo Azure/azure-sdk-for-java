@@ -45,7 +45,7 @@ public @interface HttpClientServiceVersionAugmentedSource {
      *
      * @return A list of supported service version strings.
      */
-    String[] serviceVersions() default { };
+    String[] serviceVersions() default {};
 
     /**
      * The class that represents the service version type used by the test method.
@@ -60,7 +60,8 @@ public @interface HttpClientServiceVersionAugmentedSource {
     Class<? extends ServiceVersion> serviceVersionType();
 
     /**
-     * A flag indicating if the test method ignores {@link HttpClient HttpClients} that the test run is expected to use.
+     * A flag indicating if the test method ignores {@link HttpClient HttpClients} that the test run is expected to
+     * use.
      * <p>
      * When {@link TestMode} is {@link TestMode#PLAYBACK} this value is ignored as playback uses a specialized
      * HttpClient that doesn't make network calls.

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
+import org.junit.platform.commons.support.ReflectionSupport;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -71,7 +72,8 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         // If the sourceSupplier isn't provided don't retrieve parameterized testing values.
         List<Arguments> parameterizedTestingValues = null;
         if (!noSourceSupplier) {
-            parameterizedTestingValues = getParameterizedTestingValues(context, sourceSupplier);
+            Object source = invokeSupplierMethod(context, sourceSupplier);
+            parameterizedTestingValues = convertSupplierSourceToArguments(source);
         }
 
         /*
@@ -113,7 +115,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
      * This uses reflection to convert the string values into their enum representation. If the string set is null
      * 'getLatest' will be the only value returned.
      */
-    private static List<? extends ServiceVersion> getServiceVersions(String[] serviceVersionStrings,
+    static List<? extends ServiceVersion> getServiceVersions(String[] serviceVersionStrings,
         boolean useLatestServiceVersionOnly, Class<? extends ServiceVersion> serviceVersionType)
         throws ReflectiveOperationException {
         if (CoreUtils.isNullOrEmpty(serviceVersionStrings) || useLatestServiceVersionOnly) {
@@ -135,28 +137,26 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
             .collect(Collectors.toList());
     }
 
-    private static List<Arguments> getParameterizedTestingValues(ExtensionContext context, String sourceSupplier)
-        throws ReflectiveOperationException {
-        // The method is fully qualified.
-
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    static Object invokeSupplierMethod(ExtensionContext context, String sourceSupplier) throws Exception {
         Class<?> sourceSupplierClass;
         Method sourceSupplierMethod;
+
+        // The method is fully qualified.
         if (sourceSupplier.contains("#")) {
             String[] classAndMethod = sourceSupplier.split("#", 2);
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            if (classLoader == null) {
-                classLoader = ClassLoader.getSystemClassLoader();
-            }
 
-            sourceSupplierClass = classLoader.loadClass(classAndMethod[0]);
-            sourceSupplierMethod = sourceSupplierClass.getMethod(classAndMethod[1]);
+            sourceSupplierClass = ReflectionSupport.tryToLoadClass(classAndMethod[0]).get();
+            sourceSupplierMethod = ReflectionSupport.findMethod(sourceSupplierClass, classAndMethod[1]).get();
         } else {
             sourceSupplierClass = context.getRequiredTestClass();
-            sourceSupplierMethod = sourceSupplierClass.getMethod(sourceSupplier);
+            sourceSupplierMethod = ReflectionSupport.findMethod(sourceSupplierClass, sourceSupplier).get();
         }
 
-        Object source = sourceSupplierMethod.invoke(sourceSupplierClass);
+        return ReflectionSupport.invokeMethod(sourceSupplierMethod, sourceSupplier);
+    }
 
+    static List<Arguments> convertSupplierSourceToArguments(Object source) {
         List<Arguments> arguments = new ArrayList<>();
         if (source instanceof BaseStream) {
             Iterator<?> it = ((BaseStream<?, ?>) source).iterator();
@@ -176,7 +176,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         return arguments;
     }
 
-    private static Arguments convertToArguments(Object value) {
+    static Arguments convertToArguments(Object value) {
         if (value instanceof Arguments) {
             return (Arguments) value;
         }
@@ -188,7 +188,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         return Arguments.of(value);
     }
 
-    private static List<Arguments> createHttpServiceVersionPermutations(List<HttpClient> httpClients,
+    static List<Arguments> createHttpServiceVersionPermutations(List<HttpClient> httpClients,
         List<? extends ServiceVersion> serviceVersions) {
         List<Arguments> arguments = new ArrayList<>();
 
@@ -201,7 +201,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         return arguments;
     }
 
-    private static List<Arguments> createNonHttpPermutations(List<? extends ServiceVersion> serviceVersions,
+    static List<Arguments> createNonHttpPermutations(List<? extends ServiceVersion> serviceVersions,
         List<Arguments> parameterizedTestingValues) {
         List<Arguments> arguments = new ArrayList<>();
 
@@ -214,7 +214,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         return arguments;
     }
 
-    private static List<Arguments> createFullPermutations(List<HttpClient> httpClients,
+    static List<Arguments> createFullPermutations(List<HttpClient> httpClients,
         List<? extends ServiceVersion> serviceVersions, List<Arguments> parameterizedTestingValues) {
         List<Arguments> arguments = new ArrayList<>();
 
@@ -229,7 +229,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         return arguments;
     }
 
-    private static Arguments prependArguments(Object prepend, Arguments arguments) {
+    static Arguments prependArguments(Object prepend, Arguments arguments) {
         Object[] previousArgs = arguments.get();
         Object[] newArgs = new Object[previousArgs.length + 1];
         newArgs[0] = prepend;

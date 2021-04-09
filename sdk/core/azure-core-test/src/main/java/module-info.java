@@ -16,11 +16,12 @@ module com.azure.core.test {
     exports com.azure.core.test.utils;
 
     exports com.azure.core.test.implementation to com.azure.http.netty, com.azure.core.http.jdk.httpclient,
-        com.azure.core.http.okhttp;
+        com.azure.core.http.okhttp, org.junit.platform.commons;
 
+    opens com.azure.core.test to com.fasterxml.jackson.databind, org.junit.platform.commons;
+    opens com.azure.core.test.annotation to org.junit.platform.commons;
     opens com.azure.core.test.implementation to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.core.test.implementation.entities to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.core.test to com.fasterxml.jackson.databind, org.junit.platform.commons;
 
     uses com.azure.core.http.HttpClientProvider;
 }
