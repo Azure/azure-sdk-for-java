@@ -14,6 +14,7 @@ import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagem
 import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
+import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
@@ -175,6 +176,18 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.resolvePrivateLinkServiceIds;
     }
 
+    /** The OpenShiftManagedClustersClient object to access its operations. */
+    private final OpenShiftManagedClustersClient openShiftManagedClusters;
+
+    /**
+     * Gets the OpenShiftManagedClustersClient object to access its operations.
+     *
+     * @return the OpenShiftManagedClustersClient object.
+     */
+    public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
+        return this.openShiftManagedClusters;
+    }
+
     /** The ContainerServicesClient object to access its operations. */
     private final ContainerServicesClient containerServices;
 
@@ -218,6 +231,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
+        this.openShiftManagedClusters = new OpenShiftManagedClustersClientImpl(this);
         this.containerServices = new ContainerServicesClientImpl(this);
     }
 }

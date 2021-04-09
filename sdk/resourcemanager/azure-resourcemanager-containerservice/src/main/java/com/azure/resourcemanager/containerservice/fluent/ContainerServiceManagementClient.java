@@ -88,6 +88,13 @@ public interface ContainerServiceManagementClient {
     ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds();
 
     /**
+     * Gets the OpenShiftManagedClustersClient object to access its operations.
+     *
+     * @return the OpenShiftManagedClustersClient object.
+     */
+    OpenShiftManagedClustersClient getOpenShiftManagedClusters();
+
+    /**
      * Gets the ContainerServicesClient object to access its operations.
      *
      * @return the ContainerServicesClient object.
