@@ -19,59 +19,58 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
-import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionListResultInner;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
+import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
+import com.azure.resourcemanager.containerservice.fluent.models.MaintenanceConfigurationInner;
+import com.azure.resourcemanager.containerservice.models.MaintenanceConfigurationListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
-public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsClientImpl.class);
+/** An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient. */
+public final class MaintenanceConfigurationsClientImpl implements MaintenanceConfigurationsClient {
+    private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
-    private final PrivateEndpointConnectionsService service;
+    private final MaintenanceConfigurationsService service;
 
     /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
-     * Initializes an instance of PrivateEndpointConnectionsClientImpl.
+     * Initializes an instance of MaintenanceConfigurationsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionsClientImpl(ContainerServiceManagementClientImpl client) {
+    MaintenanceConfigurationsClientImpl(ContainerServiceManagementClientImpl client) {
         this.service =
             RestProxy
                 .create(
-                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                    MaintenanceConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ContainerServiceManagementClientPrivateEndpointConnections to be used
+     * The interface defining all the services for ContainerServiceManagementClientMaintenanceConfigurations to be used
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface PrivateEndpointConnectionsService {
+    private interface MaintenanceConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/privateEndpointConnections")
+                + "/managedClusters/{resourceName}/maintenanceConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionListResultInner>> list(
+        Mono<Response<MaintenanceConfigurationListResult>> listByManagedCluster(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -83,66 +82,76 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> get(
+        Mono<Response<MaintenanceConfigurationInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @PathParam("configName") String configName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> update(
+        Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @BodyParam("application/json") PrivateEndpointConnectionInner parameters,
+            @PathParam("configName") String configName,
+            @BodyParam("application/json") MaintenanceConfigurationInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
+        Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @PathParam("configName") String configName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MaintenanceConfigurationListResult>> listByManagedClusterNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of
+     * each maintenance configuration.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionListResultInner>> listWithResponseAsync(
+    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterSinglePageAsync(
         String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -169,7 +178,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .withContext(
                 context ->
                     service
-                        .list(
+                        .listByManagedCluster(
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
@@ -177,12 +186,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             resourceName,
                             accept,
                             context))
+            .<PagedResponse<MaintenanceConfigurationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of
+     * each maintenance configuration.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -190,10 +208,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionListResultInner>> listWithResponseAsync(
+    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterSinglePageAsync(
         String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -218,59 +236,47 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
+            .listByManagedCluster(
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
                 accept,
-                context);
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of
+     * each maintenance configuration.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionListResultInner> listAsync(String resourceGroupName, String resourceName) {
-        return listWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<PrivateEndpointConnectionListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(
+        String resourceGroupName, String resourceName) {
+        return new PagedFlux<>(
+            () -> listByManagedClusterSinglePageAsync(resourceGroupName, resourceName),
+            nextLink -> listByManagedClusterNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String resourceName) {
-        return listAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of
+     * each maintenance configuration.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -278,28 +284,65 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionListResultInner> listWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(
         String resourceGroupName, String resourceName, Context context) {
-        return listWithResponseAsync(resourceGroupName, resourceName, context).block();
+        return new PagedFlux<>(
+            () -> listByManagedClusterSinglePageAsync(resourceGroupName, resourceName, context),
+            nextLink -> listByManagedClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of
+     * each maintenance configuration.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return a list of maintenance configurations in the specified managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(
+        String resourceGroupName, String resourceName) {
+        return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName));
+    }
+
+    /**
+     * Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of
+     * each maintenance configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of maintenance configurations in the specified managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(
+        String resourceGroupName, String resourceName, Context context) {
+        return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName, context));
+    }
+
+    /**
+     * Gets the details of maintenance configurations by managed cluster and resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param configName The name of the maintenance configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of maintenance configurations by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+    public Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String configName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -319,11 +362,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        if (configName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
@@ -337,27 +377,27 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
-                            privateEndpointConnectionName,
+                            configName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * Gets the details of maintenance configurations by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return the details of maintenance configurations by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    private Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String configName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -377,11 +417,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        if (configName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
@@ -393,28 +430,28 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
-                privateEndpointConnectionName,
+                configName,
                 accept,
                 context);
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * Gets the details of maintenance configurations by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return the details of maintenance configurations by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return getWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName)
+    public Mono<MaintenanceConfigurationInner> getAsync(
+        String resourceGroupName, String resourceName, String configName) {
+        return getWithResponseAsync(resourceGroupName, resourceName, configName)
             .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
+                (Response<MaintenanceConfigurationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -424,58 +461,54 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * Gets the details of maintenance configurations by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return the details of maintenance configurations by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, resourceName, privateEndpointConnectionName).block();
+    public MaintenanceConfigurationInner get(String resourceGroupName, String resourceName, String configName) {
+        return getAsync(resourceGroupName, resourceName, configName).block();
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * Gets the details of maintenance configurations by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return the details of maintenance configurations by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context).block();
+    public Response<MaintenanceConfigurationInner> getWithResponse(
+        String resourceGroupName, String resourceName, String configName, Context context) {
+        return getWithResponseAsync(resourceGroupName, resourceName, configName, context).block();
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Creates or updates a maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param configName The name of the maintenance configuration.
+     * @param parameters Parameters supplied to the Create or Update a default maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return maintenance configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters) {
+    public Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -495,11 +528,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        if (configName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -512,13 +542,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .withContext(
                 context ->
                     service
-                        .update(
+                        .createOrUpdate(
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
-                            privateEndpointConnectionName,
+                            configName,
                             parameters,
                             accept,
                             context))
@@ -526,24 +556,24 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Creates or updates a maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param configName The name of the maintenance configuration.
+     * @param parameters Parameters supplied to the Create or Update a default maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return maintenance configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
+    private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
+        String configName,
+        MaintenanceConfigurationInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -564,11 +594,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        if (configName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -579,39 +606,36 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .update(
+            .createOrUpdate(
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
-                privateEndpointConnectionName,
+                configName,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Creates or updates a maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param configName The name of the maintenance configuration.
+     * @param parameters Parameters supplied to the Create or Update a default maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return maintenance configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> updateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters) {
-        return updateWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, parameters)
+    public Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configName, parameters)
             .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
+                (Response<MaintenanceConfigurationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -621,65 +645,61 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Creates or updates a maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param configName The name of the maintenance configuration.
+     * @param parameters Parameters supplied to the Create or Update a default maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return maintenance configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters) {
-        return updateAsync(resourceGroupName, resourceName, privateEndpointConnectionName, parameters).block();
+    public MaintenanceConfigurationInner createOrUpdate(
+        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, resourceName, configName, parameters).block();
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Creates or updates a maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param configName The name of the maintenance configuration.
+     * @param parameters Parameters supplied to the Create or Update a default maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return maintenance configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> updateWithResponse(
+    public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
+        String configName,
+        MaintenanceConfigurationInner parameters,
         Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, parameters, context)
+        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configName, parameters, context)
             .block();
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes the maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String configName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -699,11 +719,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        if (configName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
@@ -717,18 +734,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
-                            privateEndpointConnectionName,
+                            configName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes the maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -736,8 +753,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String configName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -757,11 +774,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        if (configName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
@@ -773,158 +787,132 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
-                privateEndpointConnectionName,
+                configName,
                 accept,
                 context);
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes the maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String configName) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, configName)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes the maintenance configuration in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param configName The name of the maintenance configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, String configName) {
+        deleteAsync(resourceGroupName, resourceName, configName).block();
+    }
+
+    /**
+     * Deletes the maintenance configuration in the specified managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String resourceName, String configName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, configName, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List maintenance configurations operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listByManagedClusterNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<MaintenanceConfigurationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List maintenance configurations operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes the private endpoint connection in the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName).getSyncPoller();
-    }
-
-    /**
-     * Deletes the private endpoint connection in the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Deletes the private endpoint connection in the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the private endpoint connection in the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the private endpoint connection in the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        deleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Deletes the private endpoint connection in the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        deleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context).block();
+        return service
+            .listByManagedClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }
