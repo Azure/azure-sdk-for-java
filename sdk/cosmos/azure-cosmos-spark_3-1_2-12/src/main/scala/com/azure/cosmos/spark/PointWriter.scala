@@ -26,7 +26,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     with CosmosLoggingTrait {
 
   private val maxConcurrency = cosmosWriteConfig.maxConcurrencyOpt
-    .getOrElse(SparkUtils.getNumberOfHostCPUCores() * MaxNumberOfThreadsPerCPUCore)
+    .getOrElse(SparkUtils.getNumberOfHostCPUCores * MaxNumberOfThreadsPerCPUCore)
 
   // TODO: moderakh do perf tuning on the maxConcurrency and also the thread pool config
   val executorService: ExecutorService = new ThreadPoolExecutor(
@@ -81,15 +81,13 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
     executeAsync(() => createWithRetry(partitionKeyValue, objectNode))
       .onComplete {
-        case Success(_) => {
+        case Success(_) =>
           promise.success(Unit)
           pendingPointWrites.remove(promise.future)
-        }
-        case Failure(e) => {
+        case Failure(e) =>
           promise.failure(e)
           capturedFailure.set(e)
           pendingPointWrites.remove(promise.future)
-        }
       }
   }
 
@@ -100,15 +98,13 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
     executeAsync(() => upsertWithRetry(partitionKeyValue, objectNode))
       .onComplete {
-        case Success(_) => {
+        case Success(_) =>
           promise.success(Unit)
           pendingPointWrites.remove(promise.future)
-        }
-        case Failure(e) => {
+        case Failure(e) =>
           promise.failure(e)
           capturedFailure.set(e)
           pendingPointWrites.remove(promise.future)
-        }
       }
   }
 
@@ -171,9 +167,8 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           work()
           future.complete(Unit)
         } catch {
-          case e: Exception => {
+          case e: Exception =>
             future.completeExceptionally(e)
-          }
         }
       }
     })

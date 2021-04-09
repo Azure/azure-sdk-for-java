@@ -26,7 +26,7 @@ private object RowSerializerPool {
   private[this] val expirationIntervalInSeconds = 1800
   private[this] val schemaScopedSerializerMap =
     new TrieMap[StructType, RowSerializerQueue]
-  private[this] val executorService = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory())
+  private[this] val executorService = Executors.newSingleThreadScheduledExecutor(SparkUtils.daemonThreadFactory())
 
   executorService.scheduleWithFixedDelay(
     () => this.onCleanUp(),
@@ -47,7 +47,7 @@ private object RowSerializerPool {
       case None =>
         val newQueue = new RowSerializerQueue()
         newQueue.returnSerializer(serializer)
-        !schemaScopedSerializerMap.putIfAbsent(schema, newQueue).isDefined
+        schemaScopedSerializerMap.putIfAbsent(schema, newQueue).isEmpty
     }
   }
 
