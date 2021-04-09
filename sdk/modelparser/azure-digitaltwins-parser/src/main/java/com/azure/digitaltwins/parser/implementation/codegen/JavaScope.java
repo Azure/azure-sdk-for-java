@@ -118,7 +118,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      * @param subHeadText Text for the first line of the nested scope.
      * @return The {@link JavaScope} object added.
      */
-    public JavaScope scope(String subHeadText) {
+    public JavaScope addScope(String subHeadText) {
         JavaScope javaScope = new JavaScope(subHeadText);
         this.javaStatementList.add(javaScope);
         return javaScope;

@@ -15,6 +15,7 @@ public class JavaFor extends JavaScope {
      */
     public JavaFor(String forText) {
         super("for (" + forText + ")");
+        this.setSuppressNewLine(true);
     }
 
 
