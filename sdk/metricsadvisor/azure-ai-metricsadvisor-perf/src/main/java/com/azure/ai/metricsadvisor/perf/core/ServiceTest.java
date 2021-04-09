@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.metricsadvisor.perf;
+package com.azure.ai.metricsadvisor.perf.core;
 
 import com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient;
 import com.azure.ai.metricsadvisor.MetricsAdvisorClient;
@@ -16,11 +16,11 @@ import com.azure.perf.test.core.PerfStressTest;
 /**
  * Base class for Azure MetricsAdvisor performance tests.
  */
-public abstract class MetricsAdvisorTestBase<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
+public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
         + "or system properties.%n";
 
-    private final ClientLogger logger = new ClientLogger(MetricsAdvisorTestBase.class);
+    private final ClientLogger logger = new ClientLogger(ServiceTest.class);
 
     protected final MetricsAdvisorClient metricsAdvisorClient;
     protected final MetricsAdvisorAsyncClient metricsAdvisorAsyncClient;
@@ -34,7 +34,7 @@ public abstract class MetricsAdvisorTestBase<TOptions extends PerfStressOptions>
      *
      * @param options the options configured for the test.
      */
-    public MetricsAdvisorTestBase(TOptions options) {
+    public ServiceTest(TOptions options) {
         super(options);
 
         final String endpoint = Configuration.getGlobalConfiguration().get("METRICS_ADVISOR_ENDPOINT");

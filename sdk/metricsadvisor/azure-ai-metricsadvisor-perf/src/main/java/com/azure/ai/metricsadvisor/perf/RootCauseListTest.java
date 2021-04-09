@@ -3,13 +3,14 @@
 
 package com.azure.ai.metricsadvisor.perf;
 
+import com.azure.ai.metricsadvisor.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
 /**
  * Performs root cause operations.
  */
-public class RootCauseListTest extends MetricsAdvisorTestBase<PerfStressOptions> {
+public class RootCauseListTest extends ServiceTest<PerfStressOptions> {
     /**
      * Creates RootCauseTest object.
      *

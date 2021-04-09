@@ -4,13 +4,14 @@
 package com.azure.ai.metricsadvisor.perf;
 
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
+import com.azure.ai.metricsadvisor.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
 /**
  * Performs incidents list operations.
  */
-public class IncidentsListTest extends MetricsAdvisorTestBase<PerfStressOptions> {
+public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
     private static final int MAX_LIST_ELEMENTS = 10;
 
     /**

@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor.perf;
 
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
+import com.azure.ai.metricsadvisor.perf.core.ServiceTest;
 import com.azure.core.util.Context;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Mono;
 /**
  * Performs anomalies list operations.
  */
-public class AnomaliesListTest extends MetricsAdvisorTestBase<PerfStressOptions> {
+public class AnomaliesListTest extends ServiceTest<PerfStressOptions> {
     private static final int MAX_LIST_ELEMENTS = 10;
 
     /**
