@@ -30,9 +30,7 @@ import java.util.Objects;
 @ServiceClientBuilder(
         serviceClients = {
             ContainerRegistryClient.class,
-            ContainerRegistryAsyncClient.class,
-            ContainerRepositoryClient.class,
-            ContainerRepositoryAsyncClient.class
+            ContainerRegistryAsyncClient.class
         })
 public final class ContainerRegistryClientBuilder {
     private static final Map<String, String> PROPERTIES =

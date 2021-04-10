@@ -38,8 +38,10 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
-/** Initializes a new instance of the asynchronous ContainerRegistry type. */
-@ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
+/** Initializes a new instance of the asynchronous container repository client.
+ * This client is used for interacting with the repository.
+ * */
+@ServiceClient(builder = ContainerRepositoryClientBuilder.class, isAsync = true)
 public final class ContainerRepositoryAsyncClient {
     private final ContainerRegistryRepositoriesImpl serviceClient;
     private final ContainerRegistriesImpl registriesImplClient;
@@ -91,24 +93,17 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Delete repository.
+     * Delete the repository.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @return the completion.
+     * @throws ResourceNotFoundException thrown if the given name was not found.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteRepositoryResult>> deleteWithResponse() {
         return withContext(context -> deleteWithResponse(context));
     }
 
-    /**
-     * Delete repository.
-     *
-     * @param context Context associated with the operation.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
     Mono<Response<DeleteRepositoryResult>> deleteWithResponse(Context context) {
         try {
             return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
@@ -120,10 +115,11 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Delete repository.
+     * Delete the repository.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @return the completion.
+     * @throws ResourceNotFoundException thrown if the given name was not found.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteRepositoryResult> delete() {
@@ -133,9 +129,10 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Delete registry artifact.
      *
-     * @param digest Digest name.
+     * @param digest the digest to delete.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws NullPointerException thrown if digest is null.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -162,6 +159,7 @@ public final class ContainerRepositoryAsyncClient {
      * @param digest digest to delete.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws NullPointerException thrown if digest is null.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -172,9 +170,10 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Delete tag.
      *
-     * @param tag tag name.
+     * @param tag tag to delete.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @throws NullPointerException thrown if tag is null.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -198,9 +197,10 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Delete tag.
      *
-     * @param tag Tag name.
+     * @param tag tag to delete
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws NullPointerException thrown if tag is null.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -237,7 +237,7 @@ public final class ContainerRepositoryAsyncClient {
      * Get repository properties.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws ResourceNotFoundException thrown if the given repository was not found.
      * @return repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -250,7 +250,7 @@ public final class ContainerRepositoryAsyncClient {
      *
      * <p>This method can take in both a digest as well as a tag.<br>
      * In case a tag is provided it calls the service to get the digest associated with it.</p>
-     * @param tagOrDigest tag or digest associated with the blob.
+     * @param tagOrDigest tag or digest associated with the artifact.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return registry artifact properties.
@@ -267,7 +267,7 @@ public final class ContainerRepositoryAsyncClient {
                 : this.getTagProperties(tagOrDigest).map(a -> a.getDigest());
 
             return getTagMono
-                .flatMap(tag -> this.serviceClient.getRegistryArtifactPropertiesWithResponseAsync(repositoryName, tag))
+                .flatMap(digest -> this.serviceClient.getRegistryArtifactPropertiesWithResponseAsync(repositoryName, digest))
                 .map(res -> Utils.mapResponse(res, Utils::mapArtifactProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
@@ -280,7 +280,7 @@ public final class ContainerRepositoryAsyncClient {
      *
      * <p>This method can take in both a digest as well as a tag.<br>
      * In case a tag is provided it calls the service to get the digest associated with it.</p>
-     * @param tagOrDigest tag or digest associated with the blob.
+     * @param tagOrDigest tag or digest associated with the artifact.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return registry artifact properties.
@@ -291,10 +291,9 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * List registry artifacts based of a repository.
+     * List registry artifacts of a repository.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -303,11 +302,10 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * List manifests of a repository.
+     * List registry artifacts of a repository.
      *
-     * @param options the options associated with the list registy operation.
+     * @param options the options associated with the list registry operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -350,10 +348,10 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Get tag properties
      *
-     * @param tag Tag name.
+     * @param tag name of the tag.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
-     * @return tag attributes by tag.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @return tag properties by tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TagProperties>> getTagPropertiesWithResponse(String tag) {
@@ -377,10 +375,10 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Get tag attributes.
      *
-     * @param tag Tag name.
+     * @param tag name of the tag.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
-     * @return tag attributes by tag.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @return tag properties by tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagProperties> getTagProperties(String tag) {
@@ -391,7 +389,6 @@ public final class ContainerRepositoryAsyncClient {
      * List tags of a repository.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return list of tag details.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -404,7 +401,6 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param options tagOptions to be used for the given operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return list of tag details.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -458,9 +454,8 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Update the content properties of the repository.
      *
-     * @param value Repository attribute value.
+     * @param value Content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -484,9 +479,8 @@ public final class ContainerRepositoryAsyncClient {
     /**
      * Update the content properties of the repository.
      *
-     * @param value Repository attribute value.
+     * @param value Content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -495,12 +489,12 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Update tag attributes.
+     * Update tag properties.
      *
-     * @param tag Tag name.
-     * @param value Repository attribute value.
+     * @param tag Name of the tag.
+     * @param value content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -528,12 +522,12 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Update tag attributes.
+     * Update tag properties.
      *
-     * @param tag Tag name.
-     * @param value Repository attribute value.
+     * @param tag Name of the tag.
+     * @param value content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -542,10 +536,10 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Update attributes of a manifest.
+     * Update properties of a manifest.
      *
-     * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param digest digest.
+     * @param value content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
@@ -574,10 +568,10 @@ public final class ContainerRepositoryAsyncClient {
     }
 
     /**
-     * Update attributes of a manifest.
+     * Update properties of a manifest.
      *
-     * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param digest digest.
+     * @param value content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.

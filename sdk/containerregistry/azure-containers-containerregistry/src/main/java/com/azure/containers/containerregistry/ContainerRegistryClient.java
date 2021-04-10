@@ -24,7 +24,7 @@ public final class ContainerRegistryClient {
     }
 
     /**
-     * List repositories.
+     * List all the repository names in this registry.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @return list of repositories.
@@ -35,12 +35,13 @@ public final class ContainerRegistryClient {
     }
 
     /**
-     * Delete the repository identified by `name`.
+     * Delete the repository identified by 'name'.
      *
-     * @param name Name of the image (including the namespace).
+     * @param name Name of the repository (including the namespace).
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
-     * @return deleted repository.
+     * @throws NullPointerException thrown if the name is null.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteRepositoryResult deleteRepository(String name) {
@@ -48,13 +49,14 @@ public final class ContainerRegistryClient {
     }
 
     /**
-     * Delete the repository identified by `name`.
+     * Delete the repository identified by 'name'.
      *
-     * @param name Name of the image (including the namespace).
+     * @param name Name of the repository (including the namespace).
      * @param context The context to associate with this operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
-     * @return deleted repository.
+     * @throws NullPointerException thrown if the name is null.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String name, Context context) {

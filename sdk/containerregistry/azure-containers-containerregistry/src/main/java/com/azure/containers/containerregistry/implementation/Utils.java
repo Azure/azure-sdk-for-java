@@ -64,10 +64,26 @@ public final class Utils {
         CONTINUATIONLINK_PATTERN = Pattern.compile("<(.+)>;.*");
     }
 
+    /**
+     * This method parses the response to get the continuation token used to make the next pagination call.
+     * The continuation token is returned by the service in the form of a header and not as a nextLink field.
+     * @param listResponse response that is parsed.
+     * @param <T> the model type that is being operated on.
+     * @return paged response with the correct continuation token.
+     */
     public static <T> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<T> listResponse) {
         return Utils.getPagedResponseWithContinuationToken(listResponse, values -> values);
     }
 
+    /**
+     * This method parses the response to get the continuation token used to make the next pagination call.
+     * The continuation token is returned by the service in the form of a header and not as a nextLink field.
+     * @param listResponse response that is parsed.
+     * @param mapperFunction the function that maps the rest api response into the public model exposed by the client.
+     * @param <T> The model type returned by the rest client.
+     * @param <R> The model type returned by the public client.
+     * @return paged response with the correct continuation token.
+     */
     public static <T, R> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<R> listResponse, Function<List<R>, List<T>> mapperFunction) {
         Objects.requireNonNull(mapperFunction);
 
@@ -98,6 +114,11 @@ public final class Utils {
         );
     }
 
+    /**
+     * This method converts the API response codes into well known exceptions.
+     * @param exception The exception returned by the rest client.
+     * @return The exception returned by the public methods.
+     */
     public static Throwable mapException(Throwable exception) {
         if (!(exception instanceof AcrErrorsException)) {
             return exception;
@@ -123,8 +144,15 @@ public final class Utils {
         }
     }
 
-    public static <T, R> Response<R> mapResponse(Response<T> response, Function<T, R> mapFunction)
-    {
+    /**
+     * This method maps a given response to another based on the mapper function.
+     * @param response response that is parsed.
+     * @param mapFunction the function that maps the rest api response into the public model exposed by the client.
+     * @param <T> The model type returned by the rest client.
+     * @param <R> The model type returned by the public client.
+     * @return paged response with the correct continuation token.
+     */
+    public static <T, R> Response<R> mapResponse(Response<T> response, Function<T, R> mapFunction) {
         if (response == null || mapFunction == null) {
             return null;
         }
@@ -277,6 +305,19 @@ public final class Utils {
         );
     }
 
+    /**
+     * This method builds the httpPipeline for the builders.
+     * @param clientOptions The client options
+     * @param logOptions http log options.
+     * @param configuration configuration settings.
+     * @param retryPolicy retry policy
+     * @param credential credentials.
+     * @param perCallPolicies per call policies.
+     * @param perRetryPolicies per retry policies.
+     * @param httpClient http client
+     * @param endpoint endpoint to be called
+     * @return returns the httpPipeline to be consumed by the builders.
+     */
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
                                                  Configuration configuration, RetryPolicy retryPolicy, TokenCredential credential,
                                                  List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient, String endpoint) {

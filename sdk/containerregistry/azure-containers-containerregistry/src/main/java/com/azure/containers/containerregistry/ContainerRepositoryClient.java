@@ -20,18 +20,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ContainerRegistry type. */
-@ServiceClient(builder = ContainerRegistryClientBuilder.class)
+/** Initializes a new instance of the synchronous container repository client.
+ * This client is used for interacting with the repository.
+ * */
+@ServiceClient(builder = ContainerRepositoryClientBuilder.class)
 public final class ContainerRepositoryClient {
-    private final ContainerRepositoryAsyncClient serviceClient;
+    private final ContainerRepositoryAsyncClient asyncClient;
 
-    /**
-     * Initializes an instance of ContainerRegistryRepositories client.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    ContainerRepositoryClient(ContainerRepositoryAsyncClient serviceClient) {
-        this.serviceClient = serviceClient;
+    ContainerRepositoryClient(ContainerRepositoryAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -39,7 +36,7 @@ public final class ContainerRepositoryClient {
      * @return the endpoint associated with the client.
      * */
     public String getEndpoint() {
-        return this.serviceClient.getEndpoint();
+        return this.asyncClient.getEndpoint();
     }
 
     /**
@@ -47,7 +44,7 @@ public final class ContainerRepositoryClient {
      * @return registry associated with the client.
      * */
     public String getRegistry() {
-        return this.serviceClient.getRegistry();
+        return this.asyncClient.getRegistry();
     }
 
     /**
@@ -55,27 +52,27 @@ public final class ContainerRepositoryClient {
      * @return repository associated with the client.
      * */
     public String getRepository() {
-        return this.serviceClient.getRepository();
+        return this.asyncClient.getRepository();
     }
 
     /**
-     * Delete repository.
+     * Delete the repository.
      * @param context Context associated with the operation.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Artifacts deleted as part of the delete operation.
+     * @throws ResourceNotFoundException thrown if the given name was not found.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteRepositoryResult> deleteWithResponse(Context context) {
-        return this.serviceClient.deleteWithResponse(context).block();
+        return this.asyncClient.deleteWithResponse(context).block();
     }
 
     /**
      * Delete repository.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Artifacts deleted as part of the delete operation.
+     * @throws ResourceNotFoundException thrown if the given name was not found.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteRepositoryResult delete() {
@@ -83,17 +80,18 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Delete artifact.
+     * Delete registry artifact.
      *
-     * @param digest Digest name.
+     * @param digest digest to delete.
      * @param context Context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws NullPointerException thrown if digest is null.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRegistryArtifactWithResponse(String digest, Context context) {
-        return this.serviceClient.deleteRegistryArtifactWithResponse(digest, context).block();
+        return this.asyncClient.deleteRegistryArtifactWithResponse(digest, context).block();
     }
 
     /**
@@ -101,7 +99,8 @@ public final class ContainerRepositoryClient {
      *
      * @param digest digest to delete.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws NullPointerException thrown if digest is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRegistryArtifact(String digest) {
@@ -111,23 +110,25 @@ public final class ContainerRepositoryClient {
     /**
      * Delete tag.
      *
-     * @param tag Tag name.
+     * @param tag tag to delete.
      * @param context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws NullPointerException thrown if tag is null.
      * @return response for completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTagWithResponse(String tag, Context context) {
-        return this.serviceClient.deleteTagWithResponse(tag, context).block();
+        return this.asyncClient.deleteTagWithResponse(tag, context).block();
     }
 
     /**
      * Delete tag.
      *
-     * @param tag Tag name.
+     * @param tag tag to delete.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws NullPointerException thrown if tag is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTag(String tag) {
@@ -135,24 +136,24 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Get repository attributes.
+     * Get repository properties.
      *
      * @param context Context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given repository was not found.
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RepositoryProperties> getPropertiesWithResponse(Context context) {
-        return this.serviceClient.getPropertiesWithResponse(context).block();
+        return this.asyncClient.getPropertiesWithResponse(context).block();
     }
 
     /**
-     * Get repository attributes.
+     * Get repository properties.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @throws ResourceNotFoundException thrown if the given repository was not found.
+     * @return repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RepositoryProperties getProperties() {
@@ -165,15 +166,15 @@ public final class ContainerRepositoryClient {
      * <p>This method can take in both a digest as well as a tag.<br>
      * In case a tag is provided it calls the service to get the digest associated with it.</p>
      *
-     * @param digest Digest of a BLOB.
+     * @param digest digest of an artifact.
      * @param context Context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registry attributes.
+     * @throws ResourceNotFoundException thrown if the given repository was not found.
+     * @return registry artifact properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegistryArtifactProperties> getRegistryArtifactPropertiesWithResponse(String digest, Context context) {
-        return this.serviceClient.getRegistryArtifactPropertiesWithResponse(digest, context).block();
+        return this.asyncClient.getRegistryArtifactPropertiesWithResponse(digest, context).block();
     }
 
     /**
@@ -182,10 +183,10 @@ public final class ContainerRepositoryClient {
      * <p>This method can take in both a digest as well as a tag.<br>
      * In case a tag is provided it calls the service to get the digest associated with it.</p>
      *
-     * @param digest Digest of a BLOB.
+     * @param digest digest of an artifact.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registry attributes.
+     * @throws ResourceNotFoundException thrown if the given repository was not found.
+     * @return registry artifact properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryArtifactProperties getRegistryArtifactProperties(String digest) {
@@ -196,7 +197,6 @@ public final class ContainerRepositoryClient {
      * List registry artifacts of a repository.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
      * @return registry artifact properties.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -209,36 +209,35 @@ public final class ContainerRepositoryClient {
      *
      * @param options options associated with the list registry artifacts operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
      * @return registry artifact properties.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryArtifactProperties> listRegistryArtifacts(ListRegistryArtifactOptions options) {
-        return new PagedIterable<>(this.serviceClient.listRegistryArtifacts(options));
+        return new PagedIterable<>(this.asyncClient.listRegistryArtifacts(options));
     }
 
     /**
-     * Get tag attributes by tag.
+     * Get tag properties.
      *
-     * @param tag Tag name.
+     * @param tag tag associated with the artifact.
      * @param context Context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag attributes by tag.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @return tag properties by tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
 
     public Response<TagProperties> getTagPropertiesWithResponse(String tag, Context context) {
-        return this.serviceClient.getTagPropertiesWithResponse(tag, context).block();
+        return this.asyncClient.getTagPropertiesWithResponse(tag, context).block();
     }
 
     /**
-     * Get tag attributes by tag.
+     * Get tag properties by tag.
      *
-     * @param tag Tag name.
+     * @param tag tag associated with the artifact.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag attributes by tag.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @return tag properties by tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TagProperties getTagProperties(String tag) {
@@ -249,7 +248,6 @@ public final class ContainerRepositoryClient {
      * List tags of a repository.
      *
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of tag details.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -262,34 +260,31 @@ public final class ContainerRepositoryClient {
      *
      * @param options options associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of tag details.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TagProperties> listTags(ListTagsOptions options) {
-        return new PagedIterable<TagProperties>(serviceClient.listTags(options));
+        return new PagedIterable<TagProperties>(asyncClient.listTags(options));
     }
 
     /**
      * Update the content properties of the repository.
      *
-     * @param value Repository attribute value.
+     * @param value Content properties to be set.
      * @param context Context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> setPropertiesWithResponse(ContentProperties value, Context context) {
-        return this.serviceClient.setPropertiesWithResponse(value, context).block();
+        return this.asyncClient.setPropertiesWithResponse(value, context).block();
     }
 
     /**
      * Update the content properties of the repository.
      *
-     * @param value Repository attribute value.
+     * @param value Content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(ContentProperties value) {
@@ -299,25 +294,25 @@ public final class ContainerRepositoryClient {
     /**
      * Update tag properties.
      *
-     * @param tag Tag name.
-     * @param value Repository attribute value.
+     * @param tag Name of the tag.
+     * @param value Content properties to be set.
      * @param context Context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setTagPropertiesWithResponse(String tag, ContentProperties value, Context context) {
-        return this.serviceClient.setTagPropertiesWithResponse(tag, value, context).block();
+        return this.asyncClient.setTagPropertiesWithResponse(tag, value, context).block();
     }
 
     /**
      * Update tag properties.
      *
-     * @param tag Tag name.
-     * @param value Repository attribute value.
+     * @param tag Name of the tag.
+     * @param value content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given tag was not found.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setTagProperties(String tag, ContentProperties value) {
@@ -327,24 +322,24 @@ public final class ContainerRepositoryClient {
     /**
      * Update properties of a manifest.
      *
-     * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param digest digest of an artifact.
+     * @param value content properties to be set.
      * @param context Context associated with the operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @return the completion.
      */
     public Response<Void> setManifestPropertiesWithResponse(String digest, ContentProperties value, Context context) {
-        return this.serviceClient.setManifestPropertiesWithResponse(digest, value, context).block();
+        return this.asyncClient.setManifestPropertiesWithResponse(digest, value, context).block();
     }
 
     /**
      * Update properties of a manifest.
      *
-     * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param digest digest of an artifact.
+     * @param value content properties to be set.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws ResourceNotFoundException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the given digest was not found.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setManifestProperties(String digest, ContentProperties value) {

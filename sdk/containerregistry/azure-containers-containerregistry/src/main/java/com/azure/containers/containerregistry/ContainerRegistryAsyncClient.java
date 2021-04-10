@@ -50,10 +50,10 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * List repositories.
+     * List all the repository names in this registry.
      *
-     * @return list of repositories.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @return list of repository names.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listRepositories() {
@@ -94,10 +94,10 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * Delete the repository identified by `name`.
+     * Delete the repository identified by 'name'.
      *
-     * @param name Name of the image (including the namespace).
-     * @return deleted repository.
+     * @param name Name of the repository (including the namespace).
+     * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given name was not found.
      * @throws NullPointerException thrown if the name is null.
@@ -123,10 +123,10 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * Delete the repository identified by `name`.
+     * Delete the repository identified by 'name'.
      *
      * @param name Name of the image (including the namespace).
-     * @return deleted repository.
+     * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given name was not found.
      * @throws NullPointerException thrown if the name is null.
