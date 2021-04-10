@@ -405,7 +405,6 @@ class SparkE2EQueryITest extends IntegrationSpec with Spark with CosmosClient wi
 
       ts.getTime() > 0 shouldBe true
 
-
       val itemResponse = container.readItem(id, new PartitionKey(id), classOf[ObjectNode]).block()
 
       val documentTs = itemResponse.getItem.get("_ts").asLong
