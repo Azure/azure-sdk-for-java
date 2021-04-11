@@ -24,7 +24,8 @@ public class MediaJobOutputStateChangeEventData {
     private MediaJobOutput output;
 
     /*
-     * Gets the Job correlation data.
+     * Gets the Job correlation data. Schema of the data property of an
+     * EventGridEvent for an Microsoft event.
      */
     @JsonProperty(value = "jobCorrelationData")
     private Map<String, String> jobCorrelationData;
@@ -59,7 +60,8 @@ public class MediaJobOutputStateChangeEventData {
     }
 
     /**
-     * Get the jobCorrelationData property: Gets the Job correlation data.
+     * Get the jobCorrelationData property: Gets the Job correlation data. Schema of the data property of an
+     * EventGridEvent for an Microsoft event.
      *
      * @return the jobCorrelationData value.
      */
@@ -68,7 +70,8 @@ public class MediaJobOutputStateChangeEventData {
     }
 
     /**
-     * Set the jobCorrelationData property: Gets the Job correlation data.
+     * Set the jobCorrelationData property: Gets the Job correlation data. Schema of the data property of an
+     * EventGridEvent for an Microsoft event.
      *
      * @param jobCorrelationData the jobCorrelationData value to set.
      * @return the MediaJobOutputStateChangeEventData object itself.

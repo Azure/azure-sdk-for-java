@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.models.CloudEvent;
+import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -115,10 +115,10 @@ public final class EventGridPublisherClientImpl {
      * The interface defining all the services for EventGridPublisherClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{topicHostname}")
+    @Host("https://{topicHostname}")
     @ServiceInterface(name = "EventGridPublisherCl")
     private interface EventGridPublisherClientService {
-        @Post("")
+        @Post("/api/events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishEvents(
@@ -127,7 +127,7 @@ public final class EventGridPublisherClientImpl {
                 @BodyParam("application/json") List<EventGridEvent> events,
                 Context context);
 
-        @Post("")
+        @Post("/api/events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCloudEventEvents(
@@ -136,7 +136,7 @@ public final class EventGridPublisherClientImpl {
                 @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events,
                 Context context);
 
-        @Post("")
+        @Post("/api/events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCustomEventEvents(

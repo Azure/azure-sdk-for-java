@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.JobOutputAsset")
 @JsonFlatten
 @Fluent
-public final class MediaJobOutputAsset extends MediaJobOutput {
+public class MediaJobOutputAsset extends MediaJobOutput {
     /*
      * Gets the Job output asset name.
      */
