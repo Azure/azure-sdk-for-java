@@ -18,6 +18,7 @@ public class JavaIf extends JavaScope {
     public JavaIf(String ifText, StatementAdder parent) {
         super("if (" + ifText + ")");
         this.parent = parent;
+        this.setSuppressNewLine(true);
     }
 
     /**
@@ -26,7 +27,7 @@ public class JavaIf extends JavaScope {
      * @param elseIfText Text for the parenthesized portion of the else if statement.
      * @return The {@link JavaElseIf} object added.
      */
-    public JavaElseIf elseIf(String elseIfText) {
+    public JavaElseIf addElseIf(String elseIfText) {
         JavaElseIf javaElseIf = new JavaElseIf(elseIfText, this.parent);
         this.parent.addStatement(javaElseIf);
         return javaElseIf;

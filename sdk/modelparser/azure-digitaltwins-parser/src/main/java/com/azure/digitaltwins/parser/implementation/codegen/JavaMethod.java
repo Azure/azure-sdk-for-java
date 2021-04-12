@@ -112,7 +112,7 @@ public class JavaMethod extends JavaDeclaration {
      * @param description Optional text description of parameter.
      * @return The {@link JavaMethod} object itself.
      */
-    public JavaMethod param(String type, String name, String description) {
+    public JavaMethod addParameter(String type, String name, String description) {
         if (description != null && !description.endsWith(".")) {
             throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
@@ -132,7 +132,7 @@ public class JavaMethod extends JavaDeclaration {
      * @param returnDescription Description of the return value.
      * @return The {@link JavaMethod} object itself.
      */
-    public JavaMethod returns(String returnDescription) {
+    public JavaMethod addReturnComment(String returnDescription) {
         if (this.getType().equals("void")) {
             throw logger.logExceptionAsError(new StyleException("Void return value of method '" + this.getName() + "' must not be documented. -- SA1617"));
         }
@@ -161,11 +161,6 @@ public class JavaMethod extends JavaDeclaration {
         }
 
         String paramList = this.parameters.stream().map(p -> p.getType() + " " + p.getName()).collect(Collectors.joining(", "));
-        String terminator = "";
-
-        if (this.body == null) {
-            terminator = ";";
-        }
 
         if (this.body == null) {
             codeWriter.writeLine(this.getDecoratedName(typeParams) + "(" + paramList + ")" + ";");
@@ -184,8 +179,6 @@ public class JavaMethod extends JavaDeclaration {
 
         if (this.body != null) {
             this.body.generateCode(codeWriter);
-        } else {
-            codeWriter.blank();
         }
     }
 
@@ -194,7 +187,7 @@ public class JavaMethod extends JavaDeclaration {
      */
     @Override
     public void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
-        codeWriter.blank();
+        codeWriter.addNewLine();
 
         if (this.inheritDoc) {
             codeWriter.writeLine("/** {@inheritDoc} */");

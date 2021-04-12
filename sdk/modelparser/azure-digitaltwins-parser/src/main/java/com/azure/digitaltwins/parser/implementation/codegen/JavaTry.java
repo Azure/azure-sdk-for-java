@@ -18,6 +18,7 @@ public class JavaTry extends JavaScope {
     public JavaTry(StatementAdder parent) {
         super("try");
         this.parent = parent;
+        this.setSuppressNewLine(true);
     }
 
     /**

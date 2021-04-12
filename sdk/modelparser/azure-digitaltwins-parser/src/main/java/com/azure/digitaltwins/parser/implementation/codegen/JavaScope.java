@@ -18,13 +18,55 @@ public class JavaScope extends JavaStatement implements StatementAdder {
     /**
      * Boolean value indicating whether the blank line preceding the scope should be suppressed.
      */
-    private boolean suppressBreak;
+    private boolean suppressBlank;
+
+    /**
+     * Boolean value indicating whether or not the next text should be written with any indents.
+     */
+    private boolean outDent;
+
+    /**
+     * Boolean value indicating whether or not the nex text should end the line with a line break.
+     */
+    private boolean suppressNewLine;
+
+    /**
+     * @return Boolean value indicating whether or not the next text should end the line with a line break.
+     */
+    protected boolean getSuppressNewLine() {
+        return this.suppressNewLine;
+    }
+
+    /**
+     * Sets a boolean value indicating whether or not the next text should end the line with a line break.
+     *
+     * @param value True if the next text should not end the line with a line break.
+     */
+    protected void setSuppressNewLine(boolean value) {
+        this.suppressNewLine = value;
+    }
+
+    /**
+     * @return Boolean value indicating whether or not the next text should be written with any indents.
+     */
+    protected boolean getOutDent() {
+        return this.outDent;
+    }
+
+    /**
+     * Sets a boolean value indicating whether or not the next text should be written with any indents.
+     *
+     * @param value True if the next text should not be written with any indent.
+     */
+    protected void setOutDent(boolean value) {
+        this.outDent = value;
+    }
 
     /**
      * @return Boolean value indicating whether the blank line preceding the scope should be suppressed.
      */
-    protected boolean getSuppressBreak() {
-        return this.suppressBreak;
+    protected boolean getSuppressBlank() {
+        return this.suppressBlank;
     }
 
     /**
@@ -32,8 +74,8 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      *
      * @param value boolean value indicating whether the blank line preceding the scope should be suppressed.
      */
-    protected void setSuppressBreak(boolean value) {
-        this.suppressBreak = value;
+    protected void setSuppressBlank(boolean value) {
+        this.suppressBlank = value;
     }
 
     /**
@@ -66,7 +108,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
         this.headText = headText;
         javaStatementList = new ArrayList<>();
 
-        this.suppressBreak = false;
+        this.suppressBlank = false;
         this.doubleIndent = false;
     }
 
@@ -76,7 +118,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      * @param subHeadText Text for the first line of the nested scope.
      * @return The {@link JavaScope} object added.
      */
-    public JavaScope scope(String subHeadText) {
+    public JavaScope addScope(String subHeadText) {
         JavaScope javaScope = new JavaScope(subHeadText);
         this.javaStatementList.add(javaScope);
         return javaScope;
@@ -199,7 +241,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
     @Override
     public void generateCode(CodeWriter codeWriter) throws IOException {
         if (this.headText != null) {
-            codeWriter.writeLine(headText, true, getSuppressBreak(), false);
+            codeWriter.writeLine(headText, getSuppressNewLine(), getSuppressBlank(), getOutDent());
         }
 
         codeWriter.openScope();

@@ -31,6 +31,13 @@ class IndentedFileWriter {
         fileWriter.append(calculateIndentation()).append(input).append("\r\n");
     }
 
+    void writeLineWithNoIndent(String input) throws IOException {
+        if (this.isDebug) {
+            this.stringBuilder.append(input).append("\r\n");
+        }
+        fileWriter.append(input).append("\r\n");
+    }
+
     void writeWithIndent(String input) throws IOException {
         if (this.isDebug) {
             stringBuilder.append(calculateIndentation()).append(input);
@@ -43,13 +50,6 @@ class IndentedFileWriter {
             this.stringBuilder.append(input);
         }
         fileWriter.append(input);
-    }
-
-    void writeLineWithNoIndent(String input) throws IOException {
-        if (this.isDebug) {
-            this.stringBuilder.append(input).append("\r\n");
-        }
-        fileWriter.append(input).append("\r\n");
     }
 
     void increaseIndent() {

@@ -70,7 +70,7 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
         this.writeSummaryAndRemarks(codeWriter);
         this.writeAttributes(codeWriter);
 
-        codeWriter.writeLine(this.getDecoratedName(null));
+        codeWriter.writeLine(this.getDecoratedName(null), true);
         codeWriter.openScope();
 
         if (this.isSorted) {
@@ -78,11 +78,11 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
         }
 
         for (EnumVal enumVal : this.enumValues) {
+            codeWriter.addNewLine();
             codeWriter.writeLine("/**");
-            codeWriter.writeLine("* " + enumVal.getDescription());
-            codeWriter.writeLine("*/");
-            codeWriter.writeLine(enumVal.getName());
-            codeWriter.blank();
+            codeWriter.writeLine(" * " + enumVal.getDescription());
+            codeWriter.writeLine(" */");
+            codeWriter.writeLine(enumVal.getName() + ",");
         }
 
         codeWriter.closeScope();

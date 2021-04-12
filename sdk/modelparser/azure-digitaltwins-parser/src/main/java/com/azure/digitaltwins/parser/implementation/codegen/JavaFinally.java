@@ -13,7 +13,7 @@ public class JavaFinally extends JavaScope {
      */
     public JavaFinally() {
         super("finally");
-        this.setSuppressBreak(true);
+        this.setSuppressBlank(true);
     }
 
     /**

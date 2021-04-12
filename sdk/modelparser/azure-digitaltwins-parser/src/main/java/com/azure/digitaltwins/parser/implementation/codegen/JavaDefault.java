@@ -22,6 +22,6 @@ public class JavaDefault extends JavaStatement {
      */
     @Override
     public void generateCode(CodeWriter codeWriter) throws IOException {
-        codeWriter.writeLine("default:", false, true);
+        codeWriter.writeLine("default:", false, false, true);
     }
 }

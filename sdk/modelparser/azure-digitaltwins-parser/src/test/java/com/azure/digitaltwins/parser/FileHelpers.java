@@ -10,6 +10,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 class FileHelpers {
+    public static String getTestResourcesDirectoryPath(String subDirectoryName) {
+        Path resourceDirectory = Paths.get("src", "test", "resources", subDirectoryName);
+        return resourceDirectory.toFile().getAbsolutePath() + "/";
+    }
+
     public static String getTestResourceFilePath(String subDirectoryName, String fileName) {
         Path resourceDirectory = Paths.get("src", "test", "resources", subDirectoryName);
         return resourceDirectory.toFile().getAbsolutePath() + "/" + fileName;
@@ -26,5 +31,16 @@ class FileHelpers {
     public static void deleteFile(String subDirectoryName, String fileName) {
         File file = new File(FileHelpers.getTestResourceFilePath(subDirectoryName, fileName));
         file.delete();
+    }
+
+    public static void deleteJavaFilesInSubDirectory(String subDirectoryName) {
+        File generatedCodeDirectory = new File(FileHelpers.getTestResourcesDirectoryPath(subDirectoryName));
+        File[] generatedDirectoryFiles = generatedCodeDirectory.listFiles();
+
+        for (File file : generatedDirectoryFiles) {
+            if (file.getName().endsWith(".java")) {
+                file.delete();
+            }
+        }
     }
 }

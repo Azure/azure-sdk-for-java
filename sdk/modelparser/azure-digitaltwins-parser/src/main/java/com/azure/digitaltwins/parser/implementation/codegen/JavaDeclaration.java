@@ -148,12 +148,13 @@ public class JavaDeclaration {
      *
      * @param text Text for the summary.
      */
-    public void addSummary(String text) {
+    public JavaDeclaration addSummary(String text) {
         if (!text.endsWith(".")) {
             throw logger.logExceptionAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.summaryLines.add(text);
+        return this;
     }
 
     /**
@@ -193,8 +194,7 @@ public class JavaDeclaration {
      * @throws IOException
      */
     protected void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
-        codeWriter.blank();
-
+        codeWriter.addNewLine();
         if (this.inheritDoc) {
             codeWriter.writeLine("/** {@inheritDoc} */");
         } else if (!summaryLines.isEmpty()) {

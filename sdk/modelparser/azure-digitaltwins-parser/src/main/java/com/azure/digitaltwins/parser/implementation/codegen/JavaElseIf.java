@@ -19,7 +19,9 @@ public class JavaElseIf extends JavaScope {
     public JavaElseIf(String elseIfText, StatementAdder parent) {
         super("else if (" + elseIfText + ")");
         this.parent = parent;
-        this.setSuppressBreak(true);
+        this.setSuppressBlank(true);
+        this.setSuppressNewLine(true);
+        this.setOutDent(true);
     }
 
     /**

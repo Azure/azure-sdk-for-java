@@ -45,7 +45,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -72,7 +71,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -99,7 +97,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -126,7 +123,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -153,7 +149,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -180,7 +175,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             "TestType");
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -207,7 +201,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             "TestType");
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -237,7 +230,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         javaClass.addSummary("This is another line of comments.");
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -269,7 +261,6 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         javaClass.addRemarks("This is more remarks.");
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -328,8 +319,8 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
         constructor.addRemarks("This is remarks.");
-        javaClass.generateCode(codeWriter);
 
+        javaClass.generateCode(codeWriter);
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -356,13 +347,13 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        constructor.addParameter("String", "firstParam", "This is my first parameter.");
+
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
         constructor.addRemarks("This is remarks.");
 
-        constructor.param("String", "firstParam", "This is my first parameter.");
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -389,12 +380,13 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        constructor.addParameter("String", "firstParam", "This is my first parameter.");
+        constructor.addParameter("int", "secondParam", "This is my second parameter.");
+
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
         constructor.addRemarks("This is remarks.");
 
-        constructor.param("String", "firstParam", "This is my first parameter.");
-        constructor.param("int", "secondParam", "This is my second parameter.");
         javaClass.generateCode(codeWriter);
 
         codeWriter.close();
@@ -460,19 +452,19 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
         javaClass.addField(Access.PRIVATE, "String", "field1", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "field 1 description.");
 
         JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+
+        constructor.addParameter("String", "firstParam", "This is my first parameter.");
+        constructor.addParameter("int", "secondParam", "This is my second parameter.");
+
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
         constructor.addRemarks("This is remarks.");
-
-        constructor.param("String", "firstParam", "This is my first parameter.");
-        constructor.param("int", "secondParam", "This is my second parameter.");
 
         JavaScope body = new JavaScope(null);
         body.addStatement(new JavaLine("this.field1 = firstParam;"));
         constructor.setBody(body);
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -529,14 +521,13 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE);
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE)
+            .addParameter("String", "name", "Name of the thing.")
+            .addParameter("int", "howMany", null);
         javaMethod.addSummary("This is method summary.");
         javaMethod.addRemarks("This is remarks.");
-        javaMethod.param("String", "name", "Name of the thing.");
-        javaMethod.param("int", "howMany", null);
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -562,23 +553,24 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE);
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE)
+            .typeParam("T", "Generic Type of the thing.")
+            .addParameter("T", "name", "Name of the thing.")
+            .addParameter("int", "howMany", "Really, how many.");
+
         javaMethod.addSummary("This is method summary.");
         javaMethod.addRemarks("This is remarks.");
-        javaMethod.typeParam("T", "Generic Type of the thing.");
-        javaMethod.param("T", "name", "Name of the thing.");
-        javaMethod.param("int", "howMany", "Really, how many.");
 
-        JavaMethod javaMethod2 = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "int", "getNothing2", Multiplicity.INSTANCE);
+        JavaMethod javaMethod2 = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "int", "getNothing2", Multiplicity.INSTANCE)
+            .typeParam("T", "Generic Type of the thing.")
+            .typeParam("T2", "2nd generic Type of the thing.")
+            .addParameter("T", "name", "Name of the thing.")
+            .addParameter("T2", "howMany", "Really, how many.");
+
         javaMethod2.addSummary("This is method 2 summary.");
         javaMethod2.addRemarks("This is remarks.");
-        javaMethod2.typeParam("T", "Generic Type of the thing.");
-        javaMethod2.typeParam("T2", "2nd generic Type of the thing.");
-        javaMethod2.param("T", "name", "Name of the thing.");
-        javaMethod2.param("T2", "howMany", "Really, how many.");
 
         javaClass.generateCode(codeWriter);
-
         codeWriter.close();
 
         this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
@@ -604,19 +596,350 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC);
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .addParameter("String", "input", "String to convert case.")
+            .addReturnComment("Input in upper case.");
+
         javaMethod.addSummary("Converts string to upper case.");
-        javaMethod.param("String", "input", "String to convert case.");
-        javaMethod.returns("Input in upper case.");
+        JavaScope body = new JavaScope(null);
+
+        body.addIf("input != null")
+            .line("return input.toUpperCase();");
+
+        body.line("return null;");
+        javaMethod.setBody(body);
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodsIfAndElseStatements.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodsIfAndElseStatements.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodsIfAndElseStatements() throws IOException {
+        final String typeName = "ClassWithMethodsIfAndElseStatements";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .addParameter("String", "input", "String to convert case.")
+            .addReturnComment("Input in upper case.");
+
+        javaMethod.addSummary("Converts string to upper case.");
+
+        JavaScope body = new JavaScope(null);
+
+        JavaIf ifStatement = body.addIf("input != null").line("return input.toUpperCase();");
+
+        ifStatement.addElse()
+            .line("return input;");
+
+        body.line("return null;");
+
+        javaMethod.setBody(body);
+        javaClass.generateCode(codeWriter);
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodsWithNestedIf.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodsWithNestedIf.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodsWithNestedIf() throws IOException {
+        final String typeName = "ClassWithMethodsWithNestedIf";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .addParameter("String", "input", "String to convert case.")
+            .addReturnComment("Input in upper case.");
+
+        javaMethod.addSummary("Converts string to upper case.");
+
         JavaScope body = new JavaScope(null);
 
         JavaIf ifStatement = body.addIf("input != null");
+        JavaIf oneNestedIf = ifStatement
+            .addIf("input.startsWith(\"a\")")
+            .line("return input.toUpperCase();");
 
-        ifStatement.line("return input.toUpperCase();");
+        oneNestedIf
+            .addIf("input.startsWith(\"ab\")")
+            .line("return null;");
+
+        ifStatement
+            .addElse()
+            .line("return input;");
+
+        ifStatement
+            .line("return input.toUpperCase();");
+
         body.line("return null;");
 
         javaMethod.setBody(body);
 
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodsIfElseIfStatement.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodsIfElseIfStatement.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodsIfElseIfStatement() throws IOException {
+        final String typeName = "ClassWithMethodsIfElseIfStatement";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .addParameter("String", "input", "String to convert case.")
+            .addReturnComment("Input in upper case.");
+
+        javaMethod.addSummary("Converts string to upper case.");
+        JavaScope body = new JavaScope(null);
+
+        JavaIf ifStatement = body
+            .addIf("input != null")
+            .line("return input.toUpperCase();");
+
+        JavaElseIf javaElseIf = ifStatement.addElseIf("input.startsWith(\"a\")")
+            .line("return null;");
+
+        JavaElse javaElse = javaElseIf
+            .addElse()
+            .line("return \"\";");
+
+        body.line("return null;");
+
+        javaMethod.setBody(body);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodForLoop.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodForLoop.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodForLoop() throws IOException {
+        final String typeName = "ClassWithMethodForLoop";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaScope methodBody = new JavaScope(null);
+        methodBody
+            .addFor("int i = 0; i<10; i++")
+            .line("// do nothing.");
+
+        javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "void", "doNothing", Multiplicity.INSTANCE)
+            .setBody(methodBody);
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithMethodForLoopAndIf.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithMethodForLoopAndIf.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithMethodForLoopAndIf() throws IOException {
+        final String typeName = "ClassWithMethodForLoopAndIf";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "void", "doNothing", Multiplicity.INSTANCE);
+
+        JavaScope methodBody = new JavaScope(null);
+        methodBody.addFor("int i = 0; i<10; i++")
+            .addIf("i == 1")
+            .line("System.out.println(\"yay\");")
+            .addElse()
+            .line("continue;");
+
+        javaMethod.setBody(methodBody);
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithProperty.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithProperty.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithProperty() throws IOException {
+        final String typeName = "ClassWithProperty";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        javaClass.addProperty(Access.PUBLIC, "String", "stringProp");
+        javaClass.addProperty(Access.PROTECTED, "int", "intProp");
+        javaClass.addProperty(Access.PRIVATE, "String", "privateStringProp");
+
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithTryCatch.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithTryCatch.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithTryCatch() throws IOException {
+        final String typeName = "ClassWithTryCatch";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass
+            .addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toLower", Multiplicity.INSTANCE)
+            .addParameter("String", "input", "String input.");
+
+        javaMethod.addSummary("Converts input to lowercase.");
+        javaMethod.addReturnComment("Converted input in lowercase.");
+
+        JavaScope methodBody = new JavaScope(null);
+        JavaTry javaTry = methodBody.addTry();
+        javaTry.addCatch("Exception ex").line("return null;");
+        javaTry.addIf("input != null")
+            .line("return input.toLowerCase();")
+            .addElse()
+            .line("return input;");
+
+        javaMethod.setBody(methodBody);
+        javaClass.generateCode(codeWriter);
+
+        codeWriter.close();
+
+        this.compareGeneratedCodeWithExpected(TEST_SUB_DIRECTORY, typeName);
+    }
+
+    /**
+     * Find the expected output in "src/test/resources/ClassTestResources/ClassWithWhileLoop.expected"
+     * Find the generated file in "src/test/resources/ClassTestResources/ClassWithWhileLoop.temp.generated"
+     *
+     * @throws IOException IOException.
+     */
+    @Test
+    public void publicClassWithWhileLoop() throws IOException {
+        final String typeName = "ClassWithWhileLoop";
+
+        CodeWriter codeWriter = this.getCodeWriter(TEST_SUB_DIRECTORY, typeName);
+
+        JavaClass javaClass = new JavaClass(
+            Access.PUBLIC,
+            Novelty.NORMAL,
+            typeName,
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
+        JavaMethod javaMethod = javaClass
+            .addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toLower", Multiplicity.INSTANCE)
+            .addParameter("String", "input", "String input.");
+
+        javaMethod.addSummary("Converts input to lowercase.");
+        javaMethod.addReturnComment("Converted input in lowercase.");
+
+        JavaScope methodBody = new JavaScope(null);
+        JavaWhile javaWhile = methodBody.addWhile("input.size() > 0");
+        javaWhile.addIf("input != null").line("continue;");
+        javaWhile.line("input = input.substring(1);");
+
+        javaMethod.setBody(methodBody);
         javaClass.generateCode(codeWriter);
 
         codeWriter.close();
