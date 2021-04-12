@@ -142,10 +142,10 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
          * Step 1 - see if the default trust manager passes.
          */
         try {
-            defaultTrustManager.checkClientTrusted(chain, authType);
+            defaultTrustManager.checkServerTrusted(chain, authType);
         } catch (CertificateException ce) {
             try {
-                trustManager.checkClientTrusted(chain, authType);
+                trustManager.checkServerTrusted(chain, authType);
             } catch (CertificateException ce1) {
                 pass = false;
             }
