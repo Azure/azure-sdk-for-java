@@ -44,7 +44,7 @@ feature-management:
       -
         name: TimeWindowFilter
         parameters:
-          time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
+          time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT"
           time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
@@ -105,7 +105,6 @@ public class DisabledFeaturesHandler implements IDisabledFeaturesHandler{
     }
 
 }
-
 ```
 
 #### Routing
@@ -166,14 +165,12 @@ This filter provides the capability to enable a feature based on a set percentag
 
 ```yaml
 feature-management:
-  feature-set:
-    features:
-      feature-v:
-        enabled-for:
-          -
-            name: PercentageFilter
-            parameters:
-              percentage-filter-setting: 50
+  feature-v:
+    enabled-for:
+      -
+        name: PercentageFilter
+        parameters:
+          percentage-filter-setting: 50
 ```
 
 #### TimeWindowFilter
@@ -182,15 +179,13 @@ This filter provides the capability to enable a feature based on a time window. 
 
 ```yaml
 feature-management:
-  feature-set:
-    features:
-      feature-v:
-        enabled-for:
-          -
-            name: TimeWindowFilter
-            parameters:
-              time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-              time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+  feature-v:
+    enabled-for:
+      -
+       name: TimeWindowFilter
+        parameters:
+          time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
+          time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
 #### TargetingFilter
