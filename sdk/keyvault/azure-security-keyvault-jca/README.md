@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -67,7 +67,7 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L71 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L68 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
@@ -86,23 +86,20 @@ SSLContext sslContext = SSLContexts
     .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
     .build();
 
-SSLConnectionSocketFactory factory = SSLConnectionSocketFactoryBuilder
-    .create()
-    .setSslContext(sslContext)
-    .setHostnameVerifier((hostname, session) -> true)
-    .build();
+SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+    sslContext, (hostname, session) -> true);
 
-PoolingHttpClientConnectionManager manager = PoolingHttpClientConnectionManagerBuilder
-    .create()
-    .setSSLSocketFactory(factory)
-    .build();
+PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
+    RegistryBuilder.<ConnectionSocketFactory>create()
+        .register("https", sslConnectionSocketFactory)
+        .build());
 
 String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8766");
-    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-        int status = response.getCode();
+    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+        int status = response.getStatusLine().getStatusCode();
         String result1 = "Not success";
         if (status == 204) {
             result1 = "Success";

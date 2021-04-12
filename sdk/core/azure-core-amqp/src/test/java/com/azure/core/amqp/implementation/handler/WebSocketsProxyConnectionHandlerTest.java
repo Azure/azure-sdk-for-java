@@ -67,13 +67,14 @@ public class WebSocketsProxyConnectionHandlerTest {
 
     private ConnectionOptions connectionOptions;
     private WebSocketsProxyConnectionHandler handler;
+    private AutoCloseable mocksCloseable;
 
     /**
      * Creates mocks of the proxy selector and authenticator and sets them as defaults.
      */
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
@@ -85,13 +86,17 @@ public class WebSocketsProxyConnectionHandlerTest {
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         if (handler != null) {
             handler.close();
         }
 
         ProxySelector.setDefault(originalProxySelector);
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test

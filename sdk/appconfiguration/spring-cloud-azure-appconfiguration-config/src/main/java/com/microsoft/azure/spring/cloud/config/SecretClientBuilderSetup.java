@@ -6,6 +6,6 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 
 public interface SecretClientBuilderSetup {
 
-    public void setup(SecretClientBuilder builder, String uri);
+    void setup(SecretClientBuilder builder, String uri);
 
 }

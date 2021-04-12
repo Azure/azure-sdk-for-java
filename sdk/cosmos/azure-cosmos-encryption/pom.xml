@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
   <name>Encryption Plugin for Azure Cosmos DB SDK</name>
   <description>This Package contains Encryption Plugin for Microsoft Azure Cosmos SDK</description>
   <packaging>jar</packaging>
@@ -32,10 +32,18 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>azuresdkmaven</id>
+      <url>https://azsdkartifacts.blob.core.windows.net/maven</url>
+    </repository>
+  </repositories>
+
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -43,19 +51,40 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.15.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.2.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.2.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.4</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+      <version>1.2.5</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -137,14 +166,14 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.reactivex.rxjava2</groupId>
       <artifactId>rxjava</artifactId>
-      <version>2.2.20</version> <!-- {x-version-update;io.reactivex.rxjava2:rxjava;external_dependency} -->
+      <version>2.2.21</version> <!-- {x-version-update;io.reactivex.rxjava2:rxjava;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.6.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -153,8 +182,16 @@ Licensed under the MIT License.
       <artifactId>bcprov-jdk15on</artifactId>
       <version>1.68</version>  <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
     </dependency>
-
-
+    <dependency>
+      <groupId>com.microsoft.data.encryption</groupId>
+      <artifactId>cryptography</artifactId>
+      <version>0.1.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.data.encryption</groupId>
+      <artifactId>azure-key-vault-keystoreprovider</artifactId>
+      <version>0.1.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -199,7 +236,6 @@ Licensed under the MIT License.
           </properties>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -210,6 +246,8 @@ Licensed under the MIT License.
               <includes>
                 <include>com.azure:*</include>
                 <include>org.bouncycastle:bcprov-jdk15on:[1.68]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+                <include>com.microsoft.data.encryption:cryptography:[0.1.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.1.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

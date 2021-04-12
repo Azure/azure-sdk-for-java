@@ -88,13 +88,10 @@ public class DynamicsCrmLinkedService extends LinkedService {
     private Object servicePrincipalId;
 
     /*
-     * The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret,
-     * 'ServicePrincipalCert' for certificate. Type: string (or Expression with
-     * resultType string).
+     * A string from ServicePrincipalCredentialEnum or an expression
      */
     @JsonProperty(value = "typeProperties.servicePrincipalCredentialType")
-    private DynamicsServicePrincipalCredentialType servicePrincipalCredentialType;
+    private Object servicePrincipalCredentialType;
 
     /*
      * The credential of the service principal object in Azure Active
@@ -318,26 +315,21 @@ public class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: A string from ServicePrincipalCredentialEnum or an expression.
      *
      * @return the servicePrincipalCredentialType value.
      */
-    public DynamicsServicePrincipalCredentialType getServicePrincipalCredentialType() {
+    public Object getServicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: A string from ServicePrincipalCredentialEnum or an expression.
      *
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService setServicePrincipalCredentialType(
-            DynamicsServicePrincipalCredentialType servicePrincipalCredentialType) {
+    public DynamicsCrmLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
     }

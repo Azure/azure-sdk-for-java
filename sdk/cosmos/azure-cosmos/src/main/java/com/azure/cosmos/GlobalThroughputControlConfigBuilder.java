@@ -37,11 +37,13 @@ public class GlobalThroughputControlConfigBuilder {
      *
      * In short words, it controls how quickly the shared throughput will reload balanced across different clients.
      *
+     *
      * @param controlItemRenewInterval The control item renewal interval.
      * @return The {@link GlobalThroughputControlConfigBuilder}
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfigBuilder setControlItemRenewInterval(Duration controlItemRenewInterval) {
+        checkArgument(controlItemRenewInterval.getSeconds() >= 5, "Renew interval should be no less than 5s");
         this.controlItemRenewInterval = controlItemRenewInterval;
         return this;
     }

@@ -77,6 +77,11 @@ public final class KeyVaultAccessControlAsyncClient {
     private final String serviceVersion;
 
     /**
+     * The {@link HttpPipeline} powering this client.
+     */
+    private final HttpPipeline pipeline;
+
+    /**
      * Package private constructor to be used by {@link KeyVaultAccessControlClientBuilder}.
      */
     KeyVaultAccessControlAsyncClient(URL vaultUrl, HttpPipeline httpPipeline, KeyVaultAdministrationServiceVersion serviceVersion) {
@@ -85,6 +90,7 @@ public final class KeyVaultAccessControlAsyncClient {
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
+        this.pipeline = httpPipeline;
 
         clientImpl = new KeyVaultAccessControlClientImplBuilder()
             .pipeline(httpPipeline)
@@ -98,6 +104,15 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     /**

@@ -27,7 +27,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String eventRouteId = testResourceNamer.randomUuid();
@@ -36,6 +36,8 @@ public class EventRoutesTest extends EventRoutesTestBase {
         DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
         client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate);
+
+        waitIfLive();
 
         try {
             // GET

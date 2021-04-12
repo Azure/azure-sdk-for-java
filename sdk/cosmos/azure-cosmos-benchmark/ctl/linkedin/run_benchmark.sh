@@ -6,6 +6,7 @@
 ##  - ctl_key (required)
 ##  - ctl_database (optional: default testdb)
 ##  - ctl_collection (optional: default testCol)
+##  - ctl_manage_database (optional: default false)
 ##  - ctl_throughput (optional: default 100,000)
 ##  - ctl_concurrency (optional: default 50)
 ##  - ctl_consistency_level (optional: default Session)
@@ -13,7 +14,9 @@
 ##  - ctl_bulk_load_batch_size (optional: default 200,000)
 ##  - ctl_number_of_operations (optional: default 1,000,000)
 ##  - ctl_max_running_time_duration (optional: default 10 minutes)
-##  - ctl_printing_interval (optional: default 30 seconds)
+##  - ctl_printing_interval (optional: default 15 seconds)
+##  - ctl_heap_size (optional: default 8g)
+##  - ctl_environment (optional: default Daily)
 
 service_endpoint=$ctl_endpoint
 master_key=$ctl_key
@@ -87,9 +90,30 @@ fi
 
 if [ -z "$ctl_printing_interval" ]
 then
-printing_interval=60
+printing_interval=15
 else
 printing_interval=$ctl_printing_interval
+fi
+
+if [ -z "$ctl_heap_size" ]
+then
+heap_size=8g
+else
+heap_size=$ctl_heap_size
+fi
+
+if [ -z "$ctl_environment" ]
+then
+environment=Daily
+else
+environment=$ctl_environment
+fi
+
+if [ -z "$ctl_test_scenario" ]
+then
+test_scenario=GET
+else
+test_scenario=$ctl_test_scenario
 fi
 
 log_filename="/tmp/javactl.log"
@@ -106,9 +130,19 @@ jvm_opt=""
 
 if [ -z "$ctl_graphite_endpoint" ]
 then
-java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
+    if [ -z "$ctl_manage_database" ]
+    then
+        java -Xmx$heap_size -Xms$heap_size  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval -environment $environment -testScenario $test_scenario 2>&1 | tee -a "$log_filename"
+    else
+        java -Xmx$heap_size -Xms$heap_size  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval -manageDatabase -environment $environment -testScenario $test_scenario 2>&1 | tee -a "$log_filename"
+    fi
 else
-java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval 2>&1 | tee -a "$log_filename"
+    if [ -z "$ctl_manage_database" ]
+    then
+        java -Xmx$heap_size -Xms$heap_size  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval -environment $environment -testScenario $test_scenario 2>&1 | tee -a "$log_filename"
+    else
+        java -Xmx$heap_size -Xms$heap_size  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$database_name"  -collectionId "$collection_name" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput  -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -bulkloadBatchSize $bulk_load_batch_size -printingInterval $printing_interval -manageDatabase -environment $environment -testScenario $test_scenario 2>&1 | tee -a "$log_filename"
+    fi
 fi
 
 end=`date +%s`

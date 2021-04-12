@@ -10,10 +10,12 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.DirectProcessor;
@@ -61,6 +63,11 @@ class EventHubConnectionProcessorTest {
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         when(connection.getShutdownSignals()).thenReturn(shutdownSignalProcessor);
+    }
+
+    @AfterEach
+    void teardown() {
+        Mockito.framework().clearInlineMocks();
     }
 
     /**

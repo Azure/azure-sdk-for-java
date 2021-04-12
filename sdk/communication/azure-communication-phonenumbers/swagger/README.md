@@ -23,9 +23,10 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a4d1e1516433894fca89f9600a6ac8a5471fc598/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/stable/2021-03-07/phonenumbers.json
+tag: package-phonenumber-2021-03-07
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bf081421869ccd31d9fd87084b07a1e246aee310/specification/communication/data-plane/Microsoft.CommunicationServicesPhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: AcquiredPhoneNumber,BillingFrequency,CommunicationError,PhoneNumberOperation,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -37,11 +38,11 @@ sync-methods: all
 context-client-method-parameter: true
 ```
 
-### Add readonly attribute to AcquiredPhoneNumber properties
+### Add readonly attribute to PurchasedPhoneNumber properties
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.AcquiredPhoneNumber
+    where: $.definitions.PurchasedPhoneNumber
     transform: >
       $["properties"]["id"].readOnly = true;
       $["properties"]["phoneNumber"].readOnly = true;
@@ -50,8 +51,6 @@ directive:
       $["properties"]["capabilities"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["purchaseDate"].readOnly = true;
-      $["properties"]["callbackUri"].readOnly = true;
-      $["properties"]["applicationId"].readOnly = true;
       $["properties"]["cost"].readOnly = true;
 ```
 
@@ -66,20 +65,6 @@ directive:
       $["properties"]["billingFrequency"].readOnly = true;
 ```
 
-### Add readonly attribute to PhoneNumberOperation properties
-```yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberOperation
-    transform: >
-      $["properties"]["status"].readOnly = true;
-      $["properties"]["resourceLocation"].readOnly = true;
-      $["properties"]["createdDateTime"].readOnly = true;
-      $["properties"]["error"].readOnly = true;
-      $["properties"]["id"].readOnly = true;
-      $["properties"]["operationType"].readOnly = true;
-      $["properties"]["lastActionDateTime"].readOnly = true;
-```
 
 ### Add readonly attribute to PhoneNumberSearchResult properties
 ```yaml
@@ -94,4 +79,12 @@ directive:
       $["properties"]["phoneNumberType"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
+```
+
+### Rename PhoneNumberOperation to PhoneNumberRawOperation
+``` yaml
+directive:
+    - rename-model:
+        from: PhoneNumberOperation
+        to: PhoneNumberRawOperation
 ```

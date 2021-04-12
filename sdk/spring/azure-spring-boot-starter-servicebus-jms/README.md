@@ -5,11 +5,9 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven](https://maven.apache.org/) 3.0 and above
-- [Build developing version artifacts if needed][build-developing-version-artifacts-if-needed]
+- [Environment checklist][environment_checklist]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current})
@@ -17,7 +15,7 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,7 +38,7 @@ Append the following code to the end of the *application.properties* file. Repla
 ```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium, standard and basic.
+# Supported values for pricing-tier are premium, standard and basic. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
 spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
@@ -263,8 +261,6 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0 (2021-03-29)
+Updated `azure-communication-identity` version
+
 ## 1.0.0-beta.6 (2021-03-09)
 ### Added
 - Added a retryPolicy() chain method to the `CommunicationIdentityClientBuilder`.
