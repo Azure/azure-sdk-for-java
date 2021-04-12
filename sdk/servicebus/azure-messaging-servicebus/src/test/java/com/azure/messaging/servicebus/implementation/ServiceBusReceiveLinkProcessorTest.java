@@ -97,6 +97,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -116,10 +117,15 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void createNewLink() {
         // Arrange
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
+        when(link1.getCredits()).thenReturn(1);
+        when(link1.addCredits(eq(PREFETCH - 1))).thenAnswer(invocation -> {
+            countDownLatch.countDown();
+            return Mono.empty();
+        });
+
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
-
-        when(link1.getCredits()).thenReturn(1);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -225,26 +231,28 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnClose() {
         // Arrange
-        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
-
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
 
-        final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final TestPublisher<AmqpEndpointState> connection2EndpointProcessor = TestPublisher.create();
 
         when(link2.getEndpointStates()).thenReturn(connection2EndpointProcessor.flux());
         when(link2.receive()).thenReturn(Flux.create(sink -> sink.next(message2)));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.receive()).thenReturn(Flux.create(sink -> {
             sink.next(message3);
             sink.next(message4);
         }));
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link1.getCredits()).thenReturn(1);
         when(link2.getCredits()).thenReturn(1);
         when(link3.getCredits()).thenReturn(1);
+
+        final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
+        final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -286,6 +294,7 @@ class ServiceBusReceiveLinkProcessorTest {
             e.next(AmqpEndpointState.ACTIVE);
         })));
         when(link2.receive()).thenReturn(Flux.just(message2));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
             new AmqpErrorContext("test-namespace"));
@@ -326,6 +335,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link2.receive()).thenReturn(Flux.just(message2, message3));
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ARGUMENT_ERROR,
             "Non-retryable-error",
@@ -335,15 +345,6 @@ class ServiceBusReceiveLinkProcessorTest {
         // Act & Assert
         // Verify that we get the first connection.
         StepVerifier.create(processor)
-            .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                System.out.println("Emitting first message.");
-                messagePublisher.next(message1);
-            })
-            .assertNext(message -> {
-                System.out.println("Asserting first message.");
-                assertSame(message1, message);
-            })
             .then(() -> {
                 System.out.println("Outputting exception.");
                 endpointProcessor.error(amqpException);
@@ -413,9 +414,11 @@ class ServiceBusReceiveLinkProcessorTest {
 
         when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
         when(link2.receive()).thenReturn(Flux.never());
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.receive()).thenReturn(Flux.never());
+        when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Simulates two busy signals, but our retry policy says to try only once.
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
@@ -450,28 +453,29 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void doNotRetryWhenParentConnectionIsClosed() {
         // Arrange
-        final TestPublisher<ServiceBusReceiveLink> linkGenerator = TestPublisher.create();
+        final TestPublisher<ServiceBusReceiveLink> linkGenerator = TestPublisher.createCold();
         final ServiceBusReceiveLinkProcessor processor = linkGenerator.flux().subscribeWith(linkProcessor);
-        final TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.create();
-        final TestPublisher<Message> messages = TestPublisher.create();
+        final TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.createCold();
+        final TestPublisher<Message> messages = TestPublisher.createCold();
 
         when(link1.getEndpointStates()).thenReturn(endpointStates.flux());
         when(link1.receive()).thenReturn(messages.flux());
 
-        final TestPublisher<AmqpEndpointState> endpointStates2 = TestPublisher.create();
+        final TestPublisher<AmqpEndpointState> endpointStates2 = TestPublisher.createCold();
         when(link2.getEndpointStates()).thenReturn(endpointStates2.flux());
         when(link2.receive()).thenReturn(Flux.never());
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(processor)
             .then(() -> {
                 linkGenerator.next(link1);
                 endpointStates.next(AmqpEndpointState.ACTIVE);
-                messages.next(message1);
             })
-            .expectNext(message1)
-            .then(linkGenerator::complete)
-            .then(endpointStates::complete)
+            .then(() -> {
+                linkGenerator.complete();
+                endpointStates.complete();
+            })
             .expectComplete()
             .verify();
 
@@ -550,9 +554,15 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void receivesFromFirstLink() {
         // Arrange
-        ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         when(link1.getCredits()).thenReturn(0);
+        when(link1.addCredits(eq(PREFETCH))).thenAnswer(invocation -> {
+            countDownLatch.countDown();
+            return Mono.empty();
+        });
+
+        ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
         // Act & Assert
         StepVerifier.create(processor)
