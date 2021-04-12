@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.phonenumbers.models;
+package com.azure.communication.phonenumbers.implementation.converters;
 
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
+import com.azure.communication.phonenumbers.models.PhoneNumberError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public final class PhoneNumberErrorConverter {
     /**
-     * Maps from {com.azure.communication.phonenumbrs.implementation.models.CommunicationError} to {@link PhoneNumberError}.
+     * Maps from {com.azure.communication.phonenumbers.implementation.models.CommunicationError} to {@link PhoneNumberError}.
      * @param communicationError The error to convert
      * 
      * @return the converted PhoneNumberError.
