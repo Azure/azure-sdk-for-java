@@ -6,7 +6,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -42,9 +41,10 @@ public class StorageBlockingSink {
      * Try to emit an element.
      *
      * @param buffer {@link ByteBuffer} to emit.
-     * @return an optional IOException if an unrecoverable error was thrown.
+     * @throws IllegalStateException if an unrecoverable error was thrown.
+     * @throws InterruptedException if a recoverable error was thrown.
      */
-    public void tryEmitNext(ByteBuffer buffer) throws Exception {
+    public void tryEmitNext(ByteBuffer buffer) throws IllegalStateException, InterruptedException {
         /*
         tryEmitNext returns a Sinks.EmitResult that indicates different success/error cases we can
         potentially handle (in case we want to retry transmission).
@@ -55,13 +55,13 @@ public class StorageBlockingSink {
                 return;
             case FAIL_OVERFLOW: { // When queue overflows. This indicates there is backpressure.
                 try {
-                    this.writeLimitQueue.put(buffer);
+                    this.writeLimitQueue.put(buffer); // Block on writing to the queue.
                 } catch (InterruptedException e) {
                     /*
                     Just throw the error and do not populate the error field since a customer can recover from
                     this error
                     */
-                    throw logger.logExceptionAsError(new RuntimeException(e));
+                    throw logger.logThrowableAsError(e);
                 }
                 break;
             }
@@ -70,8 +70,8 @@ public class StorageBlockingSink {
             case FAIL_NON_SERIALIZED: // Concurrent calls to tryEmitNext.
             case FAIL_ZERO_SUBSCRIBER: // No one ever subscribed to Flux. This should not happen since we manage the subscribe process in the constructor.
             default: // This case shouldnt get hit - Would it be better to do nothing in this case?
-                throw logger.logThrowableAsError(new IOException("Faulted stream due to underlying sink write failure, "
-                    + "result:" + writeResult, null));
+                throw logger.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
+                    + "write failure, result:" + writeResult, null));
         }
     }
 
