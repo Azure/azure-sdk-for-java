@@ -21,7 +21,7 @@ jobs:
         GH_TOKEN: $(azuresdk-github-pat)
     - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
       parameters:
-        BaseRepoBranch: 'a-test-branch'
+        BaseRepoBranch: 'master'
         BaseRepoOwner: 'Azure'
         CommitMsg: "Update targeting packages based on release csv."
         TargetRepoName: 'azure-docs-sdk-java'
