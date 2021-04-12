@@ -279,11 +279,7 @@ private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
     }
 }
 ```
-
-### Configuring Spring Cloud Gateway
-
-To configure Spring Cloud Gateway for outbound SSL, add the following configuration:
-
+### If you also want your local JRE keystore to work, please enable the following
 ```yaml
 azure:
   keyvault:
@@ -291,6 +287,11 @@ azure:
     jca: 
       overrideTrustManagerFactory: true
 ```
+
+
+### Configuring Spring Cloud Gateway
+
+To configure Spring Cloud Gateway for outbound SSL, add the following configuration:
 
 Note: if any of your routes point to a service where the FQDN does not match the
 issued certificate you will need to disable hostname verification. This will
