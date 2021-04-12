@@ -116,6 +116,8 @@ public class JavaLibrary {
 
             codeWriter.writeLine("package " + this.libraryNamespace);
 
+            codeWriter.addNewLine();
+
             for (String importStatement : this.systemNamespaces) {
                 codeWriter.writeLine("import " + importStatement);
             }
@@ -128,7 +130,6 @@ public class JavaLibrary {
 
             javaFile.generateCode(codeWriter);
 
-            codeWriter.closeScope();
             codeWriter.close();
             filePaths.add(filePath);
         }

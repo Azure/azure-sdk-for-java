@@ -10,6 +10,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 class FileHelpers {
+    public static String getTestResourcesDirectoryPath(String subDirectoryName) {
+        Path resourceDirectory = Paths.get("src", "test", "resources", subDirectoryName);
+        return resourceDirectory.toFile().getAbsolutePath() + "/";
+    }
+
     public static String getTestResourceFilePath(String subDirectoryName, String fileName) {
         Path resourceDirectory = Paths.get("src", "test", "resources", subDirectoryName);
         return resourceDirectory.toFile().getAbsolutePath() + "/" + fileName;
