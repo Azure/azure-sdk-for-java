@@ -35,6 +35,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_CN_URI;
+import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_DE_URI;
+import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_GLOBAL_URI;
+import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_US_URI;
+import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_CN;
+import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_DE;
+import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_GLOBAL;
+import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_US;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -47,11 +55,17 @@ class KeyVaultClient extends DelegateRestClient {
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultClient.class.getName());
+    private static final String HTTPS_PREFIX = "https://";
 
     /**
      * Stores the API version postfix.
      */
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
+
+    /**
+     * Stores the Key Vault cloud URI.
+     */
+    private String keyVaultBaseUri;
 
     /**
      * Stores the Azure Key Vault URL.
@@ -97,6 +111,23 @@ class KeyVaultClient extends DelegateRestClient {
             keyVaultUri = keyVaultUri + "/";
         }
         this.keyVaultUrl = keyVaultUri;
+        String dnsSuffix = keyVaultUri.split("\\.",2)[1];
+        this.keyVaultBaseUri = HTTPS_PREFIX + dnsSuffix;
+        switch(dnsSuffix)
+        {
+            case KEY_VAULT_BASE_URI_GLOBAL :
+                this.aadAuthenticationUrl = AAD_LOGIN_GLOBAL_URI;
+                break;
+            case KEY_VAULT_BASE_URI_CN :
+                this.aadAuthenticationUrl = AAD_LOGIN_CN_URI;
+                break;
+            case KEY_VAULT_BASE_URI_US :
+                this.aadAuthenticationUrl = AAD_LOGIN_US_URI;
+                break;
+            case KEY_VAULT_BASE_URI_DE:
+                this.aadAuthenticationUrl = AAD_LOGIN_DE_URI;
+                break;
+        }
     }
 
     /**
@@ -106,12 +137,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param managedIdentity the managed identity object ID.
      */
     KeyVaultClient(String keyVaultUri, String managedIdentity) {
-        super(RestClientFactory.createClient());
-        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
-        if (!keyVaultUri.endsWith("/")) {
-            keyVaultUri = keyVaultUri + "/";
-        }
-        this.keyVaultUrl = keyVaultUri;
+        this(keyVaultUri);
         this.managedIdentity = managedIdentity;
     }
 
@@ -119,15 +145,12 @@ class KeyVaultClient extends DelegateRestClient {
      * Constructor.
      *
      * @param keyVaultUri the Azure Key Vault URI.
-     * @param aadAuthenticationUrl the Azure AD authentication URL.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    KeyVaultClient(final String keyVaultUri, final String aadAuthenticationUrl,
-            final String tenantId, final String clientId, final String clientSecret) {
+    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
         this(keyVaultUri);
-        this.aadAuthenticationUrl = aadAuthenticationUrl;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -144,7 +167,7 @@ class KeyVaultClient extends DelegateRestClient {
         try {
             AuthClient authClient = new AuthClient();
 
-            String resource = URLEncoder.encode("https://vault.azure.net", "UTF-8");
+            String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
             if (managedIdentity != null) {
                 managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
             }
