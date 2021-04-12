@@ -27,7 +27,7 @@ The requested features were implemented in the new libraries. See change log for
 
 ## Key concepts
 
-To use the Admnistration SDK, a resource access key is required for authentication.
+To use the Administration SDK, a resource access key is required for authentication.
 
 Administration uses HMAC authentication with the resource access key.
 The access key must be provided to the CommunicationIdentityClientBuilder
