@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -79,9 +80,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<String> sessionIdMono;
     private final Mono<OffsetDateTime> sessionLockedUntil;
 
-    public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
-        super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
+    public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, Duration timeout,
+        AmqpRetryPolicy retryPolicy) {
+        super(connection, entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher(),
+            retryPolicy.getRetryOptions());
         this.receiver = receiver;
         this.handler = handler;
         this.provider = provider;
