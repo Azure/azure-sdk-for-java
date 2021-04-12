@@ -707,6 +707,7 @@
         <module>sdk/resourcegraph</module>
         <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
+        <module>sdk/resourcemover</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/servicebus</module>
