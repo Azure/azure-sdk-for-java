@@ -4,28 +4,73 @@
 
 package com.azure.resourcemanager.hdinsight.models;
 
-import com.azure.resourcemanager.hdinsight.fluent.models.ExtensionInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An immutable client-side representation of Extension. */
-public interface Extension {
+/** Cluster monitoring extensions. */
+@Fluent
+public final class Extension {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Extension.class);
+
+    /*
+     * The workspace ID for the cluster monitoring extension.
+     */
+    @JsonProperty(value = "workspaceId")
+    private String workspaceId;
+
+    /*
+     * The certificate for the cluster monitoring extensions.
+     */
+    @JsonProperty(value = "primaryKey")
+    private String primaryKey;
+
     /**
-     * Gets the workspaceId property: The workspace ID for the cluster monitoring extension.
+     * Get the workspaceId property: The workspace ID for the cluster monitoring extension.
      *
      * @return the workspaceId value.
      */
-    String workspaceId();
+    public String workspaceId() {
+        return this.workspaceId;
+    }
 
     /**
-     * Gets the primaryKey property: The certificate for the cluster monitoring extensions.
+     * Set the workspaceId property: The workspace ID for the cluster monitoring extension.
+     *
+     * @param workspaceId the workspaceId value to set.
+     * @return the Extension object itself.
+     */
+    public Extension withWorkspaceId(String workspaceId) {
+        this.workspaceId = workspaceId;
+        return this;
+    }
+
+    /**
+     * Get the primaryKey property: The certificate for the cluster monitoring extensions.
      *
      * @return the primaryKey value.
      */
-    String primaryKey();
+    public String primaryKey() {
+        return this.primaryKey;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.ExtensionInner object.
+     * Set the primaryKey property: The certificate for the cluster monitoring extensions.
      *
-     * @return the inner object.
+     * @param primaryKey the primaryKey value to set.
+     * @return the Extension object itself.
      */
-    ExtensionInner innerModel();
+    public Extension withPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
 }
