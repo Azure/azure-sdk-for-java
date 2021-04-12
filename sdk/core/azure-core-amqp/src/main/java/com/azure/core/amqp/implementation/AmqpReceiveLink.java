@@ -8,6 +8,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.UncheckedIOException;
 import java.util.function.Supplier;
 
 /**
@@ -32,6 +33,9 @@ public interface AmqpReceiveLink extends AmqpLink {
      * allow the receiver to receive {@code credits} more deliveries.
      *
      * @param credits Number of credits to add to the receive link.
+     *
+     * @throws IllegalStateException if adding credits to a closed link.
+     * @throws UncheckedIOException if the work could not be scheduled on the receive link.
      */
     Mono<Void> addCredits(int credits);
 

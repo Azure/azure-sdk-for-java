@@ -24,6 +24,7 @@ import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -181,7 +182,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
                     sink.success();
                 });
             } catch (IOException e) {
-                sink.error(new RuntimeException(String.format(
+                sink.error(new UncheckedIOException(String.format(
                     "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
                     handler.getConnectionId(), getLinkName()), e));
             }
