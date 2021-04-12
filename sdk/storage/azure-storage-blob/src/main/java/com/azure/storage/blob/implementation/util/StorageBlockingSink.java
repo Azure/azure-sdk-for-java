@@ -21,7 +21,6 @@ public class StorageBlockingSink {
     testing easier.
     */
     private final Sinks.Many<ByteBuffer> writeSink;
-    private static final int WRITE_RETRY_IN_SECONDS = 3;
     LinkedBlockingQueue<ByteBuffer> writeLimitQueue;
 
     /**
