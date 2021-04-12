@@ -61,13 +61,14 @@ Learn how to generate user access tokens from [User Access Tokens](https://docs.
 
 The following sections provide several code snippets covering some of the most common tasks, including:
 
-- [Chat Thread Operations](#thread-operations)
-- [Chat Message Operations](#message-operations)
-- [Chat Thread Member Operations](#thread-member-operations)
+- [Create the Chat Client](#create-the-chat-client)
+- [Chat Thread Operations](#chat-thread-operations)
+- [Chat Message Operations](#chat-message-operations)
+- [Chat Thread Member Operations](#chat-thread-member-operations)
 - [Read Receipt Operations](#read-receipt-operations)
 - [Typing Notification Operations](#typing-notification-operations)
 
-## Create the chat client
+### Create the Chat Client
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L41-L57 -->
 ```Java
