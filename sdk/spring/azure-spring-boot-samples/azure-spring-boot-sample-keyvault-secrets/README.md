@@ -115,11 +115,12 @@ If you use certificate authentication, you only need to replace the property `az
 azure.keyvault.uri=put-your-azure-keyvault-uri-here
 azure.keyvault.client-id=put-your-azure-client-id-here
 azure.keyvault.certificate-path=put-your-certificate-file-path-here
+azure.keyvault.certificate-password=put-your-certificate-password-here-if-exists
 azure.keyvault.tenant-id=put-your-azure-tenant-id-here
 azure.keyvault.authority-host=put-your-own-authority-host-here(fill with default value if empty)
 azure.keyvault.secret-service-version=specify secretServiceVersion value(fill with default value if empty)
 ```
-
+Note: due to underlying library limitation, when using certificate with password for authentication, please make sure the provided certificate file only contains one certificate entry. For more details, please refer to the related [PR](https://github.com/AzureAD/microsoft-authentication-library-for-java/pull/276).
 ## Run with Maven
 ```
 cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
