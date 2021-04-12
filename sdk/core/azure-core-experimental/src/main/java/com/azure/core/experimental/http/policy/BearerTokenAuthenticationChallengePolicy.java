@@ -24,15 +24,17 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
 
     private final AccessTokenCacheImpl cache;
+    private String[] scopes;
 
     /**
      * Creates BearerTokenAuthenticationChallengePolicy.
      *
      * @param credential the token credential to authenticate the request
      */
-    public BearerTokenAuthenticationChallengePolicy(TokenCredential credential) {
+    public BearerTokenAuthenticationChallengePolicy(TokenCredential credential, String[] scopes) {
         Objects.requireNonNull(credential);
         this.cache = new AccessTokenCacheImpl(credential);
+        this.scopes = scopes;
     }
 
     /**
@@ -41,8 +43,15 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      * @param context The request context.
      * @return A {@link Mono} containing {@link Void}
      */
-    public Mono<Void> onBeforeRequest(HttpPipelineCallContext context) {
-        return Mono.empty();
+    public Mono<Void> AuthorizeRequest(HttpPipelineCallContext context) {
+        if (this.scopes == null) {
+            return Mono.empty();
+        }
+        return cache.getToken(new TokenRequestContext().addScopes(this.scopes))
+            .flatMap(token -> {
+                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+                return Mono.empty();
+            });
     }
 
     /**
@@ -54,7 +63,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      * @param response The Http Response containing the authentication challenge header.
      * @return A {@link Mono} containing {@link TokenRequestContext}
      */
-    public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
+    public Mono<Boolean> AuthorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.just(false);
     }
 
@@ -65,12 +74,12 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
         }
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
-        return onBeforeRequest(context)
+        return AuthorizeRequest(context)
             .then(Mono.defer(() -> next.process()))
                .flatMap(httpResponse -> {
                    String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
                    if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                       return onChallenge(context, httpResponse).flatMap(retry -> {
+                       return AuthorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
                            if (retry) {
                                return nextPolicy.process();
                            } else {
@@ -89,7 +98,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      * @param tokenRequestContext the token request conext to be used for token acquisition.
      * @return a {@link Mono} containing {@link Void}
      */
-    public Mono<Void> authorizeRequest(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+    public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return cache.getToken(tokenRequestContext)
            .flatMap(token -> {
                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());

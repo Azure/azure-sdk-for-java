@@ -56,17 +56,17 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
 
 
     @Override
-    public Mono<Void> onBeforeRequest(HttpPipelineCallContext context) {
+    public Mono<Void> AuthorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
             String[] scopes = this.scopes;
             scopes = getScopes(context, scopes);
             context.setData(ARM_SCOPES_KEY, scopes);
-            return authorizeRequest(context, new TokenRequestContext().addScopes(scopes));
+            return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes));
         });
     }
 
     @Override
-    public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
+    public Mono<Boolean> AuthorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
             if (!(response.getStatusCode() == 401 && authHeader != null)) {
@@ -92,7 +92,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
                         // If scopes wasn't configured in On Before logic or at constructor level,
                         // then this method will retrieve it again.
                         scopes = getScopes(context, scopes);
-                        return authorizeRequest(context, new TokenRequestContext()
+                        return setAuthorizationHeader(context, new TokenRequestContext()
                             .addScopes(scopes).setClaims(claims))
                             .flatMap(b -> Mono.just(true));
                     }
