@@ -86,11 +86,11 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       // TODO moderakh support patch?
       // TODO moderakh bulkWrite in another PR
 
-      if (!objectNode.has(CosmosConstants.Properties.Id) ||
-        !objectNode.get(CosmosConstants.Properties.Id).isTextual) {
-        logError(s"${CosmosConstants.Properties.Id} is a mandatory field. " +
+      require(objectNode.has(CosmosConstants.Properties.Id) &&
+        objectNode.get(CosmosConstants.Properties.Id).isTextual,
+        s"${CosmosConstants.Properties.Id} is a mandatory field. " +
           s"But it is missing or it is not a string")
-      }
+
       val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
       writer.scheduleWrite(partitionKeyValue, objectNode)
     }

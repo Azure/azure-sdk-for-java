@@ -51,6 +51,7 @@
       </activation>
       <modules>
         <module>azure-mixedreality-authentication</module>
+        <module>azure-resourcemanager-mixedreality</module>
       </modules>
     </profile>
   </profiles>

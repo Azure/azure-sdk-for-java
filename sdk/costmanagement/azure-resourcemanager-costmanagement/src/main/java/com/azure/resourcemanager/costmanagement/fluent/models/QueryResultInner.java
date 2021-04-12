@@ -21,6 +21,26 @@ public class QueryResultInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryResultInner.class);
 
     /*
+     * eTag of the resource. To handle concurrent update scenario, this field
+     * will be used to determine whether the user is updating the latest
+     * version or not.
+     */
+    @JsonProperty(value = "eTag")
+    private String etag;
+
+    /*
+     * Resource location
+     */
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
+
+    /*
+     * Resource SKU
+     */
+    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
+    private String sku;
+
+    /*
      * The link (url) to the next page of results.
      */
     @JsonProperty(value = "properties.nextLink")
@@ -43,6 +63,46 @@ public class QueryResultInner extends ProxyResource {
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> tags;
+
+    /**
+     * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
+     *
+     * @param etag the etag value to set.
+     * @return the QueryResultInner object itself.
+     */
+    public QueryResultInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the location property: Resource location.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the sku property: Resource SKU.
+     *
+     * @return the sku value.
+     */
+    public String sku() {
+        return this.sku;
+    }
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.

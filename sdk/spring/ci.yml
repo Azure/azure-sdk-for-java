@@ -194,7 +194,9 @@ extends:
         groupId: com.azure.spring
       - name: feature-management-web-sample
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-messaging
+      - name: azure-spring-cloud-sample-messaging-eventhubs
+        groupId: com.azure.spring
+      - name: azure-spring-cloud-sample-messaging-servicebus
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure.spring

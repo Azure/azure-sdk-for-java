@@ -23,6 +23,17 @@
   <properties>
     <java.version>1.8</java.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <!--
 
@@ -34,6 +45,10 @@
     </dependency>
 
     -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>

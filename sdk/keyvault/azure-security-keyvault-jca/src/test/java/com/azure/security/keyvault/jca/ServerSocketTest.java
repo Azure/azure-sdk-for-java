@@ -3,17 +3,17 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContexts;
 import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -104,26 +104,23 @@ public class ServerSocketTest {
             .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
             .build();
 
-        SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-            .create()
-            .setSslContext(sslContext)
-            .setHostnameVerifier((hostname, session) -> true)
-            .build();
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+            sslContext, (hostname, session) -> true);
 
-        PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-            .create()
-            .setSSLSocketFactory(sslSocketFactory)
-            .build();
+        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
+            RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("https", sslConnectionSocketFactory)
+                .build());
 
         /*
          * And now execute the test.
          */
         String result = null;
 
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
             HttpGet httpGet = new HttpGet("https://localhost:8765");
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
+            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+                int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
                 if (status == 204) {
                     result1 = "Success";
@@ -210,26 +207,23 @@ public class ServerSocketTest {
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
             .build();
 
-        SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-            .create()
-            .setSslContext(sslContext)
-            .setHostnameVerifier((hostname, session) -> true)
-            .build();
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+            sslContext, (hostname, session) -> true);
 
-        PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-            .create()
-            .setSSLSocketFactory(sslSocketFactory)
-            .build();
+        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
+            RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("https", sslConnectionSocketFactory)
+                .build());
 
         /*
          * And now execute the test.
          */
         String result = null;
 
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
             HttpGet httpGet = new HttpGet("https://localhost:8766");
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
+            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+                int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
                 if (status == 204) {
                     result1 = "Success";

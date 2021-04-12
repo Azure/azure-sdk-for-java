@@ -30,6 +30,7 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -114,12 +116,18 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies that we can get a new AMQP receive link and fetch a few messages.
      */
     @Test
-    void createNewLink() {
+    void createNewLink() throws InterruptedException {
         // Arrange
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(1);
+
+        doAnswer((invocation) -> {
+            countDownLatch.countDown();
+            return null;
+        }).when(link1).addCredits(eq(PREFETCH - 1));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -139,7 +147,8 @@ class ServiceBusReceiveLinkProcessorTest {
         processor.dispose();
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(3)).addCredits(eq(PREFETCH - 1));
+        final boolean awaited = countDownLatch.await(5, TimeUnit.SECONDS);
+        Assertions.assertTrue(awaited);
     }
 
     /**
@@ -548,11 +557,17 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     @Test
-    void receivesFromFirstLink() {
+    void receivesFromFirstLink() throws InterruptedException {
         // Arrange
+        final CountDownLatch countDownLatch = new CountDownLatch(2);
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(0);
+
+        doAnswer((i) -> {
+            countDownLatch.countDown();
+            return null;
+        }).when(link1).addCredits(eq(PREFETCH));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -572,16 +587,18 @@ class ServiceBusReceiveLinkProcessorTest {
         // dispose the processor
         processor.dispose();
 
-        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(3)).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
-
         Supplier<Integer> value = creditSupplierCaptor.getValue();
         assertNotNull(value);
 
         final Integer creditValue = value.get();
 
         assertEquals(0, creditValue);
+
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        final boolean awaited = countDownLatch.await(5, TimeUnit.SECONDS);
+        Assertions.assertTrue(awaited);
+
     }
 
     /**

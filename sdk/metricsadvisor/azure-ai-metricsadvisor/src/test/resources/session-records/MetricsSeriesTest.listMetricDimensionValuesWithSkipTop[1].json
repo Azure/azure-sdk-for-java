@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/dimension/query?$skip=20&$maxpagesize=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "4d165d20-3696-4a92-9b36-11a7e1ac5d20",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "3a0361d1-e9cb-46c1-ba1f-3dd11d9947b3",
+      "x-envoy-upstream-service-time" : "88",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "3a0361d1-e9cb-46c1-ba1f-3dd11d9947b3",
+      "retry-after" : "0",
+      "Content-Length" : "234",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Music\",\"Musical Instruments\",\"Office Products\",\"Outdoors\",\"Personal Computers\",\"Shoes Handbags & Sunglasses\",\"Software & Computer Games\",\"Sports\",\"Sports Collectibles\",\"__SUM__\",\"Tools & Home Improvement\"],\"@nextLink\":null}",
+      "Date" : "Tue, 30 Mar 2021 15:56:31 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

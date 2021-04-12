@@ -74,6 +74,8 @@ public class LICtlWorkload {
 
         LOGGER.info("Data loading completed");
         _bulkLoadClient.close();
+
+        _testRunner.init();
     }
 
     public void run() {
