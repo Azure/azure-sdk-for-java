@@ -7,6 +7,9 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.QueryAnswer;
+import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -162,14 +165,14 @@ public final class SearchRequest {
      * individual search query terms.
      */
     @JsonProperty(value = "speller")
-    private Speller speller;
+    private QuerySpeller speller;
 
     /*
      * A value that specifies whether answers should be returned as part of the
      * search response.
      */
     @JsonProperty(value = "answers")
-    private Answers answers;
+    private QueryAnswer answers;
 
     /*
      * The comma-separated list of fields to retrieve. If unspecified, all
@@ -597,7 +600,7 @@ public final class SearchRequest {
      *
      * @return the speller value.
      */
-    public Speller getSpeller() {
+    public QuerySpeller getSpeller() {
         return this.speller;
     }
 
@@ -608,7 +611,7 @@ public final class SearchRequest {
      * @param speller the speller value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setSpeller(Speller speller) {
+    public SearchRequest setSpeller(QuerySpeller speller) {
         this.speller = speller;
         return this;
     }
@@ -619,7 +622,7 @@ public final class SearchRequest {
      *
      * @return the answers value.
      */
-    public Answers getAnswers() {
+    public QueryAnswer getAnswers() {
         return this.answers;
     }
 
@@ -630,7 +633,7 @@ public final class SearchRequest {
      * @param answers the answers value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setAnswers(Answers answers) {
+    public SearchRequest setAnswers(QueryAnswer answers) {
         this.answers = answers;
         return this;
     }

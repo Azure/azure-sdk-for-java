@@ -653,7 +653,7 @@ public final class SearchAsyncClient {
                 SearchPagedResponse page = new SearchPagedResponse(
                     new SimpleResponse<>(response, getSearchResults(result)),
                     createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
-                    result.getCoverage());
+                    result.getCoverage(), result.getAnswers());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }

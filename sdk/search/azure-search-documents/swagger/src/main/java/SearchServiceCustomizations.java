@@ -16,10 +16,10 @@ public class SearchServiceCustomizations extends Customization {
     private static final int PUBLIC_FINAL = Modifier.PUBLIC | Modifier.FINAL;
 
     private static final String VARARG_METHOD_TEMPLATE =
-        "public %s %s(%s... %s) {" +
-        "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);\n" +
-        "    return this;\n" +
-        "}";
+        "public %s %s(%s... %s) {"
+            + "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);\n"
+            + "    return this;\n"
+            + "}";
 
     // Packages
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.indexes.implementation.models";
