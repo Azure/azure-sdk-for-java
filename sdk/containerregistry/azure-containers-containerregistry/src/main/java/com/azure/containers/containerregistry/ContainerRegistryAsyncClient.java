@@ -114,7 +114,6 @@ public final class ContainerRegistryAsyncClient {
             }
 
             return this.registriesImplClient.deleteRepositoryWithResponseAsync(name, context)
-                .map(res -> Utils.mapResponse(res, Utils::mapDeleteRepositoryResult))
                 .onErrorMap(Utils::mapException);
 
         } catch (RuntimeException e) {

@@ -7,7 +7,7 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesResponse;
-import com.azure.containers.containerregistry.implementation.models.DeleteRepositoryResult;
+import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -21,6 +21,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -146,6 +147,31 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
+     *
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void checkDockerV2Support() {
+        checkDockerV2SupportAsync().block();
+    }
+
+    /**
+     * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> checkDockerV2SupportWithResponse(Context context) {
+        return checkDockerV2SupportWithResponseAsync(context).block();
+    }
+
+    /**
      * List repositories.
      *
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
@@ -236,6 +262,39 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * List repositories.
+     *
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> getRepositories(String last, Integer n) {
+        return new PagedIterable<>(getRepositoriesAsync(last, n));
+    }
+
+    /**
+     * List repositories.
+     *
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> getRepositories(String last, Integer n, Context context) {
+        return new PagedIterable<>(getRepositoriesAsync(last, n, context));
+    }
+
+    /**
      * Delete the repository identified by `name`.
      *
      * @param name Name of the image (including the namespace).
@@ -309,6 +368,35 @@ public final class ContainerRegistriesImpl {
                                 return Mono.empty();
                             }
                         });
+    }
+
+    /**
+     * Delete the repository identified by `name`.
+     *
+     * @param name Name of the image (including the namespace).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deleted repository.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeleteRepositoryResult deleteRepository(String name) {
+        return deleteRepositoryAsync(name).block();
+    }
+
+    /**
+     * Delete the repository identified by `name`.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deleted repository.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String name, Context context) {
+        return deleteRepositoryWithResponseAsync(name, context).block();
     }
 
     /**

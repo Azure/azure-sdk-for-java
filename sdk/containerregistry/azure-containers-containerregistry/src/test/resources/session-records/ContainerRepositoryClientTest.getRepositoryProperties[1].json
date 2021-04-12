@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e3962784-5c8d-4e3c-9bba-b0ec08b78023",
+      "x-ms-client-request-id" : "6a46c57d-ad02-4e40-909b-0d10fb8b70dc",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "a02dd380-aacb-4721-a555-d0e1d19b8016",
+      "X-Ms-Correlation-Request-Id" : "3a92d85b-c956-4e9c-8c60-4048b8572e6f",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.333333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.616667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Thu, 08 Apr 2021 19:22:30 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:01 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2fbaa674-5ba7-4bde-9c11-9a1965eda04d",
+      "x-ms-client-request-id" : "1755ea22-f301-4aac-949a-546508c53428",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "ce37f360-2563-4a9e-a0d4-71cc1a87a89d",
+      "X-Ms-Correlation-Request-Id" : "6318094c-be58-4feb-b36c-66b0cfc9dba2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.266667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.5",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Thu, 08 Apr 2021 19:22:30 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:01 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,7 +48,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "981c7bc6-ad60-4f26-9827-9ec1c070aff2"
+      "x-ms-client-request-id" : "49e5260f-02a3-483a-890e-6b26fd85c5b4"
     },
     "Response" : {
       "content-length" : "314",
@@ -57,9 +57,9 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 08 Apr 2021 19:22:30 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:01 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "0be863f4-2cbc-4284-a630-0e0a61d1bbc7",
+      "X-Ms-Correlation-Request-Id" : "f008c76e-8fd8-4241-92ab-109aa472ea6e",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Body" : "{\"registry\":\"pallavitcontainerregistry.azurecr.io\",\"imageName\":\"library/hello-world\",\"createdTime\":\"2021-04-07T19:52:07.1381321Z\",\"lastUpdateTime\":\"2021-04-07T19:52:04.929436Z\",\"manifestCount\":10,\"tagCount\":5,\"changeableAttributes\":{\"deleteEnabled\":true,\"writeEnabled\":true,\"readEnabled\":true,\"listEnabled\":true}}\n",

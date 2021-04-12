@@ -12,11 +12,11 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryRepositoriesGetTagsResponse;
 import com.azure.containers.containerregistry.implementation.models.Manifest;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
-import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.RegistryArtifactProperties;
-import com.azure.containers.containerregistry.implementation.models.RepositoryProperties;
-import com.azure.containers.containerregistry.implementation.models.TagProperties;
+import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ContentProperties;
+import com.azure.containers.containerregistry.models.RepositoryProperties;
+import com.azure.containers.containerregistry.models.TagProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -33,6 +33,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -231,8 +232,9 @@ public final class ContainerRegistryRepositoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Manifest>> getManifestWithResponseAsync(String name, String reference, String accept) {
+        final String acceptHeader = "application/json";
         return FluxUtil.withContext(
-                context -> service.getManifest(this.client.getUrl(), name, reference, accept, accept, context));
+                context -> service.getManifest(this.client.getUrl(), name, reference, accept, acceptHeader, context));
     }
 
     /**
@@ -251,7 +253,8 @@ public final class ContainerRegistryRepositoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Manifest>> getManifestWithResponseAsync(
             String name, String reference, String accept, Context context) {
-        return service.getManifest(this.client.getUrl(), name, reference, accept, accept, context);
+        final String acceptHeader = "application/json";
+        return service.getManifest(this.client.getUrl(), name, reference, accept, acceptHeader, context);
     }
 
     /**
@@ -303,6 +306,41 @@ public final class ContainerRegistryRepositoriesImpl {
                                 return Mono.empty();
                             }
                         });
+    }
+
+    /**
+     * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param accept Accept header string delimited by comma. For example,
+     *     application/vnd.docker.distribution.manifest.v2+json.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Manifest getManifest(String name, String reference, String accept) {
+        return getManifestAsync(name, reference, accept).block();
+    }
+
+    /**
+     * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param accept Accept header string delimited by comma. For example,
+     *     application/vnd.docker.distribution.manifest.v2+json.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Manifest> getManifestWithResponse(String name, String reference, String accept, Context context) {
+        return getManifestWithResponseAsync(name, reference, accept, context).block();
     }
 
     /**
@@ -393,6 +431,40 @@ public final class ContainerRegistryRepositoriesImpl {
     }
 
     /**
+     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object createManifest(String name, String reference, Manifest payload) {
+        return createManifestAsync(name, reference, payload).block();
+    }
+
+    /**
+     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContainerRegistryRepositoriesCreateManifestResponse createManifestWithResponse(
+            String name, String reference, Manifest payload, Context context) {
+        return createManifestWithResponseAsync(name, reference, payload, context).block();
+    }
+
+    /**
      * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
      *
      * @param name Name of the image (including the namespace).
@@ -455,6 +527,36 @@ public final class ContainerRegistryRepositoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteManifestAsync(String name, String reference, Context context) {
         return deleteManifestWithResponseAsync(name, reference, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Digest of a BLOB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteManifest(String name, String reference) {
+        deleteManifestAsync(name, reference).block();
+    }
+
+    /**
+     * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteManifestWithResponse(String name, String reference, Context context) {
+        return deleteManifestWithResponseAsync(name, reference, context).block();
     }
 
     /**
@@ -534,6 +636,35 @@ public final class ContainerRegistryRepositoriesImpl {
     }
 
     /**
+     * Get repository attributes.
+     *
+     * @param name Name of the image (including the namespace).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return repository attributes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RepositoryProperties getProperties(String name) {
+        return getPropertiesAsync(name).block();
+    }
+
+    /**
+     * Get repository attributes.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return repository attributes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RepositoryProperties> getPropertiesWithResponse(String name, Context context) {
+        return getPropertiesWithResponseAsync(name, context).block();
+    }
+
+    /**
      * Update the attribute identified by `name` where `reference` is the name of the repository.
      *
      * @param name Name of the image (including the namespace).
@@ -596,6 +727,36 @@ public final class ContainerRegistryRepositoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String name, ContentProperties value, Context context) {
         return setPropertiesWithResponseAsync(name, value, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update the attribute identified by `name` where `reference` is the name of the repository.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param value Repository attribute value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setProperties(String name, ContentProperties value) {
+        setPropertiesAsync(name, value).block();
+    }
+
+    /**
+     * Update the attribute identified by `name` where `reference` is the name of the repository.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param value Repository attribute value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setPropertiesWithResponse(String name, ContentProperties value, Context context) {
+        return setPropertiesWithResponseAsync(name, value, context).block();
     }
 
     /**
@@ -707,6 +868,47 @@ public final class ContainerRegistryRepositoriesImpl {
     }
 
     /**
+     * List tags of a repository.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @param orderby orderby query parameter.
+     * @param digest filter by digest.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TagAttributesBase> getTags(
+            String name, String last, Integer n, String orderby, String digest) {
+        return new PagedIterable<>(getTagsAsync(name, last, n, orderby, digest));
+    }
+
+    /**
+     * List tags of a repository.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @param orderby orderby query parameter.
+     * @param digest filter by digest.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TagAttributesBase> getTags(
+            String name, String last, Integer n, String orderby, String digest, Context context) {
+        return new PagedIterable<>(getTagsAsync(name, last, n, orderby, digest, context));
+    }
+
+    /**
      * Get tag attributes by tag.
      *
      * @param name Name of the image (including the namespace).
@@ -789,6 +991,37 @@ public final class ContainerRegistryRepositoriesImpl {
     }
 
     /**
+     * Get tag attributes by tag.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Tag name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag attributes by tag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagProperties getTagProperties(String name, String reference) {
+        return getTagPropertiesAsync(name, reference).block();
+    }
+
+    /**
+     * Get tag attributes by tag.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Tag name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag attributes by tag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TagProperties> getTagPropertiesWithResponse(String name, String reference, Context context) {
+        return getTagPropertiesWithResponseAsync(name, reference, context).block();
+    }
+
+    /**
      * Update tag attributes.
      *
      * @param name Name of the image (including the namespace).
@@ -863,6 +1096,39 @@ public final class ContainerRegistryRepositoriesImpl {
     }
 
     /**
+     * Update tag attributes.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Tag name.
+     * @param value Repository attribute value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateTagAttributes(String name, String reference, ContentProperties value) {
+        updateTagAttributesAsync(name, reference, value).block();
+    }
+
+    /**
+     * Update tag attributes.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Tag name.
+     * @param value Repository attribute value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateTagAttributesWithResponse(
+            String name, String reference, ContentProperties value, Context context) {
+        return updateTagAttributesWithResponseAsync(name, reference, value, context).block();
+    }
+
+    /**
      * Delete tag.
      *
      * @param name Name of the image (including the namespace).
@@ -925,6 +1191,36 @@ public final class ContainerRegistryRepositoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTagAsync(String name, String reference, Context context) {
         return deleteTagWithResponseAsync(name, reference, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete tag.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Tag name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTag(String name, String reference) {
+        deleteTagAsync(name, reference).block();
+    }
+
+    /**
+     * Delete tag.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param reference Tag name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTagWithResponse(String name, String reference, Context context) {
+        return deleteTagWithResponseAsync(name, reference, context).block();
     }
 
     /**
@@ -1030,6 +1326,44 @@ public final class ContainerRegistryRepositoriesImpl {
     }
 
     /**
+     * List manifests of a repository.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @param orderby orderby query parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManifestAttributesBase> getManifests(String name, String last, Integer n, String orderby) {
+        return new PagedIterable<>(getManifestsAsync(name, last, n, orderby));
+    }
+
+    /**
+     * List manifests of a repository.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @param orderby orderby query parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManifestAttributesBase> getManifests(
+            String name, String last, Integer n, String orderby, Context context) {
+        return new PagedIterable<>(getManifestsAsync(name, last, n, orderby, context));
+    }
+
+    /**
      * Get manifest attributes.
      *
      * @param name Name of the image (including the namespace).
@@ -1114,6 +1448,38 @@ public final class ContainerRegistryRepositoriesImpl {
     }
 
     /**
+     * Get manifest attributes.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RegistryArtifactProperties getRegistryArtifactProperties(String name, String digest) {
+        return getRegistryArtifactPropertiesAsync(name, digest).block();
+    }
+
+    /**
+     * Get manifest attributes.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RegistryArtifactProperties> getRegistryArtifactPropertiesWithResponse(
+            String name, String digest, Context context) {
+        return getRegistryArtifactPropertiesWithResponseAsync(name, digest, context).block();
+    }
+
+    /**
      * Update attributes of a manifest.
      *
      * @param name Name of the image (including the namespace).
@@ -1186,6 +1552,39 @@ public final class ContainerRegistryRepositoriesImpl {
             String name, String digest, ContentProperties value, Context context) {
         return updateManifestAttributesWithResponseAsync(name, digest, value, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update attributes of a manifest.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param value Repository attribute value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateManifestAttributes(String name, String digest, ContentProperties value) {
+        updateManifestAttributesAsync(name, digest, value).block();
+    }
+
+    /**
+     * Update attributes of a manifest.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param value Repository attribute value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateManifestAttributesWithResponse(
+            String name, String digest, ContentProperties value, Context context) {
+        return updateManifestAttributesWithResponseAsync(name, digest, value, context).block();
     }
 
     /**

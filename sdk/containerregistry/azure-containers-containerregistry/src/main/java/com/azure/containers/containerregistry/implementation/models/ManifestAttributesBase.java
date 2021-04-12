@@ -5,66 +5,66 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Manifest details. */
-@Fluent
+@Immutable
 public final class ManifestAttributesBase {
     /*
      * Manifest
      */
-    @JsonProperty(value = "digest", required = true)
+    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * Image size
      */
-    @JsonProperty(value = "imageSize")
+    @JsonProperty(value = "imageSize", access = JsonProperty.Access.WRITE_ONLY)
     private Long size;
 
     /*
      * Created time
      */
-    @JsonProperty(value = "createdTime")
+    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Last update time
      */
-    @JsonProperty(value = "lastUpdateTime")
+    @JsonProperty(value = "lastUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture")
+    @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
     private String cpuArchitecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os")
+    @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
     private String operatingSystem;
 
     /*
      * List of manifest attributes details
      */
-    @JsonProperty(value = "references")
+    @JsonProperty(value = "references", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManifestAttributesManifestReferences> references;
 
     /*
      * List of tags
      */
-    @JsonProperty(value = "tags")
+    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tags;
 
     /*
      * Writeable properties of the resource
      */
-    @JsonProperty(value = "changeableAttributes")
+    @JsonProperty(value = "changeableAttributes", access = JsonProperty.Access.WRITE_ONLY)
     private ContentProperties writeableProperties;
 
     /**
@@ -77,34 +77,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the digest property: Manifest.
-     *
-     * @param digest the digest value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setDigest(String digest) {
-        this.digest = digest;
-        return this;
-    }
-
-    /**
      * Get the size property: Image size.
      *
      * @return the size value.
      */
     public Long getSize() {
         return this.size;
-    }
-
-    /**
-     * Set the size property: Image size.
-     *
-     * @param size the size value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setSize(Long size) {
-        this.size = size;
-        return this;
     }
 
     /**
@@ -117,34 +95,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the createdOn property: Created time.
-     *
-     * @param createdOn the createdOn value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
-    }
-
-    /**
      * Get the lastUpdatedOn property: Last update time.
      *
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
-    }
-
-    /**
-     * Set the lastUpdatedOn property: Last update time.
-     *
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-        return this;
     }
 
     /**
@@ -157,34 +113,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the cpuArchitecture property: CPU architecture.
-     *
-     * @param cpuArchitecture the cpuArchitecture value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setCpuArchitecture(String cpuArchitecture) {
-        this.cpuArchitecture = cpuArchitecture;
-        return this;
-    }
-
-    /**
      * Get the operatingSystem property: Operating system.
      *
      * @return the operatingSystem value.
      */
     public String getOperatingSystem() {
         return this.operatingSystem;
-    }
-
-    /**
-     * Set the operatingSystem property: Operating system.
-     *
-     * @param operatingSystem the operatingSystem value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setOperatingSystem(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
     }
 
     /**
@@ -197,17 +131,6 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the references property: List of manifest attributes details.
-     *
-     * @param references the references value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setReferences(List<ManifestAttributesManifestReferences> references) {
-        this.references = references;
-        return this;
-    }
-
-    /**
      * Get the tags property: List of tags.
      *
      * @return the tags value.
@@ -217,33 +140,11 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the tags property: List of tags.
-     *
-     * @param tags the tags value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setTags(List<String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Get the writeableProperties property: Writeable properties of the resource.
      *
      * @return the writeableProperties value.
      */
     public ContentProperties getWriteableProperties() {
         return this.writeableProperties;
-    }
-
-    /**
-     * Set the writeableProperties property: Writeable properties of the resource.
-     *
-     * @param writeableProperties the writeableProperties value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setWriteableProperties(ContentProperties writeableProperties) {
-        this.writeableProperties = writeableProperties;
-        return this;
     }
 }

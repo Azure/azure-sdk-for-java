@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b479657e-3256-43c6-bb0e-95f7bc929635",
+      "x-ms-client-request-id" : "6e8bd123-13b8-4ae2-a984-75f656f47339",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "a7b4662e-0422-4d51-860a-e21f6211163c",
+      "X-Ms-Correlation-Request-Id" : "13913693-5e6a-47da-95f9-aa7085da60c5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.183333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.233333",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Thu, 08 Apr 2021 19:22:40 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "77d4928e-71a4-4e38-9a8b-01ebf082cdd8",
+      "x-ms-client-request-id" : "cebcbc4f-a28e-4723-9154-884cd9c9e39d",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "e201b7d2-4c78-446c-8b97-3916e03dfa26",
+      "X-Ms-Correlation-Request-Id" : "53abab02-a985-4ded-b486-f62780e87f52",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.266667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.183333",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Thu, 08 Apr 2021 19:22:40 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,7 +48,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fbusybox",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "173a5970-556a-4ed3-a846-1dc29e490bb0"
+      "x-ms-client-request-id" : "042ddee2-eb29-49da-8bbd-bacc3b2d7117"
     },
     "Response" : {
       "content-length" : "831",
@@ -57,13 +57,13 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Thu, 08 Apr 2021 19:22:43 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:14 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "c188c239-c044-42ec-929e-26e3853df3e3",
+      "X-Ms-Correlation-Request-Id" : "3bd56565-a4a6-4a43-a0fe-dabae888795e",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "173a5970-556a-4ed3-a846-1dc29e490bb0",
-      "X-Ms-Request-Id" : "610e6da8-61b0-4e74-b83d-3d1ed92a2775",
+      "X-Ms-Client-Request-Id" : "042ddee2-eb29-49da-8bbd-bacc3b2d7117",
+      "X-Ms-Request-Id" : "0285a459-10fa-4c97-853b-64f3f5cb31e2",
       "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "8.000000",
       "Body" : "{\"manifestsDeleted\":[\"sha256:1ccc0a0ca577e5fb5a0bdf2150a1a9f842f47c8865e861fa0062c5d343eb8cac\",\"sha256:37b77d92a7ca131dd379ab9a637b814dd99dc0cb560ccf59b566bd6448564b7c\",\"sha256:6223225a29b199db7ac08bfc70717c0b4fe28b791abbe25a3208025fa86a4b70\",\"sha256:82b4c9f36a6fa022454e78ad5c72a74fd34ca4e20489b36a8a436ca3ce9c34ef\",\"sha256:975eefa55fc130df8943cf2f72a8852ed2591db75871e0dcc427b76a0d8c26f8\",\"sha256:ae39a6f5c07297d7ab64dbd4f82c77c874cc6a94cea29fdec309d0992574b4f7\",\"sha256:beded925d853f36a55cf1d0d4e92c81e945e0be5ade32df173c2827df2c9b12f\",\"sha256:e132653a6bb3ea3e3b0c63b608122ee72e03cd1e9849a05818965b695afad399\",\"sha256:ed9c347e6a72d81a3dec189527b720bd0da021239fe779c9549be501ad083b4e\",\"sha256:fd659a6f4786d18666586ab4935f8e846d7cf1ff1b2709671f3ff0fcd15519b9\"],\"tagsDeleted\":[\"test-delete-image-by-tag\",\"test-update-properties\"]}\n",
       "Content-Type" : "application/json; charset=utf-8"
@@ -74,20 +74,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e2592edc-2098-4136-a030-8acac1d075cf",
+      "x-ms-client-request-id" : "66267974-783c-40fa-b805-ec44650e45e9",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "77dd22d6-1274-4ae9-80bf-237dd7fd8d7c",
+      "X-Ms-Correlation-Request-Id" : "b4aaaf7e-b2c4-49cb-9b6f-5be8defb308c",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.083333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.116667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Thu, 08 Apr 2021 19:22:50 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -96,20 +96,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "618b0893-b6b4-4b09-9a4e-c5c075608ae4",
+      "x-ms-client-request-id" : "e24acbfa-afe5-4e01-a117-1b6c1fbddf22",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "e11cbd41-b35f-49f8-809a-9445d4701119",
+      "X-Ms-Correlation-Request-Id" : "d7c0ac27-87bd-42a8-bbe4-f0f756294046",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.066667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.333333",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Thu, 08 Apr 2021 19:22:50 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -118,7 +118,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fbusybox",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7c336a22-07a2-45b4-8b9b-31ab0199e8e6"
+      "x-ms-client-request-id" : "d5deabf5-dafd-41a2-8e29-d842202788fc"
     },
     "Response" : {
       "content-length" : "93",
@@ -127,9 +127,9 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Thu, 08 Apr 2021 19:22:50 GMT",
+      "Date" : "Fri, 09 Apr 2021 20:05:22 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "5f2b50db-da53-48ef-af8b-8aa86811e707",
+      "X-Ms-Correlation-Request-Id" : "384ae062-e16a-4032-91a7-80cee3cfecb5",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Body" : "{\"errors\":[{\"code\":\"NAME_UNKNOWN\",\"message\":\"repository \\\"library/busybox\\\" is not found\"}]}\n",

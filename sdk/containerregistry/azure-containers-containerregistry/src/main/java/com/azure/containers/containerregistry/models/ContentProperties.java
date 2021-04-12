@@ -39,7 +39,7 @@ public final class ContentProperties {
      *
      * @return the canDelete value.
      */
-    public Boolean hasCanDelete() {
+    public Boolean isCanDelete() {
         return this.canDelete;
     }
 
@@ -59,7 +59,7 @@ public final class ContentProperties {
      *
      * @return the canWrite value.
      */
-    public Boolean hasCanWrite() {
+    public Boolean isCanWrite() {
         return this.canWrite;
     }
 
@@ -79,7 +79,7 @@ public final class ContentProperties {
      *
      * @return the canList value.
      */
-    public Boolean hasCanList() {
+    public Boolean isCanList() {
         return this.canList;
     }
 
@@ -99,7 +99,7 @@ public final class ContentProperties {
      *
      * @return the canRead value.
      */
-    public Boolean hasCanRead() {
+    public Boolean isCanRead() {
         return this.canRead;
     }
 

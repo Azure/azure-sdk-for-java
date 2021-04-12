@@ -14,62 +14,38 @@ public final class RepositoryProperties {
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName", required = true)
-    private final String name;
+    @JsonProperty(value = "imageName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
 
     /*
      * Image created time
      */
-    @JsonProperty(value = "createdTime", required = true)
-    private final OffsetDateTime createdOn;
+    @JsonProperty(value = "createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdOn;
 
     /*
      * Image last update time
      */
-    @JsonProperty(value = "lastUpdateTime", required = true)
-    private final OffsetDateTime lastUpdatedOn;
+    @JsonProperty(value = "lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastUpdatedOn;
 
     /*
      * Number of the manifests
      */
-    @JsonProperty(value = "manifestCount", required = true)
-    private final int registryArtifactCount;
+    @JsonProperty(value = "manifestCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private int registryArtifactCount;
 
     /*
      * Number of the tags
      */
-    @JsonProperty(value = "tagCount", required = true)
-    private final int tagCount;
+    @JsonProperty(value = "tagCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private int tagCount;
 
     /*
      * Writeable properties of the resource
      */
-    @JsonProperty(value = "changeableAttributes", required = true)
-    private final ContentProperties writeableProperties;
-
-    /**
-     * Initializes an instance of type RepositoryProperties
-     * @param createdOn time when the repository was created.
-     * @param lastUpdatedOn time when the repository was last updated.
-     * @param properties content properties associated with the repository.
-     * @param name name of the repository.
-     * @param registryArtifactCount registry artifact count
-     * @param tagCount tag count
-     */
-    public RepositoryProperties(
-        String name,
-        int registryArtifactCount,
-        int tagCount,
-        ContentProperties properties,
-        OffsetDateTime createdOn,
-        OffsetDateTime lastUpdatedOn) {
-        this.createdOn = createdOn;
-        this.lastUpdatedOn = lastUpdatedOn;
-        this.writeableProperties = properties;
-        this.name = name;
-        this.registryArtifactCount = registryArtifactCount;
-        this.tagCount = tagCount;
-    }
+    @JsonProperty(value = "changeableAttributes", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private ContentProperties writeableProperties;
 
     /**
      * Get the name property: Image name.
