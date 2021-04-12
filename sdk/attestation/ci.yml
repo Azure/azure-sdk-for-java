@@ -40,4 +40,6 @@ extends:
       - name: azure-security-attestation
         groupId: com.azure
         safeName: azuresecurityattestation
-        
+      - name: azure-resourcemanager-attestation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerattestation
