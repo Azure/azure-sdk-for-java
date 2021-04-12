@@ -1,9 +1,33 @@
 # Release History
 
-## 4.3.0-beta.6 (Unreleased)
+## 4.3.0-beta.7 (Unreleased)
+
+
+## 4.3.0-beta.6 (2021-04-09)
+
+### Breaking Changes
+- Renamed `EncryptOptions` to `EncryptParameters`.
+- Renamed `DecryptOptions` to `DecryptParameters`.
+- Changed `KeyVaultKeyIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
+- Removed the following classes:
+    - `LocalCryptographyAsyncClient`
+    - `LocalCryptographyClient`
+    - `LocalCryptographyClientBuilder`
+    - `LocalKeyEncryptionKeyClient`
+    - `LocalKeyEncryptionKeyAsyncClient`
+    - `LocalKeyEncryptionKeyClientBuilder`
 
 ### New features
+- Added support for service version `7.2`.
+- Made all `JsonWebKey` properties settable.
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added convenience class `CreateOctKeyOptions`.
+- Added support for building local-only cryptography clients by providing a `JsonWebKey` for local operations:
+    - `CryptograhpyClientBuilder.jsonWebKey(JsonWebKey)`
+- Added support for building local-only key encryption key clients by providing a `JsonWebKey` for local operations:
+    - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey(JsonWebKey)`
+    - `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey(JsonWebKey)`
+- `CryptograhpyClientBuilder.keyIdentifier(String)` now throws a `NullPointerException` if a `null` value is provided as an argument.
 
 ## 4.3.0-beta.5 (2021-03-12)
 

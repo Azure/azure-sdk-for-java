@@ -12,9 +12,13 @@ import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
@@ -29,15 +33,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CryptographyClientTest extends CryptographyClientTestBase {
-
     private KeyClient client;
     private HttpPipeline pipeline;
 
@@ -49,18 +49,18 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     private void initializeKeyClient(HttpClient httpClient) {
         pipeline = getHttpPipeline(httpClient, KeyServiceVersion.getLatest());
         client = new KeyClientBuilder()
-                     .pipeline(pipeline)
-                     .vaultUrl(getEndpoint())
-                     .buildClient();
+            .pipeline(pipeline)
+            .vaultUrl(getEndpoint())
+            .buildClient();
     }
 
     private CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
         pipeline = getHttpPipeline(httpClient, serviceVersion);
         return new CryptographyClientBuilder()
-                   .pipeline(pipeline)
-                   .serviceVersion(serviceVersion)
-                   .keyIdentifier(keyId)
-                   .buildClient();
+            .pipeline(pipeline)
+            .serviceVersion(serviceVersion)
+            .keyIdentifier(keyId)
+            .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -78,17 +78,37 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
             for (EncryptionAlgorithm algorithm : algorithms) {
                 // Test variables
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] ciphertext = cryptoClient.encrypt(algorithm, plaintext).getCipherText();
+                byte[] decryptedText = serviceClient.decrypt(new DecryptParameters(algorithm, ciphertext, null, null,
+                    null), Context.NONE).block().getPlainText();
+
+                assertArrayEquals(decryptedText, plaintext);
+
+                ciphertext = serviceClient.encrypt(new EncryptParameters(algorithm, plaintext, null, null), Context.NONE)
+                    .block().getCipherText();
+                decryptedText = cryptoClient.decrypt(algorithm, ciphertext).getPlainText();
+
+                assertArrayEquals(decryptedText, plaintext);
+            }
+        });
+    }
+
+    @Test
+    public void encryptDecryptRsa() throws Exception {
+        encryptDecryptRsaRunner(keyPair -> {
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
+            CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
+            List<EncryptionAlgorithm> algorithms = Arrays.asList(EncryptionAlgorithm.RSA1_5, EncryptionAlgorithm.RSA_OAEP);
+
+            for (EncryptionAlgorithm algorithm : algorithms) {
+                // Test variables
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
                 byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).getCipherText();
-                byte[] decryptedText = serviceClient.decrypt(new DecryptOptions(algorithm, cipherText, null, null,
-                    null), Context.NONE).block().getPlainText();
-
-                assertArrayEquals(decryptedText, plainText);
-
-                cipherText = serviceClient.encrypt(new EncryptOptions(algorithm, plainText, null, null), Context.NONE)
-                    .block().getCipherText();
-                decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
+                byte[] decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);
             }
@@ -97,7 +117,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
-    public void wrapUnwraptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+    public void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
         initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
@@ -110,24 +130,44 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
             for (KeyWrapAlgorithm algorithm : algorithms) {
                 // Test variables
-                byte[] plainText = new byte[100];
-                new Random(0x1234567L).nextBytes(plainText);
-                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).getEncryptedKey();
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plaintext).getEncryptedKey();
                 byte[] decryptedKey =
                     serviceClient.unwrapKey(algorithm, encryptedKey, Context.NONE).block().getKey();
 
-                assertArrayEquals(decryptedKey, plainText);
+                assertArrayEquals(decryptedKey, plaintext);
 
                 encryptedKey =
-                    serviceClient.wrapKey(algorithm, plainText, Context.NONE).block().getEncryptedKey();
+                    serviceClient.wrapKey(algorithm, plaintext, Context.NONE).block().getEncryptedKey();
                 decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
+
+                assertArrayEquals(decryptedKey, plaintext);
+            }
+
+        });
+    }
+
+    @Test
+    public void wrapUnwrapRsa() throws Exception {
+        encryptDecryptRsaRunner(keyPair -> {
+            JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
+            CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
+            List<KeyWrapAlgorithm> algorithms = Arrays.asList(KeyWrapAlgorithm.RSA1_5, KeyWrapAlgorithm.RSA_OAEP);
+
+            for (KeyWrapAlgorithm algorithm : algorithms) {
+                // Test variables
+                byte[] plainText = new byte[100];
+                new Random(0x1234567L).nextBytes(plainText);
+                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).getEncryptedKey();
+                byte[] decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
 
                 assertArrayEquals(decryptedKey, plainText);
             }
 
         });
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
@@ -144,15 +184,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
             for (SignatureAlgorithm algorithm : algorithms) {
                 // Test variables
-                byte[] plainText = new byte[100];
-                new Random(0x1234567L).nextBytes(plainText);
-                byte[] signature = cryptoClient.signData(algorithm, plainText).getSignature();
-                Boolean verifyStatus = serviceClient.verifyData(algorithm, plainText, signature, Context.NONE).block().isValid();
+                byte[] plaintext = new byte[100];
+                new Random(0x1234567L).nextBytes(plaintext);
+                byte[] signature = cryptoClient.signData(algorithm, plaintext).getSignature();
+                Boolean verifyStatus = serviceClient.verifyData(algorithm, plaintext, signature, Context.NONE).block().isValid();
 
                 assertTrue(verifyStatus);
 
-                signature = serviceClient.signData(algorithm, plainText, Context.NONE).block().getSignature();
-                verifyStatus = cryptoClient.verifyData(algorithm, plainText, signature).isValid();
+                signature = serviceClient.signData(algorithm, plaintext, Context.NONE).block().getSignature();
+                verifyStatus = cryptoClient.verifyData(algorithm, plaintext, signature).isValid();
 
                 assertTrue(verifyStatus);
             }
@@ -178,7 +218,6 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
         Provider provider = Security.getProvider("SunEC");
         for (KeyCurveName crv : curveList) {
-
             final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC", provider);
             ECGenParameterSpec gps = new ECGenParameterSpec(curveToSpec.get(crv));
             generator.initialize(gps);
@@ -190,20 +229,84 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             CryptographyClient cryptoClient = initializeCryptographyClient(imported.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
+            byte[] plaintext = new byte[100];
+            new Random(0x1234567L).nextBytes(plaintext);
+
+            byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plaintext).getSignature();
+
+            Boolean verifyStatus = serviceClient.verifyData(curveToSignature.get(crv), plaintext, signature, Context.NONE).block().isValid();
+            assertTrue(verifyStatus);
+
+            signature = serviceClient.signData(curveToSignature.get(crv), plaintext, Context.NONE).block().getSignature();
+            verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plaintext, signature).isValid();
+            if (!interceptorManager.isPlaybackMode()) {
+                assertTrue(verifyStatus);
+            }
+        }
+    }
+
+    @Test
+    public void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
+        curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
+        curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
+        curveToSignature.put(KeyCurveName.P_521, SignatureAlgorithm.ES512);
+        curveToSignature.put(KeyCurveName.P_256K, SignatureAlgorithm.ES256K);
+
+        Map<KeyCurveName, String> curveToSpec = new HashMap<>();
+        curveToSpec.put(KeyCurveName.P_256, "secp256r1");
+        curveToSpec.put(KeyCurveName.P_384, "secp384r1");
+        curveToSpec.put(KeyCurveName.P_521, "secp521r1");
+        curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
+
+        List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
+        Provider provider = Security.getProvider("SunEC");
+        for (KeyCurveName crv : curveList) {
+            final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC", provider);
+            ECGenParameterSpec gps = new ECGenParameterSpec(curveToSpec.get(crv));
+            generator.initialize(gps);
+            KeyPair keyPair = generator.generateKeyPair();
+
+            JsonWebKey key = JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
+            CryptographyClient cryptoClient = initializeCryptographyClient(key);
+
             byte[] plainText = new byte[100];
             new Random(0x1234567L).nextBytes(plainText);
 
             byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plainText).getSignature();
 
-            Boolean verifyStatus = serviceClient.verifyData(curveToSignature.get(crv), plainText, signature, Context.NONE).block().isValid();
+            Boolean verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plainText, signature).isValid();
             assertTrue(verifyStatus);
-
-            signature = serviceClient.signData(curveToSignature.get(crv), plainText, Context.NONE).block().getSignature();
-            verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plainText, signature).isValid();
-            if (!interceptorManager.isPlaybackMode()) {
-                assertTrue(verifyStatus);
-            }
         }
+    }
 
+    @Test
+    public void encryptDecryptLocalAes128Cbc() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBC);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes192Cbc() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(256, EncryptionAlgorithm.A192CBC);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes256Cbc() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBC);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes128CbcPad() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBCPAD);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes192CbcPad() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(192, EncryptionAlgorithm.A192CBCPAD);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes256CbcPad() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBCPAD);
     }
 }
