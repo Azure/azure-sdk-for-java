@@ -675,6 +675,7 @@
         <module>sdk/databoxedge</module>
         <module>sdk/databricks</module>
         <module>sdk/datadog</module>
+        <module>sdk/datafactory</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
