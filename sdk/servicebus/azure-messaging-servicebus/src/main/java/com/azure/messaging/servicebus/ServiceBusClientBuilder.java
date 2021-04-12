@@ -134,6 +134,7 @@ public final class ServiceBusClientBuilder {
     private Scheduler scheduler;
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
+    private boolean crossEntityTransactions;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -185,6 +186,28 @@ public final class ServiceBusClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
+    }
+
+    /**
+     * Enable cross entity transaction on the connection to Service bus. Use this feature only when your transaction
+     * scope spans across different Service Bus entities.
+     *
+     * <p><strong>Avoid using non-transaction API on this client</strong></p>
+     * Since this feature will set up connection to Service Bus optimised to enable this feature. Once all the clients
+     * have been setup, the first receiver or sender used will initialize 'send-via' queue as a single message transfer
+     * entity. All the messages will flow via this queue. Thus this client is not suitable for any non-transaction API.
+     *
+     * <p><strong>When not to enable this feature</strong></p>
+     * If your transaction involved in one Service bus entity only. For example you are receiving from one
+     * queue/subscription and you want to settle your own messages which are part of one transaction.
+     *
+     * @return The updated {@link ServiceBusSenderClientBuilder} object.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Service Bus transactions</a>
+     */
+    public ServiceBusClientBuilder enableCrossEntityTransactions() {
+        this.crossEntityTransactions = true;
+        return this;
     }
 
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
@@ -391,7 +414,8 @@ public final class ServiceBusClientBuilder {
                     final String connectionId = StringUtil.getRandomString("MF");
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
+                        crossEntityTransactions);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
