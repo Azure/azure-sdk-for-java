@@ -18,6 +18,7 @@ trigger:
       - sdk/appconfiguration/spring-cloud-azure-feature-management-web
       - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
+      - sdk/appconfiguration/azure-resourcemanager-appconfiguration
 
 pr:
   branches:
@@ -40,6 +41,7 @@ pr:
       - sdk/appconfiguration/spring-cloud-azure-feature-management-web
       - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
+      - sdk/appconfiguration/azure-resourcemanager-appconfiguration
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
