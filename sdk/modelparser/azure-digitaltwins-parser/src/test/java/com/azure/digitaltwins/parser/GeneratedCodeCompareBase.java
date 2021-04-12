@@ -111,8 +111,7 @@ class GeneratedCodeCompareBase {
         }
 
         // Delete all generated files.
-        for (File generatedFile :
-            generatedDirectoryFiles) {
+        for (File generatedFile : generatedDirectoryFiles) {
             if (generatedFile.getName().endsWith(".java")) {
                 generatedFile.delete();
             }

@@ -32,4 +32,15 @@ class FileHelpers {
         File file = new File(FileHelpers.getTestResourceFilePath(subDirectoryName, fileName));
         file.delete();
     }
+
+    public static void deleteJavaFilesInSubDirectory(String subDirectoryName) {
+        File generatedCodeDirectory = new File(FileHelpers.getTestResourcesDirectoryPath(subDirectoryName));
+        File[] generatedDirectoryFiles = generatedCodeDirectory.listFiles();
+
+        for (File file : generatedDirectoryFiles) {
+            if (file.getName().endsWith(".java")) {
+                file.delete();
+            }
+        }
+    }
 }
