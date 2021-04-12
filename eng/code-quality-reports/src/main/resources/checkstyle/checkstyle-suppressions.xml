@@ -216,6 +216,8 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.core.http.rest.SwaggerMethodParser"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
             files="com.azure.core.util.serializer.UnixTimeSerializer"/> <!-- FIXME this is a bug in the checkstyle rule - the class itself is non-public, so it doesn't matter that the method returns an implementation type -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
+            files="com.azure.core.util.serializer.UnixTimeDeserializer"/> <!-- FIXME, same reason as above -->
 
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
@@ -277,7 +279,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\](generated-test-sources|generatedtestsources)[/\\]"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/> 
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
@@ -286,7 +288,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java"/>
- 
+
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultClient"/>
@@ -321,16 +323,24 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="."
             files=".*[/\\]azure-quantum-jobs[/\\]src[/\\]main[/\\]java[/\\]"/>
 
+<suppress checks="."
+            files=".*[/\\]webpubsub[/\\]implementation[/\\]"/>
+
   <!-- Suppress ConfigurationCredentialsPolicy for HttpPipelinePolicyCheck.
    This suppression need to be deleted after AzConfig using AAD credential.
    Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/5131 -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.data.appconfiguration.implementation.SyncTokenPolicy.java"/>
 
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]test[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]storage[/\\].*samples[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*"/>
+
+  <!-- FIXME temp -->
+  <suppress checks="ServiceClient" files="com.azure.messaging.webpubsub.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>

@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Mono;
 
 
@@ -57,10 +57,9 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
      * @param credential the AAD credentials passed to the client.
      * @param url the url for the container registry.
      * @param pipeline the http pipeline to be used to make the rest calls.
-     * @param serializerAdapter the serializer adapter to be used to make the rest calls.
      */
-    public ContainerRegistryCredentialsPolicy(TokenCredential credential, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
-        this(new ContainerRegistryTokenService(credential, url, pipeline, serializerAdapter));
+    public ContainerRegistryCredentialsPolicy(TokenCredential credential, String url, HttpPipeline pipeline) {
+        this(new ContainerRegistryTokenService(credential, url, pipeline, JacksonAdapter.createDefaultSerializerAdapter()));
     }
 
     /**
@@ -82,17 +81,23 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
-        } else {
-            HttpPipelineNextPolicy nextPolicy = next.clone();
-            return next.process()
-                .flatMap((httpResponse) -> {
-                    String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
-                    return httpResponse.getStatusCode() == 401 && authHeader != null
-                        ? this.onChallenge(context, httpResponse).flatMap((retry) -> {
-                            return retry ? nextPolicy.process() : Mono.just(httpResponse); })
-                        : Mono.just(httpResponse);
-                });
         }
+
+        HttpPipelineNextPolicy nextPolicy = next.clone();
+        return next.process()
+            .flatMap(httpResponse -> {
+                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                    return onChallenge(context, httpResponse).flatMap(retry -> {
+                        if (retry) {
+                            return nextPolicy.process();
+                        } else {
+                            return Mono.just(httpResponse);
+                        }
+                    });
+                }
+                return Mono.just(httpResponse);
+            });
     }
 
     /**
@@ -102,11 +107,14 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
      * @param tokenRequestContext the token request conext to be used for token acquisition.
      * @return a {@link Mono} containing {@link Void}
      */
-    public Mono<Void> authorizeRequest(HttpPipelineCallContext context, ContainerRegistryTokenRequestContext tokenRequestContext) {
+    public Mono<Boolean> authorizeRequest(HttpPipelineCallContext context, ContainerRegistryTokenRequestContext tokenRequestContext) {
         return tokenService.getToken(tokenRequestContext)
             .flatMap((token) -> {
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
-                return Mono.empty();
+                return Mono.just(true);
+            }).onErrorResume(throwable -> {
+                logger.error("Failed to get the token for the call with exception" + throwable);
+                return Mono.just(false);
             });
     }
 
@@ -124,15 +132,16 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
             if (!(response.getStatusCode() == 401 && authHeader != null)) {
                 return Mono.just(false);
-            } else {
-                Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
-                if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
-                    String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
-                    String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
-                    return authorizeRequest(context, new ContainerRegistryTokenRequestContext(serviceName, scope)).then(Mono.just(true));
-                }
-                return Mono.just(false);
             }
+
+            Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
+            if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
+                String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
+                String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
+                return authorizeRequest(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
+            }
+
+            return Mono.just(false);
         });
     }
 

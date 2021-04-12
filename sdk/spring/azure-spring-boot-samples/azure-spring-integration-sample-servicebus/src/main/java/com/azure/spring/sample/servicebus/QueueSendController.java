@@ -5,8 +5,8 @@ package com.azure.spring.sample.servicebus;
 
 import com.azure.spring.integration.core.DefaultMessageHandler;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class QueueSendController {
 
-    private static final Log LOGGER = LogFactory.getLog(QueueSendController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueueSendController.class);
     private static final String OUTPUT_CHANNEL = "queue.output";
     private static final String QUEUE_NAME = "queue1";
 

@@ -4,7 +4,9 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -21,7 +23,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
     private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().directBestEffort();
+    private final AtomicBoolean isTerminated = new AtomicBoolean();
+    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
@@ -36,11 +39,15 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     public Flux<Delivery> getDeliveredMessages() {
-        return deliveries.asFlux().doOnNext(delivery -> queuedDeliveries.remove(delivery));
+        return deliveries.asFlux().doOnNext(queuedDeliveries::remove);
     }
 
     @Override
     public void close() {
+        if (isTerminated.getAndSet(true)) {
+            return;
+        }
+
         deliveries.emitComplete((signalType, emitResult) -> {
             logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
                 getConnectionId(), entityPath, linkName);
@@ -95,22 +102,25 @@ public class ReceiveLinkHandler extends LinkHandler {
         final Delivery delivery = event.getDelivery();
         final Receiver link = (Receiver) delivery.getLink();
 
-        // If a message spans across deliveries (for ex: 200k message will be 4 frames (deliveries) 64k 64k 64k 8k),
+        // If a message spans across deliveries (for ex: 200kb message will be 4 frames (deliveries) 64k 64k 64k 8k),
         // all until "last-1" deliveries will be partial
         // reactor will raise onDelivery event for all of these - we only need the last one
+        final boolean wasSettled = delivery.isSettled();
         if (!delivery.isPartial()) {
             // One of our customers hit an issue - where duplicate 'Delivery' events are raised to Reactor in
             // proton-j layer
             // While processing the duplicate event - reactor hits an IllegalStateException in proton-j layer
             // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
-            if (delivery.isSettled()) {
+            if (wasSettled) {
                 if (link != null) {
-                    logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
-                            + " remoteCredit[{}], remoteCondition[{}], delivery.isSettled[{}]",
+                    logger.info("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
+                            + " remoteCredit[{}], remoteCondition[{}], delivery.isSettled[{}] Was already settled.",
                         getConnectionId(), entityPath, link.getName(), link.getCredit(), link.getRemoteCredit(),
                         link.getRemoteCondition(), delivery.isSettled());
                 } else {
-                    logger.warning("connectionId[{}], delivery.isSettled[{}]", getConnectionId(), delivery.isSettled());
+                    logger.warning("connectionId[{}], entityPath[{}] delivery.isSettled[{}] Settled delivery with no "
+                            + " link.",
+                        getConnectionId(), entityPath, delivery.isSettled());
                 }
             } else {
                 if (link.getLocalState() == EndpointState.CLOSED) {
@@ -124,24 +134,40 @@ public class ReceiveLinkHandler extends LinkHandler {
                 } else {
                     queuedDeliveries.add(delivery);
                     deliveries.emitNext(delivery, (signalType, emitResult) -> {
-                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}] Could not emit delivery. {}",
-                            getConnectionId(), entityPath, linkName, delivery);
-                        return false;
+                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}], emitResult[{}] "
+                                + "Could not emit delivery. {}",
+                            getConnectionId(), entityPath, linkName, emitResult, delivery);
+                        if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
+                            && link.getLocalState() != EndpointState.CLOSED) {
+                            link.setCondition(new ErrorCondition(Symbol.getSymbol("delivery-buffer-overflow"),
+                                "Deliveries are not processed fast enough. Closing local link."));
+                            link.close();
+
+                            return true;
+                        } else {
+                            return false;
+                        }
                     });
                 }
             }
         }
 
         if (link != null) {
-            logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
-                    + "remoteCredit[{}], remoteCondition[{}], delivery.isPartial[{}]",
-                getConnectionId(), entityPath, link.getName(), link.getCredit(), link.getRemoteCredit(),
-                link.getRemoteCondition(), delivery.isPartial());
+            final ErrorCondition condition = link.getRemoteCondition();
+            logger.verbose("onDelivery connectionId[{}], linkName[{}], updatedLinkCredit[{}],"
+                    + "remoteCredit[{}], remoteCondition[{}], delivery.isPartial[{}], delivery.isSettled[{}]",
+                getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(),
+                condition != null && condition.getCondition() != null ? condition : "N/A",
+                delivery.isPartial(), wasSettled);
         }
     }
 
     @Override
     public void onLinkRemoteClose(Event event) {
+        if (isTerminated.get()) {
+            return;
+        }
+
         deliveries.emitComplete((signalType, emitResult) -> {
             logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
                 getConnectionId(), linkName, signalType, emitResult);

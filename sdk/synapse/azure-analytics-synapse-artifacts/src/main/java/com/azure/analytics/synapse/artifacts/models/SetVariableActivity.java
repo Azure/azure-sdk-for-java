@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SetVariable")
 @JsonFlatten
 @Fluent
-public class SetVariableActivity extends Activity {
+public class SetVariableActivity extends ControlActivity {
     /*
      * Name of the variable whose value needs to be set.
      */

@@ -4,9 +4,8 @@
 package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationCrossMetricsOperator;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationLogicType;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatchCrossMetricsOperator;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyScope;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.Direction;
@@ -52,7 +51,7 @@ public final class AlertConfigurationTransforms {
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
         innerAlertConfiguration.setCrossMetricsOperator(alertConfiguration.getCrossMetricsOperator() == null
-            ? null : AnomalyAlertingConfigurationCrossMetricsOperator.fromString(
+            ? null : AnomalyAlertingConfigurationLogicType.fromString(
             alertConfiguration.getCrossMetricsOperator().toString()));
         innerAlertConfiguration.setHookIds(alertConfiguration.getIdOfHooksToAlert()
             .stream()
@@ -79,7 +78,7 @@ public final class AlertConfigurationTransforms {
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
         innerAlertConfiguration.setCrossMetricsOperator(alertConfiguration.getCrossMetricsOperator() == null
-            ? null : AnomalyAlertingConfigurationPatchCrossMetricsOperator.fromString(
+            ? null : AnomalyAlertingConfigurationLogicType.fromString(
             alertConfiguration.getCrossMetricsOperator().toString()));
         innerAlertConfiguration.setHookIds(alertConfiguration.getIdOfHooksToAlert()
             .stream()

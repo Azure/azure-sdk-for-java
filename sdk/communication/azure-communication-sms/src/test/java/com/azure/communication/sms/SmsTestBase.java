@@ -46,6 +46,9 @@ public class SmsTestBase extends TestBase {
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
 
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
     protected static final String MESSAGE = "Hello";
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
@@ -149,5 +152,9 @@ public class SmsTestBase extends TestBase {
             }
         }
         return content;
+    }
+
+    protected boolean shouldEnableSmsTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|sms)");
     }
 }

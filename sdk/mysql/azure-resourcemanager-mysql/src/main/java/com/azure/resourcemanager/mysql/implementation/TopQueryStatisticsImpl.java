@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.TopQueryStatisticsClient;
 import com.azure.resourcemanager.mysql.fluent.models.QueryStatisticInner;
 import com.azure.resourcemanager.mysql.models.QueryStatistic;
@@ -22,9 +21,10 @@ public final class TopQueryStatisticsImpl implements TopQueryStatistics {
 
     private final TopQueryStatisticsClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public TopQueryStatisticsImpl(TopQueryStatisticsClient innerClient, MySqlManager serviceManager) {
+    public TopQueryStatisticsImpl(
+        TopQueryStatisticsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -57,21 +57,21 @@ public final class TopQueryStatisticsImpl implements TopQueryStatistics {
         String resourceGroupName, String serverName, TopQueryStatisticsInput parameters) {
         PagedIterable<QueryStatisticInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
-        return inner.mapPage(inner1 -> new QueryStatisticImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
     }
 
     public PagedIterable<QueryStatistic> listByServer(
         String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context) {
         PagedIterable<QueryStatisticInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
-        return inner.mapPage(inner1 -> new QueryStatisticImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new QueryStatisticImpl(inner1, this.manager()));
     }
 
     private TopQueryStatisticsClient serviceClient() {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

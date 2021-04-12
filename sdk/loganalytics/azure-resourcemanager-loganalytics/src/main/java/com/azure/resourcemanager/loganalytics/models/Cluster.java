@@ -7,7 +7,6 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.ClusterInner;
-import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Cluster. */
@@ -62,6 +61,13 @@ public interface Cluster {
     ClusterSku sku();
 
     /**
+     * Gets the nextLink property: The link used to get the next page of recommendations.
+     *
+     * @return the nextLink value.
+     */
+    String nextLink();
+
+    /**
      * Gets the clusterId property: The ID associated with the cluster.
      *
      * @return the clusterId value.
@@ -76,65 +82,11 @@ public interface Cluster {
     ClusterEntityStatus provisioningState();
 
     /**
-     * Gets the isDoubleEncryptionEnabled property: Configures whether cluster will use double encryption. This Property
-     * can not be modified after cluster creation. Default value is 'true'.
-     *
-     * @return the isDoubleEncryptionEnabled value.
-     */
-    Boolean isDoubleEncryptionEnabled();
-
-    /**
-     * Gets the isAvailabilityZonesEnabled property: Sets whether the cluster will support availability zones. This can
-     * be set as true only in regions where Azure Data Explorer support Availability Zones. This Property can not be
-     * modified after cluster creation. Default value is 'true' if region supports Availability Zones.
-     *
-     * @return the isAvailabilityZonesEnabled value.
-     */
-    Boolean isAvailabilityZonesEnabled();
-
-    /**
-     * Gets the billingType property: Configures whether billing will be only on the cluster or each workspace will be
-     * billed by its proportional use. This does not change the overall billing, only how it will be distributed.
-     * Default value is 'Cluster'.
-     *
-     * @return the billingType value.
-     */
-    BillingType billingType();
-
-    /**
      * Gets the keyVaultProperties property: The associated key properties.
      *
      * @return the keyVaultProperties value.
      */
     KeyVaultProperties keyVaultProperties();
-
-    /**
-     * Gets the lastModifiedDate property: The last time the cluster was updated.
-     *
-     * @return the lastModifiedDate value.
-     */
-    String lastModifiedDate();
-
-    /**
-     * Gets the createdDate property: The cluster creation time.
-     *
-     * @return the createdDate value.
-     */
-    String createdDate();
-
-    /**
-     * Gets the associatedWorkspaces property: The list of Log Analytics workspaces associated with the cluster.
-     *
-     * @return the associatedWorkspaces value.
-     */
-    List<AssociatedWorkspace> associatedWorkspaces();
-
-    /**
-     * Gets the capacityReservationProperties property: Additional properties for capacity reservation.
-     *
-     * @return the capacityReservationProperties value.
-     */
-    CapacityReservationProperties capacityReservationProperties();
 
     /**
      * Gets the region of the resource.
@@ -205,12 +157,8 @@ public interface Cluster {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithSku,
-                DefinitionStages.WithIsDoubleEncryptionEnabled,
-                DefinitionStages.WithIsAvailabilityZonesEnabled,
-                DefinitionStages.WithBillingType,
-                DefinitionStages.WithKeyVaultProperties,
-                DefinitionStages.WithAssociatedWorkspaces,
-                DefinitionStages.WithCapacityReservationProperties {
+                DefinitionStages.WithNextLink,
+                DefinitionStages.WithKeyVaultProperties {
             /**
              * Executes the create request.
              *
@@ -256,47 +204,15 @@ public interface Cluster {
              */
             WithCreate withSku(ClusterSku sku);
         }
-        /** The stage of the Cluster definition allowing to specify isDoubleEncryptionEnabled. */
-        interface WithIsDoubleEncryptionEnabled {
+        /** The stage of the Cluster definition allowing to specify nextLink. */
+        interface WithNextLink {
             /**
-             * Specifies the isDoubleEncryptionEnabled property: Configures whether cluster will use double encryption.
-             * This Property can not be modified after cluster creation. Default value is 'true'.
+             * Specifies the nextLink property: The link used to get the next page of recommendations..
              *
-             * @param isDoubleEncryptionEnabled Configures whether cluster will use double encryption. This Property can
-             *     not be modified after cluster creation. Default value is 'true'.
+             * @param nextLink The link used to get the next page of recommendations.
              * @return the next definition stage.
              */
-            WithCreate withIsDoubleEncryptionEnabled(Boolean isDoubleEncryptionEnabled);
-        }
-        /** The stage of the Cluster definition allowing to specify isAvailabilityZonesEnabled. */
-        interface WithIsAvailabilityZonesEnabled {
-            /**
-             * Specifies the isAvailabilityZonesEnabled property: Sets whether the cluster will support availability
-             * zones. This can be set as true only in regions where Azure Data Explorer support Availability Zones. This
-             * Property can not be modified after cluster creation. Default value is 'true' if region supports
-             * Availability Zones..
-             *
-             * @param isAvailabilityZonesEnabled Sets whether the cluster will support availability zones. This can be
-             *     set as true only in regions where Azure Data Explorer support Availability Zones. This Property can
-             *     not be modified after cluster creation. Default value is 'true' if region supports Availability
-             *     Zones.
-             * @return the next definition stage.
-             */
-            WithCreate withIsAvailabilityZonesEnabled(Boolean isAvailabilityZonesEnabled);
-        }
-        /** The stage of the Cluster definition allowing to specify billingType. */
-        interface WithBillingType {
-            /**
-             * Specifies the billingType property: Configures whether billing will be only on the cluster or each
-             * workspace will be billed by its proportional use. This does not change the overall billing, only how it
-             * will be distributed. Default value is 'Cluster'.
-             *
-             * @param billingType Configures whether billing will be only on the cluster or each workspace will be
-             *     billed by its proportional use. This does not change the overall billing, only how it will be
-             *     distributed. Default value is 'Cluster'.
-             * @return the next definition stage.
-             */
-            WithCreate withBillingType(BillingType billingType);
+            WithCreate withNextLink(String nextLink);
         }
         /** The stage of the Cluster definition allowing to specify keyVaultProperties. */
         interface WithKeyVaultProperties {
@@ -308,27 +224,6 @@ public interface Cluster {
              */
             WithCreate withKeyVaultProperties(KeyVaultProperties keyVaultProperties);
         }
-        /** The stage of the Cluster definition allowing to specify associatedWorkspaces. */
-        interface WithAssociatedWorkspaces {
-            /**
-             * Specifies the associatedWorkspaces property: The list of Log Analytics workspaces associated with the
-             * cluster.
-             *
-             * @param associatedWorkspaces The list of Log Analytics workspaces associated with the cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withAssociatedWorkspaces(List<AssociatedWorkspace> associatedWorkspaces);
-        }
-        /** The stage of the Cluster definition allowing to specify capacityReservationProperties. */
-        interface WithCapacityReservationProperties {
-            /**
-             * Specifies the capacityReservationProperties property: Additional properties for capacity reservation.
-             *
-             * @param capacityReservationProperties Additional properties for capacity reservation.
-             * @return the next definition stage.
-             */
-            WithCreate withCapacityReservationProperties(CapacityReservationProperties capacityReservationProperties);
-        }
     }
     /**
      * Begins update for the Cluster resource.
@@ -338,11 +233,7 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
-            UpdateStages.WithKeyVaultProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithKeyVaultProperties {
         /**
          * Executes the update request.
          *
@@ -369,16 +260,6 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the Cluster update allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the resource..
-             *
-             * @param identity The identity of the resource.
-             * @return the next definition stage.
-             */
-            Update withIdentity(Identity identity);
         }
         /** The stage of the Cluster update allowing to specify sku. */
         interface WithSku {

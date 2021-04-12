@@ -6,7 +6,8 @@ This is the AutoRest configuration file for SearchServiceClient and SearchIndexC
 ---
 ## Getting Started 
 
-To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and 
+in this folder, run:
 
 > `autorest`
 
@@ -27,7 +28,7 @@ npm install -g autorest
 ### Generation
 
 There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
-`--tag=package-2020-06-searchindex` and `--tag=package-2020-06-searchservice`.
+`--tag=package-2020-06-Preview-searchindex` and `--tag=package-2020-06-Preview-searchservice`.
 
 ```ps
 cd <swagger-folder>
@@ -37,8 +38,8 @@ autorest --use=C:/work/autorest.java
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --tag=package-2020-06-searchindex
-autorest --use=C:/work/autorest.java --tag=package-2020-06-searchservice
+autorest --use=C:/work/autorest.java --tag=package-2020-06-Preview-searchindex
+autorest --use=C:/work/autorest.java --tag=package-2020-06-Preview-searchservice
 ```
 ## Configuration
 
@@ -50,31 +51,31 @@ opt-in-extensible-enums: true
 openapi-type: data-plane
 ```
 
-### Tag: package-2020-06-searchindex
+### Tag: package-2020-06-Preview-searchindex
 
-These settings apply only when `--tag=package-2020-06-searchindex` is specified on the command line.
+These settings apply only when `--tag=package-2020-06-Preview-searchindex` is specified on the command line.
 
-``` yaml $(tag) == 'package-2020-06-searchindex'
+``` yaml $(tag) == 'package-2020-06-Preview-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/56348ad232409e3266eaef220e88ae5d64f49ad7/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e6fa7db931a3e5182e5685630971b64987719938/specification/search/data-plane/Azure.Search/preview/2020-06-30-Preview/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AutocompleteItem,AutocompleteMode,AutocompleteResult,FacetResult,IndexActionType,QueryType,ScoringStatistics,SearchMode
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
-### Tag: package-2020-06-searchservice
+### Tag: package-2020-06-Preview-searchservice
 
-These settings apply only when `--tag=package-2020-06-searchservice` is specified on the command line.
+These settings apply only when `--tag=package-2020-06-Preview-searchservice` is specified on the command line.
 
-``` yaml $(tag) == 'package-2020-06-searchservice'
+``` yaml $(tag) == 'package-2020-06-Preview-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/56348ad232409e3266eaef220e88ae5d64f49ad7/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e6fa7db931a3e5182e5685630971b64987719938/specification/search/data-plane/Azure.Search/preview/2020-06-30-Preview/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,CorsOptions,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkillLanguage,LexicalAnalyzerName,LexicalTokenizerName,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkillLanguage,OutputFieldMappingEntry,PatternReplaceCharFilter,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkillLanguage,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopwordsList,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature
+custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,ConditionalSkill,CorsOptions,CustomEntity,CustomEntityAlias,CustomEntityLookupSkill,CustomEntityLookupSkillLanguage,CustomNormalizer,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,DocumentExtractionSkill,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkill,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkill,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkill,KeyPhraseExtractionSkillLanguage,LanguageDetectionSkill,LexicalAnalyzerName,LexicalNormalizer,LexicalNormalizerName,LexicalTokenizerName,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MergeSkill,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkill,OcrSkillLanguage,OutputFieldMappingEntry,PatternReplaceCharFilter,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchField,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerSkill,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkill,SentimentSkillLanguage,ShaperSkill,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkill,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopwordsList,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkill,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature,WebApiSkill
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -181,4 +182,38 @@ directive:
     where: $.definitions.PdfTextRotationAlgorithm
     transform: >
       $["x-ms-enum"].name = "BlobIndexerPdfTextRotationAlgorithm";
+```
+
+
+### Remove SearchServiceCounters's skillsetCount from being required
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.ServiceCounters.required = $.ServiceCounters.required.splice(0,6);
+```
+
+### Add serialization descriminator to LexicalNormalizer
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.LexicalNormalizer
+    transform: >
+      $.discriminator = "@odata.type";
+```
+
+### Change SearchField retrievable to hidden
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchField.properties
+    transform: >
+      $.retrievable["x-ms-client-name"] = "hidden";
+      $.retrievable.description = "A value indicating whether the field will be returned in a search result. This property must be false for key fields, and must be null for complex fields. You can hide a field from search results if you want to use it only as a filter, for sorting, or for scoring. This property can also be changed on existing fields and enabling it does not cause an increase in index storage requirements.";
+      $.analyzer["x-ms-client-name"] = "analyzerName";
+      $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
+      $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
+      $.normalizer["x-ms-client-name"] = "normalizerName";
+      $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```

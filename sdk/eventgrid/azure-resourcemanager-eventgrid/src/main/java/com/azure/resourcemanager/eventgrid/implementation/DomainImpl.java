@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.models.Domain;
@@ -15,14 +15,11 @@ import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.DomainSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.DomainUpdateParameters;
-import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.ResourceSku;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +28,7 @@ import java.util.stream.Collectors;
 public final class DomainImpl implements Domain, Domain.Definition, Domain.Update {
     private DomainInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -56,14 +53,6 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public ResourceSku sku() {
-        return this.innerModel().sku();
-    }
-
-    public IdentityInfo identity() {
-        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -129,7 +118,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -162,7 +151,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this;
     }
 
-    DomainImpl(String name, EventGridManager serviceManager) {
+    DomainImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new DomainInner();
         this.serviceManager = serviceManager;
         this.domainName = name;
@@ -191,7 +180,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this;
     }
 
-    DomainImpl(DomainInner innerObject, EventGridManager serviceManager) {
+    DomainImpl(DomainInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -255,31 +244,6 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
             this.updateDomainUpdateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public DomainImpl withSku(ResourceSku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateDomainUpdateParameters.withSku(sku);
-            return this;
-        }
-    }
-
-    public DomainImpl withIdentity(IdentityInfo identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateDomainUpdateParameters.withIdentity(identity);
-            return this;
-        }
-    }
-
-    public DomainImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
-        return this;
     }
 
     public DomainImpl withInputSchema(InputSchema inputSchema) {

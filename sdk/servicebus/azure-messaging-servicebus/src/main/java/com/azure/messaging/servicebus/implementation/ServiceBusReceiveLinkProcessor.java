@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
@@ -59,7 +58,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private final AtomicInteger wip = new AtomicInteger();
 
     private final AmqpRetryPolicy retryPolicy;
-    private final ServiceBusReceiveMode receiveMode;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -86,10 +84,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode
-        receiveMode) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.receiveMode = Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
 
         if (prefetch < 0) {
             throw logger.logExceptionAsError(
@@ -428,17 +424,14 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     }
 
     private void drain() {
-        // If someone is already in this loop, then we are already clearing the queue.
-        if (!wip.compareAndSet(0, 1)) {
+        if (wip.getAndIncrement() != 0) {
             return;
         }
 
-        try {
+        int missed = 1;
+        while (missed != 0) {
             drainQueue();
-        } finally {
-            if (wip.decrementAndGet() != 0) {
-                logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
-            }
+            missed = wip.addAndGet(-missed);
         }
     }
 
@@ -539,7 +532,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
-                link.addCredits(credits);
+                link.addCredits(credits).subscribe();
             }
         }
     }

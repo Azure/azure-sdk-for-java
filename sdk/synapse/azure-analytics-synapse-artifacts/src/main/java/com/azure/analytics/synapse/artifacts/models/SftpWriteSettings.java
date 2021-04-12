@@ -22,6 +22,14 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     @JsonProperty(value = "operationTimeout")
     private Object operationTimeout;
 
+    /*
+     * Upload to temporary file(s) and rename. Disable this option if your SFTP
+     * server doesn't support rename operation. Type: boolean (or Expression
+     * with resultType boolean).
+     */
+    @JsonProperty(value = "useTempFileRename")
+    private Object useTempFileRename;
+
     /**
      * Get the operationTimeout property: Specifies the timeout for writing each chunk to SFTP server. Default value:
      * 01:00:00 (one hour). Type: string (or Expression with resultType string).
@@ -41,6 +49,28 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      */
     public SftpWriteSettings setOperationTimeout(Object operationTimeout) {
         this.operationTimeout = operationTimeout;
+        return this;
+    }
+
+    /**
+     * Get the useTempFileRename property: Upload to temporary file(s) and rename. Disable this option if your SFTP
+     * server doesn't support rename operation. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the useTempFileRename value.
+     */
+    public Object getUseTempFileRename() {
+        return this.useTempFileRename;
+    }
+
+    /**
+     * Set the useTempFileRename property: Upload to temporary file(s) and rename. Disable this option if your SFTP
+     * server doesn't support rename operation. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param useTempFileRename the useTempFileRename value to set.
+     * @return the SftpWriteSettings object itself.
+     */
+    public SftpWriteSettings setUseTempFileRename(Object useTempFileRename) {
+        this.useTempFileRename = useTempFileRename;
         return this;
     }
 }
