@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransaction;
+import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -170,8 +171,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpTransaction> createTransaction() {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.createTransaction());
+        return getOrCreateTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.declare());
     }
 
     /**
@@ -179,8 +180,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<Void> commitTransaction(AmqpTransaction transaction) {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.completeTransaction(transaction, true));
+        return getOrCreateTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.discharge(transaction, true));
     }
 
     /**
@@ -188,8 +189,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.completeTransaction(transaction, false));
+        return getOrCreateTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.discharge(transaction, false));
     }
 
     /**
@@ -219,10 +220,10 @@ public class ReactorSession implements AmqpSession {
     }
 
     /**
-     *
-     * @return {@link Mono} of {@link TransactionCoordinator}
+     * {@inheritDoc}
      */
-    private Mono<TransactionCoordinator> createTransactionCoordinator() {
+    @Override
+    public Mono<AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
