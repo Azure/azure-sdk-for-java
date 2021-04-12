@@ -3,21 +3,21 @@
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/missingRepo",
     "Headers" : {
-      "User-Agent" : "azsdk-java-name/version (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "645bbb26-1f44-42c8-aa10-6f412158914c"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "732b92a3-dfa3-4563-97e0-954a7de94cbf"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "5e9f9da5-3f54-43da-aed4-1ffa11596ad6",
+      "X-Ms-Correlation-Request-Id" : "24f6a2c0-edbe-4613-b587-295310bfed8f",
+      "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
-      "Content-Length" : "19",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Fri, 26 Mar 2021 00:00:57 GMT",
+      "Date" : "Thu, 08 Apr 2021 19:22:28 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null

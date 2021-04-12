@@ -3,20 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange",
     "Headers" : {
-      "User-Agent" : "azsdk-java-name/version (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d1eb9a36-ebdf-4d7f-ade5-7e04e23f3718",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fa8d2c22-35ba-400a-b9b5-9fbfaa1c628e",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "95ccf293-181a-47ee-a48a-e06d1f89db39",
+      "X-Ms-Correlation-Request-Id" : "9cc9110f-b639-43d9-bd1a-c0e49dd92e73",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.65",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Fri, 26 Mar 2021 00:00:57 GMT",
+      "Date" : "Thu, 08 Apr 2021 19:22:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -24,43 +25,44 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
-      "User-Agent" : "azsdk-java-name/version (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d3966a53-4dcb-4a70-8941-111aa2c1f011",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f392476c-3024-4f0b-92ca-eda9d93c60e2",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "7e96b69f-090c-4d6b-bf48-5de5a9290ed6",
+      "X-Ms-Correlation-Request-Id" : "bf055ec7-e84d-4efe-a0eb-d2b3b3472fd2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.55",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Fri, 26 Mar 2021 00:00:57 GMT",
+      "Date" : "Thu, 08 Apr 2021 19:22:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world",
     "Headers" : {
-      "User-Agent" : "azsdk-java-name/version (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5e7b6d74-95e6-4fa4-9afd-d65938b04375"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "87001f8b-cd3c-4d6f-904d-1ebbf5ad302c"
     },
     "Response" : {
+      "content-length" : "314",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 26 Mar 2021 00:00:57 GMT",
+      "Date" : "Thu, 08 Apr 2021 19:22:29 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "d9cc6d80-2192-44a1-b3e8-3699b051eac1",
+      "X-Ms-Correlation-Request-Id" : "2bc41d20-9b5e-4760-953c-fe5bac599fd5",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "Content-Length" : "91",
-      "Body" : "{\"repositories\":[\"dockercloud/hello-world\",\"library/hello-seattle\",\"library/hello-world\"]}\n",
+      "Body" : "{\"registry\":\"pallavitcontainerregistry.azurecr.io\",\"imageName\":\"library/hello-world\",\"createdTime\":\"2021-04-07T19:52:07.1381321Z\",\"lastUpdateTime\":\"2021-04-07T19:52:04.929436Z\",\"manifestCount\":10,\"tagCount\":5,\"changeableAttributes\":{\"deleteEnabled\":true,\"writeEnabled\":true,\"readEnabled\":true,\"listEnabled\":true}}\n",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

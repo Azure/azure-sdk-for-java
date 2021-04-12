@@ -4,12 +4,12 @@
 
 package com.azure.containers.containerregistry.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Deleted repository. */
-@Fluent
+@Immutable
 public final class DeleteRepositoryResult {
     /*
      * SHA of the deleted image
@@ -24,6 +24,18 @@ public final class DeleteRepositoryResult {
     private List<String> deletedTags;
 
     /**
+     * Initializes an instance of the deleted repository result.
+     * @param deletedRegistryArtifactDigests deleted registry artifact digests.
+     * @param deletedTags deleted tags.
+     */
+    public DeleteRepositoryResult(
+        List<String> deletedRegistryArtifactDigests,
+        List<String> deletedTags) {
+        this.deletedRegistryArtifactDigests = deletedRegistryArtifactDigests;
+        this.deletedTags = deletedTags;
+    }
+
+    /**
      * Get the deletedRegistryArtifactDigests property: SHA of the deleted image.
      *
      * @return the deletedRegistryArtifactDigests value.
@@ -33,33 +45,11 @@ public final class DeleteRepositoryResult {
     }
 
     /**
-     * Set the deletedRegistryArtifactDigests property: SHA of the deleted image.
-     *
-     * @param deletedRegistryArtifactDigests the deletedRegistryArtifactDigests value to set.
-     * @return the DeleteRepositoryResult object itself.
-     */
-    public DeleteRepositoryResult setDeletedRegistryArtifactDigests(List<String> deletedRegistryArtifactDigests) {
-        this.deletedRegistryArtifactDigests = deletedRegistryArtifactDigests;
-        return this;
-    }
-
-    /**
      * Get the deletedTags property: Tag of the deleted image.
      *
      * @return the deletedTags value.
      */
     public List<String> getDeletedTags() {
         return this.deletedTags;
-    }
-
-    /**
-     * Set the deletedTags property: Tag of the deleted image.
-     *
-     * @param deletedTags the deletedTags value to set.
-     * @return the DeleteRepositoryResult object itself.
-     */
-    public DeleteRepositoryResult setDeletedTags(List<String> deletedTags) {
-        this.deletedTags = deletedTags;
-        return this;
     }
 }

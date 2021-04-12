@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -39,38 +40,32 @@ public final class ManifestAttributesBase {
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture", required = true)
+    @JsonProperty(value = "architecture")
     private String cpuArchitecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os", required = true)
+    @JsonProperty(value = "os")
     private String operatingSystem;
 
     /*
-     * Media type
+     * List of manifest attributes details
      */
-    @JsonProperty(value = "mediaType")
-    private String manifestMediaType;
-
-    /*
-     * Config blob media type
-     */
-    @JsonProperty(value = "configMediaType")
-    private String configMediaType;
+    @JsonProperty(value = "references")
+    private List<ManifestAttributesManifestReferences> references;
 
     /*
      * List of tags
      */
-    @JsonProperty(value = "tags", required = true)
+    @JsonProperty(value = "tags")
     private List<String> tags;
 
     /*
-     * Changeable attributes
+     * Writeable properties of the resource
      */
     @JsonProperty(value = "changeableAttributes")
-    private ContentProperties manifestProperties;
+    private ContentProperties writeableProperties;
 
     /**
      * Get the digest property: Manifest.
@@ -193,42 +188,22 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Get the manifestMediaType property: Media type.
+     * Get the references property: List of manifest attributes details.
      *
-     * @return the manifestMediaType value.
+     * @return the references value.
      */
-    public String getManifestMediaType() {
-        return this.manifestMediaType;
+    public List<ManifestAttributesManifestReferences> getReferences() {
+        return this.references;
     }
 
     /**
-     * Set the manifestMediaType property: Media type.
+     * Set the references property: List of manifest attributes details.
      *
-     * @param manifestMediaType the manifestMediaType value to set.
+     * @param references the references value to set.
      * @return the ManifestAttributesBase object itself.
      */
-    public ManifestAttributesBase setManifestMediaType(String manifestMediaType) {
-        this.manifestMediaType = manifestMediaType;
-        return this;
-    }
-
-    /**
-     * Get the configMediaType property: Config blob media type.
-     *
-     * @return the configMediaType value.
-     */
-    public String getConfigMediaType() {
-        return this.configMediaType;
-    }
-
-    /**
-     * Set the configMediaType property: Config blob media type.
-     *
-     * @param configMediaType the configMediaType value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setConfigMediaType(String configMediaType) {
-        this.configMediaType = configMediaType;
+    public ManifestAttributesBase setReferences(List<ManifestAttributesManifestReferences> references) {
+        this.references = references;
         return this;
     }
 
@@ -253,22 +228,22 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Get the manifestProperties property: Changeable attributes.
+     * Get the writeableProperties property: Writeable properties of the resource.
      *
-     * @return the manifestProperties value.
+     * @return the writeableProperties value.
      */
-    public ContentProperties getManifestProperties() {
-        return this.manifestProperties;
+    public ContentProperties getWriteableProperties() {
+        return this.writeableProperties;
     }
 
     /**
-     * Set the manifestProperties property: Changeable attributes.
+     * Set the writeableProperties property: Writeable properties of the resource.
      *
-     * @param manifestProperties the manifestProperties value to set.
+     * @param writeableProperties the writeableProperties value to set.
      * @return the ManifestAttributesBase object itself.
      */
-    public ManifestAttributesBase setManifestProperties(ContentProperties manifestProperties) {
-        this.manifestProperties = manifestProperties;
+    public ManifestAttributesBase setWriteableProperties(ContentProperties writeableProperties) {
+        this.writeableProperties = writeableProperties;
         return this;
     }
 }
