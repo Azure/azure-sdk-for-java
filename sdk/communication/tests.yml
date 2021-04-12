@@ -1,5 +1,17 @@
 trigger: none
 
+parameters:
+  - name: TestPackagesEnabled
+    displayName: Tests Enabled
+    type: string
+    default: all
+    values:
+      - all
+      - chat
+      - identity
+      - phonenumbers
+      - sms
+
 stages:
 - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
@@ -52,4 +64,4 @@ stages:
       AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
       AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
       COMMUNICATION_PHONE_NUMBER: $(communication-livetest-phone-number-for-config)
-
+      TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}
