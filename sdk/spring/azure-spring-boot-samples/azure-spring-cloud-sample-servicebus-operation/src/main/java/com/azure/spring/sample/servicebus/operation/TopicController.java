@@ -8,6 +8,8 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.Checkpointer;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -23,6 +25,7 @@ import javax.annotation.PostConstruct;
 @RestController
 public class TopicController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TopicController.class);
     private static final String TOPIC_NAME = "topic1";
     private static final String SUBSCRIPTION_NAME = "group1";
 
@@ -43,11 +46,11 @@ public class TopicController {
     }
 
     private void messageReceiver(Message<?> message) {
-        System.out.println(String.format("New message received: '%s'", message.getPayload()));
+        LOGGER.info("New message received: '{}'", message.getPayload());
         Checkpointer checkpointer = message.getHeaders().get(AzureHeaders.CHECKPOINTER, Checkpointer.class);
         checkpointer.success().handle((r, ex) -> {
             if (ex == null) {
-                System.out.println(String.format("Message '%s' successfully checkpointed", message.getPayload()));
+                LOGGER.info("Message '{}' successfully checkpointed", message.getPayload());
             }
             return null;
         });

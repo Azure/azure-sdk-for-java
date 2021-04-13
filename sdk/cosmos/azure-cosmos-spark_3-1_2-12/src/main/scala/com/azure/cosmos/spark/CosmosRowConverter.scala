@@ -3,13 +3,14 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
+import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 
 import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.catalyst.encoders.RowEncoder
+import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
 
 import java.time.{OffsetDateTime, ZoneOffset}
@@ -21,6 +22,7 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 import org.apache.spark.unsafe.types.UTF8String
+import scala.util.{Try, Success, Failure}
 
 // scalastyle:off multiple.string.literals
 // scalastyle:off null
@@ -39,13 +41,18 @@ private object CosmosRowConverter
     private val utcFormatter = DateTimeFormatter
         .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
 
-    def fromObjectNodeToInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
-        val row = fromObjectNodeToRow(schema, objectNode)
-        RowEncoder(schema).createSerializer().apply(row)
+    def fromObjectNodeToInternalRow(schema: StructType,
+                                    rowSerializer: ExpressionEncoder.Serializer[Row],
+                                    objectNode: ObjectNode,
+                                    schemaConversionMode: SchemaConversionMode): InternalRow = {
+        val row = fromObjectNodeToRow(schema, objectNode, schemaConversionMode)
+        rowSerializer.apply(row)
     }
 
-    def fromObjectNodeToRow(schema: StructType, objectNode: ObjectNode): Row = {
-        val values: Seq[Any] = convertStructToSparkDataType(schema, objectNode)
+    def fromObjectNodeToRow(schema: StructType,
+                            objectNode: ObjectNode,
+                            schemaConversionMode: SchemaConversionMode): Row = {
+        val values: Seq[Any] = convertStructToSparkDataType(schema, objectNode, schemaConversionMode)
         new GenericRowWithSchema(values.toArray, schema)
     }
 
@@ -116,7 +123,7 @@ private object CosmosRowConverter
             case TimestampType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
             case TimestampType => objectMapper.convertValue(rowData.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
             case arrayType: ArrayType => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[Seq[_]])
-            case _: StructType => rowTypeRouterToJsonArray(rowData)
+            case structType: StructType => rowTypeRouterToJsonArray(rowData, structType)
             case mapType: MapType =>
                 mapType.keyType match {
                     case StringType if rowData.isInstanceOf[Map[_, _]] =>
@@ -187,15 +194,16 @@ private object CosmosRowConverter
 
     private def convertSparkSubItemToJsonNode(elementType: DataType, containsNull: Boolean, data: Any): JsonNode = {
         elementType match {
-            case _: StructType => rowTypeRouterToJsonArray(data)
+            case subDocuments: StructType => rowTypeRouterToJsonArray(data, subDocuments)
             case subArray: ArrayType => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[Seq[_]])
             case _ => convertSparkDataTypeToJsonNode(elementType, data)
         }
     }
 
-    private def rowTypeRouterToJsonArray(element: Any) : ObjectNode = {
+    private def rowTypeRouterToJsonArray(element: Any, schema: StructType) : ObjectNode = {
         element match {
             case e: Row => fromRowToObjectNode(e)
+            case e: InternalRow => fromInternalRowToObjectNode(e, schema)
             case _ => throw new Exception(s"Cannot cast $element into a Json value. Struct $element has no matching Json value.")
         }
     }
@@ -258,7 +266,9 @@ private object CosmosRowConverter
       }
     }
 
-    private def convertStructToSparkDataType(schema: StructType, objectNode: ObjectNode) : Seq[Any] =
+    private def convertStructToSparkDataType(schema: StructType,
+                                             objectNode: ObjectNode,
+                                             schemaConversionMode: SchemaConversionMode) : Seq[Any] =
         schema.fields.map {
             case StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType, _, _) =>
                 objectNode.toString
@@ -271,21 +281,25 @@ private object CosmosRowConverter
             case StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType, _, _) =>
               parseLsn(objectNode)
             case StructField(name, dataType, _, _) =>
-                Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
+                Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _, schemaConversionMode)).orNull
         }
 
     // scalastyle:off
-    private def convertToSparkDataType(dataType: DataType, value: JsonNode): Any = (value, dataType) match {
+    private def convertToSparkDataType(dataType: DataType,
+                                       value: JsonNode,
+                                       schemaConversionMode: SchemaConversionMode): Any =
+      (value, dataType) match {
         case (_ : NullNode, _) | (_, _ : NullType) => null
         case (jsonNode: ObjectNode, struct: StructType) =>
-            fromObjectNodeToRow(struct, jsonNode)
+            fromObjectNodeToRow(struct, jsonNode, schemaConversionMode)
         case (jsonNode: ObjectNode, map: MapType) =>
             jsonNode.fields().asScala
                 .map(element => (
                     element.getKey,
-                    convertToSparkDataType(map.valueType, element.getValue)))
+                    convertToSparkDataType(map.valueType, element.getValue, schemaConversionMode)))
         case (arrayNode: ArrayNode, array: ArrayType) =>
-            arrayNode.elements().asScala.map(convertToSparkDataType(array.elementType, _)).toArray
+            arrayNode.elements().asScala
+              .map(convertToSparkDataType(array.elementType, _, schemaConversionMode)).toArray
         case (binaryNode: BinaryNode, _: BinaryType) =>
             binaryNode.binaryValue()
         case (arrayNode: ArrayNode, _: BinaryType) =>
@@ -293,23 +307,49 @@ private object CosmosRowConverter
             objectMapper.convertValue(arrayNode, classOf[Array[Byte]])
         case (_, _: BooleanType) => value.asBoolean()
         case (_, _: StringType) => value.asText()
-        case (_, _: DateType) => toDate(value)
-        case (_, _: TimestampType) => toTimestamp(value)
+        case (_, _: DateType) => handleConversionErrors(() => toDate(value), schemaConversionMode)
+        case (_, _: TimestampType) => handleConversionErrors(() => toTimestamp(value), schemaConversionMode)
         case (isJsonNumber(), DoubleType) => value.asDouble()
         case (isJsonNumber(), DecimalType()) => value.decimalValue()
         case (isJsonNumber(), FloatType) => value.asDouble()
         case (isJsonNumber(), LongType) => value.asLong()
         case (isJsonNumber(), _) => value.asInt()
-        case (textNode: TextNode, DoubleType) => textNode.asText.toDouble
-        case (textNode: TextNode, DecimalType()) => new java.math.BigDecimal(textNode.asText)
-        case (textNode: TextNode, FloatType) => textNode.asText.toFloat
-        case (textNode: TextNode, LongType) => textNode.asText.toLong
-        case (textNode: TextNode, IntegerType) => textNode.asText.toInt
+        case (textNode: TextNode, DoubleType) =>
+          handleConversionErrors(() => textNode.asText.toDouble, schemaConversionMode)
+        case (textNode: TextNode, DecimalType()) =>
+          handleConversionErrors(() => new java.math.BigDecimal(textNode.asText), schemaConversionMode)
+        case (textNode: TextNode, FloatType) =>
+          handleConversionErrors(() => textNode.asText.toFloat, schemaConversionMode)
+        case (textNode: TextNode, LongType) =>
+          handleConversionErrors(() => textNode.asText.toLong, schemaConversionMode)
+        case (textNode: TextNode, IntegerType) =>
+          handleConversionErrors(() => textNode.asText.toInt, schemaConversionMode)
         case _ =>
+          if (schemaConversionMode == SchemaConversionModes.Relaxed) {
             this.logError(s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
-            value.asText() // Defaulting to a string representation for values that we cannot convert
+            null
+          }
+          else {
+            throw new IllegalArgumentException(
+              s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
+          }
+
     }
     // scalastyle:on
+
+    private def handleConversionErrors[A] = (conversion: () => A,
+                                             schemaConversionMode: SchemaConversionMode) => {
+      Try(conversion()) match {
+        case Success(convertedValue) => convertedValue
+        case Failure(error) =>
+          if (schemaConversionMode == SchemaConversionModes.Relaxed){
+            null
+          }
+          else {
+            throw error
+          }
+      }
+    }
 
     private def toTimestamp(value: JsonNode): Timestamp = {
         value match {
@@ -317,9 +357,9 @@ private object CosmosRowConverter
             case textNode : TextNode =>
                 parseDateTimeFromString(textNode.asText()) match {
                     case Some(odt) => Timestamp.valueOf(odt.toLocalDateTime)
-                    case None => throw new IllegalArgumentException(
-                      s"Value '${textNode.asText()} cannot be parsed as Timestamp."
-                    )
+                    case None =>
+                      throw new IllegalArgumentException(
+                        s"Value '${textNode.asText()} cannot be parsed as Timestamp.")
                 }
             case _ => Timestamp.valueOf(value.asText())
         }
@@ -331,9 +371,9 @@ private object CosmosRowConverter
             case textNode : TextNode =>
                 parseDateTimeFromString(textNode.asText()) match {
                     case Some(odt) => Date.valueOf(odt.toLocalDate)
-                    case None => throw new IllegalArgumentException(
-                      s"Value '${textNode.asText()} cannot be parsed as Date."
-                    )
+                    case None =>
+                      throw new IllegalArgumentException(
+                        s"Value '${textNode.asText()} cannot be parsed as Date.")
                 }
             case _ => Date.valueOf(value.asText())
         }

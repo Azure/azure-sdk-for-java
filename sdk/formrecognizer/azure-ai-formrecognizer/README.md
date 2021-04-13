@@ -7,6 +7,7 @@ from form documents. It includes the following main functionalities:
 * Prebuilt receipt model - Recognize data from sales receipts using a prebuilt model.
 * Prebuilt invoice model - Recognize data from USA sales invoices using a prebuilt model.
 * Prebuilt business card model - Recognize data from business cards using a prebuilt model.
+* Prebuilt ID document model - Recognize data from ID documents using a prebuilt model.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -23,7 +24,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.5</version>
+    <version>3.1.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

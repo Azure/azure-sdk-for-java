@@ -21,7 +21,8 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
     @JsonSubTypes.Type(name = "BlobTrigger", value = BlobTrigger.class),
-    @JsonSubTypes.Type(name = "BlobEventsTrigger", value = BlobEventsTrigger.class)
+    @JsonSubTypes.Type(name = "BlobEventsTrigger", value = BlobEventsTrigger.class),
+    @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class)
 })
 @Fluent
 public class MultiplePipelineTrigger extends Trigger {

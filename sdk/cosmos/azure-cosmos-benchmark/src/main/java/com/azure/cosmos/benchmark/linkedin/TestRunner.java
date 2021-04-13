@@ -77,8 +77,13 @@ public abstract class TestRunner {
         _semaphore = new Semaphore(configuration.getConcurrency());
     }
 
+    public void init() {
+        LOGGER.info("Initializing the TestRunner");
+        _accessor.initialize();
+    }
+
     public void run() {
-        LOGGER.info("Executing Tests for the Scenario");
+        LOGGER.info("Executing Tests for the configured Scenario");
         KeyGenerator keyGenerator = getNewKeyGenerator();
         final long runStartTime = System.currentTimeMillis();
         long i = 0;

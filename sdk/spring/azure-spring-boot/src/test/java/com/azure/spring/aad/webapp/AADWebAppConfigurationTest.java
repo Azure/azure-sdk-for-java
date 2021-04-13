@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -130,6 +131,50 @@ public class AADWebAppConfigurationTest {
                 assertTrue(repo.isClientNeedConsentWhenLogin(arm));
                 assertFalse(repo.isClientNeedConsentWhenLogin("graph"));
                 assertTrue(repo.isClientNeedConsentWhenLogin("arm"));
+            });
+    }
+
+    @Test
+    public void clientWithClientCredentialsPermissions() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials"
+            )
+            .run(context -> {
+                AADWebAppClientRegistrationRepository repo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistration azure = repo.findByRegistrationId("azure");
+                ClientRegistration graph = repo.findByRegistrationId("graph");
+
+                assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(), AuthorizationGrantType.AUTHORIZATION_CODE);
+                assertEquals(repo.findByRegistrationId("graph").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void webAppWithOboWithExceptionTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void clientWhichIsNotAuthorizationCodeButOnDemandExceptionTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials",
+                "azure.activedirectory.authorization-clients.graph.on-demand = true"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
             });
     }
 

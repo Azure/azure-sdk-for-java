@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.LibrariesImpl;
-import com.azure.analytics.synapse.artifacts.models.AzureEntityResource;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.LibraryResource;
 import com.azure.analytics.synapse.artifacts.models.LibraryResourceInfo;
@@ -97,7 +96,7 @@ public final class LibraryAsyncClient {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AzureEntityResource>> getOperationResultWithResponse(String operationId) {
+    public Mono<Response<LibraryResource>> getOperationResultWithResponse(String operationId) {
         return this.serviceClient.getOperationResultWithResponseAsync(operationId);
     }
 
@@ -111,7 +110,7 @@ public final class LibraryAsyncClient {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureEntityResource> getOperationResult(String operationId) {
+    public Mono<LibraryResource> getOperationResult(String operationId) {
         return this.serviceClient.getOperationResultAsync(operationId);
     }
 

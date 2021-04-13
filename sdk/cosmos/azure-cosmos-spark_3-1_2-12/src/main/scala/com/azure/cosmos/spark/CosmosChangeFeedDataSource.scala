@@ -11,6 +11,8 @@ import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 import java.util
+import java.util.Collections
+import scala.collection.immutable.Map
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -62,7 +64,7 @@ class CosmosChangeFeedDataSource
     new ChangeFeedTable(
       session,
       partitioning,
-      CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava,
+      CosmosConfig.getEffectiveConfig(None, None, properties.asScala.toMap).asJava,
       Option.apply(schema))
   }
 
