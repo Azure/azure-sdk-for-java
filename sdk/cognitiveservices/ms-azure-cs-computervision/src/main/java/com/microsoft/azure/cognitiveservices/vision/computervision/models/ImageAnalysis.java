@@ -84,6 +84,12 @@ public class ImageAnalysis {
     private ImageMetadata metadata;
 
     /**
+     * The modelVersion property.
+     */
+    @JsonProperty(value = "modelVersion")
+    private String modelVersion;
+
+    /**
      * Get the categories value.
      *
      * @return the categories value
@@ -300,6 +306,26 @@ public class ImageAnalysis {
      */
     public ImageAnalysis withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion value.
+     *
+     * @return the modelVersion value
+     */
+    public String modelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion value.
+     *
+     * @param modelVersion the modelVersion value to set
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
         return this;
     }
 

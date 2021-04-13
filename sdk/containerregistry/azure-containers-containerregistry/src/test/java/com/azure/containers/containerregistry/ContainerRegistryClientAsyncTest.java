@@ -4,10 +4,8 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.AcrErrorsException;
-import com.azure.containers.containerregistry.models.ListRepositoriesOptions;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,17 +13,20 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ContainerRegistryClientAsyncTest extends ContainerRegistryClientTestBase {
+public class ContainerRegistryClientAsyncTest extends ContainerRegistryClientsTestBase {
 
     private ContainerRegistryAsyncClient client;
-    static final int DEFAULTPAGESIZE = 1;
 
     @BeforeAll
     static void beforeAll() {
@@ -38,40 +39,18 @@ public class ContainerRegistryClientAsyncTest extends ContainerRegistryClientTes
     }
 
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(httpClient).buildContainerRegistryAsyncClient();
-    }
-
-    private void validateListResponse(PagedResponse<String> pagedResponse) {
-        assertNotNull(pagedResponse);
-        List<String> repositories = pagedResponse.getValue();
-        assertEquals(3, repositories.size());
-        assertEquals(repositories.get(0), "dockercloud/hello-world");
-        assertEquals(repositories.get(1), "library/hello-seattle");
-        assertEquals(repositories.get(2), "library/hello-world");
+        return getContainerRegistryBuilder(httpClient).buildAsyncClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listRepositories(HttpClient httpClient) {
         client = getContainerRegistryAsyncClient(httpClient);
-        StepVerifier.create(client.listRepositories().byPage())
-            .assertNext(res -> validateListResponse(res))
-            .verifyComplete();
-    }
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listRepositoriesWithNullOptions(HttpClient httpClient) {
-        client = getContainerRegistryAsyncClient(httpClient);
-        assertThrows(NullPointerException.class, () -> client.listRepositories(null));
-    }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listRepositoriesWithOptions(HttpClient httpClient) {
-        client = getContainerRegistryAsyncClient(httpClient);
-        ListRepositoriesOptions options = new ListRepositoriesOptions();
-        StepVerifier.create(client.listRepositories(options).byPage())
-            .assertNext(res -> validateListResponse(res))
+        StepVerifier.create(client.listRepositories())
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .expectRecordedMatches(repositories -> repositories.containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME)))
             .verifyComplete();
     }
 
@@ -79,59 +58,56 @@ public class ContainerRegistryClientAsyncTest extends ContainerRegistryClientTes
     @MethodSource("getHttpClients")
     public void listRepositoriesWithPageSize(HttpClient httpClient) {
         client = getContainerRegistryAsyncClient(httpClient);
-        ListRepositoriesOptions options = new ListRepositoriesOptions().setMaxPageSize(DEFAULTPAGESIZE);
-        StepVerifier.create(client.listRepositories(options).byPage())
+
+        StepVerifier.create(client.listRepositories().byPage(PAGESIZE_2))
             .assertNext(res -> {
                 List<String> repositories = res.getValue();
-                assertEquals(1, repositories.size());
-                assertEquals(repositories.get(0), "dockercloud/hello-world");
-            })
-            .assertNext(res -> {
-                List<String> repositories = res.getValue();
-                assertEquals(1, repositories.size());
-                assertEquals(repositories.get(0), "library/hello-seattle");
-            })
-            .assertNext(res -> {
-                List<String> repositories = res.getValue();
-                assertEquals(1, repositories.size());
-                assertEquals(repositories.get(0), "library/hello-world");
-            })
-            .verifyComplete();
+                assertTrue(repositories.size() <= PAGESIZE_2);
+
+                Stream<String> repoStream = repositories.stream();
+                assertTrue(repoStream.filter(a -> TestUtils.ALPINE_REPOSITORY_NAME.equals(a)).findAny().isPresent());
+                assertNotNull(res.getContinuationToken());
+            }).expectComplete();
+
+        // Not testing for complete since there are others as well.
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void deleteRepositoriesWithNull(HttpClient httpClient) {
+    public void listRepositoriesWithInvalidPageSize(HttpClient httpClient) {
         client = getContainerRegistryAsyncClient(httpClient);
-        StepVerifier.create(client.deleteRepository(null))
-            .expectError(NullPointerException.class)
+
+        StepVerifier.create(client.listRepositories().byPage(-1))
+            .expectErrorMatches(res -> res instanceof IllegalArgumentException)
             .verify();
     }
 
-
-    // What is the prescribed way of running delete test scenarios.
-/*    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void deleteRepositories(HttpClient httpClient) {
-        client = getContainerRegistryAsyncClient(httpClient);
-        StepVerifier.create(client.deleteRepository("library/hello-world"))
-            .assertNext(res -> {
-                assertEquals(10, res.getDeletedRegistryArtifactDigests().size());
-                assertEquals("latest", res.getDeletedTags());
-            })
-            .verifyComplete();
-    }*/
-
     // What is the prescribed way of running delete test scenarios.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void deleteRepositories(HttpClient httpClient) {
+    public void deleteRepositoriesThrows(HttpClient httpClient) {
         client = getContainerRegistryAsyncClient(httpClient);
 
-        client = getContainerRegistryAsyncClient(httpClient);
         StepVerifier.create(client.deleteRepository("missingRepo"))
             .expectErrorMatches(exception -> {
-                return exception instanceof AcrErrorsException;
+                return exception instanceof ResourceNotFoundException;
             }).verify();
+
+        StepVerifier.create(client.deleteRepository(null))
+            .expectErrorMatches(exception -> {
+                return exception instanceof NullPointerException;
+            }).verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getContainerRepositoryClient(HttpClient httpClient) {
+        client = getContainerRegistryAsyncClient(httpClient);
+
+        ContainerRepositoryAsyncClient repositoryAsyncClient = client.getRepositoryClient(HELLO_WORLD_REPOSITORY_NAME);
+        assertNotNull(repositoryAsyncClient);
+        StepVerifier.create(repositoryAsyncClient.getProperties())
+            .assertNext(res -> validateProperties(res))
+            .verifyComplete();
     }
 }

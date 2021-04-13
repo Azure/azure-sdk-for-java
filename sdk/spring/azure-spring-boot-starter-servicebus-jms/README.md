@@ -38,7 +38,7 @@ Append the following code to the end of the *application.properties* file. Repla
 ```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium, standard and basic.
+# Supported values for pricing-tier are premium, standard and basic. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
 spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 

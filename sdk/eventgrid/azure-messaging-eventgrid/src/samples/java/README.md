@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-eventgrid
+  - azure-event-grid
 urlFragment: eventgrid-samples
 ---
 

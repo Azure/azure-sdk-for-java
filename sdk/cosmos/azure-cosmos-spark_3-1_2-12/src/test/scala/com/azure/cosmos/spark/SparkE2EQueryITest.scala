@@ -4,8 +4,11 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
+import com.azure.cosmos.models.{CosmosItemResponse, PartitionKey}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+
+import java.sql.Timestamp
 
 class SparkE2EQueryITest extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
@@ -359,6 +362,55 @@ class SparkE2EQueryITest extends IntegrationSpec with Spark with CosmosClient wi
     val fieldNames = rows(0).schema.fields.map(field => field.name)
     fieldNames.contains("legs") shouldBe true
     fieldNames.contains("wheels") shouldBe false
+  }
+
+  "spark query" can "get _ts as Timestamp" in  {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    for (_ <- 1 to 10) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      val id = UUID.randomUUID().toString
+      objectNode.put("id", id)
+      container.createItem(objectNode).block()
+    }
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+    )
+
+    // scalastyle:off underscore.import
+    // scalastyle:off import.grouping
+    import org.apache.spark.sql.types._
+    // scalastyle:on underscore.import
+    // scalastyle:on import.grouping
+
+    val customSchema = StructType(Array(
+      StructField("_ts", TimestampType),
+      StructField("id", StringType)
+    ))
+
+    val df = spark.read.schema(customSchema).format("cosmos.items").options(cfg).load()
+    val rowsArray = df.collect()
+
+    for (index <- 0 until rowsArray.length) {
+      val row = rowsArray(index)
+      val ts = row.getAs[Timestamp]("_ts")
+      val id = row.getAs[String]("id")
+
+      ts.getTime() > 0 shouldBe true
+
+      val itemResponse = container.readItem(id, new PartitionKey(id), classOf[ObjectNode]).block()
+
+      val documentTs = itemResponse.getItem.get("_ts").asLong
+
+      ts.getTime() shouldBe documentTs
+    }
   }
 
   //scalastyle:on magic.number
