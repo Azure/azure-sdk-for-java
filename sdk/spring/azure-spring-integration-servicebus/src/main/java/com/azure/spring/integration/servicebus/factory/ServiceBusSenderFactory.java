@@ -4,6 +4,7 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 
 /**
@@ -12,10 +13,12 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
  * @author Warren Zhu
  */
 public interface ServiceBusSenderFactory {
+
     /**
      * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}
+     *
      * @param name sender name
      * @return message sender implement instance
      */
-    ServiceBusSenderClient getOrCreateSender(String name);
+    ServiceBusSenderAsyncClient getOrCreateSender(String name);
 }

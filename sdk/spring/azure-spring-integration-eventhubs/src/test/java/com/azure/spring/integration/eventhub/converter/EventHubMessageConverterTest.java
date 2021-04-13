@@ -6,8 +6,9 @@ package com.azure.spring.integration.eventhub.converter;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
-import com.azure.spring.integration.test.support.AzureMessageConverterTest;
+import com.azure.spring.integration.test.support.UnaryAzureMessageConverterTest;
 import org.junit.Test;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.LinkedMultiValueMap;
 
@@ -22,7 +23,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
-public class EventHubMessageConverterTest extends AzureMessageConverterTest<EventData, EventData> {
+public class EventHubMessageConverterTest extends UnaryAzureMessageConverterTest<EventData> {
 
     private static final String EVENT_DATA = "event-hub-test-string";
 
@@ -30,12 +31,6 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
     private static final Instant ENQUEUED_TIME = Instant.now().minus(1, ChronoUnit.DAYS);
     private static final Long OFFSET = 1234567890L;
     private static final Long SEQUENCE_NUMBER = 123456L;
-
-
-    @Override
-    protected EventData getInstance() {
-        return new EventData(this.payload.getBytes());
-    }
 
     @Override
     public AzureMessageConverter<EventData, EventData> getConverter() {
@@ -45,6 +40,11 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
     @Override
     protected Class<EventData> getTargetClass() {
         return EventData.class;
+    }
+
+    @Override
+    protected void assertMessageHeadersEqual(EventData azureMessage, Message<?> message) {
+        assertEquals(azureMessage.getProperties().get(headerProperties), message.getHeaders().get(headerProperties));
     }
 
     private static class MyEventHubMessageConverter extends EventHubMessageConverter {

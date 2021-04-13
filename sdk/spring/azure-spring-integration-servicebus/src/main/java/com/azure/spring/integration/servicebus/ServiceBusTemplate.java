@@ -4,7 +4,6 @@
 package com.azure.spring.integration.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
@@ -18,11 +17,10 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+
+import static com.azure.spring.integration.core.api.CheckpointMode.MANUAL;
+import static com.azure.spring.integration.core.api.CheckpointMode.RECORD;
 
 /**
  * Azure Service Bus template to support send {@link Message} asynchronously.
@@ -31,30 +29,28 @@ import java.util.concurrent.ThreadFactory;
  * @author Eduardo Sciullo
  */
 public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements SendOperation {
-    private static final Logger LOG = LoggerFactory.getLogger(ServiceBusTemplate.class);
 
-    protected final T senderFactory;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
+    private static final CheckpointConfig CHECKPOINT_RECORD = CheckpointConfig.builder().checkpointMode(RECORD).build();
+    private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
+    protected final T clientFactory;
+    protected CheckpointConfig checkpointConfig = CHECKPOINT_RECORD;
     protected ServiceBusClientConfig clientConfig = ServiceBusClientConfig.builder().build();
-
-    protected CheckpointConfig checkpointConfig = CheckpointConfig.builder()
-        .checkpointMode(CheckpointMode.RECORD).build();
-
     protected ServiceBusMessageConverter messageConverter;
 
-    public ServiceBusTemplate(@NonNull T senderFactory, @NonNull ServiceBusMessageConverter messageConverter) {
-        this.senderFactory = senderFactory;
-        this.messageConverter = messageConverter;
-        LOG.info("Started ServiceBusTemplate with properties: {}", checkpointConfig);
+    public ServiceBusTemplate(@NonNull T senderFactory) {
+        this(senderFactory, DEFAULT_CONVERTER);
     }
 
-    private static boolean isValidCheckpointConfig(CheckpointConfig checkpointConfig) {
-        return checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL
-            || checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD;
+    public ServiceBusTemplate(@NonNull T senderFactory, @NonNull ServiceBusMessageConverter messageConverter) {
+        this.clientFactory = senderFactory;
+        this.messageConverter = messageConverter;
+        LOGGER.info("Started ServiceBusTemplate with properties: {}", checkpointConfig);
     }
 
     @Override
-    public <U> CompletableFuture<Void> sendAsync(String destination, @NonNull Message<U> message,
+    public <U> CompletableFuture<Void> sendAsync(String destination,
+                                                 Message<U> message,
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
         String partitionKey = getPartitionKey(partitionSupplier);
@@ -63,15 +59,25 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         if (StringUtils.hasText(partitionKey)) {
             serviceBusMessage.setPartitionKey(partitionKey);
         }
-        this.senderFactory.getOrCreateSender(destination).sendMessage(serviceBusMessage); // TODO is ok here?
-        return CompletableFuture.completedFuture(null); //TODO is ok here?
+        return this.clientFactory.getOrCreateSender(destination).sendMessage(serviceBusMessage).toFuture();
     }
 
+    public CheckpointConfig getCheckpointConfig() {
+        return checkpointConfig;
+    }
 
+    public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
+        if (checkpointConfig == null) {
+            return;
+        }
+        Assert.state(isValidCheckpointMode(checkpointConfig.getCheckpointMode()),
+                     "Only MANUAL or RECORD checkpoint " + "mode is supported " + "in " + "ServiceBusTemplate");
+        this.checkpointConfig = checkpointConfig;
+        LOGGER.info("ServiceBusTemplate checkpoint config becomes: {}", this.checkpointConfig);
+    }
 
-    protected ExecutorService buildHandlerExecutors(String threadPrefix) {
-        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat(threadPrefix + "-%d").build();
-        return Executors.newFixedThreadPool(this.clientConfig.getConcurrency(), threadFactory);
+    public ServiceBusMessageConverter getMessageConverter() {
+        return messageConverter;
     }
 
     private String getPartitionKey(PartitionSupplier partitionSupplier) {
@@ -90,18 +96,8 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         return "";
     }
 
-    public CheckpointConfig getCheckpointConfig() {
-        return checkpointConfig;
+    private static boolean isValidCheckpointMode(CheckpointMode mode) {
+        return mode == MANUAL || mode == RECORD;
     }
 
-    public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
-        Assert.state(isValidCheckpointConfig(checkpointConfig),
-            "Only MANUAL or RECORD checkpoint mode is supported in ServiceBusTemplate");
-        this.checkpointConfig = checkpointConfig;
-        LOG.info("ServiceBusTemplate checkpoint config becomes: {}", this.checkpointConfig);
-    }
-
-    public ServiceBusMessageConverter getMessageConverter() {
-        return messageConverter;
-    }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.servicebus.converter;
 
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.spring.integration.core.AzureHeaders;
@@ -11,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.StringUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -31,11 +31,13 @@ import static com.azure.spring.integration.servicebus.converter.ServiceBusMessag
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
 
 /**
- * A converter to turn a {@link org.springframework.messaging.Message} to {@link ServiceBusMessage} and turn a {@link ServiceBusReceivedMessage} to {@link org.springframework.messaging.Message}
+ * A converter to turn a {@link org.springframework.messaging.Message} to {@link ServiceBusMessage} and turn a {@link
+ * ServiceBusReceivedMessage} to {@link org.springframework.messaging.Message}
  *
  * @author Warren Zhu
  */
-public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
+public class ServiceBusMessageConverter
+    extends AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
 
     private final ObjectMapper objectMapper;
 
@@ -54,8 +56,8 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<Se
 
     @Override
     protected byte[] getPayload(ServiceBusReceivedMessage azureMessage) {
-     return   azureMessage.getBody().toBytes();
-
+        final BinaryData body = azureMessage.getBody();
+        return body == null ? null : body.toBytes();
     }
 
     @Override
@@ -81,14 +83,15 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<Se
         Optional.ofNullable(headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class))
                 .map(Duration::ofMillis)
                 .map(Instant.now()::plus)
-                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault())).ifPresent(message::setScheduledEnqueueTime);
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+                .ifPresent(message::setScheduledEnqueueTime);
 
         // ServiceBusMessageHeaders, service bus headers have highest priority.
         getStringHeader(headers, MESSAGE_ID).ifPresent(message::setMessageId);
-        Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE))
-                .ifPresent(message::setTimeToLive);
+        Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE)).ifPresent(message::setTimeToLive);
         Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
-                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault())).ifPresent(message::setScheduledEnqueueTime);
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+                .ifPresent(message::setScheduledEnqueueTime);
         getStringHeader(headers, SESSION_ID).ifPresent(message::setSessionId);
         getStringHeader(headers, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getStringHeader(headers, TO).ifPresent(message::setTo);
@@ -96,12 +99,6 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<Se
         getStringHeader(headers, PARTITION_KEY).ifPresent(message::setPartitionKey);
 
         headers.forEach((key, value) -> message.getApplicationProperties().put(key, value.toString()));
-    }
-
-    private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, String key) {
-        return Optional.ofNullable(springMessageHeaders.get(key))
-                       .map(Object::toString)
-                       .filter(StringUtils::hasText);
     }
 
     @Override
@@ -132,14 +129,15 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<Se
         return Collections.unmodifiableMap(headers);
     }
 
+    private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, String key) {
+        return Optional.ofNullable(springMessageHeaders.get(key)).map(Object::toString).filter(StringUtils::hasText);
+    }
+
     private void setValueIfHasText(Map<String, Object> map, String key, String value) {
-        Optional.ofNullable(value)
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> map.put(key, s));
+        Optional.ofNullable(value).filter(StringUtils::hasText).ifPresent(s -> map.put(key, s));
     }
 
     private void setValueIfPresent(Map<String, Object> map, String key, Object value) {
-        Optional.ofNullable(value)
-                .ifPresent(s -> map.put(key, s));
+        Optional.ofNullable(value).ifPresent(s -> map.put(key, s));
     }
 }

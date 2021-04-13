@@ -3,7 +3,8 @@
 
 package com.azure.spring.integration.servicebus.topic;
 
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.servicebus.ServiceBusTemplateSendTest;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
@@ -17,18 +18,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TopicTemplateSendTest extends ServiceBusTemplateSendTest<ServiceBusTopicClientFactory, ServiceBusSenderClient> {
+public class TopicTemplateSendTest
+    extends ServiceBusTemplateSendTest<ServiceBusTopicClientFactory, ServiceBusSenderAsyncClient> {
 
     @Before
     @Override
     public void setUp() {
-        //TODO
-     /*   this.mockClientFactory = mock(ServiceBusTopicClientFactory.class);
-        this.mockClient = mock(ITopicClient.class);
-        when(this.mockClientFactory.getOrCreateSender(anyString())).thenReturn(this.mockClient);
-        when(this.mockClient.sendAsync(isA(IMessage.class))).thenReturn(future);
+        this.mockClientFactory = mock(ServiceBusTopicClientFactory.class);
+        this.mockClient = mock(ServiceBusSenderAsyncClient.class);
 
-        this.sendOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());*/
+        when(this.mockClientFactory.getOrCreateSender(anyString())).thenReturn(this.mockClient);
+        when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
+
+        this.sendOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
     }
 
 }

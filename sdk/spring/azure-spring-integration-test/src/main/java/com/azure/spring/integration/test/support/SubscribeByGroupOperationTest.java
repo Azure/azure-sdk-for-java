@@ -11,42 +11,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public abstract class SubscribeByGroupOperationTest<O extends SubscribeByGroupOperation> {
+
     protected O subscribeByGroupOperation;
     protected String consumerGroup = "consumer-group";
     protected String anotherConsumerGroup = "consumer-group2";
     protected String destination = "event-hub";
-
-    public O getSubscribeByGroupOperation() {
-        return subscribeByGroupOperation;
-    }
-
-    public void setSubscribeByGroupOperation(O subscribeByGroupOperation) {
-        this.subscribeByGroupOperation = subscribeByGroupOperation;
-    }
-
-    public String getConsumerGroup() {
-        return consumerGroup;
-    }
-
-    public void setConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-    }
-
-    public String getAnotherConsumerGroup() {
-        return anotherConsumerGroup;
-    }
-
-    public void setAnotherConsumerGroup(String anotherConsumerGroup) {
-        this.anotherConsumerGroup = anotherConsumerGroup;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
 
     @Test
     public void testSubscribeAndUnsubscribe() {
@@ -70,8 +39,8 @@ public abstract class SubscribeByGroupOperationTest<O extends SubscribeByGroupOp
         assertTrue(onceSucceed);
         verifySubscriberRegistered(1);
 
-        boolean twiceSucceed =
-            this.subscribeByGroupOperation.subscribe(destination, consumerGroup, this::handleMessage);
+        boolean twiceSucceed = this.subscribeByGroupOperation.subscribe(destination, consumerGroup,
+                                                                        this::handleMessage);
 
         assertFalse(twiceSucceed);
 
@@ -87,8 +56,8 @@ public abstract class SubscribeByGroupOperationTest<O extends SubscribeByGroupOp
         assertTrue(onceSucceed);
         verifySubscriberRegistered(1);
 
-        boolean twiceSucceed =
-            this.subscribeByGroupOperation.subscribe(destination, anotherConsumerGroup, this::handleMessage);
+        boolean twiceSucceed = this.subscribeByGroupOperation.subscribe(destination, anotherConsumerGroup,
+                                                                        this::handleMessage);
 
         assertTrue(twiceSucceed);
 

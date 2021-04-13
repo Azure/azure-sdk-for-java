@@ -22,39 +22,13 @@ import static org.junit.Assert.assertTrue;
 
 public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannelAdapter> {
 
-    protected String destination = "dest";
-    protected String consumerGroup = "group";
     protected A adapter;
-    private String[] payloads = {"payload1", "payload2"};
-    private List<Message<?>> messages =
-        Arrays.stream(payloads).map(p -> MessageBuilder.withPayload(p).build()).collect(Collectors.toList());
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public String getConsumerGroup() {
-        return consumerGroup;
-    }
-
-    public void setConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-    }
-
-    public A getAdapter() {
-        return adapter;
-    }
-
-    public void setAdapter(A adapter) {
-        this.adapter = adapter;
-    }
-
-    @Before
-    public abstract void setUp();
+    protected String consumerGroup = "group";
+    protected String destination = "dest";
+    private String[] payloads = { "payload1", "payload2" };
+    private List<Message<?>> messages = Arrays.stream(payloads)
+                                              .map(p -> MessageBuilder.withPayload(p).build())
+                                              .collect(Collectors.toList());
 
     @Test
     public void sendAndReceive() throws InterruptedException {
@@ -81,4 +55,7 @@ public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannel
             assertEquals(receivedMessages.get(i), payloads[i]);
         }
     }
+
+    @Before
+    public abstract void setUp();
 }

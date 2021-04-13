@@ -8,8 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
-
-import java.util.function.Consumer;
+import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 
 /**
  * Factory to return functional creator of service bus topic and subscription client
@@ -18,10 +17,16 @@ import java.util.function.Consumer;
  */
 public interface ServiceBusTopicClientFactory extends ServiceBusSenderFactory {
     /**
-     * Return a function which accepts service bus topic and subscription name, then returns {@link ServiceBusProcessorClient}
+     * Return a function which accepts service bus topic and subscription name, then returns {@link
+     * ServiceBusProcessorClient}
+     *
      * @param topic topic
      * @param subscription subscription
      * @return subscription client
      */
-    ServiceBusProcessorClient getOrCreateClient(String topic, String subscription, ServiceBusClientConfig clientConfig, Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError);
+    ServiceBusProcessorClient getOrCreateProcessor(String topic,
+                                                   String subscription,
+                                                   ServiceBusClientConfig clientConfig,
+                                                   ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
+                                                                                 ServiceBusErrorContext> messageProcessor);
 }

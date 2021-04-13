@@ -11,6 +11,7 @@ import rx.Observable;
 
 public abstract class RxSendSubscribeByGroupOperationTest<T extends RxSendOperation & RxSubscribeByGroupOperation>
     extends RxSendSubscribeOperationTest<T> {
+
     protected String consumerGroup = "group1";
 
     @Override

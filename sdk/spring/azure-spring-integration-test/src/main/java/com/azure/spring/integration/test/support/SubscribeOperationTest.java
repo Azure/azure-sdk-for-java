@@ -11,16 +11,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
+
     protected O subscribeOperation;
-    private String destination = "event-hub";
-
-    public O getSubscribeOperation() {
-        return subscribeOperation;
-    }
-
-    public void setSubscribeOperation(O subscribeOperation) {
-        this.subscribeOperation = subscribeOperation;
-    }
+    protected String destination = "event-hub";
 
     @Test
     public void testSubscribeAndUnsubscribe() {

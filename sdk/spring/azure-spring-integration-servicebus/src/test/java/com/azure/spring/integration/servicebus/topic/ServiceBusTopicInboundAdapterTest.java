@@ -5,13 +5,11 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.topic.support.ServiceBusTopicTestOperation;
+import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusTopicInboundChannelAdapter> {
@@ -19,16 +17,10 @@ public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest
     @Mock
     ServiceBusTopicClientFactory clientFactory;
 
-   /* @Mock
-    SubscriptionClient subscriptionClient;*/  //TODO
-
     @Override
     public void setUp() {
-        //TODO
-       /* when(this.clientFactory.getOrCreateSubscriptionClient(this.destination, this.consumerGroup))
-            .thenReturn(this.subscriptionClient);
-        this.adapter =
-            new ServiceBusTopicInboundChannelAdapter(destination, new ServiceBusTopicTestOperation(clientFactory),
-                consumerGroup);*/
+        this.adapter = new ServiceBusTopicInboundChannelAdapter(destination,
+                                                                new ServiceBusTopicTestOperation(clientFactory),
+                                                                consumerGroup);
     }
 }

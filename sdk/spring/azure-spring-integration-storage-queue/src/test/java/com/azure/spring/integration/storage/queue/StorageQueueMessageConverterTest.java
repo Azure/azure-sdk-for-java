@@ -3,18 +3,13 @@
 
 package com.azure.spring.integration.storage.queue;
 
-import com.azure.spring.integration.storage.queue.converter.StorageQueueMessageConverter;
-import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
-import com.azure.spring.integration.test.support.AzureMessageConverterTest;
+import com.azure.spring.integration.storage.queue.converter.StorageQueueMessageConverter;
+import com.azure.spring.integration.test.support.UnaryAzureMessageConverterTest;
+import com.azure.storage.queue.models.QueueMessageItem;
+import org.springframework.messaging.Message;
 
-public class StorageQueueMessageConverterTest extends AzureMessageConverterTest<QueueMessageItem, QueueMessageItem> {
-    @Override
-    protected QueueMessageItem getInstance() {
-        final QueueMessageItem queueMessageItem = new QueueMessageItem();
-        queueMessageItem.setMessageText(this.payload);
-        return queueMessageItem;
-    }
+public class StorageQueueMessageConverterTest extends UnaryAzureMessageConverterTest<QueueMessageItem> {
 
     @Override
     protected AzureMessageConverter<QueueMessageItem, QueueMessageItem> getConverter() {
@@ -24,5 +19,10 @@ public class StorageQueueMessageConverterTest extends AzureMessageConverterTest<
     @Override
     protected Class<QueueMessageItem> getTargetClass() {
         return QueueMessageItem.class;
+    }
+
+    @Override
+    protected void assertMessageHeadersEqual(QueueMessageItem azureMessage, Message<?> message) {
+
     }
 }

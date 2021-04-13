@@ -47,7 +47,9 @@ public class ServiceBusMessageHeaders extends AzureHeaders {
     public static final String PARTITION_KEY = PREFIX + "partition_key";
     public static final String TO = PREFIX + "to";
     public static final String TIME_TO_LIVE = PREFIX + "time_to_live";
+    // expected type is Instant
     public static final String SCHEDULED_ENQUEUE_TIME = PREFIX + "scheduled_enqueue_time";
     public static final String REPLY_TO_SESSION_ID = PREFIX + "reply_to_session_id";
     public static final String SESSION_ID = PREFIX + "session_id";
+    public static final String RECEIVED_MESSAGE_CONTEXT = PREFIX + "received_message_context";
 }

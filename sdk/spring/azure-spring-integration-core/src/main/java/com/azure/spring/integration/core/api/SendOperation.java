@@ -4,6 +4,7 @@
 package com.azure.spring.integration.core.api;
 
 import org.springframework.messaging.Message;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.CompletableFuture;
 

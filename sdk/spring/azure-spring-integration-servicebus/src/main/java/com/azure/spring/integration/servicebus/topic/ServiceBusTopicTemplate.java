@@ -3,14 +3,15 @@
 
 package com.azure.spring.integration.servicebus.topic;
 
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.integration.servicebus.*;
-import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
-import com.google.common.collect.Sets;
 import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
+import com.azure.spring.integration.servicebus.ServiceBusTemplate;
+import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -18,9 +19,6 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
 import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
@@ -29,18 +27,16 @@ import java.util.function.Consumer;
  * @author Warren Zhu
  * @author Eduardo Sciullo
  */
-public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicClientFactory>
-    implements ServiceBusTopicOperation {
+public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicClientFactory> implements
+                                                                                              ServiceBusTopicOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTopicTemplate.class);
 
-    private static final String MSG_FAIL_CHECKPOINT = "Consumer group '%s' of topic '%s' failed to checkpoint %s";
-
-    private static final String MSG_SUCCESS_CHECKPOINT = "Consumer group '%s' of topic '%s' checkpointed %s in %s mode";
-
     private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
-    private String topicName;
-    private String subscriptionName;
+
+    public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
+        super(clientFactory);
+    }
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
                                    ServiceBusMessageConverter messageConverter) {
@@ -48,17 +44,24 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     }
 
     @Override
-    public boolean subscribe(String destination, String consumerGroup, @NonNull Consumer<Message<?>> consumer,
+    public void setClientConfig(@NonNull ServiceBusClientConfig clientConfig) {
+        this.clientConfig = clientConfig;
+    }
+
+    @Override
+    public boolean subscribe(String destination,
+                             String consumerGroup,
+                             @NonNull Consumer<Message<?>> consumer,
                              Class<?> payloadType) {
         Assert.hasText(destination, "destination can't be null or empty");
 
         Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);
 
-        if (nameAndConsumerGroups.contains(nameAndConsumerGroup)) {
+        if (this.nameAndConsumerGroups.contains(nameAndConsumerGroup)) {
             return false;
         }
 
-        nameAndConsumerGroups.add(nameAndConsumerGroup);
+        this.nameAndConsumerGroups.add(nameAndConsumerGroup);
 
         internalSubscribe(destination, consumerGroup, consumer, payloadType);
         return true;
@@ -68,7 +71,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     public boolean unsubscribe(String destination, String consumerGroup) {
         // TODO: unregister message handler but service bus sdk unsupported
 
-        return nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup));
+        return this.nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup));
     }
 
     /**
@@ -82,27 +85,17 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
      * @throws ServiceBusRuntimeException If fail to register the topic message handler.
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected void internalSubscribe(String name, String consumerGroup, Consumer<Message<?>> consumer,
+    protected void internalSubscribe(String name,
+                                     String consumerGroup,
+                                     Consumer<Message<?>> consumer,
                                      Class<?> payloadType) {
-        this.topicName = name;
-        this.subscriptionName = consumerGroup;
-        InboundServiceBusMessageConsumer processMessage = new InboundServiceBusMessageConsumer(name, consumerGroup, checkpointConfig, messageConverter, consumer, payloadType);
-        Consumer<ServiceBusErrorContext> processError = errorContext -> {
-             //TODO is this consumer useful?
 
-        };
-
-        ServiceBusProcessorClient processorClient = this.senderFactory.getOrCreateClient(name, consumerGroup, clientConfig, processMessage, processError);
+        final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(this.checkpointConfig,
+                                                                                                         payloadType, consumer, this.messageConverter);
+        ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
+            this.clientConfig, messageProcessor);
         processorClient.start();
-
-
     }
-
-    @Override
-    public void setClientConfig(@NonNull ServiceBusClientConfig clientConfig) {
-        this.clientConfig = clientConfig;
-    }
-
 
 
 }

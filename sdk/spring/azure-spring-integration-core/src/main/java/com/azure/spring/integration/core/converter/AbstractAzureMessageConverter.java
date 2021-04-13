@@ -76,7 +76,8 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> Message<U> toMessage(@NonNull I azureMessage, Map<String, Object> headers,
+    public <U> Message<U> toMessage(@NonNull I azureMessage,
+                                    Map<String, Object> headers,
                                     @NonNull Class<U> targetPayloadClass) {
         Map<String, Object> mergedHeaders = new HashMap<>();
         mergedHeaders.putAll(buildCustomHeaders(azureMessage));

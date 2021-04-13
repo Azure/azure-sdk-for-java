@@ -3,19 +3,20 @@
 
 package com.azure.spring.integration.servicebus.queue;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.queue.support.ServiceBusQueueTestOperation;
+import com.azure.spring.integration.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.integration.test.support.SendSubscribeWithoutGroupOperationTest;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.messaging.Message;
 
-import java.util.concurrent.CompletableFuture;
-
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceBusQueueOperationSendSubscribeTest
@@ -24,26 +25,15 @@ public class ServiceBusQueueOperationSendSubscribeTest
     @Mock
     ServiceBusQueueClientFactory clientFactory;
 
-   /* @Mock
-    IQueueClient queueClient;*/ //TODO
-
     @Before
     @Override
     public void setUp() {
-        //TODO
-       /* CompletableFuture<Void> future = new CompletableFuture<>();
-        future.complete(null);
-        when(this.clientFactory.getOrCreateClient(anyString())).thenReturn(queueClient);
-        whenRegisterMessageHandler(queueClient);
-        when(this.queueClient.completeAsync(any())).thenReturn(future);
-        when(this.queueClient.abandonAsync(any())).thenReturn(future);
-        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(clientFactory);*/
+        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(clientFactory);
     }
 
     @Override
     protected void verifyCheckpointSuccessCalled(int times) {
-        //TODO
-        /*verify(this.queueClient, times(times)).completeAsync(any());*/
+        verifyCompleteCalledTimes(times);
     }
 
     @Override
@@ -53,16 +43,49 @@ public class ServiceBusQueueOperationSendSubscribeTest
 
     @Override
     protected void verifyCheckpointFailureCalled(int times) {
-        //TODO
-        /*verify(this.queueClient, times(times)).abandonAsync(any());*/
+        verifyAbandonCalledTimes(times);
     }
 
-    //TODO
-  /*  private void whenRegisterMessageHandler(IQueueClient queueClient) {
-        try {
-            doNothing().when(queueClient).registerMessageHandler(isA(IMessageHandler.class));
-        } catch (InterruptedException | ServiceBusException e) {
-            fail("Exception should not throw" + e);
+    @Override
+    protected void manualCheckpointHandler(Message<?> message) {
+        assertTrue(message.getHeaders().containsKey(RECEIVED_MESSAGE_CONTEXT));
+        final ServiceBusReceivedMessageContext receivedMessageContext = message.getHeaders()
+                                                                               .get(RECEIVED_MESSAGE_CONTEXT,
+                                                                                    ServiceBusReceivedMessageContext.class);
+        assertNotNull(receivedMessageContext);
+
+        receivedMessageContext.complete();
+        verifyCompleteCalledTimes(1);
+
+        receivedMessageContext.abandon();
+        verifyAbandonCalledTimes(1);
+
+        receivedMessageContext.deadLetter();
+        verifyDeadLetterCalledTimes(1);
+    }
+
+    protected void verifyCompleteCalledTimes(int times) {
+        final int actualTimes = ((ServiceBusQueueTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
+
+        if (actualTimes != times) {
+            assertEquals("Complete called times", times, actualTimes);
         }
-    }*/
+    }
+
+    protected void verifyAbandonCalledTimes(int times) {
+        final int actualTimes = ((ServiceBusQueueTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
+
+        if (actualTimes != times) {
+            assertEquals("Complete called times", times, actualTimes);
+        }
+    }
+
+    protected void verifyDeadLetterCalledTimes(int times) {
+        final int actualTimes = ((ServiceBusQueueTestOperation) sendSubscribeOperation).getDeadLetterCalledTimes();
+
+        if (actualTimes != times) {
+            assertEquals("Complete called times", times, actualTimes);
+        }
+    }
+
 }

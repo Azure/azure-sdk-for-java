@@ -3,30 +3,45 @@
 
 package com.azure.spring.integration.servicebus;
 
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.core.api.SendOperation;
+import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
 import com.azure.spring.integration.test.support.SendOperationTest;
 import org.junit.Before;
+import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFactory, C extends ServiceBusSenderClient>
+/**
+ * Test cases to test service bus send operations.
+ *
+ * @param <T>
+ * @param <C>
+ */
+public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFactory,
+                                                    C extends ServiceBusSenderAsyncClient>
     extends SendOperationTest<SendOperation> {
 
-    protected T mockClientFactory;
-
     protected C mockClient;
+    protected T mockClientFactory;
 
     @Before
     public abstract void setUp();
 
     @Override
+    protected void setupError(String errorMessage) {
+        when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(Mono.error(new IllegalArgumentException(
+            errorMessage)));
+    }
+
+    @Override
     protected void verifySendCalled(int times) {
-        //TODO
-       /* verify(this.mockClient, times(times)).sendAsync(isA(IMessage.class));*/
+        verify(this.mockClient, times(times)).sendMessage(isA(ServiceBusMessage.class));
     }
 
     @Override
@@ -36,14 +51,12 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
 
     @Override
     protected void whenSendWithException() {
-       //TODO
-      /*  when(this.mockClientFactory.getOrCreateSender(anyString())).thenThrow(ServiceBusRuntimeException.class);*/
+        when(this.mockClientFactory.getOrCreateSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
     }
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        //TODO
-        /*verify(this.mockClientFactory, times(times)).getOrCreateSender(anyString());*/
+        verify(this.mockClientFactory, times(times)).getOrCreateSender(anyString());
     }
 
     @Override
