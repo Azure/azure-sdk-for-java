@@ -2,6 +2,8 @@
 
 ## 12.11.0-beta.3 (Unreleased)
 - Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
+- Added support for the 2020-08-04 service version.
+- Added support to specify Parquet Input Serialization when querying a blob.
 
 ## 12.11.0-beta.2 (2021-03-29)
 - Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
