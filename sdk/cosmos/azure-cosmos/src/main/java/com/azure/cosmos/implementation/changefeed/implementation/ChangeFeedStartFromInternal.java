@@ -48,7 +48,7 @@ public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
         String json = this.toJson();
 
         if (json.indexOf("\"Type\":") != json.lastIndexOf("\"Type\":")) {
-            // TODO @fabianm Remove as soon as root caused
+            // TODO @fabianm Remove as soon as root caused - https://github.com/Azure/azure-sdk-for-java/issues/20635
             throw new IllegalStateException("There shouldn't be any duplicate json properties!");
         }
 
