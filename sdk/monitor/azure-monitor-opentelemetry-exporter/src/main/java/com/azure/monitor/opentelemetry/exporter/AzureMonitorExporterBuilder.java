@@ -191,7 +191,7 @@ public final class AzureMonitorExporterBuilder {
      * Sets the token credential required for authentication with the ingestion endpoint service.
      *
      * @param credential The Azure Identity TokenCredential.
-     * @return The update {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder credential(TokenCredential credential) {
         this.credential = credential;
