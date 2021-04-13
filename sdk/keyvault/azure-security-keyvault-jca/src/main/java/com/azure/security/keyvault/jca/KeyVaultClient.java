@@ -113,7 +113,7 @@ class KeyVaultClient extends DelegateRestClient {
         this.keyVaultUrl = keyVaultUri;
         String dnsSuffix = keyVaultUri.split("\\.",2)[1];
         this.keyVaultBaseUri = HTTPS_PREFIX + dnsSuffix;
-        switch(dnsSuffix)
+        switch(keyVaultBaseUri)
         {
             case KEY_VAULT_BASE_URI_GLOBAL :
                 this.aadAuthenticationUrl = AAD_LOGIN_GLOBAL_URI;
@@ -127,6 +127,8 @@ class KeyVaultClient extends DelegateRestClient {
             case KEY_VAULT_BASE_URI_DE:
                 this.aadAuthenticationUrl = AAD_LOGIN_DE_URI;
                 break;
+            default:
+                throw new IllegalArgumentException("Property of azure.keyvault.uri is illegal.");
         }
     }
 
@@ -349,5 +351,13 @@ class KeyVaultClient extends DelegateRestClient {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePrivate(spec);
+    }
+
+    String getKeyVaultBaseUri() {
+        return keyVaultBaseUri;
+    }
+
+    String getAadAuthenticationUrl() {
+        return aadAuthenticationUrl;
     }
 }
