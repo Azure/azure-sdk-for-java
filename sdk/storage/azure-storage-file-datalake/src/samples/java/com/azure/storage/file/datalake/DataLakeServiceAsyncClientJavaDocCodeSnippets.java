@@ -113,12 +113,12 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
                 response.getMinuteMetrics().isEnabled()));
         // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getProperties
 
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getPropertiesWithResponse
         client.getPropertiesWithResponse().subscribe(response ->
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
                 response.getValue().getHourMetrics().isEnabled(),
                 response.getValue().getMinuteMetrics().isEnabled()));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.getPropertiesWithResponse
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getPropertiesWithResponse
     }
 
     /**
