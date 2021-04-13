@@ -201,10 +201,25 @@ function check-source-jar($artifactId, $groudId, $version)
 {
   $groudIdUrl = $groudId.Replace(".", "/")
   $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$version"
+  $sourceJarName = "$artifactId-$version-sources.jar"
   try 
   {
     $resp = Invoke-WebRequest $MavenDownloadUrl
-    return $resp -and $resp.Links.href.Contains("$artifactId-$version-sources.jar")
+    $source_jar_existence = $resp -and $resp.Links.href.Contains($sourceJarName)
+    if (!$source_jar_existence) {
+      return $false
+    }
+    # Download the maven package to local
+    $MavenDownloadLink = "$MavenDownloadUrl/$sourceJarName"
+    New-Item -ItemType Directory -Force -Path ./package
+    Push-Location -Path ./package
+    Invoke-WebRequest $MavenDownloadLink -OutFile "$artifactId-$version-sources.jar"
+    jar xvf "$artifactId-$version-sources.jar" 
+    $check_source_code_existence = Test-Path -Path ./com
+    Pop-Location 
+    # Clean up the package folder
+    Remove-Item ./package -Recurse
+    return $check_source_code_existence
   }
   catch 
   {
