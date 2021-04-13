@@ -140,7 +140,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
                 ((HttpResponseException) exception).getResponse().getStatusCode() == 400).verify();
     }
 
-    /*@ParameterizedTest
+    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendFromUnauthorizedNumber(HttpClient httpClient) {
         // Arrange
@@ -150,9 +150,8 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response)
-            .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 404).verify();
-    }*/
+            .expectError().verify();
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
