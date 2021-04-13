@@ -191,7 +191,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             next.setEmptyCreditListener(() -> 0);
 
             currentLinkSubscriptions = Disposables.composite(
-                next.receive().subscribe(message -> {
+                next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
                     synchronized (queueLock) {
                         messageQueue.add(message);
                         pendingMessages.incrementAndGet();
