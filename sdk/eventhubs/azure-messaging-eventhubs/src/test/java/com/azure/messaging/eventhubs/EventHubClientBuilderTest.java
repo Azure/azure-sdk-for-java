@@ -51,11 +51,8 @@ public class EventHubClientBuilderTest {
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
         final EventHubAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING).buildAsyncClient();
-        try {
-            assertNotNull(client);
-        } finally {
-            client.close();
-        }
+
+        assertNotNull(client);
     }
 
     @Test

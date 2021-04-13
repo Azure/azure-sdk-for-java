@@ -532,7 +532,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
-                link.addCredits(credits);
+                link.addCredits(credits).subscribe();
             }
         }
     }

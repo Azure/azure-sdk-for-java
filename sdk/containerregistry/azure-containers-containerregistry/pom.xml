@@ -30,11 +30,8 @@
   <properties>
     <!-- Once full testing is added this should either be removed or increased -->
     <!-- By default the targets are 0.40 and 0.30 respectively -->
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
-
-    <!-- If skipping test coverage is absolutely necessary, for example resources cannot be provisioned uncomment this -->
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.20</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -43,6 +40,12 @@
       <artifactId>azure-core</artifactId>
       <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
+     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -77,6 +80,18 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-containerregistry</artifactId>
+      <version>2.3.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
