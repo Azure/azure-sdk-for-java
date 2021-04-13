@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
@@ -12,7 +13,7 @@ import java.util.Locale;
 /**
  * The {@link TextAnalyticsActionResult} model.
  */
-public class TextAnalyticsActionResult {
+public abstract class TextAnalyticsActionResult {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsActionResult.class);
 
     private OffsetDateTime completedAt;
@@ -65,6 +66,8 @@ public class TextAnalyticsActionResult {
     public boolean isError() {
         return isError;
     }
+
+    public abstract IterableStream<?> getResult();
 
     private void setCompletedAt(OffsetDateTime completedAt) {
         this.completedAt = completedAt;

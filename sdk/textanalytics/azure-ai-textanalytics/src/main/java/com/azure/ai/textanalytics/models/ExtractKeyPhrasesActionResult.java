@@ -26,6 +26,7 @@ public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResu
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
+    @Override
     public ExtractKeyPhrasesResultCollection getResult() {
         throwExceptionIfError();
         return result;

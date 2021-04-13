@@ -25,6 +25,7 @@ public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResu
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
+    @Override
     public RecognizeEntitiesResultCollection getResult() {
         throwExceptionIfError();
         return result;
