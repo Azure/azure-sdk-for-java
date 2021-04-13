@@ -46,7 +46,15 @@ private object CosmosRowConverter
                                     objectNode: ObjectNode,
                                     schemaConversionMode: SchemaConversionMode): InternalRow = {
         val row = fromObjectNodeToRow(schema, objectNode, schemaConversionMode)
-        rowSerializer.apply(row)
+        try {
+          rowSerializer.apply(row)
+        }
+        catch {
+          case inner: RuntimeException =>
+            throw new Exception(
+              s"Cannot convert Json '${objectMapper.writeValueAsString(objectNode)}' into InternalRow",
+              inner)
+        }
     }
 
     def fromObjectNodeToRow(schema: StructType,

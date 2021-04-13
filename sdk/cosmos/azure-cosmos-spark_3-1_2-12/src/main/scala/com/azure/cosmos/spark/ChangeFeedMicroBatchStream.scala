@@ -70,6 +70,12 @@ private class ChangeFeedMicroBatchStream
     val start = startOffset.asInstanceOf[ChangeFeedOffset]
     val end = endOffset.asInstanceOf[ChangeFeedOffset]
 
+    val startChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(start.changeFeedState))
+    logInfo(s"Start-ChangeFeedState: ${startChangeFeedState}")
+
+    val endChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(end.changeFeedState))
+    logInfo(s"End-ChangeFeedState: ${endChangeFeedState}")
+
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
     end

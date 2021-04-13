@@ -29,8 +29,10 @@ private case class ChangeFeedScan
     schema
   }
 
-  // TODO fabianm Implement
-  override def description(): String = super.description()
+  override def description(): String = {
+    // Ignore trailing $'s in the class names for Scala objects
+    this.getClass.getName.stripSuffix("$")
+  }
 
   /**
    * Returns the physical representation of this scan for batch query. By default this method throws

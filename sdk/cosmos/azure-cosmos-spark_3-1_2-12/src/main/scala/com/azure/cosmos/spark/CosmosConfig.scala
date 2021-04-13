@@ -364,6 +364,7 @@ private case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int,
                                                inferSchemaEnabled: Boolean,
                                                includeSystemProperties: Boolean,
                                                includeTimestamp: Boolean,
+                                               allowNullForInferredProperties: Boolean,
                                                inferSchemaQuery: Option[String])
 
 private object CosmosSchemaInferenceConfig {
@@ -387,6 +388,12 @@ private object CosmosSchemaInferenceConfig {
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should include the system properties in the schema")
 
+  private val inferSchemaForceNullableProperties = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaForceNullableProperties",
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = include => include.toBoolean,
+    helpMessage = "Whether schema inference should enforce inferred properties to be nullable - even when no null-values are contained in the sample set")
+
   private val inferSchemaIncludeTimestamp = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaIncludeTimestamp",
     mandatory = false,
     defaultValue = Some(false),
@@ -404,6 +411,7 @@ private object CosmosSchemaInferenceConfig {
     val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)
     val includeSystemProperties = CosmosConfigEntry.parse(cfg, inferSchemaIncludeSystemProperties)
     val includeTimestamp = CosmosConfigEntry.parse(cfg, inferSchemaIncludeTimestamp)
+    val allowNullForInferredProperties = CosmosConfigEntry.parse(cfg, inferSchemaForceNullableProperties)
 
     assert(samplingSize.isDefined)
     assert(enabled.isDefined)
@@ -412,6 +420,7 @@ private object CosmosSchemaInferenceConfig {
       enabled.get,
       includeSystemProperties.get,
       includeTimestamp.get,
+      allowNullForInferredProperties.get,
       query)
   }
 }
