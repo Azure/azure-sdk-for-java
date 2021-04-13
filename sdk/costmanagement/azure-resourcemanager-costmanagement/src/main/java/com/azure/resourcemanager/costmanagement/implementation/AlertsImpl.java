@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.AlertsClient;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertsResultInner;
@@ -24,9 +23,10 @@ public final class AlertsImpl implements Alerts {
 
     private final AlertsClient innerClient;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public AlertsImpl(AlertsClient innerClient, CostManagementManager serviceManager) {
+    public AlertsImpl(
+        AlertsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -127,7 +127,7 @@ public final class AlertsImpl implements Alerts {
         return this.innerClient;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

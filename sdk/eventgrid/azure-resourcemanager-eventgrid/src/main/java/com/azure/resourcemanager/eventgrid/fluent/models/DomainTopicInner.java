@@ -4,18 +4,18 @@
 
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain Topic. */
 @JsonFlatten
-@Fluent
+@Immutable
 public class DomainTopicInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainTopicInner.class);
 
@@ -28,7 +28,7 @@ public class DomainTopicInner extends ProxyResource {
     /*
      * Provisioning state of the domain topic.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainTopicProvisioningState provisioningState;
 
     /**
@@ -50,24 +50,10 @@ public class DomainTopicInner extends ProxyResource {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the domain topic.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the DomainTopicInner object itself.
-     */
-    public DomainTopicInner withProvisioningState(DomainTopicProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (systemData() != null) {
-            systemData().validate();
-        }
     }
 }

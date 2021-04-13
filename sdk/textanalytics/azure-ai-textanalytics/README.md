@@ -53,12 +53,12 @@ az cognitiveservices account create \
 ### Include the Package
 **Note:** This version targets Azure Text Analytics service API version v3.0.
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.0.4</version>
+    <version>5.1.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -247,7 +247,6 @@ class ShareAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
-    @Requires({ playbackMode() })
     def "Delete share lease"() {
         setup:
         primaryShareClient.create()
@@ -257,7 +256,6 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 202)
     }
 
-    @Requires({ playbackMode() })
     def "Delete share lease error"() {
         setup:
         primaryShareClient.create()
@@ -292,7 +290,6 @@ class ShareAPITests extends APISpec {
         getPropertiesResponse.getValue().getQuota() == 1
     }
 
-    @Requires({ playbackMode() })
     def "Get properties lease"() {
         setup:
         primaryShareClient.create()
@@ -302,7 +299,6 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 200)
     }
 
-    @Requires({ playbackMode() })
     def "Get properties lease error"() {
         setup:
         primaryShareClient.create()
@@ -432,7 +428,6 @@ class ShareAPITests extends APISpec {
         id1.getAccessPolicy().getPermissions() == identifier2.getAccessPolicy().getPermissions()
     }
 
-    @Requires({ playbackMode() })
     def "Set access policy lease"() {
         setup:
         primaryShareClient.create()
@@ -442,7 +437,6 @@ class ShareAPITests extends APISpec {
         primaryShareClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null).getStatusCode() == 200
     }
 
-    @Requires({ playbackMode() })
     def "Set access policy lease error"() {
         setup:
         primaryShareClient.create()
@@ -487,7 +481,6 @@ class ShareAPITests extends APISpec {
         id.getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
     }
 
-    @Requires({ playbackMode() })
     def "Get access policy lease"() {
         setup:
         primaryShareClient.create()
@@ -500,7 +493,6 @@ class ShareAPITests extends APISpec {
         !response.iterator().hasNext()
     }
 
-    @Requires({ playbackMode() })
     def "Get access policy lease error"() {
         setup:
         primaryShareClient.create()
@@ -556,7 +548,6 @@ class ShareAPITests extends APISpec {
         getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
     }
 
-    @Requires({ playbackMode() })
     def "Set properties lease"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
@@ -570,7 +561,6 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
     }
 
-    @Requires({ playbackMode() })
     def "Set properties lease error"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
@@ -608,7 +598,6 @@ class ShareAPITests extends APISpec {
         metadataAfterSet == getMetadataAfterResponse.getMetadata()
     }
 
-    @Requires({ playbackMode() })
     def "Set metadata lease"() {
         given:
         primaryShareClient.createWithResponse(null, 1, null, null)
@@ -621,7 +610,6 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(resp, 200)
     }
 
-    @Requires({ playbackMode() })
     def "Set metadata lease error"() {
         given:
         primaryShareClient.createWithResponse(null, 1, null, null)
@@ -666,7 +654,6 @@ class ShareAPITests extends APISpec {
         (long) 3 * Constants.GB || 3
     }
 
-    @Requires({ playbackMode() })
     def "Get statistics lease"() {
         setup:
         primaryShareClient.create()
@@ -679,7 +666,6 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(resp, 200)
     }
 
-    @Requires({ playbackMode() })
     def "Get statistics lease error"() {
         setup:
         primaryShareClient.create()

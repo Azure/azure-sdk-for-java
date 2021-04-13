@@ -331,6 +331,8 @@ the main ServiceBusClientBuilder. -->
    Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/5131 -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.data.appconfiguration.implementation.SyncTokenPolicy.java"/>
 
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]test[/\\].*"/>

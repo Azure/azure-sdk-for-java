@@ -4,7 +4,8 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.containers.containerregistry.models.ContentProperties;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -12,73 +13,67 @@ import java.util.List;
 
 /** Manifest attributes details. */
 @JsonFlatten
-@Fluent
+@Immutable
 public class RegistryArtifactProperties {
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName", required = true)
+    @JsonProperty(value = "imageName", access = JsonProperty.Access.WRITE_ONLY)
     private String repository;
 
     /*
      * Manifest
      */
-    @JsonProperty(value = "manifest.digest")
+    @JsonProperty(value = "manifest.digest", access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * Image size
      */
-    @JsonProperty(value = "manifest.imageSize")
+    @JsonProperty(value = "manifest.imageSize", access = JsonProperty.Access.WRITE_ONLY)
     private Long size;
 
     /*
      * Created time
      */
-    @JsonProperty(value = "manifest.createdTime")
+    @JsonProperty(value = "manifest.createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Last update time
      */
-    @JsonProperty(value = "manifest.lastUpdateTime")
+    @JsonProperty(value = "manifest.lastUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "manifest.architecture")
+    @JsonProperty(value = "manifest.architecture", access = JsonProperty.Access.WRITE_ONLY)
     private String cpuArchitecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "manifest.os")
+    @JsonProperty(value = "manifest.os", access = JsonProperty.Access.WRITE_ONLY)
     private String operatingSystem;
 
     /*
-     * Media type
+     * List of manifest attributes details
      */
-    @JsonProperty(value = "manifest.mediaType")
-    private String manifestMediaType;
-
-    /*
-     * Config blob media type
-     */
-    @JsonProperty(value = "manifest.configMediaType")
-    private String configMediaType;
+    @JsonProperty(value = "manifest.references", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManifestAttributesManifestReferences> references;
 
     /*
      * List of tags
      */
-    @JsonProperty(value = "manifest.tags")
+    @JsonProperty(value = "manifest.tags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tags;
 
     /*
-     * Changeable attributes
+     * Writeable properties of the resource
      */
-    @JsonProperty(value = "manifest.changeableAttributes")
-    private ContentProperties manifestProperties;
+    @JsonProperty(value = "manifest.changeableAttributes", access = JsonProperty.Access.WRITE_ONLY)
+    private ContentProperties writeableProperties;
 
     /**
      * Get the repository property: Image name.
@@ -87,17 +82,6 @@ public class RegistryArtifactProperties {
      */
     public String getRepository() {
         return this.repository;
-    }
-
-    /**
-     * Set the repository property: Image name.
-     *
-     * @param repository the repository value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setRepository(String repository) {
-        this.repository = repository;
-        return this;
     }
 
     /**
@@ -110,34 +94,12 @@ public class RegistryArtifactProperties {
     }
 
     /**
-     * Set the digest property: Manifest.
-     *
-     * @param digest the digest value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setDigest(String digest) {
-        this.digest = digest;
-        return this;
-    }
-
-    /**
      * Get the size property: Image size.
      *
      * @return the size value.
      */
     public Long getSize() {
         return this.size;
-    }
-
-    /**
-     * Set the size property: Image size.
-     *
-     * @param size the size value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setSize(Long size) {
-        this.size = size;
-        return this;
     }
 
     /**
@@ -150,34 +112,12 @@ public class RegistryArtifactProperties {
     }
 
     /**
-     * Set the createdOn property: Created time.
-     *
-     * @param createdOn the createdOn value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
-    }
-
-    /**
      * Get the lastUpdatedOn property: Last update time.
      *
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
-    }
-
-    /**
-     * Set the lastUpdatedOn property: Last update time.
-     *
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-        return this;
     }
 
     /**
@@ -190,17 +130,6 @@ public class RegistryArtifactProperties {
     }
 
     /**
-     * Set the cpuArchitecture property: CPU architecture.
-     *
-     * @param cpuArchitecture the cpuArchitecture value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setCpuArchitecture(String cpuArchitecture) {
-        this.cpuArchitecture = cpuArchitecture;
-        return this;
-    }
-
-    /**
      * Get the operatingSystem property: Operating system.
      *
      * @return the operatingSystem value.
@@ -210,54 +139,12 @@ public class RegistryArtifactProperties {
     }
 
     /**
-     * Set the operatingSystem property: Operating system.
+     * Get the references property: List of manifest attributes details.
      *
-     * @param operatingSystem the operatingSystem value to set.
-     * @return the RegistryArtifactProperties object itself.
+     * @return the references value.
      */
-    public RegistryArtifactProperties setOperatingSystem(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
-    }
-
-    /**
-     * Get the manifestMediaType property: Media type.
-     *
-     * @return the manifestMediaType value.
-     */
-    public String getManifestMediaType() {
-        return this.manifestMediaType;
-    }
-
-    /**
-     * Set the manifestMediaType property: Media type.
-     *
-     * @param manifestMediaType the manifestMediaType value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setManifestMediaType(String manifestMediaType) {
-        this.manifestMediaType = manifestMediaType;
-        return this;
-    }
-
-    /**
-     * Get the configMediaType property: Config blob media type.
-     *
-     * @return the configMediaType value.
-     */
-    public String getConfigMediaType() {
-        return this.configMediaType;
-    }
-
-    /**
-     * Set the configMediaType property: Config blob media type.
-     *
-     * @param configMediaType the configMediaType value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setConfigMediaType(String configMediaType) {
-        this.configMediaType = configMediaType;
-        return this;
+    public List<ManifestAttributesManifestReferences> getReferences() {
+        return this.references;
     }
 
     /**
@@ -270,33 +157,11 @@ public class RegistryArtifactProperties {
     }
 
     /**
-     * Set the tags property: List of tags.
+     * Get the writeableProperties property: Writeable properties of the resource.
      *
-     * @param tags the tags value to set.
-     * @return the RegistryArtifactProperties object itself.
+     * @return the writeableProperties value.
      */
-    public RegistryArtifactProperties setTags(List<String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the manifestProperties property: Changeable attributes.
-     *
-     * @return the manifestProperties value.
-     */
-    public ContentProperties getManifestProperties() {
-        return this.manifestProperties;
-    }
-
-    /**
-     * Set the manifestProperties property: Changeable attributes.
-     *
-     * @param manifestProperties the manifestProperties value to set.
-     * @return the RegistryArtifactProperties object itself.
-     */
-    public RegistryArtifactProperties setManifestProperties(ContentProperties manifestProperties) {
-        this.manifestProperties = manifestProperties;
-        return this;
+    public ContentProperties getWriteableProperties() {
+        return this.writeableProperties;
     }
 }
