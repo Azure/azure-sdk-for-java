@@ -663,6 +663,7 @@
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
         <module>sdk/automation</module>
+        <module>sdk/avs</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
         <module>sdk/batch</module>
@@ -671,6 +672,7 @@
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
         <module>sdk/confluent</module>
+        <module>sdk/consumption</module>
         <module>sdk/containerregistry</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
