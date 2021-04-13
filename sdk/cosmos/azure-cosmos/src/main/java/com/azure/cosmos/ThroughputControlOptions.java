@@ -6,10 +6,12 @@ package com.azure.cosmos;
 import com.azure.cosmos.util.Beta;
 
 /**
- * Encapsulates throughput control options.
+ * Encapsulates throughput control options. It contains properties can be customized for each request.
  */
 @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlOptions {
+    private final static boolean DEFAULT_FALLBACK_ON_INIT_ERROR = false;
+
     private String groupName;
     private boolean fallbackOnInitError;
 
@@ -18,11 +20,11 @@ public class ThroughputControlOptions {
      */
     @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlOptions() {
-        this.fallbackOnInitError = false;
+        this.fallbackOnInitError = DEFAULT_FALLBACK_ON_INIT_ERROR;
     }
 
     /**
-     * Get throughput control group for the request.
+     * Get throughput control group name for the request.
      *
      * @return The throughput control group name.
      */
@@ -32,7 +34,8 @@ public class ThroughputControlOptions {
     }
 
     /**
-     * Set the throughput control group for the request.
+     * Set the throughput control group group for the request.
+     * By default, the request will use the default group if default group is specified.
      *
      * @param groupName The throughput control group name.
      *
@@ -45,7 +48,7 @@ public class ThroughputControlOptions {
     }
 
     /**
-     * Get whether the request will fail if throughput control store failed on initialization.
+     * Get whether the request will fail if throughput control controller failed on initialization.
      *
      * By default, it is false. Which means request will fail if throughput control store failed on initialization.
      * @return {@code true} request will fallback on to original request flow. {@code false} request will fail.

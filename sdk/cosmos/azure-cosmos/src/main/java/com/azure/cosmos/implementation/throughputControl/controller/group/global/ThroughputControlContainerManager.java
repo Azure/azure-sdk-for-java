@@ -139,7 +139,10 @@ public class ThroughputControlContainerManager {
      */
     public Mono<Double> queryLoadFactorsOfAllClients(double clientLoadFactor) {
         // The current design is using ttl to expire client items, so there is no need to check whether the client item is expired.
-
+        // You probably have the question about why not use the following query:
+        // "SELECT VALUE SUM(c.loadFactor) FROM c WHERE c.groupId = @GROUPID AND c.id != @CLIENTITEMID"
+        // The reason being that we might get some inconsistent results back for the query above, using the following query will make sure
+        // we always get the items within ttl.
         String sqlQueryTest = "SELECT * FROM c WHERE c.groupId = @GROUPID AND c.id != @CLIENTITEMID";
         List<SqlParameter> parameters = new ArrayList<>();
         parameters.add(new SqlParameter("@GROUPID", this.clientItemPartitionKeyValue));

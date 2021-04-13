@@ -1638,7 +1638,7 @@ public class CosmosAsyncContainer {
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      * @param fallbackOnInitError A flag to indicate whether request will fallback to original request flow if throughput control controller failed on initialization.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableGlobalThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig,

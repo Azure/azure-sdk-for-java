@@ -737,6 +737,19 @@ public class CosmosContainer {
     }
 
     /**
+     * Enable the throughput control group with local control mode.
+     *
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     *
+     * @param groupConfig A {@link GlobalThroughputControlConfig}.
+     * @param fallbackOnInitError A flag to indicate whether request will fallback to original request flow if throughput control controller failed on initialization.
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, boolean fallbackOnInitError) {
+        this.asyncContainer.enableLocalThroughputControlGroup(groupConfig, fallbackOnInitError);
+    }
+
+    /**
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
@@ -748,6 +761,24 @@ public class CosmosContainer {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
         this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+    }
+
+    /**
+     * Enable the throughput control group with global control mode.
+     * The defined throughput limit will be shared across different clients.
+     *
+     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
+     *
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
+     * @param fallbackOnInitError A flag to indicate whether request will fallback to original request flow if throughput control controller failed on initialization.
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableGlobalThroughputControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        GlobalThroughputControlConfig globalControlConfig,
+        boolean fallbackOnInitError) {
+        this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, fallbackOnInitError);
     }
 
     /**

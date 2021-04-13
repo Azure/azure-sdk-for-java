@@ -17,7 +17,6 @@ public class ThroughputControlGroupConfigBuilder {
     private Integer targetThroughput;
     private Double targetThroughputThreshold;
     private boolean isDefault;
-    private boolean isFallbackOnInitError;
 
     /**
      * Set the throughput control group name.
@@ -80,20 +79,6 @@ public class ThroughputControlGroupConfigBuilder {
     }
 
     /**
-     * Set whether request to this throughput control group will fallback to original request flow if throughput control controller failed to initialize.
-     * If set to true, request will fallback to original request flow.
-     * If set to false, request will fail.
-     *
-     * @param isFallbackOnInitError The flag to indicate whether the request will fail if throughput control controller failed to initialize.
-     * @return The {@link ThroughputControlGroupConfigBuilder}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroupConfigBuilder setFallbackOnInitError(boolean isFallbackOnInitError) {
-        this.isFallbackOnInitError = isFallbackOnInitError;
-        return this;
-    }
-
-    /**
      * Validate the throughput configuration and create a new throughput control group config item.
      *
      * @return A new {@link ThroughputControlGroupConfig}.
@@ -108,6 +93,6 @@ public class ThroughputControlGroupConfigBuilder {
         }
 
         return new ThroughputControlGroupConfig(
-            this.groupName, this.targetThroughput, this.targetThroughputThreshold, this.isDefault, this.isFallbackOnInitError);
+            this.groupName, this.targetThroughput, this.targetThroughputThreshold, this.isDefault);
     }
 }

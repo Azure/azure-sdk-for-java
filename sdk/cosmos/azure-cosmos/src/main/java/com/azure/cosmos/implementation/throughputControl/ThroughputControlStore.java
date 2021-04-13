@@ -183,6 +183,10 @@ public class ThroughputControlStore {
             .onErrorResume(throwable -> {
                 if (throwable instanceof ThroughputControlInitializationException) {
                     if (request.throughputControlOptions.isFallbackOnInitError()) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug(
+                                "Request will fallback to original request flow for exception ", throwable.getCause());
+                        }
                         return originalRequestMono;
                     }
 
@@ -200,7 +204,7 @@ public class ThroughputControlStore {
         if (request.throughputControlOptions == null) {
             request.throughputControlOptions = new ThroughputControlOptions();
 
-            if (this.defaultGroupMap.containsKey(collectionNameLink)) {
+            if (!StringUtils.isEmpty(defaultGroup)) {
                 request.throughputControlOptions.setFallbackOnInitError(
                     this.fallbackOnInitErrorGroupMap.containsKey(collectionNameLink)
                         && this.fallbackOnInitErrorGroupMap.get(collectionNameLink).contains(defaultGroup));
