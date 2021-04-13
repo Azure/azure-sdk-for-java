@@ -74,7 +74,7 @@ public class ThroughputControlGroupConfigBuilder {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setDefault(boolean aDefault) {
-        this.isDefault = aDefault;
+        isDefault = aDefault;
         return this;
     }
 
@@ -92,7 +92,6 @@ public class ThroughputControlGroupConfigBuilder {
             throw new IllegalArgumentException("Neither targetThroughput nor targetThroughputThreshold is defined.");
         }
 
-        return new ThroughputControlGroupConfig(
-            this.groupName, this.targetThroughput, this.targetThroughputThreshold, this.isDefault);
+        return new ThroughputControlGroupConfig(groupName, this.targetThroughput, this.targetThroughputThreshold, isDefault);
     }
 }

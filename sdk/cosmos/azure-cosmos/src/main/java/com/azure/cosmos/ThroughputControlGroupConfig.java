@@ -15,11 +15,7 @@ public final class ThroughputControlGroupConfig {
     private final Double targetThroughputThreshold;
     private final boolean isDefault;
 
-    ThroughputControlGroupConfig(
-        String groupName,
-        Integer targetThroughput,
-        Double targetThroughputThreshold,
-        boolean isDefault) {
+    ThroughputControlGroupConfig(String groupName, Integer targetThroughput, Double targetThroughputThreshold, boolean isDefault) {
        this.groupName= groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
