@@ -1,5 +1,5 @@
 # Azure Communication Administration client library for Java
-This package has been deprecated. Please use [azure-communication-identity][identity] and [azure-communication-phonenumbers][phone_numbers]sss instead.
+This package has been deprecated. Please use [azure-communication-identity][identity] and [azure-communication-phonenumbers][phone_numbers] instead.
 
 The requested features were implemented in the new libraries. See change log for more details.
 
