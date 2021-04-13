@@ -153,7 +153,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
             .expectError().verify();
         // TODO: re-enable this when service change is made
         //.expectErrorMatches(exception ->
-        //        ((HttpResponseException) exception).getResponse().getStatusCode() == 404).verify();
+        //        ((HttpResponseException) exception).getResponse().getStatusCode() == 401).verify();
     }
 
     @ParameterizedTest
