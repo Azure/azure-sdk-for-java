@@ -199,6 +199,9 @@ function Get-java-GithubIoDocIndex()
 }
 function check-source-jar($artifactId, $groudId, $version) 
 {
+  if($artifactId -eq "azure-spring-boot-starter") {
+    Write-Host "I am here"
+  }
   $groudIdUrl = $groudId.Replace(".", "/")
   $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$version"
   $sourceJarName = "$artifactId-$version-sources.jar"
@@ -211,10 +214,10 @@ function check-source-jar($artifactId, $groudId, $version)
     }
     # Download the maven package to local
     $MavenDownloadLink = "$MavenDownloadUrl/$sourceJarName"
-    New-Item -ItemType Directory -Force -Path ./package
+    New-Item -ItemType Directory -Force -Path ./package > $null 2>&1
     Push-Location -Path ./package
-    Invoke-WebRequest $MavenDownloadLink -OutFile "$artifactId-$version-sources.jar"
-    jar xvf "$artifactId-$version-sources.jar" 
+    Invoke-WebRequest $MavenDownloadLink -OutFile "$artifactId-$version-sources.jar" >$null 2>&1
+    jar xf "$artifactId-$version-sources.jar" >$null 2>&1
     $check_source_code_existence = Test-Path -Path ./com
     Pop-Location 
     # Clean up the package folder
@@ -251,7 +254,8 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     }
     if ($metadata[$i].VersionGA) {
       # Fill in the latest first
-      if (!(check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionGA)) {
+      $package_validation = check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionGA
+      if (!$package_validation) {
         continue
       }
       $latest_object = @{}
