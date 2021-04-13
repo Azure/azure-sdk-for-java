@@ -1,6 +1,6 @@
 # Release History
 
-## 7.1.1 (2021-04-12)
+## 7.2.0 (2021-04-12)
 ### Bug Fixes
 - Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
 error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
