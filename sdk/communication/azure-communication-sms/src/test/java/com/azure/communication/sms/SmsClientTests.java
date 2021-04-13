@@ -121,7 +121,7 @@ public class SmsClientTests extends SmsTestBase {
         }
     }
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendFromUnauthorizedNumber(HttpClient httpClient) {
         // Arrange
@@ -134,7 +134,7 @@ public class SmsClientTests extends SmsTestBase {
         } catch (Exception exception) {
             assertEquals(404, ((HttpResponseException) exception).getResponse().getStatusCode());
         }
-    }
+    }*/
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")

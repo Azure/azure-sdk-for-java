@@ -140,7 +140,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
                 ((HttpResponseException) exception).getResponse().getStatusCode() == 400).verify();
     }
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendFromUnauthorizedNumber(HttpClient httpClient) {
         // Arrange
@@ -152,7 +152,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         StepVerifier.create(response)
             .expectErrorMatches(exception ->
                 ((HttpResponseException) exception).getResponse().getStatusCode() == 404).verify();
-    }
+    }*/
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
