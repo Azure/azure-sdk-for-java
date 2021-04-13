@@ -667,9 +667,11 @@
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
         <module>sdk/batch</module>
+        <module>sdk/billing</module>
         <module>sdk/boms</module>
         <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
+        <module>sdk/commerce</module>
         <module>sdk/communication</module>
         <module>sdk/confluent</module>
         <module>sdk/consumption</module>
