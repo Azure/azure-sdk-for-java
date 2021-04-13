@@ -264,13 +264,14 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 4)
     public void throughputGlobalControlMultipleClients() throws InterruptedException {
         List<CosmosAsyncClient> clients = new ArrayList<>();
         try{
+            // and do not enable ttl on the container so to test how many items are created.
             String controlContainerId = "throughputControlContainer";
             CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-            database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
+            database.createContainerIfNotExists(controlContainerId, "/groupId").block();
             ThroughputControlGroupConfig groupConfig =
                 new ThroughputControlGroupConfigBuilder()
                     .setGroupName("group-" + UUID.randomUUID())
@@ -299,10 +300,8 @@ public class ThroughputControlTests extends TestSuiteBase {
                     new ThroughputControlOptions().setGroupName(groupConfig.getGroupName());
                 requestOptions.setThroughputControlOptions(throughputControlOptions);
 
-                testContainer.createItem(getDocumentDefinition(), requestOptions).subscribeOn(Schedulers.parallel()).subscribe();
+                testContainer.createItem(getDocumentDefinition(), requestOptions).block();
             }
-
-            Thread.sleep(500);
 
             String query = "SELECT * FROM c WHERE CONTAINS(c.groupId, @GROUPID) AND CONTAINS(c.groupId, @CLIENTITEMSUFFIX)";
             List<SqlParameter> parameters = new ArrayList<>();
