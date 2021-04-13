@@ -663,6 +663,7 @@
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
         <module>sdk/automation</module>
+        <module>sdk/avs</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
         <module>sdk/batch</module>
