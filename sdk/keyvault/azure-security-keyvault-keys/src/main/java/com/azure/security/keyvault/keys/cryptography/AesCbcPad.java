@@ -43,8 +43,8 @@ abstract class AesCbcPad extends SymmetricEncryptionAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plainText) throws IllegalBlockSizeException, BadPaddingException {
-            return cipher.doFinal(plainText);
+        public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
+            return cipher.doFinal(plaintext);
         }
     }
 
@@ -65,8 +65,8 @@ abstract class AesCbcPad extends SymmetricEncryptionAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plainText) throws IllegalBlockSizeException, BadPaddingException {
-            return cipher.doFinal(plainText);
+        public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
+            return cipher.doFinal(plaintext);
         }
     }
 

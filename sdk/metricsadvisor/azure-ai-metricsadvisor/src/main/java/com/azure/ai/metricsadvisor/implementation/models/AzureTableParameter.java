@@ -17,16 +17,16 @@ public final class AzureTableParameter {
     private String connectionString;
 
     /*
-     * Query query
-     */
-    @JsonProperty(value = "query", required = true)
-    private String query;
-
-    /*
      * Table name
      */
     @JsonProperty(value = "table", required = true)
     private String table;
+
+    /*
+     * Query script
+     */
+    @JsonProperty(value = "query", required = true)
+    private String query;
 
     /**
      * Get the connectionString property: Azure Table connection string.
@@ -49,26 +49,6 @@ public final class AzureTableParameter {
     }
 
     /**
-     * Get the query property: Query query.
-     *
-     * @return the query value.
-     */
-    public String getQuery() {
-        return this.query;
-    }
-
-    /**
-     * Set the query property: Query query.
-     *
-     * @param query the query value to set.
-     * @return the AzureTableParameter object itself.
-     */
-    public AzureTableParameter setQuery(String query) {
-        this.query = query;
-        return this;
-    }
-
-    /**
      * Get the table property: Table name.
      *
      * @return the table value.
@@ -85,6 +65,26 @@ public final class AzureTableParameter {
      */
     public AzureTableParameter setTable(String table) {
         this.table = table;
+        return this;
+    }
+
+    /**
+     * Get the query property: Query script.
+     *
+     * @return the query value.
+     */
+    public String getQuery() {
+        return this.query;
+    }
+
+    /**
+     * Set the query property: Query script.
+     *
+     * @param query the query value to set.
+     * @return the AzureTableParameter object itself.
+     */
+    public AzureTableParameter setQuery(String query) {
+        this.query = query;
         return this;
     }
 }

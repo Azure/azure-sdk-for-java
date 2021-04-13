@@ -9,10 +9,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.ClustersClient;
+import com.azure.resourcemanager.hdinsight.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner;
+import com.azure.resourcemanager.hdinsight.models.AsyncOperationResult;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleConfigurationUpdateParameter;
 import com.azure.resourcemanager.hdinsight.models.Cluster;
 import com.azure.resourcemanager.hdinsight.models.ClusterDiskEncryptionParameters;
@@ -21,6 +22,7 @@ import com.azure.resourcemanager.hdinsight.models.Clusters;
 import com.azure.resourcemanager.hdinsight.models.ExecuteScriptActionParameters;
 import com.azure.resourcemanager.hdinsight.models.GatewaySettings;
 import com.azure.resourcemanager.hdinsight.models.RoleName;
+import com.azure.resourcemanager.hdinsight.models.UpdateClusterIdentityCertificateParameters;
 import com.azure.resourcemanager.hdinsight.models.UpdateGatewaySettingsParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,9 +31,10 @@ public final class ClustersImpl implements Clusters {
 
     private final ClustersClient innerClient;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ClustersImpl(ClustersClient innerClient, HDInsightManager serviceManager) {
+    public ClustersImpl(
+        ClustersClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -70,12 +73,12 @@ public final class ClustersImpl implements Clusters {
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public void resize(
@@ -113,12 +116,12 @@ public final class ClustersImpl implements Clusters {
 
     public PagedIterable<Cluster> list() {
         PagedIterable<ClusterInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> list(Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public void rotateDiskEncryptionKey(
@@ -163,6 +166,47 @@ public final class ClustersImpl implements Clusters {
     public void updateGatewaySettings(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context) {
         this.serviceClient().updateGatewaySettings(resourceGroupName, clusterName, parameters, context);
+    }
+
+    public AsyncOperationResult getAzureAsyncOperationStatus(
+        String resourceGroupName, String clusterName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().getAzureAsyncOperationStatus(resourceGroupName, clusterName, operationId);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
+        String resourceGroupName, String clusterName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner =
+            this
+                .serviceClient()
+                .getAzureAsyncOperationStatusWithResponse(resourceGroupName, clusterName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public void updateIdentityCertificate(
+        String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters) {
+        this.serviceClient().updateIdentityCertificate(resourceGroupName, clusterName, parameters);
+    }
+
+    public void updateIdentityCertificate(
+        String resourceGroupName,
+        String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters,
+        Context context) {
+        this.serviceClient().updateIdentityCertificate(resourceGroupName, clusterName, parameters, context);
     }
 
     public void executeScriptActions(
@@ -255,7 +299,7 @@ public final class ClustersImpl implements Clusters {
         return this.innerClient;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 

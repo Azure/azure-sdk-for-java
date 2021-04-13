@@ -12,6 +12,9 @@ import org.apache.spark.sql.sources.DataSourceRegister
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
+import java.util.Collections
+import scala.collection.immutable.Map
+
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
@@ -55,7 +58,7 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
       partitioning,
       None,
       None,
-      CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava,
+      properties,
       Option.apply(schema))
   }
 

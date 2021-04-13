@@ -39,7 +39,7 @@ public class GeoSerializationTestHelpers {
 
     private static String pointToJson(GeoPoint point) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeoJsonDeserializer.POINT_TYPE, builder);
+        addType(GeoObjectType.POINT, builder);
 
         builder.append(",\"coordinates\":");
         addPosition(point.getCoordinates(), builder);
@@ -53,7 +53,7 @@ public class GeoSerializationTestHelpers {
 
     private static String lineToJson(GeoLineString line) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeoJsonDeserializer.LINE_STRING_TYPE, builder);
+        addType(GeoObjectType.LINE_STRING, builder);
 
         builder.append(",\"coordinates\":");
         addLine(line.getCoordinates(), builder);
@@ -67,7 +67,7 @@ public class GeoSerializationTestHelpers {
 
     private static String polygonToJson(GeoPolygon polygon) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeoJsonDeserializer.POLYGON_TYPE, builder);
+        addType(GeoObjectType.POLYGON, builder);
 
         builder.append(",\"coordinates\":");
         addPolygon(polygon.getRings(), builder);
@@ -81,7 +81,7 @@ public class GeoSerializationTestHelpers {
 
     private static String multiPointToJson(GeoPointCollection multiPoint) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeoJsonDeserializer.MULTI_POINT_TYPE, builder);
+        addType(GeoObjectType.MULTI_POINT, builder);
 
         builder.append(",\"coordinates\":");
         addLine(multiPoint.getPoints().stream().map(GeoPoint::getCoordinates).collect(Collectors.toList()), builder);
@@ -96,7 +96,7 @@ public class GeoSerializationTestHelpers {
 
     private static String multiLineToJson(GeoLineStringCollection multiLine) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeoJsonDeserializer.MULTI_LINE_STRING_TYPE, builder);
+        addType(GeoObjectType.MULTI_LINE_STRING, builder);
 
         builder.append(",\"coordinates\":[");
         for (int i = 0; i < multiLine.getLines().size(); i++) {
@@ -118,7 +118,7 @@ public class GeoSerializationTestHelpers {
 
     private static String multiPolygonToJson(GeoPolygonCollection multiPolygon) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeoJsonDeserializer.MULTI_POLYGON_TYPE, builder);
+        addType(GeoObjectType.MULTI_POLYGON, builder);
 
         builder.append(",\"coordinates\":[");
 
@@ -141,7 +141,7 @@ public class GeoSerializationTestHelpers {
 
     private static String collectionToJson(GeoCollection collection) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeoJsonDeserializer.GEOMETRY_COLLECTION_TYPE, builder);
+        addType(GeoObjectType.GEOMETRY_COLLECTION, builder);
 
         builder.append(",\"geometries\":[");
 
@@ -162,8 +162,8 @@ public class GeoSerializationTestHelpers {
         return builder.toString();
     }
 
-    private static void addType(String type, StringBuilder builder) {
-        builder.append("\"type\":\"").append(type).append("\"");
+    private static void addType(GeoObjectType type, StringBuilder builder) {
+        builder.append("\"type\":\"").append(type.getJsonType()).append("\"");
     }
 
     private static void addPosition(GeoPosition position, StringBuilder builder) {

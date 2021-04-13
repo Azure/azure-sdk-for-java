@@ -342,16 +342,6 @@ public abstract class KeyClientTestBase extends TestBase {
         testRunner.accept(keyOptions);
     }
 
-    @Test
-    public abstract void exportKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
-
-    void exportKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        CreateKeyOptions createKeyOptions = new CreateKeyOptions(generateResourceId(KEY_NAME), KeyType.RSA)
-            .setExportable(true);
-
-        testRunner.accept(createKeyOptions);
-    }
-
     String generateResourceId(String suffix) {
         if (interceptorManager.isPlaybackMode()) {
             return suffix;

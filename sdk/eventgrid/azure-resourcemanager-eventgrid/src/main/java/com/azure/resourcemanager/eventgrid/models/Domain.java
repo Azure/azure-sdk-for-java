@@ -6,9 +6,9 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainInner;
-import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import java.util.List;
 import java.util.Map;
 
@@ -48,20 +48,6 @@ public interface Domain {
      * @return the tags value.
      */
     Map<String, String> tags();
-
-    /**
-     * Gets the sku property: The Sku pricing tier for the domain.
-     *
-     * @return the sku value.
-     */
-    ResourceSku sku();
-
-    /**
-     * Gets the identity property: Identity information for the resource.
-     *
-     * @return the identity value.
-     */
-    IdentityInfo identity();
 
     /**
      * Gets the systemData property: The system metadata relating to Domain resource.
@@ -198,9 +184,6 @@ public interface Domain {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithPrivateEndpointConnections,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
@@ -229,36 +212,6 @@ public interface Domain {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the Domain definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The Sku pricing tier for the domain..
-             *
-             * @param sku The Sku pricing tier for the domain.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(ResourceSku sku);
-        }
-        /** The stage of the Domain definition allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: Identity information for the resource..
-             *
-             * @param identity Identity information for the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(IdentityInfo identity);
-        }
-        /** The stage of the Domain definition allowing to specify privateEndpointConnections. */
-        interface WithPrivateEndpointConnections {
-            /**
-             * Specifies the privateEndpointConnections property: List of private endpoint connections..
-             *
-             * @param privateEndpointConnections List of private endpoint connections.
-             * @return the next definition stage.
-             */
-            WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
         }
         /** The stage of the Domain definition allowing to specify inputSchema. */
         interface WithInputSchema {
@@ -321,11 +274,7 @@ public interface Domain {
 
     /** The template for Domain update. */
     interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithInboundIpRules {
+        extends UpdateStages.WithTags, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithInboundIpRules {
         /**
          * Executes the update request.
          *
@@ -352,26 +301,6 @@ public interface Domain {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the Domain update allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: Identity information for the resource..
-             *
-             * @param identity Identity information for the resource.
-             * @return the next definition stage.
-             */
-            Update withIdentity(IdentityInfo identity);
-        }
-        /** The stage of the Domain update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The Sku pricing tier for the domain..
-             *
-             * @param sku The Sku pricing tier for the domain.
-             * @return the next definition stage.
-             */
-            Update withSku(ResourceSku sku);
         }
         /** The stage of the Domain update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {

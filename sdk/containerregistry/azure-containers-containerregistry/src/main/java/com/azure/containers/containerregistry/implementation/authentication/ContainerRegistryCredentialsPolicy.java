@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Mono;
 
 
@@ -57,10 +57,9 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
      * @param credential the AAD credentials passed to the client.
      * @param url the url for the container registry.
      * @param pipeline the http pipeline to be used to make the rest calls.
-     * @param serializerAdapter the serializer adapter to be used to make the rest calls.
      */
-    public ContainerRegistryCredentialsPolicy(TokenCredential credential, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
-        this(new ContainerRegistryTokenService(credential, url, pipeline, serializerAdapter));
+    public ContainerRegistryCredentialsPolicy(TokenCredential credential, String url, HttpPipeline pipeline) {
+        this(new ContainerRegistryTokenService(credential, url, pipeline, JacksonAdapter.createDefaultSerializerAdapter()));
     }
 
     /**

@@ -6,8 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -29,7 +27,6 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -46,6 +43,7 @@ import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
+import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,7 +65,8 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
-        new TypeReference<List<Map<String, Object>>>() { };
+        new TypeReference<List<Map<String, Object>>>() {
+        };
 
     /**
      * Assert whether two objects are equal.
@@ -296,10 +295,6 @@ public final class TestHelpers {
         return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
     }
 
-    public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
-        return deserializeToType(sourceStream, LIST_TYPE_REFERENCE);
-    }
-
     public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
         return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
     }
@@ -339,7 +334,7 @@ public final class TestHelpers {
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
                 .credential(new AzureKeyCredential(API_KEY))
-                .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))))
+                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
             searchIndexClient.createOrUpdateIndex(index);
@@ -349,5 +344,25 @@ public final class TestHelpers {
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static String createGeographyPolygon(String... coordinates) {
+        if (coordinates.length % 2 != 0) {
+            throw new RuntimeException("'coordinates' must contain pairs of two.");
+        }
+
+        StringBuilder builder = new StringBuilder("geography'POLYGON((");
+
+        for (int i = 0; i < coordinates.length; i += 2) {
+            if (i != 0) {
+                builder.append(',');
+            }
+
+            builder.append(coordinates[i])
+                .append(' ')
+                .append(coordinates[i + 1]);
+        }
+
+        return builder.append("))'").toString();
     }
 }

@@ -97,6 +97,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     streamId: Option[String]
   ): String = {
 
+    assertOnSparkDriver()
     val lastContinuationTokens: ConcurrentMap[FeedRange, String] = new ConcurrentHashMap[FeedRange, String]()
     container
       .getFeedRanges
@@ -161,7 +162,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
-    session: SparkSession,
+    defaultParallelism: Int,
     container: CosmosAsyncContainer
   ): ChangeFeedOffset = {
     assertOnSparkDriver()
@@ -176,7 +177,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     )
 
     val defaultMaxPartitionSizeInMB = DefaultPartitionSizeInMB
-    val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
+    val defaultMinPartitionCount = 1 + (2 * defaultParallelism)
     val orderedMetadataWithStartLsn = this.getOrderedPartitionMetadataWithStartLsn(
       startOffset.changeFeedState,
       latestPartitionMetadata)
@@ -344,6 +345,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
     readLimit: ReadLimit
   ): Array[PartitionPlanningInfo] = {
 
+    assertOnSparkDriver()
     assertNotNullOrEmpty(partitionMetadata, "partitionMetadata")
 
     val partitionPlanningInfo =
@@ -456,6 +458,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
       maxStaleness: Option[Duration] = None
   ): Array[PartitionMetadata] = {
 
+    assertOnSparkDriver()
     this
       .getFeedRanges(
         userConfig,

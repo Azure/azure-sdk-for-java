@@ -18,15 +18,15 @@ The samples project demonstrates the following:
 ```java
 // When no URI is provided for instantiation, the Azure IoT Models Repository global endpoint
 // https://devicemodels.azure.com/ is used and the model dependency resolution
-// configuration is set to TryFromExpanded.
+// configuration is set to TRY_FROM_EXPANDED.
 ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
     .buildAsyncClient();
 
 ModelsRepositoryClient syncClient = new ModelsRepositoryClientBuilder()
     .buildClient();
 
-System.out.println("Initialized the async client pointing to the global endpoint" + asyncClient.getRepositoryUri());
-System.out.println("Initialized the sync client pointing to the global endpoint" + syncClient.getRepositoryUri());
+System.out.println("Initialized the async client pointing to the global endpoint" + asyncClient.getRepositoryEndpoint());
+System.out.println("Initialized the sync client pointing to the global endpoint" + syncClient.getRepositoryEndpoint());
 ```
 
 ```java 
@@ -40,8 +40,8 @@ ModelsRepositoryClient syncClient = new ModelsRepositoryClientBuilder()
     .repositoryEndpoint("https://contoso.com/models")
     .buildClient();
 
-System.out.println("Initialized the async client pointing to the custom endpoint" + asyncClient.getRepositoryUri());
-System.out.println("Initialized the sync client pointing to the custom endpoint" + syncClient.getRepositoryUri());
+System.out.println("Initialized the async client pointing to the custom endpoint" + asyncClient.getRepositoryEndpoint);
+System.out.println("Initialized the sync client pointing to the custom endpoint" + syncClient.getRepositoryEndpoint);
 ```
 
 ```java
@@ -57,8 +57,8 @@ ModelsRepositoryClient syncClient = new ModelsRepositoryClientBuilder()
     .modelDependencyResolution(ModelDependencyResolution.DISABLED)
     .buildClient();
 
-System.out.println("Initialized the async client pointing to the local file-system: " + asyncClient.getRepositoryUri());
-System.out.println("Initialized the sync client pointing to the local file-system: " + syncClient.getRepositoryUri());
+System.out.println("Initialized the async client pointing to the local file-system: " + asyncClient.getRepositoryEndpoint);
+System.out.println("Initialized the sync client pointing to the local file-system: " + syncClient.getRepositoryEndpoint);
 ```
 
 ## Sync vs Async clients
