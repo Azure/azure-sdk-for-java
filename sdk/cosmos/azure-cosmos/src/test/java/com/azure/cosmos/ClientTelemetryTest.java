@@ -86,10 +86,10 @@ public class ClientTelemetryTest extends TestSuiteBase {
             cosmosClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
-        Field backgroundRefreshLocationTimeIntervalInMSField = ClientTelemetry.class.getDeclaredField(
+        Field backgroundRefreshLocationTimeIntervalInSecField = ClientTelemetry.class.getDeclaredField(
             "clientTelemetrySchedulingSec");
-        backgroundRefreshLocationTimeIntervalInMSField.setAccessible(true);
-        backgroundRefreshLocationTimeIntervalInMSField.setInt(clientTelemetry, 5);
+        backgroundRefreshLocationTimeIntervalInSecField.setAccessible(true);
+        backgroundRefreshLocationTimeIntervalInSecField.setInt(clientTelemetry, 5);
         clientTelemetry.init();
 
         InternalObjectNode internalObjectNode = getInternalObjectNode();
