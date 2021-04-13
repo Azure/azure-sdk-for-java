@@ -117,7 +117,7 @@ private object CosmosTableSchemaInferrer
               case anyType: DataType => field.getKey -> StructField(
                 field.getKey,
                 anyType,
-                nullable=(!systemProperties.contains(field.getKey) && allowNullForInferredProperties))
+                nullable= !systemProperties.contains(field.getKey) && allowNullForInferredProperties)
             })
         .toSeq)
   }
