@@ -66,6 +66,7 @@ private class ChangeFeedMicroBatchStream
     assert(startOffset.isInstanceOf[ChangeFeedOffset], "Argument 'startOffset' is not a change feed offset.")
     assert(endOffset.isInstanceOf[ChangeFeedOffset], "Argument 'endOffset' is not a change feed offset.")
 
+    logInfo(s"--> planInputPartitions, startOffset: ${startOffset.json()} - endOffset: ${endOffset.json()}")
     val start = startOffset.asInstanceOf[ChangeFeedOffset]
     val end = endOffset.asInstanceOf[ChangeFeedOffset]
 
@@ -85,6 +86,7 @@ private class ChangeFeedMicroBatchStream
    * Returns a factory to create a `PartitionReader` for each `InputPartition`.
    */
   override def createReaderFactory(): PartitionReaderFactory = {
+    logInfo("--> createReaderFactory")
     ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle)
   }
 
@@ -105,10 +107,12 @@ private class ChangeFeedMicroBatchStream
   // serialize them in the end offset returned to avoid any IO calls for the actual partitioning
   override def latestOffset(startOffset: Offset, readLimit: ReadLimit): Offset = {
 
+    logInfo("--> latestOffset")
     // scalastyle:off null
     // null means no more data to process
     // null is used here because the DataSource V2 API is defined in Java
     if (latestOffsetSnapshot == null) {
+      logInfo("<-- latestOffset - latestOffsetSnapshot is null")
       null
       // scalastyle:on null
     } else {
@@ -127,9 +131,11 @@ private class ChangeFeedMicroBatchStream
       )
 
       if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
+        logInfo(s"<-- latestOffset - new offset ${offset.json()}")
         this.latestOffsetSnapshot = Some(offset)
         offset
       } else {
+        logInfo(s"<-- latestOffset - Finished setting latestOffsetSnapshot to null")
         // scalastyle:off null
         // null means no more data to process
         // null is used here because the DataSource V2 API is defined in Java
