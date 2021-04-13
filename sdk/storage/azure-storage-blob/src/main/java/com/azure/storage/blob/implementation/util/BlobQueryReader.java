@@ -239,9 +239,8 @@ public class BlobQueryReader {
 
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("'input' must be one of %s, %s or %s", BlobQueryJsonSerialization.class.getSimpleName(),
-                    BlobQueryDelimitedSerialization.class.getSimpleName(),
-                    BlobQueryParquetSerialization.class.getSimpleName())));
+                "Please see values of valid input serialization in the documentation "
+                    + "(https://docs.microsoft.com/rest/api/storageservices/query-blob-contents#request-body)."));
         }
         return new QuerySerialization().setFormat(generatedFormat);
     }
@@ -279,9 +278,8 @@ public class BlobQueryReader {
 
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("'output' must be one of %s, %s or %s", BlobQueryJsonSerialization.class.getSimpleName(),
-                    BlobQueryDelimitedSerialization.class.getSimpleName(),
-                    BlobQueryArrowSerialization.class.getSimpleName())));
+                "Please see values of valid output serialization in the documentation "
+                    + "(https://docs.microsoft.com/rest/api/storageservices/query-blob-contents#request-body)."));
         }
         return new QuerySerialization().setFormat(generatedFormat);
     }
