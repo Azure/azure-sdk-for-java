@@ -74,14 +74,14 @@ class ServiceBusSessionReceiver implements AsyncAutoCloseable {
             .doOnSubscribe(subscription -> {
                 logger.verbose("Adding prefetch to receive link.");
                 if (prefetch > 0) {
-                    receiveLink.addCredits(prefetch);
+                    receiveLink.addCredits(prefetch).subscribe();
                 }
             })
             .doOnRequest(request -> {  // request is of type long.
                 if (prefetch == 0) {  //  add "request" number of credits
-                    receiveLink.addCredits((int) request);
+                    receiveLink.addCredits((int) request).subscribe();
                 } else {  // keep total credits "prefetch" if prefetch is not 0.
-                    receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits()));
+                    receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits())).subscribe();
                 }
             })
             .takeUntilOther(cancelReceiveProcessor)
