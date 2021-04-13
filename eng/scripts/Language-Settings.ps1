@@ -254,8 +254,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     }
     if ($metadata[$i].VersionGA) {
       # Fill in the latest first
-      $package_validation = check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionGA
-      if (!$package_validation) {
+      if (!(check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionGA)) {
         continue
       }
       $latest_object = @{}
