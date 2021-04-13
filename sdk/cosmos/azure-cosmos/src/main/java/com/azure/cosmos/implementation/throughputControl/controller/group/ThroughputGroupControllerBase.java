@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.throughputControl.Exceptions.ThroughputControlInitializationException;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationTokenSource;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -219,7 +220,8 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         return this.requestControllerAsyncCache.getAsync(
             this.group.getGroupName(),
             null,
-            () -> this.createAndInitializeRequestController());
+            () -> this.createAndInitializeRequestController()
+        ).onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
     private void refreshRequestController() {
@@ -239,6 +241,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     @Override
     public boolean canHandleRequest(RxDocumentServiceRequest request) {
-        return this.isDefault() || StringUtils.equals(this.group.getGroupName(), request.getThroughputControlGroupName());
+        return this.isDefault()
+            || (request.getThroughputControlOptions() != null && StringUtils.equals(this.group.getGroupName(), request.getThroughputControlOptions().getGroupName()));
     }
 }

@@ -11,11 +11,16 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
-import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.ThroughputControlOptions;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlClientItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -25,13 +30,19 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,7 +86,10 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+        ThroughputControlOptions options =
+            new ThroughputControlOptions().setGroupName(groupConfig.getGroupName());
+        requestOptions.setThroughputControlOptions(options);
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
         TestItem createdItem = createItemResponse.getItem();
@@ -111,7 +125,9 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+        ThroughputControlOptions throughputControlOptions =
+            new ThroughputControlOptions().setGroupName(groupConfig.getGroupName());
+        requestOptions.setThroughputControlOptions(throughputControlOptions);
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
         TestItem createdItem = createItemResponse.getItem();
@@ -152,7 +168,9 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+        ThroughputControlOptions throughputControlOptions =
+            new ThroughputControlOptions().setGroupName(groupConfig.getGroupName());
+        requestOptions.setThroughputControlOptions(throughputControlOptions);
 
         // Step2: first request to group-1, which will not get throttled, but will consume all the rus of the throughput control group.
         CosmosItemResponse<TestItem> createItemResponse = createdContainer.createItem(getDocumentDefinition(), requestOptions).block();
@@ -182,6 +200,128 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void throughputControlFallBackOnInitError() {
+        // Purposely not creating the throughput control container so to test fallBackOnInitError
+        String controlContainerId = "throughputControlContainer";
+        GlobalThroughputControlConfig globalControlConfig =
+            this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                .setControlItemRenewInterval(Duration.ofSeconds(5))
+                .setControlItemExpireInterval(Duration.ofSeconds(20))
+                .build();
+
+        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        CosmosItemResponseValidator successValidator =
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                .build();
+
+        // test 1: enable throughput control group using default fallBackOnInitError (false by default)
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-" + UUID.randomUUID())
+                .setTargetThroughput(6)
+                .build();
+        container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        ThroughputControlOptions throughputControlOptions = new ThroughputControlOptions().setGroupName(groupConfig.getGroupName());
+        requestOptions.setThroughputControlOptions(throughputControlOptions);
+
+       // test 1.1: request with fallBackOnInitError = true, request should still succeeded
+        throughputControlOptions.setFallbackOnInitError(true);
+        validateItemSuccess(
+            container.createItem(TestItem.createNewItem(), requestOptions),
+            successValidator);
+
+        // test 1.2: request with fallBackOnInitError = false, request will fail if throughput control store can not be initialized successfully
+        throughputControlOptions.setFallbackOnInitError(false);
+        CosmosAsyncContainer fakeContainer = client.getDatabase(database.getId()).getContainer("fakeContainer");
+        validateItemFailure(
+            fakeContainer.createItem(TestItem.createNewItem(), requestOptions),
+            notFoundValidator);
+
+        // test 2: enable throughput control group using fallBackOnInitError = true
+        ThroughputControlGroupConfig groupConfig2 =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-" + UUID.randomUUID())
+                .setTargetThroughput(6)
+                .build();
+        container.enableGlobalThroughputControlGroup(groupConfig2, globalControlConfig, true);
+
+        CosmosItemRequestOptions requestOptions2 = new CosmosItemRequestOptions();
+
+        // test 2.1: request with fallBackOnInitError = false, request will fail.
+        ThroughputControlOptions throughputControlOptions2 =
+            new ThroughputControlOptions()
+                .setGroupName(groupConfig2.getGroupName())
+                .setFallbackOnInitError(false);
+        requestOptions2.setThroughputControlOptions(throughputControlOptions2);
+        validateItemFailure(
+            container.createItem(TestItem.createNewItem(), requestOptions2),
+            notFoundValidator);
+    }
+
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void throughputGlobalControlMultipleClients() throws InterruptedException {
+        List<CosmosAsyncClient> clients = new ArrayList<>();
+        try{
+            String controlContainerId = "throughputControlContainer";
+            CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
+            database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
+            ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                    .setGroupName("group-" + UUID.randomUUID())
+                    .setTargetThroughput(6)
+                    .build();
+
+            int clientCount = 3;
+            for (int i = 0; i < clientCount; i++) {
+                CosmosAsyncClient testClient = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .buildAsyncClient();
+
+                clients.add(testClient);
+
+                CosmosAsyncContainer testContainer = testClient.getDatabase(this.database.getId()).getContainer(container.getId());
+                GlobalThroughputControlConfig globalControlConfig1 = testClient.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                    .setControlItemRenewInterval(Duration.ofSeconds(5))
+                    .setControlItemExpireInterval(Duration.ofSeconds(20))
+                    .build();
+                testContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig1);
+
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+                requestOptions.setContentResponseOnWriteEnabled(true);
+                ThroughputControlOptions throughputControlOptions =
+                    new ThroughputControlOptions().setGroupName(groupConfig.getGroupName());
+                requestOptions.setThroughputControlOptions(throughputControlOptions);
+
+                testContainer.createItem(getDocumentDefinition(), requestOptions).subscribeOn(Schedulers.parallel()).subscribe();
+            }
+
+            Thread.sleep(500);
+
+            String query = "SELECT * FROM c WHERE CONTAINS(c.groupId, @GROUPID) AND CONTAINS(c.groupId, @CLIENTITEMSUFFIX)";
+            List<SqlParameter> parameters = new ArrayList<>();
+            parameters.add(new SqlParameter("@GROUPID", groupConfig.getGroupName()));
+            parameters.add(new SqlParameter("@CLIENTITEMSUFFIX", ".client"));
+            SqlQuerySpec querySpec = new SqlQuerySpec(query, parameters);
+
+            List<GlobalThroughputControlClientItem> clientItems = controlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
+                .collectList()
+                .block();
+            assertThat(clientItems.size()).isEqualTo(clientCount);
+
+        } finally {
+            for (CosmosAsyncClient client : clients) {
+                if (client != null) {
+                    client.close();
+                }
+            }
+        }
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
@@ -224,7 +364,10 @@ public class ThroughputControlTests extends TestSuiteBase {
             if (operationType == OperationType.Query) {
                 CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
                 if (!StringUtils.isEmpty(throughputControlGroup)) {
-                    queryRequestOptions.setThroughputControlGroupName(throughputControlGroup);
+                    ThroughputControlOptions throughputControlOptions =
+                        new ThroughputControlOptions()
+                            .setGroupName(throughputControlGroup);
+                    queryRequestOptions.setThroughputControlOptions(throughputControlOptions);
                 }
 
                 String query = String.format("SELECT * from c where c.mypk = '%s'", createdItem.getMypk());
@@ -238,7 +381,10 @@ public class ThroughputControlTests extends TestSuiteBase {
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
                     .createForProcessingFromBeginning(FeedRange.forFullRange());
                 if (!StringUtils.isEmpty(throughputControlGroup)) {
-                    changeFeedRequestOptions.setThroughputControlGroupName(throughputControlGroup);
+                    ThroughputControlOptions throughputControlOptions =
+                        new ThroughputControlOptions()
+                            .setGroupName(throughputControlGroup);
+                    changeFeedRequestOptions.setThroughputControlOptions(throughputControlOptions);
                 }
 
                 FeedResponse<TestItem> itemFeedResponse = cosmosAsyncContainer.queryChangeFeed(changeFeedRequestOptions, TestItem.class).byPage().blockFirst();
@@ -251,7 +397,10 @@ public class ThroughputControlTests extends TestSuiteBase {
                 || operationType == OperationType.Create) {
                 CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
                 if (!StringUtils.isEmpty((throughputControlGroup))) {
-                    itemRequestOptions.setThroughputControlGroupName(throughputControlGroup);
+                    ThroughputControlOptions throughputControlOptions =
+                        new ThroughputControlOptions()
+                            .setGroupName(throughputControlGroup);
+                    itemRequestOptions.setThroughputControlOptions(throughputControlOptions);
                 }
 
                 if (operationType == OperationType.Read) {

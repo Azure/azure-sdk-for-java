@@ -14,12 +14,19 @@ public final class ThroughputControlGroupConfig {
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
     private final boolean isDefault;
+    private final boolean fallbackOnInitError;
 
-    ThroughputControlGroupConfig(String groupName, Integer targetThroughput, Double targetThroughputThreshold, boolean isDefault) {
+    ThroughputControlGroupConfig(
+        String groupName,
+        Integer targetThroughput,
+        Double targetThroughputThreshold,
+        boolean isDefault,
+        boolean fallbackOnInitError) {
        this.groupName= groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.isDefault = isDefault;
+       this.fallbackOnInitError = fallbackOnInitError;
     }
 
     /**
@@ -69,5 +76,17 @@ public final class ThroughputControlGroupConfig {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
         return this.isDefault;
+    }
+
+    /**
+     * Get whether request to this throughput control group will fallback to original request flow if throughput control controller failed to initialize.
+     *
+     * By default is false. It means the request will fail if throughput control controller failed to initialize.
+     *
+     * @return {@code true} request will fallback to original request flow. {@code false} request will fail.
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public boolean isFallbackOnInitError() {
+        return fallbackOnInitError;
     }
 }

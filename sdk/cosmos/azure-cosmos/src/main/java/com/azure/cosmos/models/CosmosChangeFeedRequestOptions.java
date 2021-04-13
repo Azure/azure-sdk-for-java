@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
@@ -33,7 +34,7 @@ public final class CosmosChangeFeedRequestOptions {
     private ChangeFeedStartFromInternal startFromInternal;
     private boolean isSplitHandlingDisabled;
     private boolean quotaInfoEnabled;
-    private String throughputControlGroupName;
+    private ThroughputControlOptions throughputControlOptions;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -361,7 +362,7 @@ public final class CosmosChangeFeedRequestOptions {
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
                     pagedFluxOptions.getRequestContinuation());
             effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
-            effectiveRequestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
+            effectiveRequestOptions.setThroughputControlOptions(this.getThroughputControlOptions());
         }
 
         if (pagedFluxOptions.getMaxItemCount() != null) {
@@ -412,24 +413,24 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     /**
-     * Get the throughput control group name.
+     * Get the throughput control options associated to the request.
      *
-     * @return The throughput control group name.
+     * @return the {@link ThroughputControlOptions}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getThroughputControlGroupName() {
-        return this.throughputControlGroupName;
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlOptions getThroughputControlOptions() {
+        return this.throughputControlOptions;
     }
 
     /**
-     * Set the throughput control group name.
+     * Set the throughput control options associated with the request.
      *
-     * @param throughputControlGroupName The throughput control group name.
-     * @return A {@link CosmosChangeFeedRequestOptions}.
+     * @param {@link ThroughputControlOptions} associated with the request.
+     * @return the CosmosItemRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosChangeFeedRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
-        this.throughputControlGroupName = throughputControlGroupName;
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosChangeFeedRequestOptions setThroughputControlOptions(ThroughputControlOptions throughputControlOptions) {
+        this.throughputControlOptions = throughputControlOptions;
         return this;
     }
 }

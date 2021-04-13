@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.util.Beta;
 
 import java.util.Map;
@@ -28,7 +29,7 @@ public class CosmosQueryRequestOptions {
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
     private FeedRange feedRange;
-    private String throughputControlGroupName;
+    private ThroughputControlOptions throughputControlOptions;
 
     /**
      * Instantiates a new query request options.
@@ -56,7 +57,7 @@ public class CosmosQueryRequestOptions {
         this.partitionkey = options.partitionkey;
         this.queryMetricsEnabled = options.queryMetricsEnabled;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
-        this.throughputControlGroupName = options.throughputControlGroupName;
+        this.throughputControlOptions = options.throughputControlOptions;
     }
 
     /**
@@ -398,23 +399,24 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Get throughput control group name.
-     * @return The throughput control group name.
+     * Get the throughput control options associated to the request.
+     *
+     * @return the {@link ThroughputControlOptions}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getThroughputControlGroupName() {
-        return this.throughputControlGroupName;
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlOptions getThroughputControlOptions() {
+        return this.throughputControlOptions;
     }
 
     /**
-     * Set the throughput control group name.
+     * Set the throughput control options associated with the request.
      *
-     * @param throughputControlGroupName The throughput control group name.
-     * @return A {@link CosmosQueryRequestOptions}.
+     * @param {@link ThroughputControlOptions} associated with the request.
+     * @return the CosmosItemRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
-        this.throughputControlGroupName = throughputControlGroupName;
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setThroughputControlOptions(ThroughputControlOptions throughputControlOptions) {
+        this.throughputControlOptions = throughputControlOptions;
         return this;
     }
 }

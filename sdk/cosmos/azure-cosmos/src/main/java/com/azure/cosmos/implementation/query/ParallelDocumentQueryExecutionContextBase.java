@@ -79,7 +79,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 }
 
                 return this.createDocumentServiceRequestWithFeedRange(headers, querySpecForInit, partitionKeyInternal, feedRange,
-                                                         collectionRid, cosmosQueryRequestOptions.getThroughputControlGroupName());
+                                                         collectionRid, cosmosQueryRequestOptions.getThroughputControlOptions());
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {
@@ -144,7 +144,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                     null,
                     feedRangeEpk,
                     collectionRid,
-                    cosmosQueryRequestOptions.getThroughputControlGroupName());
+                    cosmosQueryRequestOptions.getThroughputControlOptions());
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {

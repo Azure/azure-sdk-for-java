@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
@@ -72,7 +73,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile boolean isFeed;
     public volatile AuthorizationTokenType authorizationTokenType;
     public volatile Map<String, Object> properties;
-    public String throughputControlGroupName;
+    public ThroughputControlOptions throughputControlOptions;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
@@ -362,7 +363,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
-        request.throughputControlGroupName = getThroughputControlGroupName(options);
+        request.throughputControlOptions = getThroughputControlOptions(options);
         return request;
     }
 
@@ -388,7 +389,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
-        request.throughputControlGroupName = getThroughputControlGroupName(options);
+        request.throughputControlOptions = getThroughputControlOptions(options);
         return request;
     }
 
@@ -403,7 +404,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
-        request.throughputControlGroupName = getThroughputControlGroupName(options);
+        request.throughputControlOptions = getThroughputControlOptions(options);
         return request;
     }
 
@@ -428,7 +429,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             body.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
-        request.throughputControlGroupName = getThroughputControlGroupName(options);
+        request.throughputControlOptions = getThroughputControlOptions(options);
         return request;
     }
 
@@ -506,7 +507,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Object options) {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
-        request.throughputControlGroupName = getThroughputControlGroupName(options);
+        request.throughputControlOptions = getThroughputControlOptions(options);
         return request;
     }
 
@@ -1053,15 +1054,15 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
     }
 
-    private static String getThroughputControlGroupName(Object options) {
+    private static ThroughputControlOptions getThroughputControlOptions(Object options) {
         if (options == null) {
             return null;
         } else if (options instanceof RequestOptions) {
-            return ((RequestOptions) options).getThroughputControlGroupName();
+            return ((RequestOptions) options).getThroughputControlOptions();
         } else if (options instanceof CosmosQueryRequestOptions) {
-            return ((CosmosQueryRequestOptions) options).getThroughputControlGroupName();
+            return ((CosmosQueryRequestOptions) options).getThroughputControlOptions();
         } else if (options instanceof CosmosChangeFeedRequestOptions) {
-            return ((CosmosChangeFeedRequestOptions) options).getThroughputControlGroupName();
+            return ((CosmosChangeFeedRequestOptions) options).getThroughputControlOptions();
         } else {
             return null;
         }
@@ -1104,5 +1105,5 @@ public class RxDocumentServiceRequest implements Cloneable {
         isAddressRefresh = addressRefresh;
     }
 
-    public String getThroughputControlGroupName() { return this.throughputControlGroupName; }
+    public ThroughputControlOptions getThroughputControlOptions() { return this.throughputControlOptions; }
 }

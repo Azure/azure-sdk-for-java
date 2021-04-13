@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -90,12 +91,12 @@ implements IDocumentQueryExecutionContext<T> {
                                                                     PartitionKeyInternal partitionKeyInternal,
                                                                     PartitionKeyRange targetRange,
                                                                     String collectionRid,
-                                                                    String throughputControlGroup) {
+                                                                    ThroughputControlOptions throughputControlOptions) {
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                 : this.createReadFeedDocumentServiceRequest(requestHeaders);
         request.requestContext.resolvedCollectionRid = collectionRid;
-        request.throughputControlGroupName = throughputControlGroup;
+        request.throughputControlOptions = throughputControlOptions;
 
         if (partitionKeyInternal != null) {
             request.setPartitionKeyInternal(partitionKeyInternal);
@@ -111,12 +112,12 @@ implements IDocumentQueryExecutionContext<T> {
                                                                     PartitionKeyInternal partitionKeyInternal,
                                                                     FeedRange feedRange,
                                                                     String collectionRid,
-                                                                    String throughputControlGroupName) {
+                                                                    ThroughputControlOptions throughputControlOptions) {
         RxDocumentServiceRequest request = querySpec != null
                                                ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                                                : this.createReadFeedDocumentServiceRequest(requestHeaders);
         request.requestContext.resolvedCollectionRid = collectionRid;
-        request.throughputControlGroupName = throughputControlGroupName;
+        request.throughputControlOptions = throughputControlOptions;
 
         if (partitionKeyInternal != null) {
             feedRange = new FeedRangePartitionKeyImpl(partitionKeyInternal);

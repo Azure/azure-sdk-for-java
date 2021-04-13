@@ -1600,6 +1600,7 @@ public interface AsyncDocumentClient {
      * Enable throughput control group.
      *
      * @param group the throughput control group.
+     * @param fallbackOnInitError A flag to indicate whether request will fallback to original request flow if throughput control controller failed on initialization.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group);
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group, boolean fallbackOnInitError);
 }

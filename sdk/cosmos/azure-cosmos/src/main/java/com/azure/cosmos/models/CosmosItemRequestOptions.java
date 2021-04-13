@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
@@ -22,7 +23,7 @@ public class CosmosItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
-    private String throughputControlGroupName;
+    private ThroughputControlOptions throughputControlOptions;
 
     /**
      * copy constructor
@@ -37,7 +38,7 @@ public class CosmosItemRequestOptions {
         ifMatchETag = options.ifMatchETag;
         ifNoneMatchETag = options.ifNoneMatchETag;
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
-        throughputControlGroupName = options.throughputControlGroupName;
+        throughputControlOptions = options.throughputControlOptions;
     }
 
 
@@ -283,17 +284,29 @@ public class CosmosItemRequestOptions {
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
-        requestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        requestOptions.setThroughputControlOptions(throughputControlOptions);
         return requestOptions;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getThroughputControlGroupName() {
-        return this.throughputControlGroupName;
+    /**
+     * Get the throughput control options associated to the request.
+     *
+     * @return the {@link ThroughputControlOptions}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlOptions getThroughputControlOptions() {
+        return this.throughputControlOptions;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void setThroughputControlGroupName(String throughputControlGroupName) {
-        this.throughputControlGroupName = throughputControlGroupName;
+    /**
+     * Set the throughput control options associated with the request.
+     *
+     * @param {@link ThroughputControlOptions} associated with the request.
+     * @return the CosmosItemRequestOptions.
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemRequestOptions setThroughputControlOptions(ThroughputControlOptions throughputControlOptions) {
+        this.throughputControlOptions = throughputControlOptions;
+        return this;
     }
 }

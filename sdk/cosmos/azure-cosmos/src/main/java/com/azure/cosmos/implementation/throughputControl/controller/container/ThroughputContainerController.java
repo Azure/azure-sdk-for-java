@@ -8,6 +8,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.throughputControl.Exceptions.ThroughputControlInitializationException;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationTokenSource;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -268,7 +270,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         checkNotNull(request, "Request can not be null");
         checkNotNull(originalRequestMono, "Original request mono can not be null");
 
-        return this.getOrCreateThroughputGroupController(request.getThroughputControlGroupName())
+        return this.getOrCreateThroughputGroupController(request.getThroughputControlOptions())
             .flatMap(groupController -> {
                 if (groupController.v != null) {
                     return groupController.v.processRequest(request, originalRequestMono);
@@ -279,17 +281,19 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     // TODO: a better way to handle throughput control group enabled after the container initialization
-    private Mono<Utils.ValueHolder<ThroughputGroupControllerBase>> getOrCreateThroughputGroupController(String groupName) {
+    private Mono<Utils.ValueHolder<ThroughputGroupControllerBase>> getOrCreateThroughputGroupController(
+        ThroughputControlOptions throughputControlOptions) {
 
         // If there is no control group defined, using the default group controller
-        if (StringUtils.isEmpty(groupName)) {
+        if (throughputControlOptions == null || StringUtils.isEmpty(throughputControlOptions.getGroupName())) {
             return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
         }
 
         for (ThroughputControlGroupInternal group : this.groups) {
-            if (StringUtils.equals(groupName, group.getGroupName())) {
+            if (StringUtils.equals(throughputControlOptions.getGroupName(), group.getGroupName())) {
                 return this.resolveThroughputGroupController(group)
-                    .map(Utils.ValueHolder::new);
+                    .map(Utils.ValueHolder::new)
+                    .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
             }
         }
 

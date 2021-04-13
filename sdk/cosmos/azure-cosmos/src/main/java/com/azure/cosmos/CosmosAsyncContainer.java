@@ -76,6 +76,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class CosmosAsyncContainer {
 
     private final static Logger logger = LoggerFactory.getLogger(CosmosAsyncContainer.class);
+    private final boolean DEFAULT_REQUEST_FALLBACK_ON_THROUGHPUT_CONTROL_INITIALIZATION_ERROR = false;
 
     private final CosmosAsyncDatabase database;
     private final String id;
@@ -1603,8 +1604,28 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        this.enableLocalThroughputControlGroup(groupConfig, DEFAULT_REQUEST_FALLBACK_ON_THROUGHPUT_CONTROL_INITIALIZATION_ERROR);
+    }
+
+    /**
+     * Enable the throughput control group with local control mode.
+     *
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     *
+     * @param groupConfig A {@link ThroughputControlGroupConfig}.
+     * @param fallbackOnInitError A flag to indicate whether request will fallback to original request flow if throughput control controller failed on initialization.
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, boolean fallbackOnInitError) {
         LocalThroughputControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
-        this.database.getClient().enableThroughputControlGroup(localControlGroup);
+        this.database.getClient().enableThroughputControlGroup(localControlGroup, fallbackOnInitError);
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableGlobalThroughputControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        GlobalThroughputControlConfig globalControlConfig) {
+        this.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, DEFAULT_REQUEST_FALLBACK_ON_THROUGHPUT_CONTROL_INITIALIZATION_ERROR);
     }
 
     /**
@@ -1615,15 +1636,17 @@ public class CosmosAsyncContainer {
      *
      * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
+     * @param fallbackOnInitError A flag to indicate whether request will fallback to original request flow if throughput control controller failed on initialization.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableGlobalThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
-        GlobalThroughputControlConfig globalControlConfig) {
+        GlobalThroughputControlConfig globalControlConfig,
+        boolean fallbackOnInitError) {
 
         GlobalThroughputControlGroup globalControlGroup =
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
-        this.database.getClient().enableThroughputControlGroup(globalControlGroup);
+        this.database.getClient().enableThroughputControlGroup(globalControlGroup, fallbackOnInitError);
     }
 }

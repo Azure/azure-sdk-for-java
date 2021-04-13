@@ -487,10 +487,11 @@ public final class CosmosAsyncClient implements Closeable {
      * Enable throughput control group.
      *
      * @param group Throughput control group going to be enabled.
+     * @param fallbackOnInitError A flag to indicate whether request will fallback to original request flow if throughput control controller failed on initialization.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group, boolean fallbackOnInitError) {
         checkNotNull(group, "Throughput control group cannot be null");
-        this.asyncDocumentClient.enableThroughputControlGroup(group);
+        this.asyncDocumentClient.enableThroughputControlGroup(group, fallbackOnInitError);
     }
 
     /**

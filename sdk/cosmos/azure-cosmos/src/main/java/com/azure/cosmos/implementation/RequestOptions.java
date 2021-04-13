@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -35,7 +36,7 @@ public class RequestOptions {
     private ThroughputProperties throughputProperties;
     private Boolean contentResponseOnWriteEnabled;
     private String filterPredicate;
-    private String throughputControlGroupName;
+    private ThroughputControlOptions throughputControlOptions;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -400,11 +401,11 @@ public class RequestOptions {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
     }
 
-    public String getThroughputControlGroupName() {
-        return this.throughputControlGroupName;
+    public ThroughputControlOptions getThroughputControlOptions() {
+        return this.throughputControlOptions;
     }
 
-    public void setThroughputControlGroupName(String throughputControlGroupName) {
-        this.throughputControlGroupName = throughputControlGroupName;
+    public void setThroughputControlOptions(ThroughputControlOptions throughputControlOptions) {
+        this.throughputControlOptions = throughputControlOptions;
     }
 }

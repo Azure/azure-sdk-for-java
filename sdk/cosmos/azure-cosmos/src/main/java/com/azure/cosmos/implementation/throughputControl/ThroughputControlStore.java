@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.throughputControl;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.ThroughputControlOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.throughputControl.Exceptions.ThroughputControlInitializationException;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
 import com.azure.cosmos.implementation.throughputControl.controller.container.EmptyThroughputContainerController;
@@ -24,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -86,6 +86,8 @@ public class ThroughputControlStore {
 
     private final LinkedCancellationTokenSource cancellationTokenSource;
     private final ConcurrentHashMap<String, LinkedCancellationToken> cancellationTokenMap;
+    private final ConcurrentHashMap<String, Set<String>> fallbackOnInitErrorGroupMap;
+    private final ConcurrentHashMap<String, String> defaultGroupMap;
 
     public ThroughputControlStore(
         RxClientCollectionCache collectionCache,
@@ -103,9 +105,12 @@ public class ThroughputControlStore {
 
         this.cancellationTokenSource = new LinkedCancellationTokenSource();
         this.cancellationTokenMap = new ConcurrentHashMap<>();
+
+        this.fallbackOnInitErrorGroupMap = new ConcurrentHashMap<>();
+        this.defaultGroupMap = new ConcurrentHashMap<>();
     }
 
-    public void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    public void enableThroughputControlGroup(ThroughputControlGroupInternal group, boolean fallbackOnInitError) {
         checkNotNull(group, "Throughput control group cannot be null");
 
         String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
@@ -119,6 +124,8 @@ public class ThroughputControlStore {
                     controlGroup -> group.isDefault() && !StringUtils.equals(group.getId(), controlGroup.getId()))) {
                     throw new IllegalArgumentException("A default group already exists");
                 }
+
+                this.defaultGroupMap.put(containerNameLink, group.getGroupName());
             }
 
             if (!groupSet.add(group)) {
@@ -134,6 +141,17 @@ public class ThroughputControlStore {
 
             return groupSet;
         });
+
+        if (fallbackOnInitError) {
+            this.fallbackOnInitErrorGroupMap.compute(containerNameLink, (key, groupSet) -> {
+                if (groupSet == null) {
+                    groupSet = ConcurrentHashMap.newKeySet();
+                }
+
+                groupSet.add(group.getGroupName());
+                return groupSet;
+            });
+        }
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
@@ -147,6 +165,8 @@ public class ThroughputControlStore {
         }
 
         String collectionNameLink = Utils.getCollectionName(request.getResourceAddress());
+        this.populateRequestThroughputControlOptions(request, collectionNameLink);
+
         return this.resolveContainerController(collectionNameLink)
             .flatMap(containerController -> {
                 if (containerController.canHandleRequest(request)) {
@@ -159,7 +179,38 @@ public class ThroughputControlStore {
                 // We will handle the first scenario by creating a new container controller,
                 // while fall back to original request Mono for the second scenario.
                 return this.updateControllerAndRetry(collectionNameLink, request, originalRequestMono);
+            })
+            .onErrorResume(throwable -> {
+                if (throwable instanceof ThroughputControlInitializationException) {
+                    if (request.throughputControlOptions.isFallbackOnInitError()) {
+                        return originalRequestMono;
+                    }
+
+
+                    return Mono.error(throwable.getCause());
+                }
+
+                return Mono.error(throwable);
             });
+    }
+
+    private void populateRequestThroughputControlOptions(RxDocumentServiceRequest request, String collectionNameLink) {
+        String defaultGroup = this.defaultGroupMap.getOrDefault(collectionNameLink, StringUtils.EMPTY);
+
+        if (request.throughputControlOptions == null) {
+            request.throughputControlOptions = new ThroughputControlOptions();
+
+            if (this.defaultGroupMap.containsKey(collectionNameLink)) {
+                request.throughputControlOptions.setFallbackOnInitError(
+                    this.fallbackOnInitErrorGroupMap.containsKey(collectionNameLink)
+                        && this.fallbackOnInitErrorGroupMap.get(collectionNameLink).contains(defaultGroup));
+            }
+        }
+
+        if (StringUtils.isEmpty(request.throughputControlOptions.getGroupName())
+            && !StringUtils.isEmpty(defaultGroup)) {
+            request.throughputControlOptions.setGroupName(defaultGroup);
+        }
     }
 
     private <T> Mono<T> updateControllerAndRetry(
@@ -207,7 +258,7 @@ public class ThroughputControlStore {
             containerNameLink,
             null,
             () -> this.createAndInitContainerController(containerNameLink)
-        );
+        ).onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
     private Mono<IThroughputContainerController> createAndInitContainerController(String containerNameLink) {
