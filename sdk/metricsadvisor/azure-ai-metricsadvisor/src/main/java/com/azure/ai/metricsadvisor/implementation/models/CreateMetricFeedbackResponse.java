@@ -8,7 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the addFeeddback operation. */
+/** Contains all response data for the createMetricFeedback operation. */
 public final class CreateMetricFeedbackResponse extends ResponseBase<CreateMetricFeedbackHeaders, Void> {
     /**
      * Creates an instance of CreateMetricFeedbackResponse.

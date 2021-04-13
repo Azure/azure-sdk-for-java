@@ -9,18 +9,11 @@ Import-AzContainerRegistryImage `
     -ResourceGroupName $DeploymentOutputs['CONTAINERREGISTRY_RESOURCE_GROUP'] `
     -RegistryName $DeploymentOutputs['CONTAINERREGISTRY_REGISTRY_NAME'] `
     -SourceImage 'library/hello-world' -SourceRegistryUri 'registry.hub.docker.com' `
+    -TargetTag @('library/hello-world:latest', 'library/hello-world:v1', 'library/hello-world:v2', 'library/hello-world:v3', 'library/hello-world:v4') `
     -Mode 'Force'
-    
-    Import-AzContainerRegistryImage `
-    -ResourceGroupName $DeploymentOutputs['CONTAINERREGISTRY_RESOURCE_GROUP'] `
-    -RegistryName $DeploymentOutputs['CONTAINERREGISTRY_REGISTRY_NAME'] `
-    -SourceImage 'dockercloud/hello-world' -SourceRegistryUri 'registry.hub.docker.com' `
-    -Mode 'Force'
-    
-    
+
 Import-AzContainerRegistryImage `
     -ResourceGroupName $DeploymentOutputs['CONTAINERREGISTRY_RESOURCE_GROUP'] `
     -RegistryName $DeploymentOutputs['CONTAINERREGISTRY_REGISTRY_NAME'] `
-    -SourceImage 'library/hello-seattle' -SourceRegistryUri 'registry.hub.docker.com' `
+    -SourceImage 'library/alpine' -SourceRegistryUri 'registry.hub.docker.com' `
     -Mode 'Force'
-    

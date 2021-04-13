@@ -3,10 +3,14 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.credential.AzureSasCredential
 import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -15,6 +19,7 @@ import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -23,6 +28,7 @@ import com.azure.storage.blob.models.StaticWebsite
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.sas.AccountSasPermission
@@ -73,6 +79,67 @@ class ServiceAPITest extends APISpec {
             .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
             .setDefaultServiceVersion("2018-03-28"))
+    }
+
+    @Unroll
+    def "SAS Sanitization"() {
+        given:
+        def identifier = "id with spaces"
+        def blobName = generateBlobName()
+        cc.setAccessPolicy(null, Arrays.asList(new BlobSignedIdentifier()
+            .setId(identifier)
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setPermissions("racwdl")
+                .setExpiresOn(getUTCNow().plusDays(1)))))
+        cc.getBlobClient(blobName).upload(BinaryData.fromBytes("test".getBytes()))
+        def sas = cc.generateSas(new BlobServiceSasSignatureValues(identifier))
+        if (unsanitize) {
+            sas = sas.replace("%20", " ")
+        }
+
+        when: "Endpoint with SAS built in"
+        optionalRecordingPolicy(new BlobContainerClientBuilder()
+            .httpClient(getHttpClient())
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
+            .buildClient()
+            .getBlobClient(blobName)
+            .downloadContent()
+
+        then: "Works as expected"
+        notThrown(Exception)
+
+// TODO AzureSasCredential doesn't currently sanitize inputs
+//
+//        when: "Endpoint with SAS separate through Credential"
+//        new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl()).credential(new AzureSasCredential(sas)).buildClient().getBlobClient(blobName).downloadContent()
+//
+//        then: "Works as expected"
+//        notThrown(Exception)
+
+        when: "Connection string with SAS"
+        def connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas
+        optionalRecordingPolicy(new BlobContainerClientBuilder()
+            .httpClient(getHttpClient())
+            .connectionString(connectionString)
+            .containerName(cc.getBlobContainerName()))
+            .buildClient()
+            .getBlobClient(blobName)
+            .downloadContent()
+
+        then: "Works as expected"
+        notThrown(Exception)
+
+        where:
+        _ | unsanitize
+        _ | true
+        _ | false
+    }
+
+    BlobContainerClientBuilder optionalRecordingPolicy(BlobContainerClientBuilder builder) {
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+        return builder
     }
 
     def "List containers"() {

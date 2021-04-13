@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Spark job definition resource type. */
 @Fluent
-public final class SparkJobDefinitionResource extends AzureEntityResource {
+public final class SparkJobDefinitionResource extends SubResource {
     /*
      * Properties of spark job definition.
      */

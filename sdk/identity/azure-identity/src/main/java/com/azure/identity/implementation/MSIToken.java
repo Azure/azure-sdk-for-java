@@ -60,19 +60,19 @@ public final class MSIToken extends AccessToken {
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            logger.verbose(e.getMessage());
         }
 
         try {
             return Instant.from(dtf.parse(dateTime)).getEpochSecond();
         } catch (DateTimeParseException e) {
-            logger.error(e.getMessage());
+            logger.verbose(e.getMessage());
         }
 
         try {
             return Instant.from(dtfWindows.parse(dateTime)).getEpochSecond();
         } catch (DateTimeParseException e) {
-            logger.error(e.getMessage());
+            logger.verbose(e.getMessage());
         }
 
         throw logger.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));

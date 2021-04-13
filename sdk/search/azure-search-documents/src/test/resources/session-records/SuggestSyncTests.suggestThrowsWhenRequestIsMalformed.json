@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')//docs/search.post.suggest?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')//docs/search.post.suggest?api-version=2020-06-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ac16dd03-b179-4cc4-976e-49bf39560e33",
+      "x-ms-client-request-id" : "3aa5a9e9-e1ef-4c78-838c-0255ae8ea070",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ac16dd03-b179-4cc4-976e-49bf39560e33",
+      "request-id" : "3aa5a9e9-e1ef-4c78-838c-0255ae8ea070",
       "StatusCode" : "400",
-      "Date" : "Wed, 31 Mar 2021 21:17:30 GMT",
+      "Date" : "Fri, 02 Apr 2021 22:35:09 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "ac16dd03-b179-4cc4-976e-49bf39560e33",
-      "elapsed-time" : "3",
+      "client-request-id" : "3aa5a9e9-e1ef-4c78-838c-0255ae8ea070",
+      "elapsed-time" : "25",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "143",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'.\\r\\nParameter name: $orderby\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "ac16dd03-b179-4cc4-976e-49bf39560e33",
+      "x-ms-client-request-id" : "3aa5a9e9-e1ef-4c78-838c-0255ae8ea070",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.postgresql.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.ServerBasedPerformanceTiersClient;
 import com.azure.resourcemanager.postgresql.fluent.models.PerformanceTierPropertiesInner;
 import com.azure.resourcemanager.postgresql.models.PerformanceTierProperties;
@@ -19,30 +18,31 @@ public final class ServerBasedPerformanceTiersImpl implements ServerBasedPerform
 
     private final ServerBasedPerformanceTiersClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public ServerBasedPerformanceTiersImpl(
-        ServerBasedPerformanceTiersClient innerClient, PostgreSqlManager serviceManager) {
+        ServerBasedPerformanceTiersClient innerClient,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PerformanceTierProperties> list(String resourceGroupName, String serverName) {
         PagedIterable<PerformanceTierPropertiesInner> inner = this.serviceClient().list(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PerformanceTierProperties> list(String resourceGroupName, String serverName, Context context) {
         PagedIterable<PerformanceTierPropertiesInner> inner =
             this.serviceClient().list(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
     }
 
     private ServerBasedPerformanceTiersClient serviceClient() {
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 }

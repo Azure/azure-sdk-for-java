@@ -31,3 +31,6 @@ extends:
       - name: azure-mixedreality-authentication
         groupId: com.azure
         safeName: azuremixedrealityauthentication
+      - name: azure-resourcemanager-mixedreality
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermixedreality

@@ -30,6 +30,7 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
         "Sports Collectibles",
         "__SUM__",
         "Tools & Home Improvement").stream().sorted().collect(Collectors.toList());
+    static final int LISTING_SERIES_DEFINITIONS_LIMIT = 50;
 
     static final int EXPECTED_DIMENSION_VALUES_COUNT = 31;
     static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2020-01-01T00:00:00Z");
