@@ -5,7 +5,11 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
+  <distributionManagement>
+    <relocation>
+      <message>This package has been deprecated. Please use azure-communication-identity (https://search.maven.org/artifact/com.azure/azure-communication-identity) and azure-communication-phonenumbers (https://search.maven.org/artifact/com.azure/azure-communication-phonenumbers) instead. </message>
+    </relocation>
+  </distributionManagement>
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
@@ -16,7 +20,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-administration</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
 
   <name>Microsoft Azure client administration library for communication</name>
   <description>
@@ -32,13 +36,6 @@
     </license>
 </licenses>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
-
-  <distributionManagement>
-    <site>
-      <id>azure-java-build-docs</id>
-      <url>${site.url}/site/${project.artifactId}</url>
-    </site>
-  </distributionManagement>
 
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
