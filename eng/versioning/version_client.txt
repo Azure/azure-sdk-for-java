@@ -73,7 +73,7 @@ com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-encryption;1.0.0-beta.2;1.0.0-beta.3
 com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.0.0-beta.2;4.0.0-beta.2
-com.azure:azure-data-appconfiguration;1.1.10;1.2.0-beta.2
+com.azure:azure-data-appconfiguration;1.1.11;1.2.0-beta.2
 com.azure:azure-data-schemaregistry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-tables;12.0.0-beta.6;12.0.0-beta.7
