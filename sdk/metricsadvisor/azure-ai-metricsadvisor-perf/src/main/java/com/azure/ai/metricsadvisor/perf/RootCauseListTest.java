@@ -25,6 +25,8 @@ public class RootCauseListTest extends ServiceTest<PerfStressOptions> {
         super.metricsAdvisorClient
             .listIncidentRootCauses(super.detectionConfigId,
                 super.incidentId)
+            .stream()
+            .limit(super.maxListElements)
             .forEach(rootCause -> {
             });
     }
@@ -34,6 +36,7 @@ public class RootCauseListTest extends ServiceTest<PerfStressOptions> {
         return super.metricsAdvisorAsyncClient
             .listIncidentRootCauses(super.detectionConfigId,
                 super.incidentId)
+            .take(super.maxListElements)
             .then();
     }
 }

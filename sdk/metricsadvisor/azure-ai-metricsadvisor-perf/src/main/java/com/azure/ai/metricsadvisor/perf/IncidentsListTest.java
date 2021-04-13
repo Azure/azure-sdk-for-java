@@ -12,8 +12,6 @@ import reactor.core.publisher.Mono;
  * Performs incidents list operations.
  */
 public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
-    private static final int MAX_LIST_ELEMENTS = 10;
-
     /**
      * Creates IncidentsListTest object.
      *
@@ -28,7 +26,9 @@ public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
         super.metricsAdvisorClient
             .listIncidentsForAlert(super.alertConfigId,
                 super.alertId,
-                new ListIncidentsAlertedOptions().setTop(MAX_LIST_ELEMENTS))
+                new ListIncidentsAlertedOptions())
+            .stream()
+            .limit(super.maxListElements)
             .forEach(incident -> {
             });
     }
@@ -38,7 +38,8 @@ public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
         return super.metricsAdvisorAsyncClient
             .listIncidentsForAlert(super.alertConfigId,
                 super.alertId,
-                new ListIncidentsAlertedOptions().setTop(MAX_LIST_ELEMENTS))
+                new ListIncidentsAlertedOptions())
+            .take(super.maxListElements)
             .then();
     }
 }

@@ -19,6 +19,7 @@ import com.azure.perf.test.core.PerfStressTest;
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
         + "or system properties.%n";
+    private static final int DEFAULT_MAX_LIST_ELEMENTS = 100;
 
     private final ClientLogger logger = new ClientLogger(ServiceTest.class);
 
@@ -28,6 +29,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected final String alertId;
     protected final String detectionConfigId;
     protected final String incidentId;
+    protected final int maxListElements;
+
 
     /**
      * Creates an instance of performance test.
@@ -86,5 +89,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             throw logger.logExceptionAsError(
                 new RuntimeException(String.format(CONFIGURATION_ERROR, "METRICS_ADVISOR_INCIDENT_ID")));
         }
+
+        this.maxListElements = Configuration.getGlobalConfiguration()
+            .get("METRICS_ADVISOR_MAX_LIST_ELEMENTS", DEFAULT_MAX_LIST_ELEMENTS);
     }
 }

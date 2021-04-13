@@ -24,6 +24,12 @@ METRICS_ADVISOR_DETECTION_CONFIG_ID=<id of a metric advisor detection configurti
 METRICS_ADVISOR_INCIDENT_ID=<id of a metric advisor incident>
 ```
 
+The following environment variable limits the number of items in list APIs; the default value is 100.
+
+```
+METRICS_ADVISOR_MAX_LIST_ELEMENTS=<max-list-elements>
+```
+
 ### Adding the package to your product
 [//]: # ({x-version-update-start;com.azure:azure-ai-metricsadvisor;current})
 ```xml
@@ -47,11 +53,25 @@ METRICS_ADVISOR_INCIDENT_ID=<id of a metric advisor incident>
    ```java
    java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
 
-#### Common perf test command line options for Form Recognizer
+#### Common perf test command line options for Metrics Advisor
 - `--duration` - Number of seconds to run the main test for. Default is 10.
 - `--iterations` - Number of iterations of main test loop.
 - `--parallel` - Number of operations to execute in parallel,
 - `--warmup` - Duration of test warmup time in seconds before the test attributes are calculated.
+
+#### Example
+
+The tests can be executed as below
+
+```java
+
+java -jar target/azure-ai-metricsadvisor-perf-1.0.0-beta.1-jar-with-dependencies.jar anomalieslist --warmup 1 --iterations 1 --parallel 5 --duration 30
+
+java -jar target/azure-ai-metricsadvisor-perf-1.0.0-beta.1-jar-with-dependencies.jar incidentslist --warmup 1 --iterations 1 --parallel 5 --duration 30
+
+java -jar target/azure-ai-metricsadvisor-perf-1.0.0-beta.1-jar-with-dependencies.jar rootcauselist --warmup 1 --iterations 1 --parallel 5 --duration 30
+
+```
 
 Use [PerfStressOptions](https://github.com/Azure/azure-sdk-for-java/blob/master/common/perf-test-core/src/main/java/com/azure/perf/test/core/PerfStressOptions.java)
 for the other command line options that could be used.

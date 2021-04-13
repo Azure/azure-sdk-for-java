@@ -13,8 +13,6 @@ import reactor.core.publisher.Mono;
  * Performs anomalies list operations.
  */
 public class AnomaliesListTest extends ServiceTest<PerfStressOptions> {
-    private static final int MAX_LIST_ELEMENTS = 10;
-
     /**
      * Creates AnomaliesListTest object.
      *
@@ -29,8 +27,10 @@ public class AnomaliesListTest extends ServiceTest<PerfStressOptions> {
         super.metricsAdvisorClient
             .listAnomaliesForAlert(super.alertConfigId,
                 super.alertId,
-                new ListAnomaliesAlertedOptions().setTop(MAX_LIST_ELEMENTS),
+                new ListAnomaliesAlertedOptions(),
                 Context.NONE)
+            .stream()
+            .limit(super.maxListElements)
             .forEach(anomaly -> {
             });
     }
@@ -40,7 +40,8 @@ public class AnomaliesListTest extends ServiceTest<PerfStressOptions> {
         return super.metricsAdvisorAsyncClient
             .listAnomaliesForAlert(super.alertConfigId,
                 super.alertId,
-                new ListAnomaliesAlertedOptions().setTop(MAX_LIST_ELEMENTS))
+                new ListAnomaliesAlertedOptions())
+            .take(super.maxListElements)
             .then();
     }
 }
