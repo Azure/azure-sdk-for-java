@@ -1,9 +1,14 @@
 # Release History
 
-## 7.2.0-beta.2 (Unreleased)
+## 7.2.0 (2021-04-12)
 ### Bug Fixes
 - Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
-error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
+  error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
+- Upgrade to `azure-core-amqp:2.0.4` improves recovery of connection to Service Bus.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.4`.
 
 ## 7.2.0-beta.1 (2021-03-18)
 ### New Features
