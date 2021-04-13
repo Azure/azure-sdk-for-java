@@ -15,7 +15,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImpl;
 import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImplBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.NdJsonSerializer;
@@ -34,7 +33,7 @@ import java.util.Objects;
  */
 public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com/.default";
+    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
@@ -172,21 +171,6 @@ public final class AzureMonitorExporterBuilder {
         String endpoint = keyValues.get("IngestionEndpoint");
         if (endpoint != null) {
             this.endpoint(endpoint);
-        }
-        String authorizationType = keyValues.get("Authorization");
-        if (authorizationType != null && authorizationType.equals("aad") && this.credential == null) {
-            // Use user assigned managed Identity's client Id if provided
-            String clientId = keyValues.get("AppId");
-            if (clientId != null) {
-                // User Assigned Managed Identity
-                this.credential = new DefaultAzureCredentialBuilder()
-                    .managedIdentityClientId(clientId)
-                    .build();
-            } else {
-                // System Assigned Managed Identity
-                this.credential = new DefaultAzureCredentialBuilder()
-                    .build();
-            }
         }
         this.connectionString = connectionString;
         return this;

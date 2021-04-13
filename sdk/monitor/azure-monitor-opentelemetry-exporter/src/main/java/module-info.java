@@ -4,7 +4,6 @@
 module com.azure.monitor.opentelemetry.exporter {
 
     requires transitive com.azure.core;
-    requires transitive com.azure.identity;
 
     requires transitive io.opentelemetry.sdk;
     requires transitive io.opentelemetry.sdk.trace;
