@@ -43,6 +43,12 @@ jobs:
       container: $[ variables['Container'] ]
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - ${{ parameters.ServiceDirectory }}
+            - sdk/**/pom*.xml
+
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
           AgentImage: $(OSVmImage)
