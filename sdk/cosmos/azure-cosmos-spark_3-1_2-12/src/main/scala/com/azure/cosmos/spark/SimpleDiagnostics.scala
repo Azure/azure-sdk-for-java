@@ -6,17 +6,17 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.spark.{OperationContext, OperationListener}
 import com.azure.cosmos.implementation.{HttpConstants, RxDocumentServiceRequest, RxDocumentServiceResponse}
 
-class SimpleOperationLogger extends OperationListener with CosmosLoggingTrait {
+class SimpleDiagnostics extends OperationListener with CosmosLoggingTrait {
   override def requestListener(context: OperationContext, request: RxDocumentServiceRequest): Unit = {
-    logInfo(s"request: ${context.toString} ${toString(request)}")
+    logInfo(s"${context.toString}, request: ${toString(request)}")
   }
 
   override def responseListener(context: OperationContext, response: RxDocumentServiceResponse): Unit = {
-    logInfo(s"response: ${context.toString} ${toString(response)}")
+    logInfo(s"${context.toString}, response: ${toString(response)}")
   }
 
   override def exceptionListener(context: OperationContext, exception: Throwable): Unit = {
-    logInfo(s"response: ${context.toString} ${exception.getMessage}")
+    logInfo(s"${context.toString}, response: ${exception.getMessage}")
   }
 
   private def toString(request: RxDocumentServiceRequest): String = {
@@ -30,7 +30,7 @@ class SimpleOperationLogger extends OperationListener with CosmosLoggingTrait {
     sb.append(", effectiveRange:").append(request.getEffectiveRange)
     sb.append(", resourceAddress:").append(request.getResourceAddress)
     sb.append(", ")
-    headerDump(sb, request.getHeaders)
+    requestHeadersDump(sb, request.getHeaders)
     sb.append("}")
     sb.toString()
   }
@@ -40,17 +40,25 @@ class SimpleOperationLogger extends OperationListener with CosmosLoggingTrait {
     sb.append("response{")
     sb.append("statusCode:").append(response.getStatusCode)
     sb.append(", ")
-    headerDump(sb, response.getResponseHeaders)
+    responseHeadersDump(sb, response.getResponseHeaders)
     sb.append("}")
 
     sb.toString()
   }
 
-  private def headerDump(sb: StringBuilder, headers: java.util.Map[String, String]): Unit = {
+  private def requestHeadersDump(sb: StringBuilder, headers: java.util.Map[String, String]): Unit = {
     sb.append("headers{")
     sb.append("continuationToken:").append(headers.get(HttpConstants.HttpHeaders.CONTINUATION))
     sb.append(", activityId:").append(headers.get(HttpConstants.HttpHeaders.ACTIVITY_ID))
-    sb.append(", subStatusCode:").append(headers.get(HttpConstants.HttpHeaders.SUB_STATUS))
+    sb.append(", correlationActivityId:").append(headers.get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID))
+    sb.append("}")
+  }
+
+  private def responseHeadersDump(sb: StringBuilder, headers: java.util.Map[String, String]): Unit = {
+    sb.append("headers{")
+    sb.append("continuationToken:").append(headers.get(HttpConstants.HttpHeaders.CONTINUATION))
+    sb.append(", activityId:").append(headers.get(HttpConstants.HttpHeaders.ACTIVITY_ID))
+    sb.append(", itemCount:").append(headers.get(HttpConstants.HttpHeaders.ITEM_COUNT))
     sb.append("}")
   }
 }

@@ -4,13 +4,13 @@
 package com.azure.cosmos.spark.diagnostics
 
 import com.azure.cosmos.implementation.spark.OperationListener
-import com.azure.cosmos.spark.SimpleOperationLogger
+import com.azure.cosmos.spark.SimpleDiagnostics
 
 import scala.collection.concurrent.TrieMap
 
 object OperationListenerFactory {
   private val listeners = TrieMap[String, OperationListener]()
-  listeners.put(classOf[SimpleOperationLogger].getSimpleName, new SimpleOperationLogger)
+  listeners.put(classOf[SimpleDiagnostics].getName, new SimpleDiagnostics)
 
   def getOperationListener(listenerName: String) : OperationListener = {
     listeners.get(listenerName) match {

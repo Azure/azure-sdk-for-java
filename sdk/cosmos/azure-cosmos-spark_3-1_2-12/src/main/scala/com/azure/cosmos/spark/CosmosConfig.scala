@@ -8,12 +8,10 @@ import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
-import com.azure.cosmos.spark.CosmosWriteConfig.itemWriteStrategy
-import com.azure.cosmos.spark.DiagnosticsModes.{DiagnosticsMode, Disabled}
+import com.azure.cosmos.spark.DiagnosticsModes.DiagnosticsMode
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
-import org.apache.commons.lang3.StringUtils
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -31,10 +29,6 @@ import scala.collection.JavaConverters._
 
 // scalastyle:off multiple.string.literals
 
-// each config category will be a case class:
-// TODO moderakh more configs
-//case class ClientConfig()
-//case class CosmosBatchWriteConfig()
 
 private object CosmosConfig {
   def getEffectiveConfig
@@ -271,42 +265,26 @@ private object DiagnosticsModes extends Enumeration {
   val Disabled, Sampling, All = Value
 }
 
-private case class DiagnosticsConfig(diagnosticsMode: DiagnosticsMode, loggerClassOpt: Option[String])
+case class DiagnosticsConfig(mode: Option[String])
 
 private object DiagnosticsConfig {
 
-  private val diagnosticsMode = CosmosConfigEntry[DiagnosticsMode](key = "spark.cosmos.diagnostics.mode",
-    defaultValue = Option.apply(DiagnosticsModes.Disabled),
+  private val diagnosticsMode = CosmosConfigEntry[String](key = "spark.cosmos.diagnostics",
     mandatory = false,
-    parseFromStringFunction = diagnosticsModeAsString =>
-      CosmosConfigEntry.parseEnumeration(diagnosticsModeAsString, DiagnosticsModes),
-    helpMessage = "Cosmos DB Spark Diagnostics Mode")
-
-  private val DiagnosticsLogger = CosmosConfigEntry[String](key = "spark.cosmos.diagnostics.loggerClass",
-    defaultValue = Option.apply("com.azure.cosmos.spark.SimpleOperationLogger"),
-    mandatory = false,
-    parseFromStringFunction = loggerAString => {
-      // validate that the class is loadable and has a default constructor
-      Class.forName(loggerAString).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
-      loggerAString
+    parseFromStringFunction = diagnostics => {
+      if (diagnostics == "simple") {
+        classOf[SimpleDiagnostics].getName
+      } else {
+        // this is experimental and to be used by cosmos db dev engineers.
+        Class.forName(diagnostics).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
+        diagnostics
+      }
     },
-    helpMessage = "Cosmos DB Spark diagnostics logger class")
-
-//  private val diagnosticsOptions = CosmosConfigEntry[Map[String, String]](key = "spark.cosmos.diagnostics.samplingFunction",
-//    defaultValue = Map[String, String],
-//    mandatory = false,
-//    parseFromStringFunction = optionsAsString => {
-//      optionsAsString.split(";")
-//        .map(str => StringUtils.split(str, "=", 2))
-//        .map(x => (x(0), x(1))).toMap
-//    },
-//    helpMessage = "Cosmos DB Spark diagnostics options")
+    helpMessage = "Cosmos DB Spark Diagnostics, supported value, 'simple'")
 
   def parseDiagnosticsConfig(cfg: Map[String, String]): DiagnosticsConfig = {
     val diagnosticsModeOpt = CosmosConfigEntry.parse(cfg, diagnosticsMode)
-    val loggerOpt = CosmosConfigEntry.parse(cfg, DiagnosticsLogger)
-
-    DiagnosticsConfig(diagnosticsModeOpt.get, loggerOpt)
+    DiagnosticsConfig(diagnosticsModeOpt)
   }
 }
 
@@ -757,7 +735,6 @@ private object CosmosConfigEntry {
   }
 
   def parse[T](configuration: Map[String, String], configEntry: CosmosConfigEntry[T]): Option[T] = {
-    // TODO moderakh: where should we handle case sensitivity?
     // we are doing this here per config parsing for now
     val opt = configuration
       .map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }
