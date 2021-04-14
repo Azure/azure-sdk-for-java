@@ -139,6 +139,13 @@ jobs:
       vmImage: MMSUbuntu18.04
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - ${{ parameters.ServiceDirectory }}
+            - sdk/**/*.md
+            - sdk/**/pom*.xml
+
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"

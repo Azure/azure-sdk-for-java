@@ -86,7 +86,7 @@ stages:
                 parameters:
                   Paths:
                     - ${{ parameters.ServiceDirectory }}
-                    - sdk/**/pom.xml
+                    - sdk/**/pom*.xml
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
