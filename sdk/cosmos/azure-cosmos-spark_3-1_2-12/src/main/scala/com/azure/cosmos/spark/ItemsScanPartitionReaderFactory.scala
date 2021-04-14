@@ -15,7 +15,8 @@ private case class ItemsScanPartitionReaderFactory
   config: Map[String, String],
   readSchema: StructType,
   cosmosQuery: CosmosParameterizedQuery,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 ) extends PartitionReaderFactory with CosmosLoggingTrait {
 
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
@@ -28,6 +29,8 @@ private case class ItemsScanPartitionReaderFactory
       feedRange,
       readSchema,
       cosmosQuery,
-      cosmosClientStateHandle)
+      cosmosClientStateHandle,
+      diagnosticsConfig,
+    )
   }
 }

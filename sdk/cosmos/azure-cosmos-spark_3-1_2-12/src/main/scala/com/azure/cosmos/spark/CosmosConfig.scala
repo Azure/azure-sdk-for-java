@@ -4,12 +4,16 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.routing.LocationHelper
+import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
+import com.azure.cosmos.spark.CosmosWriteConfig.itemWriteStrategy
+import com.azure.cosmos.spark.DiagnosticsModes.{DiagnosticsMode, Disabled}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
+import org.apache.commons.lang3.StringUtils
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -260,6 +264,52 @@ private object CosmosViewRepositoryConfig {
 }
 
 private[cosmos] case class CosmosContainerConfig(database: String, container: String)
+
+
+private object DiagnosticsModes extends Enumeration {
+  type DiagnosticsMode = Value
+  val Disabled, Sampling, All = Value
+}
+
+private case class DiagnosticsConfig(diagnosticsMode: DiagnosticsMode, loggerClassOpt: Option[String])
+
+private object DiagnosticsConfig {
+
+  private val diagnosticsMode = CosmosConfigEntry[DiagnosticsMode](key = "spark.cosmos.diagnostics.mode",
+    defaultValue = Option.apply(DiagnosticsModes.Disabled),
+    mandatory = false,
+    parseFromStringFunction = diagnosticsModeAsString =>
+      CosmosConfigEntry.parseEnumeration(diagnosticsModeAsString, DiagnosticsModes),
+    helpMessage = "Cosmos DB Spark Diagnostics Mode")
+
+  private val DiagnosticsLogger = CosmosConfigEntry[String](key = "spark.cosmos.diagnostics.loggerClass",
+    defaultValue = Option.apply("com.azure.cosmos.spark.SimpleOperationLogger"),
+    mandatory = false,
+    parseFromStringFunction = loggerAString => {
+      // validate that the class is loadable and has a default constructor
+      Class.forName(loggerAString).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
+      loggerAString
+    },
+    helpMessage = "Cosmos DB Spark diagnostics logger class")
+
+//  private val diagnosticsOptions = CosmosConfigEntry[Map[String, String]](key = "spark.cosmos.diagnostics.samplingFunction",
+//    defaultValue = Map[String, String],
+//    mandatory = false,
+//    parseFromStringFunction = optionsAsString => {
+//      optionsAsString.split(";")
+//        .map(str => StringUtils.split(str, "=", 2))
+//        .map(x => (x(0), x(1))).toMap
+//    },
+//    helpMessage = "Cosmos DB Spark diagnostics options")
+
+  def parseDiagnosticsConfig(cfg: Map[String, String]): DiagnosticsConfig = {
+    val diagnosticsModeOpt = CosmosConfigEntry.parse(cfg, diagnosticsMode)
+    val loggerOpt = CosmosConfigEntry.parse(cfg, DiagnosticsLogger)
+
+    DiagnosticsConfig(diagnosticsModeOpt.get, loggerOpt)
+  }
+}
+
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value

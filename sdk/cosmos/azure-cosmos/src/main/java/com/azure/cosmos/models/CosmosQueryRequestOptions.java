@@ -4,6 +4,8 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.spark.OperationContext;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.util.Map;
@@ -28,6 +30,7 @@ public class CosmosQueryRequestOptions {
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
     private FeedRange feedRange;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
 
     /**
@@ -57,6 +60,15 @@ public class CosmosQueryRequestOptions {
         this.queryMetricsEnabled = options.queryMetricsEnabled;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
         this.throughputControlGroupName = options.throughputControlGroupName;
+        this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+    }
+
+    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
     }
 
     /**

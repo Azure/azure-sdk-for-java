@@ -83,6 +83,7 @@ public class HttpConstants {
         public static final String IS_QUERY_PLAN_REQUEST = "x-ms-cosmos-is-query-plan-request";
         public static final String SUPPORTED_QUERY_FEATURES = "x-ms-cosmos-supported-query-features";
         public static final String QUERY_VERSION = "x-ms-cosmos-query-version";
+        public static final String CORRELATED_ACTIVITY_ID = "x-ms-cosmos-correlated-activityid";
 
         // Our custom DocDB headers
         public static final String CONTINUATION = "x-ms-continuation";

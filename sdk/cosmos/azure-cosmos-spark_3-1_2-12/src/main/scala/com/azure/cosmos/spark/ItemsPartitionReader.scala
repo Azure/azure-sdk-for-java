@@ -3,13 +3,19 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
+import com.azure.cosmos.spark.DiagnosticsModes.{All, Disabled}
+import com.azure.cosmos.spark.diagnostics.{OperationListenerFactory, SparkOperationContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
+
+import java.util.UUID
 
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
@@ -20,7 +26,8 @@ private case class ItemsPartitionReader
   feedRange: NormalizedRange,
   readSchema: StructType,
   cosmosQuery: CosmosParameterizedQuery,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 )
 // TODO: moderakh query need to change to SqlSpecQuery
 // requires making a serializable wrapper on top of SqlQuerySpec
@@ -35,6 +42,34 @@ private case class ItemsPartitionReader
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
 
   private val queryOptions = new CosmosQueryRequestOptions()
+
+  diagnosticsConfig.diagnosticsMode match {
+    case All => {
+      initializeDiagnosticsOperationContext()
+    }
+
+    case Disabled => {
+      // no-op
+    }
+  }
+
+  private def initializeDiagnosticsOperationContext() : Unit = {
+    val taskContext = TaskContext.get
+    assert(taskContext != null)
+
+    val sparkOperationContext = SparkOperationContext(UUID.randomUUID().toString,
+      taskContext.stageId(),
+      taskContext.partitionId(),
+      feedRange.toString + " " + cosmosQuery.toSqlQuerySpec.getQueryText)
+
+    val listener: OperationListener =
+      OperationListenerFactory.getOperationListener(diagnosticsConfig.loggerClassOpt.get)
+
+    val operationContextAndListenerTuple = new OperationContextAndListenerTuple(sparkOperationContext, listener)
+    queryOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple)
+  }
+
+
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
   private lazy val iterator = cosmosAsyncContainer.queryItems(
