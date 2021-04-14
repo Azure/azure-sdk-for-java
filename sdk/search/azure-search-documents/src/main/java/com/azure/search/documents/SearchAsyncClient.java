@@ -807,42 +807,41 @@ public final class SearchAsyncClient {
      * Create search request from search text and parameters
      *
      * @param searchText search text
-     * @param searchOptions search options
+     * @param options search options
      * @return SearchRequest
      */
-    private static SearchRequest createSearchRequest(String searchText, SearchOptions searchOptions) {
-        SearchRequest searchRequest = new SearchRequest().setSearchText(searchText);
+    private static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
+        SearchRequest request = new SearchRequest().setSearchText(searchText);
 
-        if (searchOptions == null) {
-            return searchRequest;
+        if (options == null) {
+            return request;
         }
 
-        List<String> scoringParameters = searchOptions.getScoringParameters() == null
+        List<String> scoringParameters = options.getScoringParameters() == null
             ? null
-            : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-                .collect(Collectors.toList());
+            : options.getScoringParameters().stream().map(ScoringParameter::toString).collect(Collectors.toList());
 
-        return searchRequest.setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
-            .setFacets(searchOptions.getFacets())
-            .setFilter(searchOptions.getFilter())
-            .setHighlightFields(nullSafeStringJoin(searchOptions.getHighlightFields()))
-            .setHighlightPostTag(searchOptions.getHighlightPostTag())
-            .setHighlightPreTag(searchOptions.getHighlightPreTag())
-            .setMinimumCoverage(searchOptions.getMinimumCoverage())
-            .setOrderBy(nullSafeStringJoin(searchOptions.getOrderBy()))
-            .setQueryType(searchOptions.getQueryType())
+        return request.setIncludeTotalResultCount(options.isTotalCountIncluded())
+            .setFacets(options.getFacets())
+            .setFilter(options.getFilter())
+            .setHighlightFields(nullSafeStringJoin(options.getHighlightFields()))
+            .setHighlightPostTag(options.getHighlightPostTag())
+            .setHighlightPreTag(options.getHighlightPreTag())
+            .setMinimumCoverage(options.getMinimumCoverage())
+            .setOrderBy(nullSafeStringJoin(options.getOrderBy()))
+            .setQueryType(options.getQueryType())
             .setScoringParameters(scoringParameters)
-            .setScoringProfile(searchOptions.getScoringProfile())
-            .setSearchFields(nullSafeStringJoin(searchOptions.getSearchFields()))
-            .setQueryLanguage(searchOptions.getQueryLanguage())
-            .setSpeller(searchOptions.getSpeller())
-            .setAnswers(createSearchRequestAnswers(searchOptions))
-            .setSearchMode(searchOptions.getSearchMode())
-            .setScoringStatistics(searchOptions.getScoringStatistics())
-            .setSessionId(searchOptions.getSessionId())
-            .setSelect(nullSafeStringJoin(searchOptions.getSelect()))
-            .setSkip(searchOptions.getSkip())
-            .setTop(searchOptions.getTop());
+            .setScoringProfile(options.getScoringProfile())
+            .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
+            .setQueryLanguage(options.getQueryLanguage())
+            .setSpeller(options.getSpeller())
+            .setAnswers(createSearchRequestAnswers(options))
+            .setSearchMode(options.getSearchMode())
+            .setScoringStatistics(options.getScoringStatistics())
+            .setSessionId(options.getSessionId())
+            .setSelect(nullSafeStringJoin(options.getSelect()))
+            .setSkip(options.getSkip())
+            .setTop(options.getTop());
     }
 
     private static String createSearchRequestAnswers(SearchOptions searchOptions) {
@@ -868,26 +867,26 @@ public final class SearchAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName search text
-     * @param suggestOptions suggest options
+     * @param options suggest options
      * @return SuggestRequest
      */
     private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
-        SuggestOptions suggestOptions) {
-        SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
+        SuggestOptions options) {
+        SuggestRequest request = new SuggestRequest(searchText, suggesterName);
 
-        if (suggestOptions == null) {
-            return suggestRequest;
+        if (options == null) {
+            return request;
         }
 
-        return suggestRequest.setFilter(suggestOptions.getFilter())
-            .setUseFuzzyMatching(suggestOptions.useFuzzyMatching())
-            .setHighlightPostTag(suggestOptions.getHighlightPostTag())
-            .setHighlightPreTag(suggestOptions.getHighlightPreTag())
-            .setMinimumCoverage(suggestOptions.getMinimumCoverage())
-            .setOrderBy(nullSafeStringJoin(suggestOptions.getOrderBy()))
-            .setSearchFields(nullSafeStringJoin(suggestOptions.getSearchFields()))
-            .setSelect(nullSafeStringJoin(suggestOptions.getSelect()))
-            .setTop(suggestOptions.getTop());
+        return request.setFilter(options.getFilter())
+            .setUseFuzzyMatching(options.useFuzzyMatching())
+            .setHighlightPostTag(options.getHighlightPostTag())
+            .setHighlightPreTag(options.getHighlightPreTag())
+            .setMinimumCoverage(options.getMinimumCoverage())
+            .setOrderBy(nullSafeStringJoin(options.getOrderBy()))
+            .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
+            .setSelect(nullSafeStringJoin(options.getSelect()))
+            .setTop(options.getTop());
     }
 
     /**
@@ -895,25 +894,25 @@ public final class SearchAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName search text
-     * @param autocompleteOptions autocomplete options
+     * @param options autocomplete options
      * @return AutocompleteRequest
      */
     private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
-        AutocompleteOptions autocompleteOptions) {
-        AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
+        AutocompleteOptions options) {
+        AutocompleteRequest request = new AutocompleteRequest(searchText, suggesterName);
 
-        if (autocompleteOptions == null) {
-            return autoCompleteRequest;
+        if (options == null) {
+            return request;
         }
 
-        return autoCompleteRequest.setAutocompleteMode(autocompleteOptions.getAutocompleteMode())
-            .setFilter(autocompleteOptions.getFilter())
-            .setUseFuzzyMatching(autocompleteOptions.useFuzzyMatching())
-            .setHighlightPostTag(autocompleteOptions.getHighlightPostTag())
-            .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
-            .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
-            .setSearchFields(nullSafeStringJoin(autocompleteOptions.getSearchFields()))
-            .setTop(autoCompleteRequest.getTop());
+        return request.setAutocompleteMode(options.getAutocompleteMode())
+            .setFilter(options.getFilter())
+            .setUseFuzzyMatching(options.useFuzzyMatching())
+            .setHighlightPostTag(options.getHighlightPostTag())
+            .setHighlightPreTag(options.getHighlightPreTag())
+            .setMinimumCoverage(options.getMinimumCoverage())
+            .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
+            .setTop(options.getTop());
     }
 
     private static String nullSafeStringJoin(Iterable<? extends CharSequence> elements) {
