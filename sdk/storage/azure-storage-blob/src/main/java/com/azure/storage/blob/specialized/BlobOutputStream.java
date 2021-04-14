@@ -279,8 +279,6 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             try {
                 this.sink.tryEmitNext(ByteBuffer.wrap(buffer));
-            } catch (InterruptedException e) {
-                throw logger.logExceptionAsError(new RuntimeException(e));
             } catch (IllegalStateException e) {
                 this.lastError = new IOException(e);
             }

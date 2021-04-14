@@ -21,7 +21,30 @@ public class StorageBlockingSink {
     testing easier.
     */
     private final Sinks.Many<ByteBuffer> writeSink;
-    LinkedBlockingQueue<ByteBuffer> writeLimitQueue;
+    private final LinkedBlockingQueue<ByteBuffer> writeLimitQueue;
+
+    /* Overrided implementation of LinkedBlockingQueue to effectively implement a true BlockingSink. */
+    private static class ProducerBlockingQueue<T> extends LinkedBlockingQueue<T> {
+        private final ClientLogger logger = new ClientLogger(StorageBlockingSink.class);
+
+        ProducerBlockingQueue(int queueSize) {
+            super(queueSize);
+        }
+
+        /* The Reactor implementation of Sinks(UnicastProcessor).tryEmitNext (see usage below) makes a call to
+        queue.offer(). The desired functionality of tryEmitNext is for it to block on backpressure until there is
+        space in the queue. Since this code is called from user thread on BlobOutputStream.write and blocking on that
+        API until data can be written is ok, this is the simplest way to get desired behavior. */
+        @Override
+        public boolean offer(T o) {
+            try {
+                super.put(o);
+                return true;
+            } catch (InterruptedException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+    }
 
     /**
      * Create a new StorageBlockingSink.
@@ -32,7 +55,7 @@ public class StorageBlockingSink {
         backpressure from downstream. Its capacity is 1 to keep the buffer as small as possible, as downstream
         implementations do their own buffering.
         */
-        this.writeLimitQueue = new LinkedBlockingQueue<>(1);
+        this.writeLimitQueue = new ProducerBlockingQueue<>(1);
         this.writeSink = Sinks.many().unicast().onBackpressureBuffer(writeLimitQueue);
     }
 
@@ -41,9 +64,8 @@ public class StorageBlockingSink {
      *
      * @param buffer {@link ByteBuffer} to emit.
      * @throws IllegalStateException if an unrecoverable error was thrown.
-     * @throws InterruptedException if a recoverable error was thrown.
      */
-    public void tryEmitNext(ByteBuffer buffer) throws IllegalStateException, InterruptedException {
+    public void tryEmitNext(ByteBuffer buffer) throws IllegalStateException {
         /*
         tryEmitNext returns a Sinks.EmitResult that indicates different success/error cases we can
         potentially handle (in case we want to retry transmission).
@@ -52,25 +74,18 @@ public class StorageBlockingSink {
         switch (writeResult) {
             case OK: // Success
                 return;
-            case FAIL_OVERFLOW: { // When queue overflows. This indicates there is backpressure.
-                try {
-                    this.writeLimitQueue.put(buffer); // Block on writing to the queue.
-                } catch (InterruptedException e) {
-                    /*
-                    Just throw the error and do not populate the error field since a customer can recover from
-                    this error
-                    */
-                    throw logger.logThrowableAsError(e);
-                }
-                break;
-            }
-            case FAIL_TERMINATED: // Flux already emitted completion signal. We implicitly save customer from hitting this state by calling checkStreamState before write.
-            case FAIL_CANCELLED: // Flux got a cancellation signal.
-            case FAIL_NON_SERIALIZED: // Concurrent calls to tryEmitNext.
-            case FAIL_ZERO_SUBSCRIBER: // No one ever subscribed to Flux. This should not happen since we manage the subscribe process in the constructor.
-            default: // This case shouldnt get hit - Would it be better to do nothing in this case?
+            case FAIL_OVERFLOW: /* When queue overflows. This indicates there is backpressure.
+            NOTE: If the FAIL_OVERFLOW case ever gets hit, it indicates there is a mismatch between the way Reactor
+            implements tryEmitNext and the way ProducerBlockingQueue is designed. */
+            case FAIL_TERMINATED: /* Flux already emitted completion signal. We implicitly save customer from
+            hitting this state by calling checkStreamState before write. */
+            case FAIL_CANCELLED: /* Flux got a cancellation signal. */
+            case FAIL_NON_SERIALIZED: /* Concurrent calls to tryEmitNext. */
+            case FAIL_ZERO_SUBSCRIBER: /* No one ever subscribed to Flux. This should not happen since we manage the
+            subscribe process in the constructor. */
+            default: // This case should never get hit
                 throw logger.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
-                    + "write failure, result:" + writeResult, null));
+                    + "write failure, result:" + writeResult));
         }
     }
 
