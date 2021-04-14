@@ -6,6 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.spark.{OperationContext, OperationListener}
 import com.azure.cosmos.implementation.{HttpConstants, RxDocumentServiceRequest, RxDocumentServiceResponse}
 
+// scalastyle:off multiple.string.literals
 private[spark] class SimpleDiagnostics extends OperationListener with CosmosLoggingTrait {
   override def requestListener(context: OperationContext, request: RxDocumentServiceRequest): Unit = {
     logInfo(s"${context.toString}, request: ${toString(request)}")
@@ -62,3 +63,4 @@ private[spark] class SimpleDiagnostics extends OperationListener with CosmosLogg
     sb.append("}")
   }
 }
+// scalastyle:on multiple.string.literals

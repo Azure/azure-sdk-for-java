@@ -33,7 +33,7 @@ private case class ItemsScanPartitionReaderFactory
       cosmosQuery,
       diagnosticsOperationContext,
       cosmosClientStateHandle,
-      diagnosticsConfig,
+      diagnosticsConfig
     )
   }
 }
