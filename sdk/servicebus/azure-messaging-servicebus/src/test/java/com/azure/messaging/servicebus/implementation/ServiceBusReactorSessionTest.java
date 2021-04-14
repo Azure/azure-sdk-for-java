@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
@@ -118,6 +119,8 @@ public class ServiceBusReactorSessionTest {
     private ArgumentCaptor<Runnable> dispatcherCaptor;
     @Mock
     private ReactorDispatcher dispatcher;
+    @Mock
+    private AmqpConnection connection;
 
     private ServiceBusReactorSession serviceBusReactorSession;
 
@@ -193,8 +196,10 @@ public class ServiceBusReactorSessionTest {
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
 
-        serviceBusReactorSession = new ServiceBusReactorSession(session, handler, SESSION_NAME, reactorProvider,
-            handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+
+        serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler, SESSION_NAME,
+            reactorProvider, handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions);
     }
 
     @AfterEach

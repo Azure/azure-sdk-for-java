@@ -24,13 +24,13 @@ public final class Usage {
      * The current usage.
      */
     @JsonProperty(value = "currentValue")
-    private Integer currentValue;
+    private Long currentValue;
 
     /*
      * The maximum allowed usage.
      */
     @JsonProperty(value = "limit")
-    private Integer limit;
+    private Long limit;
 
     /*
      * The details about the localizable name of the used resource.
@@ -63,7 +63,7 @@ public final class Usage {
      *
      * @return the currentValue value.
      */
-    public Integer currentValue() {
+    public Long currentValue() {
         return this.currentValue;
     }
 
@@ -73,7 +73,7 @@ public final class Usage {
      * @param currentValue the currentValue value to set.
      * @return the Usage object itself.
      */
-    public Usage withCurrentValue(Integer currentValue) {
+    public Usage withCurrentValue(Long currentValue) {
         this.currentValue = currentValue;
         return this;
     }
@@ -83,7 +83,7 @@ public final class Usage {
      *
      * @return the limit value.
      */
-    public Integer limit() {
+    public Long limit() {
         return this.limit;
     }
 
@@ -93,7 +93,7 @@ public final class Usage {
      * @param limit the limit value to set.
      * @return the Usage object itself.
      */
-    public Usage withLimit(Integer limit) {
+    public Usage withLimit(Long limit) {
         this.limit = limit;
         return this;
     }

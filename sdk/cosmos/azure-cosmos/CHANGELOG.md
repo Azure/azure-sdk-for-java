@@ -1,5 +1,11 @@
 ## Release History
 
+### 4.15.0-beta.2 (Unreleased)
+
+### 4.15.0-beta.1 (2021-04-07)
+#### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with cosmos encrytion modules.
+
 ### 4.14.0 (2021-04-06)
 #### New Features
 * General Availability for `readMany()` API in `CosmosAsyncContainer` and `CosmosContainer`.

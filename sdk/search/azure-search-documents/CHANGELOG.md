@@ -27,6 +27,14 @@
 
 - Updated Jackson annotations to include `required = true` when service must receive or return the property.
 
+## 11.3.1 (2021-04-08)
+
+### Dependency Updates
+- Updated `azure-core` from `1.14.0` to `1.15.0`.
+- Updated `azure-core-http-netty` from `1.9.0` to `1.9.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.0` to `1.2.2`.
+- Updated Jackson from `2.12.1` to `2.12.2`.
+
 ## 11.3.0 (2021-03-10)
 
 ### Dependency Updates

@@ -67,11 +67,6 @@
       <artifactId>jsch</artifactId>
       <version>0.1.55</version> <!-- {x-version-update;com.jcraft:jsch;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.github.cverges.expect4j</groupId>
-      <artifactId>expect4j</artifactId>
-      <version>1.6</version> <!-- {x-version-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
-    </dependency>
     <!-- This dependency is added for building from source pipeline, to also include this core project -->
     <dependency>
       <groupId>com.azure.spring</groupId>
