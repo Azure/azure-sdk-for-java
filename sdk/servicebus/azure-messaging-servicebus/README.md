@@ -86,7 +86,11 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
+<<<<<<< HEAD
     <version>1.2.4</version>
+=======
+    <version>1.2.5</version>
+>>>>>>> master
 </dependency>
 ```
 [//]: # ({x-version-update-end})

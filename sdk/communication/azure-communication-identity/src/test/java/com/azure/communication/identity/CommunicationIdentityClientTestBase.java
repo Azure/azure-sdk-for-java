@@ -41,6 +41,9 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("token");
@@ -131,6 +134,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    protected boolean shouldEnableIdentityTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|identity)");
     }
 
     static class FakeCredentials implements TokenCredential {

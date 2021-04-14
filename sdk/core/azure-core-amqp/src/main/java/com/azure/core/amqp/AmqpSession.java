@@ -106,7 +106,7 @@ public interface AmqpSession extends Disposable {
      *
      * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-coordination">Transaction Coordination</a>
      */
-    default Mono<AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
+    default Mono<? extends AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
         return Mono.error(new UnsupportedOperationException("Implementation not found error."));
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
@@ -52,6 +53,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     private final AmqpRetryPolicy retryPolicy;
     private final TokenManagerProvider tokenManagerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
+    private final AmqpConnection amqpConnection;
     private final AmqpRetryOptions retryOptions;
     private final boolean distributedTransactionsSupport;
 
@@ -69,12 +71,14 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param retryOptions Retry options.
      * @param createOptions  the options to create {@link ServiceBusReactorSession}.
      */
-    ServiceBusReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
-        ReactorProvider provider, ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
+    ServiceBusReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
+        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+        MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
         ServiceBusCreateSessionOptions createOptions) {
-        super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, retryOptions);
+        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier,
+            tokenManagerProvider, messageSerializer, retryOptions);
+        this.amqpConnection = amqpConnection;
         this.retryOptions = retryOptions;
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManagerProvider = tokenManagerProvider;
@@ -148,7 +152,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     @Override
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
-        return new ServiceBusReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager,
+        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
             reactorProvider, retryOptions.getTryTimeout(), retryPolicy);
     }
 
