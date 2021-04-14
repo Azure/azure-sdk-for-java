@@ -176,7 +176,7 @@ the main ServiceBusClientBuilder. -->
   <!-- This class overrides a method that throws, so it cannot be avoided. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
-  <!-- Nested blocks are still readable in the switch statements. -->
+  <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
 
