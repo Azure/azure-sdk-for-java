@@ -60,7 +60,7 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
             .flatMap(httpResponse -> {
                 if (shouldRetryWithRedirect(httpResponse.getStatusCode(), retryCount)) {
                     String responseLocation = httpResponse.getHeaderValue("Location");
-                    if (responseLocation != null && !responseLocation.equals(context.getHttpRequest().getUrl().toString())) {
+                    if (responseLocation != null) {
                         this.redirectedEndpointUrl = responseLocation;
                         return attemptRetry(context, next, originalHttpRequest, retryCount + 1);
                     }
