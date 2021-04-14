@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Client encryption policy.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ClientEncryptionPolicy {
 
     private JsonSerializable jsonSerializable;
@@ -30,7 +30,12 @@ public final class ClientEncryptionPolicy {
     @JsonProperty("policyFormatVersion")
     private int policyFormatVersion;
 
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Constructor.
+     *
+     * @param paths list of path of the item that need encryption along with path-specific settings.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
         this.validateIncludedPaths(paths);
         this.includedPaths = paths;
@@ -62,17 +67,13 @@ public final class ClientEncryptionPolicy {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
+    /**
+     * Gets the list of path of the item that need encryption along with path-specific settings.
+     * @return includedPaths
+     */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<ClientEncryptionIncludedPath> getIncludedPaths() {
         return this.includedPaths;
-    }
-
-    int getPolicyFormatVersion() {
-        return policyFormatVersion;
-    }
-
-    void setPolicyFormatVersion(int policyFormatVersion) {
-        this.policyFormatVersion = policyFormatVersion;
     }
 
     private void validateIncludedPaths(List<ClientEncryptionIncludedPath> clientEncryptionIncludedPath) {

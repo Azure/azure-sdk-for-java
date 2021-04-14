@@ -23,6 +23,13 @@ public interface Operation {
     OperationDisplay display();
 
     /**
+     * Gets the properties property: The operation properties.
+     *
+     * @return the properties value.
+     */
+    OperationProperties properties();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.OperationInner object.
      *
      * @return the inner object.

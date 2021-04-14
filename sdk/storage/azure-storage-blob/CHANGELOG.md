@@ -1,9 +1,13 @@
 # Release History
 
-## 12.11.0-beta.2 (Unreleased)
+## 12.11.0-beta.3 (Unreleased)
+- Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
+
+## 12.11.0-beta.2 (2021-03-29)
 - Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
 - Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
 - Added upload and download methods on BlobClient and BlobAsyncClient that work with BinaryData.
+- Fixed a bug that ignored the page size when calling PagedIterable.byPage(pageSize)
 
 ## 12.11.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 

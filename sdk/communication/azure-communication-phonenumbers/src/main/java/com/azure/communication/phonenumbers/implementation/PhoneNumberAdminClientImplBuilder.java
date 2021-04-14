@@ -18,7 +18,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 public final class PhoneNumberAdminClientImplBuilder {
     /*
      * The communication resource, for example
-     * https://resourcename.communication.azure.com
+     * https://resourcename.communication.azure.com.
      */
     private String endpoint;
 

@@ -15,7 +15,7 @@ best parts of Azure cloud.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0-beta.5</version>
+  <version>12.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

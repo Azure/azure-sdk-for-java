@@ -61,6 +61,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "Web", value = WebLinkedService.class),
     @JsonSubTypes.Type(name = "Cassandra", value = CassandraLinkedService.class),
     @JsonSubTypes.Type(name = "MongoDb", value = MongoDbLinkedService.class),
+    @JsonSubTypes.Type(name = "MongoDbAtlas", value = MongoDbAtlasLinkedService.class),
     @JsonSubTypes.Type(name = "MongoDbV2", value = MongoDbV2LinkedService.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApi", value = CosmosDbMongoDbApiLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStore", value = AzureDataLakeStoreLinkedService.class),
@@ -114,13 +115,16 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "HDInsightOnDemand", value = HDInsightOnDemandLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataLakeAnalytics", value = AzureDataLakeAnalyticsLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDatabricks", value = AzureDatabricksLinkedService.class),
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLake", value = AzureDatabricksDeltaLakeLinkedService.class),
     @JsonSubTypes.Type(name = "Responsys", value = ResponsysLinkedService.class),
     @JsonSubTypes.Type(name = "DynamicsAX", value = DynamicsAXLinkedService.class),
     @JsonSubTypes.Type(name = "OracleServiceCloud", value = OracleServiceCloudLinkedService.class),
     @JsonSubTypes.Type(name = "GoogleAdWords", value = GoogleAdWordsLinkedService.class),
     @JsonSubTypes.Type(name = "SapTable", value = SapTableLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class)
+    @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
+    @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
+    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class)
 })
 @Fluent
 public class LinkedService {

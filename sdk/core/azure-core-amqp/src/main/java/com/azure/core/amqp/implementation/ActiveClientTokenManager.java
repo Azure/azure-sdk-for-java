@@ -121,6 +121,7 @@ public class ActiveClientTokenManager implements TokenManager {
         });
 
         return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
+            .takeUntil(duration -> hasDisposed.get())
             .flatMap(delay -> {
                 logger.info("Refreshing token. scopes[{}] ", scopes);
                 return authorize();

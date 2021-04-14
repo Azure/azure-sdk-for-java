@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.query.Transformer;
@@ -125,6 +126,11 @@ public final class CosmosBridgeInternal {
             .clientTelemetryEnabled(builder.isClientTelemetryEnabled());
 
         return copy;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosException cosmosException(int statusCode, Exception innerException) {
+        return new CosmosException(statusCode, innerException);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
