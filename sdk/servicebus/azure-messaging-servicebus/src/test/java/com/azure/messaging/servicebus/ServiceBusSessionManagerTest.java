@@ -58,6 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -203,6 +204,8 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
@@ -256,6 +259,8 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
@@ -311,6 +316,8 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         // Session 2's messages
         final ServiceBusReceiveLink amqpReceiveLink2 = mock(ServiceBusReceiveLink.class);
@@ -333,6 +340,8 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
         when(amqpReceiveLink2.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
         when(amqpReceiveLink2.updateDisposition(lockToken2, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink2.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink2.closeAsync()).thenReturn(Mono.empty());
 
         final AtomicInteger count = new AtomicInteger();
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
@@ -425,6 +434,8 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         // Session 2's
         final ServiceBusReceiveLink amqpReceiveLink2 = mock(ServiceBusReceiveLink.class);
@@ -440,6 +451,8 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink2.getLinkName()).thenReturn(linkName2);
         when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
         when(amqpReceiveLink2.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
+        when(amqpReceiveLink2.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink2.closeAsync()).thenReturn(Mono.empty());
 
         final AtomicInteger count = new AtomicInteger();
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
@@ -505,6 +518,8 @@ class ServiceBusSessionManagerTest {
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(sessionManager.receive().publishOn(Schedulers.parallel()))
