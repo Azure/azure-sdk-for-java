@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -37,6 +38,7 @@ import java.util.List;
 @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 @EnableConfigurationProperties(AADB2CProperties.class)
+@Import(AADB2CConfiguration.class)
 public class AADB2CResourceServerAutoConfiguration {
 
     private final AADB2CProperties properties;
@@ -73,10 +75,10 @@ public class AADB2CResourceServerAutoConfiguration {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
-        if (!StringUtils.isEmpty(properties.getAppIdUri())) {
+        if (StringUtils.hasText(properties.getAppIdUri())) {
             validAudiences.add(properties.getAppIdUri());
         }
-        if (!StringUtils.isEmpty(properties.getClientId())) {
+        if (StringUtils.hasText(properties.getClientId())) {
             validAudiences.add(properties.getClientId());
         }
         if (!validAudiences.isEmpty()) {

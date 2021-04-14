@@ -10,6 +10,7 @@ public class AADB2CURLTest {
 
     static final String DEFAULT_BASE_URI = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/";
     static final String CHINA_BASE_URI = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/";
+    static final String B2C_TENANT_ID = "fake-tenant-id";
 
     /**
      * Reference pattern see AUTHORIZATION_URL_PATTERN of ${@link AADB2CURL}.
@@ -46,6 +47,17 @@ public class AADB2CURLTest {
         AADB2CURL.getTokenUrl("", "");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetAADTokenUrlException() {
+        AADB2CURL.getAADTokenUrl("");
+    }
+
+    @Test
+    public void testGetAADTokenUrl() {
+        final String expect = "https://login.microsoftonline.com/fake-tenant-id/oauth2/v2.0/token";
+        assertThat(AADB2CURL.getAADTokenUrl(B2C_TENANT_ID)).isEqualTo(expect);
+    }
+
     /**
      * Reference pattern see JWKSET_URL_PATTERN of ${@link AADB2CURL}.
      */
@@ -64,6 +76,17 @@ public class AADB2CURLTest {
     @Test(expected = IllegalArgumentException.class)
     public void testGetJwkSetUrlException() {
         AADB2CURL.getJwkSetUrl(DEFAULT_BASE_URI, "");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetAADJwkSetUrlException() {
+        AADB2CURL.getAADJwkSetUrl("");
+    }
+
+    @Test
+    public void testGetAADJwkSetUrl() {
+        final String expect = "https://login.microsoftonline.com/fake-tenant-id/discovery/v2.0/keys";
+        assertThat(AADB2CURL.getAADJwkSetUrl(B2C_TENANT_ID)).isEqualTo(expect);
     }
 
     /**
