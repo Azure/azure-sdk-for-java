@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -110,7 +111,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         MockitoAnnotations.initMocks(this);
         when(environment.getActiveProfiles()).thenReturn(new String[]{PROFILE_NAME_1, PROFILE_NAME_2});
         MutablePropertySources sources = new MutablePropertySources();
-
+        
         sources.addFirst(new PropertySource<String>("refreshArgs") {
 
             @Override
@@ -118,7 +119,7 @@ public class AppConfigurationPropertySourceLocatorTest {
                 return null;
             }
         });
-
+        
         when(environment.getPropertySources()).thenReturn(sources);
 
         when(properties.getName()).thenReturn(APPLICATION_NAME);
@@ -130,6 +131,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(configStoreMock.getConnectionString()).thenReturn(TEST_CONN_STRING);
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
+        when(configStoreMock.isEnabled()).thenReturn(true);
         when(configStoreMock.isEnabled()).thenReturn(true);
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
@@ -377,7 +379,8 @@ public class AppConfigurationPropertySourceLocatorTest {
         AppConfigurationProperties properties = new AppConfigurationProperties();
         properties.setName("TestStoreName");
         properties.setStores(configStores);
-
+        
+        when(appPropertiesMock.getPrekillTime()).thenReturn(5);
         when(appPropertiesMock.getPrekillTime()).thenReturn(5);
 
         ConfigurableEnvironment env = Mockito.mock(ConfigurableEnvironment.class);

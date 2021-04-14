@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -14,8 +15,8 @@ final class StateHolder {
 
     private static final int MAX_JITTER = 15;
     private static final String FEATURE_ENDPOINT = "_feature";
-    private static ConcurrentHashMap<String, State> state = new ConcurrentHashMap<String, State>();
-    private static ConcurrentHashMap<String, Boolean> loadState = new ConcurrentHashMap<String, Boolean>();
+    private static final Map<String, State> state = new ConcurrentHashMap<>();
+    private static final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
 
     private StateHolder() {
         throw new IllegalStateException("Should not be callable.");
@@ -70,8 +71,7 @@ final class StateHolder {
      * @return the loadState
      */
     static boolean getLoadState(String name) {
-        Boolean loadstate = loadState.get(name);
-        return loadstate == null ? false : loadstate;
+        return loadState.getOrDefault(name,  false);
     }
     
     /**

@@ -33,10 +33,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     private final List<ConfigStore> configStores;
-
     private ApplicationEventPublisher publisher;
-
-    private ClientStore clientStore;
+    private final ClientStore clientStore;
 
     private String eventDataInfo;
 
@@ -59,7 +57,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      */
     @Async
     public Future<Boolean> refreshConfigurations() {
-        return new AsyncResult<Boolean>(refreshStores());
+        return new AsyncResult<>(refreshStores());
     }
 
     public void resetCache(String endpoint) {
