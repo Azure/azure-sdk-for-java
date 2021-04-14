@@ -381,7 +381,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         properties.setStores(configStores);
         
         when(appPropertiesMock.getPrekillTime()).thenReturn(5);
-        when(appPropertiesMock.getPrekillTime()).thenReturn(5);
 
         ConfigurableEnvironment env = Mockito.mock(ConfigurableEnvironment.class);
         MutablePropertySources sources = new MutablePropertySources();
