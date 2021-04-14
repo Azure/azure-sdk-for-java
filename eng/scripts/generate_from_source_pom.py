@@ -21,6 +21,7 @@ import argparse
 from datetime import timedelta
 import os
 import time
+import json
 import xml.etree.ElementTree as ET
 
 # Only azure-client-sdk-parent and spring-boot-starter-parent are valid parent POMs for Track 2 libraries.
@@ -55,7 +56,7 @@ pom_file_end = '''  </modules>
 maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str):
+def create_from_source_pom(project_list: str, set_pipeline_variable: bool = False):
     project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
@@ -103,6 +104,9 @@ def create_from_source_pom(project_list: str):
             fromSourcePom.write('    <module>{}</module>\n'.format(module))
 
         fromSourcePom.write(pom_file_end)
+
+    if set_pipeline_variable:
+        print('##vso[task.setvariable variable=FromSourceDirectories;]{}'.format(json.dumps(modules)))
 
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
 def load_client_artifact_identifiers():
@@ -234,11 +238,12 @@ def element_find(element: ET.Element, path: str):
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '--pl', type=str)
+    parser.add_argument('--set-pipeline-variable', action='store_true', default=False)
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list)
+    create_from_source_pom(args.project_list, args.set_pipeline_variable)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')
