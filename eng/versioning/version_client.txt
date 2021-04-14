@@ -246,7 +246,7 @@ com.azure.resourcemanager:azure-resourcemanager-batchai;1.0.0-beta.1;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-databox;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-databox;1.0.0-beta.1;1.0.0-beta.2
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
