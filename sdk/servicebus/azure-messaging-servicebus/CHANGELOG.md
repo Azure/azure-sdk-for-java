@@ -2,9 +2,9 @@
 
 ## 7.3.0-beta.1 (2021-04-14)
 ### New Features
-- Issue [17614](https://github.com/Azure/azure-sdk-for-java/issues/17614) : Adding support for AMQP Data types SEQUENCE 
-  and VALUE. It support sending and receiving of only one AMQP Sequence at present.
-- Added the api `maxAutoLockRenewDuration()` on `ServiceBusProcessorClientBuilder`.
+- Adding support for AMQP Data types SEQUENCE and VALUE. It support sending and receiving of only one AMQP Sequence at 
+  present. Issue [17614](https://github.com/Azure/azure-sdk-for-java/issues/17614).
+- Adding support for api `maxAutoLockRenewDuration()` on `ServiceBusProcessorClientBuilder`.
 
 ## 7.2.0 (2021-04-12)
 ### Bug Fixes
