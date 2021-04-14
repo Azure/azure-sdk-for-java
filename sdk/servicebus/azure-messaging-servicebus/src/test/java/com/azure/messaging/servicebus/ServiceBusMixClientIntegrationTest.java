@@ -241,7 +241,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusProcessorClient processorA;
         // Initialize processor client
         if (isSessionEnabled) {
-            processorA = builder.sessionProcessor().disableAutoComplete().topicName(topicA).subscriptionName("session-subscription")
+            processorA = builder.sessionProcessor().disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
                 .processMessage(processMessage).processError(processError)
                 .buildProcessorClient();
         } else {
@@ -400,7 +400,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient receiverA;
 
         if (isSessionEnabled) {
-            receiverA = builder.sessionReceiver().disableAutoComplete().topicName(topicA).subscriptionName("session-subscription")
+            receiverA = builder.sessionReceiver().disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
                 .buildAsyncClient().acceptNextSession().block();
         } else {
             receiverA = builder.receiver().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
