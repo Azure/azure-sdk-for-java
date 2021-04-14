@@ -85,8 +85,8 @@ stages:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - ${{ parameters.ServiceDirectory }}
-                    - sdk/**/pom*.xml
+                    - '${{ parameters.ServiceDirectory }}'
+                    - '*.xml'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
