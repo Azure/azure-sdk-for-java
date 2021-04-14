@@ -137,7 +137,7 @@ foreach ($packageDetail in $packageDetails) {
     Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$RepositoryUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.password=$RepositoryPassword`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
     mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
   }
-  elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+  elseif ($true) {
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
     Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
     mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
@@ -161,6 +161,7 @@ foreach ($packageDetail in $packageDetails) {
     else {
       Write-Information "Releasing staging repostiory $stagedRepositoryId"
       Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"$RepositoryPassword`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+      exit 1
       mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
     }
   }
