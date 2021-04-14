@@ -1,0 +1,64 @@
+parameters:
+  - name: Paths
+    type: object
+    default: []
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+
+steps:
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      Repositories:
+        - Name: Azure/azure-sdk-for-java
+          Commitish: $(Build.SourceVersion)
+          WorkingDirectory: $(System.DefaultWorkingDirectory)
+      Paths: ${{ parameters.Paths }}
+
+  - task: UsePythonVersion@0
+    displayName: 'Use Python 3.6'
+    inputs:
+      versionSpec: '3.6'
+    condition: eq(variables['TestFromSource'], 'true')
+
+  - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+    parameters:
+      AgentImage: $(OSVmImage)
+
+  - template: generate-project-list.yml
+    parameters:
+      Artifacts: ${{parameters.Artifacts}}
+      AdditionalModules: ${{parameters.AdditionalModules}}
+
+  - task: PythonScript@0
+    displayName: 'Generate FromSourceDirectories variable for sparse checkout'
+    inputs:
+      scriptPath: 'eng/scripts/generate_from_source_pom.py'
+      arguments: '--set-pipeline-variable --project-list $(ProjectList)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - pwsh: |
+      $paths = '$(FromSourceDirectories)' | ConvertFrom-Json
+      foreach ($path in $paths) {
+        Write-Host "git sparse-checkout add $path"
+        git sparse-checkout add $path
+      }
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - task: PythonScript@0
+    displayName: 'Set versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/set_versions.py'
+      arguments: '--build-type client --pst'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - task: PythonScript@0
+    displayName: 'Update versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--update-type library --build-type client --sr'
+    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
