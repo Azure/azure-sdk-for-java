@@ -2233,10 +2233,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     final OperationListener listener =
                         operationContextAndListenerTuple.getOperationListener();
                     final OperationContext operationContext = operationContextAndListenerTuple.getOperationContext();
-
-                    // TODO: moderakh is there a better place to set this?
                     request.getHeaders().put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
-
                     listener.requestListener(operationContext, request);
 
                     return RxDocumentClientImpl.this.query(request).single().doOnNext(
