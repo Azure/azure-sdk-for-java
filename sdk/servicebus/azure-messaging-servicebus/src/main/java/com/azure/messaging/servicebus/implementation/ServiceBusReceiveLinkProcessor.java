@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AsyncAutoCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
@@ -198,7 +199,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     drain();
                 }),
-                next.getEndpointStates().subscribe(
+                next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
@@ -221,20 +222,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
-                            if (existing != null) {
-                                existing.dispose();
-                            }
 
+                            disposeReceiver(existing);
                             requestUpstream();
                         }
                     }));
         }
 
         checkAndAddCredits(next);
-
-        if (oldChannel != null) {
-            oldChannel.dispose();
-        }
+        disposeReceiver(oldChannel);
 
         if (oldSubscription != null) {
             oldSubscription.dispose();
@@ -412,9 +408,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             retrySubscription.dispose();
         }
 
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         currentLink = null;
 
@@ -509,9 +503,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             subscriber.onComplete();
         }
 
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         synchronized (queueLock) {
             messageQueue.clear();
@@ -585,5 +577,22 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         return creditsToAdd;
+    }
+
+    private void disposeReceiver(AmqpReceiveLink link) {
+        if (link == null) {
+            return;
+        }
+
+        try {
+            if (link instanceof AsyncAutoCloseable) {
+                ((AsyncAutoCloseable) link).closeAsync().subscribe();
+            } else {
+                link.dispose();
+            }
+        } catch (Exception error) {
+            logger.warning("linkName[{}] entityPath[{}] Unable to dispose of link.", link.getLinkName(),
+                link.getEntityPath(), error);
+        }
     }
 }

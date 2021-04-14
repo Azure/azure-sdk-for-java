@@ -34,6 +34,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -135,7 +136,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     public Flux<Message> receive() {
         // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
-        return super.receive().filter(message -> message != EMPTY_MESSAGE);
+        return super.receive()
+            .filter(message -> message != EMPTY_MESSAGE)
+            .publishOn(Schedulers.boundedElastic());
     }
 
     @Override
@@ -149,13 +152,14 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     @Override
-    public void dispose() {
+    public Mono<Void> closeAsync() {
         if (isDisposed.getAndSet(true)) {
-            return;
+            return super.closeAsync();
         }
 
         cleanupWorkItems();
 
+        final Mono<Void> disposeMono;
         if (!pendingUpdates.isEmpty()) {
             final List<Mono<Void>> pending = new ArrayList<>();
             final StringJoiner builder = new StringJoiner(", ");
@@ -174,14 +178,15 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             }
 
             logger.info("Waiting for pending updates to complete. Locks: {}", builder.toString());
-            try {
-                Mono.when(pending).block(timeout);
-            } catch (IllegalStateException ignored) {
-            }
+            disposeMono = Mono.when(pending);
+        } else {
+            disposeMono = Mono.empty();
         }
 
-        subscription.dispose();
-        super.dispose();
+        return disposeMono.onErrorResume(error -> {
+            logger.info("There was an exception while disposing of all links.", error);
+            return Mono.empty();
+        }).doFinally(signal -> subscription.dispose()).then(super.closeAsync());
     }
 
     @Override
