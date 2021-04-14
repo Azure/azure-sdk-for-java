@@ -20,6 +20,7 @@ private case class ChangeFeedScan
     with CosmosLoggingTrait {
 
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  private lazy val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
 
   /**
    * Returns the actual schema of this data source scan, which may be different from the physical
@@ -30,8 +31,7 @@ private case class ChangeFeedScan
   }
 
   override def description(): String = {
-    // Ignore trailing $'s in the class names for Scala objects
-    this.getClass.getName.stripSuffix("$")
+    s"""Cosmos ChangeFeedScan: ${containerConfig.database}.${containerConfig.container}""".stripMargin
   }
 
   /**
@@ -62,5 +62,4 @@ private case class ChangeFeedScan
   override def toMicroBatchStream(checkpointLocation: String): MicroBatchStream = {
     new ChangeFeedMicroBatchStream(session, schema, config, cosmosClientStateHandle, checkpointLocation: String)
   }
-
 }
