@@ -199,9 +199,6 @@ function Get-java-GithubIoDocIndex()
 }
 function check-source-jar($artifactId, $groudId, $version) 
 {
-  if($artifactId -eq "azure-spring-boot-starter") {
-    Write-Host "I am here"
-  }
   $groudIdUrl = $groudId.Replace(".", "/")
   $MavenDownloadUrl = "$MavenDownloadSite/$groudIdUrl/$artifactId/$version"
   $sourceJarName = "$artifactId-$version-sources.jar"
