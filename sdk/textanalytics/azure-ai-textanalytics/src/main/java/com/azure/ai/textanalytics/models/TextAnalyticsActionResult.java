@@ -67,6 +67,11 @@ public abstract class TextAnalyticsActionResult {
         return isError;
     }
 
+    /**
+     * Gets the action result.
+     *
+     * @return the action result.
+     */
     public abstract IterableStream<?> getResult();
 
     private void setCompletedAt(OffsetDateTime completedAt) {
