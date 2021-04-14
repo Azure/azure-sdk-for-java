@@ -15,7 +15,9 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,130 +26,98 @@ public class AzureMonitorRedirectCustomPolicyTest {
 
     @Test
     public void retryWith308Test() throws Exception {
-        final int maxRetries = 1;
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Location", "http://redirecthost/");
-        HttpHeaders httpHeader = new HttpHeaders(headers);
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                int count = -1;
-
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Assertions.assertTrue(count++ < maxRetries);
-                    if (request.getUrl().toString().equals("http://localhost/")) {
-                        return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-                    } else {
-                        return Mono.just(new MockHttpResponse(request, 200));
-                    }
+        RecordingHttpClient httpClient = new RecordingHttpClient() {
+            @Override
+            public Mono<HttpResponse> internalSend(HttpRequest request) {
+                if (request.getUrl().toString().equals("http://localhost/")) {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Location", "http://redirecthost/");
+                    HttpHeaders httpHeader = new HttpHeaders(headers);
+                    return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200));
                 }
-            })
+            }
+        };
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new AzureMonitorRedirectCustomPolicy())
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
-
+        
+        assertEquals(2, httpClient.httpRequestsCaptured.size());
         assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void retryMaxTest() throws Exception {
-        final int maxRetries = 10;
+        RecordingHttpClient httpClient = new RecordingHttpClient() {
+            @Override
+            public Mono<HttpResponse> internalSend(HttpRequest request) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/" + httpRequestsCaptured.size());
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            }
+        };
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                int count = -1;
-
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("Location", "http://redirecthost/" + count);
-                    HttpHeaders httpHeader = new HttpHeaders(headers);
-                    Assertions.assertTrue(count++ < maxRetries);
-                    return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-                }
-            })
-            .policies(new AzureMonitorRedirectCustomPolicy())
+            .httpClient(httpClient)
+            .policies(new AzureMonitorRedirectCustomPolicy(3))
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
-
+        // redirect is captured only 3 times
+        assertEquals(4, httpClient.httpRequestsCaptured.size());
         assertEquals(308, response.getStatusCode());
     }
 
     @Test
     public void retryWith308MultipleRequestsTest() throws Exception {
-        final int maxRetries = 2;
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Location", "http://redirecthost/");
-        HttpHeaders httpHeader = new HttpHeaders(headers);
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                int count = -1;
-
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Assertions.assertTrue(count++ < maxRetries);
-                    if (request.getUrl().toString().equals("http://localhost/")) {
-                        return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-                    } else {
-                        return Mono.just(new MockHttpResponse(request, 200));
-                    }
+        RecordingHttpClient httpClient = new RecordingHttpClient() {
+            @Override
+            public Mono<HttpResponse> internalSend(HttpRequest request) {
+                if (request.getUrl().toString().equals("http://localhost/")) {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Location", "http://redirecthost/");
+                    HttpHeaders httpHeader = new HttpHeaders(headers);
+                    return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200));
                 }
-            })
+            }
+        };
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new AzureMonitorRedirectCustomPolicy())
             .build();
 
+        assertEquals(0,httpClient.httpRequestsCaptured.size());
         HttpResponse response1 = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
+        assertEquals(2,httpClient.httpRequestsCaptured.size());
         HttpResponse response2 = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
-
+        assertEquals(3,httpClient.httpRequestsCaptured.size());
         assertEquals(200, response1.getStatusCode());
         //Make sure the future requests are sent to http://redirecthost/
         assertEquals(200, response2.getStatusCode());
+
     }
 
-    @Test
-    public void retryWith308And500Test() throws Exception {
-        final int maxRetries = 3;
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Location", "http://redirecthost/");
-        HttpHeaders httpHeader = new HttpHeaders(headers);
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                int count = -1;
+    static abstract class RecordingHttpClient implements HttpClient {
 
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Assertions.assertTrue(count++ < maxRetries);
-                    if (count == 0) {
-                        System.out.println("Unavailable");
-                        return Mono.just(new MockHttpResponse(request, 500));
-                    } else if (request.getUrl().toString().equals("http://localhost/")) {
-                        System.out.println("Redirect");
-                        return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-                    } else {
-                        System.out.println("Success");
-                        return Mono.just(new MockHttpResponse(request, 200));
-                    }
-                }
-            })
-            .policies(new AzureMonitorRedirectCustomPolicy())
-            .policies(new RetryPolicy(new FixedDelay(3, Duration.of(0, ChronoUnit.MILLIS))))
-            .build();
+        final List<HttpRequest> httpRequestsCaptured = new ArrayList<>();
 
-        HttpResponse response1 = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
-        HttpResponse response2 = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
-        assertEquals(200, response1.getStatusCode());
-        //Make sure the future requests are sent to http://redirecthost/
-        assertEquals(200, response2.getStatusCode());
+        @Override
+        public Mono<HttpResponse> send(HttpRequest httpRequest) {
+            httpRequestsCaptured.add(httpRequest);
+            return internalSend(httpRequest);
+        }
+
+        abstract Mono<HttpResponse> internalSend(HttpRequest httpRequest);
     }
-
-
-
 
 }
