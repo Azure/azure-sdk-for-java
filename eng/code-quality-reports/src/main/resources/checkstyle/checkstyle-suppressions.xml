@@ -179,7 +179,6 @@ the main ServiceBusClientBuilder. -->
   <!-- Nested blocks are still readable in the switch statements. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
-  <suppress checks="AvoidNestedBlocks" files="com.azure.storage.blob.implementation.util.StorageBlockingSink.java"/>
 
   <!-- The constant name is public static. -->
   <suppress checks="ConstantNames" files=".*[/\\]azure[/\\]storage[/\\].*LoggingOptions.java"/>
