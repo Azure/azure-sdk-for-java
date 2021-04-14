@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
@@ -34,15 +33,16 @@ import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchOptions;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SuggestOptions;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -513,7 +513,7 @@ public final class DocumentsImpl {
         String filter = filterInternal;
         Boolean useFuzzyMatchingInternal = null;
         if (suggestOptions != null) {
-            useFuzzyMatchingInternal = suggestOptions.isUseFuzzyMatching();
+            useFuzzyMatchingInternal = suggestOptions.useFuzzyMatching();
         }
         Boolean useFuzzyMatching = useFuzzyMatchingInternal;
         String highlightPostTagInternal = null;
@@ -681,7 +681,7 @@ public final class DocumentsImpl {
         String filter = filterInternal;
         Boolean useFuzzyMatchingInternal = null;
         if (autocompleteOptions != null) {
-            useFuzzyMatchingInternal = autocompleteOptions.isUseFuzzyMatching();
+            useFuzzyMatchingInternal = autocompleteOptions.useFuzzyMatching();
         }
         Boolean useFuzzyMatching = useFuzzyMatchingInternal;
         String highlightPostTagInternal = null;

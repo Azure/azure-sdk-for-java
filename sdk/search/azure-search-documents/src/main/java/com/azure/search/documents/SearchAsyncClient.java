@@ -817,9 +817,10 @@ public final class SearchAsyncClient {
             return searchRequest;
         }
 
-        List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
+        List<String> scoringParameters = searchOptions.getScoringParameters() == null
+            ? null
             : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         return searchRequest.setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
             .setFacets(searchOptions.getFacets())
@@ -842,14 +843,6 @@ public final class SearchAsyncClient {
             .setSelect(nullSafeStringJoin(searchOptions.getSelect()))
             .setSkip(searchOptions.getSkip())
             .setTop(searchOptions.getTop());
-    }
-
-    private static String nullSafeStringJoin(Iterable<? extends CharSequence> elements) {
-        if (elements == null) {
-            return null;
-        }
-
-        return String.join(",", elements);
     }
 
     private static String createSearchRequestAnswers(SearchOptions searchOptions) {
@@ -882,31 +875,19 @@ public final class SearchAsyncClient {
         SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
 
-        if (suggestOptions != null) {
-            suggestRequest.setFilter(suggestOptions.getFilter())
-                .setUseFuzzyMatching(suggestOptions.useFuzzyMatching())
-                .setHighlightPostTag(suggestOptions.getHighlightPostTag())
-                .setHighlightPreTag(suggestOptions.getHighlightPreTag())
-                .setMinimumCoverage(suggestOptions.getMinimumCoverage())
-                .setTop(suggestOptions.getTop());
-
-            List<String> searchFields = suggestOptions.getSearchFields();
-            if (searchFields != null) {
-                suggestRequest.setSearchFields(String.join(",", searchFields));
-            }
-
-            List<String> orderBy = suggestOptions.getOrderBy();
-            if (orderBy != null) {
-                suggestRequest.setOrderBy(String.join(",", orderBy));
-            }
-
-            List<String> select = suggestOptions.getSelect();
-            if (select != null) {
-                suggestRequest.setSelect(String.join(",", select));
-            }
+        if (suggestOptions == null) {
+            return suggestRequest;
         }
 
-        return suggestRequest;
+        return suggestRequest.setFilter(suggestOptions.getFilter())
+            .setUseFuzzyMatching(suggestOptions.useFuzzyMatching())
+            .setHighlightPostTag(suggestOptions.getHighlightPostTag())
+            .setHighlightPreTag(suggestOptions.getHighlightPreTag())
+            .setMinimumCoverage(suggestOptions.getMinimumCoverage())
+            .setOrderBy(nullSafeStringJoin(suggestOptions.getOrderBy()))
+            .setSearchFields(nullSafeStringJoin(suggestOptions.getSearchFields()))
+            .setSelect(nullSafeStringJoin(suggestOptions.getSelect()))
+            .setTop(suggestOptions.getTop());
     }
 
     /**
@@ -921,22 +902,26 @@ public final class SearchAsyncClient {
         AutocompleteOptions autocompleteOptions) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
 
-        if (autocompleteOptions != null) {
-            autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
-                .setUseFuzzyMatching(autocompleteOptions.useFuzzyMatching())
-                .setHighlightPostTag(autocompleteOptions.getHighlightPostTag())
-                .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
-                .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
-                .setTop(autocompleteOptions.getTop())
-                .setAutocompleteMode(autocompleteOptions.getAutocompleteMode());
-
-            List<String> searchFields = autocompleteOptions.getSearchFields();
-            if (searchFields != null) {
-                autoCompleteRequest.setSearchFields(String.join(",", searchFields));
-            }
+        if (autocompleteOptions == null) {
+            return autoCompleteRequest;
         }
 
-        return autoCompleteRequest;
+        return autoCompleteRequest.setAutocompleteMode(autocompleteOptions.getAutocompleteMode())
+            .setFilter(autocompleteOptions.getFilter())
+            .setUseFuzzyMatching(autocompleteOptions.useFuzzyMatching())
+            .setHighlightPostTag(autocompleteOptions.getHighlightPostTag())
+            .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
+            .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
+            .setSearchFields(nullSafeStringJoin(autocompleteOptions.getSearchFields()))
+            .setTop(autoCompleteRequest.getTop());
+    }
+
+    private static String nullSafeStringJoin(Iterable<? extends CharSequence> elements) {
+        if (elements == null) {
+            return null;
+        }
+
+        return String.join(",", elements);
     }
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {

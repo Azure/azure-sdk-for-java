@@ -18,6 +18,8 @@ public class SearchIndexCustomizations extends Customization {
 
     // Classes
     private static final String SEARCH_OPTIONS = "SearchOptions";
+    private static final String AUTOCOMPLETE_OPTIONS = "AutocompleteOptions";
+    private static final String SUGGEST_OPTIONS = "SuggestOptions";
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
@@ -26,11 +28,31 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
+        customizeAutocompleteOptions(packageCustomization.getClass(AUTOCOMPLETE_OPTIONS));
+        customizeSuggestOptions(packageCustomization.getClass(SUGGEST_OPTIONS));
+    }
 
+    private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
+        classCustomization.getMethod("setSearchFields").replaceParameters("String... searchFields")
+            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "searchFields", "searchFields", "searchFields"));
+    }
+
+    private void customizeSuggestOptions(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
+        classCustomization.getMethod("setOrderBy").replaceParameters("String... orderBy")
+            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "orderBy", "orderBy", "orderBy"));
+        classCustomization.getMethod("setSearchFields").replaceParameters("String... searchFields")
+            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "searchFields", "searchFields", "searchFields"));
+        classCustomization.getMethod("setSelect").replaceParameters("String... select")
+            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "select", "select", "select"));
+    }
+
+    private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
+        customizeSearchOptions(packageCustomization.getClass(SEARCH_OPTIONS));
     }
 
     private void customizeSearchOptions(ClassCustomization classCustomization) {
-
         classCustomization.getMethod("isIncludeTotalCount").rename("isTotalCountIncluded");
 
         classCustomization.getMethod("setFacets").replaceParameters("String... facets")
@@ -63,10 +85,4 @@ public class SearchIndexCustomizations extends Customization {
 //            .setReturnType("List<ScoringParameter>",
 //                "this.scoringParameters.stream().map(ScoringParameter::new).collect(java.util.stream.Collectors.toList())");
     }
-
-    private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
-        customizeSearchOptions(packageCustomization.getClass(SEARCH_OPTIONS));
-    }
-
-
 }
