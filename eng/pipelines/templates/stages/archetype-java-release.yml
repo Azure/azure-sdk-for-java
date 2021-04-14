@@ -82,6 +82,12 @@ stages:
               vmImage: MMSUbuntu18.04
 
             steps:
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                parameters:
+                  Paths:
+                    - '${{ parameters.ServiceDirectory }}'
+                    - '**/*.xml'
+
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
                 inputs:
@@ -124,7 +130,7 @@ stages:
               runOnce:
                 deploy:
                   steps:
-                    - checkout: self
+                    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     - template: /eng/common/pipelines/templates/steps/retain-run.yml
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
@@ -146,10 +152,15 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
-                        path: azure-sdk-for-java
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          SkipDefaultCheckout: true
+                          Repositories:
+                            - Name: Azure/azure-sdk-for-java
+                              Commitish: $(Build.SourceVersion)
+                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                       - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
@@ -188,7 +199,7 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                       - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
                         parameters:
                           TargetVariable: "OwningGHUser"
@@ -225,7 +236,7 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
@@ -255,7 +266,7 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
 
                       - task: UsePythonVersion@0
                         displayName: 'Use Python 3.6'
@@ -295,10 +306,15 @@ stages:
           name: Azure Pipelines
           vmImage: vs2017-win2016
         steps:
-        - checkout: self
-          path: azure-sdk-for-java
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            SkipDefaultCheckout: true
+            Repositories:
+              - Name: Azure/azure-sdk-for-java
+                Commitish: $(Build.SourceVersion)
+                WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - download: current
           artifact: ${{parameters.ArtifactName}}-signed
