@@ -1,5 +1,8 @@
 # Release History
 
+## 2.2.0-beta.2 (Unreleased)
+
+
 ## 2.2.0-beta.1 (2021-04-14)
 ### New Features
 - Adding support for AMQP data types SEQUENCE and VALUE.
