@@ -40,6 +40,7 @@ public class CosmosItemRequestOptions {
         throughputControlGroupName = options.throughputControlGroupName;
     }
 
+
     /**
      * Constructor
      */
@@ -283,7 +284,6 @@ public class CosmosItemRequestOptions {
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
-
         return requestOptions;
     }
 
