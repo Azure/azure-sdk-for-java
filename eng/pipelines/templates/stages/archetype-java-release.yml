@@ -157,7 +157,7 @@ stages:
                         parameters:
                           SkipDefaultCheckout: true
                           Repositories:
-                            - Name: azure-sdk-for-java
+                            - Name: Azure/azure-sdk-for-java
                               Commitish: $(Build.SourceVersion)
                               WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
@@ -311,7 +311,7 @@ stages:
           parameters:
             SkipDefaultCheckout: true
             Repositories:
-              - Name: azure-sdk-for-java
+              - Name: Azure/azure-sdk-for-java
                 Commitish: $(Build.SourceVersion)
                 WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
