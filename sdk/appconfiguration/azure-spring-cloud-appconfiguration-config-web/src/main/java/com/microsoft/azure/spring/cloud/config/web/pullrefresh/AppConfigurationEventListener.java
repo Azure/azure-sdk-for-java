@@ -18,7 +18,7 @@ public class AppConfigurationEventListener implements ApplicationListener<Servle
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationEventListener.class);
 
-    private AppConfigurationRefresh appConfigurationRefresh;
+    private final AppConfigurationRefresh appConfigurationRefresh;
 
     public AppConfigurationEventListener(AppConfigurationRefresh appConfigurationRefresh) {
         this.appConfigurationRefresh = appConfigurationRefresh;

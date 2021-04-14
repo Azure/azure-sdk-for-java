@@ -2,18 +2,20 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 
 final class StateHolder {
 
     private static final int MAX_JITTER = 15;
-    private static ConcurrentHashMap<String, State> state = new ConcurrentHashMap<String, State>();
-    private static ConcurrentHashMap<String, Boolean> loadState = new ConcurrentHashMap<String, Boolean>();
+    private static final Map<String, State> state = new ConcurrentHashMap<>();
+    private static final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
 
     private StateHolder() {
         throw new IllegalStateException("Should not be callable.");
@@ -51,8 +53,7 @@ final class StateHolder {
      * @return the loadState
      */
     static boolean getLoadState(String name) {
-        Boolean loadstate = loadState.get(name);
-        return loadstate == null ? false : loadstate;
+        return loadState.getOrDefault(name,  false);
     }
 
     /**
