@@ -681,6 +681,7 @@
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
         <module>sdk/customerinsights</module>
+        <module>sdk/databox</module>
         <module>sdk/databoxedge</module>
         <module>sdk/databricks</module>
         <module>sdk/datadog</module>
