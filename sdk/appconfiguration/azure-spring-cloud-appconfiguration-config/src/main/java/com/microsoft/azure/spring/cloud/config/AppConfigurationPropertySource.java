@@ -153,8 +153,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
         List<ConfigurationSetting> features = new ArrayList<ConfigurationSetting>();
         // Reading In Features
-        if (configStore.isUseFeatureManagement()) {
-            settingSelector.setKeyFilter(".appconfig*");
+        if (configStore.getFeatureFlags().getEnabled()) {
+            settingSelector.setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
+                .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
             features = clients.listSettings(settingSelector, storeName);
 
             if (features == null) {

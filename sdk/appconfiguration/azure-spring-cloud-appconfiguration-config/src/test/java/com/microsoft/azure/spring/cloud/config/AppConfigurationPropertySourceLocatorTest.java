@@ -53,6 +53,7 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProvid
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
 import reactor.core.publisher.Flux;
@@ -77,6 +78,8 @@ public class AppConfigurationPropertySourceLocatorTest {
     private ClientStore clientStoreMock;
     @Mock
     private ConfigStore configStore;
+    @Mock
+    private FeatureFlagStore featureFlagStoreMock;
     @Mock
     private ConfigurationAsyncClient configClientMock;
     @Mock
@@ -168,6 +171,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] labels = new String[1];
         labels[0] = "\0";
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
@@ -184,12 +188,45 @@ public class AppConfigurationPropertySourceLocatorTest {
         assertThat(sources.size()).isEqualTo(2);
         assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
+    
+    @Test
+    public void storeCreatedWithFeatureFlags() {
+        String[] labels = new String[1];
+        labels[0] = "\0";
+        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        when(properties.getDefaultContext()).thenReturn("application");
+        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(item1)
+        .thenReturn(featureItem);
+        
+        FeatureFlagStore featureFlagStore = new FeatureFlagStore();
+        featureFlagStore.setEnabled(true);
+        
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
+
+        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
+            tokenCredentialProvider, null);
+        PropertySource<?> source = locator.locate(environment);
+        assertThat(source).isInstanceOf(CompositePropertySource.class);
+
+        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+        // Application name: foo and active profile: dev,prod, should construct below
+        // composite Property Source:
+        // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
+        // /application/]
+        String[] expectedSourceNames = new String[]{
+            "/foo/store1/\0",
+            "/application/store1/\0"
+        };
+        assertThat(sources.size()).isEqualTo(2);
+        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+    }
 
     @Test
     public void revisionsCheck() {
         String[] labels = new String[1];
         labels[0] = "\0";
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
         when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(item1)
             .thenReturn(featureItem);
@@ -217,6 +254,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] labels = new String[1];
         labels[0] = "\0";
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(environment.getProperty("spring.application.name")).thenReturn(null);
         when(properties.getDefaultContext()).thenReturn("application");
@@ -241,6 +279,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] labels = new String[1];
         labels[0] = "\0";
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(environment.getProperty("spring.application.name")).thenReturn("");
         when(properties.getName()).thenReturn("");
@@ -343,7 +382,19 @@ public class AppConfigurationPropertySourceLocatorTest {
         
         when(appPropertiesMock.getPrekillTime()).thenReturn(5);
 
-        Environment env = Mockito.mock(ConfigurableEnvironment.class);
+        ConfigurableEnvironment env = Mockito.mock(ConfigurableEnvironment.class);
+        MutablePropertySources sources = new MutablePropertySources();
+
+        sources.addFirst(new PropertySource<String>("refreshArgs") {
+
+            @Override
+            public Object getProperty(String name) {
+                return null;
+            }
+        });
+
+        when(env.getPropertySources()).thenReturn(sources);
+        
         String[] array = {};
         when(env.getActiveProfiles()).thenReturn(array);
         String[] labels = {""};

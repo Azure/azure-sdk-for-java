@@ -35,7 +35,7 @@ public class ConfigStore {
 
     private boolean failFast = true;
 
-    private boolean useFeatureManagement = false;
+    private FeatureFlagStore featureFlags = new FeatureFlagStore();
 
     private boolean enabled = true;
 
@@ -77,20 +77,12 @@ public class ConfigStore {
         this.failFast = failFast;
     }
 
-    public boolean isUseFeatureManagement() {
-        return useFeatureManagement;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public void setUseFeatureManagement(boolean useFeatureManagement) {
-        this.useFeatureManagement = useFeatureManagement;
     }
 
     /**
@@ -105,6 +97,14 @@ public class ConfigStore {
      */
     public void setMonitoring(AppConfigurationStoreMonitoring monitoring) {
         this.monitoring = monitoring;
+    }
+
+    public FeatureFlagStore getFeatureFlags() {
+        return featureFlags;
+    }
+
+    public void setFeatureFlags(FeatureFlagStore featureFlags) {
+        this.featureFlags = featureFlags;
     }
 
     @PostConstruct

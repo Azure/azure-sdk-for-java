@@ -99,10 +99,13 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         // Feature Management needs to be set in the last config store.
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
-            if (configStore.isEnabled() && (startup.get() || StateHolder.getLoadState(configStore.getEndpoint()))) {
+
+            Boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
+
+            if (configStore.isEnabled() && loadNewPropertySources) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
                     !configStoreIterator.hasNext());
-            } else if (!configStore.isEnabled() && (startup.get() || StateHolder.getLoadState(configStore.getEndpoint()))) {
+            } else if (!configStore.isEnabled() && loadNewPropertySources) {
                 LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
             } else {
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
@@ -130,7 +133,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
      */
     private void addPropertySource(CompositePropertySource composite, ConfigStore store, String applicationName,
         List<String> profiles, Map<String, List<String>> storeContextsMap, boolean initFeatures) {
-        
+
         List<String> contexts = new ArrayList<>();
         contexts.addAll(generateContexts(this.properties.getDefaultContext(), store));
         contexts.addAll(generateContexts(applicationName, store));
@@ -174,7 +177,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         if (!StringUtils.hasText(applicationName)) {
             return result; // Ignore null or empty application name
         }
-        
+
         result.add(PATH_SPLITTER + applicationName + PATH_SPLITTER);
 
         return result;
@@ -211,7 +214,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             }
 
             // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+            List<ConfigurationSetting> watchKeysSettings = new ArrayList<ConfigurationSetting>();
+            List<ConfigurationSetting> watchKeysFeatures = new ArrayList<ConfigurationSetting>();
 
             for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
@@ -219,10 +223,27 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
                     store.getEndpoint());
-                watchKeys.add(configurationRevision);
+                watchKeysSettings.add(configurationRevision);
             }
-            StateHolder.setState(store.getEndpoint(), watchKeys, store.getMonitoring());
+            if (store.getFeatureFlags().getEnabled()) {
+                SettingSelector settingSelector = new SettingSelector()
+                    .setKeyFilter(store.getFeatureFlags().getKeyFilter())
+                    .setLabelFilter(store.getFeatureFlags().getLabelFilter());
+
+                ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
+                    store.getEndpoint());
+                configurationRevision.setKey(store.getFeatureFlags().getKeyFilter());
+                watchKeysFeatures.add(configurationRevision);
+                StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
+                    store.getFeatureFlags().getCacheExpiration());
+                StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
+            }
+
+            StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getCacheExpiration());
             StateHolder.setLoadState(store.getEndpoint(), true);
+        } catch (RuntimeException e) {
+            delayException();
+            throw e;
         } catch (Exception e) {
             delayException();
             throw e;

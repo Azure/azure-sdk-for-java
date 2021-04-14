@@ -2,15 +2,12 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
@@ -20,12 +17,21 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
+import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.properties.FeatureFlagStore;
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
+
 @Component
 public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefresh.class);
 
     private final AtomicBoolean running = new AtomicBoolean(false);
+
     private final List<ConfigStore> configStores;
     private ApplicationEventPublisher publisher;
     private final ClientStore clientStore;
@@ -75,22 +81,27 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         if (running.compareAndSet(false, true)) {
             try {
                 for (ConfigStore configStore : configStores) {
-                    if (StateHolder.getLoadState(configStore.getEndpoint()) && configStore.isEnabled() && configStore.getMonitoring().isEnabled()
-                        && refresh(configStore)) {
-                        // Only one refresh Event needs to be call to update all of the
-                        // stores, not one for each.
-                        if (eventDataInfo.equals("*")) {
-                            LOGGER.info("Configuration Refresh event triggered by store modification.");
-                        } else {
-                            LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
-                        }
-                        RefreshEventData eventData = new RefreshEventData(eventDataInfo);
-                        publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
-                        didRefresh = true;
-                        break;
+                    if (configStore.isEnabled()) {
+                        String endpoint = configStore.getEndpoint();
+                        AppConfigurationStoreMonitoring monitor = configStore.getMonitoring();
 
-                    } else {
-                        LOGGER.debug("Skipping refresh check for " + configStore.getEndpoint());
+                        if (StateHolder.getLoadState(endpoint) && monitor.isEnabled()
+                            && refresh(StateHolder.getState(endpoint), endpoint, monitor.getCacheExpiration())) {
+                            didRefresh = true;
+                            break;
+                        } else {
+                            LOGGER.debug("Skipping configuration refresh check for " + endpoint);
+                        }
+
+                        FeatureFlagStore featureStore = configStore.getFeatureFlags();
+
+                        if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint) && refresh(
+                            StateHolder.getStateFeatureFlag(endpoint), endpoint, featureStore.getCacheExpiration())) {
+                            didRefresh = true;
+                            break;
+                        } else {
+                            LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
+                        }
                     }
                 }
             } finally {
@@ -104,19 +115,19 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     /**
      * Checks un-cached items for etag changes. If they have changed a RefreshEventData is published.
      *
-     * @param store the {@code store} for which to composite watched key names
+     * @param state The refresh state of the endpoint being checked.
+     * @param endpoint The App Config Endpoint being checked for refresh.
+     * @param cacheTime Amount of time to wait until next check of this endpoint.
      * @return Refresh event was triggered. No other sources need to be checked.
      */
-    private boolean refresh(ConfigStore store) {
-        State state = StateHolder.getState(store.getEndpoint());
-
+    private boolean refresh(State state, String endpoint, Duration cacheTime) {
         Date date = new Date();
         if (date.after(state.getNotCachedTime())) {
             for (ConfigurationSetting watchKey : state.getWatchKeys()) {
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(watchKey.getKey())
                     .setLabelFilter(watchKey.getLabel());
 
-                ConfigurationSetting revision = clientStore.getRevison(settingSelector, store.getEndpoint());
+                ConfigurationSetting revision = clientStore.getRevison(settingSelector, endpoint);
 
                 String etag = null;
                 // If there is no result, etag will be considered empty.
@@ -125,20 +136,25 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     etag = revision.getETag();
                 }
 
-                LOGGER.error(etag + " - " + watchKey.getETag());
+                LOGGER.debug(etag + " - " + watchKey.getETag());
                 if (etag != null && !etag.equals(watchKey.getETag())) {
                     LOGGER.trace(
                         "Some keys in store [{}] matching the key [{}] and label [{}] is updated, "
                             + "will send refresh event.",
-                        store.getEndpoint(), watchKey.getKey(), watchKey.getLabel());
+                        endpoint, watchKey.getKey(), watchKey.getLabel());
 
                     this.eventDataInfo = watchKey.toString();
 
-                    // Don't need to refresh here will be done in Property Source
+                    // Only one refresh Event needs to be call to update all of the
+                    // stores, not one for each.
+                    LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+
+                    RefreshEventData eventData = new RefreshEventData(eventDataInfo);
+                    publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;
                 }
             }
-            StateHolder.setState(store.getEndpoint(), state.getWatchKeys(), store.getMonitoring());
+            StateHolder.setState(endpoint, state.getWatchKeys(), cacheTime);
         }
 
         return false;
