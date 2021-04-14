@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
@@ -196,6 +197,7 @@ public class ServiceBusReactorSessionTest {
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
 
+        when(connection.getShutdownSignals()).thenReturn(Flux.empty());
         serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler, SESSION_NAME, reactorProvider,
             handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
             new ServiceBusCreateSessionOptions(false));
