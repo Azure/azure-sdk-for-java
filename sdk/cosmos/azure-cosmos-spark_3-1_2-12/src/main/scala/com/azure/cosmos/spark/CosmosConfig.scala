@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
-import com.azure.cosmos.spark.DiagnosticsModes.DiagnosticsMode
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
@@ -259,7 +258,7 @@ private object CosmosViewRepositoryConfig {
 
 private[cosmos] case class CosmosContainerConfig(database: String, container: String)
 
-case class DiagnosticsConfig(mode: Option[String])
+private case class DiagnosticsConfig(mode: Option[String])
 
 private object DiagnosticsConfig {
 

@@ -69,7 +69,6 @@ private case class ItemsScan(session: SparkSession,
   }
 
   override def toBatch: Batch = {
-    // TODO: moderakh should we refactor Bath to a new class? of should it be here?
     this
   }
 }

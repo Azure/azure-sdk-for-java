@@ -8,7 +8,7 @@ import com.azure.cosmos.spark.SimpleDiagnostics
 
 import scala.collection.concurrent.TrieMap
 
-object OperationListenerFactory {
+private[spark] object OperationListenerFactory {
   private val listeners = TrieMap[String, OperationListener]()
   listeners.put(classOf[SimpleDiagnostics].getName, new SimpleDiagnostics)
 

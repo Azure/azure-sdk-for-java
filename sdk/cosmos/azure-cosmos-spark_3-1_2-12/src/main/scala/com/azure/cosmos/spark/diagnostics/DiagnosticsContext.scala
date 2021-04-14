@@ -3,4 +3,4 @@
 
 package com.azure.cosmos.spark.diagnostics
 
-case class DiagnosticsContext(correlationActivityId: String, details: String)
+private[spark] case class DiagnosticsContext(correlationActivityId: String, details: String)

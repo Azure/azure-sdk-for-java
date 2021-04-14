@@ -5,7 +5,7 @@ package com.azure.cosmos.spark.diagnostics
 
 import com.azure.cosmos.implementation.spark.OperationContext;
 
-case class SparkTaskContext(correlationActivityId: String, stageId: Int, partitionId: Long, details: String) extends OperationContext {
+private[spark] case class SparkTaskContext(correlationActivityId: String, stageId: Int, partitionId: Long, details: String) extends OperationContext {
 
   @transient private lazy val cachedToString = {
     "SparkTaskContext(" +

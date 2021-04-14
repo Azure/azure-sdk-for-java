@@ -6,7 +6,6 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
-import com.azure.cosmos.spark.DiagnosticsModes.{All, Disabled}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, OperationListenerFactory, SparkTaskContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext

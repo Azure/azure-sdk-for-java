@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.spark.{OperationContext, OperationListener}
 import com.azure.cosmos.implementation.{HttpConstants, RxDocumentServiceRequest, RxDocumentServiceResponse}
 
-class SimpleDiagnostics extends OperationListener with CosmosLoggingTrait {
+private[spark] class SimpleDiagnostics extends OperationListener with CosmosLoggingTrait {
   override def requestListener(context: OperationContext, request: RxDocumentServiceRequest): Unit = {
     logInfo(s"${context.toString}, request: ${toString(request)}")
   }
