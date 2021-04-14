@@ -252,17 +252,16 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Rename Parameters Answers to QueryAnswer and Speller to QuerySpeller
+### Rename Speller to QuerySpeller
 ``` yaml $(java)
 directive:
   - from: swagger-document
     where: $.paths["/docs"].get.parameters
     transform: >
-      $.find(p => p.name === "answers")["x-ms-enum"].name = "QueryAnswer";
       $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpeller";
 ```
 
-### Rename Definitions Answers to QueryAnswer and Speller to QuerySpeller
+### Rename Answers to QueryAnswer and Speller to QuerySpeller
 ``` yaml $(java)
 directive:
   - from: swagger-document
@@ -270,4 +269,27 @@ directive:
     transform: >
       $.Answers["x-ms-enum"].name = "QueryAnswer";
       $.Speller["x-ms-enum"].name = "QuerySpeller";
+```
+
+### Change Answers to a string in SearchOptions and SearchRequest
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.paths["/docs"].get.parameters
+    transform: >
+      let param = $.find(p => p.name === "answers");
+      param.type = "string";
+      delete param.enum;
+      delete param["x-ms-enum"];
+```
+
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      let param = $.SearchRequest.properties.answers;
+      param.type = "string";
+      param.description = $.Answers.description;
+      delete param["$ref"];
 ```

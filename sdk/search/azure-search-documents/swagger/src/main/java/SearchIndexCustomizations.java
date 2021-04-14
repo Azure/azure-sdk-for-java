@@ -5,6 +5,7 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import org.slf4j.Logger;
 
 public class SearchIndexCustomizations extends Customization {
     private static final String VARARG_METHOD_TEMPLATE =
@@ -19,7 +20,7 @@ public class SearchIndexCustomizations extends Customization {
     private static final String SEARCH_OPTIONS = "SearchOptions";
 
     @Override
-    public void customize(LibraryCustomization libraryCustomization) {
+    public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         customizeModelsPackage(libraryCustomization.getPackage(MODELS));
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
     }

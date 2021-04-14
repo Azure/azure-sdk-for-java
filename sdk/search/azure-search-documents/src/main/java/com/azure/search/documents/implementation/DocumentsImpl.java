@@ -38,7 +38,6 @@ import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteResult;
-import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
@@ -106,7 +105,7 @@ public final class DocumentsImpl {
                 @QueryParam("searchFields") String searchFields,
                 @QueryParam("queryLanguage") QueryLanguage queryLanguage,
                 @QueryParam("speller") QuerySpeller speller,
-                @QueryParam("answers") QueryAnswer answers,
+                @QueryParam("answers") String answers,
                 @QueryParam("searchMode") SearchMode searchMode,
                 @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
                 @QueryParam("sessionId") String sessionId,
@@ -336,11 +335,11 @@ public final class DocumentsImpl {
             spellerInternal = searchOptions.getSpeller();
         }
         QuerySpeller speller = spellerInternal;
-        QueryAnswer answersInternal = null;
+        String answersInternal = null;
         if (searchOptions != null) {
             answersInternal = searchOptions.getAnswers();
         }
-        QueryAnswer answers = answersInternal;
+        String answers = answersInternal;
         SearchMode searchModeInternal = null;
         if (searchOptions != null) {
             searchModeInternal = searchOptions.getSearchMode();

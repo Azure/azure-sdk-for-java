@@ -6,6 +6,7 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
 import java.util.Locale;
@@ -74,7 +75,7 @@ public class SearchServiceCustomizations extends Customization {
     private static final String SEARCH_FIELD = "SearchField";
 
     @Override
-    public void customize(LibraryCustomization libraryCustomization) {
+    public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         customizeModelsPackage(libraryCustomization.getPackage(MODELS));
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
     }
@@ -131,9 +132,9 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
         classCustomization.addMethod(
-            "public static SearchFieldDataType collection(SearchFieldDataType dataType) {\n" +
-            "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n" +
-            "}")
+            "public static SearchFieldDataType collection(SearchFieldDataType dataType) {\n"
+                + "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n"
+                + "}")
             .addAnnotation("@JsonCreator")
             .getJavadoc()
             .setDescription("Returns a collection of a specific SearchFieldDataType")
@@ -155,18 +156,17 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
         classCustomization.addMethod(
-            "/**\n" +
-            " * Set the key property: The key used to provision the cognitive service\n" +
-            " * resource attached to a skillset.\n" +
-            " *\n" +
-            " * @param key the key value to set.\n" +
-            " * @return the CognitiveServicesAccountKey object itself.\n" +
-            " */\n" +
-            "public CognitiveServicesAccountKey setKey(String key) {\n" +
-            "    this.key = key;\n" +
-            "    return this;\n" +
-            "}"
-        );
+            "/**\n"
+                + " * Set the key property: The key used to provision the cognitive service\n"
+                + " * resource attached to a skillset.\n"
+                + " *\n"
+                + " * @param key the key value to set.\n"
+                + " * @return the CognitiveServicesAccountKey object itself.\n"
+                + " */\n"
+                + "public CognitiveServicesAccountKey setKey(String key) {\n"
+                + "    this.key = key;\n"
+                + "    return this;\n"
+                + "}");
     }
 
     private void customizeOcrSkill(ClassCustomization classCustomization) {
@@ -176,9 +176,9 @@ public class SearchServiceCustomizations extends Customization {
             .getJavadoc();
 
         JavadocCustomization newJavadoc = classCustomization.addMethod(
-            "public Boolean setShouldDetectOrientation() {\n" +
-            "    return this.shouldDetectOrientation;\n" +
-            "}")
+            "public Boolean setShouldDetectOrientation() {\n"
+                + "    return this.shouldDetectOrientation;\n"
+                + "}")
             .addAnnotation("@Deprecated")
             .getJavadoc();
 
@@ -213,8 +213,8 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeSearchField(ClassCustomization classCustomization) {
         classCustomization.getMethod("setHidden")
             .replaceBody(
-                "this.hidden = (hidden == null) ? null : !hidden;" +
-                    "return this;"
+                "this.hidden = (hidden == null) ? null : !hidden;\n"
+                    + "return this;"
             );
 
         classCustomization.getMethod("isHidden")

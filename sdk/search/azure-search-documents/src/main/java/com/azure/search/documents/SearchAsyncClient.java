@@ -36,6 +36,7 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -812,43 +813,61 @@ public final class SearchAsyncClient {
     private static SearchRequest createSearchRequest(String searchText, SearchOptions searchOptions) {
         SearchRequest searchRequest = new SearchRequest().setSearchText(searchText);
 
-        if (searchOptions != null) {
-            List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
-                : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-                    .collect(Collectors.toList());
-            searchRequest.setSearchMode(searchOptions.getSearchMode())
-                .setFacets(searchOptions.getFacets())
-                .setFilter(searchOptions.getFilter())
-                .setHighlightPostTag(searchOptions.getHighlightPostTag())
-                .setHighlightPreTag(searchOptions.getHighlightPreTag())
-                .setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
-                .setMinimumCoverage(searchOptions.getMinimumCoverage())
-                .setQueryType(searchOptions.getQueryType())
-                .setScoringParameters(scoringParameters)
-                .setScoringProfile(searchOptions.getScoringProfile())
-                .setSkip(searchOptions.getSkip())
-                .setTop(searchOptions.getTop())
-                .setScoringStatistics(searchOptions.getScoringStatistics())
-                .setSessionId(searchOptions.getSessionId());
-
-            if (searchOptions.getHighlightFields() != null) {
-                searchRequest.setHighlightFields(String.join(",", searchOptions.getHighlightFields()));
-            }
-
-            if (searchOptions.getSearchFields() != null) {
-                searchRequest.setSearchFields(String.join(",", searchOptions.getSearchFields()));
-            }
-
-            if (searchOptions.getOrderBy() != null) {
-                searchRequest.setOrderBy(String.join(",", searchOptions.getOrderBy()));
-            }
-
-            if (searchOptions.getSelect() != null) {
-                searchRequest.setSelect(String.join(",", searchOptions.getSelect()));
-            }
+        if (searchOptions == null) {
+            return searchRequest;
         }
 
-        return searchRequest;
+        List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
+            : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
+            .collect(Collectors.toList());
+
+        return searchRequest.setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
+            .setFacets(searchOptions.getFacets())
+            .setFilter(searchOptions.getFilter())
+            .setHighlightFields(nullSafeStringJoin(searchOptions.getHighlightFields()))
+            .setHighlightPostTag(searchOptions.getHighlightPostTag())
+            .setHighlightPreTag(searchOptions.getHighlightPreTag())
+            .setMinimumCoverage(searchOptions.getMinimumCoverage())
+            .setOrderBy(nullSafeStringJoin(searchOptions.getOrderBy()))
+            .setQueryType(searchOptions.getQueryType())
+            .setScoringParameters(scoringParameters)
+            .setScoringProfile(searchOptions.getScoringProfile())
+            .setSearchFields(nullSafeStringJoin(searchOptions.getSearchFields()))
+            .setQueryLanguage(searchOptions.getQueryLanguage())
+            .setSpeller(searchOptions.getSpeller())
+            .setAnswers(createSearchRequestAnswers(searchOptions))
+            .setSearchMode(searchOptions.getSearchMode())
+            .setScoringStatistics(searchOptions.getScoringStatistics())
+            .setSessionId(searchOptions.getSessionId())
+            .setSelect(nullSafeStringJoin(searchOptions.getSelect()))
+            .setSkip(searchOptions.getSkip())
+            .setTop(searchOptions.getTop());
+    }
+
+    private static String nullSafeStringJoin(Iterable<? extends CharSequence> elements) {
+        if (elements == null) {
+            return null;
+        }
+
+        return String.join(",", elements);
+    }
+
+    private static String createSearchRequestAnswers(SearchOptions searchOptions) {
+        QueryAnswer answer = searchOptions.getAnswers();
+        Integer answersCount = searchOptions.getAnswersCount();
+
+        // No answer has been defined.
+        if (answer == null) {
+            return null;
+        }
+
+        // No count, just send the QueryAnswer.
+        if (answersCount == null) {
+            return answer.toString();
+        }
+
+        // Answer and count, format it as the service expects.
+        return String.format("%s|count-%d", answer, answersCount);
     }
 
     /**

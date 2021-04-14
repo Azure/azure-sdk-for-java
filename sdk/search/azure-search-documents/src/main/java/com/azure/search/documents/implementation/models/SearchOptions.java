@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
@@ -139,7 +138,7 @@ public final class SearchOptions {
      * 'extractive|count-3'. Default count is 1.
      */
     @JsonProperty(value = "answers")
-    private QueryAnswer answers;
+    private String answers;
 
     /*
      * A value that specifies whether any or all of the search terms must be
@@ -518,7 +517,7 @@ public final class SearchOptions {
      *
      * @return the answers value.
      */
-    public QueryAnswer getAnswers() {
+    public String getAnswers() {
         return this.answers;
     }
 
@@ -531,7 +530,7 @@ public final class SearchOptions {
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswers(QueryAnswer answers) {
+    public SearchOptions setAnswers(String answers) {
         this.answers = answers;
         return this;
     }

@@ -19,7 +19,7 @@ public final class SearchOptions {
      * Default is false. Setting this value to true may have a performance
      * impact. Note that the count returned is an approximation.
      */
-    @JsonProperty(value = "includeTotalCount")
+    @JsonProperty(value = "$count")
     private Boolean includeTotalCount;
 
     /*
@@ -27,7 +27,7 @@ public final class SearchOptions {
      * expression contains a field name, optionally followed by a
      * comma-separated list of name:value pairs.
      */
-    @JsonProperty(value = "Facets")
+    @JsonProperty(value = "facet")
     private List<String> facets;
 
     /*
@@ -40,7 +40,7 @@ public final class SearchOptions {
      * The list of field names to use for hit highlights. Only searchable
      * fields can be used for hit highlighting.
      */
-    @JsonProperty(value = "HighlightFields")
+    @JsonProperty(value = "highlight")
     private List<String> highlightFields;
 
     /*
@@ -77,7 +77,7 @@ public final class SearchOptions {
      * descending by document match score. There can be at most 32 $orderby
      * clauses.
      */
-    @JsonProperty(value = "OrderBy")
+    @JsonProperty(value = "$orderby")
     private List<String> orderBy;
 
     /*
@@ -135,6 +135,16 @@ public final class SearchOptions {
      */
     @JsonProperty(value = "answers")
     private QueryAnswer answers;
+
+    /*
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns answers extracted from key passages in the highest
+     * ranked documents. The number of answers returned can be configured by
+     * appending the pipe character '|' followed by the 'count-<number of
+     * answers>' option after the answers parameter value, such as
+     * 'extractive|count-3'. Default count is 1.
+     */
+    private Integer answersCount;
 
     /*
      * A value that specifies whether any or all of the search terms must be
@@ -395,11 +405,11 @@ public final class SearchOptions {
         return this;
     }
 
-
     /**
      * Get the scoringParameters property: The list of parameter values to be used in scoring functions (for example,
      * referencePointParameter) using the format name-values. For example, if the scoring profile defines a function
-     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the quotes).
+     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the
+     * quotes).
      *
      * @return the scoringParameters value.
      */
@@ -410,7 +420,8 @@ public final class SearchOptions {
     /**
      * Set the scoringParameters property: The list of parameter values to be used in scoring functions (for example,
      * referencePointParameter) using the format name-values. For example, if the scoring profile defines a function
-     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the quotes).
+     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the
+     * quotes).
      *
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchOptions object itself.
@@ -529,6 +540,32 @@ public final class SearchOptions {
      */
     public SearchOptions setAnswers(QueryAnswer answers) {
         this.answers = answers;
+        return this;
+    }
+
+    /**
+     * Get the answers count property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns answers extracted from key passages in the highest ranked documents. The number of answers returned can
+     * be configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after
+     * the answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     *
+     * @return the answers count value.
+     */
+    public Integer getAnswersCount() {
+        return this.answersCount;
+    }
+
+    /**
+     * Set the answers count property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns answers extracted from key passages in the highest ranked documents. The number of answers returned can
+     * be configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after
+     * the answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     *
+     * @param answersCount the answers count value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setAnswersCount(Integer answersCount) {
+        this.answersCount = answersCount;
         return this;
     }
 
