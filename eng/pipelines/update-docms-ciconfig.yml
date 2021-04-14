@@ -1,7 +1,7 @@
 jobs:
   - job: UpdateDocMsCIConfig
     pool:
-      vmImage: 'window-2019'
+      vmImage: 'windows-2019'
     steps:
     - pwsh: |
         Write-Host "git clone https://github.com/Azure/azure-docs-sdk-java.git $(Build.SourcesDirectory)/repo"
