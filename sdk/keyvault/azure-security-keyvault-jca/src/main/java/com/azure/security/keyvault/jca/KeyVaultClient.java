@@ -110,7 +110,10 @@ class KeyVaultClient extends DelegateRestClient {
             keyVaultUri = keyVaultUri + "/";
         }
         this.keyVaultUrl = keyVaultUri;
-        String dnsSuffix = keyVaultUri.split("\\.",2)[1];
+        String dnsSuffix = Optional.of(keyVaultUri)
+            .map(uri -> uri.split("\\.",2)[1])
+            .map(suffix -> suffix.substring(0, suffix.length()-1))
+            .get();
         this.keyVaultBaseUri = HTTPS_PREFIX + dnsSuffix;
         switch(keyVaultBaseUri)
         {

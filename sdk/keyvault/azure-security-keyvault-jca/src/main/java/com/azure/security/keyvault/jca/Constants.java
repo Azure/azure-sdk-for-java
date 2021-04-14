@@ -8,10 +8,10 @@ package com.azure.security.keyvault.jca;
  */
 public class Constants {
 
-    public static final String KEY_VAULT_BASE_URI_GLOBAL = "https://vault.azure.net/";
-    public static final String KEY_VAULT_BASE_URI_CN = "https://vault.azure.cn/";
-    public static final String KEY_VAULT_BASE_URI_US = "https://vault.usgovcloudapi.net/";
-    public static final String KEY_VAULT_BASE_URI_DE = "https://vault.microsoftazure.de/";
+    public static final String KEY_VAULT_BASE_URI_GLOBAL = "https://vault.azure.net";
+    public static final String KEY_VAULT_BASE_URI_CN = "https://vault.azure.cn";
+    public static final String KEY_VAULT_BASE_URI_US = "https://vault.usgovcloudapi.net";
+    public static final String KEY_VAULT_BASE_URI_DE = "https://vault.microsoftazure.de";
 
     public static final String AAD_LOGIN_GLOBAL_URI = "https://login.microsoftonline.com/";
     public static final String AAD_LOGIN_CN_URI = "https://login.partner.microsoftonline.cn/";
