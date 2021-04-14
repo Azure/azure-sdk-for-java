@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.parser;
+package com.azure.digitaltwins.parser.tests.codegen;
 
+import com.azure.digitaltwins.parser.GeneratedCodeCompareBase;
 import com.azure.digitaltwins.parser.implementation.codegen.Access;
 import com.azure.digitaltwins.parser.implementation.codegen.CodeWriter;
 import com.azure.digitaltwins.parser.implementation.codegen.JavaInterface;

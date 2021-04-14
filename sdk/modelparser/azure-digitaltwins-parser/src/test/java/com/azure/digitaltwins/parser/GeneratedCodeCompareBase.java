@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class GeneratedCodeCompareBase {
+public class GeneratedCodeCompareBase {
     private static final String DASH_SEPARATOR = "------------------------------------------------------------------------------------------------------------------------";
     private static final String EXPECTED_CODE_FILE_EXTENSION = ".expected";
     private static final String GENERATED_CODE_FILE_EXTENSION = ".temp.generated";
