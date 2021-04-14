@@ -259,12 +259,6 @@ private object CosmosViewRepositoryConfig {
 
 private[cosmos] case class CosmosContainerConfig(database: String, container: String)
 
-
-private object DiagnosticsModes extends Enumeration {
-  type DiagnosticsMode = Value
-  val Disabled, Sampling, All = Value
-}
-
 case class DiagnosticsConfig(mode: Option[String])
 
 private object DiagnosticsConfig {

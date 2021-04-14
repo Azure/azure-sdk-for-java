@@ -49,7 +49,7 @@ private case class ItemsScan(session: SparkSession,
       CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
     val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
 
-    val partitions = CosmosPartitionPlanner.createInputPartitions(
+    CosmosPartitionPlanner.createInputPartitions(
       partitioningConfig,
       container,
       partitionMetadata,
@@ -57,8 +57,6 @@ private case class ItemsScan(session: SparkSession,
       CosmosPartitionPlanner.DefaultPartitionSizeInMB,
       ReadLimit.allAvailable()
     ).map(_.asInstanceOf[InputPartition])
-
-    partitions
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
