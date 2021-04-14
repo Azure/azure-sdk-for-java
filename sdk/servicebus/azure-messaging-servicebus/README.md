@@ -87,7 +87,7 @@ platform. First, add the package:
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
 <<<<<<< HEAD
-    <version>1.2.4</version>
+    <version>1.2.5</version>
 =======
     <version>1.2.5</version>
 >>>>>>> master
