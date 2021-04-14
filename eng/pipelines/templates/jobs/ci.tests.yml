@@ -55,9 +55,14 @@ jobs:
       - template: ../variables/globals.yml
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          AgentImage: $(OSVmImage)
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          Paths:
+            - '${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
 
       - template: ../steps/cache-maven-repository.yml
 
@@ -67,31 +72,6 @@ jobs:
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
       - ${{ parameters.PreTestSteps }}
-
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
-        inputs:
-          versionSpec: '3.6'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
-      - task: PythonScript@0
-        displayName: 'Set versions for source build'
-        inputs:
-          scriptPath: 'eng/versioning/set_versions.py'
-          arguments: '--build-type client --pst'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
-      - task: PythonScript@0
-        displayName: 'Update versions for source build'
-        inputs:
-          scriptPath: 'eng/versioning/update_versions.py'
-          arguments: '--update-type library --build-type client --sr'
-        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: PythonScript@0
         # The root pom.xml contains both track 1, data, and track 2, client libraries.
