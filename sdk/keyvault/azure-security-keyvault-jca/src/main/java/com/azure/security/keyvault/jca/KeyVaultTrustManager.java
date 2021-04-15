@@ -3,8 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.security.KeyStore;
@@ -13,8 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.X509ExtendedTrustManager;
 
 /**
  * The Azure Key Vault variant of the X509TrustManager.
@@ -52,6 +49,14 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
                 addTrustManager(keyStore);
             }
         }
+        addDefaultTrustManager();
+
+    }
+
+    public KeyVaultTrustManager(TrustManager trustManager) {
+
+        this.trustManager = (X509TrustManager) trustManager;
+        addKeyVaultKeystore();
         addDefaultTrustManager();
 
     }

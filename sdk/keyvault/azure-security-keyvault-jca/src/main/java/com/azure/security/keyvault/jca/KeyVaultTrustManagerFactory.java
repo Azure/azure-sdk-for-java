@@ -5,8 +5,12 @@ package com.azure.security.keyvault.jca;
 
 import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.TrustManagerFactorySpi;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -34,7 +38,20 @@ public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
 
     @Override
     protected void engineInit(ManagerFactoryParameters spec) {
+        /**
+         * At least, Tomcat initialises its ssl context's trust manager in this way.
+         * If we don't implement this method, the server side "overrideTrustManagerFactory: true" does not work.
+         */
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", spec);
+        if(spec != null) {
+            try {
+                TrustManagerFactory factory = TrustManagerFactory.getInstance("PKIX", "SunJSSE");
+                factory.init(spec);
+                trustManagers.add(new KeyVaultTrustManager(factory.getTrustManagers()[0]));
+            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
