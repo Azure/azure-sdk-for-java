@@ -5,7 +5,6 @@ package com.azure.digitaltwins.parser.implementation.parsergen;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,89 +36,24 @@ public class PropertyVersionDigest {
      * @param propertyVersionObject A {@link JsonNode} from the metamodel digest containing DTDL-version-specific information about a material property.
      */
     public PropertyVersionDigest(JsonNode propertyVersionObject) {
-        JsonNode idRequiredNode = propertyVersionObject.get(DtdlStrings.ID_REQUIRED);
-        this.idRequired = idRequiredNode != null && idRequiredNode.booleanValue();
+        this.idRequired = JsonNodeHelper.getNotNullableBooleanValue(propertyVersionObject, DtdlStrings.ID_REQUIRED);
+        this.typeRequired = JsonNodeHelper.getNotNullableBooleanValue(propertyVersionObject, DtdlStrings.TYPE_REQUIRED);
+        this.isAllowed = JsonNodeHelper.getNotNullableBooleanValue(propertyVersionObject, DtdlStrings.ALLOWED);
 
-        JsonNode typeRequiredNode = propertyVersionObject.get(DtdlStrings.TYPE_REQUIRED);
-        this.typeRequired = typeRequiredNode != null && typeRequiredNode.booleanValue();
+        this.maxCount = JsonNodeHelper.getNullableIntegerValue(propertyVersionObject, DtdlStrings.MAX_COUNT);
+        this.minCount = JsonNodeHelper.getNullableIntegerValue(propertyVersionObject, DtdlStrings.MIN_COUNT);
+        this.maxInclusive = JsonNodeHelper.getNullableIntegerValue(propertyVersionObject, DtdlStrings.MAX_INCLUSIVE);
+        this.minInclusive = JsonNodeHelper.getNullableIntegerValue(propertyVersionObject, DtdlStrings.MIN_INCLUSIVE);
+        this.maxLength = JsonNodeHelper.getNullableIntegerValue(propertyVersionObject, DtdlStrings.MAX_LENGTH);
+        this.value = JsonNodeHelper.getNullableIntegerValue(propertyVersionObject, DtdlStrings.VALUE);
 
-        JsonNode allowedNode = propertyVersionObject.get(DtdlStrings.ALLOWED);
-        this.isAllowed = allowedNode != null && allowedNode.booleanValue();
+        this.pattern = JsonNodeHelper.getTextValue(propertyVersionObject, DtdlStrings.PATTERN);
+        this.classType = JsonNodeHelper.getTextValue(propertyVersionObject, DtdlStrings.CLASS);
+        this.defaultLanguage = JsonNodeHelper.getTextValue(propertyVersionObject, DtdlStrings.DEFAULT_LANGUAGE);
 
-        JsonNode maxCountNode = propertyVersionObject.get(DtdlStrings.MAX_COUNT);
-        this.maxCount = maxCountNode != null
-            ? maxCountNode.intValue()
-            : null;
-
-        JsonNode minCountNode = propertyVersionObject.get(DtdlStrings.MIN_COUNT);
-        this.minCount = minCountNode != null
-            ? minCountNode.intValue()
-            : null;
-
-        JsonNode maxInclusiveNode = propertyVersionObject.get(DtdlStrings.MAX_INCLUSIVE);
-        this.maxInclusive = maxInclusiveNode != null
-            ? maxInclusiveNode.intValue()
-            : null;
-
-        JsonNode minInclusiveNode = propertyVersionObject.get(DtdlStrings.MIN_INCLUSIVE);
-        this.minInclusive = minInclusiveNode != null
-            ? minInclusiveNode.intValue()
-            : null;
-
-        JsonNode maxLengthNode = propertyVersionObject.get(DtdlStrings.MAX_LENGTH);
-        this.maxLength = maxLengthNode != null
-            ? maxLengthNode.intValue()
-            : null;
-
-        JsonNode patternNode = propertyVersionObject.get(DtdlStrings.PATTERN);
-        this.pattern = patternNode != null
-            ? patternNode.textValue()
-            : null;
-
-        JsonNode valueNode = propertyVersionObject.get(DtdlStrings.VALUE);
-        this.value = valueNode != null
-            ? valueNode.intValue()
-            : null;
-
-        JsonNode classTypeNode = propertyVersionObject.get(DtdlStrings.CLASS);
-        this.classType = classTypeNode != null
-            ? classTypeNode.textValue()
-            : null;
-
-        JsonNode defaultLanguageNode = propertyVersionObject.get(DtdlStrings.DEFAULT_LANGUAGE);
-        this.defaultLanguage = defaultLanguageNode != null
-            ? defaultLanguageNode.textValue()
-            : null;
-
-        JsonNode valuesNode = propertyVersionObject.get(DtdlStrings.VALUES);
-        if(valuesNode != null && valuesNode.isArray()) {
-            this.values = new ArrayList<>();
-            valuesNode
-                .forEach(jsonNode ->
-                    values.add(jsonNode.textValue()));
-        } else {
-            values = null;
-        }
-
-        JsonNode uniquePropertiesNode = propertyVersionObject.get(DtdlStrings.UNIQUE_PROPERTIES);
-        if(uniquePropertiesNode != null && uniquePropertiesNode.isArray()) {
-            this.uniqueProperties = new ArrayList<>();
-            uniquePropertiesNode
-                .forEach(jsonNode ->
-                    uniqueProperties.add(jsonNode.textValue()));
-        } else {
-            uniqueProperties = null;
-        }
-
-        JsonNode classVersionsNode = propertyVersionObject.get(DtdlStrings.VERSIONS);
-        if(classVersionsNode != null && classVersionsNode.isArray()) {
-            this.classVersions = new ArrayList<>();
-            classVersionsNode
-                .forEach(jsonNode ->
-                    classVersions.add(jsonNode.intValue()));
-        } else {
-            classVersions = null;
-        }
+        this.values = JsonNodeHelper.getArrayValues(propertyVersionObject, DtdlStrings.VALUES, String.class);
+        this.uniqueProperties = JsonNodeHelper.getArrayValues(propertyVersionObject, DtdlStrings.UNIQUE_PROPERTIES, String.class);
+        this.classVersions = JsonNodeHelper.getArrayValues(propertyVersionObject, DtdlStrings.VALUES, Integer.class);
     }
 
     /**

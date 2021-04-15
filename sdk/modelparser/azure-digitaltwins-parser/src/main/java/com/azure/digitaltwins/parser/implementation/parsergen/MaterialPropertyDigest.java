@@ -1,16 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.parser.implementation.parsergen;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Class that abstracts material property information extracted from the metamodel digest provided by the meta-parser.
  */
 public class MaterialPropertyDigest {
-
-
-
     private boolean isLiteral;
     private boolean isAbstract;
     private boolean isPlural;
@@ -32,7 +34,19 @@ public class MaterialPropertyDigest {
      * Initializes a new instance of the {@link MaterialPropertyDigest} class.
      */
     public MaterialPropertyDigest() {
-
+        this.isLiteral = false;
+        this.classType = null;
+        this.dictionaryKey = null;
+        this.isAbstract = false;
+        this.dataType = null;
+        this.isPlural = false;
+        this.isOptional = false;
+        this.dtmiSegment = null;
+        this.isInherited = false;
+        this.isShadowed = false;
+        this.isKey = false;
+        this.isSegment = false;
+        this.propertyVersions = new HashMap<>();
     }
 
     /***
@@ -40,7 +54,23 @@ public class MaterialPropertyDigest {
      * @param materialPropertyObj A {@link JsonNode} from the meta-model digest containing information about a material property.
      */
     public MaterialPropertyDigest(JsonNode materialPropertyObj) {
+        JsonNode versionAgnosticPropertyObj = materialPropertyObj.get("_");
 
+        this.dtmiSegment = JsonNodeHelper.getTextValue(versionAgnosticPropertyObj, DtdlStrings.DTMI_SEGMENT);
+        this.dataType = JsonNodeHelper.getTextValue(versionAgnosticPropertyObj, DtdlStrings.DATA_TYPE);
+        this.classType = JsonNodeHelper.getTextValue(versionAgnosticPropertyObj, DtdlStrings.CLASS);
+        this.dictionaryKey = JsonNodeHelper.getTextValue(versionAgnosticPropertyObj, DtdlStrings.DICTIONARY_KEY);
+
+        this.isLiteral = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.LITERAL);
+        this.isAbstract = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.ABSTRACT);
+        this.isPlural = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.PLURAL);
+        this.isOptional = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.OPTIONAL);
+        this.isInherited = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.INHERITED);
+        this.isShadowed = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.SHADOWED);
+        this.isKey = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.IS_KEY);
+        this.isSegment = JsonNodeHelper.getNotNullableBooleanValue(versionAgnosticPropertyObj, DtdlStrings.IS_SEGMENT);
+
+        this.propertyVersions = findAndCreatePropertyVersions(materialPropertyObj);
     }
 
     /**
@@ -132,5 +162,32 @@ public class MaterialPropertyDigest {
      */
     public Map<Integer, PropertyVersionDigest> getPropertyVersions() {
         return this.propertyVersions;
+    }
+
+    private Map<Integer, PropertyVersionDigest> findAndCreatePropertyVersions(JsonNode materialPropertyObj) {
+        HashMap<Integer, PropertyVersionDigest> map = new HashMap<>();
+
+        for (Iterator<String> it = materialPropertyObj.fieldNames(); it.hasNext();) {
+            String fieldName = it.next();
+            if (isNumeric(fieldName)) {
+                map.put(Integer.parseInt(fieldName), new PropertyVersionDigest(materialPropertyObj.get(fieldName)));
+            }
+        }
+
+        return map;
+    }
+
+    private static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+
+        try {
+            Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+
+        return true;
     }
 }

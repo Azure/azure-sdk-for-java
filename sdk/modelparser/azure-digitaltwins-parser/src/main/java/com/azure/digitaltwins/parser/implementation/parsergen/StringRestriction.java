@@ -33,14 +33,7 @@ public class StringRestriction {
      * @param restrictionObject A {@link JsonNode} from the meta-model digest containing restrictions on the string value.
      */
     public StringRestriction(JsonNode restrictionObject) {
-        JsonNode maxNode = restrictionObject.get(DtdlStrings.MAX_LENGTH);
-        this.maxLength = maxNode != null
-            ? maxNode.intValue()
-            : null;
-
-        JsonNode patternNode = restrictionObject.get(DtdlStrings.PATTERN);
-        this.pattern = patternNode != null
-            ? patternNode.textValue()
-            : null;
+        this.maxLength = JsonNodeHelper.getNullableIntegerValue(restrictionObject, DtdlStrings.MAX_LENGTH);
+        this.pattern = JsonNodeHelper.getTextValue(restrictionObject, DtdlStrings.PATTERN);
     }
 }

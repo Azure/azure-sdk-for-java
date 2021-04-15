@@ -19,6 +19,15 @@ public class DtdlStrings {
     public static final String VALUE = "value";
     public static final String TYPE_REQUIRED = "typeRequired";
     public static final String UNIQUE_PROPERTIES = "uniqueProperties";
-
-
+    public static final String LITERAL = "literal";
+    public static final String DICTIONARY_KEY = "dictionaryKey";
+    public static final String ABSTRACT = "abstract";
+    public static final String DATA_TYPE = "datatype";
+    public static final String PLURAL = "plural";
+    public static final String OPTIONAL = "optional";
+    public static final String DTMI_SEGMENT = "dtmiSegment";
+    public static final String INHERITED = "inherited";
+    public static final String SHADOWED = "shadowed";
+    public static final String IS_KEY = "isKey";
+    public static final String IS_SEGMENT = "isSeg";
 }
