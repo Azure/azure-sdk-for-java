@@ -44,7 +44,7 @@ public class AADGroupsCountIT {
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
         properties.put("azure.activedirectory.user-group.allowed-groups", "group1,group2");
         aadWebApiITHelper = new AADWebApiITHelper(
-            DumbApp.class,
+            TestApp.class,
             properties,
             AAD_MULTI_TENANT_CLIENT_ID,
             AAD_MULTI_TENANT_CLIENT_SECRET,
@@ -59,7 +59,7 @@ public class AADGroupsCountIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp extends WebSecurityConfigurerAdapter {
 
         @Autowired
         private AADAuthenticationFilter aadAuthenticationFilter;

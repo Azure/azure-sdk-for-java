@@ -31,7 +31,7 @@ public class AADB2CIT {
 
     @Before
     public void initAndSignIn() {
-        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(TestApp.class, createDefaultProperteis());
         aadB2CSeleniumITHelper.logIn();
     }
 
@@ -75,13 +75,13 @@ public class AADB2CIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @Controller
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp extends WebSecurityConfigurerAdapter {
 
         private final AADB2COidcLoginConfigurer configurer;
 
         private final String profileEdit;
 
-        public DumbApp(AADB2COidcLoginConfigurer configurer) {
+        public TestApp(AADB2COidcLoginConfigurer configurer) {
             this.profileEdit = AAD_B2C_PROFILE_EDIT;
             this.configurer = configurer;
         }

@@ -42,7 +42,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
         properties.put("azure.activedirectory.client-secret", clientSecret);
         properties.put("azure.activedirectory.session-stateless", "true");
         aadWebApiITHelper = new AADWebApiITHelper(
-            DumbApp.class,
+            TestApp.class,
             properties,
             clientId,
             clientSecret,
@@ -63,7 +63,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp extends WebSecurityConfigurerAdapter {
 
         @Autowired
         private AADAppRoleStatelessAuthenticationFilter aadAuthFilter;

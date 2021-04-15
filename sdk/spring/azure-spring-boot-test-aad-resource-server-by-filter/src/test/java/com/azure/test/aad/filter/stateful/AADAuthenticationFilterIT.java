@@ -53,7 +53,7 @@ public class AADAuthenticationFilterIT {
         properties.put("azure.activedirectory.client-secret", clientSecret);
         properties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         return new AADWebApiITHelper(
-            DumbApp.class,
+            TestApp.class,
             properties,
             clientId,
             clientSecret,
@@ -107,7 +107,7 @@ public class AADAuthenticationFilterIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp extends WebSecurityConfigurerAdapter {
 
         @Autowired
         private AADAuthenticationFilter aadAuthFilter;
