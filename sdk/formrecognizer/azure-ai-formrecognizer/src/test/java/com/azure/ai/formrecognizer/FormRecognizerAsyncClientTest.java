@@ -2035,10 +2035,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeIDDocumentWithBlankPdf(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
-        // TODO: (service-bug) Still a discrepancy between other prebuilt results and ID document testing
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
@@ -2050,7 +2048,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setPollInterval(durationTestMode)
                 ).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBlankPdfResultData(syncPoller.getFinalResult());
+            assertEquals(0, syncPoller.getFinalResult().size());
         }, BLANK_PDF);
     }
 
