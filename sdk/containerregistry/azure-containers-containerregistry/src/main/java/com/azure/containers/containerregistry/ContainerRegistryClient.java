@@ -4,92 +4,72 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.AcrErrorsException;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.ListRepositoriesOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.util.Objects;
 
 /** Initializes a new instance of the synchronous ContainerRegistry type. */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class)
 public final class ContainerRegistryClient {
     private final ContainerRegistryAsyncClient asyncClient;
 
-    /**
-     * Initializes an instance of ContainerRegistries client.
-     *
-     * @param asyncClient the service client implementation.
-     */
     ContainerRegistryClient(ContainerRegistryAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 
     /**
-     * List repositories.
+     * List all the repository names in this registry.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositories() {
-        return new PagedIterable<>(this.asyncClient.listRepositories());
+        return new PagedIterable<String>(asyncClient.listRepositories());
     }
 
     /**
-     * List repositories.
+     * Delete the repository identified by 'name'.
      *
-     * @param options The options to use while getting the list of repositories.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of repositories.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRepositories(ListRepositoriesOptions options, Context context) {
-        Objects.requireNonNull(options);
-
-        Integer pageSize = options.getMaxPageSize();
-        return new PagedIterable<>(new PagedFlux<>(
-            () -> asyncClient.listRepositoriesSinglePageAsync(pageSize, context),
-            token -> asyncClient.listRepositoriesNextSinglePageAsync(token, context)));
-    }
-
-    /**
-     * Delete the repository identified by `name`.
-     *
-     * @param name Name of the image (including the namespace).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @param name Name of the repository (including the namespace).
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
+     * @throws NullPointerException thrown if the name is null.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteRepositoryResult deleteRepository(String name) {
-        return this.asyncClient.deleteRepository(name).block();
+        return this.deleteRepositoryWithResponse(name, Context.NONE).getValue();
     }
 
     /**
-     * Delete the repository identified by `name`.
+     * Delete the repository identified by 'name'.
      *
-     * @param name Name of the image (including the namespace).
+     * @param name Name of the repository (including the namespace).
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
+     * @throws NullPointerException thrown if the name is null.
+     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String name, Context context) {
         return this.asyncClient.deleteRepositoryWithResponse(name, context).block();
+    }
+
+    /**
+     * Get an instance of repository client from the registry client.
+     *
+     * @param repository Name of the repository (including the namespace).
+     * @return repository client.
+     */
+    public ContainerRepositoryClient getRepositoryClient(String repository) {
+        return new ContainerRepositoryClient(this.asyncClient.getRepositoryClient(repository));
     }
 }

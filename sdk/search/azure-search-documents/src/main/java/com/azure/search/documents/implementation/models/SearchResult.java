@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.CaptionResult;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -49,7 +50,7 @@ public final class SearchResult {
      * Captions are only returned for queries of type 'semantic'.
      */
     @JsonProperty(value = "@search.captions", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, List<CaptionResult>> captions;
+    private List<CaptionResult> captions;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
@@ -104,7 +105,7 @@ public final class SearchResult {
      *
      * @return the captions value.
      */
-    public Map<String, List<CaptionResult>> getCaptions() {
+    public List<CaptionResult> getCaptions() {
         return this.captions;
     }
 

@@ -663,20 +663,30 @@
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
         <module>sdk/automation</module>
+        <module>sdk/avs</module>
+        <module>sdk/azurestack</module>
+        <module>sdk/azurestackhci</module>
         <module>sdk/batch</module>
+        <module>sdk/batchai</module>
+        <module>sdk/billing</module>
         <module>sdk/boms</module>
         <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
+        <module>sdk/commerce</module>
         <module>sdk/communication</module>
         <module>sdk/confluent</module>
+        <module>sdk/consumption</module>
         <module>sdk/containerregistry</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
+        <module>sdk/customerinsights</module>
+        <module>sdk/databox</module>
         <module>sdk/databoxedge</module>
         <module>sdk/databricks</module>
         <module>sdk/datadog</module>
         <module>sdk/datafactory</module>
+        <module>sdk/datamigration</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/digitaltwins</module>
@@ -713,6 +723,7 @@
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/servicebus</module>
+        <module>sdk/signalr</module>
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
