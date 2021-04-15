@@ -336,7 +336,7 @@ Check out other client libraries for Azure communication service
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-administration
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-administration/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/azure-communication-administration_1.0.0-beta.3/sdk/communication/azure-communication-administration/src
 
 
 
