@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -129,8 +130,10 @@ public final class Utility {
      * @param inputStream InputStream to back the Flux
      *
      * @return Flux of ByteBuffer backed by the InputStream
+     * @throws NullPointerException If {@code inputStream} is null.
      */
     public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
+        Objects.requireNonNull(inputStream, "'inputStream' is required and cannot be null.");
         return FluxUtil
             .toFluxByteBuffer(inputStream)
             .cache()
