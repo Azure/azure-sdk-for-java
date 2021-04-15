@@ -50,6 +50,18 @@
       }
     ],
     "outputs": {
+      "COMMUNICATION_TENANT_ID": {
+            "type": "String",
+            "value": "[parameters('tenantId')]"
+      },
+      "COMMUNICATION_CLIENT_ID": {
+            "type": "String",
+            "value": "[parameters('testApplicationId')]"
+      },
+      "COMMUNICATION_CLIENT_SECRET": {
+            "type": "String",
+            "value": "[parameters('testApplicationSecret')]"
+      },
       "COMMUNICATION_CONNECTION_STRING": {
         "type": "string",
         "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryConnectionString]"
