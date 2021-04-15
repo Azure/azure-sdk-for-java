@@ -6,8 +6,10 @@ package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.ClusterInner;
+import com.azure.resourcemanager.loganalytics.models.AssociatedWorkspace;
+import com.azure.resourcemanager.loganalytics.models.BillingType;
+import com.azure.resourcemanager.loganalytics.models.CapacityReservationProperties;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterEntityStatus;
 import com.azure.resourcemanager.loganalytics.models.ClusterPatch;
@@ -15,12 +17,13 @@ import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.Identity;
 import com.azure.resourcemanager.loganalytics.models.KeyVaultProperties;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.Update {
     private ClusterInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -55,10 +58,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().sku();
     }
 
-    public String nextLink() {
-        return this.innerModel().nextLink();
-    }
-
     public String clusterId() {
         return this.innerModel().clusterId();
     }
@@ -67,8 +66,41 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().provisioningState();
     }
 
+    public Boolean isDoubleEncryptionEnabled() {
+        return this.innerModel().isDoubleEncryptionEnabled();
+    }
+
+    public Boolean isAvailabilityZonesEnabled() {
+        return this.innerModel().isAvailabilityZonesEnabled();
+    }
+
+    public BillingType billingType() {
+        return this.innerModel().billingType();
+    }
+
     public KeyVaultProperties keyVaultProperties() {
         return this.innerModel().keyVaultProperties();
+    }
+
+    public String lastModifiedDate() {
+        return this.innerModel().lastModifiedDate();
+    }
+
+    public String createdDate() {
+        return this.innerModel().createdDate();
+    }
+
+    public List<AssociatedWorkspace> associatedWorkspaces() {
+        List<AssociatedWorkspace> inner = this.innerModel().associatedWorkspaces();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public CapacityReservationProperties capacityReservationProperties() {
+        return this.innerModel().capacityReservationProperties();
     }
 
     public Region region() {
@@ -83,7 +115,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 
@@ -116,7 +148,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(String name, LogAnalyticsManager serviceManager) {
+    ClusterImpl(String name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -147,7 +179,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(ClusterInner innerObject, LogAnalyticsManager serviceManager) {
+    ClusterImpl(ClusterInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
@@ -195,8 +227,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withIdentity(Identity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
     }
 
     public ClusterImpl withSku(ClusterSku sku) {
@@ -209,8 +246,18 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
-    public ClusterImpl withNextLink(String nextLink) {
-        this.innerModel().withNextLink(nextLink);
+    public ClusterImpl withIsDoubleEncryptionEnabled(Boolean isDoubleEncryptionEnabled) {
+        this.innerModel().withIsDoubleEncryptionEnabled(isDoubleEncryptionEnabled);
+        return this;
+    }
+
+    public ClusterImpl withIsAvailabilityZonesEnabled(Boolean isAvailabilityZonesEnabled) {
+        this.innerModel().withIsAvailabilityZonesEnabled(isAvailabilityZonesEnabled);
+        return this;
+    }
+
+    public ClusterImpl withBillingType(BillingType billingType) {
+        this.innerModel().withBillingType(billingType);
         return this;
     }
 
@@ -222,6 +269,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateParameters.withKeyVaultProperties(keyVaultProperties);
             return this;
         }
+    }
+
+    public ClusterImpl withAssociatedWorkspaces(List<AssociatedWorkspace> associatedWorkspaces) {
+        this.innerModel().withAssociatedWorkspaces(associatedWorkspaces);
+        return this;
+    }
+
+    public ClusterImpl withCapacityReservationProperties(CapacityReservationProperties capacityReservationProperties) {
+        this.innerModel().withCapacityReservationProperties(capacityReservationProperties);
+        return this;
     }
 
     private boolean isInCreateMode() {
