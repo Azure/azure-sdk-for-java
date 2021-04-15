@@ -25,7 +25,7 @@ public class StorageBlockingSink {
 
     /* Overrided implementation of LinkedBlockingQueue to effectively implement a true BlockingSink. */
     private static class ProducerBlockingQueue<T> extends LinkedBlockingQueue<T> {
-        private final ClientLogger logger = new ClientLogger(StorageBlockingSink.class);
+        private final ClientLogger logger = new ClientLogger(ProducerBlockingQueue.class);
 
         ProducerBlockingQueue(int queueSize) {
             super(queueSize);
