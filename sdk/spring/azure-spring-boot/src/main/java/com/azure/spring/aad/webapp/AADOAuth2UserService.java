@@ -50,12 +50,14 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
     private static final String ROLES = "roles";
 
-    public AADOAuth2UserService(
-        AADAuthenticationProperties properties
-    ) {
+    public AADOAuth2UserService(AADAuthenticationProperties properties) {
+        this(properties, new GraphClient(properties));
+    }
+
+    public AADOAuth2UserService(AADAuthenticationProperties properties, GraphClient graphClient) {
         this.properties = properties;
         this.oidcUserService = new OidcUserService();
-        this.graphClient = new GraphClient(properties);
+        this.graphClient = graphClient;
     }
 
     @Override

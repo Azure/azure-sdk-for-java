@@ -15,10 +15,12 @@ import org.springframework.validation.annotation.Validated;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -135,11 +137,31 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     public static class UserGroupProperties {
 
+        private boolean enableGroupId = false;
+
         /**
          * Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph
          * API Call.
          */
         private List<String> allowedGroups = new ArrayList<>();
+
+        private Set<String> allowedGroupsId = new HashSet<>();
+
+        public boolean isEnableGroupId() {
+            return enableGroupId;
+        }
+
+        public void setEnableGroupId(boolean enableGroupId) {
+            this.enableGroupId = enableGroupId;
+        }
+
+        public Set<String> getAllowedGroupsId() {
+            return allowedGroupsId;
+        }
+
+        public void setAllowedGroupsId(Set<String> allowedGroupsId) {
+            this.allowedGroupsId = allowedGroupsId;
+        }
 
         public List<String> getAllowedGroups() {
             return allowedGroups;
@@ -156,6 +178,11 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .map(AADAuthenticationProperties::getUserGroup)
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
                        .map(allowedGroups -> !allowedGroups.isEmpty())
+                       .orElse(false)
+            || Optional.of(this)
+                       .map(AADAuthenticationProperties::getUserGroup)
+                       .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupsId)
+                       .map(allowedGroupsId -> !allowedGroupsId.isEmpty())
                        .orElse(false);
     }
 
@@ -322,6 +349,10 @@ public class AADAuthenticationProperties implements InitializingBean {
         return Optional.ofNullable(getUserGroup())
                        .map(UserGroupProperties::getAllowedGroups)
                        .orElseGet(Collections::emptyList)
+                       .contains(group)
+            || Optional.ofNullable(getUserGroup())
+                       .map(UserGroupProperties::getAllowedGroupsId)
+                       .orElseGet(Collections::emptySet)
                        .contains(group);
     }
 
@@ -359,6 +390,13 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "azure.activedirectory.user-group.allowed-groups should be empty. "
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
                 + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
+        }
+
+        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupsId().isEmpty()) {
+            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
+                + "azure.activedirectory.user-group.allowed-groups-id should be empty. "
+                + "But actually azure.activedirectory.tenant-id=" + tenantId
+                + ", and azure.activedirectory.user-group.allowed-groups-id=" + userGroup.getAllowedGroupsId());
         }
 
         authorizationClients.values()

@@ -26,8 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * GraphClient is used to access graph server.
- * Mainly used to get groups information of a user.
+ * GraphClient is used to access graph server. Mainly used to get groups information of a user.
  */
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
@@ -54,7 +53,8 @@ public class GraphClient {
             memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
-                       .map(Membership::getDisplayName)
+                       .map(properties.getUserGroup().isEnableGroupId() ? Membership::getObjectID :
+                           Membership::getDisplayName)
                        .forEach(groups::add);
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
