@@ -20,8 +20,7 @@ public class UriUtil {
 
     static String getAADLoginURIByKeyVaultBaseUri(String keyVaultBaseUri) {
         String aadAuthenticationUrl;
-        switch(keyVaultBaseUri)
-        {
+        switch (keyVaultBaseUri) {
             case KEY_VAULT_BASE_URI_GLOBAL :
                 aadAuthenticationUrl = AAD_LOGIN_URI_GLOBAL;
                 break;

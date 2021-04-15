@@ -141,8 +141,8 @@ class KeyVaultClient extends DelegateRestClient {
         this.keyVaultUrl = keyVaultUri;
         //Base Uri shouldn't end with a slash.
         String domainNameSuffix = Optional.of(keyVaultUri)
-                                          .map(uri -> uri.split("\\.",2)[1])
-                                          .map(suffix -> suffix.substring(0, suffix.length()-1))
+                                          .map(uri -> uri.split("\\.", 2)[1])
+                                          .map(suffix -> suffix.substring(0, suffix.length() - 1))
                                           .get();
         keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
         aadAuthenticationUrl = getAADLoginURIByKeyVaultBaseUri(keyVaultBaseUri);
