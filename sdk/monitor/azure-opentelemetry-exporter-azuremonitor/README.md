@@ -130,7 +130,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [opentelemetry_io]: https://opentelemetry.io/ 
 [span_data]: https://opentelemetry.lightstep.com/spans
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/monitor/azure-opentelemetry-exporter-azuremonitor/src/samples
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/monitor/azure-monitor-opentelemetry-exporter/src/samples
 [opentelemtry_spec]: https://opentelemetry.io/
 [instrumentation_library]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#instrumentation-libraries
 [tracer_provider]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#tracer-provider
