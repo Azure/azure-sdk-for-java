@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.CosmosParameterizedQuery
 import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
+import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
@@ -21,23 +22,30 @@ private case class ItemsScan(session: SparkSession,
   extends Scan
     with Batch
     with CosmosLoggingTrait {
+
+  requireNotNull(cosmosQuery, "cosmosQuery")
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
+  val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+  val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+  val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+  val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
+  val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
+
+  override def description(): String = {
+    s"""Cosmos ItemsScan: ${containerConfig.database}.${containerConfig.container}
+       | - Cosmos Query: ${cosmosQuery.toSqlQuerySpec.toPrettyString}""".stripMargin
+  }
+
   /**
-    * Returns the actual schema of this data source scan, which may be different from the physical
-    * schema of the underlying storage, as column pruning or other optimizations may happen.
-    */
+   * Returns the actual schema of this data source scan, which may be different from the physical
+   * schema of the underlying storage, as column pruning or other optimizations may happen.
+   */
   override def readSchema(): StructType = {
     schema
   }
 
   override def planInputPartitions(): Array[InputPartition] = {
-    val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-    val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
-    val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-    val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
-    val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
-
     val partitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
       config,
       clientConfiguration,

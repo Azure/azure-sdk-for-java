@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
@@ -92,15 +93,14 @@ public class AADResourceServerClientConfiguration {
      * Use InMemoryClientRegistrationRepository and ClientRegistrationRepository to create
      * AADResourceServerOAuth2AuthorizedClientRepository
      *
-     * @param repo client registration
      * @param oAuth2AuthorizedClientService authorized client repository
      * @return AADResourceServerOAuth2AuthorizedClientRepository Bean
      */
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
-        ClientRegistrationRepository repo, OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-        return new AADResourceServerOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService, repo);
+        OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService);
     }
 
     /**

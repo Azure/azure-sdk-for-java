@@ -40,7 +40,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public ContainerServiceVMSizeTypes vmSize() {
-        return this.innerModel().vmSize();
+        return ContainerServiceVMSizeTypes.fromString(this.innerModel().vmSize());
     }
 
     @Override
@@ -79,8 +79,8 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
-    public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes param0) {
-        this.innerModel().withVmSize(param0);
+    public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize) {
+        this.innerModel().withVmSize(vmSize.toString());
         return this;
     }
 
@@ -159,6 +159,10 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withNodeLabels(innerModel().nodeLabels());
         agentPoolInner.withNodeTaints(innerModel().nodeTaints());
         agentPoolInner.withProximityPlacementGroupId(innerModel().proximityPlacementGroupId());
+        agentPoolInner.withKubeletConfig(innerModel().kubeletConfig());
+        agentPoolInner.withLinuxOSConfig(innerModel().linuxOSConfig());
+        agentPoolInner.withEnableEncryptionAtHost(innerModel().enableEncryptionAtHost());
+        agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
         return agentPoolInner;
     }
 

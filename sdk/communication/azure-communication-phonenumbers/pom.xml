@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
 
   <name>Microsoft Azure client phone numbers library for communication</name>
   <description>
@@ -51,6 +51,7 @@
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.72</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
   <dependencies>
@@ -62,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -169,6 +170,48 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>disable-coverage-if-identity</id>
+      <activation>
+        <property>
+          <name>env.TEST_PACKAGES_ENABLED</name>
+          <value>identity</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+     <profile>
+      <id>disable-coverage-if-sms</id>
+      <activation>
+        <property>
+          <name>env.TEST_PACKAGES_ENABLED</name>
+          <value>sms</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+    <profile>
+      <id>disable-coverage-if-chat</id>
+      <activation>
+        <property>
+          <name>env.TEST_PACKAGES_ENABLED</name>
+          <value>chat</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
     </profile>
   </profiles>
 </project>

@@ -4,9 +4,9 @@
 
 package com.azure.containers.containerregistry.implementation;
 
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesListRepositoriesNextResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesListRepositoriesResponse;
-import com.azure.containers.containerregistry.models.AcrErrorsException;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesNextResponse;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesResponse;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -21,6 +21,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -53,20 +54,20 @@ public final class ContainerRegistriesImpl {
      * The interface defining all the services for ContainerRegistryContainerRegistries to be used by the proxy service
      * to perform REST calls.
      */
-    @Host("{endpoint}")
+    @Host("{url}")
     @ServiceInterface(name = "ContainerRegistryCon")
     public interface ContainerRegistriesService {
         @Get("/v2/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<Void>> checkDockerV2Support(
-                @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("url") String url, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/acr/v1/_catalog")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesListRepositoriesResponse> listRepositories(
-                @HostParam("endpoint") String endpoint,
+        Mono<ContainerRegistriesGetRepositoriesResponse> getRepositories(
+                @HostParam("url") String url,
                 @QueryParam("last") String last,
                 @QueryParam("n") Integer n,
                 @HeaderParam("Accept") String accept,
@@ -76,7 +77,7 @@ public final class ContainerRegistriesImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<DeleteRepositoryResult>> deleteRepository(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("url") String url,
                 @PathParam("name") String name,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -84,9 +85,9 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<ContainerRegistriesListRepositoriesNextResponse> listRepositoriesNext(
+        Mono<ContainerRegistriesGetRepositoriesNextResponse> getRepositoriesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
+                @HostParam("url") String url,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -101,8 +102,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> checkDockerV2SupportWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.checkDockerV2Support(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(context -> service.checkDockerV2Support(this.client.getUrl(), accept, context));
     }
 
     /**
@@ -117,7 +117,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> checkDockerV2SupportWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.checkDockerV2Support(this.client.getEndpoint(), accept, context);
+        return service.checkDockerV2Support(this.client.getUrl(), accept, context);
     }
 
     /**
@@ -147,6 +147,31 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
+     *
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void checkDockerV2Support() {
+        checkDockerV2SupportAsync().block();
+    }
+
+    /**
+     * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> checkDockerV2SupportWithResponse(Context context) {
+        return checkDockerV2SupportWithResponseAsync(context).block();
+    }
+
+    /**
      * List repositories.
      *
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
@@ -158,10 +183,9 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> listRepositoriesSinglePageAsync(String last, Integer n) {
+    public Mono<PagedResponse<String>> getRepositoriesSinglePageAsync(String last, Integer n) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.listRepositories(this.client.getEndpoint(), last, n, accept, context))
+        return FluxUtil.withContext(context -> service.getRepositories(this.client.getUrl(), last, n, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -186,18 +210,18 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> listRepositoriesSinglePageAsync(String last, Integer n, Context context) {
+    public Mono<PagedResponse<String>> getRepositoriesSinglePageAsync(String last, Integer n, Context context) {
         final String accept = "application/json";
-        return service.listRepositories(this.client.getEndpoint(), last, n, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getRepositories(),
-                        res.getValue().getLink(),
-                        res.getDeserializedHeaders()));
+        return service.getRepositories(this.client.getUrl(), last, n, accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getRepositories(),
+                                        res.getValue().getLink(),
+                                        res.getDeserializedHeaders()));
     }
 
     /**
@@ -212,10 +236,10 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRepositoriesAsync(String last, Integer n) {
+    public PagedFlux<String> getRepositoriesAsync(String last, Integer n) {
         return new PagedFlux<>(
-                () -> listRepositoriesSinglePageAsync(last, n),
-                nextLink -> listRepositoriesNextSinglePageAsync(nextLink));
+                () -> getRepositoriesSinglePageAsync(last, n),
+                nextLink -> getRepositoriesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -231,10 +255,43 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRepositoriesAsync(String last, Integer n, Context context) {
+    public PagedFlux<String> getRepositoriesAsync(String last, Integer n, Context context) {
         return new PagedFlux<>(
-                () -> listRepositoriesSinglePageAsync(last, n, context),
-                nextLink -> listRepositoriesNextSinglePageAsync(nextLink, context));
+                () -> getRepositoriesSinglePageAsync(last, n, context),
+                nextLink -> getRepositoriesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List repositories.
+     *
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> getRepositories(String last, Integer n) {
+        return new PagedIterable<>(getRepositoriesAsync(last, n));
+    }
+
+    /**
+     * List repositories.
+     *
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     *     last.
+     * @param n query parameter for max number of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> getRepositories(String last, Integer n, Context context) {
+        return new PagedIterable<>(getRepositoriesAsync(last, n, context));
     }
 
     /**
@@ -249,8 +306,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponseAsync(String name) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.deleteRepository(this.client.getEndpoint(), name, accept, context));
+        return FluxUtil.withContext(context -> service.deleteRepository(this.client.getUrl(), name, accept, context));
     }
 
     /**
@@ -266,7 +322,7 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponseAsync(String name, Context context) {
         final String accept = "application/json";
-        return service.deleteRepository(this.client.getEndpoint(), name, accept, context);
+        return service.deleteRepository(this.client.getUrl(), name, accept, context);
     }
 
     /**
@@ -315,6 +371,35 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * Delete the repository identified by `name`.
+     *
+     * @param name Name of the image (including the namespace).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deleted repository.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeleteRepositoryResult deleteRepository(String name) {
+        return deleteRepositoryAsync(name).block();
+    }
+
+    /**
+     * Delete the repository identified by `name`.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deleted repository.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String name, Context context) {
+        return deleteRepositoryWithResponseAsync(name, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -324,10 +409,10 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> listRepositoriesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<String>> getRepositoriesNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listRepositoriesNext(nextLink, this.client.getEndpoint(), accept, context))
+                        context -> service.getRepositoriesNext(nextLink, this.client.getUrl(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -350,9 +435,9 @@ public final class ContainerRegistriesImpl {
      * @return list of repositories.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> listRepositoriesNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<String>> getRepositoriesNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
-        return service.listRepositoriesNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.getRepositoriesNext(nextLink, this.client.getUrl(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
