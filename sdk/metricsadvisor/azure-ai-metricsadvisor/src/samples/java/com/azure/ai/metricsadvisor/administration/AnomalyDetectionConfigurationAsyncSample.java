@@ -181,15 +181,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
                         .getSuppressCondition().getMinNumber(),
                     wholeSeriesDetectionCondition.getHardThresholdCondition()
                         .getSuppressCondition().getMinRatio());
-            } else {
-                System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                    null,null);
             }
-        } else {
-            System.out.printf(" - Lower bound: %s%n",null);
-            System.out.printf(" - Upper bound: %s%n",null);
-            System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                null,null);
         }
 
         System.out.printf("- Change Threshold Condition:%n");
