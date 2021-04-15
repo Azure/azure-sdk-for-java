@@ -81,7 +81,7 @@ public class ImplementationBridgeHelpers {
 
         private CosmosQueryRequestOptionsHelper() {}
         static {
-            ensureClassLoaded(CosmosClientBuilder.class);
+            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
         }
 
         public static void setCosmosQueryRequestOptionsAccessor(final CosmosQueryRequestOptionsAccessor newAccessor) {
@@ -103,7 +103,6 @@ public class ImplementationBridgeHelpers {
         public interface CosmosQueryRequestOptionsAccessor {
             void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
-
         }
     }
 
