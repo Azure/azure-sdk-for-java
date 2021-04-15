@@ -6,10 +6,8 @@ import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
-import com.azure.core.util.Context;
-import java.util.Arrays;
 
-public class SendSmsToGroupExample {
+public class SendSmsToASinglePhoneExample {
     public static void main(String[] args) {
         String connectionString = System.getenv("COMMUNICATION_CONNECTION_STRING");
         String phoneNumber = System.getenv("COMMUNICATION_PHONE_NUMBER");
@@ -21,17 +19,10 @@ public class SendSmsToGroupExample {
         options.setDeliveryReportEnabled(true);
         options.setTag("Marketing");
 
-        Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
-            phoneNumber,
-            Arrays.asList(phoneNumber),
-            "Weekly Promotion",
-            options /* Optional */,
-            Context.NONE).getValue();
+        SmsSendResult sendResult = smsClient.send(phoneNumber, phoneNumber, "Weekly promotion", options);
 
-        for (SmsSendResult result : sendResults) {
-            System.out.println("Message Id: " + result.getMessageId());
-            System.out.println("Recipient Number: " + result.getTo());
-            System.out.println("Send Result Successful:" + result.isSuccessful());
-        }
+        System.out.println("Message Id: " + sendResult.getMessageId());
+        System.out.println("Recipient Number: " + sendResult.getTo());
+        System.out.println("Send Result Successful:" + sendResult.isSuccessful());
     }
 }

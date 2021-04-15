@@ -15,8 +15,8 @@ import java.util.List;
 
 public class CreateChatThreadExample {
     public static void main(String[] args) {
-        String endpoint = System.getenv("AZURE_COMMUNICATION_ENDPOINT");
-        String token = System.getenv("AZURE_COMMUNICATION_TOKEN");
+        String endpoint = System.getenv("COMMUNICATION_ENDPOINT");
+        String token = System.getenv("COMMUNICATION_TOKEN");
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(token);
 
         // Initialize the chat client
