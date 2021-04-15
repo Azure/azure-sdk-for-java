@@ -1,6 +1,7 @@
 package com.azure.storage.blob.implementation.util
 
 import com.azure.storage.common.implementation.Constants
+import reactor.core.publisher.Sinks
 import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -22,8 +23,8 @@ class StorageBlockingSinkTest extends Specification {
         def blockingSink = new StorageBlockingSink()
 
         when:
-        blockingSink.tryEmitNext(ByteBuffer.wrap(new byte[0]))
-        blockingSink.tryEmitCompleteOrThrow()
+        blockingSink.emitNext(ByteBuffer.wrap(new byte[0]))
+        blockingSink.emitCompleteOrThrow()
 
         then:
         StepVerifier.create(blockingSink.asFlux())
@@ -48,9 +49,9 @@ class StorageBlockingSinkTest extends Specification {
             .subscribe()
 
         for(int i = 0; i < num; i++) {
-            blockingSink.tryEmitNext(ByteBuffer.allocate(8).putLong(i)) // This simulates a customer writing really fast to the OutputStream
+            blockingSink.emitNext(ByteBuffer.allocate(8).putLong(i)) // This simulates a customer writing really fast to the OutputStream
         }
-        blockingSink.tryEmitCompleteOrThrow()
+        blockingSink.emitCompleteOrThrow()
 
         then:
         notThrown(Exception)
@@ -88,9 +89,9 @@ class StorageBlockingSinkTest extends Specification {
             .subscribe()
 
         for(int i = 0; i < num; i++) {
-            blockingSink.tryEmitNext(buffers[i]) // This simulates a customer writing really fast to the OutputStream
+            blockingSink.emitNext(buffers[i]) // This simulates a customer writing really fast to the OutputStream
         }
-        blockingSink.tryEmitCompleteOrThrow()
+        blockingSink.emitCompleteOrThrow()
 
         then:
         notThrown(Exception)
@@ -111,10 +112,10 @@ class StorageBlockingSinkTest extends Specification {
             .subscribe()
 
         for(int i = 0; i < num; i++) {
-            blockingSink.tryEmitNext(ByteBuffer.allocate(8).putLong(i))
+            blockingSink.emitNext(ByteBuffer.allocate(8).putLong(i))
             sleep(delay) // This simulates a customer writing really slow to the OutputStream
         }
-        blockingSink.tryEmitCompleteOrThrow()
+        blockingSink.emitCompleteOrThrow()
 
         then:
         notThrown(Exception)
@@ -151,12 +152,73 @@ class StorageBlockingSinkTest extends Specification {
             .subscribe()
 
         for(int i = 0; i < num; i++) {
-            blockingSink.tryEmitNext(buffers[i])
+            blockingSink.emitNext(buffers[i])
             sleep(delay) // This simulates a customer writing really slow to the OutputStream
         }
-        blockingSink.tryEmitCompleteOrThrow()
+        blockingSink.emitCompleteOrThrow()
 
         then:
         notThrown(Exception)
+    }
+
+    def "error terminated"() {
+        setup:
+        def blockingSink = new StorageBlockingSink()
+
+        when:
+        blockingSink.asFlux()
+            .subscribe()
+
+        blockingSink.emitNext(ByteBuffer.wrap(new byte[0]))
+        blockingSink.emitCompleteOrThrow()
+        blockingSink.emitNext(ByteBuffer.wrap(new byte[0]))
+
+        then:
+        def e = thrown(IllegalStateException)
+        ((Sinks.EmissionException) e.getCause()).getReason() == Sinks.EmitResult.FAIL_TERMINATED
+
+        when:
+        blockingSink = new StorageBlockingSink()
+        blockingSink.asFlux()
+            .subscribe()
+
+        blockingSink.emitCompleteOrThrow()
+        blockingSink.emitCompleteOrThrow()
+
+        then:
+        e = thrown(Sinks.EmissionException)
+        e.getReason() == Sinks.EmitResult.FAIL_TERMINATED
+    }
+
+    def "error cancelled"() {
+        setup:
+        def blockingSink = new StorageBlockingSink()
+
+        when:
+        blockingSink.asFlux()
+            .timeout(Duration.ofMillis(100))
+            .subscribe()
+
+        sleep(200)
+
+        blockingSink.emitNext(ByteBuffer.wrap(new byte[0]))
+
+        then:
+        def e = thrown(IllegalStateException)
+        ((Sinks.EmissionException) e.getCause()).getReason() == Sinks.EmitResult.FAIL_CANCELLED
+
+        when:
+        blockingSink = new StorageBlockingSink()
+        blockingSink.asFlux()
+            .timeout(Duration.ofMillis(100))
+            .subscribe()
+
+        sleep(200)
+
+        blockingSink.emitCompleteOrThrow()
+
+        then:
+        e = thrown(Sinks.EmissionException)
+        e.getReason() == Sinks.EmitResult.FAIL_CANCELLED
     }
 }

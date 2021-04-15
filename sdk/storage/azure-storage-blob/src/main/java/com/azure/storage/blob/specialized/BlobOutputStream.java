@@ -249,7 +249,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             // Need to wait until the uploadTask completes
             lock.lock();
             try {
-                sink.tryEmitCompleteOrThrow(); /* Allow upload task to try to complete. */
+                sink.emitCompleteOrThrow(); /* Allow upload task to try to complete. */
 
                 while (!complete) {
                     transferComplete.await();
@@ -276,9 +276,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             System.arraycopy(data, offset, buffer, 0, length);
 
             try {
-                this.sink.tryEmitNext(ByteBuffer.wrap(buffer));
-            } catch (Throwable t) {
-                this.lastError = new IOException(t);
+                this.sink.emitNext(ByteBuffer.wrap(buffer));
+            } catch (Exception e) {
+                this.lastError = new IOException(e);
             }
         }
 

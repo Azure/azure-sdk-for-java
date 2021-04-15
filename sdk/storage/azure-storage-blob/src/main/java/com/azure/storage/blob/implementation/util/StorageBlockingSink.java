@@ -65,9 +65,9 @@ public final class StorageBlockingSink {
      *
      * @param buffer {@link ByteBuffer} to emit.
      */
-    public void tryEmitNext(ByteBuffer buffer) {
+    public void emitNext(ByteBuffer buffer) {
         try {
-            this.writeSink.tryEmitNext(buffer).orThrow();
+             this.writeSink.tryEmitNext(buffer).orThrow();
             /* Here are different cases that tryEmitNext can return.
             * OK: Success
             * FAIL_OVERFLOW: When the writeLimitQueue overflows. This indicates there is backpressure. NOTE: If this
@@ -80,16 +80,16 @@ public final class StorageBlockingSink {
             * FAIL_ZERO_SUBSCRIBER: The Flux was never subscribed to. We implicitly save ourselves from hitting this
             * case since we manage the subscribe process in the constructor of BlockBlobOutputStream
             */
-        } catch (Throwable t) {
+        } catch (Exception e) {
             throw logger.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
-                + "write failure", t));
+                + "write failure", e));
         }
     }
 
     /**
      * Try to emit a complete signal, otherwise throw.
      */
-    public void tryEmitCompleteOrThrow() {
+    public void emitCompleteOrThrow() {
         this.writeSink.tryEmitComplete().orThrow();
     }
 
