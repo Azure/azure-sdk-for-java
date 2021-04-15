@@ -9,11 +9,13 @@ import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.aad.webapp.AADOAuth2AuthorizedClientRepository;
 import com.azure.spring.aad.webapp.AADOAuth2UserService;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
@@ -41,6 +43,7 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
+@ConditionalOnClass(Authentication.class)
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADConfiguration {
 
