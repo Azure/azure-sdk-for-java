@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
@@ -46,11 +46,8 @@ public class RecognizeCustomFormsAsync {
         String modelId = "{modelId}";
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            recognizeFormPoller = client.beginRecognizeCustomForms(
-                modelId,
-                toFluxByteBuffer(targetStream).cache(),
-                sourceFile.length()
-            );
+            recognizeFormPoller = client.beginRecognizeCustomForms(modelId, toFluxByteBuffer(targetStream),
+                sourceFile.length());
         }
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller

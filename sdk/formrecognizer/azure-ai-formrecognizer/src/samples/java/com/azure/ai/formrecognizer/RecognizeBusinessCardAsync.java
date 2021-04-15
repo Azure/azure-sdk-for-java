@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Asynchronous sample for recognizing business card information from a document given through a file.
@@ -47,7 +47,7 @@ public class RecognizeBusinessCardAsync {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeBusinessCardPoller =
-            client.beginRecognizeBusinessCards(toFluxByteBuffer(targetStream).cache(), sourceFile.length());
+            client.beginRecognizeBusinessCards(toFluxByteBuffer(targetStream), sourceFile.length());
 
         Mono<List<RecognizedForm>> businessCardPageResultsMono =
             recognizeBusinessCardPoller

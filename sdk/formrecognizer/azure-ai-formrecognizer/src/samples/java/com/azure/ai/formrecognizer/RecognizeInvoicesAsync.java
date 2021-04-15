@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample for recognizing commonly found invoice fields from a local file input stream of an invoice document.
@@ -49,8 +49,7 @@ public class RecognizeInvoicesAsync {
         byte[] fileContent = Files.readAllBytes(invoice.toPath());
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            recognizeInvoicesPoller = client.beginRecognizeInvoices(toFluxByteBuffer(targetStream).cache(),
-                invoice.length());
+            recognizeInvoicesPoller = client.beginRecognizeInvoices(toFluxByteBuffer(targetStream), invoice.length());
         }
 
         Mono<List<RecognizedForm>> invoicePageResultMono = recognizeInvoicesPoller

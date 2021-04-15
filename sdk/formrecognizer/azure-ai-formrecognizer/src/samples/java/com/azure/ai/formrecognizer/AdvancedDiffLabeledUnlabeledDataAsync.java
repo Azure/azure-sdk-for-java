@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample to show the differences in output that arise when RecognizeCustomForms
@@ -56,7 +56,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
 
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> labeledCustomFormPoller =
             client.beginRecognizeCustomForms("{labeled_model_Id}",
-                toFluxByteBuffer(new ByteArrayInputStream(fileContent)).cache(),
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
                 analyzeFile.length(),
                     new RecognizeCustomFormsOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
@@ -65,7 +65,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
 
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
             client.beginRecognizeCustomForms("{unlabeled_model_Id}",
-                toFluxByteBuffer(new ByteArrayInputStream(fileContent)).cache(),
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
                 analyzeFile.length(),
                     new RecognizeCustomFormsOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)

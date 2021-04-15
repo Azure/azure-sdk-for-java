@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
+import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
  * Async sample for recognizing commonly found license fields from a local file input stream of an license ID document.
@@ -48,7 +48,8 @@ public class RecognizeIdDocumentsAsync {
 
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeIDPoller
             = client.beginRecognizeIdDocuments(
-                toFluxByteBuffer(new ByteArrayInputStream(fileContent)).cache(), fileContent.length);
+            toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+            fileContent.length);
 
         Mono<List<RecognizedForm>> idDocumentPollerResult = recognizeIDPoller
             .last()
