@@ -89,6 +89,7 @@
                 <include>org.springframework:spring-web:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-webflux:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework.security:spring-security-core:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
                 <include>org.springframework.security:spring-security-web:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
