@@ -6,7 +6,11 @@ package com.azure.security.keyvault.jca;
 import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactorySpi;
+import java.io.IOException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,6 +39,13 @@ public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
     @Override
     protected void engineInit(ManagerFactoryParameters spec) {
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", spec);
+        try {
+            KeyStore ks = KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE);
+            ks.load(null);
+            trustManagers.add(new KeyVaultTrustManager(ks));
+        } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -20,12 +20,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
@@ -59,12 +54,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the certificates by alias.
      */
-    private final HashMap<String, Certificate> certificates = new HashMap<>();
+    private static final HashMap<String, Certificate> certificates = new HashMap<>();
 
     /**
      * Stores the certificate keys by alias.
      */
-    private final HashMap<String, Key> certificateKeys = new HashMap<>();
+    private static final HashMap<String, Key> certificateKeys = new HashMap<>();
 
     /**
      * Stores the creation date.
@@ -74,15 +69,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the key vault client.
      */
-    private KeyVaultClient keyVaultClient;
+    private static KeyVaultClient keyVaultClient;
+
+    private static Timer timer;
 
     /**
      * Constructor.
      *
      * <p>
      * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>, 
-     * <code>azure.keyvault.aadAuthenticationUrl</code>, 
+     * <code>azure.keyvault.uri</code>,
+     * <code>azure.keyvault.aadAuthenticationUrl</code>,
      * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
      * <code>azure.keyvault.clientSecret</code> and
@@ -103,6 +100,46 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
+    }
+
+    void startRefresh() {
+        final Long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refreshInterval"))
+            .map(Long::valueOf)
+            .orElse(0L);
+        if(refreshInterval > 0) {
+            synchronized (KeyVaultKeyStore.class) {
+                if (timer != null) {
+                    try {
+                        timer.cancel();
+                        timer.purge();
+                    } catch (RuntimeException runtimeException) {
+                        LOGGER.log(WARNING,"Error of terminating Timer", runtimeException);
+                    }
+                }
+                timer = new Timer(true);
+                final TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        refreshCertificate();
+                    }
+                };
+                timer.scheduleAtFixedRate(task, refreshInterval, refreshInterval);
+            }
+        }
+    }
+
+    private void refreshCertificate() {
+        Optional.ofNullable(aliases)
+                .orElse(Collections.emptyList())
+                .forEach(alias -> {
+                    Key key = keyVaultClient.getKey(alias, null);
+                    Certificate certificate = keyVaultClient.getCertificate(alias);
+                    if(!Objects.isNull(key) && !Objects.isNull(certificate)) {
+                        certificateKeys.put(alias, key);
+                        certificates.put(alias, certificate);
+                    }
+                });
+
     }
 
     @Override
@@ -148,6 +185,22 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
         if (cert != null) {
+            if (aliases == null) {
+                aliases = keyVaultClient.getAliases();
+            }
+            for (String candidateAlias : aliases) {
+                Certificate certificate = engineGetCertificate(candidateAlias);
+                if (certificate.equals(cert)) {
+                    alias = candidateAlias;
+                    break;
+                }
+            }
+        }
+        final Long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refreshInterval"))
+            .map(Long::valueOf)
+            .orElse(0L);
+        if (alias == null && cert != null && refreshInterval > 0) {
+            refreshCertificate();
             if (aliases == null) {
                 aliases = keyVaultClient.getAliases();
             }
@@ -237,6 +290,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             }
         }
         sideLoad();
+        startRefresh();
     }
 
     @Override
