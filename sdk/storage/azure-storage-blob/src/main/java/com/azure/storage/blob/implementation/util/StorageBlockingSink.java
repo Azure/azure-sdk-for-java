@@ -52,7 +52,7 @@ public final class StorageBlockingSink {
      */
     public StorageBlockingSink() {
         /*
-        We use a LinkedBlockingQueue to effectively block the thread that calls tryEmitNext if there is
+        We use a ProducerBlockingQueue to effectively block the thread that calls tryEmitNext if there is
         backpressure from downstream. Its capacity is 1 to keep the buffer as small as possible, as downstream
         implementations do their own buffering.
         */
