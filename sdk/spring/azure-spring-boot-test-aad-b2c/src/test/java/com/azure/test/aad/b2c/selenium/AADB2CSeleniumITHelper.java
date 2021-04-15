@@ -110,6 +110,10 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public String getName() {
+        String currentUrl = driver.getCurrentUrl();
+        LOGGER.info("AADB2CSeleniumITHelper, currenturl = {}", currentUrl);
+        String pageSource = driver.getPageSource();
+        LOGGER.info("AADB2CSeleniumITHelper, pageSource = {}", pageSource);
         return driver.findElement(By.cssSelector("tbody"))
             .findElement(By.xpath("tr[2]"))
             .findElement(By.xpath("th[2]"))

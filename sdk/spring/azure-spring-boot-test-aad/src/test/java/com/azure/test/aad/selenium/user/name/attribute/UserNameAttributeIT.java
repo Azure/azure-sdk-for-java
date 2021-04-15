@@ -39,6 +39,7 @@ public class UserNameAttributeIT {
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("api/principalName");
+        LOGGER.info("UserNameAttributeIT, principalName = {}", httpResponse);
         Assertions.assertTrue(httpResponse.contains(AAD_USER_NAME_1));
     }
 

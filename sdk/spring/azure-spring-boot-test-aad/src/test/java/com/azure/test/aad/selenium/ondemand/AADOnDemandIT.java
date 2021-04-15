@@ -50,6 +50,7 @@ public class AADOnDemandIT {
         Assertions.assertTrue(incrementalConsentUrl.contains(armClientScope));
 
         httpResponse = aadSeleniumITHelper.httpGet("api/arm");
+        LOGGER.info("onDemandTest, httpResponse = {}", httpResponse);
         Assertions.assertTrue(httpResponse.contains("arm"));
     }
 
