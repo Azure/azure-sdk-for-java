@@ -5,9 +5,9 @@ package com.azure.test.aad.selenium.logout;
 
 import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADLogoutIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADLogoutIT.class);
@@ -34,10 +36,10 @@ public class AADLogoutIT {
         aadSeleniumITHelper.logIn();
         String logoutUsername = aadSeleniumITHelper.logoutAndGetLogoutUsername();
         String loginUsername = aadSeleniumITHelper.getUsername();
-        Assert.assertEquals(loginUsername, logoutUsername);
+        assertEquals(loginUsername, logoutUsername);
     }
 
-    @After
+    @AfterAll
     public void destroy() {
         aadSeleniumITHelper.destroy();
     }
