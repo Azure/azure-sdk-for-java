@@ -197,8 +197,6 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
 
-        private final ClientLogger logger = new ClientLogger(BlockBlobOutputStream.class);
-
         private final Lock lock;
         private final Condition transferComplete;
         private final StorageBlockingSink sink;
@@ -279,8 +277,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             try {
                 this.sink.tryEmitNext(ByteBuffer.wrap(buffer));
-            } catch (IllegalStateException e) {
-                this.lastError = new IOException(e);
+            } catch (Throwable t) {
+                this.lastError = new IOException(t);
             }
         }
 

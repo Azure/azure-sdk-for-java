@@ -1,8 +1,9 @@
 package com.azure.storage.blob.implementation.util
 
-
+import com.azure.storage.common.implementation.Constants
 import reactor.test.StepVerifier
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.time.Duration
@@ -30,37 +31,28 @@ class StorageBlockingSinkTest extends Specification {
             .expectComplete()
     }
 
-    // This test can take a long time to execute
-    def "producer consumer"() {
+    // These next few test can take a long time to execute
+    @Unroll
+    def "producer, delayed consumer"() {
         setup:
         def blockingSink = new StorageBlockingSink()
         def delay = 1000
-        def blockTime = 3
 
         when:
         blockingSink.asFlux()
             .index()
-            .delayElements(Duration.ofMillis(delay))
+            .delayElements(Duration.ofMillis(delay)) // This simulates the slower network bound IO
             .doOnNext({ tuple ->
                 assert tuple.getT2().getLong(0) == tuple.getT1() // Check for data integrity
             })
-//            .onErrorStop()
             .subscribe()
 
-        // timer around this and do math to check blocking happened.
-//        def timeStart = new Date()
         for(int i = 0; i < num; i++) {
-            blockingSink.tryEmitNext(ByteBuffer.allocate(8).putLong(i))
+            blockingSink.tryEmitNext(ByteBuffer.allocate(8).putLong(i)) // This simulates a customer writing really fast to the OutputStream
         }
         blockingSink.tryEmitCompleteOrThrow()
-//        delay(200)
-//        def timeStop = new Date()
 
         then:
-        // We will block for 3 seconds for every other item (num / 2), and the block time is 3 seconds.
-//        TimeDuration duration = TimeCategory.minus(new Date(), timeStart)
-//        duration.toMilliseconds() / 1000 < blockTime * num / 2
-//        duration.toMilliseconds() / 1000 > blockTime * ((num / 2) - 1)
         notThrown(Exception)
 
         where:
@@ -68,9 +60,103 @@ class StorageBlockingSinkTest extends Specification {
         5       || _
         10      || _
         50      || _
-        100     || _ // Anything past this takes way too long, This takes around 2 min
+        100     || _
     }
-    // add test that generates random buffers
 
+    @Unroll
+    def "producer, delayed consumer random buffers"() {
+        setup:
+        def blockingSink = new StorageBlockingSink()
+        def delay = 1000
+        def num = 50
+        def rand = new Random()
+        def buffers = new ByteBuffer[num]
+        for(int i = 0; i < num; i++) {
+            def size = rand.nextInt(8 * Constants.KB)
+            def b = new byte[size]
+            rand.nextBytes(b)
+            buffers[i] = ByteBuffer.wrap(b)
+        }
 
+        when:
+        blockingSink.asFlux()
+            .index()
+            .delayElements(Duration.ofMillis(delay)) // This simulates the slower network bound IO
+            .doOnNext({ tuple ->
+                assert tuple.getT2() == buffers[(int)tuple.getT1()] // Check for data integrity
+            })
+            .subscribe()
+
+        for(int i = 0; i < num; i++) {
+            blockingSink.tryEmitNext(buffers[i]) // This simulates a customer writing really fast to the OutputStream
+        }
+        blockingSink.tryEmitCompleteOrThrow()
+
+        then:
+        notThrown(Exception)
+    }
+
+    @Unroll
+    def "delayed producer, consumer"() {
+        setup:
+        def blockingSink = new StorageBlockingSink()
+        def delay = 1000
+
+        when:
+        blockingSink.asFlux()
+            .index()
+            .doOnNext({ tuple ->
+                assert tuple.getT2().getLong(0) == tuple.getT1() // Check for data integrity
+            })
+            .subscribe()
+
+        for(int i = 0; i < num; i++) {
+            blockingSink.tryEmitNext(ByteBuffer.allocate(8).putLong(i))
+            sleep(delay) // This simulates a customer writing really slow to the OutputStream
+        }
+        blockingSink.tryEmitCompleteOrThrow()
+
+        then:
+        notThrown(Exception)
+
+        where:
+        num     || _
+        5       || _
+        10      || _
+        50      || _
+        100     || _
+    }
+
+    @Unroll
+    def "delayed producer, consumer random buffers"() {
+        setup:
+        def blockingSink = new StorageBlockingSink()
+        def delay = 1000
+        def num = 50
+        def rand = new Random()
+        def buffers = new ByteBuffer[num]
+        for(int i = 0; i < num; i++) {
+            def size = rand.nextInt(8 * Constants.KB)
+            def b = new byte[size]
+            rand.nextBytes(b)
+            buffers[i] = ByteBuffer.wrap(b)
+        }
+
+        when:
+        blockingSink.asFlux()
+            .index()
+            .doOnNext({ tuple ->
+                assert tuple.getT2() == buffers[(int)tuple.getT1()] // Check for data integrity
+            })
+            .subscribe()
+
+        for(int i = 0; i < num; i++) {
+            blockingSink.tryEmitNext(buffers[i])
+            sleep(delay) // This simulates a customer writing really slow to the OutputStream
+        }
+        blockingSink.tryEmitCompleteOrThrow()
+
+        then:
+        notThrown(Exception)
+    }
 }

@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * This is a lightweight wrapper around Sinks.Many to implement a Sink backed by a LinkedBlockingQueue, effectively
  * implementing a BlockingSink.
  */
-public class StorageBlockingSink {
+public final class StorageBlockingSink {
     private final ClientLogger logger = new ClientLogger(StorageBlockingSink.class);
 
     /*
@@ -24,11 +24,12 @@ public class StorageBlockingSink {
     private final LinkedBlockingQueue<ByteBuffer> writeLimitQueue;
 
     /* Overrided implementation of LinkedBlockingQueue to effectively implement a true BlockingSink. */
-    private static class ProducerBlockingQueue<T> extends LinkedBlockingQueue<T> {
-        private final ClientLogger logger = new ClientLogger(ProducerBlockingQueue.class);
+    private static final class ProducerBlockingQueue<ByteBuffer> extends LinkedBlockingQueue<ByteBuffer> {
+        private final ClientLogger logger;
 
-        ProducerBlockingQueue(int queueSize) {
+        ProducerBlockingQueue(int queueSize, ClientLogger logger) {
             super(queueSize);
+            this.logger = logger;
         }
 
         /* The Reactor implementation of Sinks(UnicastProcessor).tryEmitNext (see usage below) makes a call to
@@ -36,7 +37,7 @@ public class StorageBlockingSink {
         space in the queue. Since this code is called from user thread on BlobOutputStream.write and blocking on that
         API until data can be written is ok, this is the simplest way to get desired behavior. */
         @Override
-        public boolean offer(T o) {
+        public boolean offer(ByteBuffer o) {
             try {
                 super.put(o);
                 return true;
@@ -55,7 +56,7 @@ public class StorageBlockingSink {
         backpressure from downstream. Its capacity is 1 to keep the buffer as small as possible, as downstream
         implementations do their own buffering.
         */
-        this.writeLimitQueue = new ProducerBlockingQueue<>(1);
+        this.writeLimitQueue = new ProducerBlockingQueue<>(1, this.logger);
         this.writeSink = Sinks.many().unicast().onBackpressureBuffer(writeLimitQueue);
     }
 
@@ -63,29 +64,25 @@ public class StorageBlockingSink {
      * Try to emit an element.
      *
      * @param buffer {@link ByteBuffer} to emit.
-     * @throws IllegalStateException if an unrecoverable error was thrown.
      */
-    public void tryEmitNext(ByteBuffer buffer) throws IllegalStateException {
-        /*
-        tryEmitNext returns a Sinks.EmitResult that indicates different success/error cases we can
-        potentially handle (in case we want to retry transmission).
-        */
-        final Sinks.EmitResult writeResult = this.writeSink.tryEmitNext(buffer);
-        switch (writeResult) {
-            case OK: // Success
-                return;
-            case FAIL_OVERFLOW: /* When queue overflows. This indicates there is backpressure.
-            NOTE: If the FAIL_OVERFLOW case ever gets hit, it indicates there is a mismatch between the way Reactor
-            implements tryEmitNext and the way ProducerBlockingQueue is designed. */
-            case FAIL_TERMINATED: /* Flux already emitted completion signal. We implicitly save customer from
-            hitting this state by calling checkStreamState before write. */
-            case FAIL_CANCELLED: /* Flux got a cancellation signal. */
-            case FAIL_NON_SERIALIZED: /* Concurrent calls to tryEmitNext. */
-            case FAIL_ZERO_SUBSCRIBER: /* No one ever subscribed to Flux. This should not happen since we manage the
-            subscribe process in the constructor. */
-            default: // This case should never get hit
-                throw logger.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
-                    + "write failure, result:" + writeResult));
+    public void tryEmitNext(ByteBuffer buffer) {
+        try {
+            this.writeSink.tryEmitNext(buffer).orThrow();
+            /* Here are different cases that tryEmitNext can return.
+            * OK: Success
+            * FAIL_OVERFLOW: When the writeLimitQueue overflows. This indicates there is backpressure. NOTE: If this
+            * ever gets hit, it indicates that there is a mismatch between the way Reactor implements tryEmitNext
+            * and they way ProducerBlockingQueue is designed.
+            * FAIL_TERMINATED: The Flux already emitted a completion signal. We implicitly save ourselves from hitting
+            * this case by calling checkStreamState before write in BlockBlobOutputStream.
+            * FAIL_CANCELLED: The Flux received a cancellation signal. This can happen due to timeouts.
+            * FAIL_NON_SERIALIZED: Concurrent calls to tryEmitNext. This is invalid for OutputStreams anyway.
+            * FAIL_ZERO_SUBSCRIBER: The Flux was never subscribed to. We implicitly save ourselves from hitting this
+            * case since we manage the subscribe process in the constructor of BlockBlobOutputStream
+            */
+        } catch (Throwable t) {
+            throw logger.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
+                + "write failure", t));
         }
     }
 
