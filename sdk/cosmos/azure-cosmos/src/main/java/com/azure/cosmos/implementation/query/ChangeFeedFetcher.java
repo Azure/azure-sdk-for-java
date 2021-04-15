@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RenameCollectionAwareClientRetryPolicy;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -62,16 +63,18 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
             this.createRequestFunc = createRequestFunc;
         } else {
             DocumentClientRetryPolicy retryPolicyInstance = client.getResetSessionTokenRetryPolicy().getRequestPolicy();
+            String collectionLink = PathsHelper.generatePath(
+                ResourceType.DocumentCollection, changeFeedState.getContainerRid(), false);
             retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
                 client.getCollectionCache(),
                 retryPolicyInstance,
-                PathsHelper.getCollectionPath(changeFeedState.getContainerRid()),
+                collectionLink,
                 requestOptionProperties);
 
             retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(client,
                 client.getCollectionCache(),
                 client.getPartitionKeyRangeCache(),
-                PathsHelper.getCollectionPath(changeFeedState.getContainerRid()),
+                collectionLink,
                 retryPolicyInstance,
                 requestOptionProperties);
 
