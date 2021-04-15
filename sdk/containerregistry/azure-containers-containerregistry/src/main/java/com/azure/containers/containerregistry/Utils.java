@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.containers.containerregistry.implementation;
+package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
+import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -32,6 +32,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public final class Utils {
      * @param <T> the model type that is being operated on.
      * @return paged response with the correct continuation token.
      */
-    public static <T> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<T> listResponse) {
+    static <T> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<T> listResponse) {
         return Utils.getPagedResponseWithContinuationToken(listResponse, values -> values);
     }
 
@@ -79,7 +80,7 @@ public final class Utils {
      * @param <R> The model type returned by the public client.
      * @return paged response with the correct continuation token.
      */
-    public static <T, R> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<R> listResponse, Function<List<R>, List<T>> mapperFunction) {
+    static <T, R> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<R> listResponse, Function<List<R>, List<T>> mapperFunction) {
         Objects.requireNonNull(mapperFunction);
 
         String continuationLink = null;
@@ -114,7 +115,7 @@ public final class Utils {
      * @param exception The exception returned by the rest client.
      * @return The exception returned by the public methods.
      */
-    public static Throwable mapException(Throwable exception) {
+    static Throwable mapException(Throwable exception) {
         if (!(exception instanceof AcrErrorsException)) {
             return exception;
         }
@@ -147,7 +148,7 @@ public final class Utils {
      * @param <R> The model type returned by the public client.
      * @return paged response with the correct continuation token.
      */
-    public static <T, R> Response<R> mapResponse(Response<T> response, Function<T, R> mapFunction) {
+    static <T, R> Response<R> mapResponse(Response<T> response, Function<T, R> mapFunction) {
         if (response == null || mapFunction == null) {
             return null;
         }
@@ -173,10 +174,19 @@ public final class Utils {
      * @param endpoint endpoint to be called
      * @return returns the httpPipeline to be consumed by the builders.
      */
-    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-                                                 Configuration configuration, RetryPolicy retryPolicy, TokenCredential credential,
-                                                 List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient, String endpoint) {
+    static HttpPipeline buildHttpPipeline(
+        ClientOptions clientOptions,
+        HttpLogOptions logOptions,
+        Configuration configuration,
+        RetryPolicy retryPolicy,
+        TokenCredential credential,
+        List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies,
+        HttpClient httpClient,
+        String endpoint) {
+
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(
             new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());
@@ -190,28 +200,35 @@ public final class Utils {
 
         policies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
 
+        // We generally put credential policy between BeforeRetry and AfterRetry policies and put Logging policy in the end.
+        // However since ACR uses the rest endpoints of the service in the credential policy,
+        // we want to be able to use the same pipeline (minus the credential policy) to have uniformity in the policy
+        // pipelines across all ACR endpoints.
         if (credential != null) {
-            ArrayList<HttpPipelinePolicy> credentialPolicies =  clone(policies);
-            credentialPolicies.add(new HttpLoggingPolicy(logOptions));
+            ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
+            credentialPolicies.add(loggingPolicy);
 
-            policies.add(new ContainerRegistryCredentialsPolicy(
+            ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
                 credential,
                 endpoint,
                 new HttpPipelineBuilder()
                     .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                     .httpClient(httpClient)
-                    .build()
-            ));
+                    .build(),
+                JacksonAdapter.createDefaultSerializerAdapter());
+
+            ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
+            policies.add(credentialsPolicy);
         }
 
-        policies.add(new HttpLoggingPolicy(logOptions));
+        policies.add(loggingPolicy);
         HttpPipeline httpPipeline =
             new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();
-
         return httpPipeline;
     }
 

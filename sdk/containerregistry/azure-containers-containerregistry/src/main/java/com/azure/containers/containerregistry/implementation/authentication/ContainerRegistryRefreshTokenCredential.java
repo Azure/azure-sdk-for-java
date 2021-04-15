@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
  * Token credentials representing the container registry refresh token.
  * This token is unique per registry operation.
  */
-class ContainerRegistryTokenCredential {
+public class ContainerRegistryRefreshTokenCredential {
 
-    private final TokenCredential tokenCredential;
+    private final TokenCredential aadTokenCredential;
     private final TokenServiceImpl tokenService;
     public static final String AAD_DEFAULT_SCOPE = "https://management.core.windows.net/.default";
 
@@ -23,9 +23,9 @@ class ContainerRegistryTokenCredential {
      * @param tokenService the container registry token service that calls the token rest APIs.
      * @param aadTokenCredential the ARM access token.
      */
-    ContainerRegistryTokenCredential(TokenServiceImpl tokenService, TokenCredential aadTokenCredential) {
+    ContainerRegistryRefreshTokenCredential(TokenServiceImpl tokenService, TokenCredential aadTokenCredential) {
         this.tokenService = tokenService;
-        this.tokenCredential = aadTokenCredential;
+        this.aadTokenCredential = aadTokenCredential;
     }
 
     /**
@@ -36,9 +36,8 @@ class ContainerRegistryTokenCredential {
     public Mono<AccessToken> getToken(ContainerRegistryTokenRequestContext context) {
         String serviceName = context.getServiceName();
 
-        return Mono.defer(() -> tokenCredential.getToken(new TokenRequestContext().addScopes(AAD_DEFAULT_SCOPE))
-            .flatMap(
-                token -> this.tokenService.getAcrRefreshTokenAsync(token.getToken(), serviceName)));
+        return Mono.defer(() -> aadTokenCredential.getToken(new TokenRequestContext().addScopes(AAD_DEFAULT_SCOPE))
+            .flatMap(token -> this.tokenService.getAcrRefreshTokenAsync(token.getToken(), serviceName)));
     }
 
 }

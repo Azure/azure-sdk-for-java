@@ -1,23 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.containers.containerregistry.implementation.authentication;
+package com.azure.containers.containerregistry;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpPipeline;
+import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenRequestContext;
+import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.experimental.http.policy.BearerTokenAuthenticationChallengePolicy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Mono;
 
-
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.HashMap;
 
 /**
  * <p>Credential policy for the container registry. It follows the challenge based authorization scheme.</p>
@@ -38,7 +37,7 @@ import java.util.HashMap;
  * <p>Step5: GET /api/v1/acr/repositories
  * Request Header: {Bearer acrTokenAccess}</p>
  */
-public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
+final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationChallengePolicy {
 
     private static final String BEARER = "Bearer";
     public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
@@ -54,20 +53,10 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
     /**
      * Creates an instance of ContainerRegistryCredentialsPolicy.
      *
-     * @param credential the AAD credentials passed to the client.
-     * @param url the url for the container registry.
-     * @param pipeline the http pipeline to be used to make the rest calls.
-     */
-    public ContainerRegistryCredentialsPolicy(TokenCredential credential, String url, HttpPipeline pipeline) {
-        this(new ContainerRegistryTokenService(credential, url, pipeline, JacksonAdapter.createDefaultSerializerAdapter()));
-    }
-
-    /**
-     * Creates an instance of ContainerRegistryCredentialsPolicy.
-     *
      * @param tokenService the token generation service.
      */
     ContainerRegistryCredentialsPolicy(ContainerRegistryTokenService tokenService) {
+        super(tokenService);
         this.tokenService = tokenService;
     }
 
@@ -107,7 +96,7 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
      * @param tokenRequestContext the token request conext to be used for token acquisition.
      * @return a {@link Mono} containing {@link Void}
      */
-    public Mono<Boolean> authorizeRequest(HttpPipelineCallContext context, ContainerRegistryTokenRequestContext tokenRequestContext) {
+    Mono<Boolean> addAuthorization(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return tokenService.getToken(tokenRequestContext)
             .flatMap((token) -> {
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
@@ -120,13 +109,14 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
 
     /**
      * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication
-     * challenge header is received after the initial request and returns appropriate {@link ContainerRegistryTokenRequestContext} to
+     * challenge header is received after the initial request and returns appropriate {@link TokenRequestContext} to
      * be used for re-authentication.
      *
      * @param context The request context.
      * @param response The Http Response containing the authentication challenge header.
-     * @return A {@link Mono} containing {@link ContainerRegistryTokenRequestContext}
+     * @return A {@link Mono} containing {@link Boolean}
      */
+    @Override
     public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
@@ -138,7 +128,7 @@ public class ContainerRegistryCredentialsPolicy implements HttpPipelinePolicy {
             if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
                 String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
                 String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
-                return authorizeRequest(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
+                return addAuthorization(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
             }
 
             return Mono.just(false);
