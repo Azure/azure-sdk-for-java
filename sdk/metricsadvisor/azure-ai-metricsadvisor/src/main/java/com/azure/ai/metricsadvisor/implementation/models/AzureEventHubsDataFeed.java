@@ -17,7 +17,7 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private AzureEventHubsParameter dataSourceParameter;
 
     /**

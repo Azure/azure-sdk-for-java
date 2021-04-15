@@ -17,7 +17,7 @@ public final class AzureCosmosDBDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private AzureCosmosDBParameter dataSourceParameter;
 
     /**

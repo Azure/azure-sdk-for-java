@@ -104,7 +104,7 @@ public class ConsistencyWriter {
             // force address refresh header can be critical to recover for example from
             // stale Gateway caches etc.
             BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics) != null &&
-            BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics).retryCount > 1) {
+            BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics).getRetryCount() > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 
@@ -135,7 +135,7 @@ public class ConsistencyWriter {
             // force address refresh header can be critical to recover for example from
             // stale Gateway caches etc.
             BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics) != null &&
-            BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics).retryCount > 1) {
+            BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics).getRetryCount() > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 

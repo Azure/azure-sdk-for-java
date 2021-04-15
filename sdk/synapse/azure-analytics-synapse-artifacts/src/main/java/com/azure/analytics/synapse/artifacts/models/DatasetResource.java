@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dataset resource type. */
 @Fluent
-public final class DatasetResource extends AzureEntityResource {
+public final class DatasetResource extends SubResource {
     /*
      * Dataset properties.
      */
