@@ -3,11 +3,11 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /** The Phone Number Services error. */
-@Fluent
+@Immutable
 public final class PhoneNumberError {
 
     private final String code;
