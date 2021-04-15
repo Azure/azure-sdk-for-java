@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
 /**
@@ -17,7 +16,6 @@ public class RetryPolicy implements IRetryPolicyFactory {
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
     private final ThrottlingRetryOptions throttlingRetryOptions;
-    private CosmosDiagnostics cosmosDiagnostics;
     private ClientRetryPolicy clientRetryPolicy;
 
     public RetryPolicy(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager
@@ -30,11 +28,8 @@ public class RetryPolicy implements IRetryPolicyFactory {
 
     @Override
     public DocumentClientRetryPolicy getRequestPolicy() {
-        if (clientRetryPolicy == null) {
-            clientRetryPolicy = new ClientRetryPolicy(this.diagnosticsClientContext,
-                this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions);
-            this.cosmosDiagnostics = clientRetryPolicy.getCosmosDiagnostics();
-        }
+        clientRetryPolicy = new ClientRetryPolicy(this.diagnosticsClientContext,
+            this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions);
         return clientRetryPolicy;
     }
 

@@ -413,7 +413,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 executeFunc,
                 targetRange,
                 collectionRid,
-                () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
+                createRetryPolicyFunc,
                 resourceType,
                 correlatedActivityId,
                 initialPageSize,

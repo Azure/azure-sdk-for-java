@@ -54,12 +54,16 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         this.cumulativeRetryDelay = Duration.ZERO;
     }
 
-    @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         Duration retryDelay = Duration.ZERO;
 
+        CosmosException dce = Utils.as(exception, CosmosException.class);
+        if (dce == null || !Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS)) {
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
+        }
+
         if (this.currentAttemptCount < this.maxAttemptCount &&
-                (retryDelay = checkIfRetryNeeded(exception)) != null) {
+                (retryDelay = checkIfRetryNeeded(dce)) != null) {
             this.currentAttemptCount++;
             logger.debug(
                     "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
@@ -102,13 +106,9 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     /// <param name="exception">Exception to examine</param>
     /// <param name="retryDelay">retryDelay</param>
     /// <returns>True if the exception is retriable; False otherwise</returns>
-    private Duration checkIfRetryNeeded(Exception exception) {
+    private Duration checkIfRetryNeeded(CosmosException dce) {
         Duration retryDelay = Duration.ZERO;
-
-        CosmosException dce = Utils.as(exception, CosmosException.class);
-
         if (dce != null){
-
             if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS))  {
                 retryDelay = dce.getRetryAfterDuration();
                 if (this.backoffDelayFactor > 1) {
@@ -120,7 +120,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 {
                     if (retryDelay == Duration.ZERO){
                         // we should never reach here as BE should turn non-zero of retryDelay
-                        logger.trace("Received retryDelay of 0 with Http 429", exception);
+                        logger.trace("Received retryDelay of 0 with Http 429", dce);
                         retryDelay = DEFAULT_RETRY_IN_SECONDS;
                     }
 

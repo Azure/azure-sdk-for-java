@@ -77,11 +77,6 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
-    @Override
-    public IRetryPolicy getNextRetryPolicy() {
-        return null;
-    }
-
     boolean shouldRetryForGone(int statusCode, int subStatusCode) {
 
         if (statusCode == StatusCodes.GONE

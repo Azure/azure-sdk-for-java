@@ -27,6 +27,4 @@ public interface IRetryPolicy {
     Mono<ShouldRetryResult> shouldRetry(Exception e);
 
     RetryContext getRetryContext();
-
-    IRetryPolicy getNextRetryPolicy();
 }

@@ -95,9 +95,4 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
             return Mono.just(shouldRetryResult);
         });
     }
-
-    @Override
-    public IRetryPolicy getNextRetryPolicy() {
-        return  this.retryPolicy;
-    }
 }

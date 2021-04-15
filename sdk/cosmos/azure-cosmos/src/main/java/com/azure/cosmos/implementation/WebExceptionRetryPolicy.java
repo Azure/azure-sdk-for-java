@@ -42,7 +42,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         if (!WebExceptionUtility.isWebExceptionRetriable(exception)) {
             // Have caller propagate original exception.
             this.durationTimer.stop();
-            return Mono.just(ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
         }
 
         // Don't penalise first retry with delay.
@@ -65,10 +65,5 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     @Override
     public RetryContext getRetryContext() {
         return this.retryContext;
-    }
-
-    @Override
-    public IRetryPolicy getNextRetryPolicy() {
-        return null;
     }
 }

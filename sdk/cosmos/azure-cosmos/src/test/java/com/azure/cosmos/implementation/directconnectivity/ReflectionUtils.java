@@ -204,6 +204,10 @@ public class ReflectionUtils {
         set(client, storeModel, "storeModel");
     }
 
+    public static void setGatewayHttpClient(RxStoreModel client, HttpClient httpClient) {
+        set(client, httpClient, "httpClient");
+    }
+
     public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
         return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
     }
@@ -222,6 +226,10 @@ public class ReflectionUtils {
 
     public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
         return get(StoreReader.class, consistencyReader, "storeReader");
+    }
+
+    public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
+        set(consistencyReader, storeReader, "storeReader");
     }
 
     public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {

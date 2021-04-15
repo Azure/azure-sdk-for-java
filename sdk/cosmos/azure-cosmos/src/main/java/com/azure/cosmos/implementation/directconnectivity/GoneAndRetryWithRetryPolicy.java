@@ -77,11 +77,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         return this.retryContext;
     }
 
-    @Override
-    public IRetryPolicy getNextRetryPolicy() {
-        return null;
-    }
-
     private Duration getElapsedTime() {
         Instant endSnapshot = this.end != null ? this.end : Instant.now();
 
@@ -179,7 +174,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
-                return Mono.just(ShouldRetryResult.noRetry());
+                return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
             } else if (exception instanceof GoneException &&
                 !request.isReadOnly() &&
                 BridgeInternal.hasSendingRequestStarted((CosmosException)exception) &&
@@ -237,11 +232,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         @Override
         public RetryContext getRetryContext() {
             return this.retryContext;
-        }
-
-        @Override
-        public IRetryPolicy getNextRetryPolicy() {
-            return null;
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handleException(Exception exception) {
@@ -325,7 +315,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             if (!(exception instanceof RetryWithException)) {
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
-                return Mono.just(ShouldRetryResult.noRetry());
+                return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
             }
 
             RetryWithException lastRetryWithException = (RetryWithException)exception;
@@ -366,11 +356,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         @Override
         public RetryContext getRetryContext() {
             return this.retryContext;
-        }
-
-        @Override
-        public IRetryPolicy getNextRetryPolicy() {
-            return null;
         }
     }
 }

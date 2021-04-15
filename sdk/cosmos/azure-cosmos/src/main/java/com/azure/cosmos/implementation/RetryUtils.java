@@ -34,11 +34,9 @@ public class RetryUtils {
             Flux<ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
                 CosmosException clientException = Utils.as(e, CosmosException.class);
-                addStatusSubStatusCodeOnRetryContext(policy, retryContext, clientException);
+                    addStatusSubStatusCodeOnRetryContext(retryContext, clientException, s.nonRelatedException);
 
                 if (s.backOffTime != null) {
-                    incrementRetryCounter(policy, retryContext);
-
                     return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis()), CosmosSchedulers.COSMOS_PARALLEL).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
@@ -84,7 +82,7 @@ public class RetryUtils {
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
                 if (retryContext != null) {
                     CosmosException clientException = Utils.as(e, CosmosException.class);
-                    addStatusSubStatusCodeOnRetryContext(retryPolicy, retryContext, clientException);
+                    addStatusSubStatusCodeOnRetryContext(retryContext, clientException, shouldRetryResult.nonRelatedException);
                     retryContext.updateEndTime();
                 }
 
@@ -107,7 +105,6 @@ public class RetryUtils {
                     return failure;
                 }
 
-                incrementRetryCounter(retryPolicy, retryContext);
                 if (inBackoffAlternateCallbackMethod != null
                         && shouldRetryResult.backOffTime.compareTo(minBackoffForInBackoffCallback) > 0) {
                     StopWatch stopwatch = new StopWatch();
@@ -199,29 +196,13 @@ public class RetryUtils {
         }
     }
 
-    private static void incrementRetryCounter(IRetryPolicy retryPolicy, RetryContext retryContext) {
-        if (retryPolicy.getNextRetryPolicy() == null) {
-            retryContext.incrementRetry();
-            retryContext.retryCounterIncremented = true;
-        } else if (!retryContext.retryCounterIncremented) {
-            retryContext.incrementRetry();
-        } else {
-            retryContext.retryCounterIncremented = false;
-        }
-    }
-
-    private static void addStatusSubStatusCodeOnRetryContext(IRetryPolicy retryPolicy, RetryContext retryContext, CosmosException clientException) {
-        if(retryContext != null && clientException != null) {
-            if (retryPolicy.getNextRetryPolicy() == null) {
+    private static void addStatusSubStatusCodeOnRetryContext(RetryContext retryContext,
+                                                             CosmosException clientException,
+                                                             boolean isNonRelatedException) {
+        if (!isNonRelatedException)
+            if (retryContext != null && clientException != null) {
                 retryContext.addStatusAndSubStatusCode(null, clientException.getStatusCode(),
                     clientException.getSubStatusCode());
-                retryContext.isCurrentExceptionCapturedInLastRetry = true;
-            } else if (!retryContext.isCurrentExceptionCapturedInLastRetry) {
-                retryContext.addStatusAndSubStatusCode(null, clientException.getStatusCode(),
-                    clientException.getSubStatusCode());
-            } else {
-                retryContext.isCurrentExceptionCapturedInLastRetry = false;
             }
-        }
     }
 }
