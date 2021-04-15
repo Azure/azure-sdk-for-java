@@ -4,47 +4,48 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.containers.containerregistry.models.ContentProperties;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Repository attributes. */
-@Fluent
+@Immutable
 public final class RepositoryProperties {
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName")
+    @JsonProperty(value = "imageName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Image created time
      */
-    @JsonProperty(value = "createdTime", required = true)
+    @JsonProperty(value = "createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Image last update time
      */
-    @JsonProperty(value = "lastUpdateTime")
+    @JsonProperty(value = "lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * Number of the manifests
      */
-    @JsonProperty(value = "manifestCount", required = true)
+    @JsonProperty(value = "manifestCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int registryArtifactCount;
 
     /*
      * Number of the tags
      */
-    @JsonProperty(value = "tagCount", required = true)
+    @JsonProperty(value = "tagCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int tagCount;
 
     /*
-     * Changeable attributes
+     * Writeable properties of the resource
      */
-    @JsonProperty(value = "changeableAttributes")
+    @JsonProperty(value = "changeableAttributes", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private ContentProperties writeableProperties;
 
     /**
@@ -57,34 +58,12 @@ public final class RepositoryProperties {
     }
 
     /**
-     * Set the name property: Image name.
-     *
-     * @param name the name value to set.
-     * @return the RepositoryProperties object itself.
-     */
-    public RepositoryProperties setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the createdOn property: Image created time.
      *
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
-    }
-
-    /**
-     * Set the createdOn property: Image created time.
-     *
-     * @param createdOn the createdOn value to set.
-     * @return the RepositoryProperties object itself.
-     */
-    public RepositoryProperties setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
     }
 
     /**
@@ -97,34 +76,12 @@ public final class RepositoryProperties {
     }
 
     /**
-     * Set the lastUpdatedOn property: Image last update time.
-     *
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @return the RepositoryProperties object itself.
-     */
-    public RepositoryProperties setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-        return this;
-    }
-
-    /**
      * Get the registryArtifactCount property: Number of the manifests.
      *
      * @return the registryArtifactCount value.
      */
     public int getRegistryArtifactCount() {
         return this.registryArtifactCount;
-    }
-
-    /**
-     * Set the registryArtifactCount property: Number of the manifests.
-     *
-     * @param registryArtifactCount the registryArtifactCount value to set.
-     * @return the RepositoryProperties object itself.
-     */
-    public RepositoryProperties setRegistryArtifactCount(int registryArtifactCount) {
-        this.registryArtifactCount = registryArtifactCount;
-        return this;
     }
 
     /**
@@ -137,33 +94,11 @@ public final class RepositoryProperties {
     }
 
     /**
-     * Set the tagCount property: Number of the tags.
-     *
-     * @param tagCount the tagCount value to set.
-     * @return the RepositoryProperties object itself.
-     */
-    public RepositoryProperties setTagCount(int tagCount) {
-        this.tagCount = tagCount;
-        return this;
-    }
-
-    /**
-     * Get the writeableProperties property: Changeable attributes.
+     * Get the writeableProperties property: Writeable properties of the resource.
      *
      * @return the writeableProperties value.
      */
     public ContentProperties getWriteableProperties() {
         return this.writeableProperties;
-    }
-
-    /**
-     * Set the writeableProperties property: Changeable attributes.
-     *
-     * @param writeableProperties the writeableProperties value to set.
-     * @return the RepositoryProperties object itself.
-     */
-    public RepositoryProperties setWriteableProperties(ContentProperties writeableProperties) {
-        this.writeableProperties = writeableProperties;
-        return this;
     }
 }
