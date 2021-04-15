@@ -119,10 +119,9 @@ public class AccessTokenCacheImpl {
         };
     }
 
+    // Refresh token is a function of serviceName and is same irrespective of the scope.
     private boolean checkIfWeShouldForceRefresh(ContainerRegistryTokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
-            && (this.tokenRequestContext.getScope() == null ? tokenRequestContext.getScope() == null
-            : this.tokenRequestContext.getScope().equals(tokenRequestContext.getScope()))
             && (this.tokenRequestContext.getServiceName() == null ? tokenRequestContext.getServiceName() == null
             : this.tokenRequestContext.getServiceName().equals(tokenRequestContext.getServiceName())));
     }
