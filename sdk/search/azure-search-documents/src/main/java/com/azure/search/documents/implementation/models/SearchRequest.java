@@ -7,6 +7,8 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -162,14 +164,18 @@ public final class SearchRequest {
      * individual search query terms.
      */
     @JsonProperty(value = "speller")
-    private Speller speller;
+    private QuerySpeller speller;
 
     /*
-     * A value that specifies whether answers should be returned as part of the
-     * search response.
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns answers extracted from key passages in the highest
+     * ranked documents. The number of answers returned can be configured by
+     * appending the pipe character '|' followed by the 'count-<number of
+     * answers>' option after the answers parameter value, such as
+     * 'extractive|count-3'. Default count is 1.
      */
     @JsonProperty(value = "answers")
-    private Answers answers;
+    private String answers;
 
     /*
      * The comma-separated list of fields to retrieve. If unspecified, all
@@ -597,7 +603,7 @@ public final class SearchRequest {
      *
      * @return the speller value.
      */
-    public Speller getSpeller() {
+    public QuerySpeller getSpeller() {
         return this.speller;
     }
 
@@ -608,29 +614,33 @@ public final class SearchRequest {
      * @param speller the speller value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setSpeller(Speller speller) {
+    public SearchRequest setSpeller(QuerySpeller speller) {
         this.speller = speller;
         return this;
     }
 
     /**
-     * Get the answers property: A value that specifies whether answers should be returned as part of the search
-     * response.
+     * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
+     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
+     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
      *
      * @return the answers value.
      */
-    public Answers getAnswers() {
+    public String getAnswers() {
         return this.answers;
     }
 
     /**
-     * Set the answers property: A value that specifies whether answers should be returned as part of the search
-     * response.
+     * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
+     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
+     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
      *
      * @param answers the answers value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setAnswers(Answers answers) {
+    public SearchRequest setAnswers(String answers) {
         this.answers = answers;
         return this;
     }

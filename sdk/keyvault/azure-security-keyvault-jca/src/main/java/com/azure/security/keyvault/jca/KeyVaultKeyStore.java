@@ -136,6 +136,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             certificate = keyVaultClient.getCertificate(alias);
             if (certificate != null) {
                 certificates.put(alias, certificate);
+                if (aliases == null) {
+                    aliases = keyVaultClient.getAliases();
+                }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }

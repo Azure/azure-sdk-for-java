@@ -36,7 +36,7 @@
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 
 # PRLabel: %Azure.Core
-/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
+/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
