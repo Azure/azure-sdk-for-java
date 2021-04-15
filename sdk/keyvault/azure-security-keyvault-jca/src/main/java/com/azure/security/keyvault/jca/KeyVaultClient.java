@@ -34,14 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_CN_URI;
-import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_DE_URI;
-import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_GLOBAL_URI;
-import static com.azure.security.keyvault.jca.Constants.AAD_LOGIN_US_URI;
-import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_CN;
-import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_DE;
-import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_GLOBAL;
-import static com.azure.security.keyvault.jca.Constants.KEY_VAULT_BASE_URI_US;
+import static com.azure.security.keyvault.jca.UriUtil.getAADLoginURIByKeyVaultBaseUri;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -99,51 +92,36 @@ class KeyVaultClient extends DelegateRestClient {
     private String managedIdentity;
 
     /**
-     * Constructor.
+     * Constructor for authentication with system-assigned managed identity.
      *
      * @param keyVaultUri the Azure Key Vault URI.
      */
     KeyVaultClient(String keyVaultUri) {
-        super(RestClientFactory.createClient());
-        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
-        if (!keyVaultUri.endsWith("/")) {
-            keyVaultUri = keyVaultUri + "/";
-        }
-        this.keyVaultUrl = keyVaultUri;
-        String dnsSuffix = Optional.of(keyVaultUri)
-            .map(uri -> uri.split("\\.",2)[1])
-            .map(suffix -> suffix.substring(0, suffix.length()-1))
-            .get();
-        this.keyVaultBaseUri = HTTPS_PREFIX + dnsSuffix;
-        switch(keyVaultBaseUri)
-        {
-            case KEY_VAULT_BASE_URI_GLOBAL :
-                this.aadAuthenticationUrl = AAD_LOGIN_GLOBAL_URI;
-                break;
-            case KEY_VAULT_BASE_URI_CN :
-                this.aadAuthenticationUrl = AAD_LOGIN_CN_URI;
-                break;
-            case KEY_VAULT_BASE_URI_US :
-                this.aadAuthenticationUrl = AAD_LOGIN_US_URI;
-                break;
-            case KEY_VAULT_BASE_URI_DE:
-                this.aadAuthenticationUrl = AAD_LOGIN_DE_URI;
-                break;
-            default:
-                throw new IllegalArgumentException("Property of azure.keyvault.uri is illegal.");
-        }
+        this(keyVaultUri, null, null, null, null);
     }
 
     /**
-     * Constructor.
+     * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri the Azure Key Vault URI.
-     * @param managedIdentity the managed identity object ID.
+     * @param managedIdentity the user-assigned managed identity object ID.
      */
     KeyVaultClient(String keyVaultUri, String managedIdentity) {
-        this(keyVaultUri);
-        this.managedIdentity = managedIdentity;
+        this(keyVaultUri, null, null, null, managedIdentity);
     }
+
+    /**
+     * Constructor for authentication with service principal.
+     *
+     * @param keyVaultUri the Azure Key Vault URI.
+     * @param tenantId the tenant ID.
+     * @param clientId the client ID.
+     * @param clientSecret the client secret.
+     */
+    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+        this(keyVaultUri, tenantId, clientId, clientSecret, null);
+    }
+
 
     /**
      * Constructor.
@@ -152,12 +130,27 @@ class KeyVaultClient extends DelegateRestClient {
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
+     * @param managedIdentity the user-assigned managed identity object ID.
      */
-    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
-        this(keyVaultUri);
+    KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
+        super(RestClientFactory.createClient());
+        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
+        if (!keyVaultUri.endsWith("/")) {
+            keyVaultUri = keyVaultUri + "/";
+        }
+        this.keyVaultUrl = keyVaultUri;
+        //Base Uri shouldn't end with a slash.
+        String domainNameSuffix = Optional.of(keyVaultUri)
+                                          .map(uri -> uri.split("\\.",2)[1])
+                                          .map(suffix -> suffix.substring(0, suffix.length()-1))
+                                          .get();
+        keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
+        aadAuthenticationUrl = getAADLoginURIByKeyVaultBaseUri(keyVaultBaseUri);
+
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.managedIdentity = managedIdentity;
     }
 
     /**
