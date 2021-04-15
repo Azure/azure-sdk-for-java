@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 public class AADAccessTokenGroupRolesExtractionTest {
 
-    private final static String membershipsJson = "{\"@odata.context\":\"https://graph.microsoft.com/v1"
+    private final String MEMBERSHIPS_JSON = "{\"@odata.context\":\"https://graph.microsoft.com/v1"
         + ".0/$metadata#directoryObjects\",\"value\":[{\"@odata.type\":\"#microsoft.graph.group\","
         + "\"id\":\"d07c0bd6-4aab-45ac-b87c-23e8d00194ab\",\"deletedDateTime\":null,\"classification\":null,"
         + "\"createdDateTime\":\"2021-04-13T02:00:25Z\",\"creationOptions\":[],\"description\":\"group1\","
@@ -57,7 +57,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
     private GraphClientTest graphClientTest = new GraphClientTest(properties);
     private AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClientTest);
 
-    private void setup() throws IOException {
+    private void setup() {
         Set<String> allowedGroupsId = new HashSet<>();
         allowedGroupsId.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
         List<String> allowedGroupsName = new ArrayList<>();
@@ -72,7 +72,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
     }
 
     @Test
-    public void testGroupsName() throws IOException {
+    public void testGroupsName() {
         setup();
         when(properties.getUserGroup().isEnableGroupId()).thenReturn(false);
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
@@ -82,7 +82,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
     }
 
     @Test
-    public void testGroupsId() throws IOException {
+    public void testGroupsId() {
         setup();
         when(properties.getUserGroup().isEnableGroupId()).thenReturn(true);
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
@@ -92,7 +92,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
     class GraphClientTest extends GraphClient {
 
-        public GraphClientTest(AADAuthenticationProperties properties) {
+        GraphClientTest(AADAuthenticationProperties properties) {
             super(properties);
         }
 
@@ -111,8 +111,8 @@ public class AADAccessTokenGroupRolesExtractionTest {
                 memberships.getValue()
                            .stream()
                            .filter(this::isGroupObject)
-                           .map(properties.getUserGroup().isEnableGroupId() ? Membership::getObjectID :
-                               Membership::getDisplayName)
+                           .map(properties.getUserGroup().isEnableGroupId() ? Membership::getObjectID
+                               : Membership::getDisplayName)
                            .forEach(groups::add);
                 aadMembershipRestUri = Optional.of(memberships)
                                                .map(Memberships::getOdataNextLink)
@@ -122,7 +122,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
         }
 
         public String getUserMemberships() {
-            return membershipsJson;
+            return MEMBERSHIPS_JSON;
         }
 
         public boolean isGroupObject(final Membership membership) {

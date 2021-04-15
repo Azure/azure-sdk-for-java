@@ -53,8 +53,8 @@ public class GraphClient {
             memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
-                       .map(properties.getUserGroup().isEnableGroupId() ? Membership::getObjectID :
-                           Membership::getDisplayName)
+                       .map(properties.getUserGroup().isEnableGroupId() ? Membership::getObjectID
+                           : Membership::getDisplayName)
                        .forEach(groups::add);
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
