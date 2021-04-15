@@ -4,10 +4,10 @@
 package com.azure.test.aad.webapi.obo;
 
 import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
-import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,10 @@ import java.util.function.Consumer;
 import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADWebApiOboIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADWebApiOboIT.class);
@@ -49,7 +50,7 @@ public class AADWebApiOboIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
-    @Before
+    @BeforeAll
     public void init() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);

@@ -5,16 +5,15 @@ package com.azure.test.aad.resource.server;
 
 import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,13 +26,14 @@ import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADWeiResourceServerUserNameAttributeIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
-    @Before
+    @BeforeAll
     public void init() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);

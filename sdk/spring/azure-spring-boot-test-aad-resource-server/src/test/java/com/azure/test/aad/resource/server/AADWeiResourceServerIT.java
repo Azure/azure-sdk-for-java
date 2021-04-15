@@ -5,8 +5,9 @@ package com.azure.test.aad.resource.server;
 
 import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,13 +26,15 @@ import java.util.Map;
 import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADWeiResourceServerIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
-    @Before
+    @BeforeAll
     public void init() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
@@ -50,9 +53,9 @@ public class AADWeiResourceServerIT {
         assertEquals(aadWebApiITHelper.httpGetStringByAccessToken("graph"), "graph");
     }
 
-    @Test(expected = HttpClientErrorException.class)
+    @Test
     public void testHasNoScope() {
-        aadWebApiITHelper.httpGetStringByAccessToken("notExist");
+        assertThrows(HttpClientErrorException.class, () -> aadWebApiITHelper.httpGetStringByAccessToken("notExist"));
     }
 
     @EnableWebSecurity
