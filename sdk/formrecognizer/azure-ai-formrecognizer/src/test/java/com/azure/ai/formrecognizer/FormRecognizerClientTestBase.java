@@ -39,7 +39,6 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -86,13 +85,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final String EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE = "123 Main Street Redmond, WA 98052";
-    private static final String EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE = "+15555555555";
+    private static final String EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
+    // TODO (Service pending) Disabled, service to provide a different png file.
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
-    static final String MULTIPAGE_RECEIPT_PDF = "multipage_receipt.pdf";
+    static final String MULTIPAGE_RECEIPT_PDF = "contoso_allInOne_multipage_receipt.pdf";
     static final String BUSINESS_CARD_JPG = "businessCard.jpg";
     static final String BUSINESS_CARD_PNG = "businessCard.png";
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
@@ -300,7 +300,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateBoundingBoxData(List<Float> expectedBoundingBox,
-                                                FieldBoundingBox actualFieldBoundingBox) {
+        FieldBoundingBox actualFieldBoundingBox) {
         assertNotNull(actualFieldBoundingBox);
         assertNotNull(actualFieldBoundingBox.getPoints());
         if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
@@ -417,9 +417,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    @Disabled
     abstract void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-    // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
 
     // Receipt - URL
 
@@ -922,14 +920,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .getValue().asString());
         assertEquals("Contoso", receiptPage1Fields.get("MerchantName")
             .getValue().asString());
-        // Service bug - valuePhoneNumber not returned for type phonenumber
-        // assertEquals(EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
-        //     .getValue().asPhoneNumber());
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
+            .getValue().asPhoneNumber());
         assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
         assertNotNull(receiptPage1.getPages());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue().asString());
 
-        // Assert no fields and lines on second page
         assertNotNull(receiptPage2.getFields());
         List<FormPage> receipt2Pages = receiptPage2.getPages();
         assertEquals(1, receipt2Pages.size());
@@ -940,7 +936,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE,
             receiptPage2Fields.get("MerchantAddress").getValue().asString());
         assertEquals("Contoso", receiptPage2Fields.get("MerchantName").getValue().asString());
-        assertEquals("+19876543210",
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE,
             receiptPage2Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
         assertEquals(14.52f, receiptPage2Fields.get("Total").getValue().asFloat());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage2Fields.get("ReceiptType").getValue().asString());
