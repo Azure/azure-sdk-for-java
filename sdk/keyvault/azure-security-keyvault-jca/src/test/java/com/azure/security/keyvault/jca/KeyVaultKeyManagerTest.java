@@ -22,7 +22,8 @@ public class KeyVaultKeyManagerTest {
     private KeyVaultKeyManager manager;
 
     @BeforeEach
-    public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
+    public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
+        CertificateException {
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
@@ -32,7 +33,7 @@ public class KeyVaultKeyManagerTest {
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
         keyStore.load(parameter);
-        manager = new KeyVaultKeyManager(keyStore,null);
+        manager = new KeyVaultKeyManager(keyStore, null);
     }
 
     @Test

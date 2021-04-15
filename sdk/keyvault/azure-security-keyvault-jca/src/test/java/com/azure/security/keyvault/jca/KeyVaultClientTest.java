@@ -22,7 +22,7 @@ public class KeyVaultClientTest {
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         KeyVaultClient keyVaultClient = new KeyVaultClient(
-            keyVaultUri,System.getProperty("azure.keyvault.aad-authentication-url"),
+            keyVaultUri, System.getProperty("azure.keyvault.aad-authentication-url"),
             tenantId,
             clientId,
             clientSecret);
@@ -37,7 +37,7 @@ public class KeyVaultClientTest {
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         KeyVaultClient keyVaultClient = new KeyVaultClient(
-            keyVaultUri,System.getProperty("azure.keyvault.aad-authentication-url"),
+            keyVaultUri, System.getProperty("azure.keyvault.aad-authentication-url"),
             tenantId,
             clientId,
             clientSecret);
@@ -52,7 +52,7 @@ public class KeyVaultClientTest {
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         KeyVaultClient keyVaultClient = new KeyVaultClient(
-            keyVaultUri,System.getProperty("azure.keyvault.aad-authentication-url"),tenantId,clientId,clientSecret);
-        assertNull(keyVaultClient.getKey("gaohandecertificate",null));
+            keyVaultUri, System.getProperty("azure.keyvault.aad-authentication-url"), tenantId, clientId, clientSecret);
+        assertNull(keyVaultClient.getKey("gaohandecertificate", null));
     }
 }
