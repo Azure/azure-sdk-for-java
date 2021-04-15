@@ -699,6 +699,7 @@
         <module>sdk/hanaonazure</module>
         <module>sdk/hdinsight</module>
         <module>sdk/healthbot</module>
+        <module>sdk/healthcareapis</module>
         <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
         <module>sdk/iothub</module>
