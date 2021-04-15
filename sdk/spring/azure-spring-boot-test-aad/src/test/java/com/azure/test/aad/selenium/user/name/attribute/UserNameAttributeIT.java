@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.selenium.user.name.attribute;
 
+import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
 import org.junit.Assert;
@@ -10,8 +11,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +37,7 @@ public class UserNameAttributeIT {
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE);
         properties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE);
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
+        aadSeleniumITHelper = new AADSeleniumITHelper(TestApp.class, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("api/principalName");
         Assert.assertTrue(httpResponse.contains(AAD_USER_NAME_1));
@@ -48,7 +51,18 @@ public class UserNameAttributeIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp {
+    public static class TestApp {
+
+        @Configuration
+        public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+                http.authorizeRequests()
+                    .antMatchers("/login").permitAll()
+                    .anyRequest().authenticated();
+            }
+        }
 
         @GetMapping(value = "/api/principalName")
         public ResponseEntity<String> home(Principal principal) {

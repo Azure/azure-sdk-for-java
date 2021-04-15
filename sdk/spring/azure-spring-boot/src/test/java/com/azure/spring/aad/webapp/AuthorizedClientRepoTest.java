@@ -3,8 +3,11 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
+import com.azure.spring.aad.AADConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -36,13 +39,17 @@ public class AuthorizedClientRepoTest {
 
     @Test
     public void loadInitAzureAuthzClient() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
+        new WebApplicationContextRunner()
+            .withUserConfiguration(AADConfiguration.class)
             .withPropertyValues(
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.authorization-clients.graph.authorization-grant-type=authorization_code",
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                "azure.activedirectory.base-uri = fake-uri")
+                "azure.activedirectory.base-uri = https://login.microsoftonline.com/")
             .run(context -> {
                 getBeans(context);
-
                 authorizedRepo.saveAuthorizedClient(
                     createAuthorizedClient(azure),
                     createAuthentication(),
@@ -65,10 +72,15 @@ public class AuthorizedClientRepoTest {
 
     @Test
     public void saveAndLoadAzureAuthzClient() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
+        new WebApplicationContextRunner()
+            .withUserConfiguration(AADConfiguration.class)
             .withPropertyValues(
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.authorization-clients.graph.authorization-grant-type=authorization_code",
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                "azure.activedirectory.base-uri = fake-uri")
+                "azure.activedirectory.base-uri = https://login.microsoftonline.com/")
             .run(context -> {
                 getBeans(context);
 
@@ -93,7 +105,7 @@ public class AuthorizedClientRepoTest {
     }
 
     private void getBeans(AssertableWebApplicationContext context) {
-        AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+        AADClientRegistrationRepository clientRepo = context.getBean(AADClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
 

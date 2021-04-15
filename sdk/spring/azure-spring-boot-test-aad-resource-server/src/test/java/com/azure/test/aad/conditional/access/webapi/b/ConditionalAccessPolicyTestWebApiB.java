@@ -3,14 +3,15 @@
 
 package com.azure.test.aad.conditional.access.webapi.b;
 
+import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.AppRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class ConditionalAccessPolicyTestWebApiB {
         properties.put("azure.activedirectory.client-id", CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID);
         properties.put("azure.activedirectory.app-id-uri", "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID);
         properties.put("server.port", "8883");
-        AppRunner app = new AppRunner(DumbApp.class);
+        AppRunner app = new AppRunner(TestApp.class);
         properties.forEach(app::property);
         app.start();
     }
@@ -38,14 +39,15 @@ public class ConditionalAccessPolicyTestWebApiB {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp extends WebSecurityConfigurerAdapter {
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        @Configuration
+        public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
+            AADResourceServerWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+            }
         }
 
         @GetMapping("/webapiB")

@@ -3,12 +3,12 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 @ConfigurationProperties("azure.activedirectory")
 public class AADAuthenticationProperties implements InitializingBean {
 
+    public static final String ON_BEHALF_OF = "on-behalf-of";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
@@ -61,7 +61,7 @@ public class AADAuthenticationProperties implements InitializingBean {
      * </p>
      *
      * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
-     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
+     * @see com.azure.spring.aad.AADClientRegistrationRepository
      */
     @Deprecated
     private String redirectUriTemplate;
@@ -326,7 +326,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
             baseUri = "https://login.microsoftonline.com/";
@@ -361,16 +361,30 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
         }
 
-        authorizationClients.values()
-                            .stream()
-                            .filter(AuthorizationClientProperties::isOnDemand)
-                            .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                            .filter(Objects::nonNull)
-                            .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
-                            .findAny()
-                            .ifPresent(notUsed -> {
-                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
-                            });
+        authorizationClients.forEach(this::validateAuthorizationClientProperties);
+    }
+
+    private void validateAuthorizationClientProperties(String id, AuthorizationClientProperties properties) {
+        String type = Optional.of(properties)
+                              .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                              .map(AuthorizationGrantType::getValue)
+                              .orElse(null);
+        if (!AuthorizationGrantType.AUTHORIZATION_CODE.getValue().equals(type)
+            && !AuthorizationGrantType.CLIENT_CREDENTIALS.getValue().equals(type)
+            && !ON_BEHALF_OF.equals(type)) {
+            throw new IllegalStateException("azure.activedirectory.authorization-clients." + id
+                + ".authorization-grant-type must be configured. "
+                + "Valid values are: authorization_code, client_credentials, on-behalf-of");
+        }
+        if (properties.isOnDemand() && !AuthorizationGrantType.AUTHORIZATION_CODE.getValue().equals(type)) {
+            throw new IllegalStateException("onDemand only support authorization_code grant type. Please set "
+                + "'azure.activedirectory.authorization-clients." + id + ".authorization-grant-type=authorization_code'"
+                + " or 'azure.activedirectory.authorization-clients." + id + ".on-demand=false'.");
+        }
+        if (properties.getScopes() == null || properties.getScopes().isEmpty()) {
+            throw new IllegalStateException(
+                "'azure.activedirectory.authorization-clients." + id + ".scopes' must be configured");
+        }
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

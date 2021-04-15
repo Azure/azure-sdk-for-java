@@ -31,17 +31,17 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AuthorizedClientRepository.class);
 
-    private final AADWebAppClientRegistrationRepository repo;
+    private final AADClientRegistrationRepository repo;
     private final OAuth2AuthorizedClientRepository delegate;
     private final OAuth2AuthorizedClientProvider provider;
 
-    public AADOAuth2AuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
+    public AADOAuth2AuthorizedClientRepository(AADClientRegistrationRepository repo) {
         this(repo,
             new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
             new RefreshTokenOAuth2AuthorizedClientProvider());
     }
 
-    public AADOAuth2AuthorizedClientRepository(AADWebAppClientRegistrationRepository repo,
+    public AADOAuth2AuthorizedClientRepository(AADClientRegistrationRepository repo,
                                                OAuth2AuthorizedClientRepository delegate,
                                                OAuth2AuthorizedClientProvider provider) {
         this.repo = repo;
@@ -63,11 +63,11 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
         OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(id, principal, request);
-        if (result != null || repo.isClientCredentials(id)) {
+        if (result != null) {
             return (T) result;
         }
 
-        if (repo.isClientNeedConsentWhenLogin(id)) {
+        if (repo.isAzureDelegatedClientRegistrations(id)) {
             OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
             if (azureClient == null) {
                 throw new ClientAuthorizationRequiredException(AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID);
@@ -76,7 +76,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
             OAuth2AuthorizationContext.Builder contextBuilder =
                 OAuth2AuthorizationContext.withAuthorizedClient(fakeAuthzClient);
             String[] scopes = null;
-            if (!AADClientRegistrationRepository.isDefaultClient(id)) {
+            if (!AADClientRegistrationRepository.isAzureClient(id)) {
                 scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
             }
             OAuth2AuthorizationContext context = contextBuilder
@@ -101,7 +101,7 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
     }
 
     private String getAzureClientId() {
-        return repo.getAzureClient().getClient().getRegistrationId();
+        return repo.getAzureRegistration().getClient().getRegistrationId();
     }
 
     private OAuth2AuthorizedClient createFakeAuthzClient(OAuth2AuthorizedClient azureClient,

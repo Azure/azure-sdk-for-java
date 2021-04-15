@@ -3,10 +3,12 @@
 
 package com.azure.test.aad.resource.server;
 
+import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,7 +40,7 @@ public class AADWeiResourceServerUserNameAttributeIT {
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
         properties.put("azure.activedirectory.app-id-uri", "api://" + AAD_MULTI_TENANT_CLIENT_ID);
         aadWebApiITHelper = new AADWebApiITHelper(
-            DumbApp.class,
+            TestApp.class,
             properties,
             AAD_MULTI_TENANT_CLIENT_ID,
             AAD_MULTI_TENANT_CLIENT_SECRET,
@@ -54,14 +56,15 @@ public class AADWeiResourceServerUserNameAttributeIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp {
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        @Configuration
+        public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
+            AADResourceServerWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+            }
         }
 
         @GetMapping(value = "/principalName")

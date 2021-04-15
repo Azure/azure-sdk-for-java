@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.AADAuthorizationGrantType;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.List;
 
@@ -13,18 +13,9 @@ import java.util.List;
 public class AuthorizationClientProperties {
 
     private List<String> scopes;
-
     private boolean onDemand = false;
-
-    private AADAuthorizationGrantType authorizationGrantType;
-
-    public AADAuthorizationGrantType getAuthorizationGrantType() {
-        return authorizationGrantType;
-    }
-
-    public void setAuthorizationGrantType(AADAuthorizationGrantType authorizationGrantType) {
-        this.authorizationGrantType = authorizationGrantType;
-    }
+    // TODO (rujche): breaking change, need to update sample and changelog.md.
+    private AuthorizationGrantType authorizationGrantType;
 
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
@@ -40,5 +31,13 @@ public class AuthorizationClientProperties {
 
     public void setOnDemand(boolean onDemand) {
         this.onDemand = onDemand;
+    }
+
+    public AuthorizationGrantType getAuthorizationGrantType() {
+        return authorizationGrantType;
+    }
+
+    public void setAuthorizationGrantType(AuthorizationGrantType authorizationGrantType) {
+        this.authorizationGrantType = authorizationGrantType;
     }
 }

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -44,6 +43,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static com.azure.spring.autoconfigure.aad.AADAuthenticationProperties.ON_BEHALF_OF;
+
 /**
  *
  */
@@ -62,8 +63,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
         Assert.notNull(context, "context cannot be null");
         ClientRegistration clientRegistration = context.getClientRegistration();
 
-        if (!AADAuthorizationGrantType.ON_BEHALF_OF
-            .isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
+        if (!ON_BEHALF_OF.equals(clientRegistration.getAuthorizationGrantType().getValue())) {
             return null;
         }
 
@@ -87,7 +87,7 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     }
 
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked" })
     private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(ClientRegistration clientRegistration,
                                                                         Authentication principal) {
 
@@ -176,6 +176,6 @@ public class AADOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
         parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges "
             + "than "
             + "provided by the access token");
-        response.addHeader(HttpHeaders.WWW_AUTHENTICATE, Constants.BEARER_PREFIX + parameters.toString());
+        response.addHeader(HttpHeaders.WWW_AUTHENTICATE, Constants.BEARER_PREFIX + parameters);
     }
 }

@@ -3,6 +3,8 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
+import com.azure.spring.aad.AADConfiguration;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
@@ -25,18 +27,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
-    private AADWebAppClientRegistrationRepository clientRepo;
+    private AADClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
     private ClientRegistration arm;
 
-    private final WebApplicationContextRunner contextRunner = WebApplicationContextRunnerUtils
-        .getContextRunnerWithRequiredProperties().withPropertyValues(
-            "azure.activedirectory.base-uri = fake-uri",
-            "azure.activedirectory.authorization-clients.arm.scopes = Calendars.Read",
-            "azure.activedirectory.authorization-clients.arm.on-demand=true");
+    private final WebApplicationContextRunner contextRunner =
+        new WebApplicationContextRunner()
+            .withUserConfiguration(AADConfiguration.class)
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.base-uri = https://login.microsoftonline.com/",
+                "azure.activedirectory.authorization-clients.arm.authorization-grant-type=authorization_code",
+                "azure.activedirectory.authorization-clients.arm.scopes=Calendars.Read",
+                "azure.activedirectory.authorization-clients.arm.on-demand=true");
 
     private void getBeans(AssertableWebApplicationContext context) {
-        clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+        clientRepo = context.getBean(AADClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         arm = clientRepo.findByRegistrationId("arm");
     }
@@ -84,7 +92,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     private HttpHeaders convertedHeaderOf(OAuth2AuthorizationCodeGrantRequest request) {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureRegistration());
         RequestEntity<?> entity = converter.convert(request);
         return Optional.ofNullable(entity)
             .map(HttpEntity::getHeaders)
@@ -92,7 +100,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     }
 
     private Object[] expectedHeaders() {
-        return new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient())
+        return new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureRegistration())
             .getHttpHeaders()
             .entrySet()
             .stream()
@@ -102,9 +110,9 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureRegistration());
         RequestEntity<?> entity = converter.convert(request);
-        return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
+        return toMultiValueMap(entity);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {
@@ -132,5 +140,12 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
         builder.redirectUri("http://localhost");
         builder.state("fake-state");
         return builder.build();
+    }
+
+    @SuppressWarnings("unchecked")
+    private MultiValueMap<String, String> toMultiValueMap(RequestEntity<?> entity) {
+        return (MultiValueMap<String, String>) Optional.ofNullable(entity)
+                                                       .map(HttpEntity::getBody)
+                                                       .orElse(null);
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.webapi.obo;
 
+import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.aad.AADWebApiITHelper;
 import org.junit.Before;
@@ -12,12 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
@@ -55,10 +55,12 @@ public class AADWebApiOboIT {
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
         properties.put("azure.activedirectory.app-id-uri", "api://" + AAD_MULTI_TENANT_CLIENT_ID);
+        properties.put(
+            "azure.activedirectory.authorization-clients.graph.authorization-grant-type", "authorization_code");
         properties.put("azure.activedirectory.authorization-clients.graph.scopes",
             "https://graph.microsoft.com/User.Read");
         aadWebApiITHelper = new AADWebApiITHelper(
-            DumbApp.class,
+            TestApp.class,
             properties,
             AAD_MULTI_TENANT_CLIENT_ID,
             AAD_MULTI_TENANT_CLIENT_SECRET,
@@ -70,28 +72,22 @@ public class AADWebApiOboIT {
         assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
     }
 
-    private void runApp(Consumer<AppRunner> command) {
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
-            app.start();
-            command.accept(app);
-        }
-    }
-
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp {
 
         @Autowired
         private WebClient webClient;
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        @Configuration
+        public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
+            AADResourceServerWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+            }
         }
 
         @Bean

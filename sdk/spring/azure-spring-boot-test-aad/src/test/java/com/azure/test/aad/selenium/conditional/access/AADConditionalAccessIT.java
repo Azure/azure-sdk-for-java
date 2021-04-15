@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.selenium.conditional.access;
 
+import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
 import org.junit.Assert;
@@ -13,7 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -43,9 +46,11 @@ public class AADConditionalAccessIT {
     @Test
     public void conditionalAccessTest() {
         Map<String, String> properties = createDefaultProperties();
+        properties.put(
+            "azure.activedirectory.authorization-clients.webapiA.authorization-grant-type", "authorization_code");
         properties.put("azure.activedirectory.authorization-clients.webapiA.scopes",
             "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID + "/File.Read");
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
+        aadSeleniumITHelper = new AADSeleniumITHelper(TestApp.class, properties);
         String body = aadSeleniumITHelper.loginAndGetBodyText();
         Assert.assertEquals("Response from webapiB.", body);
     }
@@ -59,7 +64,7 @@ public class AADConditionalAccessIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp {
+    public static class TestApp {
         @Autowired
         private WebClient webClient;
 
@@ -73,6 +78,18 @@ public class AADConditionalAccessIT {
                             .apply(function.oauth2Configuration())
                             .build();
         }
+
+        @Configuration
+        public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+                http.authorizeRequests()
+                    .antMatchers("/login").permitAll()
+                    .anyRequest().authenticated();
+            }
+        }
+
 
         /**
          * Call webapiA and webapiB server, return response body.

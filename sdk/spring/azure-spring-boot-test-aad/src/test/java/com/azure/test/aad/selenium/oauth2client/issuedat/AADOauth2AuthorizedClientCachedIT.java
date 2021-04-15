@@ -3,13 +3,16 @@
 
 package com.azure.test.aad.selenium.oauth2client.issuedat;
 
+import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
@@ -31,14 +34,18 @@ public class AADOauth2AuthorizedClientCachedIT {
     public void testOauth2AuthorizedClientCached() {
         Map<String, String> properties = createDefaultProperties();
 
+        properties.put(
+            "azure.activedirectory.authorization-clients.arm.authorization-grant-type","authorization_code");
         String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
         String armClientScope = armClientUrl + "user_impersonation";
         properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
 
+        properties.put(
+            "azure.activedirectory.authorization-clients.graph.authorization-grant-type","authorization_code");
         String graphBaseUrl = AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE);
         properties.put("azure.activedirectory.authorization-clients.graph.scopes",
             graphBaseUrl + "User.Read, " + graphBaseUrl + "Directory.Read.All");
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
+        aadSeleniumITHelper = new AADSeleniumITHelper(TestApp.class, properties);
         aadSeleniumITHelper.logIn();
 
         // If Oauth2AuthorizedClient is cached, the issuedAt value should be equal.
@@ -63,7 +70,18 @@ public class AADOauth2AuthorizedClientCachedIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp {
+    public static class TestApp {
+
+        @Configuration
+        public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+                http.authorizeRequests()
+                    .antMatchers("/login").permitAll()
+                    .anyRequest().authenticated();
+            }
+        }
 
         @GetMapping(value = "accessTokenIssuedAt/azure")
         public String azure(

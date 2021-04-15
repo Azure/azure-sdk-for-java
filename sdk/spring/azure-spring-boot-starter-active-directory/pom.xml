@@ -22,13 +22,23 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-oauth2-client;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-oauth2-resource-server;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
       <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -41,39 +51,9 @@
       <version>3.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-core</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-core;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-web;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-config</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
       <version>1.9.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>nimbus-jose-jwt</artifactId>
-      <version>8.20.2</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
@@ -92,17 +72,13 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.9.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.nimbusds:nimbus-jose-jwt:[8.20.2]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty:[1.0.4]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-oauth2-client:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-oauth2-client;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-oauth2-resource-server:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-webflux:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework.security:spring-security-core:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
-                <include>org.springframework.security:spring-security-web:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

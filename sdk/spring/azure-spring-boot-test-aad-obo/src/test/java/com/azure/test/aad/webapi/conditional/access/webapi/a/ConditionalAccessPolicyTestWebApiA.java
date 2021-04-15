@@ -3,18 +3,18 @@
 
 package com.azure.test.aad.webapi.conditional.access.webapi.a;
 
+import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.AppRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -43,11 +43,13 @@ public class ConditionalAccessPolicyTestWebApiA {
         properties.put("azure.activedirectory.client-id", CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET);
         properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
+        properties.put(
+            "azure.activedirectory.authorization-clients.webapiB.authorization-grant-type", "authorization_code");
         properties.put("azure.activedirectory.authorization-clients.webapiB.scopes",
             "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID + "/File.Read");
         properties.put("azure.activedirectory.app-id-uri",
             "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID);
-        AppRunner app = new AppRunner(DumbApp.class);
+        AppRunner app = new AppRunner(TestApp.class);
         properties.forEach(app::property);
         app.start();
     }
@@ -60,17 +62,18 @@ public class ConditionalAccessPolicyTestWebApiA {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class TestApp {
 
         @Autowired
         private WebClient webClient;
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        @Configuration
+        public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
+            AADResourceServerWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+            }
         }
 
         @Bean

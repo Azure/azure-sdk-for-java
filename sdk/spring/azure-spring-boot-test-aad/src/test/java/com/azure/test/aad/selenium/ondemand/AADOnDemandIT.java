@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.selenium.ondemand;
 
+import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.After;
@@ -11,8 +12,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +35,12 @@ public class AADOnDemandIT {
         String armClientUrl = AzureCloudUrls.getServiceManagementBaseUrl(AZURE_CLOUD_TYPE);
         String armClientScope = armClientUrl + "user_impersonation";
         Map<String, String> properties = createDefaultProperties();
+        properties.put(
+            "azure.activedirectory.authorization-clients.arm.authorization-grant-type","authorization_code");
         properties.put("azure.activedirectory.authorization-clients.arm.scopes", armClientScope);
         properties.put("azure.activedirectory.authorization-clients.arm.on-demand", "true");
 
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
+        aadSeleniumITHelper = new AADSeleniumITHelper(TestApp.class, properties,
             AAD_USER_NAME_ON_DEMAND, AAD_USER_PASSWORD_ON_DEMAND);
         aadSeleniumITHelper.logIn();
 
@@ -57,7 +62,18 @@ public class AADOnDemandIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp {
+    public static class TestApp {
+
+        @Configuration
+        public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                super.configure(http);
+                http.authorizeRequests()
+                    .antMatchers("/login").permitAll()
+                    .anyRequest().authenticated();
+            }
+        }
 
         @GetMapping(value = "/api/azure")
         public ResponseEntity<String> azure(
