@@ -690,6 +690,7 @@
         <module>sdk/delegatednetwork</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
+        <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
