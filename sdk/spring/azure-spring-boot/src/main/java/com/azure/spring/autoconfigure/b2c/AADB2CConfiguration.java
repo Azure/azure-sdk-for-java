@@ -3,13 +3,12 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -25,7 +24,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,6 @@ import java.util.stream.Collectors;
  * Configure the B2C necessary beans used for client registration.
  */
 @Configuration
-@ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @EnableConfigurationProperties(AADB2CProperties.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AADB2CConfiguration {
@@ -50,7 +48,7 @@ public class AADB2CConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @Conditional({ ClientCondition.class})
+    @Conditional({ AnyCondition.class})
     public ClientRegistrationRepository clientRegistrationRepository() {
         long invalidCount = properties.getAuthorizationClients()
                                       .entrySet()
@@ -58,10 +56,7 @@ public class AADB2CConfiguration {
                                       .filter(entry -> entry.getValue().getAuthorizationGrantType() != null
                                           && !AADAuthorizationGrantType.CLIENT_CREDENTIALS.equals(entry.getValue().getAuthorizationGrantType()))
                                       .count();
-        if (invalidCount > 0) {
-            throw new IllegalStateException("Web Application does not support non 'client_credentials' grant type.");
-        }
-
+        Assert.isTrue(invalidCount == 0, "Web Application does not support non 'client_credentials' grant type.");
         final List<ClientRegistration> clientRegistrations = new ArrayList<>();
         clientRegistrations.addAll(properties.getUserFlows()
                   .entrySet()
@@ -74,14 +69,6 @@ public class AADB2CConfiguration {
                                              .map(this::b2cClientCredentialRegistration)
                                              .collect(Collectors.toList()));
         return new AADB2CClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
-    }
-
-    @NotNull
-    private List<ClientRegistration> getClientRegistrationList(Map<String, String> userFlows) {
-        return userFlows.entrySet()
-                        .stream()
-                        .map(this::b2cClientRegistration)
-                        .collect(Collectors.toList());
     }
 
     private ClientRegistration b2cClientRegistration(Map.Entry<String, String> client) {
@@ -103,7 +90,7 @@ public class AADB2CConfiguration {
     /**
      * Create client credential registration by default.
      *
-     * @param client
+     * @param client each client properties
      * @return ClientRegistration
      */
     private ClientRegistration b2cClientCredentialRegistration(Map.Entry<String, AuthorizationClientProperties> client) {
@@ -127,7 +114,7 @@ public class AADB2CConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @Conditional({ ClientCondition.class})
+    @Conditional({ AnyCondition.class})
     public OAuth2AuthorizedClientManager authorizeClientManager(ClientRegistrationRepository clients,
                                                          OAuth2AuthorizedClientRepository authorizedClients) {
         DefaultOAuth2AuthorizedClientManager manager =
@@ -145,11 +132,13 @@ public class AADB2CConfiguration {
         return manager;
     }
 
-    private static final class ClientCondition extends AnyNestedCondition {
-        ClientCondition() {
+    protected static final class AnyCondition extends AnyNestedCondition {
+        AnyCondition() {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 
+        @ConditionalOnWebApplication
+        @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
         @ConditionalOnProperty(
             prefix = AADB2CProperties.PREFIX,
             value = {
@@ -157,17 +146,15 @@ public class AADB2CConfiguration {
                 "client-secret"
             }
         )
-        @ConditionalOnMissingClass({"org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken"})
         static class WebAppMode {
-            WebAppMode() {
-            }
+
         }
 
+        @ConditionalOnWebApplication
+        @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
         @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })
-        @ConditionalOnClass({ BearerTokenAuthenticationToken.class })
         static class WebApiMode {
-            WebApiMode() {
-            }
+
         }
     }
 }

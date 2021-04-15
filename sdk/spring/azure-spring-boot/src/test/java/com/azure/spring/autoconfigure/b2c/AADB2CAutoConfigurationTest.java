@@ -63,7 +63,7 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2CConfiguration {
             final Object prompt = properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.PROMPT);
             final String loginHint =
                 String.valueOf(properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.LOGIN_HINT));
-            Set<String> clientNames = new HashSet(Arrays.asList(AADB2CConstants.TEST_SIGN_IN_NAME,
+            Set<Object> clientNames = new HashSet<>(Arrays.asList(AADB2CConstants.TEST_SIGN_IN_NAME,
                 AADB2CConstants.TEST_SIGN_UP_NAME, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME));
             for (String clientName: userFlows.keySet()) {
                 Assertions.assertTrue(clientNames.contains(userFlows.get(clientName)));

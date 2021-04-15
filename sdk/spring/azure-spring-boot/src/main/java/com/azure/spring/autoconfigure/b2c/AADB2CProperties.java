@@ -123,7 +123,7 @@ public class AADB2CProperties implements InitializingBean {
     public void afterPropertiesSet() {
         // only as web app verification
         if (!CollectionUtils.isEmpty(userFlows)) {
-            if (StringUtils.hasText(tenant) && StringUtils.hasText(baseUri)) {
+            if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
                 throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
             }
             if (!userFlows.keySet().contains(loginFlow)) {

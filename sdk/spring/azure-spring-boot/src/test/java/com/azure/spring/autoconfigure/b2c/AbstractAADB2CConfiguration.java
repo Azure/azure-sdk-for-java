@@ -31,7 +31,7 @@ public class AbstractAADB2CConfiguration {
 
     protected WebApplicationContextRunner contextRunner;
 
-    protected String [] getClientCredentialConfig() {
+    protected String[] getClientCredentialConfig() {
         return new String[]{ String.format("%s.%s.scopes=%s", AADB2CConstants.AUTHORIZATION_CLIENTS,
                 AADB2CConstants.CLIENT_CREDENTIAL_NAME, AADB2CConstants.TEST_CLIENT_CREDENTIAL_SCOPES),
             String.format("%s.%s.authorization-grant-type=%s", AADB2CConstants.AUTHORIZATION_CLIENTS,
@@ -55,7 +55,7 @@ public class AbstractAADB2CConfiguration {
                     Assertions.assertEquals(authorizationClients.get(clientName).getAuthorizationGrantType(),
                         AADAuthorizationGrantType.CLIENT_CREDENTIALS);
                 }
-        });
+            });
     }
 
     @Test
@@ -75,6 +75,6 @@ public class AbstractAADB2CConfiguration {
                 Assertions.assertNotNull(clientService);
                 Assertions.assertNotNull(authorizedClientRepo);
                 Assertions.assertNotNull(clientManager);
-        });
+            });
     }
 }

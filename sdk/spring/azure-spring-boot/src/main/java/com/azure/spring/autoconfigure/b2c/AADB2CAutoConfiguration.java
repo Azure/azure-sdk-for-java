@@ -6,11 +6,9 @@ import com.azure.spring.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
@@ -33,16 +31,8 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  * </p>
  */
 @Configuration
-@ConditionalOnWebApplication
-@ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-@ConditionalOnProperty(
-    prefix = AADB2CProperties.PREFIX,
-    value = {
-        "client-id",
-        "client-secret"
-    }
-)
-@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
+@Conditional({ AADB2CConfiguration.AnyCondition.class})
+@ConditionalOnMissingClass({"org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken"})
 @EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2CConfiguration.class)
 public class AADB2CAutoConfiguration {

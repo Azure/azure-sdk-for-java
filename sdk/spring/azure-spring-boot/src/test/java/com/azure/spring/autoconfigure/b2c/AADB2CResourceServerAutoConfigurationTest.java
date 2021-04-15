@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ContextConsumer;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
@@ -36,7 +37,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2CCon
         };
     }
 
-    private ContextConsumer b2CAutoConfigurationBean() {
+    private ContextConsumer<ApplicationContext> b2CAutoConfigurationBean() {
         return (c) -> {
             final AADB2CResourceServerAutoConfiguration autoResourceConfig =
                 c.getBean(AADB2CResourceServerAutoConfiguration.class);
@@ -44,7 +45,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2CCon
         };
     }
 
-    private ContextConsumer b2CResourceServerPropertiesBean() {
+    private ContextConsumer<ApplicationContext> b2CResourceServerPropertiesBean() {
         return (c) -> {
             final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
 
@@ -55,7 +56,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2CCon
         };
     }
 
-    private ContextConsumer b2CResourceServerBean() {
+    private ContextConsumer<ApplicationContext> b2CResourceServerBean() {
         return (c) -> {
             final JwtDecoder jwtDecoder = c.getBean(JwtDecoder.class);
             final AADIssuerJWSKeySelector jwsKeySelector = c.getBean(AADIssuerJWSKeySelector.class);
