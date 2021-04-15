@@ -154,6 +154,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeReceiptDataWithPngFile(HttpClient httpClient,
                                                 FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -187,10 +188,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
                 toFluxByteBuffer(data), dataLength, new RecognizeReceiptsOptions()
@@ -198,7 +197,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
-        }, MULTIPAGE_INVOICE_PDF);
+        }, MULTIPAGE_RECEIPT_PDF);
     }
 
     /**
@@ -297,6 +296,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void recognizeReceiptSourceUrlWithPngFile(HttpClient httpClient,
                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -2037,10 +2037,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeIDDocumentWithBlankPdf(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
-        // TODO: (service-bug) Still a discrepancy between other prebuilt results and ID document testing
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
@@ -2052,7 +2050,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         .setPollInterval(durationTestMode)
                 ).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateBlankPdfResultData(syncPoller.getFinalResult());
+            assertEquals(0, syncPoller.getFinalResult().size());
         }, BLANK_PDF);
     }
 
