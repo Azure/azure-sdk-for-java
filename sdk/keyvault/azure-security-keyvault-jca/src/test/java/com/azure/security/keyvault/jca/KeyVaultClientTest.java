@@ -41,7 +41,7 @@ public class KeyVaultClientTest {
             tenantId,
             clientId,
             clientSecret);
-        Certificate certificate = keyVaultClient.getCertificate("gaohandecertificate");
+        Certificate certificate = keyVaultClient.getCertificate("myalias");
         assertNotNull(certificate);
     }
 
@@ -53,6 +53,6 @@ public class KeyVaultClientTest {
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         KeyVaultClient keyVaultClient = new KeyVaultClient(
             keyVaultUri, System.getProperty("azure.keyvault.aad-authentication-url"), tenantId, clientId, clientSecret);
-        assertNull(keyVaultClient.getKey("gaohandecertificate", null));
+        assertNull(keyVaultClient.getKey("myalias", null));
     }
 }

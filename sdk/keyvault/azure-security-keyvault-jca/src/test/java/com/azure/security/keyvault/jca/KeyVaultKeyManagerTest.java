@@ -38,12 +38,12 @@ public class KeyVaultKeyManagerTest {
 
     @Test
     public void testPrivateKey() {
-        assertNotNull(manager.getPrivateKey("gaohandecertificate"));
+        assertNotNull(manager.getPrivateKey("myalias"));
     }
 
 
     @Test
     public void testGetCertificateChain() {
-        assertNotNull(manager.getCertificateChain("gaohandecertificate"));
+        assertNotNull(manager.getCertificateChain("myalias"));
     }
 }
