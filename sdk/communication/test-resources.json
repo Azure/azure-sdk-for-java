@@ -17,12 +17,6 @@
         "defaultValue": ".communication.azure.com",
         "type": "string"
       },
-      "communication-livetest-phone-number": {
-        "type": "string",
-        "metadata": {
-          "description": "The phone number static resource."
-        }
-      },
       "subscriptionId": {
         "type": "string",
         "metadata": {
@@ -95,10 +89,6 @@
       "AZURE_CLIENT_SECRET": {
             "type": "String",
             "value": "[parameters('testApplicationSecret')]"
-      },
-      "COMMUNICATION_PHONE_NUMBER": {
-            "type": "String",
-            "value": "[parameters('communication-livetest-phone-number')]"
       },
       "COMMUNICATION_CONNECTION_STRING": {
         "type": "string",
