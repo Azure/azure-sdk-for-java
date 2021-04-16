@@ -6,6 +6,7 @@ package com.azure.test.aad.selenium.multitenant;
 import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
@@ -34,16 +35,18 @@ public class AADMultipleTenantIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADMultipleTenantIT.class);
     private AADSeleniumITHelper aadSeleniumITHelper;
 
-    @Test
-    public void multipleTenantTest() {
+    @BeforeAll
+    public void beforeAll() {
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
-
-        aadSeleniumITHelper = new AADSeleniumITHelper(TestApp.class, properties,
-            AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
+        aadSeleniumITHelper = new AADSeleniumITHelper(
+            TestApp.class, properties, AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         aadSeleniumITHelper.logIn();
+    }
 
+    @Test
+    public void multipleTenantTest() {
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         assertTrue(httpResponse.contains("home"));
     }
