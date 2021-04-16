@@ -66,7 +66,7 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
 public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(CoreMessageReceiver.class);
     private static final Duration LINK_REOPEN_TIMEOUT = Duration.ofMinutes(5); // service closes link long before this timeout expires
-    private static final Duration RETURN_MESSAGES_DAEMON_WAKE_UP_INTERVAL = Duration.ofMillis(1); // Wakes up every 1 millisecond
+    private static final Duration RETURN_MESSAGES_DAEMON_WAKE_UP_INTERVAL = Duration.ofMillis(10); // Wakes up every few milliseconds
     private static final Duration UPDATE_STATE_REQUESTS_DAEMON_WAKE_UP_INTERVAL = Duration.ofMillis(500); // Wakes up every 500 milliseconds
     private static final Duration ZERO_TIMEOUT_APPROXIMATION = Duration.ofMillis(200);
     private static final int CREDIT_FLOW_BATCH_SIZE = 50; // Arbitrarily chosen 50 to avoid sending too many flows in case prefetch count is large

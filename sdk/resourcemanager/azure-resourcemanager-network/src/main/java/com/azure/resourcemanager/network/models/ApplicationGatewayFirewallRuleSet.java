@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A web application firewall rule set. */
 @JsonFlatten
@@ -134,6 +135,20 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
      */
     public ApplicationGatewayFirewallRuleSet withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayFirewallRuleSet withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayFirewallRuleSet withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

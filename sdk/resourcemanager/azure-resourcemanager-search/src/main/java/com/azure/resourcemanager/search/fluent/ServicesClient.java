@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.search.fluent.models.SearchServiceInner;
 import com.azure.resourcemanager.search.models.CheckNameAvailabilityOutput;
+import com.azure.resourcemanager.search.models.SearchServiceUpdate;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -27,7 +28,7 @@ import reactor.core.publisher.Mono;
 public interface ServicesClient
     extends InnerSupportsGet<SearchServiceInner>, InnerSupportsListing<SearchServiceInner>, InnerSupportsDelete<Void> {
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -50,7 +51,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -73,7 +74,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -96,7 +97,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -124,7 +125,7 @@ public interface ServicesClient
         Context context);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -147,7 +148,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -168,7 +169,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -191,7 +192,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -212,7 +213,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam);
 
     /**
-     * Creates or updates a Search service in the given resource group. If the Search service already exists, all
+     * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
@@ -240,12 +241,12 @@ public interface ServicesClient
         Context context);
 
     /**
-     * Updates an existing Search service in the given resource group.
+     * Updates an existing search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the Azure Cognitive Search service to update.
-     * @param serviceParam Describes an Azure Cognitive Search service and its current state.
+     * @param serviceParam The parameters used to update an Azure Cognitive Search service.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,15 +256,15 @@ public interface ServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchServiceInner>> updateWithResponseAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId);
+        String resourceGroupName, String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId);
 
     /**
-     * Updates an existing Search service in the given resource group.
+     * Updates an existing search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the Azure Cognitive Search service to update.
-     * @param serviceParam Describes an Azure Cognitive Search service and its current state.
+     * @param serviceParam The parameters used to update an Azure Cognitive Search service.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,15 +274,15 @@ public interface ServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SearchServiceInner> updateAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId);
+        String resourceGroupName, String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId);
 
     /**
-     * Updates an existing Search service in the given resource group.
+     * Updates an existing search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the Azure Cognitive Search service to update.
-     * @param serviceParam Describes an Azure Cognitive Search service and its current state.
+     * @param serviceParam The parameters used to update an Azure Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -289,30 +290,30 @@ public interface ServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SearchServiceInner> updateAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam);
+        String resourceGroupName, String searchServiceName, SearchServiceUpdate serviceParam);
 
     /**
-     * Updates an existing Search service in the given resource group.
+     * Updates an existing search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the Azure Cognitive Search service to update.
-     * @param serviceParam Describes an Azure Cognitive Search service and its current state.
+     * @param serviceParam The parameters used to update an Azure Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an Azure Cognitive Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchServiceInner update(String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam);
+    SearchServiceInner update(String resourceGroupName, String searchServiceName, SearchServiceUpdate serviceParam);
 
     /**
-     * Updates an existing Search service in the given resource group.
+     * Updates an existing search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the Azure Cognitive Search service to update.
-     * @param serviceParam Describes an Azure Cognitive Search service and its current state.
+     * @param serviceParam The parameters used to update an Azure Cognitive Search service.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -325,12 +326,12 @@ public interface ServicesClient
     Response<SearchServiceInner> updateWithResponse(
         String resourceGroupName,
         String searchServiceName,
-        SearchServiceInner serviceParam,
+        SearchServiceUpdate serviceParam,
         UUID clientRequestId,
         Context context);
 
     /**
-     * Gets the Search service with the given name in the given resource group.
+     * Gets the search service with the given name in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -341,14 +342,14 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Search service with the given name in the given resource group.
+     * @return the search service with the given name in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchServiceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String searchServiceName, UUID clientRequestId);
 
     /**
-     * Gets the Search service with the given name in the given resource group.
+     * Gets the search service with the given name in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -359,14 +360,14 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Search service with the given name in the given resource group.
+     * @return the search service with the given name in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SearchServiceInner> getByResourceGroupAsync(
         String resourceGroupName, String searchServiceName, UUID clientRequestId);
 
     /**
-     * Gets the Search service with the given name in the given resource group.
+     * Gets the search service with the given name in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -375,13 +376,13 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Search service with the given name in the given resource group.
+     * @return the search service with the given name in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SearchServiceInner> getByResourceGroupAsync(String resourceGroupName, String searchServiceName);
 
     /**
-     * Gets the Search service with the given name in the given resource group.
+     * Gets the search service with the given name in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -390,13 +391,13 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Search service with the given name in the given resource group.
+     * @return the search service with the given name in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SearchServiceInner getByResourceGroup(String resourceGroupName, String searchServiceName);
 
     /**
-     * Gets the Search service with the given name in the given resource group.
+     * Gets the search service with the given name in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -408,14 +409,14 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Search service with the given name in the given resource group.
+     * @return the search service with the given name in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SearchServiceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context);
 
     /**
-     * Deletes a Search service in the given resource group, along with its associated resources.
+     * Deletes a search service in the given resource group, along with its associated resources.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -433,7 +434,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, UUID clientRequestId);
 
     /**
-     * Deletes a Search service in the given resource group, along with its associated resources.
+     * Deletes a search service in the given resource group, along with its associated resources.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -450,7 +451,7 @@ public interface ServicesClient
     Mono<Void> deleteAsync(String resourceGroupName, String searchServiceName, UUID clientRequestId);
 
     /**
-     * Deletes a Search service in the given resource group, along with its associated resources.
+     * Deletes a search service in the given resource group, along with its associated resources.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -465,7 +466,7 @@ public interface ServicesClient
     Mono<Void> deleteAsync(String resourceGroupName, String searchServiceName);
 
     /**
-     * Deletes a Search service in the given resource group, along with its associated resources.
+     * Deletes a search service in the given resource group, along with its associated resources.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -479,7 +480,7 @@ public interface ServicesClient
     void delete(String resourceGroupName, String searchServiceName);
 
     /**
-     * Deletes a Search service in the given resource group, along with its associated resources.
+     * Deletes a search service in the given resource group, along with its associated resources.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -498,7 +499,7 @@ public interface ServicesClient
         String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context);
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -507,39 +508,39 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group.
+     * @return a list of all search services in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SearchServiceInner> listByResourceGroupAsync(String resourceGroupName, UUID clientRequestId);
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group.
+     * @return a list of all search services in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SearchServiceInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group.
+     * @return a list of all search services in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SearchServiceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -549,47 +550,47 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group.
+     * @return a list of all search services in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SearchServiceInner> listByResourceGroup(
         String resourceGroupName, UUID clientRequestId, Context context);
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      *
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription.
+     * @return a list of all search services in the given subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SearchServiceInner> listAsync(UUID clientRequestId);
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription.
+     * @return a list of all search services in the given subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SearchServiceInner> listAsync();
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription.
+     * @return a list of all search services in the given subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SearchServiceInner> list();
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      *
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
@@ -597,16 +598,16 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription.
+     * @return a list of all search services in the given subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SearchServiceInner> list(UUID clientRequestId, Context context);
 
     /**
-     * Checks whether or not the given Search service name is available for use. Search service names must be globally
+     * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
      *
-     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits
+     * @param name The search service name to validate. Search service names must only contain lowercase letters, digits
      *     or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and
      *     must be between 2 and 60 characters in length.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
@@ -621,10 +622,10 @@ public interface ServicesClient
         String name, UUID clientRequestId);
 
     /**
-     * Checks whether or not the given Search service name is available for use. Search service names must be globally
+     * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
      *
-     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits
+     * @param name The search service name to validate. Search service names must only contain lowercase letters, digits
      *     or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and
      *     must be between 2 and 60 characters in length.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
@@ -638,10 +639,10 @@ public interface ServicesClient
     Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(String name, UUID clientRequestId);
 
     /**
-     * Checks whether or not the given Search service name is available for use. Search service names must be globally
+     * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
      *
-     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits
+     * @param name The search service name to validate. Search service names must only contain lowercase letters, digits
      *     or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and
      *     must be between 2 and 60 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -653,10 +654,10 @@ public interface ServicesClient
     Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(String name);
 
     /**
-     * Checks whether or not the given Search service name is available for use. Search service names must be globally
+     * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
      *
-     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits
+     * @param name The search service name to validate. Search service names must only contain lowercase letters, digits
      *     or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and
      *     must be between 2 and 60 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,10 +669,10 @@ public interface ServicesClient
     CheckNameAvailabilityOutput checkNameAvailability(String name);
 
     /**
-     * Checks whether or not the given Search service name is available for use. Search service names must be globally
+     * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
      *
-     * @param name The Search service name to validate. Search service names must only contain lowercase letters, digits
+     * @param name The search service name to validate. Search service names must only contain lowercase letters, digits
      *     or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and
      *     must be between 2 and 60 characters in length.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be

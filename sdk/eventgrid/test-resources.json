@@ -65,19 +65,19 @@
     }
   ],
   "outputs": {
-    "AZURE_EVENTGRID_EVENTGRID_ENDPOINT": {
+    "AZURE_EVENTGRID_EVENT_ENDPOINT": {
       "type": "string",
       "value": "[reference(variables('eventGridTopicName')).endpoint]"
     },
-    "AZURE_EVENTGRID_EVENTGRID_KEY": {
+    "AZURE_EVENTGRID_EVENT_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventGridTopicName')), variables('apiVersion')).key1]"
     },
-    "AZURE_EVENTGRID_CLOUD_ENDPOINT": {
+    "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT": {
       "type": "string",
       "value": "[reference(variables('cloudeventTopicName')).endpoint]"
     },
-    "AZURE_EVENTGRID_CLOUD_KEY": {
+    "AZURE_EVENTGRID_CLOUDEVENT_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('cloudeventTopicName')), variables('apiVersion')).key1]"
     },

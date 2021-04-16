@@ -11,9 +11,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -294,29 +291,6 @@ public class StorageImplUtils {
      */
     public static String emptyIfNull(String value) {
         return value == null ? "" : value;
-    }
-
-    /**
-     * Reads data from an input stream and writes it to an output stream.
-     * @param source {@link InputStream source}
-     * @param writeLength The length of data to write.
-     * @param destination {@link OutputStream destination}
-     * @throws IOException If an I/O error occurs.
-     */
-    public static void copyToOutputStream(InputStream source, long writeLength, OutputStream destination)
-        throws IOException {
-        StorageImplUtils.assertNotNull("source", source);
-        StorageImplUtils.assertNotNull("destination", destination);
-
-        final byte[] retrievedBuff = new byte[Constants.BUFFER_COPY_LENGTH];
-        int nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
-        int count = source.read(retrievedBuff, 0, nextCopy);
-
-        while (nextCopy > 0 && count != -1) {
-            destination.write(retrievedBuff, 0, count);
-            nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
-            count = source.read(retrievedBuff, 0, nextCopy);
-        }
     }
 
     /**

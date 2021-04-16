@@ -6,6 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -13,19 +14,17 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.context.Context;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link PagedFlux}
@@ -42,7 +41,7 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testEmptyResults() throws MalformedURLException {
+    public void testEmptyResults() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(0);
         StepVerifier.create(pagedFlux.log()).verifyComplete();
         StepVerifier.create(pagedFlux.byPage().log()).verifyComplete();
@@ -50,15 +49,16 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToItems() throws MalformedURLException {
+    public void testPagedFluxSubscribeToItems() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.log())
             .expectNext(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testPagedFluxConverter() throws MalformedURLException {
+    public void testPagedFluxConverter() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
 
         StepVerifier.create(pagedFlux.mapPage(String::valueOf))
@@ -67,7 +67,7 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPagesFromStart() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesFromStart() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0), pagedResponses.get(1), pagedResponses.get(2),
@@ -75,8 +75,9 @@ public class PagedFluxTest {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
             .expectNextCount(5)
@@ -89,11 +90,11 @@ public class PagedFluxTest {
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(3).getValue().equals(pagedResponse.getValue()))
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(4).getValue().equals(pagedResponse.getValue()))
             .verifyComplete();
-
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testPagedFluxSinglePageConvertedType() throws MalformedURLException {
+    public void testPagedFluxSinglePageConvertedType() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
         StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
             .expectNextCount(1)
@@ -105,7 +106,7 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPagesFromContinuationToken() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesFromContinuationToken() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.byPage("3").log())
             .expectNext(pagedResponses.get(3), pagedResponses.get(4))
@@ -113,7 +114,7 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPagesWithSinglePageResult() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesWithSinglePageResult() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0))
@@ -130,8 +131,7 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPagesWithSinglePageResultWithoutNextPageRetriever()
-        throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesWithSinglePageResultWithoutNextPageRetriever() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFluxSinglePage();
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0))
@@ -148,7 +148,7 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPagesWithTwoPages() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesWithTwoPages() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(2);
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0), pagedResponses.get(1))
@@ -166,66 +166,91 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPagesFromNullContinuationToken() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPagesFromNullContinuationToken() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.byPage(null).log())
             .verifyComplete();
     }
 
     @Test
-    public void testPagedFluxWithContext() throws Exception {
+    public void testPagedFluxWithContext() {
+        final String expectedContextKey = "hello";
+        final String expectedContextValue = "context";
 
-        CountDownLatch singlePageLatch = new CountDownLatch(1);
-        PagedFlux<Integer> pagedFlux = new PagedFlux<>(() -> withContext(context -> {
+        final Consumer<com.azure.core.util.Context> contextVerifier = context -> {
             assertNotNull(context);
             assertEquals(1, context.getValues().size());
-            assertEquals("context", context.getData("hello").get().toString());
-            singlePageLatch.countDown();
-            return Mono.empty();
+            assertEquals(expectedContextValue, context.getData(expectedContextKey).orElse("").toString());
+        };
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost");
+        final Function<String, PagedResponse<Integer>> pagedResponseSupplier = continuationToken ->
+            new PagedResponseBase<>(request, 200, headers, Collections.emptyList(), continuationToken, null);
+
+        PagedFlux<Integer> singlePageFlux = new PagedFlux<>(() -> withContext(context -> {
+            contextVerifier.accept(context);
+            return Mono.just(pagedResponseSupplier.apply(null));
         }));
 
+        StepVerifier.create(singlePageFlux.byPage()
+            .contextWrite(Context.of(expectedContextKey, expectedContextValue)))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
-        CountDownLatch multiPageLatch = new CountDownLatch(2);
-        pagedFlux
-            .byPage()
-            .subscriberContext(Context.of("hello", "context"))
-            .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
-
-        boolean completed = singlePageLatch.await(1, TimeUnit.SECONDS);
-        assertTrue(completed);
-
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
-        pagedFlux = new PagedFlux<>(() -> withContext(context -> {
-            assertNotNull(context);
-            assertEquals(1, context.getValues().size());
-            assertEquals("context", context.getData("hello").get().toString());
-            multiPageLatch.countDown();
-            PagedResponse<Integer> response = new PagedResponseBase<>(httpRequest, 200, httpHeaders,
-                Collections.emptyList(),
-                "0", null);
-            return Mono.just(response);
+        final String expectedContinuationToken = "0";
+        PagedFlux<Integer> multiPageFlux = new PagedFlux<>(() -> withContext(context -> {
+            contextVerifier.accept(context);
+            return Mono.just(pagedResponseSupplier.apply(expectedContinuationToken));
         }), continuationToken -> withContext(context -> {
-            assertNotNull(context);
-            assertEquals(1, context.getValues().size());
-            assertEquals("context", context.getData("hello").get().toString());
-            multiPageLatch.countDown();
-            return Mono.empty();
+            contextVerifier.accept(context);
+            assertEquals(expectedContinuationToken, continuationToken);
+            return Mono.just(pagedResponseSupplier.apply(null));
         }));
 
-        pagedFlux
-            .byPage()
-            .subscriberContext(Context.of("hello", "context"))
-            .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
-        completed = multiPageLatch.await(1, TimeUnit.SECONDS);
-        assertTrue(completed);
+        StepVerifier.create(multiPageFlux.byPage()
+            .contextWrite(Context.of(expectedContextKey, expectedContextValue)))
+            .expectNextCount(2)
+            .verifyComplete();
     }
 
-    private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+    @Test
+    public void pagedFluxWithPageSize() {
+        final int expectedPageSize = 5;
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost");
+        final Function<String, PagedResponse<Integer>> pagedResponseSupplier = continuationToken ->
+            new PagedResponseBase<>(request, 200, headers, Collections.emptyList(), continuationToken, null);
+
+        PagedFlux<Integer> singlePageFlux = new PagedFlux<>(pageSize -> {
+            assertEquals(expectedPageSize, pageSize);
+            return Mono.just(pagedResponseSupplier.apply(null));
+        });
+
+        StepVerifier.create(singlePageFlux.byPage(expectedPageSize))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+
+        final String expectedContinuationToken = "0";
+        PagedFlux<Integer> multiPageFlux = new PagedFlux<>(pageSize -> {
+            assertEquals(expectedPageSize, pageSize);
+            return Mono.just(pagedResponseSupplier.apply(expectedContinuationToken));
+        }, (continuationToken, pageSize) -> {
+            assertEquals(expectedPageSize, pageSize);
+            assertEquals(expectedContinuationToken, continuationToken);
+            return Mono.just(pagedResponseSupplier.apply(null));
+        });
+
+        StepVerifier.create(multiPageFlux.byPage(expectedPageSize))
+            .expectNextCount(2)
+            .verifyComplete();
+    }
+
+    private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) {
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
         pagedResponses = IntStream.range(0, noOfPages)
@@ -242,10 +267,10 @@ public class PagedFluxTest {
             continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
 
-    private PagedFlux<Integer> getIntegerPagedFluxSinglePage() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+    private PagedFlux<Integer> getIntegerPagedFluxSinglePage() {
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
         pagedResponses = IntStream.range(0, 1)
@@ -302,31 +327,31 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void fluxByItemOnlyRetrievesOnePage() throws InterruptedException {
+    public void fluxByItemOnlyRetrievesOnePage() {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
 
         pagedFlux.ignoreElements().block();
         assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        pagedFlux.blockFirst();
-
-        Thread.sleep(2000);
+        StepVerifier.create(pagedFlux.take(1)
+            .then(Mono.delay(Duration.ofMillis(500)).then()))
+            .verifyComplete();
 
         assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
     }
 
     @Test
-    public void fluxByPageOnlyRetrievesOnePage() throws InterruptedException {
+    public void fluxByPageOnlyRetrievesOnePage() {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
 
         pagedFlux.byPage().ignoreElements().block();
         assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        pagedFlux.byPage().blockFirst();
-
-        Thread.sleep(2000);
+        StepVerifier.create(pagedFlux.byPage().take(1)
+            .then(Mono.delay(Duration.ofMillis(500)).then()))
+            .verifyComplete();
 
         assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
     }

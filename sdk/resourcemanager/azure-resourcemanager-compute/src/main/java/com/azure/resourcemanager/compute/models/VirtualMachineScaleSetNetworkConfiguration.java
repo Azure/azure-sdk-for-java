@@ -39,6 +39,12 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
     private Boolean enableAcceleratedNetworking;
 
     /*
+     * Specifies whether the network interface is FPGA networking-enabled.
+     */
+    @JsonProperty(value = "properties.enableFpga")
+    private Boolean enableFpga;
+
+    /*
      * The network security group.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
@@ -128,6 +134,26 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
     }
 
     /**
+     * Get the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
+     * @return the enableFpga value.
+     */
+    public Boolean enableFpga() {
+        return this.enableFpga;
+    }
+
+    /**
+     * Set the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
+     * @param enableFpga the enableFpga value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withEnableFpga(Boolean enableFpga) {
+        this.enableFpga = enableFpga;
+        return this;
+    }
+
+    /**
      * Get the networkSecurityGroup property: The network security group.
      *
      * @return the networkSecurityGroup value.
@@ -206,6 +232,13 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetNetworkConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetNetworkConfiguration withId(String id) {
+        super.withId(id);
         return this;
     }
 

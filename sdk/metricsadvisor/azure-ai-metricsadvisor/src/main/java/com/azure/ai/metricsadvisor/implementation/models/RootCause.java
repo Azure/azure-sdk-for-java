@@ -24,13 +24,13 @@ public final class RootCause {
     private List<String> path;
 
     /*
-     * score
+     * score of the root cause
      */
     @JsonProperty(value = "score", required = true)
     private double score;
 
     /*
-     * description
+     * description of the root cause
      */
     @JsonProperty(value = "description", required = true)
     private String description;
@@ -76,7 +76,7 @@ public final class RootCause {
     }
 
     /**
-     * Get the score property: score.
+     * Get the score property: score of the root cause.
      *
      * @return the score value.
      */
@@ -85,7 +85,7 @@ public final class RootCause {
     }
 
     /**
-     * Set the score property: score.
+     * Set the score property: score of the root cause.
      *
      * @param score the score value to set.
      * @return the RootCause object itself.
@@ -96,7 +96,7 @@ public final class RootCause {
     }
 
     /**
-     * Get the description property: description.
+     * Get the description property: description of the root cause.
      *
      * @return the description value.
      */
@@ -105,7 +105,7 @@ public final class RootCause {
     }
 
     /**
-     * Set the description property: description.
+     * Set the description property: description of the root cause.
      *
      * @param description the description value to set.
      * @return the RootCause object itself.

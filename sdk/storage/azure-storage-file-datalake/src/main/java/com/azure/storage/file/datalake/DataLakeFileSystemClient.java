@@ -3,7 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -47,7 +49,7 @@ import java.util.Objects;
  * <p>
  * Please refer to the
  *
- * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
+ * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">
  *     Azure Docs</a> for more information on file systems.
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class)
@@ -144,6 +146,16 @@ public class DataLakeFileSystemClient {
         return dataLakeFileSystemAsyncClient.getFileSystemName();
     }
 
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return dataLakeFileSystemAsyncClient.getAccountUrl();
+    }
+
     /**
      * Gets the URL of the file system represented by this client.
      *
@@ -191,6 +203,7 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.create}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() {
         createWithResponse(null, null, null, Context.NONE);
     }
@@ -212,6 +225,7 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
@@ -228,6 +242,7 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.delete}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
         deleteWithResponse(null, null, Context.NONE);
     }
@@ -246,6 +261,7 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
@@ -263,6 +279,7 @@ public class DataLakeFileSystemClient {
      *
      * @return The file system properties.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public FileSystemProperties getProperties() {
         return getPropertiesWithResponse(null, null, Context.NONE).getValue();
     }
@@ -280,6 +297,7 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the file system properties.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileSystemProperties> getPropertiesWithResponse(String leaseId, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobContainerProperties> response = blobContainerClient.getPropertiesWithResponse(leaseId, timeout,
@@ -299,6 +317,7 @@ public class DataLakeFileSystemClient {
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
     }
@@ -317,6 +336,7 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
@@ -327,7 +347,7 @@ public class DataLakeFileSystemClient {
     /**
      * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
      * consumed while new items are automatically retrieved as needed. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -335,6 +355,7 @@ public class DataLakeFileSystemClient {
      *
      * @return The list of files/directories.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths() {
         return this.listPaths(new ListPathsOptions(), null);
     }
@@ -342,23 +363,26 @@ public class DataLakeFileSystemClient {
     /**
      * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
      * consumed while new items are automatically retrieved as needed. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration}
      *
-     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service. If
+     * iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
         return new PagedIterable<>(dataLakeFileSystemAsyncClient.listPathsWithOptionalTimeout(options, timeout));
     }
 
     /**
      * Creates a new file within a file system. By default, this method will not overwrite an existing file. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -368,13 +392,14 @@ public class DataLakeFileSystemClient {
      *  version of the path name.
      * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFile(String fileName) {
         return createFile(fileName, false);
     }
 
     /**
      * Creates a new file within a file system. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -385,6 +410,7 @@ public class DataLakeFileSystemClient {
      * @param overwrite Whether or not to overwrite, should a file exist.
      * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFile(String fileName, boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (!overwrite) {
@@ -396,7 +422,7 @@ public class DataLakeFileSystemClient {
 
     /**
      * Creates a new file within a file system. If a file with the same name already exists, the file will be
-     * overwritten. For more information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * overwritten. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -416,6 +442,7 @@ public class DataLakeFileSystemClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
      * to interact with the file created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> createFileWithResponse(String fileName, String permissions, String umask,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -427,7 +454,7 @@ public class DataLakeFileSystemClient {
 
     /**
      * Deletes the specified file in the file system. If the file doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -437,13 +464,14 @@ public class DataLakeFileSystemClient {
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteFile(String fileName) {
         deleteFileWithResponse(fileName, null, null, Context.NONE).getValue();
     }
 
     /**
      * Deletes the specified file in the file system. If the file doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -457,6 +485,7 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
@@ -465,7 +494,7 @@ public class DataLakeFileSystemClient {
     /**
      * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -475,13 +504,14 @@ public class DataLakeFileSystemClient {
      * url encoded version of the path name.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createDirectory(String directoryName) {
         return createDirectory(directoryName, false);
     }
 
     /**
      * Creates a new directory within a file system. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -492,6 +522,7 @@ public class DataLakeFileSystemClient {
      * @param overwrite Whether or not to overwrite, should a directory exist.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createDirectory(String directoryName, boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (!overwrite) {
@@ -504,7 +535,7 @@ public class DataLakeFileSystemClient {
     /**
      * Creates a new directory within a file system. If a directory with the same name already exists, the directory
      * will be overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -524,6 +555,7 @@ public class DataLakeFileSystemClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
      * used to interact with the directory created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
@@ -535,7 +567,7 @@ public class DataLakeFileSystemClient {
 
     /**
      * Deletes the specified directory in the file system. If the directory doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -545,13 +577,14 @@ public class DataLakeFileSystemClient {
      * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
      * url encoded version of the path name.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDirectory(String directoryName) {
         deleteDirectoryWithResponse(directoryName, false, null, null, Context.NONE).getValue();
     }
 
     /**
      * Deletes the specified directory in the file system. If the directory doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -566,6 +599,7 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return getDirectoryClient(directoryName).deleteWithResponse(recursive, requestConditions, timeout, context);
@@ -582,6 +616,7 @@ public class DataLakeFileSystemClient {
      *
      * @return The file system access policy.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public FileSystemAccessPolicies getAccessPolicy() {
         return getAccessPolicyWithResponse(null, null, Context.NONE).getValue();
     }
@@ -600,6 +635,7 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The file system access policy.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileSystemAccessPolicies> getAccessPolicyWithResponse(String leaseId, Duration timeout,
         Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
@@ -624,9 +660,10 @@ public class DataLakeFileSystemClient {
      * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
      * system.
      * Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setAccessPolicy(PublicAccessType accessType, List<DataLakeSignedIdentifier> identifiers) {
         setAccessPolicyWithResponse(accessType, identifiers, null, null, Context.NONE);
     }
@@ -646,13 +683,14 @@ public class DataLakeFileSystemClient {
      * @param identifiers A list of {@link DataLakeSignedIdentifier} objects that specify the permissions for the file
      * system.
      * Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -662,6 +700,50 @@ public class DataLakeFileSystemClient {
                 Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions),
                 timeout, context), logger);
     }
+
+//    /**
+//     * Renames an existing file system.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String}
+//     *
+//     * @param destinationFileSystemName The new name of the file system.
+//     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public DataLakeFileSystemClient rename(String destinationFileSystemName) {
+//        return this.renameWithResponse(new FileSystemRenameOptions(destinationFileSystemName), null, Context.NONE).getValue();
+//    }
+//
+//    /**
+//     * Renames an existing file system.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context}
+//     *
+//     * @param options {@link FileSystemRenameOptions}
+//     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+//     * @param context Additional context that is passed through the Http pipeline during the service call.
+//     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+//     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public Response<DataLakeFileSystemClient> renameWithResponse(FileSystemRenameOptions options,
+//        Duration timeout, Context context) {
+//        return DataLakeImplUtils.returnOrConvertException(() -> {
+//            Response<com.azure.storage.blob.BlobContainerClient> response = blobContainerClient
+//                .renameWithResponse(Transforms.toBlobContainerRenameOptions(options), timeout, context);
+//            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
+//        }, logger);
+//    }
+//
+//    private DataLakeFileSystemClient getFileSystemClient(String destinationFileSystem) {
+//        return new DataLakeFileSystemClient(
+//            dataLakeFileSystemAsyncClient.getFileSystemAsyncClient(destinationFileSystem),
+//            dataLakeFileSystemAsyncClient.prepareBuilderReplacePath(destinationFileSystem).buildClient());
+//    }
 
     BlobContainerClient getBlobContainerClient() {
         return blobContainerClient;

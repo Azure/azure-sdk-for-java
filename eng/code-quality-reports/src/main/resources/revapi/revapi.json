@@ -14,6 +14,7 @@
             "com\\.azure\\..+\\.implementation(\\..+)?",
             "com\\.azure\\..+\\.samples(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
+            "reactor\\.core\\..+",
             "reactor\\.netty\\..+",
             "reactor\\.util\\..+",
             "io\\.netty\\..+",
@@ -41,7 +42,9 @@
         "minor": "nonBreaking",
         "patch": "equivalent"
       },
-      "passThroughDifferences": [ "java.class.nonPublicPartOfAPI" ]
+      "passThroughDifferences": [
+        "java.class.nonPublicPartOfAPI"
+      ]
     }
   },
   {
@@ -56,19 +59,44 @@
       },
       {
         "regex": true,
-        "code": "java\\.missing\\.(oldSuperType|newSuperType)",
-        "new": "class com\\.azure\\.core\\.http\\.rest\\.((PagedFlux<T extends java\\.lang\\.Object>)|(PagedFluxBase<T extends java\\.lang\\.Object.*>)).*",
-        "justification": "azure.core 1.3.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class javax\\.servlet\\.ServletContextEvent",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.ServletContextCleaner"
       },
       {
-        "code": "java.method.addedToInterface",
-        "new": "method com.azure.core.util.IterableStream<T> com.azure.core.util.paging.ContinuablePage<C, T>::getElements() @ com.azure.core.http.rest.PagedResponse<T>",
-        "justification": "Exposed through revapi transitive dependency checking. azure.core 1.3.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.avalon\\.framework\\.logger\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.AvalonLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.AvalonLogger"
       },
       {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.lang.Iterable<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::iterableByPage(===int===) @ com.azure.core.http.rest.PagedIterableBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.log\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.LogKitLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.LogKitLogger"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.(oldClass|newClass)",
+        "new": "missing\\-class org\\.apache\\.log4j\\.Logger",
+        "exampleUseChainInNewApi": ".*com\\.azure\\.keyvault\\.jca\\.org\\.apache\\.commons\\.logging\\.impl\\.Log4JLogger.*",
+        "justification": "We allow this in com.azure.keyvault.jca.org.apache.commons.logging.impl.Log4JLogger"
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "class org.apache.http.impl.client.HttpRequestTaskCallable<V extends java.lang.Object>",
+        "justification": "We allow this in org.apache.http.impl.client.HttpRequestFutureTask<V>"
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
+        "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
+        "justification": "We allow this in org.apache.http.HttpClientConnection>"
       },
       {
         "regex": true,
@@ -87,21 +115,6 @@
         "code": "java.class.nonPublicPartOfAPI",
         "new": "(class|enum|interface) org\\.conscrypt\\..*",
         "justification": "skip check for third party files."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.lang.Iterable<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::iterableByPage(===int===) @ com.azure.core.http.rest.PagedIterable<T>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.util.stream.Stream<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::streamByPage(===int===) @ com.azure.core.http.rest.PagedIterableBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.util.stream.Stream<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::streamByPage(===int===) @ com.azure.core.http.rest.PagedIterable<T>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
       },
       {
         "regex": true,
@@ -204,19 +217,6 @@
         "justification": "Reactor added new final APIs to Flux."
       },
       {
-        "regex": true,
-        "code": "java\\.annotation\\.added",
-        "new": "^(method|parameter)\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(FacetResult|SearchServiceStatistics)::.+$",
-        "justification": "Annotations better indicate which parameters are required when handling service requests and responses."
-      },
-      {
-        "regex": true,
-        "code": "java\\.annotation\\.attributeAdded",
-        "new": "^parameter\\s.+?\\scom\\.azure\\.search\\.documents(\\.indexes)?\\.models\\.(AnalyzedTokenInfo|CorsOptions|FieldMapping|IndexerExecutionResult|SearchIndexerStatus|SearchServiceCounters|TextWeights|AutocompleteResult)::<init>\\(.+\\)$",
-        "justification": "Annotations attributes better indicate which parameters are required when handling service requests and responses."
-      },
-
-      {
         "code": "java.class.externalClassExposedInAPI",
         "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
         "justification": "This is a preview release"
@@ -269,7 +269,25 @@
         "code": "java.annotation.added",
         "new": "class com.azure.storage.blob.models.PageList",
         "justification": "Annotation required to resolve deserialization bug."
-      },{
+      },
+      {
+        "code": "java.annotation.added",
+        "new": "class com.azure.storage.file.datalake.models.PathHttpHeaders",
+        "justification": "Annotation added when migrating to new generator, it should not break anything."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "class com.azure.storage.file.share.models.ShareProtocolSettings",
+        "new": "class com.azure.storage.file.share.models.ShareProtocolSettings",
+        "justification": "Annotation required to resolve a swagger error. The value is now correct."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "class com.azure.storage.file.share.models.ShareSmbSettings",
+        "new": "class com.azure.storage.file.share.models.ShareSmbSettings",
+        "justification": "Annotation required to resolve a swagger error. The value is now correct."
+      },
+      {
         "code": "java.method.returnTypeChanged",
         "old": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
         "new": "method java.util.List<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
@@ -337,7 +355,7 @@
         "code": "java.method.parameterTypeChanged",
         "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===java.lang.String===)",
         "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===com.azure.core.amqp.models.AmqpMessageId===)",
-        "justification":"Introduced new type AmqpMessageId."
+        "justification": "Introduced new type AmqpMessageId."
       },
       {
         "code": "java.method.parameterTypeChanged",
@@ -355,10 +373,116 @@
         "code": "java.method.removed",
         "old": "method void com.azure.core.amqp.models.AmqpAnnotatedMessage::<init>(com.azure.core.amqp.models.AmqpAnnotatedMessage)",
         "justification": "Removed copy constructor, It is not required for Service bus message."
-      },      {
+      },
+      {
         "code": "java.method.defaultMethodAddedToInterface",
         "new": "method reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> com.azure.core.http.HttpClient::send(com.azure.core.http.HttpRequest, com.azure.core.util.Context)",
         "justification": "Default interface method"
+      },
+      {
+        "code": "java.method.staticMethodAddedToInterface",
+        "new": "method com.azure.core.http.HttpClient com.azure.core.http.HttpClient::createDefault(com.azure.core.util.HttpClientOptions)",
+        "justification": "Default implementation"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.http.HttpHeader::<init>(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New constructor"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.lang.String)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::setAll(java.util.Map<java.lang.String, java.util.List<java.lang.String>>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.util.List<java.lang.String>)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.lang.String[])",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.util.List<java.lang.String> com.azure.core.util.Header::getValuesList()",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::setPollInterval(java.time.Duration)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setClaims(java.lang.String)",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getClaims()",
+        "justification": "New method"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method com.azure.core.util.polling.SyncPoller<T, U> com.azure.core.util.polling.SyncPoller<T, U>::setPollInterval(java.time.Duration)",
+        "justification": "Default implementation"
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
+        "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
+        "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+      },
+      {
+        "code": "java.field.constantValueChanged",
+        "old": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD",
+        "new": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD",
+        "justification": "Correct the event type defined in swagger file"
+      },
+      {
+        "code": "java.field.constantValueChanged",
+        "old": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
+        "new": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
+        "justification": "Correct the event type defined in swagger file"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.ProxyOptions com.azure.core.http.ProxyOptions::fromConfiguration(com.azure.core.util.Configuration, boolean)",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method <T> T com.azure.core.util.serializer.SerializerAdapter::deserialize(byte[], java.lang.reflect.Type, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method byte[] com.azure.core.util.serializer.SerializerAdapter::serializeToBytes(java.lang.Object, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
+        "justification": "Method exposed from Azure Core"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "@interface com.azure.core.annotation.ServiceClient",
+        "new": "@interface com.azure.core.annotation.ServiceClient",
+        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "@interface com.azure.core.annotation.ServiceMethod",
+        "new": "@interface com.azure.core.annotation.ServiceMethod",
+        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
       }
     ]
   }

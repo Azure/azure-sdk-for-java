@@ -7,13 +7,13 @@ import com.azure.core.util.CoreUtils;
 /**
  * Catch-all for all other Communication identifiers for Communication Services
  */
-public class UnknownIdentifier extends CommunicationIdentifier {
+public final class UnknownIdentifier extends CommunicationIdentifier {
 
     private final String id;
 
     /**
      * Creates an UnknownIdentifier object
-     * 
+     *
      * @param id the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
@@ -25,9 +25,29 @@ public class UnknownIdentifier extends CommunicationIdentifier {
     }
 
     /**
-     * @return the string identifier representing the object identity
+     * Get id of this identifier
+     * @return id of this identifier
      */
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof UnknownIdentifier)) {
+            return false;
+        }
+
+        UnknownIdentifier thatId = (UnknownIdentifier) that;
+        return this.id.equals(thatId.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

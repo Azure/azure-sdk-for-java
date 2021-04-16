@@ -249,7 +249,7 @@ def prep_version_file_for_source_testing(build_type):
 
 # given a build type, artifact id and group id, set the dependency version to the
 # current version and increment the current version
-def increment_library_version(build_type, artifact_id, group_id):
+def increment_or_set_library_version(build_type, artifact_id, group_id, new_version=None):
 
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
@@ -270,50 +270,51 @@ def increment_library_version(build_type, artifact_id, group_id):
                 # https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#java
                 if module.name == library_to_update and hasattr(module, 'current'):
                     artifact_found = True
-                    vmatch = version_regex_named.match(module.current)
-                    if (vmatch.group('prerelease') is not None):
-                        prever = prerelease_regex_named.match(vmatch.group('prerelease'))
-                        # This is the case where, somehow, the versioning verification has failed and
-                        # the prerelease verification doesn't match "beta.X"
-                        if prever is None:
-                            # if the build_type isn't data then error
-                            if build_type.name.lower() != 'data':
-                                raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format beta.X'.format(library_to_update, module.current, vmatch.group('prerelease')))
+                    if new_version is None:
+                        vmatch = version_regex_named.match(module.current)
+                        if (vmatch.group('prerelease') is not None):
+                            prever = prerelease_regex_named.match(vmatch.group('prerelease'))
+                            # This is the case where, somehow, the versioning verification has failed and
+                            # the prerelease verification doesn't match "beta.X"
+                            if prever is None:
+                                # if the build_type isn't data then error
+                                if build_type.name.lower() != 'data':
+                                    raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format beta.X'.format(library_to_update, module.current, vmatch.group('prerelease')))
+                                else:
+                                    # verify that prerelease is "beta"
+                                    if prerelease_data_regex.match(vmatch.group('prerelease')) is None:
+                                        raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format (beta) or (beta.X)'.format(library_to_update, module.current, vmatch.group('prerelease')))
+                                    # in the case there the prerelease version is just "beta", increment the minor and set the patch to 0
+                                    minor = int(vmatch.group('minor'))
+                                    minor += 1
+                                    new_version = '{}.{}.{}-beta'.format(vmatch.group('major'), minor, 0)
                             else:
-                                # verify that prerelease is "beta"
-                                if prerelease_data_regex.match(vmatch.group('prerelease')) is None:
-                                    raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format (beta) or (beta.X)'.format(library_to_update, module.current, vmatch.group('prerelease')))
-                                # in the case there the prerelease version is just "beta", increment the minor and set the patch to 0
-                                minor = int(vmatch.group('minor'))
-                                minor += 1
-                                new_version = '{}.{}.{}-beta'.format(vmatch.group('major'), minor, 0)
+                                rev = int(prever.group('revision'))
+                                rev += 1
+                                new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
                         else:
-                            rev = int(prever.group('revision'))
-                            rev += 1
-                            new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
-                    else:
-                        minor = int(vmatch.group('minor'))
-                        minor += 1
-                        new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
-                    # The dependency version only needs to be updated it if is different from the current version.
-                    # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
-                    if (module.dependency != module.current):
-                        vDepMatch = version_regex_named.match(module.dependency)
-                        # If the dependency version is a beta then just set it to whatever the current
-                        # version is
-                        if (vDepMatch.group('prerelease') is not None):
-                            print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
-                            module.dependency = module.current
-                        # else, the dependency version isn't a pre-release version
-                        else:
-                            # if the dependency version isn't a beta and the current version is, don't
-                            # update the dependency version
-                            if (vmatch.group('prerelease') is not None):
-                                print('library_to_update {}, has a GA dependency version {} and a beta current version {}. The dependency version will be kept at the GA version. '.format(library_to_update, module.dependency, module.current))
-                            else:
-                                print('library_to_update {}, has both GA dependency {} and current {} versions. The dependency will be updated to {}. '.format(library_to_update, module.dependency, module.current, module.current))
+                            minor = int(vmatch.group('minor'))
+                            minor += 1
+                            new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
+                        # The dependency version only needs to be updated it if is different from the current version.
+                        # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
+                        if (module.dependency != module.current):
+                            vDepMatch = version_regex_named.match(module.dependency)
+                            # If the dependency version is a beta then just set it to whatever the current
+                            # version is
+                            if (vDepMatch.group('prerelease') is not None):
+                                print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
                                 module.dependency = module.current
-                    print('library_to_update {}, previous current version={}, new current version={}'.format(library_to_update, module.current, new_version))
+                            # else, the dependency version isn't a pre-release version
+                            else:
+                                # if the dependency version isn't a beta and the current version is, don't
+                                # update the dependency version
+                                if (vmatch.group('prerelease') is not None):
+                                    print('library_to_update {}, has a GA dependency version {} and a beta current version {}. The dependency version will be kept at the GA version. '.format(library_to_update, module.dependency, module.current))
+                                else:
+                                    print('library_to_update {}, has both GA dependency {} and current {} versions. The dependency will be updated to {}. '.format(library_to_update, module.dependency, module.current, module.current))
+                                    module.dependency = module.current
+                        print('library_to_update {}, previous current version={}, new current version={}'.format(library_to_update, module.current, new_version))
                     module.current = new_version
                 newlines.append(module.string_for_version_file())
 
@@ -395,6 +396,7 @@ def main():
     optional.add_argument('--artifact-id', '--ai', help='artifactId of the target library')
     optional.add_argument('--group-id', '--gi', help='groupId of the target library')
     optional.add_argument('--prep-source-testing', '--pst', action='store_true', help='prep the version file for source testing')
+    optional.add_argument('--new-version', '--nv', help='set an new version.')
     optional.add_argument('--increment-version', '--iv', action='store_true', help='increment the version for a given group/artifact')
     optional.add_argument('--verify-version', '--vv', action='store_true', help='verify the version for a given group/artifact')
     optional.add_argument('--set-dev-zero-version', '--sdzv', action='store_true', help='Set a zero dev build version for packages that do not already have dev versions set (should be run after setting dev versions for other packages)')
@@ -410,7 +412,13 @@ def main():
     elif (args.increment_version):
         if not args.artifact_id or not args.group_id:
             raise ValueError('increment-version requires both the artifact-id and group-id arguments. artifact-id={}, group-id={}'.format(args.artifact_id, args.group_id))
-        increment_library_version(args.build_type, args.artifact_id, args.group_id)
+        if args.new_version:
+            raise ValueError('new-version should not be passed with increment-version')
+        increment_or_set_library_version(args.build_type, args.artifact_id, args.group_id)
+    elif (args.new_version):
+        if not args.artifact_id or not args.group_id:
+            raise ValueError('new-version requires both the artifact-id and group-id arguments. artifact-id={}, group-id={}'.format(args.artifact_id, args.group_id))
+        increment_or_set_library_version(args.build_type, args.artifact_id, args.group_id, args.new_version)
     elif (args.verify_version):
         if not args.artifact_id or not args.group_id:
             raise ValueError('verify-version requires both the artifact-id and group-id arguments. artifact-id={}, group-id={}'.format(args.artifact_id, args.group_id))

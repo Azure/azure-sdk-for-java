@@ -1,7 +1,16 @@
 # Release History
 
-## 12.8.0-beta.2 (Unreleased)
+## 12.9.0-beta.3 (Unreleased)
 
+
+## 12.9.0-beta.2 (2021-03-29)
+- Updated azure-storage-common and azure-core dependencies.
+
+## 12.9.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+
+## 12.8.0 (2021-01-14)
+- GA release
 
 ## 12.8.0-beta.1 (2020-12-07)
 - Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.

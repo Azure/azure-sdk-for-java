@@ -4,12 +4,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,9 @@ import java.util.Set;
 /** An immutable client-side representation of an Azure AD service principal. */
 @Fluent
 public interface ServicePrincipal
-    extends ActiveDirectoryObject, HasInnerModel<ServicePrincipalInner>, Updatable<ServicePrincipal.Update> {
+    extends ActiveDirectoryObject,
+        HasInnerModel<MicrosoftGraphServicePrincipalInner>,
+        Updatable<ServicePrincipal.Update> {
     /** @return app id. */
     String applicationId();
 
@@ -80,6 +83,13 @@ public interface ServicePrincipal
              * @return the next stage of the service principal definition
              */
             WithCreate withNewApplication(String signOnUrl);
+
+            /**
+             * Specifies a new application to create and use by the service principal.
+             *
+             * @return the next stage of the service principal definition
+             */
+            WithCreate withNewApplication();
         }
 
         /** A service principal definition allowing credentials to be specified. */
@@ -149,7 +159,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential update
              */
-            CertificateCredential.UpdateDefinitionStages.Blank<? extends Update>
+            CertificateCredential.DefinitionStages.Blank<? extends Update>
                 defineCertificateCredential(String name);
 
             /**
@@ -158,7 +168,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential update
              */
-            PasswordCredential.UpdateDefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
 
             /**
              * Removes a credential.

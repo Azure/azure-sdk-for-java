@@ -15,7 +15,7 @@ public final class CheckNameAvailabilityInput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityInput.class);
 
     /*
-     * The Search service name to validate. Search service names must only
+     * The search service name to validate. Search service names must only
      * contain lowercase letters, digits or dashes, cannot use dash as the
      * first two or last one characters, cannot contain consecutive dashes, and
      * must be between 2 and 60 characters in length.
@@ -36,7 +36,7 @@ public final class CheckNameAvailabilityInput {
     }
 
     /**
-     * Get the name property: The Search service name to validate. Search service names must only contain lowercase
+     * Get the name property: The search service name to validate. Search service names must only contain lowercase
      * letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive
      * dashes, and must be between 2 and 60 characters in length.
      *
@@ -47,7 +47,7 @@ public final class CheckNameAvailabilityInput {
     }
 
     /**
-     * Set the name property: The Search service name to validate. Search service names must only contain lowercase
+     * Set the name property: The search service name to validate. Search service names must only contain lowercase
      * letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive
      * dashes, and must be between 2 and 60 characters in length.
      *

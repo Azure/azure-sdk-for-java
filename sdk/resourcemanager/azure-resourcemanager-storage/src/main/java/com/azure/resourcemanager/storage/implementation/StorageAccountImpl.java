@@ -14,8 +14,10 @@ import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentic
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DirectoryServiceOptions;
 import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
+import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicEndpoints;
 import com.azure.resourcemanager.storage.models.Sku;
@@ -189,6 +191,35 @@ class StorageAccountImpl
     }
 
     @Override
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.innerModel().minimumTlsVersion();
+    }
+
+    @Override
+    public boolean isHttpsTrafficOnly() {
+        if (this.innerModel().enableHttpsTrafficOnly() == null) {
+            return true;
+        }
+        return this.innerModel().enableHttpsTrafficOnly();
+    }
+
+    @Override
+    public boolean isBlobPublicAccessAllowed() {
+        if (this.innerModel().allowBlobPublicAccess() == null) {
+            return true;
+        }
+        return this.innerModel().allowBlobPublicAccess();
+    }
+
+    @Override
+    public boolean isSharedKeyAccessAllowed() {
+        if (this.innerModel().allowSharedKeyAccess() == null) {
+            return true;
+        }
+        return this.innerModel().allowSharedKeyAccess();
+    }
+
+    @Override
     public List<StorageAccountKey> getKeys() {
         return this.getKeysAsync().block();
     }
@@ -357,9 +388,9 @@ class StorageAccountImpl
     public StorageAccountImpl withSystemAssignedManagedServiceIdentity() {
         if (this.innerModel().identity() == null) {
             if (isInCreateMode()) {
-                createParameters.withIdentity(new Identity().withType("SystemAssigned"));
+                createParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
             } else {
-                updateParameters.withIdentity(new Identity().withType("SystemAssigned"));
+                updateParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
             }
         }
         return this;
@@ -377,7 +408,61 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withHttpAndHttpsTraffic() {
-        updateParameters.withEnableHttpsTrafficOnly(false);
+        if (isInCreateMode()) {
+            createParameters.withEnableHttpsTrafficOnly(false);
+        } else {
+            updateParameters.withEnableHttpsTrafficOnly(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        if (isInCreateMode()) {
+            createParameters.withMinimumTlsVersion(minimumTlsVersion);
+        } else {
+            updateParameters.withMinimumTlsVersion(minimumTlsVersion);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableBlobPublicAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowBlobPublicAccess(true);
+        } else {
+            updateParameters.withAllowBlobPublicAccess(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableBlobPublicAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowBlobPublicAccess(false);
+        } else {
+            updateParameters.withAllowBlobPublicAccess(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableSharedKeyAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowSharedKeyAccess(true);
+        } else {
+            updateParameters.withAllowSharedKeyAccess(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableSharedKeyAccess() {
+        if (isInCreateMode()) {
+            createParameters.withAllowSharedKeyAccess(false);
+        } else {
+            updateParameters.withAllowSharedKeyAccess(false);
+        }
         return this;
     }
 

@@ -1,6 +1,55 @@
 # Release History
 
-## 7.1.0-beta.1 (Unreleased)
+## 7.3.0-beta.1 (Unreleased)
+
+
+## 7.2.0 (2021-04-12)
+### Bug Fixes
+- Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
+  error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
+- Upgrade to `azure-core-amqp:2.0.4` improves recovery of connection to Service Bus.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.4`.
+
+## 7.2.0-beta.1 (2021-03-18)
+### New Features
+- Added support for distributed transactions across entities via API 'ServiceBusClientBuilder.enableCrossEntityTransactions()'.
+
+## 7.1.0 (2021-03-10)
+### Bug Fixes
+- Continue to receive messages regardless of user not settling the received message in PEEK_LOCK mode [#19247](https://github.com/Azure/azure-sdk-for-java/issues/19247).
+- Update to end the trace span regardless of the scope instance type for process operation tracing spans.
+- Removed logs that leaked secrets when connection string is invalid. [#19249](https://github.com/Azure/azure-sdk-for-java/issues/19249)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.3`.
+
+## 7.0.2 (2021-02-10)
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.2`.
+
+## 7.0.1 (2021-01-15)
+### New Features
+- Improve performance because by upgrading `azure-core-amqp` dependency to `2.0.1`. It Changes AMQP connections from 
+  sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection.
+
+### Bug Fixes
+- Fix issue [18351](https://github.com/Azure/azure-sdk-for-java/issues/18351): Getting 'NullPointerException' When calling 
+  'ServiceBusAdministrationAsyncClient#getSubscriptionRuntimeProperties()' for the topic where user has only listen 
+  (and not manage) permission.
+- Fix issue [18122](https://github.com/Azure/azure-sdk-for-java/issues/18435): A session-based Message receiver does not 
+  receive messages sent after 60s gap from the last message sent. This happens if there is only one active session in
+  Service Bus entity.
+- Fix issue [18536](https://github.com/Azure/azure-sdk-for-java/issues/18536): The 'ServiceBusAdministrationClient.deleteSubscription()'
+  is not synchronous.
+
+### Dependency Updates   
+- Upgraded `azure-core` dependency to `1.12.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.1`.
 
 ## 7.0.0 (2020-11-30)
 

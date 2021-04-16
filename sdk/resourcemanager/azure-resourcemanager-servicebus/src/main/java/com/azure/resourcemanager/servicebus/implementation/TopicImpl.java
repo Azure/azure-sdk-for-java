@@ -8,12 +8,11 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.models.TopicResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
-import com.azure.resourcemanager.servicebus.models.TopicCreateOrUpdateParameters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +28,7 @@ class TopicImpl
     extends IndependentChildResourceImpl<
         Topic,
         ServiceBusNamespaceImpl,
-        TopicResourceInner,
+        SBTopicInner,
         TopicImpl,
         ServiceBusManager>
     implements
@@ -45,14 +44,11 @@ class TopicImpl
               String namespaceName,
               String name,
               Region region,
-              TopicResourceInner inner,
+              SBTopicInner inner,
               ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
         initChildrenOperationsCache();
-        if (inner.location() == null) {
-            inner.withLocation(region.toString());
-        }
     }
 
     @Override
@@ -72,7 +68,7 @@ class TopicImpl
 
     @Override
     public long maxSizeInMB() {
-        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().maxSizeInMegabytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().maxSizeInMegabytes().longValue());
     }
 
     @Override
@@ -105,8 +101,7 @@ class TopicImpl
         if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().autoDeleteOnIdle());
-        return (long) timeSpan.totalMinutes();
+        return this.innerModel().autoDeleteOnIdle().toMinutes();
     }
 
     @Override
@@ -114,7 +109,7 @@ class TopicImpl
         if (this.innerModel().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.innerModel().defaultMessageTimeToLive()).toDuration();
+        return this.innerModel().defaultMessageTimeToLive();
     }
 
     @Override
@@ -122,7 +117,7 @@ class TopicImpl
         if (this.innerModel().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        return TimeSpan.parse(this.innerModel().duplicateDetectionHistoryTimeWindow()).toDuration();
+        return this.innerModel().duplicateDetectionHistoryTimeWindow();
     }
 
     @Override
@@ -203,7 +198,7 @@ class TopicImpl
 
     @Override
     public TopicImpl withSizeInMB(long sizeInMB) {
-        this.innerModel().withMaxSizeInMegabytes(sizeInMB);
+        this.innerModel().withMaxSizeInMegabytes((int) sizeInMB);
         return this;
     }
 
@@ -221,14 +216,13 @@ class TopicImpl
 
     @Override
     public TopicImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
-        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.innerModel().withAutoDeleteOnIdle(timeSpan.toString());
+        this.innerModel().withAutoDeleteOnIdle(Duration.ofMinutes(durationInMinutes));
         return this;
     }
 
     @Override
     public TopicImpl withDefaultMessageTTL(Duration ttl) {
-        this.innerModel().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
+        this.innerModel().withDefaultMessageTimeToLive(ttl);
         return this;
     }
 
@@ -259,17 +253,13 @@ class TopicImpl
     @Override
     public TopicImpl withDuplicateMessageDetection(Duration duplicateDetectionHistoryDuration) {
         this.innerModel().withRequiresDuplicateDetection(true);
-        this.innerModel().withDuplicateDetectionHistoryTimeWindow(TimeSpan
-                .fromDuration(duplicateDetectionHistoryDuration)
-                .toString());
+        this.innerModel().withDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryDuration);
         return this;
     }
 
     @Override
     public TopicImpl withDuplicateMessageDetectionHistoryDuration(Duration duration) {
-        this.innerModel().withDuplicateDetectionHistoryTimeWindow(TimeSpan
-                .fromDuration(duration)
-                .toString());
+        this.innerModel().withDuplicateDetectionHistoryTimeWindow(duration);
         // Below shortcut cannot be used as 'withRequiresDuplicateDetection' cannot be changed
         // once the topic is created.
         // return withDuplicateMessageDetection(duration);
@@ -319,7 +309,7 @@ class TopicImpl
     }
 
     @Override
-    protected Mono<TopicResourceInner> getInnerAsync() {
+    protected Mono<SBTopicInner> getInnerAsync() {
         return this.manager().serviceClient().getTopics()
                 .getAsync(this.resourceGroupName(),
                         this.parentName,
@@ -328,11 +318,11 @@ class TopicImpl
 
     @Override
     protected Mono<Topic> createChildResourceAsync() {
-        Mono<TopicResourceInner> createTask = this.manager().serviceClient().getTopics()
+        Mono<SBTopicInner> createTask = this.manager().serviceClient().getTopics()
             .createOrUpdateAsync(this.resourceGroupName(),
                     this.parentName,
                     this.name(),
-                    prepareForCreate(this.innerModel()))
+                    this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return inner;
@@ -373,24 +363,5 @@ class TopicImpl
             rulesCreateStream,
             subscriptionsDeleteStream,
             rulesDeleteStream);
-    }
-
-    private TopicCreateOrUpdateParameters prepareForCreate(TopicResourceInner inner) {
-        return new TopicCreateOrUpdateParameters()
-            .withAutoDeleteOnIdle(inner.autoDeleteOnIdle())
-            .withEntityAvailabilityStatus(inner.entityAvailabilityStatus())
-            .withDefaultMessageTimeToLive(inner.defaultMessageTimeToLive())
-            .withDuplicateDetectionHistoryTimeWindow(inner.duplicateDetectionHistoryTimeWindow())
-            .withEnableBatchedOperations(inner.enableBatchedOperations())
-            .withEnableExpress(inner.enableExpress())
-            .withEnablePartitioning(inner.enablePartitioning())
-            .withFilteringMessagesBeforePublishing(inner.filteringMessagesBeforePublishing())
-            .withIsAnonymousAccessible(inner.isAnonymousAccessible())
-            .withIsExpress(inner.isExpress())
-            .withMaxSizeInMegabytes(inner.maxSizeInMegabytes())
-            .withRequiresDuplicateDetection(inner.requiresDuplicateDetection())
-            .withStatus(inner.status())
-            .withSupportOrdering(inner.supportOrdering())
-            .withLocation(inner.location());
     }
 }

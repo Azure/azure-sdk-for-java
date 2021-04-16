@@ -20,6 +20,7 @@ const groupUrl = 'https://repo1.maven.org/maven2/com/azure/resourcemanager/';
 const artiRegEx = />(azure-resourcemanager-.+)\/</g;
 const verRegEx = /<version>(.+)<\/version>/g;
 const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/g;
+const pkgRegEx2 = /Package\s+tag\s+(.+)\.</g;
 var startCnt = 0;
 var endCnt = 0;
 var data = {};
@@ -42,6 +43,7 @@ function getArtifacts() {
     for (var i in artifacts) {
       readMetadata(artifacts[i]);
     }
+    artiRegEx.lastIndex = 0;
   });
 }
 
@@ -58,6 +60,7 @@ function readMetadata(artifact) {
     for (var i in versions) {
       readPom(artifact, versions[i]);
     }
+    verRegEx.lastIndex = 0;
   });
 }
 
@@ -65,6 +68,9 @@ function readMetadata(artifact) {
 function readPom(artifact, version) {
   sendRequest(groupUrl + artifact + '/' + version + '/' + artifact + '-' + version + '.pom', function(response) {
     var match = pkgRegEx.exec(response);
+    if (match === null) {
+      match = pkgRegEx2.exec(response);
+    }
     ++endCnt;
     if (match === null) {
       // console.log('[WARN] no package tag found in ' + artifact + '_' + version);
@@ -79,6 +85,7 @@ function readPom(artifact, version) {
       }
       data[service][tag].push(version);
     }
+    pkgRegEx.lastIndex = 0;
     if (startCnt == endCnt) {
       // update file for listing all latest releases of the packages
       var content = '# Single-Service Packages Latest Releases\n\n' +

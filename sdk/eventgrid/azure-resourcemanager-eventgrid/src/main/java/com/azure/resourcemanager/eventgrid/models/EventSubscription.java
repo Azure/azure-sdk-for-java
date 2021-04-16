@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.eventgrid.models;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import java.time.OffsetDateTime;
@@ -31,6 +33,13 @@ public interface EventSubscription {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: The system metadata relating to Event Subscription resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the topic property: Name of the topic of the event subscription.
@@ -355,4 +364,24 @@ public interface EventSubscription {
      * @return the refreshed resource.
      */
     EventSubscription refresh(Context context);
+
+    /**
+     * Get the full endpoint URL for an event subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription.
+     */
+    EventSubscriptionFullUrl getFullUrl();
+
+    /**
+     * Get the full endpoint URL for an event subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription.
+     */
+    Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
 }

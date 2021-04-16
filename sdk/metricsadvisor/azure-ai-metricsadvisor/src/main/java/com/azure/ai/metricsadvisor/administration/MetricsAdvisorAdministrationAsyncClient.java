@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor.administration;
 
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationList;
@@ -12,12 +13,6 @@ import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationList;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchFillMissingPointForAd;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchNeedRollup;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchRollUpMethod;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchStatus;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchViewMode;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailRollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
 import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
 import com.azure.ai.metricsadvisor.implementation.models.FillMissingPointType;
@@ -35,6 +30,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
@@ -202,7 +198,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
                 ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
             .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-            .setRollUpMethod(DataFeedDetailRollUpMethod.fromString(dataFeedRollupSettings
+            .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings
                 .getDataFeedAutoRollUpMethod() == null
                 ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
             .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
@@ -329,21 +325,37 @@ public class MetricsAdvisorAdministrationAsyncClient {
                     ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
                 .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
                     ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
-                .setNeedRollup(DataFeedDetailPatchNeedRollup.fromString(
-                    dataFeedRollupSettings.getRollupType().toString()))
+                .setNeedRollup(
+                    dataFeedRollupSettings.getRollupType() != null
+                    ? NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType().toString())
+                    : null)
                 .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-                .setRollUpMethod(DataFeedDetailPatchRollUpMethod.fromString(
-                    dataFeedRollupSettings.getDataFeedAutoRollUpMethod() == null
-                        ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setRollUpMethod(
+                    dataFeedRollupSettings.getDataFeedAutoRollUpMethod() != null
+                    ? RollUpMethod.fromString(
+                        dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString())
+                        : null)
                 .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-                .setFillMissingPointForAd(DataFeedDetailPatchFillMissingPointForAd.fromString(
-                    dataFeedMissingDataPointFillSettings.getFillType().toString()))
-                .setFillMissingPointForAdValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
-                .setViewMode(DataFeedDetailPatchViewMode.fromString(dataFeedOptions.getAccessMode() == null
-                    ? null : dataFeedOptions.getAccessMode().toString()))
+                .setFillMissingPointType(
+                    dataFeedMissingDataPointFillSettings.getFillType() != null
+                    ? FillMissingPointType.fromString(
+                        dataFeedMissingDataPointFillSettings.getFillType().toString())
+                        : null)
+                .setFillMissingPointValue(
+                    // For PATCH send 'fill-custom-value' over wire only for 'fill-custom-type'.
+                    dataFeedMissingDataPointFillSettings.getFillType() == DataFeedMissingDataPointFillType.CUSTOM_VALUE
+                    ? dataFeedMissingDataPointFillSettings.getCustomFillValue()
+                        : null)
+                .setViewMode(
+                    dataFeedOptions.getAccessMode() != null
+                    ? ViewMode.fromString(dataFeedOptions.getAccessMode().toString())
+                        : null)
                 .setViewers(dataFeedOptions.getViewerEmails())
                 .setAdmins(dataFeedOptions.getAdminEmails())
-                .setStatus(DataFeedDetailPatchStatus.fromString(dataFeed.getStatus().toString()))
+                .setStatus(
+                    dataFeed.getStatus() != null
+                        ? EntityStatus.fromString(dataFeed.getStatus().toString())
+                        : null)
                 .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), withTracing)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));
     }

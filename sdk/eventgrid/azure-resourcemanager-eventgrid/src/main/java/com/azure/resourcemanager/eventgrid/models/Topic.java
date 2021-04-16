@@ -4,9 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,13 @@ public interface Topic {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: The system metadata relating to Topic resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the privateEndpointConnections property: The privateEndpointConnections property.
@@ -177,7 +185,6 @@ public interface Topic {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithPrivateEndpointConnections,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
@@ -206,16 +213,6 @@ public interface Topic {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the Topic definition allowing to specify privateEndpointConnections. */
-        interface WithPrivateEndpointConnections {
-            /**
-             * Specifies the privateEndpointConnections property: The privateEndpointConnections property..
-             *
-             * @param privateEndpointConnections The privateEndpointConnections property.
-             * @return the next definition stage.
-             */
-            WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
         }
         /** The stage of the Topic definition allowing to specify inputSchema. */
         interface WithInputSchema {
@@ -353,4 +350,47 @@ public interface Topic {
      * @return the refreshed resource.
      */
     Topic refresh(Context context);
+
+    /**
+     * List the two keys used to publish to a topic.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys listSharedAccessKeys();
+
+    /**
+     * List the two keys used to publish to a topic.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 }

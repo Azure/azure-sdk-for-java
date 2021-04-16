@@ -3,29 +3,35 @@
 
 package com.azure.communication.chat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import com.azure.communication.administration.CommunicationIdentityClientBuilder;
-import com.azure.communication.chat.models.ErrorException;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.nimbusds.jwt.PlainJWT;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Abstract base class for all Chat tests
@@ -35,10 +41,22 @@ public class ChatClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("CHAT_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
+        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
 
     protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICES_ACCESS_KEY", "pw==");
+        .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
+
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
+        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+        .add("token");
+
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        Pattern.CASE_INSENSITIVE);
+
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
@@ -55,7 +73,32 @@ public class ChatClientTestBase extends TestBase {
         }
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+
+        return builder;
+    }
+
+    protected ChatThreadClientBuilder getChatThreadClientBuilder(String token, HttpClient httpClient) {
+        ChatThreadClientBuilder builder = new ChatThreadClientBuilder();
+
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new CommunicationTokenCredential(generateRawToken()));
+            return builder;
+        } else {
+            builder.credential(new CommunicationTokenCredential(token));
+        }
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
@@ -64,20 +107,22 @@ public class ChatClientTestBase extends TestBase {
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(ACCESS_KEY)
+            .credential(new AzureKeyCredential(ACCESS_KEY))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
         return builder;
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, ErrorException.class, expectedStatusCode);
+        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends ErrorException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -93,11 +138,11 @@ public class ChatClientTestBase extends TestBase {
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, ErrorException.class, expectedStatusCode);
+        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends ErrorException> expectedExceptionType, int expectedStatusCode) {
-        assertEquals(expectedExceptionType, exception.getClass());
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        assertTrue(expectedExceptionType.isAssignableFrom(exception.getClass()));
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 
@@ -129,9 +174,9 @@ public class ChatClientTestBase extends TestBase {
         return idToken.serialize();
     }
 
-    protected boolean checkMembersListContainsMemberId(List<ChatThreadMember> memberList, String memberId) {
-        for (ChatThreadMember member: memberList) {
-            if (member.getUser().getId().equals(memberId)) {
+    protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
+        for (ChatParticipant participant: participantList) {
+            if (((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId().equals(participantId)) {
                 return true;
             }
         }
@@ -139,8 +184,8 @@ public class ChatClientTestBase extends TestBase {
         return false;
     }
 
-    protected boolean checkReadReceiptListContainsMessageId(List<ReadReceipt> receiptList, String messageId) {
-        for (ReadReceipt receipt: receiptList) {
+    protected boolean checkReadReceiptListContainsMessageId(List<ChatMessageReadReceipt> receiptList, String messageId) {
+        for (ChatMessageReadReceipt receipt: receiptList) {
             if (receipt.getChatMessageId().equals(messageId)) {
                 return true;
             }
@@ -164,5 +209,24 @@ public class ChatClientTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
+    }
+
+    protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+
+    protected boolean shouldEnableChatTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|chat)");
+    }
+
+    private String redact(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), replacement);
+            }
+        }
+
+        return content;
     }
 }

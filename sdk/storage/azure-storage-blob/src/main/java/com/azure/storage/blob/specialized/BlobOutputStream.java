@@ -234,7 +234,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     }
                     return Mono.empty();
                 })
-                .doOnTerminate(() -> {
+                // Use doFinally to cover all termination scenarios of the Flux.
+                .doFinally(signalType -> {
                     lock.lock();
                     try {
                         complete = true;
@@ -269,7 +270,14 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         @Override
         protected void writeInternal(final byte[] data, int offset, int length) {
             this.checkStreamState();
-            sink.next(ByteBuffer.wrap(data, offset, length));
+            /*
+            We need to do a deep copy here because the writing is async in this case. It is a common pattern for
+            customers writing to an output stream to perform the writes in a tight loop with a reused buffer. This
+            coupled with async network behavior can result in the data being overwritten as the buffer is reused.
+             */
+            byte[] buffer = new byte[length];
+            System.arraycopy(data, offset, buffer, 0, length);
+            sink.next(ByteBuffer.wrap(buffer));
         }
 
         // Never called

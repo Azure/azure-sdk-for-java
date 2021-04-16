@@ -10,13 +10,9 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import javax.net.ssl.SSLPeerUnverifiedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
 
 public class HostnameSslTests extends AppServiceTest {
     private String webappName = "";
@@ -76,23 +72,23 @@ public class HostnameSslTests extends AppServiceTest {
             .withSniBasedSsl()
             .attach()
             .apply();
-        if (!isPlaybackMode()) {
-            Response<String> response = null;
-            int retryCount = 3;
-            while (response == null && retryCount > 0) {
-                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
-                try {
-                    response = curl("https://" + webappName + "." + domainName);
-                } catch (SSLPeerUnverifiedException e) {
-                    retryCount--;
-                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-                }
-            }
-            if (retryCount == 0) {
-                Assertions.fail();
-            }
-            Assertions.assertEquals(200, response.getStatusCode());
-            Assertions.assertNotNull(response.getValue());
-        }
+//        if (!isPlaybackMode()) {
+//            Response<String> response = null;
+//            int retryCount = 3;
+//            while (response == null && retryCount > 0) {
+//                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
+//                try {
+//                    response = curl("https://" + webappName + "." + domainName);
+//                } catch (SSLPeerUnverifiedException e) {
+//                    retryCount--;
+//                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+//                }
+//            }
+//            if (retryCount == 0) {
+//                Assertions.fail();
+//            }
+//            Assertions.assertEquals(200, response.getStatusCode());
+//            Assertions.assertNotNull(response.getValue());
+//        }
     }
 }

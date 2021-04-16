@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingEndpointsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpoint;
@@ -22,22 +21,24 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
 
     private final StreamingEndpointsClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public StreamingEndpointsImpl(StreamingEndpointsClient innerClient, MediaservicesManager serviceManager) {
+    public StreamingEndpointsImpl(
+        StreamingEndpointsClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<StreamingEndpoint> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingEndpointInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingEndpoint> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<StreamingEndpointInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, context);
-        return inner.mapPage(inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
     }
 
     public StreamingEndpoint get(String resourceGroupName, String accountName, String streamingEndpointName) {
@@ -221,7 +222,7 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

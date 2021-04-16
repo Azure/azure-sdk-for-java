@@ -17,18 +17,36 @@ public final class SearchServiceListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SearchServiceListResult.class);
 
     /*
-     * The list of Search services.
+     * The list of search services.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchServiceInner> value;
 
+    /*
+     * Request URL that can be used to query next page of search services.
+     * Returned when the total number of requested search services exceed
+     * maximum page size.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
     /**
-     * Get the value property: The list of Search services.
+     * Get the value property: The list of search services.
      *
      * @return the value value.
      */
     public List<SearchServiceInner> value() {
         return this.value;
+    }
+
+    /**
+     * Get the nextLink property: Request URL that can be used to query next page of search services. Returned when the
+     * total number of requested search services exceed maximum page size.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**

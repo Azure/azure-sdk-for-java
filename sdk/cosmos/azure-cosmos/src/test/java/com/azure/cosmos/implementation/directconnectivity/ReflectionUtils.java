@@ -4,21 +4,32 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
+import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
@@ -26,7 +37,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  *
@@ -63,7 +76,7 @@ public class ReflectionUtils {
 
     @SuppressWarnings("unchecked")
     // Note: @moderakh @kushagraThapar - klass is not used but still casting to T
-    private static <T> T get(Class<T> klass, Object object, String fieldName) {
+    public static <T> T get(Class<T> klass, Object object, String fieldName) {
         try {
             return (T) FieldUtils.readField(object, fieldName, true);
         } catch (IllegalAccessException e) {
@@ -191,4 +204,90 @@ public class ReflectionUtils {
         set(client, storeModel, "storeModel");
     }
 
+    public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
+        return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
+    }
+
+    public static ConsistencyReader getConsistencyReader(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyReader.class, replicatedResourceClient, "consistencyReader");
+    }
+
+    public static ConsistencyWriter getConsistencyWriter(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
+    }
+
+    public static void setRetryCount(RetryContext retryContext, int retryCount) {
+        set(retryContext, retryCount, "retryCount");
+    }
+
+    public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
+        return get(StoreReader.class, consistencyReader, "storeReader");
+    }
+
+    public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
+        set(storeReader, transportClient, "transportClient");
+    }
+
+    public static TransportClient getTransportClient(ReplicatedResourceClient replicatedResourceClient) {
+        return get(TransportClient.class, replicatedResourceClient, "transportClient");
+    }
+
+    public static TransportClient getTransportClient(ConsistencyWriter consistencyWriter) {
+        return get(TransportClient.class, consistencyWriter, "transportClient");
+    }
+
+    public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
+        set(consistencyWriter, transportClient, "transportClient");
+    }
+
+    public static RntbdEndpoint.Provider getRntbdEndpointProvider(RntbdTransportClient rntbdTransportClient) {
+        return get(RntbdEndpoint.Provider.class, rntbdTransportClient, "endpointProvider");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ThroughputRequestThrottler getRequestThrottler(GlobalThroughputRequestController requestController) {
+        return get(ThroughputRequestThrottler.class, requestController, "requestThrottler");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void setRequestThrottler(
+        GlobalThroughputRequestController requestController,
+        ThroughputRequestThrottler throughputRequestThrottler) {
+
+        set(requestController, throughputRequestThrottler, "requestThrottler");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ConcurrentHashMap<String, ThroughputRequestThrottler> getRequestThrottler(
+        PkRangesThroughputRequestController requestController) {
+
+        return get(ConcurrentHashMap.class, requestController, "requestThrottlerMap");
+    }
+
+    public static RxClientCollectionCache getClientCollectionCache(RxDocumentClientImpl rxDocumentClient) {
+        return get(RxClientCollectionCache.class, rxDocumentClient, "collectionCache");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static AsyncCache<String, DocumentCollection> getCollectionInfoByNameCache(RxCollectionCache CollectionCache) {
+        return get(AsyncCache.class, CollectionCache, "collectionInfoByNameCache");
+    }
+
+    public static RxPartitionKeyRangeCache getPartitionKeyRangeCache(RxDocumentClientImpl rxDocumentClient) {
+        return get(RxPartitionKeyRangeCache.class, rxDocumentClient, "partitionKeyRangeCache");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static AsyncCache<String, CollectionRoutingMap> getRoutingMapAsyncCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        return get(AsyncCache.class, partitionKeyRangeCache, "routingMapCache");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
+        return get(ConcurrentHashMap.class, asyncCache, "values");
+    }
+
+    public static AtomicBoolean isInitialized(CosmosAsyncContainer cosmosAsyncContainer) {
+        return get(AtomicBoolean.class, cosmosAsyncContainer, "isInitialized");
+    }
 }

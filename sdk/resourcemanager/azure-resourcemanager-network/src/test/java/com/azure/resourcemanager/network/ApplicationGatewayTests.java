@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.keyvault.models.Secret;
@@ -21,6 +22,11 @@ import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
 import com.azure.core.management.Region;
+import com.azure.security.keyvault.certificates.CertificateClient;
+import com.azure.security.keyvault.certificates.CertificateClientBuilder;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -40,6 +46,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     public void canCRUDApplicationGatewayWithWAF() throws Exception {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
         String appPublicIp = generateRandomResourceName("pip", 15);
+
         PublicIpAddress pip =
             networkManager
                 .publicIpAddresses()
@@ -59,10 +66,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
                 .fromPublicFrontend()
-                .fromFrontendHttpsPort(443)
-                .withSslCertificateFromPfxFile(
-                    new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
-                .withSslCertificatePassword("Abc123")
+                .fromFrontendHttpPort(80)
                 .toBackendHttpPort(8080)
                 .toBackendIPAddress("11.1.1.1")
                 .toBackendIPAddress("11.1.1.2")
@@ -197,6 +201,105 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             appGateway.update().defineSslCertificate("ssl2").withKeyVaultSecretId(secret2.id()).attach().apply();
 
         Assertions.assertEquals(secret2.id(), appGateway.sslCertificates().get("ssl2").keyVaultSecretId());
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void canCreateApplicationGatewayWithSslCertificate() throws Exception {
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        String identityName = generateRandomResourceName("id", 10);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        Identity identity =
+            msiManager
+                .identities()
+                .define(identityName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+
+        Assertions.assertNotNull(identity.name());
+        Assertions.assertNotNull(identity.principalId());
+
+        ManagedServiceIdentity serviceIdentity = createManagedServiceIdentityFromIdentity(identity);
+
+        String secretId = createKeyVaultCertificate(clientIdFromFile(), identity.principalId());
+
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                // Request routing rules
+                .defineRequestRoutingRule("rule1")
+                    .fromPublicFrontend()
+                    .fromFrontendHttpsPort(443)
+                    .withSslCertificate("ssl1")
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("11.1.1.1")
+                    .toBackendIPAddress("11.1.1.2")
+                    .attach()
+                .withIdentity(serviceIdentity)
+                .defineSslCertificate("ssl1")
+                    .withKeyVaultSecretId(secretId)
+                    .attach()
+                .withExistingPublicIpAddress(pip)
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withAutoScale(2, 5)
+                .withWebApplicationFirewall(true, ApplicationGatewayFirewallMode.PREVENTION)
+                .create();
+
+        Assertions.assertEquals(secretId, appGateway.sslCertificates().get("ssl1").keyVaultSecretId());
+        Assertions.assertEquals(secretId, appGateway.requestRoutingRules().get("rule1").sslCertificate().keyVaultSecretId());
+    }
+
+    private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {
+        String vaultName = generateRandomResourceName("vlt", 10);
+        String secretName = generateRandomResourceName("srt", 10);
+
+        Vault vault =
+            keyVaultManager
+                .vaults()
+                .define(vaultName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .defineAccessPolicy()
+                    .forServicePrincipal(servicePrincipal)
+                    .allowSecretAllPermissions()
+                    .allowCertificateAllPermissions()
+                    .attach()
+                .defineAccessPolicy()
+                    .forObjectId(identityPrincipal)
+                    .allowSecretAllPermissions()
+                    .attach()
+                .withAccessFromAzureServices()
+                .withDeploymentEnabled()
+                // Important!! Only soft delete enabled key vault can be assigned to application gateway
+                // See also: https://github.com/MicrosoftDocs/azure-docs/issues/34382
+                .withSoftDeleteEnabled()
+                .create();
+
+        // create certificate
+        CertificateClient certificateClient = new CertificateClientBuilder()
+            .vaultUrl(vault.vaultUri())
+            .pipeline(vault.vaultHttpPipeline())
+            .buildClient();
+        KeyVaultCertificateWithPolicy certificate = certificateClient.beginCreateCertificate(secretName, CertificatePolicy.getDefault()).getFinalResult();
+
+        // take secret ID of the certificate
+        return certificate.getSecretId();
     }
 
     private Secret createKeyVaultSecret(String servicePrincipal, String identityPrincipal) throws Exception {

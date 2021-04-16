@@ -44,7 +44,7 @@ import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
 public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
-    private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final static String USER_AGENT = Utils.getUserAgent();
     private final int statusCode;
     private final Map<String, String> responseHeaders;
@@ -309,7 +309,7 @@ public class CosmosException extends AzureException {
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
-        return Double.valueOf(value);
+        return Double.parseDouble(value);
     }
 
     @Override

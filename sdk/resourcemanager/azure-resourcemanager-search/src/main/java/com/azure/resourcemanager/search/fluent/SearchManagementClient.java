@@ -72,4 +72,25 @@ public interface SearchManagementClient {
      * @return the ServicesClient object.
      */
     ServicesClient getServices();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the SharedPrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the SharedPrivateLinkResourcesClient object.
+     */
+    SharedPrivateLinkResourcesClient getSharedPrivateLinkResources();
 }

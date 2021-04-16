@@ -1,12 +1,8 @@
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
-import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -120,6 +116,27 @@ class BlobOutputStreamTest extends APISpec {
         new BlobStorageException(null, null, null) || BlobStorageException
         new IllegalArgumentException()             || IllegalArgumentException
         new IOException()                          || IOException
+    }
+
+    @Requires({ liveMode() })
+    def "BlockBlob output stream buffer reuse"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.KB)
+        def inputStream = new ByteArrayInputStream(data)
+        def buffer = new byte[1024]
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def outputStream = blockBlobClient.getBlobOutputStream()
+        for (int i=0; i<10; i++) {
+            inputStream.read(buffer)
+            outputStream.write(buffer)
+        }
+        outputStream.close()
+
+        then:
+        blockBlobClient.getProperties().getBlobSize() == data.length
+        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
     @Requires({ liveMode() })

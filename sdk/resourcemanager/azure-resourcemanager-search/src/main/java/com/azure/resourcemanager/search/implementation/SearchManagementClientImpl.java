@@ -12,9 +12,12 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.search.fluent.AdminKeysClient;
 import com.azure.resourcemanager.search.fluent.OperationsClient;
+import com.azure.resourcemanager.search.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.search.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.search.fluent.QueryKeysClient;
 import com.azure.resourcemanager.search.fluent.SearchManagementClient;
 import com.azure.resourcemanager.search.fluent.ServicesClient;
+import com.azure.resourcemanager.search.fluent.SharedPrivateLinkResourcesClient;
 import java.time.Duration;
 
 /** Initializes a new instance of the SearchManagementClientImpl type. */
@@ -146,6 +149,42 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
         return this.services;
     }
 
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The SharedPrivateLinkResourcesClient object to access its operations. */
+    private final SharedPrivateLinkResourcesClient sharedPrivateLinkResources;
+
+    /**
+     * Gets the SharedPrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the SharedPrivateLinkResourcesClient object.
+     */
+    public SharedPrivateLinkResourcesClient getSharedPrivateLinkResources() {
+        return this.sharedPrivateLinkResources;
+    }
+
     /**
      * Initializes an instance of SearchManagementClient client.
      *
@@ -170,10 +209,13 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2015-08-19";
+        this.apiVersion = "2020-08-01";
         this.operations = new OperationsClientImpl(this);
         this.adminKeys = new AdminKeysClientImpl(this);
         this.queryKeys = new QueryKeysClientImpl(this);
         this.services = new ServicesClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.sharedPrivateLinkResources = new SharedPrivateLinkResourcesClientImpl(this);
     }
 }

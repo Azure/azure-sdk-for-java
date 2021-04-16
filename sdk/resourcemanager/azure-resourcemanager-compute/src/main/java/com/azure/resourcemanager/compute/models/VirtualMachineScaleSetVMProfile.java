@@ -35,6 +35,13 @@ public final class VirtualMachineScaleSetVMProfile {
     private VirtualMachineScaleSetNetworkProfile networkProfile;
 
     /*
+     * Specifies the Security related profile settings for the virtual machines
+     * in the scale set.
+     */
+    @JsonProperty(value = "securityProfile")
+    private SecurityProfile securityProfile;
+
+    /*
      * Specifies the boot diagnostic settings state. <br><br>Minimum
      * api-version: 2015-06-15.
      */
@@ -50,13 +57,14 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /*
      * Specifies that the image or disk that is being used was licensed
-     * on-premises. This element is only used for images that contain the
-     * Windows Server operating system. <br><br> Possible values are: <br><br>
-     * Windows_Client <br><br> Windows_Server <br><br> If this element is
-     * included in a request for an update, the value must match the initial
-     * value. This value cannot be updated. <br><br> For more information, see
-     * [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * on-premises. <br><br> Possible values for Windows Server operating
+     * system are: <br><br> Windows_Client <br><br> Windows_Server <br><br>
+     * Possible values for Linux Server operating system are: <br><br>
+     * RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * <br><br> [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
      * <br><br> Minimum api-version: 2015-06-15
      */
     @JsonProperty(value = "licenseType")
@@ -156,6 +164,28 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
+     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
+     * scale set.
+     *
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
+     * scale set.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
      * api-version: 2015-06-15.
      *
@@ -201,13 +231,15 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises. This
-     * element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible
-     * values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this
-     * element is included in a request for an update, the value must match the initial value. This value cannot be
-     * updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
+     * Minimum api-version: 2015-06-15.
      *
      * @return the licenseType value.
      */
@@ -216,13 +248,15 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises. This
-     * element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible
-     * values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this
-     * element is included in a request for an update, the value must match the initial value. This value cannot be
-     * updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
+     * Minimum api-version: 2015-06-15.
      *
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -336,6 +370,9 @@ public final class VirtualMachineScaleSetVMProfile {
         }
         if (networkProfile() != null) {
             networkProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
         if (diagnosticsProfile() != null) {
             diagnosticsProfile().validate();

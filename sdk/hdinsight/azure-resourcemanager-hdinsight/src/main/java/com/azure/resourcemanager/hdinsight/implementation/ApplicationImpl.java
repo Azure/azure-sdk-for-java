@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.hdinsight.models.Application;
 import com.azure.resourcemanager.hdinsight.models.ApplicationProperties;
@@ -15,9 +14,9 @@ import java.util.Map;
 public final class ApplicationImpl implements Application, Application.Definition {
     private ApplicationInner innerObject;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    ApplicationImpl(ApplicationInner innerObject, HDInsightManager serviceManager) {
+    ApplicationImpl(ApplicationInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -55,7 +54,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this.innerObject;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 
@@ -89,7 +88,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this;
     }
 
-    ApplicationImpl(String name, HDInsightManager serviceManager) {
+    ApplicationImpl(String name, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = new ApplicationInner();
         this.serviceManager = serviceManager;
         this.applicationName = name;

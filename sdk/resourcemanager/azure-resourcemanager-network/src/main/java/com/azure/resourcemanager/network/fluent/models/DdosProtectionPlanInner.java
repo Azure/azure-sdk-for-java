@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A DDoS protection plan in a resource group. */
 @JsonFlatten
@@ -84,6 +85,20 @@ public class DdosProtectionPlanInner extends Resource {
      */
     public List<SubResource> virtualNetworks() {
         return this.virtualNetworks;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DdosProtectionPlanInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DdosProtectionPlanInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

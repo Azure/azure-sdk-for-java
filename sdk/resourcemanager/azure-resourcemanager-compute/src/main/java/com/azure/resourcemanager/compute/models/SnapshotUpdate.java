@@ -25,7 +25,9 @@ public class SnapshotUpdate {
 
     /*
      * The snapshots sku name. Can be Standard_LRS, Premium_LRS, or
-     * Standard_ZRS.
+     * Standard_ZRS. This is an optional parameter for incremental snapshot and
+     * the default behavior is the SKU will be set to the same sku as the
+     * previous snapshot
      */
     @JsonProperty(value = "sku")
     private SnapshotSku sku;
@@ -60,6 +62,24 @@ public class SnapshotUpdate {
     @JsonProperty(value = "properties.encryption")
     private Encryption encryption;
 
+    /*
+     * Policy for accessing the disk via network.
+     */
+    @JsonProperty(value = "properties.networkAccessPolicy")
+    private NetworkAccessPolicy networkAccessPolicy;
+
+    /*
+     * ARM id of the DiskAccess resource for using private endpoints on disks.
+     */
+    @JsonProperty(value = "properties.diskAccessId")
+    private String diskAccessId;
+
+    /*
+     * Indicates the OS on a snapshot supports hibernation.
+     */
+    @JsonProperty(value = "properties.supportsHibernation")
+    private Boolean supportsHibernation;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -81,7 +101,9 @@ public class SnapshotUpdate {
     }
 
     /**
-     * Get the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS.
+     * Get the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
+     * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
+     * the previous snapshot.
      *
      * @return the sku value.
      */
@@ -90,7 +112,9 @@ public class SnapshotUpdate {
     }
 
     /**
-     * Set the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS.
+     * Set the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
+     * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
+     * the previous snapshot.
      *
      * @param sku the sku value to set.
      * @return the SnapshotUpdate object itself.
@@ -187,6 +211,66 @@ public class SnapshotUpdate {
      */
     public SnapshotUpdate withEncryption(Encryption encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @return the networkAccessPolicy value.
+     */
+    public NetworkAccessPolicy networkAccessPolicy() {
+        return this.networkAccessPolicy;
+    }
+
+    /**
+     * Set the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @param networkAccessPolicy the networkAccessPolicy value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
+        this.networkAccessPolicy = networkAccessPolicy;
+        return this;
+    }
+
+    /**
+     * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @return the diskAccessId value.
+     */
+    public String diskAccessId() {
+        return this.diskAccessId;
+    }
+
+    /**
+     * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @param diskAccessId the diskAccessId value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withDiskAccessId(String diskAccessId) {
+        this.diskAccessId = diskAccessId;
+        return this;
+    }
+
+    /**
+     * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
+     *
+     * @return the supportsHibernation value.
+     */
+    public Boolean supportsHibernation() {
+        return this.supportsHibernation;
+    }
+
+    /**
+     * Set the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
+     *
+     * @param supportsHibernation the supportsHibernation value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withSupportsHibernation(Boolean supportsHibernation) {
+        this.supportsHibernation = supportsHibernation;
         return this;
     }
 

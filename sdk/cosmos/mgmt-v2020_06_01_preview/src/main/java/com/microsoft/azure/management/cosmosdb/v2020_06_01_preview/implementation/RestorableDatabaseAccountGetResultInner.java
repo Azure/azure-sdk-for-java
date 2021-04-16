@@ -9,6 +9,9 @@
 package com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.implementation;
 
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ApiType;
+import java.util.List;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestorableLocationResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ARMResourceProperties;
@@ -36,6 +39,19 @@ public class RestorableDatabaseAccountGetResultInner extends ARMResourceProperti
      */
     @JsonProperty(value = "properties.deletionTime")
     private DateTime deletionTime;
+
+    /**
+     * The API type of the restorable database account. Possible values
+     * include: 'MongoDB', 'Gremlin', 'Cassandra', 'Table', 'Sql', 'GremlinV2'.
+     */
+    @JsonProperty(value = "properties.apiType", access = JsonProperty.Access.WRITE_ONLY)
+    private ApiType apiType;
+
+    /**
+     * List of regions where the of the database account can be restored from.
+     */
+    @JsonProperty(value = "properties.restorableLocations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<RestorableLocationResource> restorableLocations;
 
     /**
      * Get the name of the global database account.
@@ -95,6 +111,24 @@ public class RestorableDatabaseAccountGetResultInner extends ARMResourceProperti
     public RestorableDatabaseAccountGetResultInner withDeletionTime(DateTime deletionTime) {
         this.deletionTime = deletionTime;
         return this;
+    }
+
+    /**
+     * Get the API type of the restorable database account. Possible values include: 'MongoDB', 'Gremlin', 'Cassandra', 'Table', 'Sql', 'GremlinV2'.
+     *
+     * @return the apiType value
+     */
+    public ApiType apiType() {
+        return this.apiType;
+    }
+
+    /**
+     * Get list of regions where the of the database account can be restored from.
+     *
+     * @return the restorableLocations value
+     */
+    public List<RestorableLocationResource> restorableLocations() {
+        return this.restorableLocations;
     }
 
 }

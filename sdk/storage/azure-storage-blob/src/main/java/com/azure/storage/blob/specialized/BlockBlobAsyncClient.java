@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -12,9 +14,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobPutBlobFromUrlHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -54,7 +56,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  *
  * <p>
  * Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
+ * <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  *
  * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core project
@@ -138,6 +140,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * data emitted by the {@code Flux}.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
         try {
             return upload(data, length, false);
@@ -167,6 +170,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length, boolean overwrite) {
         try {
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
@@ -212,6 +216,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
         return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
@@ -238,6 +243,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlockBlobSimpleUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options) {
         try {
             return withContext(context -> uploadWithResponse(options, context));
@@ -256,18 +262,18 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, options.getLength(), null, options.getContentMd5(), options.getMetadata(),
+        return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
+            options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
-                BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
-                    hd.getVersionId());
+                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                    hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -287,6 +293,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param sourceUrl The source URL to upload from.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl) {
         try {
             return uploadFromUrl(sourceUrl, false);
@@ -311,6 +318,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl, boolean overwrite) {
         try {
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
@@ -342,6 +350,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlobUploadFromUrlOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options) {
         try {
             return withContext(context -> uploadFromUrlWithResponse(options, context));
@@ -368,9 +377,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
-        return this.azureBlobStorage.blockBlobs().putBlobFromUrlWithRestResponseAsync(
-            null, null, 0,
-            url, null, null, null,
+        return this.azureBlobStorage.getBlockBlobs().putBlobFromUrlWithResponseAsync(
+            containerName, blobName, 0, url, null, null, null,
             destinationRequestConditions.getLeaseId(), options.getTier(),
             destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
             destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
@@ -382,10 +390,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             options.isCopySourceBlobProperties(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
-                BlockBlobPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
-                    hd.getVersionId());
+                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                    hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -410,6 +418,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlock(String base64BlockId, Flux<ByteBuffer> data, long length) {
         try {
             return stageBlockWithResponse(base64BlockId, data, length, null, null).flatMap(FluxUtil::toMono);
@@ -444,6 +453,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
         try {
@@ -457,7 +467,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
             base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
             encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -465,7 +475,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -482,6 +492,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlockFromUrl(String base64BlockId, String sourceUrl, BlobRange sourceRange) {
         try {
             return this.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange, null, null, null)
@@ -515,6 +526,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param sourceRequestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
@@ -539,7 +551,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null, base64BlockId, 0,
+        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName, base64BlockId, 0,
             url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
@@ -561,6 +573,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockList> listBlocks(BlockListType listType) {
         try {
             return this.listBlocksWithResponse(listType, null).map(Response::getValue);
@@ -583,6 +596,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return A reactive response containing the list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId) {
         try {
             return this.listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId));
@@ -604,6 +618,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlockBlobListBlocksOptions}
      * @return A reactive response containing the list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options) {
         try {
             return withContext(context -> listBlocksWithResponse(options, context));
@@ -615,8 +630,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
 
-        return this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, options.getType(), getSnapshotId(), null, options.getLeaseId(),
+        return this.azureBlobStorage.getBlockBlobs().getBlockListWithResponseAsync(
+            containerName, blobName, options.getType(), getSnapshotId(), null, options.getLeaseId(),
             options.getIfTagsMatch(), null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -636,6 +651,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds) {
         try {
             return commitBlockList(base64BlockIds, false);
@@ -660,6 +676,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds, boolean overwrite) {
         try {
             BlobRequestConditions requestConditions = null;
@@ -695,6 +712,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions) {
@@ -719,6 +737,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlockBlobCommitBlockListOptions}
      * @return A reactive response containing the information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options) {
         try {
             return withContext(context -> commitBlockListWithResponse(options, context));
@@ -734,7 +753,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.getBlockBlobs().commitBlockListWithResponseAsync(containerName, blobName,
             new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
@@ -742,10 +761,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
-                BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
-                    hd.getVersionId());
+                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                    hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
             });
     }

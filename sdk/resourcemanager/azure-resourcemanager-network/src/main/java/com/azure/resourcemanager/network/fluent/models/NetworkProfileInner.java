@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Network profile resource. */
 @JsonFlatten
@@ -133,6 +134,20 @@ public class NetworkProfileInner extends Resource {
      */
     public NetworkProfileInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkProfileInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkProfileInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

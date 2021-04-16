@@ -10,12 +10,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The MediaJobOutputAsset model. */
+/** The event data for a Job output asset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.JobOutputAsset")
 @JsonFlatten
 @Fluent
-public class MediaJobOutputAsset extends MediaJobOutput {
+public final class MediaJobOutputAsset extends MediaJobOutput {
     /*
      * Gets the Job output asset name.
      */
@@ -39,6 +39,34 @@ public class MediaJobOutputAsset extends MediaJobOutput {
      */
     public MediaJobOutputAsset setAssetName(String assetName) {
         this.assetName = assetName;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobOutputAsset setError(MediaJobError error) {
+        super.setError(error);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobOutputAsset setLabel(String label) {
+        super.setLabel(label);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobOutputAsset setProgress(long progress) {
+        super.setProgress(progress);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobOutputAsset setState(MediaJobState state) {
+        super.setState(state);
         return this;
     }
 }

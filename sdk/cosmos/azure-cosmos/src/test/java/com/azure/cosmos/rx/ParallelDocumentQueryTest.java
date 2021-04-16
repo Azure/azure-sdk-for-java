@@ -50,7 +50,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.models.ModelBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.models.ModelBridgeInternal.setPartitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.testng.Assert.fail;
@@ -228,7 +228,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .map(Resource::getId).collectList().single().block()) {
             String query = "SELECT * from root";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-            partitionKeyRangeIdInternal(options, partitionKeyRangeId);
+            setPartitionKeyRangeIdInternal(options, partitionKeyRangeId);
             int queryResultCount = createdCollection.queryItems(query, options, InternalObjectNode.class)
                 .byPage()
                 .flatMap(p -> Flux.fromIterable(p.getResults()))
@@ -248,8 +248,8 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new Range<String>("A", "D", false, true));
             String serialized = compositeContinuationToken.toString();
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
-            boolean succeeed = CompositeContinuationToken.tryParse(serialized, outCompositeContinuationToken);
-            assertThat(succeeed).isTrue();
+            boolean succeeded = CompositeContinuationToken.tryParse(serialized, outCompositeContinuationToken);
+            assertThat(succeeded).isTrue();
             CompositeContinuationToken deserialized = outCompositeContinuationToken.v;
             String token = deserialized.getToken();
             Range<String> range = deserialized.getRange();
@@ -263,15 +263,23 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         {
             // Negative
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
-            boolean succeeed = CompositeContinuationToken.tryParse("{\"property\" : \"not a valid composite continuation token\"}", outCompositeContinuationToken);
-            assertThat(succeeed).isFalse();
+            boolean succeeded = CompositeContinuationToken.tryParse("{\"property\" : \"not a valid composite continuation token\"}", outCompositeContinuationToken);
+            assertThat(succeeded).isFalse();
         }
 
         {
             // Negative - GATEWAY composite continuation token
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
-            boolean succeeed = CompositeContinuationToken.tryParse("{\"token\":\"-RID:tZFQAImzNLQLAAAAAAAAAA==#RT:1#TRC:10\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}", outCompositeContinuationToken);
-            assertThat(succeeed).isFalse();
+            boolean succeeded = CompositeContinuationToken.tryParse("{\"token\":\"-RID:tZFQAImzNLQLAAAAAAAAAA==#RT:1#TRC:10\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}", outCompositeContinuationToken);
+            assertThat(succeeded).isTrue();
+            CompositeContinuationToken deserialized = outCompositeContinuationToken.v;
+            String token = deserialized.getToken();
+            Range<String> range = deserialized.getRange();
+            assertThat(token).isEqualTo("-RID:tZFQAImzNLQLAAAAAAAAAA==#RT:1#TRC:10");
+            assertThat(range.getMin()).isEqualTo("");
+            assertThat(range.getMax()).isEqualTo("FF");
+            assertThat(range.isMinInclusive()).isEqualTo(true);
+            assertThat(range.isMaxInclusive()).isEqualTo(false);
         }
     }
 

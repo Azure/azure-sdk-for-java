@@ -1,14 +1,30 @@
 # Release History
+## 1.0.1 (Unreleased)
 
-## 1.0.0-beta.4 (Unreleased)
 
+## 1.0.0 (2021-03-29)
+Updated `azure-communication-sms` version
+
+## 1.0.0-beta.4 (2021-03-09)
+### Added
+- Added Azure Active Directory authentication support
+- Support for creating SmsClient with TokenCredential.
+- Added support for 1:N SMS messaging.
+- Added support for tagging SMS messages.
+- Send method series in SmsClient are idempotent under retry policy.
+- Added `SmsOptions`
+
+### Breaking Change
+- Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> send(String from, String to, String message)`.
+- Updated `public Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumberIdentifier from,List<PhoneNumberIdentifier> to, String message, SendSmsOptions smsOptions, Context context)` to `Mono<Response<SmsSendResult>> sendWithResponse(String from, String to, String message, SmsSendOptions options, Context context)`.
+- Replaced `SendSmsResponse` with `SmsSendResult`.
 
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added
 - Support directly passing connection string to the SmsClientBuilder using connectionString().
 
 ### Breaking Change
-- Removed credential(CommunicationClientCredential credential) and replaced with 
+- Removed credential(CommunicationClientCredential credential) and replaced with
 accessKey(String accessKey) within CommunicationIdentityClientBuilder.
 
 ## 1.0.0-beta.2 (2020-10-06)

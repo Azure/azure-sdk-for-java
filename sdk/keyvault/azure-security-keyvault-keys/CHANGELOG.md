@@ -1,7 +1,82 @@
 # Release History
 
-## 4.3.0-beta.4 (Unreleased)
+## 4.3.0-beta.7 (Unreleased)
 
+
+## 4.3.0-beta.6 (2021-04-09)
+
+### Breaking Changes
+- Renamed `EncryptOptions` to `EncryptParameters`.
+- Renamed `DecryptOptions` to `DecryptParameters`.
+- Changed `KeyVaultKeyIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
+- Removed the following classes:
+    - `LocalCryptographyAsyncClient`
+    - `LocalCryptographyClient`
+    - `LocalCryptographyClientBuilder`
+    - `LocalKeyEncryptionKeyClient`
+    - `LocalKeyEncryptionKeyAsyncClient`
+    - `LocalKeyEncryptionKeyClientBuilder`
+
+### New features
+- Added support for service version `7.2`.
+- Made all `JsonWebKey` properties settable.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added convenience class `CreateOctKeyOptions`.
+- Added support for building local-only cryptography clients by providing a `JsonWebKey` for local operations:
+    - `CryptograhpyClientBuilder.jsonWebKey(JsonWebKey)`
+- Added support for building local-only key encryption key clients by providing a `JsonWebKey` for local operations:
+    - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey(JsonWebKey)`
+    - `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey(JsonWebKey)`
+- `CryptograhpyClientBuilder.keyIdentifier(String)` now throws a `NullPointerException` if a `null` value is provided as an argument.
+
+## 4.3.0-beta.5 (2021-03-12)
+
+### Breaking Changes
+- Removed local support for encryption and decryption using AESGCM, as per guidance of Microsoft's cryptography board. Remote encryption and decryption using said algorithm is still supported.
+
+### Changed
+- Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
+
+### Bug fixes
+- Fixed issue that caused a `NullPointerException` when attempting to use a `CryptographyClient` for symmetric key encryption operations after the first one.
+- Fixed issue where `JsonWebKey` byte array contents would get serialized/deserialized using Base64 instead of URL-safe Base64.
+- Fixed issue where properties of responses received when using a `CryptographyClient` for encryption/decryption were not populated on the `EncryptResult` and `DecryptResult` classes.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.0`
+- Upgraded `azure-identity` dependency to `1.2.4`
+
+## 4.3.0-beta.4 (2021-02-11)
+
+### Bug Fixes
+- Fixed issue where cryptographic operations would be attempted locally for symmetric keys that were missing their key material ('k' component).
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.2.5 (2021-02-11)
+
+### Bug Fixes
+- Fixed issue where cryptographic operations would be attempted locally for symmetric keys that were missing their key material ('k' component).
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.2.4 (2021-01-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.12.0`
+- Upgraded `azure-core-http-netty` dependency to `1.7.1`
+- Upgraded `azure-core-http-okhttp` dependency to `1.4.1`
+- Upgraded `azure-identity` dependency to `1.2.2`
 
 ## 4.3.0-beta.3 (2020-11-19)
 

@@ -267,6 +267,13 @@ public class VirtualMachineScaleSetUpdateIpConfiguration extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetUpdateIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

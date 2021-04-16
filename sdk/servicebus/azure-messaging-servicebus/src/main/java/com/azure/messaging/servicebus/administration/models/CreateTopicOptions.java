@@ -19,7 +19,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /**
- * Represents the set of options that can be specified for the creation of a queue.
+ * Represents the set of options that can be specified for the creation of a topic.
  *
  * @see ServiceBusAdministrationAsyncClient#createTopic(String, CreateTopicOptions)
  * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)

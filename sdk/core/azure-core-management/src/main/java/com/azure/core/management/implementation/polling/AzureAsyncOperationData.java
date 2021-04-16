@@ -136,7 +136,16 @@ final class AzureAsyncOperationData {
                             this.finalResult = new FinalResult(this.lroOperationUri, null);
                         }
                     } else {
-                        this.updateUrls(pollResponseHeaders);
+                        try {
+                            this.updateUrls(pollResponseHeaders);
+                        } catch (Util.MalformedUrlException mue) {
+                            this.provisioningState = ProvisioningState.FAILED;
+                            this.pollError = new Error(
+                                "Long running operation contains a malformed Azure-AsyncOperation header.",
+                                pollResponseStatusCode,
+                                pollResponseHeaders.toMap(),
+                                pollResponseBody);
+                        }
                     }
                 }
             }
@@ -153,7 +162,7 @@ final class AzureAsyncOperationData {
         if (azAsyncOpUrl != null) {
             this.pollUrl = azAsyncOpUrl;
         }
-        final URL locationUrl = Util.getLocationUrl(pollResponseHeaders, logger);
+        final URL locationUrl = Util.getLocationUrl(pollResponseHeaders, logger, true);
         if (locationUrl != null) {
             this.locationUrl = locationUrl;
         }
@@ -171,7 +180,7 @@ final class AzureAsyncOperationData {
         }
         try {
             return adapter.deserialize(value, AsyncOperationResource.class, SerializerEncoding.JSON);
-        } catch (IOException ignored) {
+        } catch (IOException | RuntimeException ignored) {
             return null;
         }
     }

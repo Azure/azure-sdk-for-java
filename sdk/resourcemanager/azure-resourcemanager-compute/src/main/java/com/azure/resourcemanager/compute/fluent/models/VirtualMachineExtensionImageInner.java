@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Describes a Virtual Machine Extension Image. */
 @JsonFlatten
@@ -154,6 +155,20 @@ public class VirtualMachineExtensionImageInner extends Resource {
      */
     public VirtualMachineExtensionImageInner withSupportsMultipleExtensions(Boolean supportsMultipleExtensions) {
         this.supportsMultipleExtensions = supportsMultipleExtensions;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineExtensionImageInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineExtensionImageInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

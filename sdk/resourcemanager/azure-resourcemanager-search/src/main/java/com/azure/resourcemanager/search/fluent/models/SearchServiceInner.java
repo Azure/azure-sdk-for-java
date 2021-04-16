@@ -10,11 +10,14 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.models.HostingMode;
 import com.azure.resourcemanager.search.models.Identity;
+import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.ProvisioningState;
+import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
 import com.azure.resourcemanager.search.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Describes an Azure Cognitive Search service and its current state. */
@@ -31,7 +34,13 @@ public class SearchServiceInner extends Resource {
     private Sku sku;
 
     /*
-     * The number of replicas in the Search service. If specified, it must be a
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
+    /*
+     * The number of replicas in the search service. If specified, it must be a
      * value between 1 and 12 inclusive for standard SKUs or between 1 and 3
      * inclusive for basic SKU.
      */
@@ -39,7 +48,7 @@ public class SearchServiceInner extends Resource {
     private Integer replicaCount;
 
     /*
-     * The number of partitions in the Search service; if specified, it can be
+     * The number of partitions in the search service; if specified, it can be
      * 1, 2, 3, 4, 6, or 12. Values greater than 1 are only valid for standard
      * SKUs. For 'standard3' services with hostingMode set to 'highDensity',
      * the allowed values are between 1 and 3.
@@ -58,15 +67,24 @@ public class SearchServiceInner extends Resource {
     private HostingMode hostingMode;
 
     /*
-     * The status of the Search service. Possible values include: 'running':
-     * The Search service is running and no provisioning operations are
-     * underway. 'provisioning': The Search service is being provisioned or
-     * scaled up or down. 'deleting': The Search service is being deleted.
-     * 'degraded': The Search service is degraded. This can occur when the
-     * underlying search units are not healthy. The Search service is most
+     * This value can be set to 'enabled' to avoid breaking changes on existing
+     * customer resources and templates. If set to 'disabled', traffic over
+     * public interface is not allowed, and private endpoint connections would
+     * be the exclusive access method.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * The status of the search service. Possible values include: 'running':
+     * The search service is running and no provisioning operations are
+     * underway. 'provisioning': The search service is being provisioned or
+     * scaled up or down. 'deleting': The search service is being deleted.
+     * 'degraded': The search service is degraded. This can occur when the
+     * underlying search units are not healthy. The search service is most
      * likely operational, but performance might be slow and some requests
-     * might be dropped. 'disabled': The Search service is disabled. In this
-     * state, the service will reject all API requests. 'error': The Search
+     * might be dropped. 'disabled': The search service is disabled. In this
+     * state, the service will reject all API requests. 'error': The search
      * service is in an error state. If your service is in the degraded,
      * disabled, or error states, it means the Azure Cognitive Search team is
      * actively investigating the underlying issue. Dedicated services in these
@@ -77,13 +95,13 @@ public class SearchServiceInner extends Resource {
     private SearchServiceStatus status;
 
     /*
-     * The details of the Search service status.
+     * The details of the search service status.
      */
     @JsonProperty(value = "properties.statusDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String statusDetails;
 
     /*
-     * The state of the last provisioning operation performed on the Search
+     * The state of the last provisioning operation performed on the search
      * service. Provisioning is an intermediate state that occurs while service
      * capacity is being established. After capacity is set up,
      * provisioningState changes to either 'succeeded' or 'failed'. Client
@@ -91,17 +109,32 @@ public class SearchServiceInner extends Resource {
      * interval is from 30 seconds to one minute) by using the Get Search
      * Service operation to see when an operation is completed. If you are
      * using the free service, this value tends to come back as 'succeeded'
-     * directly in the call to Create Search service. This is because the free
+     * directly in the call to Create search service. This is because the free
      * service uses capacity that is already set up.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The identity of the resource.
+     * Network specific rules that determine how the Azure Cognitive Search
+     * service may be reached.
      */
-    @JsonProperty(value = "identity")
-    private Identity identity;
+    @JsonProperty(value = "properties.networkRuleSet")
+    private NetworkRuleSet networkRuleSet;
+
+    /*
+     * The list of private endpoint connections to the Azure Cognitive Search
+     * service.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * The list of shared private link resources managed by the Azure Cognitive
+     * Search service.
+     */
+    @JsonProperty(value = "properties.sharedPrivateLinkResources", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
 
     /**
      * Get the sku property: The SKU of the Search Service, which determines price tier and capacity limits. This
@@ -126,7 +159,27 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the replicaCount property: The number of replicas in the Search service. If specified, it must be a value
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
      *
      * @return the replicaCount value.
@@ -136,7 +189,7 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the replicaCount property: The number of replicas in the Search service. If specified, it must be a value
+     * Set the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
      *
      * @param replicaCount the replicaCount value to set.
@@ -148,7 +201,7 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the partitionCount property: The number of partitions in the Search service; if specified, it can be 1, 2, 3,
+     * Get the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
      * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
      * set to 'highDensity', the allowed values are between 1 and 3.
      *
@@ -159,7 +212,7 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the partitionCount property: The number of partitions in the Search service; if specified, it can be 1, 2, 3,
+     * Set the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
      * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
      * set to 'highDensity', the allowed values are between 1 and 3.
      *
@@ -198,12 +251,36 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the status property: The status of the Search service. Possible values include: 'running': The Search service
-     * is running and no provisioning operations are underway. 'provisioning': The Search service is being provisioned
-     * or scaled up or down. 'deleting': The Search service is being deleted. 'degraded': The Search service is
-     * degraded. This can occur when the underlying search units are not healthy. The Search service is most likely
-     * operational, but performance might be slow and some requests might be dropped. 'disabled': The Search service is
-     * disabled. In this state, the service will reject all API requests. 'error': The Search service is in an error
+     * Get the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
+     * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
+     * endpoint connections would be the exclusive access method.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
+     * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
+     * endpoint connections would be the exclusive access method.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the status property: The status of the search service. Possible values include: 'running': The search service
+     * is running and no provisioning operations are underway. 'provisioning': The search service is being provisioned
+     * or scaled up or down. 'deleting': The search service is being deleted. 'degraded': The search service is
+     * degraded. This can occur when the underlying search units are not healthy. The search service is most likely
+     * operational, but performance might be slow and some requests might be dropped. 'disabled': The search service is
+     * disabled. In this state, the service will reject all API requests. 'error': The search service is in an error
      * state. If your service is in the degraded, disabled, or error states, it means the Azure Cognitive Search team is
      * actively investigating the underlying issue. Dedicated services in these states are still chargeable based on the
      * number of search units provisioned.
@@ -215,7 +292,7 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the statusDetails property: The details of the Search service status.
+     * Get the statusDetails property: The details of the search service status.
      *
      * @return the statusDetails value.
      */
@@ -224,12 +301,12 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The state of the last provisioning operation performed on the Search service.
+     * Get the provisioningState property: The state of the last provisioning operation performed on the search service.
      * Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is
      * set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll provisioning
      * status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service
      * operation to see when an operation is completed. If you are using the free service, this value tends to come back
-     * as 'succeeded' directly in the call to Create Search service. This is because the free service uses capacity that
+     * as 'succeeded' directly in the call to Create search service. This is because the free service uses capacity that
      * is already set up.
      *
      * @return the provisioningState value.
@@ -239,23 +316,45 @@ public class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the identity property: The identity of the resource.
+     * Get the networkRuleSet property: Network specific rules that determine how the Azure Cognitive Search service may
+     * be reached.
      *
-     * @return the identity value.
+     * @return the networkRuleSet value.
      */
-    public Identity identity() {
-        return this.identity;
+    public NetworkRuleSet networkRuleSet() {
+        return this.networkRuleSet;
     }
 
     /**
-     * Set the identity property: The identity of the resource.
+     * Set the networkRuleSet property: Network specific rules that determine how the Azure Cognitive Search service may
+     * be reached.
      *
-     * @param identity the identity value to set.
+     * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceInner object itself.
      */
-    public SearchServiceInner withIdentity(Identity identity) {
-        this.identity = identity;
+    public SearchServiceInner withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
+        this.networkRuleSet = networkRuleSet;
         return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The list of private endpoint connections to the Azure Cognitive
+     * Search service.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the Azure
+     * Cognitive Search service.
+     *
+     * @return the sharedPrivateLinkResources value.
+     */
+    public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
+        return this.sharedPrivateLinkResources;
     }
 
     /** {@inheritDoc} */
@@ -283,6 +382,15 @@ public class SearchServiceInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (networkRuleSet() != null) {
+            networkRuleSet().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (sharedPrivateLinkResources() != null) {
+            sharedPrivateLinkResources().forEach(e -> e.validate());
         }
     }
 }

@@ -202,7 +202,7 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests {
     static class AzureListenersBean {
 
         @AzureMessageListeners({@AzureMessageListener(id = "first", destination = "myQueue"),
-                @AzureMessageListener(id = "second", destination = "anotherQueue", concurrency = "2-10")})
+            @AzureMessageListener(id = "second", destination = "anotherQueue", concurrency = "2-10")})
         public void repeatableHandle(String msg) {
         }
     }

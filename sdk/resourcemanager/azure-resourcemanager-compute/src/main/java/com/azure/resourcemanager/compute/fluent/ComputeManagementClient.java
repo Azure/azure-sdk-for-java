@@ -102,6 +102,13 @@ public interface ComputeManagementClient {
     VirtualMachineImagesClient getVirtualMachineImages();
 
     /**
+     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesEdgeZonesClient object.
+     */
+    VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones();
+
+    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.
@@ -116,6 +123,13 @@ public interface ComputeManagementClient {
     VirtualMachinesClient getVirtualMachines();
 
     /**
+     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetsClient object.
+     */
+    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
+
+    /**
      * Gets the VirtualMachineSizesClient object to access its operations.
      *
      * @return the VirtualMachineSizesClient object.
@@ -128,13 +142,6 @@ public interface ComputeManagementClient {
      * @return the ImagesClient object.
      */
     ImagesClient getImages();
-
-    /**
-     * Gets the VirtualMachineScaleSetsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetsClient object.
-     */
-    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
 
     /**
      * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
@@ -179,6 +186,13 @@ public interface ComputeManagementClient {
     VirtualMachineRunCommandsClient getVirtualMachineRunCommands();
 
     /**
+     * Gets the VirtualMachineScaleSetVMRunCommandsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMRunCommandsClient object.
+     */
+    VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands();
+
+    /**
      * Gets the ResourceSkusClient object to access its operations.
      *
      * @return the ResourceSkusClient object.
@@ -205,6 +219,20 @@ public interface ComputeManagementClient {
      * @return the DiskEncryptionSetsClient object.
      */
     DiskEncryptionSetsClient getDiskEncryptionSets();
+
+    /**
+     * Gets the DiskAccessesClient object to access its operations.
+     *
+     * @return the DiskAccessesClient object.
+     */
+    DiskAccessesClient getDiskAccesses();
+
+    /**
+     * Gets the DiskRestorePointsClient object to access its operations.
+     *
+     * @return the DiskRestorePointsClient object.
+     */
+    DiskRestorePointsClient getDiskRestorePoints();
 
     /**
      * Gets the GalleriesClient object to access its operations.
@@ -242,9 +270,37 @@ public interface ComputeManagementClient {
     GalleryApplicationVersionsClient getGalleryApplicationVersions();
 
     /**
-     * Gets the ContainerServicesClient object to access its operations.
+     * Gets the CloudServiceRoleInstancesClient object to access its operations.
      *
-     * @return the ContainerServicesClient object.
+     * @return the CloudServiceRoleInstancesClient object.
      */
-    ContainerServicesClient getContainerServices();
+    CloudServiceRoleInstancesClient getCloudServiceRoleInstances();
+
+    /**
+     * Gets the CloudServiceRolesClient object to access its operations.
+     *
+     * @return the CloudServiceRolesClient object.
+     */
+    CloudServiceRolesClient getCloudServiceRoles();
+
+    /**
+     * Gets the CloudServicesClient object to access its operations.
+     *
+     * @return the CloudServicesClient object.
+     */
+    CloudServicesClient getCloudServices();
+
+    /**
+     * Gets the CloudServicesUpdateDomainsClient object to access its operations.
+     *
+     * @return the CloudServicesUpdateDomainsClient object.
+     */
+    CloudServicesUpdateDomainsClient getCloudServicesUpdateDomains();
+
+    /**
+     * Gets the CloudServiceOperatingSystemsClient object to access its operations.
+     *
+     * @return the CloudServiceOperatingSystemsClient object.
+     */
+    CloudServiceOperatingSystemsClient getCloudServiceOperatingSystems();
 }

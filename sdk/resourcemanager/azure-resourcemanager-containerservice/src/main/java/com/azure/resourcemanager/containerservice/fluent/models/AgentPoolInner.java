@@ -11,8 +11,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
-import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.KubeletConfig;
+import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
+import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
+import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSType;
+import com.azure.resourcemanager.containerservice.models.Ossku;
+import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,7 +44,7 @@ public class AgentPoolInner extends SubResource {
      * Size of agent VMs.
      */
     @JsonProperty(value = "properties.vmSize")
-    private ContainerServiceVMSizeTypes vmSize;
+    private String vmSize;
 
     /*
      * OS Disk Size in GB to be used to specify the disk size for every machine
@@ -49,10 +55,35 @@ public class AgentPoolInner extends SubResource {
     private Integer osDiskSizeGB;
 
     /*
-     * VNet SubnetID specifies the VNet's subnet identifier.
+     * OS disk type to be used for machines in a given agent pool. Allowed
+     * values are 'Ephemeral' and 'Managed'. If unspecified, defaults to
+     * 'Ephemeral' when the VM supports ephemeral OS and has a cache disk
+     * larger than the requested OSDiskSizeGB. Otherwise, defaults to
+     * 'Managed'. May not be changed after creation.
+     */
+    @JsonProperty(value = "properties.osDiskType")
+    private OSDiskType osDiskType;
+
+    /*
+     * KubeletDiskType determines the placement of emptyDir volumes, container
+     * runtime data root, and Kubelet ephemeral storage. Currently allows one
+     * value, OS, resulting in Kubelet using the OS disk for data.
+     */
+    @JsonProperty(value = "properties.kubeletDiskType")
+    private KubeletDiskType kubeletDiskType;
+
+    /*
+     * VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe
+     * pods
      */
     @JsonProperty(value = "properties.vnetSubnetID")
     private String vnetSubnetId;
+
+    /*
+     * Pod SubnetID specifies the VNet's subnet identifier for pods.
+     */
+    @JsonProperty(value = "properties.podSubnetID")
+    private String podSubnetId;
 
     /*
      * Maximum number of pods that can run on a node.
@@ -66,6 +97,13 @@ public class AgentPoolInner extends SubResource {
      */
     @JsonProperty(value = "properties.osType")
     private OSType osType;
+
+    /*
+     * OsSKU to be used to specify os sku. Choose from Ubuntu(default) and
+     * CBLMariner for Linux OSType. Not applicable to Windows OSType.
+     */
+    @JsonProperty(value = "properties.osSKU")
+    private Ossku osSku;
 
     /*
      * Maximum number of nodes for auto-scaling
@@ -106,7 +144,7 @@ public class AgentPoolInner extends SubResource {
     /*
      * Version of node image
      */
-    @JsonProperty(value = "properties.nodeImageVersion")
+    @JsonProperty(value = "properties.nodeImageVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String nodeImageVersion;
 
     /*
@@ -123,6 +161,12 @@ public class AgentPoolInner extends SubResource {
     private String provisioningState;
 
     /*
+     * Describes whether the Agent Pool is Running or Stopped
+     */
+    @JsonProperty(value = "properties.powerState", access = JsonProperty.Access.WRITE_ONLY)
+    private PowerState powerState;
+
+    /*
      * Availability zones for nodes. Must use VirtualMachineScaleSets
      * AgentPoolType.
      */
@@ -134,6 +178,13 @@ public class AgentPoolInner extends SubResource {
      */
     @JsonProperty(value = "properties.enableNodePublicIP")
     private Boolean enableNodePublicIp;
+
+    /*
+     * Public IP Prefix ID. VM nodes use IPs assigned from this Public IP
+     * Prefix.
+     */
+    @JsonProperty(value = "properties.nodePublicIPPrefixID")
+    private String nodePublicIpPrefixId;
 
     /*
      * ScaleSetPriority to be used to specify virtual machine scale set
@@ -184,6 +235,38 @@ public class AgentPoolInner extends SubResource {
     private String proximityPlacementGroupId;
 
     /*
+     * KubeletConfig specifies the configuration of kubelet on agent nodes.
+     */
+    @JsonProperty(value = "properties.kubeletConfig")
+    private KubeletConfig kubeletConfig;
+
+    /*
+     * LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     */
+    @JsonProperty(value = "properties.linuxOSConfig")
+    private LinuxOSConfig linuxOSConfig;
+
+    /*
+     * Whether to enable EncryptionAtHost
+     */
+    @JsonProperty(value = "properties.enableEncryptionAtHost")
+    private Boolean enableEncryptionAtHost;
+
+    /*
+     * Whether to use FIPS enabled OS
+     */
+    @JsonProperty(value = "properties.enableFIPS")
+    private Boolean enableFips;
+
+    /*
+     * GPUInstanceProfile to be used to specify GPU MIG instance profile for
+     * supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g
+     * and MIG7g.
+     */
+    @JsonProperty(value = "properties.gpuInstanceProfile")
+    private GpuInstanceProfile gpuInstanceProfile;
+
+    /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
@@ -225,7 +308,7 @@ public class AgentPoolInner extends SubResource {
      *
      * @return the vmSize value.
      */
-    public ContainerServiceVMSizeTypes vmSize() {
+    public String vmSize() {
         return this.vmSize;
     }
 
@@ -235,7 +318,7 @@ public class AgentPoolInner extends SubResource {
      * @param vmSize the vmSize value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withVmSize(ContainerServiceVMSizeTypes vmSize) {
+    public AgentPoolInner withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
     }
@@ -263,7 +346,57 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Get the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
+     * 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a
+     * cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after
+     * creation.
+     *
+     * @return the osDiskType value.
+     */
+    public OSDiskType osDiskType() {
+        return this.osDiskType;
+    }
+
+    /**
+     * Set the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
+     * 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a
+     * cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after
+     * creation.
+     *
+     * @param osDiskType the osDiskType value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withOsDiskType(OSDiskType osDiskType) {
+        this.osDiskType = osDiskType;
+        return this;
+    }
+
+    /**
+     * Get the kubeletDiskType property: KubeletDiskType determines the placement of emptyDir volumes, container runtime
+     * data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk
+     * for data.
+     *
+     * @return the kubeletDiskType value.
+     */
+    public KubeletDiskType kubeletDiskType() {
+        return this.kubeletDiskType;
+    }
+
+    /**
+     * Set the kubeletDiskType property: KubeletDiskType determines the placement of emptyDir volumes, container runtime
+     * data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk
+     * for data.
+     *
+     * @param kubeletDiskType the kubeletDiskType value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withKubeletDiskType(KubeletDiskType kubeletDiskType) {
+        this.kubeletDiskType = kubeletDiskType;
+        return this;
+    }
+
+    /**
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods.
      *
      * @return the vnetSubnetId value.
      */
@@ -272,13 +405,33 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods.
      *
      * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the AgentPoolInner object itself.
      */
     public AgentPoolInner withVnetSubnetId(String vnetSubnetId) {
         this.vnetSubnetId = vnetSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the podSubnetId property: Pod SubnetID specifies the VNet's subnet identifier for pods.
+     *
+     * @return the podSubnetId value.
+     */
+    public String podSubnetId() {
+        return this.podSubnetId;
+    }
+
+    /**
+     * Set the podSubnetId property: Pod SubnetID specifies the VNet's subnet identifier for pods.
+     *
+     * @param podSubnetId the podSubnetId value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withPodSubnetId(String podSubnetId) {
+        this.podSubnetId = podSubnetId;
         return this;
     }
 
@@ -319,6 +472,28 @@ public class AgentPoolInner extends SubResource {
      */
     public AgentPoolInner withOsType(OSType osType) {
         this.osType = osType;
+        return this;
+    }
+
+    /**
+     * Get the osSku property: OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux
+     * OSType. Not applicable to Windows OSType.
+     *
+     * @return the osSku value.
+     */
+    public Ossku osSku() {
+        return this.osSku;
+    }
+
+    /**
+     * Set the osSku property: OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux
+     * OSType. Not applicable to Windows OSType.
+     *
+     * @param osSku the osSku value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withOsSku(Ossku osSku) {
+        this.osSku = osSku;
         return this;
     }
 
@@ -452,17 +627,6 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the nodeImageVersion property: Version of node image.
-     *
-     * @param nodeImageVersion the nodeImageVersion value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withNodeImageVersion(String nodeImageVersion) {
-        this.nodeImageVersion = nodeImageVersion;
-        return this;
-    }
-
-    /**
      * Get the upgradeSettings property: Settings for upgrading the agentpool.
      *
      * @return the upgradeSettings value.
@@ -490,6 +654,15 @@ public class AgentPoolInner extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the powerState property: Describes whether the Agent Pool is Running or Stopped.
+     *
+     * @return the powerState value.
+     */
+    public PowerState powerState() {
+        return this.powerState;
     }
 
     /**
@@ -529,6 +702,26 @@ public class AgentPoolInner extends SubResource {
      */
     public AgentPoolInner withEnableNodePublicIp(Boolean enableNodePublicIp) {
         this.enableNodePublicIp = enableNodePublicIp;
+        return this;
+    }
+
+    /**
+     * Get the nodePublicIpPrefixId property: Public IP Prefix ID. VM nodes use IPs assigned from this Public IP Prefix.
+     *
+     * @return the nodePublicIpPrefixId value.
+     */
+    public String nodePublicIpPrefixId() {
+        return this.nodePublicIpPrefixId;
+    }
+
+    /**
+     * Set the nodePublicIpPrefixId property: Public IP Prefix ID. VM nodes use IPs assigned from this Public IP Prefix.
+     *
+     * @param nodePublicIpPrefixId the nodePublicIpPrefixId value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
+        this.nodePublicIpPrefixId = nodePublicIpPrefixId;
         return this;
     }
 
@@ -683,6 +876,108 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the kubeletConfig property: KubeletConfig specifies the configuration of kubelet on agent nodes.
+     *
+     * @return the kubeletConfig value.
+     */
+    public KubeletConfig kubeletConfig() {
+        return this.kubeletConfig;
+    }
+
+    /**
+     * Set the kubeletConfig property: KubeletConfig specifies the configuration of kubelet on agent nodes.
+     *
+     * @param kubeletConfig the kubeletConfig value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withKubeletConfig(KubeletConfig kubeletConfig) {
+        this.kubeletConfig = kubeletConfig;
+        return this;
+    }
+
+    /**
+     * Get the linuxOSConfig property: LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     *
+     * @return the linuxOSConfig value.
+     */
+    public LinuxOSConfig linuxOSConfig() {
+        return this.linuxOSConfig;
+    }
+
+    /**
+     * Set the linuxOSConfig property: LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     *
+     * @param linuxOSConfig the linuxOSConfig value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
+        this.linuxOSConfig = linuxOSConfig;
+        return this;
+    }
+
+    /**
+     * Get the enableEncryptionAtHost property: Whether to enable EncryptionAtHost.
+     *
+     * @return the enableEncryptionAtHost value.
+     */
+    public Boolean enableEncryptionAtHost() {
+        return this.enableEncryptionAtHost;
+    }
+
+    /**
+     * Set the enableEncryptionAtHost property: Whether to enable EncryptionAtHost.
+     *
+     * @param enableEncryptionAtHost the enableEncryptionAtHost value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
+        this.enableEncryptionAtHost = enableEncryptionAtHost;
+        return this;
+    }
+
+    /**
+     * Get the enableFips property: Whether to use FIPS enabled OS.
+     *
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.enableFips;
+    }
+
+    /**
+     * Set the enableFips property: Whether to use FIPS enabled OS.
+     *
+     * @param enableFips the enableFips value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withEnableFips(Boolean enableFips) {
+        this.enableFips = enableFips;
+        return this;
+    }
+
+    /**
+     * Get the gpuInstanceProfile property: GPUInstanceProfile to be used to specify GPU MIG instance profile for
+     * supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g.
+     *
+     * @return the gpuInstanceProfile value.
+     */
+    public GpuInstanceProfile gpuInstanceProfile() {
+        return this.gpuInstanceProfile;
+    }
+
+    /**
+     * Set the gpuInstanceProfile property: GPUInstanceProfile to be used to specify GPU MIG instance profile for
+     * supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g.
+     *
+     * @param gpuInstanceProfile the gpuInstanceProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withGpuInstanceProfile(GpuInstanceProfile gpuInstanceProfile) {
+        this.gpuInstanceProfile = gpuInstanceProfile;
+        return this;
+    }
+
+    /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
@@ -701,6 +996,13 @@ public class AgentPoolInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AgentPoolInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -709,6 +1011,15 @@ public class AgentPoolInner extends SubResource {
     public void validate() {
         if (upgradeSettings() != null) {
             upgradeSettings().validate();
+        }
+        if (powerState() != null) {
+            powerState().validate();
+        }
+        if (kubeletConfig() != null) {
+            kubeletConfig().validate();
+        }
+        if (linuxOSConfig() != null) {
+            linuxOSConfig().validate();
         }
     }
 }

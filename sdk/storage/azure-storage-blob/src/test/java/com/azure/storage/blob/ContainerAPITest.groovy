@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.rest.PagedIterable
+import com.azure.core.http.rest.PagedResponse
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -911,6 +914,27 @@ class ContainerAPITest extends APISpec {
             .verifyComplete()
     }
 
+    def "List blobs flat options maxResults by page"() {
+        setup:
+        def PAGE_SIZE = 2
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        expect: "Get first page of blob listings (sync and async)"
+        for (def page : cc.listBlobs(options, null).iterableByPage(PAGE_SIZE)) {
+            assert page.value.size() <= PAGE_SIZE
+        }
+        StepVerifier.create(ccAsync.listBlobs(options).byPage(PAGE_SIZE).limitRequest(1))
+            .assertNext({ assert it.getValue().size() == PAGE_SIZE })
+            .verifyComplete()
+    }
+
     def "List blobs prefix with comma"() {
         setup:
         def prefix = generateBlobName() + ", " + generateBlobName()
@@ -1273,7 +1297,6 @@ class ContainerAPITest extends APISpec {
         !blobs.hasNext() // Normal
     }
 
-
     def "List blobs hier options maxResults"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
@@ -1289,6 +1312,26 @@ class ContainerAPITest extends APISpec {
         StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
             .assertNext({ assert it.getValue().size() == 1 })
             .verifyComplete()
+    }
+
+    def "List blobs hier options maxResults by page"() {
+        setup:
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveUncommittedBlobs(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        expect:
+        def pagedIterable = cc.listBlobsByHierarchy("", options, null);
+
+        def iterableByPage = pagedIterable.iterableByPage(1)
+        for (def page : iterableByPage) {
+            assert page.value.size() == 1
+        }
     }
 
     @Unroll
@@ -1740,4 +1783,102 @@ class ContainerAPITest extends APISpec {
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
+//    def "Rename"() {
+//        setup:
+//        def newName = generateContainerName()
+//
+//        when:
+//        def renamedContainer = cc.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    def "Rename sas"() {
+//        setup:
+//        def newName = generateContainerName()
+//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sasClient = getContainerClient(sas, cc.getBlobContainerUrl())
+//
+//        when:
+//        def renamedContainer = sasClient.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    @Unroll
+//    def "Rename AC"() {
+//        setup:
+//        leaseID = setupContainerLeaseCondition(cc, leaseID)
+//        def cac = new BlobRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        expect:
+//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+//            null, null).getStatusCode() == 200
+//
+//        where:
+//        leaseID         || _
+//        null            || _
+//        receivedLeaseID || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC fail"() {
+//        setup:
+//        def cac = new BlobRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+//            null, null)
+//
+//        then:
+//        thrown(BlobStorageException)
+//
+//        where:
+//        leaseID         || _
+//        garbageLeaseID  || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC illegal"() {
+//        setup:
+//        def ac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified).setTagsConditions(tags)
+//
+//        when:
+//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(ac),
+//            null, null)
+//
+//        then:
+//        thrown(UnsupportedOperationException)
+//
+//        where:
+//        modified | unmodified | match        | noneMatch    | tags
+//        oldDate  | null       | null         | null         | null
+//        null     | newDate    | null         | null         | null
+//        null     | null       | receivedEtag | null         | null
+//        null     | null       | null         | garbageEtag  | null
+//        null     | null       | null         | null         | "tags"
+//    }
+//
+//    def "Rename error"() {
+//        setup:
+//        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+//        def newName = generateContainerName()
+//
+//        when:
+//        cc.rename(newName)
+//
+//        then:
+//        thrown(BlobStorageException)
+//    }
 }

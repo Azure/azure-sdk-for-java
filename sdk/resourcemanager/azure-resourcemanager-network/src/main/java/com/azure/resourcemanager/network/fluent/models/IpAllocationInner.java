@@ -248,6 +248,20 @@ public class IpAllocationInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public IpAllocationInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IpAllocationInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

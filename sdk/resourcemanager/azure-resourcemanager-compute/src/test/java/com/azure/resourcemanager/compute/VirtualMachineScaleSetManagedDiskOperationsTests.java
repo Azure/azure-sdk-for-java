@@ -42,7 +42,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test

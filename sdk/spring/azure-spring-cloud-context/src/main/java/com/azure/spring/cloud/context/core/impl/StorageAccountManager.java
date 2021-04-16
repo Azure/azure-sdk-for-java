@@ -3,17 +3,23 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.storage.StorageAccount;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
+
+import javax.annotation.Nonnull;
 
 /**
  * Resource manager for Storage account.
  */
 public class StorageAccountManager extends AzureManager<StorageAccount, String> {
 
-    public StorageAccountManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+    private final AzureResourceManager azureResourceManager;
+
+    public StorageAccountManager(@Nonnull AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -28,12 +34,23 @@ public class StorageAccountManager extends AzureManager<StorageAccount, String> 
 
     @Override
     public StorageAccount internalGet(String key) {
-        return azure.storageAccounts().getByResourceGroup(azureProperties.getResourceGroup(), key);
+        try {
+            return azureResourceManager.storageAccounts().getByResourceGroup(resourceGroup, key);
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override
     public StorageAccount internalCreate(String key) {
-        return azure.storageAccounts().define(key).withRegion(azureProperties.getRegion())
-            .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
+        return azureResourceManager.storageAccounts()
+                                   .define(key)
+                                   .withRegion(region)
+                                   .withExistingResourceGroup(resourceGroup)
+                                   .create();
     }
 }

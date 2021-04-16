@@ -16,7 +16,7 @@ public interface VpnLinkConnectionsClient {
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +31,7 @@ public interface VpnLinkConnectionsClient {
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +46,7 @@ public interface VpnLinkConnectionsClient {
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.

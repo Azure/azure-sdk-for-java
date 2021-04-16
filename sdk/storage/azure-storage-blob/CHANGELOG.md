@@ -1,8 +1,29 @@
 # Release History
 
-## 12.10.0-beta.2 (Unreleased)
+## 12.11.0-beta.3 (Unreleased)
+- Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
 
+## 12.11.0-beta.2 (2021-03-29)
+- Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
+- Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
+- Added upload and download methods on BlobClient and BlobAsyncClient that work with BinaryData.
+- Fixed a bug that ignored the page size when calling PagedIterable.byPage(pageSize)
 
+## 12.11.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.10.2 (2021-03-26)
+- Fixed a bug where BlobInputStream would not use request conditions when doing the initial getProperties call in openInputStream.
+
+## 12.10.1 (2021-03-19)
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.10.0 (2021-01-14)
+- GA release
 
 ## 12.10.0-beta.1 (2020-12-07)
 - Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.

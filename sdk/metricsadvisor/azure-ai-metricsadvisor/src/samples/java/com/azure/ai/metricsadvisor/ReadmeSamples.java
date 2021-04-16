@@ -23,7 +23,6 @@ import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
@@ -32,11 +31,14 @@ import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.models.SuppressCondition;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -79,6 +81,29 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code snippet for getting advisor client using AAD Authentication.
+     */
+    public void useAADAuthentication() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(credential)
+            .buildClient();
+    }
+
+    /**
+     * Code snippet for getting administration client using AAD Authentication.
+     */
+    public void metricsAdvisorAdministrationClientAAD() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
+            new MetricsAdvisorAdministrationClientBuilder()
+                .endpoint("{endpoint}")
+                .credential(credential)
+                .buildClient();
+    }
+
+    /**
      * Code snippet for creating a data feed.
      */
     public void createDataFeed() {
@@ -112,7 +137,8 @@ public class ReadmeSamples {
         System.out.printf("Data feed granularity value : %d%n",
             createdSqlDataFeed.getGranularity().getCustomGranularityValue());
         System.out.println("Data feed related metric Ids:");
-        createdSqlDataFeed.getMetricIds().forEach(System.out::println);
+        dataFeed.getMetricIds().forEach((metricId, metricName)
+            -> System.out.printf("Metric Id : %s, Metric Name: %s%n", metricId, metricName));
         System.out.printf("Data feed source type: %s%n", createdSqlDataFeed.getSourceType());
 
         if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {

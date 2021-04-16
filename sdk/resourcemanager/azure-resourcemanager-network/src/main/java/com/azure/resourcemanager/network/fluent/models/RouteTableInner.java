@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Route table resource. */
 @JsonFlatten
@@ -49,6 +50,12 @@ public class RouteTableInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * The resource GUID property of the route table.
+     */
+    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceGuid;
 
     /*
      * Resource ID.
@@ -126,6 +133,15 @@ public class RouteTableInner extends Resource {
     }
 
     /**
+     * Get the resourceGuid property: The resource GUID property of the route table.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.resourceGuid;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -142,6 +158,20 @@ public class RouteTableInner extends Resource {
      */
     public RouteTableInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RouteTableInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RouteTableInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

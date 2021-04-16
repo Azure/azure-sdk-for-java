@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -63,7 +64,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ExpressRouteConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
@@ -77,9 +78,10 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ExpressRouteConnectionInner putExpressRouteConnectionParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
@@ -92,9 +94,10 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             @PathParam("connectionName") String connectionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
@@ -107,9 +110,10 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             @PathParam("connectionName") String connectionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections")
@@ -121,6 +125,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
             @PathParam("expressRouteGatewayName") String expressRouteGatewayName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -130,7 +135,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -174,7 +179,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -187,6 +193,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                             apiVersion,
                             this.client.getSubscriptionId(),
                             putExpressRouteConnectionParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -197,7 +204,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -243,7 +250,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -254,6 +262,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                 apiVersion,
                 this.client.getSubscriptionId(),
                 putExpressRouteConnectionParameters,
+                accept,
                 context);
     }
 
@@ -263,7 +272,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -294,7 +303,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -332,7 +341,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,7 +364,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -384,7 +393,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -408,7 +417,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -438,7 +447,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -461,7 +470,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
-     * @param putExpressRouteConnectionParameters ExpressRouteConnection resource.
+     * @param putExpressRouteConnectionParameters Parameters required in an ExpressRouteConnection PUT operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -522,7 +531,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -534,6 +544,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                             connectionName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -577,7 +588,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -587,6 +599,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                 connectionName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -688,7 +701,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -700,6 +714,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                             connectionName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -743,7 +758,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -753,6 +769,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                 connectionName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -939,7 +956,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -950,6 +968,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                             expressRouteGatewayName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -989,7 +1008,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-08-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -998,6 +1018,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                 expressRouteGatewayName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 

@@ -6,10 +6,14 @@ package com.azure.spring.sample.aad.controller;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.StandardClaimAccessor;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Optional;
 
 import static com.azure.spring.sample.aad.utils.JsonMapper.toJsonString;
 
@@ -20,26 +24,27 @@ public class ClientController {
     public String index(
         Model model,
         OAuth2AuthenticationToken authentication,
-        @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient authorizedClient
+        @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient azureClient
     ) {
         model.addAttribute("userName", authentication.getName());
-        model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
+        String preferredUsername = Optional.of(authentication)
+                                           .map(OAuth2AuthenticationToken::getPrincipal)
+                                           .map(user -> (OidcUser) user)
+                                           .map(StandardClaimAccessor::getPreferredUsername)
+                                           .orElse("UNKNOWN");
+        model.addAttribute("preferredUsername", preferredUsername);
+        model.addAttribute("clientName", azureClient.getClientRegistration().getClientName());
         return "index";
     }
 
     @GetMapping("/graph")
     @ResponseBody
     public String graph(
-        @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient oAuth2AuthorizedClient
+        @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graphClient
     ) {
-        return toJsonString(oAuth2AuthorizedClient);
+        // toJsonString() is just a demo.
+        // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
+        return toJsonString(graphClient);
     }
 
-    @GetMapping("/office")
-    @ResponseBody
-    public String office(
-        @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient oAuth2AuthorizedClient
-    ) {
-        return toJsonString(oAuth2AuthorizedClient);
-    }
 }

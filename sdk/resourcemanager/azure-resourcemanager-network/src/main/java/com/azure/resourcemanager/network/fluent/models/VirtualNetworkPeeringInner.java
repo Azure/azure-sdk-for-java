@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,6 +33,12 @@ public class VirtualNetworkPeeringInner extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Resource type.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /*
      * Whether the VMs in the local virtual network space would be able to
@@ -80,6 +87,12 @@ public class VirtualNetworkPeeringInner extends SubResource {
     private AddressSpace remoteAddressSpace;
 
     /*
+     * The reference to the remote virtual network's Bgp Communities.
+     */
+    @JsonProperty(value = "properties.remoteBgpCommunities")
+    private VirtualNetworkBgpCommunities remoteBgpCommunities;
+
+    /*
      * The status of the virtual network peering.
      */
     @JsonProperty(value = "properties.peeringState")
@@ -90,6 +103,18 @@ public class VirtualNetworkPeeringInner extends SubResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * If we need to verify the provisioning state of the remote gateway.
+     */
+    @JsonProperty(value = "properties.doNotVerifyRemoteGateways")
+    private Boolean doNotVerifyRemoteGateways;
+
+    /*
+     * The resourceGuid property of the Virtual Network Peering resource.
+     */
+    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceGuid;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -120,6 +145,26 @@ public class VirtualNetworkPeeringInner extends SubResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the type property: Resource type.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Resource type.
+     *
+     * @param type the type value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /**
@@ -259,6 +304,26 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
+     * Get the remoteBgpCommunities property: The reference to the remote virtual network's Bgp Communities.
+     *
+     * @return the remoteBgpCommunities value.
+     */
+    public VirtualNetworkBgpCommunities remoteBgpCommunities() {
+        return this.remoteBgpCommunities;
+    }
+
+    /**
+     * Set the remoteBgpCommunities property: The reference to the remote virtual network's Bgp Communities.
+     *
+     * @param remoteBgpCommunities the remoteBgpCommunities value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withRemoteBgpCommunities(VirtualNetworkBgpCommunities remoteBgpCommunities) {
+        this.remoteBgpCommunities = remoteBgpCommunities;
+        return this;
+    }
+
+    /**
      * Get the peeringState property: The status of the virtual network peering.
      *
      * @return the peeringState value.
@@ -288,6 +353,42 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
+     * Get the doNotVerifyRemoteGateways property: If we need to verify the provisioning state of the remote gateway.
+     *
+     * @return the doNotVerifyRemoteGateways value.
+     */
+    public Boolean doNotVerifyRemoteGateways() {
+        return this.doNotVerifyRemoteGateways;
+    }
+
+    /**
+     * Set the doNotVerifyRemoteGateways property: If we need to verify the provisioning state of the remote gateway.
+     *
+     * @param doNotVerifyRemoteGateways the doNotVerifyRemoteGateways value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withDoNotVerifyRemoteGateways(Boolean doNotVerifyRemoteGateways) {
+        this.doNotVerifyRemoteGateways = doNotVerifyRemoteGateways;
+        return this;
+    }
+
+    /**
+     * Get the resourceGuid property: The resourceGuid property of the Virtual Network Peering resource.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.resourceGuid;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkPeeringInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -295,6 +396,9 @@ public class VirtualNetworkPeeringInner extends SubResource {
     public void validate() {
         if (remoteAddressSpace() != null) {
             remoteAddressSpace().validate();
+        }
+        if (remoteBgpCommunities() != null) {
+            remoteBgpCommunities().validate();
         }
     }
 }

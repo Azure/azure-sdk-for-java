@@ -3,6 +3,8 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -13,34 +15,29 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
-import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.method.annotation.OAuth2AuthorizedClientArgumentResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
+import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
 /**
  * Configure the necessary beans used for aad authentication and authorization.
@@ -48,11 +45,9 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 @Configuration
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
+@ConditionalOnProperty("azure.activedirectory.client-id")
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-@ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
 public class AADWebAppConfiguration {
-
-    private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -69,78 +64,78 @@ public class AADWebAppConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
-        return new AzureAuthorizedClientRepository(repo);
-    }
-
-    @Bean
-    public OAuth2AuthorizedClientManager authorizedClientManager(
-        ClientRegistrationRepository clientRegistrationRepository,
-        OAuth2AuthorizedClientRepository authorizedClientRepository) {
-
-        DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-        responseClient.setRequestEntityConverter(
-            new AzureOauth2RefreshTokenGrantRequestEntityConverter());
-
-        OAuth2AuthorizedClientProvider authorizedClientProvider =
-            OAuth2AuthorizedClientProviderBuilder.builder()
-                .authorizationCode()
-                .refreshToken(configurer -> configurer.accessTokenResponseClient(responseClient))
-                .clientCredentials()
-                .password()
-                .build();
-
-        DefaultOAuth2AuthorizedClientManager authorizedClientManager =
-            new DefaultOAuth2AuthorizedClientManager(
-                clientRegistrationRepository, authorizedClientRepository);
-        authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
-        return authorizedClientManager;
+        return new AADOAuth2AuthorizedClientRepository(repo);
     }
 
     @Bean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
-        return new AzureActiveDirectoryOAuth2UserService(properties);
+        return new AADOAuth2UserService(properties);
     }
 
     private AzureClientRegistration createDefaultClient() {
-        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
-        builder.scope(allScopes());
+        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID,
+            AADAuthorizationGrantType.AUTHORIZATION_CODE);
+        Set<String> authorizationCodeScopes = authorizationCodeScopes();
+        builder.scope(authorizationCodeScopes);
         ClientRegistration client = builder.build();
-
-        return new AzureClientRegistration(client, accessTokenScopes());
+        Set<String> accessTokenScopes = accessTokenScopes();
+        if (resourceServerCount(accessTokenScopes) == 0 && resourceServerCount((authorizationCodeScopes)) > 1) {
+            // AAD server will return error if:
+            // 1. authorizationCodeScopes have more than one resource server.
+            // 2. accessTokenScopes have no resource server
+            accessTokenScopes.add(properties.getGraphBaseUri() + "User.Read");
+        }
+        return new AzureClientRegistration(client, accessTokenScopes);
     }
 
-    private Set<String> allScopes() {
+    public static int resourceServerCount(Set<String> scopes) {
+        return (int) scopes.stream()
+                           .filter(scope -> scope.contains("/"))
+                           .map(scope -> scope.substring(0, scope.lastIndexOf('/')))
+                           .distinct()
+                           .count();
+    }
+
+    private Set<String> authorizationCodeScopes() {
         Set<String> result = accessTokenScopes();
-        for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
-            if (!authProperties.isOnDemand()) {
+        for (AuthorizationClientProperties authProperties : properties.getAuthorizationClients().values()) {
+            if (!authProperties.isOnDemand()
+                && isDefaultAuthorizationGrantType(authProperties)) {
                 result.addAll(authProperties.getScopes());
             }
         }
         return result;
     }
 
+    private boolean isDefaultAuthorizationGrantType(AuthorizationClientProperties authProperties) {
+        return authProperties.getAuthorizationGrantType() == null
+            || AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(authProperties.getAuthorizationGrantType());
+    }
+
     private Set<String> accessTokenScopes() {
-        Set<String> result = openidScopes();
+        Set<String> result = Optional.of(properties)
+                                     .map(AADAuthenticationProperties::getAuthorizationClients)
+                                     .map(clients -> clients.get(AZURE_CLIENT_REGISTRATION_ID))
+                                     .map(AuthorizationClientProperties::getScopes)
+                                     .map(Collection::stream)
+                                     .orElseGet(Stream::empty)
+                                     .collect(Collectors.toSet());
+        result.addAll(openidScopes());
         if (properties.allowedGroupsConfigured()) {
-            result.add("https://graph.microsoft.com/User.Read");
+            // The 2 scopes are need to get group name from graph.
+            result.add(properties.getGraphBaseUri() + "User.Read");
+            result.add(properties.getGraphBaseUri() + "Directory.Read.All");
         }
-        addAzureConfiguredScopes(result);
         return result;
     }
 
-    private void addAzureConfiguredScopes(Set<String> result) {
-        AuthorizationProperties azureProperties = properties.getAuthorization().get(AZURE_CLIENT_REGISTRATION_ID);
-        if (azureProperties != null) {
-            result.addAll(azureProperties.getScopes());
-        }
-    }
 
     private Set<String> openidScopes() {
         Set<String> result = new HashSet<>();
         result.add("openid");
         result.add("profile");
 
-        if (!properties.getAuthorization().isEmpty()) {
+        if (!properties.getAuthorizationClients().isEmpty()) {
             result.add("offline_access");
         }
         return result;
@@ -148,20 +143,24 @@ public class AADWebAppConfiguration {
 
     private List<ClientRegistration> createAuthzClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : properties.getAuthorization().keySet()) {
+        for (String name : properties.getAuthorizationClients().keySet()) {
             if (AZURE_CLIENT_REGISTRATION_ID.equals(name)) {
                 continue;
             }
 
-            AuthorizationProperties authz = properties.getAuthorization().get(name);
+            AuthorizationClientProperties authz = properties.getAuthorizationClients().get(name);
             result.add(createClientBuilder(name, authz));
         }
         return result;
     }
 
-    private ClientRegistration createClientBuilder(String id, AuthorizationProperties authz) {
-        ClientRegistration.Builder result = createClientBuilder(id);
+    private ClientRegistration createClientBuilder(String id, AuthorizationClientProperties authz) {
+        ClientRegistration.Builder result = createClientBuilder(id, authz.getAuthorizationGrantType());
         List<String> scopes = authz.getScopes();
+        if (AADAuthorizationGrantType.ON_BEHALF_OF.equals(authz.getAuthorizationGrantType())) {
+            throw new IllegalStateException("Web Application do not support on-behalf-of grant type. id = "
+                + id + ".");
+        }
         if (authz.isOnDemand()) {
             if (!scopes.contains("openid")) {
                 scopes.add("openid");
@@ -174,22 +173,29 @@ public class AADWebAppConfiguration {
         return result.build();
     }
 
-    private ClientRegistration.Builder createClientBuilder(String id) {
+    private ClientRegistration.Builder createClientBuilder(String id, AADAuthorizationGrantType aadAuthorizationGrantType) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
-        result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
+
+        AuthorizationGrantType authorizationGrantType = Optional.ofNullable(aadAuthorizationGrantType)
+            .map(AADAuthorizationGrantType::getValue)
+            .map(AuthorizationGrantType::new)
+            .orElse(AuthorizationGrantType.AUTHORIZATION_CODE);
+        result.authorizationGrantType(authorizationGrantType);
+
+        result.redirectUri("{baseUrl}/login/oauth2/code/");
+        result.userNameAttributeName(properties.getUserNameAttribute());
 
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
-        AuthorizationServerEndpoints endpoints =
-            new AuthorizationServerEndpoints(properties.getAuthorizationServerUri());
-        result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
-        result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
-        result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
+        AADAuthorizationServerEndpoints endpoints =
+            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
+        result.authorizationUri(endpoints.authorizationEndpoint());
+        result.tokenUri(endpoints.tokenEndpoint());
+        result.jwkSetUri(endpoints.jwkSetEndpoint());
 
         Map<String, Object> configurationMetadata = new LinkedHashMap<>();
-        String endSessionEndpoint = endpoints.endSessionEndpoint(properties.getTenantId());
+        String endSessionEndpoint = endpoints.endSessionEndpoint();
         configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
         result.providerConfigurationMetadata(configurationMetadata);
 
@@ -202,31 +208,14 @@ public class AADWebAppConfiguration {
     @Configuration
     @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
-    public static class DefaultAzureOAuth2Configuration extends AzureOAuth2Configuration {
+    public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+            http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated();
         }
     }
-
-    /**
-     * Temp solution to make RefreshTokenGrantRequestEntityConverter take effect.
-     * TODO: remove this logic after spring-security can inject OAuth2AuthorizedClientManager
-     * to OAuth2AuthorizedClientArgumentResolver
-     * issue: https://github.com/spring-projects/spring-security/issues/8700
-     */
-    @Order(HIGHEST_PRECEDENCE)
-    @Configuration
-    public static class AzureWebMvcContext implements WebMvcConfigurer {
-
-        @Autowired
-        OAuth2AuthorizedClientManager clientManager;
-
-        @Override
-        public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-            argumentResolvers.add(new OAuth2AuthorizedClientArgumentResolver(clientManager));
-        }
-    }
-
 }

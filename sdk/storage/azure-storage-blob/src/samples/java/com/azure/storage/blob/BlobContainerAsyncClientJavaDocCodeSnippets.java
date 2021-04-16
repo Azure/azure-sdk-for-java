@@ -423,4 +423,27 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
     }
+
+//    /**
+//     * Code snippet for {@link BlobContainerAsyncClient#rename(String)}
+//     */
+//    public void renameContainer() {
+//        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.rename#String
+//        BlobContainerAsyncClient blobContainerAsyncClient =
+//            client.rename("newContainerName")
+//                .block();
+//        // END: com.azure.storage.blob.BlobContainerAsyncClient.rename#String
+//    }
+//
+//    /**
+//     * Code snippet for {@link BlobContainerAsyncClient#renameWithResponse(BlobContainerRenameOptions)}
+//     */
+//    public void renameContainerWithResponse() {
+//        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
+//        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId("lease-id");
+//        BlobContainerAsyncClient containerClient = client
+//            .renameWithResponse(new BlobContainerRenameOptions( "newContainerName")
+//                    .setRequestConditions(requestConditions)).block().getValue();
+//        // END: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
+//    }
 }

@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
  * values here are set, use the generateSas method on the desired service client to obtain a representation of the SAS
  * which can then be applied to a new client using the .sasToken(String) method on the desired client builder.
  *
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class AccountSasSignatureValues {

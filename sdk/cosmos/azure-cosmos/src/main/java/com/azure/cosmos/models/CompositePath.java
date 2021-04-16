@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Objects;
+
 /**
  * Represents a composite path of the IndexingPolicy in the Azure Cosmos DB database service.
  * A composite path is used in a composite index. For example if you want to run a query like
@@ -109,5 +111,20 @@ public final class CompositePath {
 
     JsonSerializable getJsonSerializable() {
         return this.jsonSerializable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CompositePath that = (CompositePath) o;
+        return Objects.equals(getJsonSerializable(), that.getJsonSerializable());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getJsonSerializable());
     }
 }

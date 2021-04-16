@@ -13,7 +13,10 @@ public enum IpFilterTag {
     DEFAULT("Default"),
 
     /** Enum value XffProxy. */
-    XFF_PROXY("XffProxy");
+    XFF_PROXY("XffProxy"),
+
+    /** Enum value ServiceTag. */
+    SERVICE_TAG("ServiceTag");
 
     /** The actual serialized value for a IpFilterTag instance. */
     private final String value;

@@ -22,7 +22,7 @@ have to be online at the same time.
 - [Java Development Kit (JDK)][java_development_kit] with version 8 or above
 - [Maven][maven]
 - Microsoft Azure subscription
-  - You can create a free account at: https://azure.microsoft.com
+  - You can create a free account at: [https://azure.microsoft.com](https://azure.microsoft.com)
 - Azure Service Bus instance
   - Step-by-step guide for [creating a Service Bus instance using Azure Portal][service_bus_create]
 
@@ -37,7 +37,7 @@ To quickly create the needed Service Bus resources in Azure and to receive a con
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.0</version>
+    <version>7.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -86,13 +86,13 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 - Known Issue: The pom.xml file should list `azure-messaging-servicebus` before `azure-identity` client libraries. This
-  issue is resolved with `azure-identity:1.2.1`. 
+  issue is resolved with `azure-identity:1.2.1`.
   Check [here][known-issue-binarydata-notfound] for more details.
 
 The implemented ways to request a credential are under the `com.azure.identity.credential` package. The sample below
@@ -132,21 +132,22 @@ on which actual message transmission takes place. The namespace often serves as 
 ### Service Bus Clients
 The builder [`ServiceBusClientBuilder`][ServiceBusClientBuilder] is used to create all the Service Bus clients.
 
-* **[`ServiceBusSenderClient`][ServiceBusSenderClient]** A <b>synchronous</b> sender responsible for sending 
+* **[`ServiceBusSenderClient`][ServiceBusSenderClient]** A <b>synchronous</b> sender responsible for sending
 [`ServiceBusMessage`][ServiceBusMessage] to specific queue or topic on Azure Service Bus.
-* **[`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient]** A <b>asynchronous</b> sender responsible for sending 
+* **[`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient]** A <b>asynchronous</b> sender responsible for sending
 [`ServiceBusMessage`][ServiceBusMessage] to specific queue or topic on Azure Service Bus.
-* **[`ServiceBusReceiverClient`][ServiceBusReceiverClient]** A <b>synchronous</b> receiver responsible for receiving 
+* **[`ServiceBusReceiverClient`][ServiceBusReceiverClient]** A <b>synchronous</b> receiver responsible for receiving
  [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topic on Azure Service Bus.
-* **[`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient]** A <b>asynchronous</b> receiver responsible for 
+* **[`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient]** A <b>asynchronous</b> receiver responsible for
 receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topic on Azure Service Bus.
 
 ## Examples
  - [Send messages](#send-messages)
  - [Receive messages and renew lock](#receive-messages-and-renew-lock)
  - [Settle messages](#settle-messages)
- - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics) 
+ - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics)
  - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
+ - [Sharing a connection between clients](#sharing-of-connection-between-clients)
 ### Send messages
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or a synchronous
@@ -258,8 +259,8 @@ In non-session case, you would use the sub builder `processor()`. In case of ses
 ### Create a dead-letter queue Receiver
 
 Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, called a dead-letter queue (DLQ).
-The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed independent 
-of the main entity. For session enabled or non-session queue or topic subscriptions, the dead-letter receiver can be 
+The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed independent
+of the main entity. For session enabled or non-session queue or topic subscriptions, the dead-letter receiver can be
 created the same way as shown below. Learn more about dead-letter queue [here][dead-letter-queue].
 
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L202-L208 -->
@@ -273,6 +274,24 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .buildClient();
 ```
 
+### Sharing of connection between clients
+The creation of physical connection to Service Bus requires resources. An application should share the connection  
+between clients which can be achieved by sharing the top level builder as shown below.
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L247-L258 -->
+```java
+    ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
+        .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>");
+    // Create receiver and sender which will share the connection.
+    ServiceBusReceiverClient receiver = sharedConnectionBuilder
+        .receiver()
+        .queueName("<< QUEUE NAME >>")
+        .buildClient();
+    ServiceBusSenderClient sender = sharedConnectionBuilder
+        .sender()
+        .queueName("<< QUEUE NAME >>")
+        .buildClient();
+}
+```
 ## Troubleshooting
 
 ### Enable client logging
@@ -311,8 +330,8 @@ java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 
 This is a general exception for AMQP related failures, which includes the AMQP errors as `ErrorCondition` and the
 context that caused this exception as `AmqpErrorContext`. `isTransient` is a boolean indicating if the exception is a
-transient error or not. If a transient AMQP exception occurs, the client library retries the operation as many times 
-as the [AmqpRetryOptons][AmqpRetryOptons] allows. Afterwords, the operation fails and an exception is propagated back 
+transient error or not. If a transient AMQP exception occurs, the client library retries the operation as many times
+as the [AmqpRetryOptons][AmqpRetryOptons] allows. Afterwords, the operation fails and an exception is propagated back
 to the user.
 
 [`AmqpErrorCondition`][AmqpErrorCondition] contains error conditions common to the AMQP protocol and used by Azure

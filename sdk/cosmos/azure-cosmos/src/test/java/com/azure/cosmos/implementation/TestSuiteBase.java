@@ -134,7 +134,7 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
         logger.info("beforeSuite Started");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
@@ -151,7 +151,7 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
         logger.info("afterSuite Started");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
@@ -499,12 +499,13 @@ public class TestSuiteBase extends DocumentClientTest {
 
     public static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setPartitionKey(new PartitionKey(docId));
+        PartitionKey pk = new PartitionKey(docId);
+        options.setPartitionKey(pk);
         List<Document> res = client
                 .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
                 .single().block().getResults();
         if (!res.isEmpty()) {
-            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId));
+            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk);
         }
     }
 
@@ -521,8 +522,10 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
-    public static void deleteDocument(AsyncDocumentClient client, String documentLink) {
-        client.deleteDocument(documentLink, null).block();
+    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk) {
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(pk);
+        client.deleteDocument(documentLink, options).block();
     }
 
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {

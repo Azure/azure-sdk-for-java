@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobAccessPolicy
@@ -664,6 +667,171 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
+    }
+
+    def "can use sas to authenticate"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
+        if (testMode == TestMode.RECORD) {
+            recordPolicy = interceptorManager.getRecordPolicy()
+        }
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(blobName)
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(blobName)
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+            .blobName(blobName)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(blobName)
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildBlockBlobClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(blobName)
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildBlockBlobClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+            .blobName(blobName)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildBlockBlobClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
     }
 
     BlobServiceSasSignatureValues generateValues(BlobSasPermission permission) {

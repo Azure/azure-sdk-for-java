@@ -43,8 +43,8 @@ public class RecognizeCustomFormsAsyncWithSelectionMarks {
             .buildAsyncClient();
 
         // The form you are recognizing must be of the same type as the forms the custom model was trained on
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-                                       + "forms/selectionMarkForm.pdf");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+                                       + "sample-forms/forms/selectionMarkForm.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller;
@@ -73,7 +73,7 @@ public class RecognizeCustomFormsAsyncWithSelectionMarks {
                 System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
                 System.out.printf("Form type: %s%n", form.getFormType());
                 System.out.printf("Form has form type confidence : %.2f%n", form.getFormTypeConfidence());
-                System.out.printf("Form was analyzed with model with ID: ", form.getModelId());
+                System.out.printf("Form was analyzed with model with ID: %s%n", form.getModelId());
                 form.getFields().forEach((label, formField) -> {
                     System.out.printf("Field '%s' has label '%s' with confidence score of %.2f.%n", label,
                         formField.getLabelData().getText(),

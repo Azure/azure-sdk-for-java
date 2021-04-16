@@ -10,7 +10,7 @@ import java.util.List;
 /** An immutable client-side representation of ExportExecutionListResult. */
 public interface ExportExecutionListResult {
     /**
-     * Gets the value property: A list of export executions.
+     * Gets the value property: The list of export executions.
      *
      * @return the value value.
      */

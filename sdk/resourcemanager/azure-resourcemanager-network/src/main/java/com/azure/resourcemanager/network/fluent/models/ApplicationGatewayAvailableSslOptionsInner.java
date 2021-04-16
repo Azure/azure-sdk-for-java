@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Response for ApplicationGatewayAvailableSslOptions API service call. */
 @JsonFlatten
@@ -152,6 +153,20 @@ public class ApplicationGatewayAvailableSslOptionsInner extends Resource {
      */
     public ApplicationGatewayAvailableSslOptionsInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayAvailableSslOptionsInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayAvailableSslOptionsInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

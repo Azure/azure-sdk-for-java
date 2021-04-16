@@ -3,6 +3,8 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
@@ -41,7 +43,7 @@ class BuildHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null, endpoint, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
             new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
@@ -93,7 +95,8 @@ class BuildHelperTest extends Specification {
     @Unroll
     def "Custom application id in UA string"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
             new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
@@ -172,7 +175,8 @@ class BuildHelperTest extends Specification {
         headers.add(new Header("User-Agent", "overwritten"))
 
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, new RequestRetryOptions(), BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
             new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
@@ -228,6 +232,115 @@ class BuildHelperTest extends Specification {
         StepVerifier.create(queueClient.getHttpPipeline().send(request(queueClient.getQueueUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+    }
+
+    def "Does not throw on ambiguous credentials, without AzureSasCredential"(){
+        when:
+        new QueueClientBuilder()
+            .endpoint(endpoint)
+            .queueName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "Throws on ambiguous credentials, with AzureSasCredential"() {
+        when:
+        new QueueClientBuilder()
+            .endpoint(endpoint)
+            .queueName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueClientBuilder()
+            .endpoint(endpoint)
+            .queueName("foo")
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueClientBuilder()
+            .endpoint(endpoint)
+            .queueName("foo")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .queueName("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
     }
 
     private static final class FreshDateTestClient implements HttpClient {

@@ -47,6 +47,20 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryDataDiskImage withHostCaching(HostCaching hostCaching) {
+        super.withHostCaching(hostCaching);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryDataDiskImage withSource(GalleryArtifactVersionSource source) {
+        super.withSource(source);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

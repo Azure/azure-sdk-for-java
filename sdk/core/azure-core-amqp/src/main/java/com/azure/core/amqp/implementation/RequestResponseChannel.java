@@ -3,9 +3,9 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -29,16 +29,18 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.SignalType;
+import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -52,26 +54,31 @@ public class RequestResponseChannel implements Disposable {
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final AtomicBoolean hasError = new AtomicBoolean();
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private final FluxSink<AmqpEndpointState> endpointStatesSink =
-        endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
+
+    // The request response channel is closed when both the receive and send link component are disposed of.
+    private final AtomicInteger pendingDisposes = new AtomicInteger(2);
+    private final Sinks.One<Void> closeMono = Sinks.one();
 
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final String replyTo;
     private final MessageSerializer messageSerializer;
+    private final AmqpRetryOptions retryOptions;
     private final ReactorProvider provider;
-    private final Duration operationTimeout;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicLong requestId = new AtomicLong(0);
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
     private final Disposable.Composite subscriptions;
-    private final AmqpRetryPolicy retryPolicy;
     private final SenderSettleMode senderSettleMode;
     private final String linkName;
+    private final String connectionId;
+    private final String activeEndpointTimeoutMessage;
+
+    private volatile AmqpEndpointState sendLinkEndpoint;
+    private volatile AmqpEndpointState receiveLinkEndpoint;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
@@ -88,15 +95,19 @@ public class RequestResponseChannel implements Disposable {
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
-    protected RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
-        String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-        ReactorProvider provider, MessageSerializer messageSerializer,
-        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+    protected RequestResponseChannel(AmqpConnection amqpConnection, String connectionId,
+        String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
+        AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
+        MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
+        ReceiverSettleMode receiverSettleMode) {
+        this.connectionId = connectionId;
         this.linkName = linkName;
+        this.retryOptions = retryOptions;
         this.provider = provider;
-        this.operationTimeout = retryOptions.getTryTimeout();
-        this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.senderSettleMode = senderSettleMode;
+        this.activeEndpointTimeoutMessage = String.format(
+            "RequestResponseChannel connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
+            connectionId, linkName);
 
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
@@ -132,19 +143,37 @@ public class RequestResponseChannel implements Disposable {
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
-                    logger.verbose("{} - Settling message: {}", this.linkName, message.getCorrelationId());
+                    logger.verbose("connectionId[{}], linkName[{}]: Settling message: {}", connectionId, linkName,
+                        message.getCorrelationId());
+
                     settleMessage(message);
                 }),
 
-            receiveLinkHandler.getEndpointStates().subscribe(
-                state -> endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
-                this::handleError, this::dispose),
+            receiveLinkHandler.getEndpointStates().subscribe(state -> {
+                updateEndpointState(null, AmqpEndpointStateUtil.getConnectionState(state));
+            }, error -> {
+                handleError(error, "Error in ReceiveLinkHandler.");
+                onTerminalState("ReceiveLinkHandler");
+            }, () -> {
+                disposeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
+                onTerminalState("ReceiveLinkHandler");
+            }),
 
-            sendLinkHandler.getEndpointStates().subscribe(state ->
-                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
-                this::handleError, this::dispose)
+            sendLinkHandler.getEndpointStates().subscribe(state -> {
+                updateEndpointState(AmqpEndpointStateUtil.getConnectionState(state), null);
+            }, error -> {
+                handleError(error, "Error in SendLinkHandler.");
+                onTerminalState("SendLinkHandler");
+            }, () -> {
+                disposeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
+                onTerminalState("SendLinkHandler");
+            }),
+
+            amqpConnection.getShutdownSignals().next().flatMap(signal -> {
+                logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
+                return disposeAsync(" Shutdown signal received.");
+            }).subscribe()
         );
-
         //@formatter:on
 
         // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
@@ -155,7 +184,8 @@ public class RequestResponseChannel implements Disposable {
                 receiveLink.open();
             });
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
+            throw logger.logExceptionAsError(new RuntimeException(String.format(
+                "connectionId[%s], linkName[%s]: Unable to open send and receive link.", connectionId, linkName), e));
         }
     }
 
@@ -165,18 +195,35 @@ public class RequestResponseChannel implements Disposable {
      * @return The endpoint states for the request/response channel.
      */
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates;
+        return endpointStates.asFlux();
     }
 
     @Override
     public void dispose() {
+        disposeAsync("Dispose called.")
+            .block(retryOptions.getTryTimeout());
+    }
+
+    Mono<Void> disposeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
-            return;
+            return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());
         }
 
-        subscriptions.dispose();
-        sendLink.close();
-        receiveLink.close();
+        return Mono.fromRunnable(() -> {
+            logger.verbose("connectionId[{}] linkName[{}] {}", connectionId, linkName, message);
+
+            try {
+                provider.getReactorDispatcher().invoke(() -> {
+                    sendLink.close();
+                    receiveLink.close();
+                });
+            } catch (IOException | RejectedExecutionException e) {
+                logger.info("connectionId[{}] linkName[{}] Unable to schedule close work. Closing manually.",
+                    connectionId, linkName, e);
+                sendLink.close();
+                receiveLink.close();
+            }
+        }).publishOn(Schedulers.boundedElastic()).then(closeMono.asMono());
     }
 
     @Override
@@ -223,41 +270,43 @@ public class RequestResponseChannel implements Disposable {
         message.setMessageId(messageId);
         message.setReplyTo(replyTo);
 
-        return RetryUtil.withRetry(
-            Mono.when(sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
-                receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)),
-            operationTimeout, retryPolicy)
-            .then(
-                Mono.create(sink -> {
-                    try {
-                        logger.verbose("{} - Scheduling on dispatcher. Message Id {}", linkName, messageId);
-                        unconfirmedSends.putIfAbsent(messageId, sink);
+        final Mono<Void> activeEndpoints = Mono.when(
+            sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
+            receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE));
 
-                        // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
-                        // condition. So, we are forced to use the dispatcher.
-                        provider.getReactorDispatcher().invoke(() -> {
-                            Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
-                                .replace("-", "").getBytes(UTF_8));
+        return RetryUtil.withRetry(activeEndpoints, retryOptions, activeEndpointTimeoutMessage)
+            .then(Mono.create(sink -> {
+                try {
+                    logger.verbose("connectionId[{}], linkName[{}]: Scheduling on dispatcher. MessageId[{}]",
+                        connectionId, linkName, messageId);
+                    unconfirmedSends.putIfAbsent(messageId, sink);
 
-                            if (deliveryState != null) {
-                                logger.verbose("{} - Setting delivery state as [{}].", linkName, deliveryState);
-                                delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
-                                delivery.disposition(deliveryState);
-                            }
+                    // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
+                    // condition. So, we are forced to use the dispatcher.
+                    provider.getReactorDispatcher().invoke(() -> {
+                        final Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
+                            .replace("-", "").getBytes(UTF_8));
 
-                            final int payloadSize = messageSerializer.getSize(message)
-                                + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
-                            final byte[] bytes = new byte[payloadSize];
-                            final int encodedSize = message.encode(bytes, 0, payloadSize);
-                            receiveLink.flow(1);
-                            sendLink.send(bytes, 0, encodedSize);
-                            delivery.settle();
-                            sendLink.advance();
-                        });
-                    } catch (IOException e) {
-                        sink.error(e);
-                    }
-                }));
+                        if (deliveryState != null) {
+                            logger.verbose("connectionId[{}], linkName[{}]: Setting delivery state as [{}].",
+                                connectionId, linkName, deliveryState);
+                            delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
+                            delivery.disposition(deliveryState);
+                        }
+
+                        final int payloadSize = messageSerializer.getSize(message)
+                            + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+                        final byte[] bytes = new byte[payloadSize];
+                        final int encodedSize = message.encode(bytes, 0, payloadSize);
+                        receiveLink.flow(1);
+                        sendLink.send(bytes, 0, encodedSize);
+                        delivery.settle();
+                        sendLink.advance();
+                    });
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            }));
     }
 
     /**
@@ -292,24 +341,65 @@ public class RequestResponseChannel implements Disposable {
 
         if (sink == null) {
             int size = unconfirmedSends.size();
-            logger.warning("{} - Received delivery without pending messageId[{}]. Size[{}]", linkName, id, size);
+            logger.warning("connectionId[{}] linkName[{}] Received delivery without pending messageId[{}]. size[{}]",
+                connectionId, linkName, id, size);
             return;
         }
 
         sink.success(message);
     }
 
-    private void handleError(Throwable error) {
+    private void handleError(Throwable error, String message) {
         if (hasError.getAndSet(true)) {
             return;
         }
 
-        endpointStatesSink.error(error);
-        logger.error("{} - Exception in RequestResponse links. Disposing and clearing unconfirmed sends.", linkName,
+        logger.error("connectionId[{}] linkName[{}] {} Disposing unconfirmed sends.", connectionId, linkName, message,
             error);
-        dispose();
+
+        endpointStates.emitError(error, (signalType, emitResult) -> {
+            logger.warning("connectionId[{}] linkName[{}] signal[{}] result[{}] Could not emit error to sink.",
+                connectionId, linkName, signalType, emitResult);
+            return false;
+        });
 
         unconfirmedSends.forEach((key, value) -> value.error(error));
         unconfirmedSends.clear();
+
+        disposeAsync("Disposing channel due to error.").subscribe();
+    }
+
+    private void onTerminalState(String handlerName) {
+        final int remaining = pendingDisposes.decrementAndGet();
+        logger.verbose("connectionId[{}] linkName[{}]: {} disposed. Remaining: {}",
+            connectionId, linkName, handlerName, remaining);
+
+        if (remaining == 0) {
+            subscriptions.dispose();
+            closeMono.emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                handlerName + ". Error closing mono."));
+        }
+    }
+
+    private boolean onEmitSinkFailure(SignalType signalType, Sinks.EmitResult emitResult, String message) {
+        logger.verbose("connectionId[{}] linkName[{}] signal[{}] result[{}] {}",
+            connectionId, linkName, signalType, emitResult, message);
+
+        return false;
+    }
+
+    private synchronized void updateEndpointState(AmqpEndpointState newSendLink, AmqpEndpointState newReceiveLink) {
+        if (newSendLink != null) {
+            sendLinkEndpoint = newSendLink;
+        } else if (newReceiveLink != null) {
+            receiveLinkEndpoint = newReceiveLink;
+        }
+
+        logger.verbose("connectionId[{}] linkName[{}] sendState[{}] receiveState[{}] Updating endpoint states.",
+            connectionId, linkName, sendLinkEndpoint, receiveLinkEndpoint);
+
+        if (sendLinkEndpoint == receiveLinkEndpoint) {
+            endpointStates.emitNext(sendLinkEndpoint, Sinks.EmitFailureHandler.FAIL_FAST);
+        }
     }
 }

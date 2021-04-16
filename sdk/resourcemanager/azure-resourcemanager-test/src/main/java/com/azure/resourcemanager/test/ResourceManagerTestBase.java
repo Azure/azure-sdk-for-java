@@ -23,6 +23,8 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -37,13 +39,22 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivilegedAction;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Test base for resource manager SDK.
@@ -64,24 +75,16 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(
         ZERO_TENANT,
         ZERO_SUBSCRIPTION,
-        new AzureEnvironment(
-            new HashMap<String, String>() {
-                {
-                    put("managementEndpointUrl", PLAYBACK_URI);
-                    put("resourceManagerEndpointUrl", PLAYBACK_URI);
-                    put("sqlManagementEndpointUrl", PLAYBACK_URI);
-                    put("galleryEndpointUrl", PLAYBACK_URI);
-                    put("activeDirectoryEndpointUrl", PLAYBACK_URI);
-                    put("activeDirectoryResourceId", PLAYBACK_URI);
-                    put("activeDirectoryGraphResourceId", PLAYBACK_URI);
-                }}));
+        new AzureEnvironment(Arrays.stream(AzureEnvironment.Endpoint.values())
+            .collect(Collectors.toMap(AzureEnvironment.Endpoint::identifier, endpoint -> PLAYBACK_URI)))
+    );
     private static final OutputStream EMPTY_OUTPUT_STREAM = new OutputStream() {
         @Override
         public void write(int b) {
         }
     };
 
-    private final ClientLogger logger = new ClientLogger(ResourceManagerTestBase.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestBase.class);
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
@@ -100,8 +103,39 @@ public abstract class ResourceManagerTestBase extends TestBase {
     public static String password() {
         // do not record
         String password = new ResourceNamer("").randomName("Pa5$", 12);
-        new ClientLogger(ResourceManagerTestBase.class).info("Password: {}", password);
+        LOGGER.info("Password: {}", password);
         return password;
+    }
+
+    private static String sshPublicKey;
+
+    /**
+     * @return a SSH public key
+     */
+    public static String sshPublicKey() {
+        if (sshPublicKey == null) {
+            try {
+                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+                keyGen.initialize(1024);
+                KeyPair pair = keyGen.generateKeyPair();
+                PublicKey publicKey = pair.getPublic();
+
+                RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
+                ByteArrayOutputStream byteOs = new ByteArrayOutputStream();
+                DataOutputStream dos = new DataOutputStream(byteOs);
+                dos.writeInt("ssh-rsa".getBytes(StandardCharsets.US_ASCII).length);
+                dos.write("ssh-rsa".getBytes(StandardCharsets.US_ASCII));
+                dos.writeInt(rsaPublicKey.getPublicExponent().toByteArray().length);
+                dos.write(rsaPublicKey.getPublicExponent().toByteArray());
+                dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
+                dos.write(rsaPublicKey.getModulus().toByteArray());
+                String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
+                sshPublicKey = "ssh-rsa " + publicKeyEncoded;
+            } catch (NoSuchAlgorithmException | IOException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
+            }
+        }
+        return sshPublicKey;
     }
 
     protected TokenCredential credentialFromFile() {
@@ -140,10 +174,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         } catch (Exception e) {
             if (isPlaybackMode()) {
                 httpLogDetailLevel = HttpLogDetailLevel.NONE;
-                logger.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{AZURE_TEST_LOG_LEVEL});
+                LOGGER.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{AZURE_TEST_LOG_LEVEL});
             } else {
                 httpLogDetailLevel = HttpLogDetailLevel.BODY_AND_HEADERS;
-                logger.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{AZURE_TEST_LOG_LEVEL});
+                LOGGER.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{AZURE_TEST_LOG_LEVEL});
             }
         }
 
@@ -179,7 +213,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 try {
                     testAuthFile = AuthFile.parse(credFile);
                 } catch (IOException e) {
-                    throw logger.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format."));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format."));
                 }
                 credential = testAuthFile.getCredential();
                 testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());
@@ -190,7 +224,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
                 String subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
                 if (clientId == null || tenantId == null || clientSecret == null || subscriptionId == null) {
-                    throw logger.logExceptionAsError(
+                    throw LOGGER.logExceptionAsError(
                         new IllegalArgumentException("When running tests in record mode either 'AZURE_AUTH_LOCATION' or 'AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET and AZURE_SUBSCRIPTION_ID' needs to be set"));
                 }
 
@@ -219,7 +253,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
             textReplacementRules.put(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
-            textReplacementRules.put(AzureEnvironment.AZURE.getGraphEndpoint(), PLAYBACK_URI + "/");
+            textReplacementRules.put(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint(), PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
         }
         initializeClients(httpPipeline, testProfile);
@@ -310,9 +344,9 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 }
             }
         } catch (IllegalAccessException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         } catch (NoSuchFieldException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 
@@ -346,7 +380,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
             | IllegalAccessException
             | InstantiationException
             | InvocationTargetException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 

@@ -76,6 +76,13 @@ public final class VirtualMachineCaptureResultInner extends SubResource {
         return this.resources;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineCaptureResultInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
