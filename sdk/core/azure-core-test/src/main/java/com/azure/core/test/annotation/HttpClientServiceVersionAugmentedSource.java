@@ -54,6 +54,19 @@ public @interface HttpClientServiceVersionAugmentedSource {
     String[] serviceVersions() default {};
 
     /**
+     * Flag that determines if all service versions should be used.
+     * <p>
+     * If this is set to true it overrides the configuration set in {@link #serviceVersions()}. By default this is
+     * false.
+     * <p>
+     * When {@link TestMode} is {@link TestMode#PLAYBACK} this value is ignored as playback always runs against the
+     * latest service version.
+     *
+     * @return A flag indicating if all service versions will be used in testing.
+     */
+    boolean useAllServiceVersions() default false;
+
+    /**
      * The class that represents the service version type used by the test method.
      * <p>
      * This is used to convert the {@link #serviceVersions()} into their {@link ServiceVersion} type.

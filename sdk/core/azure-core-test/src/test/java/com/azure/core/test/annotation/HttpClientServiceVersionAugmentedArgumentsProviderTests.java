@@ -3,6 +3,7 @@
 
 package com.azure.core.test.annotation;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.ServiceVersion;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.commons.PreconditionViolationException;
+import reactor.core.publisher.Mono;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +23,13 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.azure.core.test.annotation.AzureTestingServiceVersion.ALPHA;
+import static com.azure.core.test.annotation.AzureTestingServiceVersion.BETA;
+import static com.azure.core.test.annotation.AzureTestingServiceVersion.GA;
 import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.convertToArguments;
+import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.createFullPermutations;
+import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.createHttpServiceVersionPermutations;
+import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.createNonHttpPermutations;
 import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.getServiceVersions;
 import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.invokeSupplierMethod;
 import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.validateSourceSupplier;
@@ -39,56 +46,57 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link HttpClientServiceVersionAugmentedArgumentsProvider}.
  */
+@SuppressWarnings("unused")
 public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
-    /**
-     * Tests {@link HttpClientServiceVersionAugmentedArgumentsProvider#getServiceVersions(String[], boolean, Class)}.
-     */
+
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("getServiceVersionsSupplier")
-    public void getServiceVersionsTest(String[] serviceVersionStrings, boolean useLatestServiceVersionOnly,
-        Class<? extends ServiceVersion> serviceVersionType, List<? extends ServiceVersion> expectedServiceVersions)
+    public void getServiceVersionsTest(String[] serviceVersionStrings, boolean useAllServiceVersions,
+        boolean useLatestServiceVersionOnly, Class<? extends ServiceVersion> serviceVersionType,
+        List<? extends ServiceVersion> expectedServiceVersions)
         throws ReflectiveOperationException {
         List<? extends ServiceVersion> actualServiceVersions = getServiceVersions(serviceVersionStrings,
-            useLatestServiceVersionOnly, serviceVersionType);
+            useAllServiceVersions, useLatestServiceVersionOnly, serviceVersionType);
 
         assertEquals(expectedServiceVersions.size(), actualServiceVersions.size());
-        for (int i = 0; i < expectedServiceVersions.size(); i++) {
-            assertEquals(expectedServiceVersions.get(i), actualServiceVersions.get(i));
-        }
+        assertTrue(actualServiceVersions.containsAll(expectedServiceVersions));
     }
 
     private static Stream<Arguments> getServiceVersionsSupplier() {
-        String[] noServiceVersions = new String[0];
         Class<? extends ServiceVersion> serviceVersionType = AzureTestingServiceVersion.class;
 
-        List<? extends ServiceVersion> gaOnly = Collections.singletonList(AzureTestingServiceVersion.GA);
-        List<? extends ServiceVersion> alphaAndBeta = Arrays.asList(AzureTestingServiceVersion.ALPHA,
-            AzureTestingServiceVersion.BETA);
-
-        String[] alphaAndBetaStrings = alphaAndBeta.stream().map(ServiceVersion::getVersion).toArray(String[]::new);
-
         return Stream.of(
-            // No service versions and not using latest only defaults to latest.
-            Arguments.of(noServiceVersions, false, serviceVersionType, gaOnly),
+            // No service versions, not using all versions, and not using latest only defaults to latest.
+            Arguments.of(new String[0], false, false, serviceVersionType, Collections.singletonList(GA)),
 
-            // Service versions are correctly mapped to their values.
-            Arguments.of(alphaAndBetaStrings, false, serviceVersionType, alphaAndBeta),
+            // Service versions not using all versions correctly map to their values.
+            Arguments.of(new String[]{ALPHA.getVersion(), BETA.getVersion()}, false, false, serviceVersionType,
+                Arrays.asList(ALPHA, BETA)),
 
             // Use latest only overrides passed service version strings
-            Arguments.of(alphaAndBetaStrings, true, serviceVersionType, gaOnly)
+            Arguments.of(new String[]{ALPHA.getVersion(), BETA.getVersion()}, false, true, serviceVersionType,
+                Collections.singletonList(GA)),
+
+            // Use all versions overrides the passed service versions.
+            Arguments.of(new String[0], true, false, serviceVersionType, Arrays.asList(ALPHA, BETA, GA)),
+            Arguments.of(new String[]{ALPHA.getVersion(), BETA.getVersion()}, true, false, serviceVersionType,
+                Arrays.asList(ALPHA, BETA, GA)),
+
+            // USe latest only overrides using all service versions.
+            Arguments.of(new String[0], true, true, serviceVersionType, Collections.singletonList(GA))
         );
     }
 
     @Test
     public void nonEnumServiceVersionTypeThrows() {
-        assertThrows(NoSuchMethodException.class, () -> getServiceVersions(new String[] { "ignored" }, false,
+        assertThrows(NoSuchMethodException.class, () -> getServiceVersions(new String[]{"ignored"}, false, false,
             ServiceVersion.class));
     }
 
     @Test
     public void serviceVersionTypeWithoutGetLatestThrows() {
-        assertThrows(NoSuchMethodException.class, () -> getServiceVersions(null, false, ServiceVersion.class));
-        assertThrows(NoSuchMethodException.class, () -> getServiceVersions(new String[] { "ignored" }, true,
+        assertThrows(IllegalStateException.class, () -> getServiceVersions(null, false, false, ServiceVersion.class));
+        assertThrows(IllegalStateException.class, () -> getServiceVersions(new String[]{"ignored"}, false, true,
             ServiceVersion.class));
     }
 
@@ -281,55 +289,219 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
         );
     }
 
-//    static List<Arguments> createHttpServiceVersionPermutations(List<HttpClient> httpClients,
-//        List<? extends ServiceVersion> serviceVersions) {
-//        List<Arguments> arguments = new ArrayList<>();
-//
-//        for (HttpClient httpClient : httpClients) {
-//            for (ServiceVersion serviceVersion : serviceVersions) {
-//                arguments.add(Arguments.of(httpClient, serviceVersion));
-//            }
-//        }
-//
-//        return arguments;
-//    }
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("createHttpServiceVersionPermutationsTestSupplier")
+    public void createHttpServiceVersionPermutationsTest(List<HttpClient> httpClients,
+        List<ServiceVersion> serviceVersions, List<Arguments> expected) {
+        List<Arguments> actual = createHttpServiceVersionPermutations(httpClients, serviceVersions);
 
-//    static List<Arguments> createNonHttpPermutations(List<? extends ServiceVersion> serviceVersions,
-//        List<Arguments> parameterizedTestingValues) {
-//        List<Arguments> arguments = new ArrayList<>();
-//
-//        for (ServiceVersion serviceVersion : serviceVersions) {
-//            for (Arguments parameterizedTestingValue : parameterizedTestingValues) {
-//                arguments.add(prependArguments(serviceVersion, parameterizedTestingValue));
-//            }
-//        }
-//
-//        return arguments;
-//    }
+        assertEquals(expected.size(), actual.size());
 
-//    static List<Arguments> createFullPermutations(List<HttpClient> httpClients,
-//        List<? extends ServiceVersion> serviceVersions, List<Arguments> parameterizedTestingValues) {
-//        List<Arguments> arguments = new ArrayList<>();
-//
-//        List<Arguments> nonHttpArguments = createNonHttpPermutations(serviceVersions, parameterizedTestingValues);
-//
-//        for (HttpClient httpClient : httpClients) {
-//            for (Arguments nonHttpArgument : nonHttpArguments) {
-//                arguments.add(prependArguments(httpClient, nonHttpArgument));
-//            }
-//        }
-//
-//        return arguments;
-//    }
+        for (int i = 0; i < expected.size(); i++) {
+            assertArrayEquals(expected.get(i).get(), actual.get(i).get());
+        }
+    }
 
-//    static Arguments prependArguments(Object prepend, Arguments arguments) {
-//        Object[] previousArgs = arguments.get();
-//        Object[] newArgs = new Object[previousArgs.length + 1];
-//        newArgs[0] = prepend;
-//        System.arraycopy(previousArgs, 0, newArgs, 1, previousArgs.length);
-//
-//        return Arguments.of(newArgs);
-//    }
+    private static Stream<Arguments> createHttpServiceVersionPermutationsTestSupplier() {
+        HttpClient noOpHttpClient = request -> Mono.empty();
+        HttpClient alwaysErrorHttpClient = request -> Mono.error(new RuntimeException("Always errors"));
+
+        ServiceVersion alpha = ALPHA;
+        ServiceVersion beta = BETA;
+        ServiceVersion ga = GA;
+
+        return Stream.of(
+            Arguments.of(Collections.singletonList(noOpHttpClient), Collections.singletonList(alpha),
+                Collections.singletonList(Arguments.arguments(noOpHttpClient, alpha))),
+
+            Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Collections.singletonList(alpha),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha),
+                    Arguments.of(alwaysErrorHttpClient, alpha)
+                )),
+
+            Arguments.of(Collections.singletonList(noOpHttpClient), Arrays.asList(alpha, beta, ga),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha),
+                    Arguments.of(noOpHttpClient, beta),
+                    Arguments.of(noOpHttpClient, ga)
+                )),
+
+            Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Arrays.asList(alpha, beta, ga),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha),
+                    Arguments.of(noOpHttpClient, beta),
+                    Arguments.of(noOpHttpClient, ga),
+
+                    Arguments.of(alwaysErrorHttpClient, alpha),
+                    Arguments.of(alwaysErrorHttpClient, beta),
+                    Arguments.of(alwaysErrorHttpClient, ga)
+                ))
+        );
+    }
+
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("createNonHttpPermutationsTestSupplier")
+    public void createNonHttpPermutationsTest(List<ServiceVersion> serviceVersions,
+        List<Arguments> parameterizedTestingValues, List<Arguments> expected) {
+        List<Arguments> actual = createNonHttpPermutations(serviceVersions, parameterizedTestingValues);
+
+        assertEquals(expected.size(), actual.size());
+
+        for (int i = 0; i < expected.size(); i++) {
+            assertArrayEquals(expected.get(i).get(), actual.get(i).get());
+        }
+    }
+
+    private static Stream<Arguments> createNonHttpPermutationsTestSupplier() {
+        ServiceVersion alpha = ALPHA;
+        ServiceVersion beta = BETA;
+        ServiceVersion ga = GA;
+
+        Arguments simpleArguments = Arguments.of(1, 2);
+        Arguments complexArguments = Arguments.of(1, "1", true);
+
+        return Stream.of(
+            Arguments.of(Collections.singletonList(alpha), Collections.singletonList(simpleArguments),
+                Collections.singletonList(Arguments.of(alpha, 1, 2))),
+
+            Arguments.of(Arrays.asList(alpha, beta, ga), Collections.singletonList(simpleArguments),
+                Arrays.asList(
+                    Arguments.of(alpha, 1, 2),
+                    Arguments.of(beta, 1, 2),
+                    Arguments.of(ga, 1, 2)
+                )),
+
+            Arguments.of(Collections.singletonList(alpha), Arrays.asList(simpleArguments, complexArguments),
+                Arrays.asList(
+                    Arguments.of(alpha, 1, 2),
+                    Arguments.of(alpha, 1, "1", true)
+                )),
+
+            Arguments.of(Arrays.asList(alpha, beta, ga), Arrays.asList(simpleArguments, complexArguments),
+                Arrays.asList(
+                    Arguments.of(alpha, 1, 2),
+                    Arguments.of(alpha, 1, "1", true),
+
+                    Arguments.of(beta, 1, 2),
+                    Arguments.of(beta, 1, "1", true),
+
+                    Arguments.of(ga, 1, 2),
+                    Arguments.of(ga, 1, "1", true)
+                ))
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("createFullPermutationsTestSupplier")
+    public void createFullPermutationsTest(List<HttpClient> httpClients, List<ServiceVersion> serviceVersions,
+        List<Arguments> parameterizedTestingValues, List<Arguments> expected) {
+        List<Arguments> actual = createFullPermutations(httpClients, serviceVersions, parameterizedTestingValues);
+
+        assertEquals(expected.size(), actual.size());
+
+        for (int i = 0; i < expected.size(); i++) {
+            assertArrayEquals(expected.get(i).get(), actual.get(i).get());
+        }
+    }
+
+    private static Stream<Arguments> createFullPermutationsTestSupplier() {
+        HttpClient noOpHttpClient = request -> Mono.empty();
+        HttpClient alwaysErrorHttpClient = request -> Mono.error(new RuntimeException("Always errors"));
+
+        ServiceVersion alpha = ALPHA;
+        ServiceVersion beta = BETA;
+        ServiceVersion ga = GA;
+
+        Arguments simpleArguments = Arguments.of(1, 2);
+        Arguments complexArguments = Arguments.of(1, "1", true);
+
+        return Stream.of(
+            Arguments.of(Collections.singletonList(noOpHttpClient), Collections.singletonList(alpha),
+                Collections.singletonList(simpleArguments),
+                Collections.singletonList(Arguments.of(noOpHttpClient, alpha, 1, 2))),
+
+            Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Collections.singletonList(alpha),
+                Collections.singletonList(simpleArguments),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2)
+                )),
+
+            Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Arrays.asList(alpha, beta, ga),
+                Collections.singletonList(simpleArguments),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(noOpHttpClient, beta, 1, 2),
+                    Arguments.of(noOpHttpClient, ga, 1, 2),
+
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, beta, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, ga, 1, 2)
+                )),
+
+            Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Collections.singletonList(alpha),
+                Arrays.asList(simpleArguments, complexArguments),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(noOpHttpClient, alpha, 1, "1", true),
+
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, "1", true)
+                )),
+
+            Arguments.of(Collections.singletonList(noOpHttpClient), Arrays.asList(alpha, beta, ga),
+                Collections.singletonList(simpleArguments),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(noOpHttpClient, beta, 1, 2),
+                    Arguments.of(noOpHttpClient, ga, 1, 2)
+                )),
+
+            Arguments.of(Collections.singletonList(noOpHttpClient), Arrays.asList(alpha, beta, ga),
+                Arrays.asList(simpleArguments, complexArguments),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(noOpHttpClient, alpha, 1, "1", true),
+
+                    Arguments.of(noOpHttpClient, beta, 1, 2),
+                    Arguments.of(noOpHttpClient, beta, 1, "1", true),
+
+                    Arguments.of(noOpHttpClient, ga, 1, 2),
+                    Arguments.of(noOpHttpClient, ga, 1, "1", true)
+                )),
+
+            Arguments.of(Collections.singletonList(noOpHttpClient), Collections.singletonList(alpha),
+                Arrays.asList(simpleArguments, complexArguments),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(noOpHttpClient, alpha, 1, "1", true)
+                )),
+
+            Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Arrays.asList(alpha, beta, ga),
+                Arrays.asList(simpleArguments, complexArguments),
+                Arrays.asList(
+                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(noOpHttpClient, alpha, 1, "1", true),
+
+                    Arguments.of(noOpHttpClient, beta, 1, 2),
+                    Arguments.of(noOpHttpClient, beta, 1, "1", true),
+
+                    Arguments.of(noOpHttpClient, ga, 1, 2),
+                    Arguments.of(noOpHttpClient, ga, 1, "1", true),
+
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, "1", true),
+
+                    Arguments.of(alwaysErrorHttpClient, beta, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, beta, 1, "1", true),
+
+                    Arguments.of(alwaysErrorHttpClient, ga, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, ga, 1, "1", true)
+                ))
+        );
+    }
 
     /**
      * Dummy method for testing that a non-static, non-{@code Stream<Arguments>} supplier method results in an {@link
@@ -400,5 +572,32 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
      */
     public static Stream<Arguments> staticAndValidReturnType() {
         return Stream.of(Arguments.of(1));
+    }
+
+    /**
+     * Simple method providing a single element Stream containing Arguments.of(1, 2).
+     *
+     * @return Single element Stream.
+     */
+    public static Stream<Arguments> simpleArguments() {
+        return Stream.of(Arguments.of(1, 2));
+    }
+
+    /**
+     * Simple method providing a single element Stream containing Arguments.of(1, "1", true).
+     *
+     * @return Single element Stream.
+     */
+    public static Stream<Arguments> complexArguments() {
+        return Stream.of(Arguments.of(1, "1", true));
+    }
+
+    /**
+     * Simple method providing a multiple element Stream containing simpleArguments() then complexArguments().
+     *
+     * @return Multiple element Stream.
+     */
+    public static Stream<Arguments> multipleArgumentElements() {
+        return Stream.concat(simpleArguments(), complexArguments());
     }
 }

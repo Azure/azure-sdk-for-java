@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 import org.junit.platform.commons.support.ReflectionSupport;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -22,18 +23,19 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.BaseStream;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 final class HttpClientServiceVersionAugmentedArgumentsProvider
     implements ArgumentsProvider, AnnotationConsumer<HttpClientServiceVersionAugmentedSource> {
     private static final TestMode TEST_MODE = ImplUtils.getTestMode();
+
+    private static final Map<Class<? extends ServiceVersion>, ServiceVersion> CLASS_TO_LATEST_SERVICE_VERSION
+        = new ConcurrentHashMap<>();
 
     private static final Map<Class<? extends ServiceVersion>, Map<String, ServiceVersion>>
         CLASS_TO_MAP_STRING_SERVICE_VERSION = new ConcurrentHashMap<>();
@@ -47,11 +49,12 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
     private boolean noSourceSupplier;
 
     private String[] serviceVersions;
+    private boolean useAllServiceVersions;
     private boolean useLatestServiceVersionOnly;
     private Class<? extends ServiceVersion> serviceVersionType;
 
     private boolean ignoreHttpClients;
-    private boolean useNullHttpClient;
+    private boolean usePlaybackClient;
 
     @Override
     public void accept(HttpClientServiceVersionAugmentedSource annotation) {
@@ -59,29 +62,30 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         this.noSourceSupplier = CoreUtils.isNullOrEmpty(sourceSupplier);
 
         this.serviceVersions = annotation.serviceVersions();
+        this.useAllServiceVersions = annotation.useAllServiceVersions();
         this.useLatestServiceVersionOnly = CoreUtils.isNullOrEmpty(serviceVersions) || TEST_MODE == TestMode.PLAYBACK;
         this.serviceVersionType = annotation.serviceVersionType();
 
         this.ignoreHttpClients = annotation.ignoreHttpClients();
-        this.useNullHttpClient = TEST_MODE == TestMode.PLAYBACK;
+        this.usePlaybackClient = TEST_MODE == TestMode.PLAYBACK;
     }
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
         // If the TEST_MODE is PLAYBACK or HttpClients are being ignored don't use HttpClients.
         List<HttpClient> httpClientsToUse = Collections.singletonList(null);
-        if (!ignoreHttpClients && !useNullHttpClient) {
+        if (!ignoreHttpClients && !usePlaybackClient) {
             httpClientsToUse = TestBase.getHttpClients().collect(Collectors.toList());
         }
 
-        List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(serviceVersions,
+        List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(serviceVersions, useAllServiceVersions,
             useLatestServiceVersionOnly, serviceVersionType);
 
         // If the sourceSupplier isn't provided don't retrieve parameterized testing values.
-        List<Arguments> parameterizedTestingValues = null;
+        List<Arguments> testValues = null;
         if (!noSourceSupplier) {
             Object source = invokeSupplierMethod(context, sourceSupplier);
-            parameterizedTestingValues = convertSupplierSourceToArguments(source);
+            testValues = convertSupplierSourceToArguments(source);
         }
 
         /*
@@ -103,17 +107,15 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
          *    - Use a permutation of HTTP client X service versions X parameterized testing values.
          */
         if (ignoreHttpClients && noSourceSupplier) {
-            return serviceVersionsToUse.stream().map(Arguments::of);
+            return serviceVersionsToUse.stream().map(Arguments::arguments);
         } else if (ignoreHttpClients) {
-            return createNonHttpPermutations(serviceVersionsToUse, parameterizedTestingValues).stream();
+            return createNonHttpPermutations(serviceVersionsToUse, testValues).stream();
         } else if (noSourceSupplier) {
             return createHttpServiceVersionPermutations(httpClientsToUse, serviceVersionsToUse).stream();
         } else if (CoreUtils.isNullOrEmpty(httpClientsToUse)) {
-            return createFullPermutations(Collections.singletonList(null), serviceVersionsToUse,
-                parameterizedTestingValues).stream();
+            return createFullPermutations(Collections.singletonList(null), serviceVersionsToUse, testValues).stream();
         } else {
-            return createFullPermutations(httpClientsToUse, serviceVersionsToUse, parameterizedTestingValues)
-                .stream();
+            return createFullPermutations(httpClientsToUse, serviceVersionsToUse, testValues).stream();
         }
     }
 
@@ -124,11 +126,19 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
      * 'getLatest' will be the only value returned.
      */
     static List<? extends ServiceVersion> getServiceVersions(String[] serviceVersionStrings,
-        boolean useLatestServiceVersionOnly, Class<? extends ServiceVersion> serviceVersionType)
-        throws ReflectiveOperationException {
-        if (CoreUtils.isNullOrEmpty(serviceVersionStrings) || useLatestServiceVersionOnly) {
-            Method getLatest = serviceVersionType.getMethod("getLatest");
-            return Collections.singletonList((ServiceVersion) getLatest.invoke(serviceVersionType));
+        boolean useAllServiceVersions, boolean useLatestServiceVersionOnly,
+        Class<? extends ServiceVersion> serviceVersionType) throws ReflectiveOperationException {
+
+        if (useLatestServiceVersionOnly || (CoreUtils.isNullOrEmpty(serviceVersionStrings) && !useAllServiceVersions)) {
+            return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.computeIfAbsent(serviceVersionType,
+                type -> {
+                    try {
+                        return (ServiceVersion) serviceVersionType.getMethod("getLatest").invoke(serviceVersionType);
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                        throw new IllegalStateException("ServiceVersion class doesn't have a getLatest method. Class: "
+                            + serviceVersionType);
+                    }
+                }));
         }
 
         // Assumption that the service version type is an enum.
@@ -138,6 +148,10 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         Map<String, ServiceVersion> stringToServiceVersion = CLASS_TO_MAP_STRING_SERVICE_VERSION
             .computeIfAbsent(serviceVersionType, type -> Arrays.stream(serviceVersions)
                 .collect(Collectors.toMap(ServiceVersion::getVersion, sv -> sv)));
+
+        if (useAllServiceVersions) {
+            return new ArrayList<>(stringToServiceVersion.values());
+        }
 
         return Arrays.stream(serviceVersionStrings)
             .map(stringToServiceVersion::get)
@@ -227,7 +241,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
 
         for (ServiceVersion serviceVersion : serviceVersions) {
             for (Arguments parameterizedTestingValue : parameterizedTestingValues) {
-                arguments.add(prependArguments(serviceVersion, parameterizedTestingValue));
+                arguments.add(prependArguments(serviceVersion, null, parameterizedTestingValue));
             }
         }
 
@@ -238,22 +252,29 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         List<? extends ServiceVersion> serviceVersions, List<Arguments> parameterizedTestingValues) {
         List<Arguments> arguments = new ArrayList<>();
 
-        List<Arguments> nonHttpArguments = createNonHttpPermutations(serviceVersions, parameterizedTestingValues);
-
         for (HttpClient httpClient : httpClients) {
-            for (Arguments nonHttpArgument : nonHttpArguments) {
-                arguments.add(prependArguments(httpClient, nonHttpArgument));
+            for (ServiceVersion serviceVersion : serviceVersions) {
+                for (Arguments parameterizedTestingValue : parameterizedTestingValues) {
+                    arguments.add(prependArguments(httpClient, serviceVersion, parameterizedTestingValue));
+                }
             }
         }
 
         return arguments;
     }
 
-    static Arguments prependArguments(Object prepend, Arguments arguments) {
+    private static Arguments prependArguments(Object prepend, Object optionalPrepend, Arguments arguments) {
+        boolean hasOptionalPrepend = optionalPrepend != null;
+
         Object[] previousArgs = arguments.get();
-        Object[] newArgs = new Object[previousArgs.length + 1];
+        Object[] newArgs = new Object[previousArgs.length + 1 + (hasOptionalPrepend ? 1 : 0)];
+
         newArgs[0] = prepend;
-        System.arraycopy(previousArgs, 0, newArgs, 1, previousArgs.length);
+        if (hasOptionalPrepend) {
+            newArgs[1] = optionalPrepend;
+        }
+
+        System.arraycopy(previousArgs, 0, newArgs, hasOptionalPrepend ? 2 : 1, previousArgs.length);
 
         return Arguments.of(newArgs);
     }

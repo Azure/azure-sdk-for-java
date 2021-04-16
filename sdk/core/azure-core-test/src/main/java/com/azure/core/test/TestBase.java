@@ -21,22 +21,42 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
-    private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+
+    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
+        .get(AZURE_TEST_HTTP_CLIENTS);
+    private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
+    private static final List<String> CONFIGURED_HTTP_CLIENTS;
+
+    static {
+        CONFIGURED_HTTP_CLIENTS = new ArrayList<>();
+
+        if (DEFAULT_TO_NETTY) {
+            CONFIGURED_HTTP_CLIENTS.add("netty");
+        } else {
+            for (String configuredHttpClient : CONFIGURED_HTTP_CLIENTS_TO_TEST.split(",")) {
+                if (CoreUtils.isNullOrEmpty(configuredHttpClient)) {
+                    continue;
+                }
+
+                CONFIGURED_HTTP_CLIENTS.add(configuredHttpClient.trim().toLowerCase(Locale.ROOT));
+            }
+        }
+    }
 
     private static TestMode testMode;
 
@@ -52,8 +72,8 @@ public abstract class TestBase implements BeforeEachCallback {
     final TestIterationContext testIterationContext = new TestIterationContext();
 
     /**
-     * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
-     * variable. If it is not set, {@link TestMode#PLAYBACK}
+     * Before tests are executed, determines the test mode by reading the {@code AZURE_TEST_MODE} environment variable.
+     * If it is not set, {@link TestMode#PLAYBACK}
      */
     @BeforeAll
     public static void setupClass() {
@@ -152,11 +172,19 @@ public abstract class TestBase implements BeforeEachCallback {
          * In LIVE or RECORD mode load all HttpClient instances and let the test run determine which HttpClient
          * implementation it will use.
          */
-        return (testMode == TestMode.PLAYBACK)
-            ? Stream.of(new HttpClient[]{null})
-            : StreamSupport.stream(ServiceLoader.load(HttpClientProvider.class).spliterator(), false)
-                .map(HttpClientProvider::createInstance)
-                .filter(TestBase::shouldClientBeTested);
+        if (testMode == TestMode.PLAYBACK) {
+            return Stream.of();
+        }
+
+        List<HttpClient> httpClientsToTest = new ArrayList<>();
+        for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
+            if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
+                .toLowerCase(Locale.ROOT))) {
+                httpClientsToTest.add(httpClientProvider.createInstance());
+            }
+        }
+
+        return httpClientsToTest.stream();
     }
 
     /**
@@ -176,17 +204,15 @@ public abstract class TestBase implements BeforeEachCallback {
      * @return Boolean indicates whether filters out the client or not.
      */
     public static boolean shouldClientBeTested(HttpClient client) {
-        String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
-        if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
-            return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
-        }
-        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
+        return includeHttpClientOrHttpClientProvider(client.getClass().getSimpleName().toLowerCase(Locale.ROOT));
+    }
+
+    private static boolean includeHttpClientOrHttpClientProvider(String name) {
+        if (CONFIGURED_HTTP_CLIENTS_TO_TEST.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
             return true;
         }
-        String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
-        return Arrays.stream(configuredHttpClientList).anyMatch(configuredHttpClient ->
-            client.getClass().getSimpleName().toLowerCase(Locale.ROOT)
-                .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
+
+        return CONFIGURED_HTTP_CLIENTS.stream().anyMatch(name::contains);
     }
 
     /**
