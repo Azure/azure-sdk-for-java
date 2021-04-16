@@ -53,7 +53,7 @@ com.azure:azure-communication-common;1.0.0;1.0.1
 com.azure:azure-communication-sms;1.0.0;1.0.1
 com.azure:azure-communication-identity;1.0.0;1.0.1
 com.azure:azure-communication-phonenumbers;1.0.0-beta.7;1.0.0-beta.8
-com.azure:azure-containers-containerregistry;1.0.0.beta.1;1.0.0-beta.1
+com.azure:azure-containers-containerregistry;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-core;1.15.0;1.16.0-beta.1
 com.azure:azure-core-amqp;2.0.4;2.1.0-beta.2
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
@@ -246,6 +246,13 @@ com.azure.resourcemanager:azure-resourcemanager-batchai;1.0.0-beta.1;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-databox;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-devspaces;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-devtestlabs;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.1;1.0.0-beta.2
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

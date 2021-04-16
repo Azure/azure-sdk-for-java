@@ -756,7 +756,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.collectionCache,
             null,
             resourceLink,
-            options);
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(options));
 
         return ObservableHelper.fluxInlineIfPossibleAsObs(
             () -> createQueryInternal(resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, activityId),
@@ -1207,6 +1207,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return headers;
+    }
+
+    public IRetryPolicyFactory getResetSessionTokenRetryPolicy() {
+        return this.resetSessionTokenRetryPolicy;
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
@@ -2312,7 +2316,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.collectionCache,
                 null,
                 resourceLink,
-                effectiveOptions);
+                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(effectiveOptions));
 
             return ObservableHelper.fluxInlineIfPossibleAsObs(
                 () -> {
