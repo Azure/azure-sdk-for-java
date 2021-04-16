@@ -381,14 +381,14 @@ public final class ServiceBusClientBuilder {
         synchronized (connectionLock) {
             if (sharedConnection == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
-                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-                final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
+                    final ReactorProvider provider = new ReactorProvider();
+                    final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                    final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                        connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                        ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
                         connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
