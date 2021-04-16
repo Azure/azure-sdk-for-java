@@ -63,6 +63,4 @@ stages:
     EnvVars:
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
-      AZURE_SUBSCRIPTION_ID: $(acs-subscription-id)
-      COMMUNICATION_PHONE_NUMBER: $(communication-livetest-phone-number)
       TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}
