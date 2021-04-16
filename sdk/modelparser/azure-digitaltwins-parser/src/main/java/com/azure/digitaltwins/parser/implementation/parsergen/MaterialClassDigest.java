@@ -29,7 +29,7 @@ public class MaterialClassDigest {
     private Map<Integer, String> badTypeCauseFormat;
     private Map<Integer, String> badTypeActionFormat;
     private Map<String, MaterialPropertyDigest> properties;
-    //TODO: azabbasi: Instance.
+    private InstanceValidationDigest instance;
 
     /**
      * Initializes a new instance of the {@link MaterialClassDigest} class.
@@ -48,6 +48,7 @@ public class MaterialClassDigest {
         this.badTypeActionFormat = new HashMap<>();
         this.badTypeCauseFormat = new HashMap<>();
         this.properties = new HashMap<>();
+
     }
 
     /**
@@ -76,58 +77,121 @@ public class MaterialClassDigest {
         this.badTypeCauseFormat = JsonNodeHelper.getDictionaryOfSingularValues(materialClassObject, DtdlStrings.BAD_TYPE_CAUSE_FORMAT, Integer.class, String.class);
         this.badTypeActionFormat = JsonNodeHelper.getDictionaryOfSingularValues(materialClassObject, DtdlStrings.BAD_TYPE_ACTION_FORMAT, Integer.class, String.class);
         this.properties = findAndCreateProperties(materialClassObject.get(DtdlStrings.PROPERTIES));
+
+        JsonNode instanceNode = materialClassObject.get(DtdlStrings.INSTANCE);
+        this.instance =  instanceNode != null ? new InstanceValidationDigest(instanceNode) : null;
     }
 
+    /**
+     *
+     * @return Gets a list of DTDL versions in which the class has been defined.
+     */
     public List<Integer> getDtdlVersions() {
-        return dtdlVersions;
+        return this.dtdlVersions;
     }
 
+    /**
+     *
+     * @return Gets a value indicating whether the obverse class is to be abstract according to the meta-model.
+     */
     public boolean isAbstract() {
-        return isAbstract;
+        return this.isAbstract;
     }
 
+    /**
+     *
+     * @return Gets a value indicating whether the DTDL type is permitted to be used in a DTDL model.
+     */
     public boolean isOvert() {
-        return isOvert;
+        return this.isOvert;
     }
 
+    /**
+     *
+     * @return Gets a value indicating whether the class is designated as a partition type in the meta-model.
+     */
     public boolean isPartition() {
-        return isPartition;
+        return this.isPartition;
     }
 
+    /**
+     *
+     * @return Gets the parent class of the class.
+     */
     public String getParentClass() {
-        return parentClass;
+        return this.parentClass;
     }
 
+    /**
+     *
+     * @return Gets a list of type URIs of which the class is a sub-type.
+     */
     public List<String> getTypeIds() {
-        return typeIds;
+        return this.typeIds;
     }
 
+    /**
+     *
+     * @return Gets a map that maps from DTDL version to a list of type URIs that are subclasses of the class.
+     */
     public Map<Integer, List<String>> getConcreteSubclasses() {
-        return concreteSubclasses;
+        return this.concreteSubclasses;
     }
 
+    /**
+     *
+     * @return Gets a map that maps from DTDL version to a list of type URIs that are subclasses of the class and which have any instances that are standard elements.
+     */
     public Map<Integer, List<String>> getElementalSubclasses() {
-        return elementalSubclasses;
+        return this.elementalSubclasses;
     }
 
+    /**
+     *
+     * @return Gets a map that maps from DTDL version to a list of type URIs that are subclasses of the class and which are both extensible and material.
+     */
     public Map<Integer, List<String>> getExtensibleMaterialSubclasses() {
-        return extensibleMaterialSubclasses;
+        return this.extensibleMaterialSubclasses;
     }
 
+    /**
+     *
+     * @return Gets a map that maps from DTDL version to a list of IDs of standard elements that are instances of the class.
+     */
     public Map<Integer, List<String>> getStandardElementIds() {
-        return standardElementIds;
+        return this.standardElementIds;
     }
 
+    /**
+     *
+     * @return Gets a map that maps from DTDL version to a string that describes the cause of a bad type error.
+     */
     public Map<Integer, String> getBadTypeCauseFormat() {
-        return badTypeCauseFormat;
+        return this.badTypeCauseFormat;
     }
 
+    /**
+     *
+     * @return Gets a map that maps from DTDL version to a string that describes the action that will resolve a bad type error.
+     */
     public Map<Integer, String> getBadTypeActionFormat() {
-        return badTypeActionFormat;
+        return this.badTypeActionFormat;
     }
 
+    /**
+     *
+     * @return ets a dictionary that maps from property name to a {@link MaterialPropertyDigest} object providing details about the property.
+     */
     public Map<String, MaterialPropertyDigest> getProperties() {
-        return properties;
+        return this.properties;
+    }
+
+    /**
+     *
+     * @return Gets a {@link InstanceValidationDigest} providing instance validation criteria for the DTDL type.
+     */
+    public InstanceValidationDigest getInstance() {
+        return this.instance;
     }
 
     private Map<String, MaterialPropertyDigest> findAndCreateProperties(JsonNode materialPropertyObj) {

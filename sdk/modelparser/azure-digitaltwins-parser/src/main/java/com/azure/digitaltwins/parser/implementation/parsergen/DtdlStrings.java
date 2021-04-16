@@ -43,4 +43,12 @@ public class DtdlStrings {
     public static final String BAD_TYPE_ACTION_FORMAT = "badTypeActionFormat";
     public static final String PROPERTIES = "properties";
     public static final String INSTANCE = "instance";
+    public static final String JSON_TYPE = "jsonType";
+    public static final String INSTANCE_OF = "instanceOf";
+    public static final String HAS_VALUE = "hasValue";
+    public static final String NAME_PATTERN = "namePattern";
+    public static final String NAME_HAS_VALUE = "nameHasValue";
+    public static final String CRITERIA_TEXT = "criteriaText";
+    public static final String ELEMENT = "element";
+    public static final String EACH_CHILD = "eachChild";
 }
