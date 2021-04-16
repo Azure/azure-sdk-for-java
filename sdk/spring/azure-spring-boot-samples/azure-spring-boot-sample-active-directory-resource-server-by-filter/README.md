@@ -5,7 +5,6 @@ languages:
 - javascript
 products:
 - azure-active-directory
-- java spring boot
 ---
 # Authentication filter sample for Azure AD Spring Boot Starter client library for Java
 
