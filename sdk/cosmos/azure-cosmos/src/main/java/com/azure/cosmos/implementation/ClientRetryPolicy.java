@@ -53,15 +53,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions) {
 
-        this.throttlingRetry = new ResourceThrottleRetryPolicy(
-                throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
-                throttlingRetryOptions.getMaxRetryWaitTime());
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
+        this.throttlingRetry = new ResourceThrottleRetryPolicy(
+            throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
+            throttlingRetryOptions.getMaxRetryWaitTime(),
+            BridgeInternal.getRetryContext(this.getCosmosDiagnostics()));
     }
 
     @Override

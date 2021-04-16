@@ -5,10 +5,6 @@ package com.azure.cosmos.implementation;
 
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-
 // TODO update documentation
 /**
  * While this class is public, but it is not part of our published public APIs.

@@ -25,7 +25,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private Duration currentBackoff;
     private RetryContext retryContext;
 
-    public SessionTokenMismatchRetryPolicy(int waitTimeInMilliSeconds)
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds)
     {
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(waitTimeInMilliSeconds));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
@@ -33,11 +33,11 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
+        this.retryContext = retryContext;
     }
 
     public SessionTokenMismatchRetryPolicy(RetryContext retryContext) {
-        this(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
-        this.retryContext = retryContext;
+        this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
     }
 
     @Override

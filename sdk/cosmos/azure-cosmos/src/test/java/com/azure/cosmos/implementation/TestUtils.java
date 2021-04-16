@@ -37,7 +37,6 @@ public class TestUtils {
     }
 
     public static String getUserNameLink(String databaseId, String userId) {
-
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
     }
 

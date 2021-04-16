@@ -669,6 +669,7 @@ public class CosmosAsyncContainer {
                 useEtagAsContinuation,
                 isNoChangesResponse,
                 response.getCosmosDiagnostics()                                                     );
+
         }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,

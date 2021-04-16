@@ -9,11 +9,8 @@ public class ResetSessionTokenRetryPolicyFactory implements IRetryPolicyFactory 
     private final IRetryPolicyFactory retryPolicy;
     private final ISessionContainer sessionContainer;
     private final RxClientCollectionCache collectionCache;
-    private RenameCollectionAwareClientRetryPolicy renameCollectionAwareClientRetryPolicy;
 
-    public ResetSessionTokenRetryPolicyFactory(ISessionContainer sessionContainer,
-                                               RxClientCollectionCache collectionCache,
-                                               IRetryPolicyFactory retryPolicy) {
+    public ResetSessionTokenRetryPolicyFactory(ISessionContainer sessionContainer, RxClientCollectionCache collectionCache, IRetryPolicyFactory retryPolicy) {
         this.retryPolicy = retryPolicy;
         this.sessionContainer = sessionContainer;
         this.collectionCache = collectionCache;
@@ -21,9 +18,7 @@ public class ResetSessionTokenRetryPolicyFactory implements IRetryPolicyFactory 
 
     @Override
     public DocumentClientRetryPolicy getRequestPolicy() {
-        renameCollectionAwareClientRetryPolicy = new RenameCollectionAwareClientRetryPolicy(this.sessionContainer
-            , this.collectionCache, retryPolicy.getRequestPolicy());
-        return renameCollectionAwareClientRetryPolicy;
+        return new RenameCollectionAwareClientRetryPolicy(this.sessionContainer, this.collectionCache, retryPolicy.getRequestPolicy());
     }
 
     @Override

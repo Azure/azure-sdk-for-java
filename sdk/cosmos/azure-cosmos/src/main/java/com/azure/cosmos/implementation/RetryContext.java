@@ -18,16 +18,12 @@ public class RetryContext {
 
     private volatile List<int[]> statusAndSubStatusCodes;
 
-    public void addStatusAndSubStatusCode(Integer index, int statusCode, int subStatusCode) {
+    public void addStatusAndSubStatusCode(int statusCode, int subStatusCode) {
         if (statusAndSubStatusCodes == null) {
             statusAndSubStatusCodes = new ArrayList<>();
         }
         int[] statusAndSubStatusCode = {statusCode, subStatusCode};
-        if (index == null) {
-            statusAndSubStatusCodes.add(statusAndSubStatusCode);
-        } else {
-            statusAndSubStatusCodes.add(index, statusAndSubStatusCode);
-        }
+        statusAndSubStatusCodes.add(statusAndSubStatusCode);
     }
 
     public List<int[]> getStatusAndSubStatusCodes() {

@@ -31,6 +31,7 @@ public class RetryUtils {
             if (retryContext != null) {
                 retryContext.captureStartTimeIfNotSet();
             }
+
             Flux<ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
                 CosmosException clientException = Utils.as(e, CosmosException.class);
@@ -201,7 +202,7 @@ public class RetryUtils {
                                                              boolean isNonRelatedException) {
         if (!isNonRelatedException)
             if (retryContext != null && clientException != null) {
-                retryContext.addStatusAndSubStatusCode(null, clientException.getStatusCode(),
+                retryContext.addStatusAndSubStatusCode(clientException.getStatusCode(),
                     clientException.getSubStatusCode());
             }
     }

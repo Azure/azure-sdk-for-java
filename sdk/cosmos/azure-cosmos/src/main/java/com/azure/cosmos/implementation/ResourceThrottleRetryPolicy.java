@@ -29,11 +29,11 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     // should we make this atomic int?
     private int currentAttemptCount;
     private Duration cumulativeRetryDelay;
-    private CosmosDiagnostics cosmosDiagnostics;
+    private RetryContext retryContext;
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, CosmosDiagnostics cosmosDiagnostics) {
+    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, RetryContext retryContext) {
         this(maxAttemptCount, maxWaitTime);
-        this.cosmosDiagnostics = cosmosDiagnostics;
+        this.retryContext = retryContext;
     }
 
     public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime) {
@@ -54,11 +54,16 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         this.cumulativeRetryDelay = Duration.ZERO;
     }
 
+    @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         Duration retryDelay = Duration.ZERO;
 
         CosmosException dce = Utils.as(exception, CosmosException.class);
         if (dce == null || !Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS)) {
+            logger.debug(
+                "Operation will NOT be retried - not a throttled request. Current attempt {}",
+                this.currentAttemptCount,
+                exception);
             return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
         }
 
@@ -96,7 +101,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
 
     @Override
     public RetryContext getRetryContext() {
-        return BridgeInternal.getRetryContext(cosmosDiagnostics);
+        return this.retryContext;
     }
 
     // if retry not needed reaturns null
