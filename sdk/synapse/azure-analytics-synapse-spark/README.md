@@ -218,10 +218,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
-[azure_synapse]: https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace
+[azure_synapse]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[jdk]: https://docs.microsoft.com/en-us/azure/developer/java/fundamentals/?view=azure-java-stable
-[azure_sub]: https://azure.microsoft.com/en-us/free/
+[jdk]: https://docs.microsoft.com/azure/developer/java/fundamentals/?view=azure-java-stable
+[azure_sub]: https://azure.microsoft.com/free/
 [rest_api]: https://docs.microsoft.com/rest/api/synapse/
 [azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
