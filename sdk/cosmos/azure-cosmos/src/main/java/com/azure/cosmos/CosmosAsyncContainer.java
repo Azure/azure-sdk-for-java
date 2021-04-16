@@ -972,6 +972,8 @@ public class CosmosAsyncContainer {
         CosmosQueryRequestOptions options,
         Class<T> classType) {
         final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
+        requestOptions.setPartitionKey(partitionKey);
+        
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
