@@ -1,7 +1,7 @@
 # Release History
 
-## 12.11.0-beta.3 (Unreleased)
-
+## 12.11.0-beta.3 (2021-04-16)
+- Fixed a bug where connection strings with unencoded SAS's would result in URL exceptions. 
 
 ## 12.11.0-beta.2 (2021-03-29)
 - Update `azure-core` to version `1.14.1`
