@@ -28,24 +28,4 @@ public interface Operations {
      * @return the list of available Service Fabric resource provider API operations.
      */
     PagedIterable<OperationResult> list(Context context);
-
-    /**
-     * Get the list of available Service Fabric resource provider API operations.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available Service Fabric resource provider API operations.
-     */
-    PagedIterable<OperationResult> list();
-
-    /**
-     * Get the list of available Service Fabric resource provider API operations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available Service Fabric resource provider API operations.
-     */
-    PagedIterable<OperationResult> list(Context context);
 }
