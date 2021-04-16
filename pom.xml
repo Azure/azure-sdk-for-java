@@ -709,6 +709,7 @@
         <module>sdk/kusto</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
+        <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
