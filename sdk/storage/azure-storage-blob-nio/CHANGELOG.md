@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.5 (Unreleased)
+## 12.0.0-beta.5 (2021-04-16)
 - Fixed a bug where a file would be determined to be a directory if another file with the same prefix exists
 
 ## 12.0.0-beta.4 (2021-03-29)

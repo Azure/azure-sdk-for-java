@@ -1,7 +1,7 @@
 # Release History
 
-## 12.5.0-beta.3 (Unreleased)
-
+## 12.5.0-beta.3 (2021-04-16)
+- Updated `azure-storage-blob` version to `12.11.0-beta.3` to pickup fixes for blob output stream.
 
 ## 12.5.0-beta.2 (2021-03-29)
 - Fixed a bug where files/directories in root directories could not be renamed.
