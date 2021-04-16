@@ -43,7 +43,4 @@ public class DtdlStrings {
     public static final String BAD_TYPE_ACTION_FORMAT = "badTypeActionFormat";
     public static final String PROPERTIES = "properties";
     public static final String INSTANCE = "instance";
-
-
-
 }

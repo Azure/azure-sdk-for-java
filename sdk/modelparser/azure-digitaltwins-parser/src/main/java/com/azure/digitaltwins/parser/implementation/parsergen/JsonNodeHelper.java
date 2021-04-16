@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
 
-
 /**
  * Helper class to facilitate getting values out of a JsonNode object.
  */
