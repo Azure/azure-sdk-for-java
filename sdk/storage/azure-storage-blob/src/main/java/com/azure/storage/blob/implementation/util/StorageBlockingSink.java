@@ -67,19 +67,19 @@ public final class StorageBlockingSink {
      */
     public void emitNext(ByteBuffer buffer) {
         try {
-             this.writeSink.tryEmitNext(buffer).orThrow();
-             /* Here are different cases that tryEmitNext can return.
-              * OK: Success
-              * FAIL_OVERFLOW: When the writeLimitQueue overflows. This indicates there is backpressure. NOTE: If this
-              * ever gets hit, it indicates that there is a mismatch between the way Reactor implements tryEmitNext
-              * and they way ProducerBlockingQueue is designed.
-              * FAIL_TERMINATED: The Flux already emitted a completion signal. We implicitly save ourselves from hitting
-              * this case by calling checkStreamState before write in BlockBlobOutputStream.
-              * FAIL_CANCELLED: The Flux received a cancellation signal. This can happen due to timeouts.
-              * FAIL_NON_SERIALIZED: Concurrent calls to tryEmitNext. This is invalid for OutputStreams anyway.
-              * FAIL_ZERO_SUBSCRIBER: The Flux was never subscribed to. We implicitly save ourselves from hitting this
-              * case since we manage the subscribe process in the constructor of BlockBlobOutputStream
-              */
+            this.writeSink.tryEmitNext(buffer).orThrow();
+            /* Here are different cases that tryEmitNext can return.
+             * OK: Success
+             * FAIL_OVERFLOW: When the writeLimitQueue overflows. This indicates there is backpressure. NOTE: If this
+             * ever gets hit, it indicates that there is a mismatch between the way Reactor implements tryEmitNext
+             * and they way ProducerBlockingQueue is designed.
+             * FAIL_TERMINATED: The Flux already emitted a completion signal. We implicitly save ourselves from hitting
+             * this case by calling checkStreamState before write in BlockBlobOutputStream.
+             * FAIL_CANCELLED: The Flux received a cancellation signal. This can happen due to timeouts.
+             * FAIL_NON_SERIALIZED: Concurrent calls to tryEmitNext. This is invalid for OutputStreams anyway.
+             * FAIL_ZERO_SUBSCRIBER: The Flux was never subscribed to. We implicitly save ourselves from hitting this
+             * case since we manage the subscribe process in the constructor of BlockBlobOutputStream
+             */
         } catch (Exception e) {
             throw logger.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
                 + "write failure", e));
