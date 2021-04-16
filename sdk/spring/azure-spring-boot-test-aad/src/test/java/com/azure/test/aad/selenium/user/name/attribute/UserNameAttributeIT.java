@@ -36,6 +36,7 @@ public class UserNameAttributeIT {
         Map<String, String> properties = createDefaultProperties();
         properties.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE);
         properties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE);
+        properties.put("azure.activedirectory.user-name-attribute", "preferred_username");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("api/principalName");

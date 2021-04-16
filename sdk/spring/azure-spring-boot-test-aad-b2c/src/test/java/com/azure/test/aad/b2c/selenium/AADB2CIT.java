@@ -6,6 +6,7 @@ package com.azure.test.aad.b2c.selenium;
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,6 +39,7 @@ public class AADB2CIT {
         aadB2CSeleniumITHelper.logIn();
     }
 
+    @Disabled // TODO (rujche) Fix it.
     @Test
     public void testSignIn() {
         String name = aadB2CSeleniumITHelper.getName();
