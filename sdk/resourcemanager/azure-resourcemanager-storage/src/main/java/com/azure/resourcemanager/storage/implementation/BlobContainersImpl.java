@@ -118,7 +118,8 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
-        return innerModel().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).then();
+        return innerModel().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
+            .then();
     }
 
     @Override
