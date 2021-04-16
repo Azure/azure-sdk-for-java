@@ -48,7 +48,7 @@ public class MaterialClassDigest {
         this.badTypeActionFormat = new HashMap<>();
         this.badTypeCauseFormat = new HashMap<>();
         this.properties = new HashMap<>();
-
+        this.instance = null;
     }
 
     /**

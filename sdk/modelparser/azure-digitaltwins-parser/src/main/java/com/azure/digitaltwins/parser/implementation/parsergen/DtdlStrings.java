@@ -3,6 +3,9 @@
 
 package com.azure.digitaltwins.parser.implementation.parsergen;
 
+/**
+ * Common descriptive strings found in the digest file.
+ */
 public class DtdlStrings {
     public static final String PATTERN = "pattern";
     public static final String MAX_LENGTH = "maxLength";
