@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -220,8 +221,8 @@ public class ReflectionUtils {
         return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
     }
 
-    public static void setRetryCount(RetryContext retryContext, int retryCount) {
-        set(retryContext, retryCount, "retryCount");
+    public static void setRetryContext(ClientSideRequestStatistics clientSideRequestStatistics, RetryContext retryContext) {
+        set(clientSideRequestStatistics, retryContext, "retryContext");
     }
 
     public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
