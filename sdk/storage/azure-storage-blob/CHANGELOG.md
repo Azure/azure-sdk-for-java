@@ -2,6 +2,7 @@
 
 ## 12.11.0-beta.3 (Unreleased)
 - Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
+- Fixed a bug where BlobOutputStream could hang when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
 
 ## 12.11.0-beta.2 (2021-03-29)
 - Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
