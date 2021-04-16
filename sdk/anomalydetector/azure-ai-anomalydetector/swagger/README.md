@@ -1,8 +1,8 @@
 ## Generate autorest code
 ``` yaml
 input-file:
-- https://raw.githubusercontent.com/conhua/azure-rest-api-specs-pr/conhua/anomaly-detector-multivarite/specification/cognitiveservices/data-plane/AnomalyDetector/preview/v1.1-preview/AnomalyDetector.json?token=AARWQPJZG3BAE354CNKBHUTAMZRVS
-- https://raw.githubusercontent.com/conhua/azure-rest-api-specs-pr/conhua/anomaly-detector-multivarite/specification/cognitiveservices/data-plane/AnomalyDetector/preview/v1.1-preview/MultivariateAnomalyDetector.json?token=AARWQPJS3LI6HHHX5MTIKPDAMZR2O
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/AnomalyDetector/preview/v1.1-preview/AnomalyDetector.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/AnomalyDetector/preview/v1.1-preview/MultivariateAnomalyDetector.json
 java: true
 output-folder: ../
 namespace: com.azure.ai.anomalydetector
