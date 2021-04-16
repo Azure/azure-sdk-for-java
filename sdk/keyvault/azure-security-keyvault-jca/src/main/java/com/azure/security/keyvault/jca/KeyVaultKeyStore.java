@@ -20,7 +20,16 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Optional;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
@@ -49,17 +58,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the list of aliases.
      */
-    private List<String> aliases;
+    private static List<String> aliases;
 
     /**
      * Stores the certificates by alias.
      */
-    private static final HashMap<String, Certificate> certificates = new HashMap<>();
+    private static final HashMap<String, Certificate> CERTIFICATES = new HashMap<>();
 
     /**
      * Stores the certificate keys by alias.
      */
-    private static final HashMap<String, Key> certificateKeys = new HashMap<>();
+    private static final HashMap<String, Key> CERTIFICATE_KEYS = new HashMap<>();
 
     /**
      * Stores the creation date.
@@ -96,24 +105,34 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
         if (clientId != null) {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, aadAuthenticationUrl, tenantId, clientId, clientSecret);
+            setKeyVaultClient(new KeyVaultClient(keyVaultUri, aadAuthenticationUrl, tenantId, clientId, clientSecret));
         } else {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
+            setKeyVaultClient(new KeyVaultClient(keyVaultUri, managedIdentity));
         }
     }
 
-    void startRefresh() {
-        final Long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refreshInterval"))
-            .map(Long::valueOf)
-            .orElse(0L);
-        if(refreshInterval > 0) {
+    private static void setKeyVaultClient(KeyVaultClient keyVaultClient) {
+        KeyVaultKeyStore.keyVaultClient = keyVaultClient;
+    }
+
+    private static void setAliases(List<String> aliases) {
+        KeyVaultKeyStore.aliases = aliases;
+    }
+
+    /**
+     * auto refresh certificate by user set Interval time
+     *
+     * @param refreshInterval refresh Interval time
+     */
+    public static void startRefresh(long refreshInterval) {
+        if (refreshInterval > 0) {
             synchronized (KeyVaultKeyStore.class) {
                 if (timer != null) {
                     try {
                         timer.cancel();
                         timer.purge();
                     } catch (RuntimeException runtimeException) {
-                        LOGGER.log(WARNING,"Error of terminating Timer", runtimeException);
+                        LOGGER.log(WARNING, "Error of terminating Timer", runtimeException);
                     }
                 }
                 timer = new Timer(true);
@@ -128,24 +147,27 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         }
     }
 
-    private void refreshCertificate() {
+    /**
+     * refresh certificate and KeyVaultTrustManager trustManager
+     */
+    public static void refreshCertificate() {
         Optional.ofNullable(aliases)
                 .orElse(Collections.emptyList())
                 .forEach(alias -> {
                     Key key = keyVaultClient.getKey(alias, null);
                     Certificate certificate = keyVaultClient.getCertificate(alias);
-                    if(!Objects.isNull(key) && !Objects.isNull(certificate)) {
-                        certificateKeys.put(alias, key);
-                        certificates.put(alias, certificate);
+                    if (!Objects.isNull(key) && !Objects.isNull(certificate)) {
+                        CERTIFICATE_KEYS.put(alias, key);
+                        CERTIFICATES.put(alias, certificate);
                     }
                 });
-
+        KeyVaultTrustManager.refreshTrustManagerByKeyStore();
     }
 
     @Override
     public Enumeration<String> engineAliases() {
         if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
+            setAliases(keyVaultClient.getAliases());
         }
         return Collections.enumeration(aliases);
     }
@@ -167,12 +189,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Certificate engineGetCertificate(String alias) {
         Certificate certificate;
-        if (certificates.containsKey(alias)) {
-            certificate = certificates.get(alias);
+        if (CERTIFICATES.containsKey(alias)) {
+            certificate = CERTIFICATES.get(alias);
         } else {
             certificate = keyVaultClient.getCertificate(alias);
             if (certificate != null) {
-                certificates.put(alias, certificate);
+                CERTIFICATES.put(alias, certificate);
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
@@ -186,7 +208,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String alias = null;
         if (cert != null) {
             if (aliases == null) {
-                aliases = keyVaultClient.getAliases();
+                setAliases(keyVaultClient.getAliases());
             }
             for (String candidateAlias : aliases) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
@@ -196,13 +218,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 }
             }
         }
-        final Long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refreshInterval"))
-            .map(Long::valueOf)
-            .orElse(0L);
-        if (alias == null && cert != null && refreshInterval > 0) {
+
+        boolean refresh = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificate-refresh-when-have-untrust-certificate"))
+            .map(Boolean::parseBoolean)
+            .orElse(false);
+
+        if (alias == null && cert != null && refresh) {
             refreshCertificate();
             if (aliases == null) {
-                aliases = keyVaultClient.getAliases();
+                setAliases(keyVaultClient.getAliases());
             }
             for (String candidateAlias : aliases) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
@@ -239,14 +263,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Key engineGetKey(String alias, char[] password) {
         Key key;
-        if (certificateKeys.containsKey(alias)) {
-            key = certificateKeys.get(alias);
+        if (CERTIFICATE_KEYS.containsKey(alias)) {
+            key = CERTIFICATE_KEYS.get(alias);
         } else {
             key = keyVaultClient.getKey(alias, password);
             if (key != null) {
-                certificateKeys.put(alias, key);
+                CERTIFICATE_KEYS.put(alias, key);
                 if (aliases == null) {
-                    aliases = keyVaultClient.getAliases();
+                    setAliases(keyVaultClient.getAliases());
                 }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
@@ -259,7 +283,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
+            setAliases(keyVaultClient.getAliases());
         }
         return aliases.contains(alias);
     }
@@ -274,23 +298,22 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             if (parameter.getClientId() != null) {
-                keyVaultClient = new KeyVaultClient(
+                setKeyVaultClient(new KeyVaultClient(
                         parameter.getUri(),
                         parameter.getAadAuthenticationUrl(),
                         parameter.getTenantId(),
                         parameter.getClientId(),
-                        parameter.getClientSecret());
+                        parameter.getClientSecret()));
             } else if (parameter.getManagedIdentity() != null) {
-                keyVaultClient = new KeyVaultClient(
+                setKeyVaultClient(new KeyVaultClient(
                         parameter.getUri(),
-                        parameter.getManagedIdentity()
+                        parameter.getManagedIdentity())
                 );
             } else {
-                keyVaultClient = new KeyVaultClient(parameter.getUri());
+                setKeyVaultClient(new KeyVaultClient(parameter.getUri()));
             }
         }
         sideLoad();
-        startRefresh();
     }
 
     @Override
@@ -301,11 +324,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
+            setAliases(keyVaultClient.getAliases());
         }
         if (!aliases.contains(alias)) {
             aliases.add(alias);
-            certificates.put(alias, certificate);
+            CERTIFICATES.put(alias, certificate);
         }
     }
 

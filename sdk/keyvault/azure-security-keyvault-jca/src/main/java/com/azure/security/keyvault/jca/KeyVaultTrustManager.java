@@ -3,8 +3,11 @@
 
 package com.azure.security.keyvault.jca;
 
-import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.net.Socket;
 import java.security.KeyStore;
@@ -13,8 +16,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.X509ExtendedTrustManager;
 
 /**
  * The Azure Key Vault variant of the X509TrustManager.
@@ -29,12 +30,12 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
     /**
      * Trust manager that employs KeyVault keystore or other 3rd party keystore.
      */
-    private X509TrustManager trustManager;
+    private static X509TrustManager trustManager;
 
     /**
      * Stores the keystore.
      */
-    private KeyStore keyStore;
+    private static KeyStore keyStore;
 
     /**
      * Constructor.
@@ -43,10 +44,10 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
      */
     public KeyVaultTrustManager(KeyStore keyStore) {
 
-        if(keyStore != null){
+        if (keyStore != null) {
             if (keyStore.getType().equals(KeyVaultKeyStore.KEY_STORE_TYPE)) {
-                this.keyStore = keyStore;
-                addTrustManager(this.keyStore);
+                setKeyStore(keyStore);
+                addTrustManager(KeyVaultTrustManager.keyStore);
             } else {
                 addKeyVaultKeystore();
                 addTrustManager(keyStore);
@@ -56,10 +57,29 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     }
 
+    private static void setKeyStore(KeyStore keyStore) {
+        KeyVaultTrustManager.keyStore = keyStore;
+    }
+
+    private static void setTrustManager(X509TrustManager trustManager) {
+        KeyVaultTrustManager.trustManager = trustManager;
+    }
+
+    /**
+     * add trustManager
+     * @param trustManager trust manager
+     */
+    public KeyVaultTrustManager(TrustManager trustManager) {
+        setTrustManager((X509TrustManager) trustManager);
+        addKeyVaultKeystore();
+        addDefaultTrustManager();
+
+    }
+
     private void addKeyVaultKeystore() {
         try {
-            this.keyStore = KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE);
-            this.keyStore.load(null, null);
+            keyStore = KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE);
+            keyStore.load(null, null);
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
             ex.printStackTrace();
         }
@@ -73,6 +93,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
         } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
             ex.printStackTrace();
         }
+
     }
 
     private void addDefaultTrustManager() {
@@ -92,6 +113,18 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
                 ex.printStackTrace();
             }
+        }
+
+    }
+
+    static void refreshTrustManagerByKeyStore() {
+
+        try {
+            TrustManagerFactory factory = TrustManagerFactory.getInstance("PKIX", "SunJSSE");
+            factory.init(keyStore);
+            trustManager = (X509TrustManager) factory.getTrustManagers()[0];
+        } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException e) {
+            e.printStackTrace();
         }
 
     }
@@ -163,6 +196,19 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
                 throw new CertificateException("Unable to verify in keystore");
             }
         }
+    }
+
+    public static KeyStore getKeyStore() throws Exception {
+
+        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.aad-authentication-url"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"));
+        trustStore.load(parameter);
+        return trustStore;
     }
 
     @Override
