@@ -1,7 +1,34 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.2 (Unreleased)
 
+## 2.0.4 (2021-04-12)
+
+### Bug Fixes
+
+- Fixed recovery of AMQP connection and receiver after a disconnect or a transient error occurs.
+- Closing AMQP sender/receiver when it is no longer authorized.
+- Fixed bug where the same endpoint state would not be emitted.
+- Decreased the number of duplicated and verbose logs.
+- Fixed NullPointerExceptions where there is no connection to initialize.
+- Fixed issue with contending threads trying to use the same drain loop via 'wip' in ReactorDispatcher.
+
+## 2.1.0-beta.1 (2021-03-26)
+
+### New Features
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession.
+- Added API in interface 'AmqpSession.getOrCreateTransactionCoordinator()'.
+
+## 2.0.3 (2021-03-09)
+
+### Bug Fixes
+
+- Fixed a bug where using a proxy the SSL peer hostname was set incorrect.
+- Removed logs that leaked secrets. [#19249](https://github.com/Azure/azure-sdk-for-java/issues/19249)
+
+### Version Updates
+
+- Upgraded Reactor from `3.3.12.RELEASE` to `3.4.3`.
 
 ## 2.0.2 (2021-02-05)
 

@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -170,7 +171,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Override
     public BlobAsyncClient getSnapshotClient(String snapshot) {
-        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
     }
 
@@ -183,7 +184,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Override
     public BlobAsyncClient getVersionClient(String versionId) {
-        return new BlobAsyncClient(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
@@ -326,6 +327,62 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             return overwriteCheck
                 .then(uploadWithResponse(data, parallelTransferOptions, null, null, null,
+                    requestConditions)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+
+    /**
+     * Creates a new block blob. By default this method will not overwrite an existing blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.upload#BinaryData}
+     *
+     * @param data The data to write to the blob.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data) {
+        try {
+            return upload(data, false);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.upload#BinaryData-boolean}
+     *
+     * @param data The data to write to the blob.
+     * @param overwrite Whether or not to overwrite, should the blob already exist.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data,
+                                      boolean overwrite) {
+        try {
+            Mono<Void> overwriteCheck;
+            BlobRequestConditions requestConditions;
+
+            if (overwrite) {
+                overwriteCheck = Mono.empty();
+                requestConditions = null;
+            } else {
+                overwriteCheck = exists().flatMap(exists -> exists
+                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : Mono.empty());
+                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            }
+
+            return overwriteCheck
+                .then(uploadWithResponse(Flux.just(data.toByteBuffer()), null, null, null, null,
                     requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -530,6 +587,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          Write to the pool and upload the output.
          */
         return chunkedSource.concatMap(pool::write)
+            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
             .concatWith(Flux.defer(pool::flush))
             .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.

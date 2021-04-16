@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaLiveEventIncomingDataChunkDroppedEventData model. */
+/** Ingest fragment dropped event data. */
 @Immutable
 public final class MediaLiveEventIncomingDataChunkDroppedEventData {
     /*

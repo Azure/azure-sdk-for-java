@@ -21,23 +21,24 @@ There is one swagger for Chat management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2
+autorest README.md --java --v4 --use=@autorest/java@4.0.11 --use=@autorest/modelerfour@4.15.442
 ```
 
 ## Update generated files for chat service
 To update generated files for chat service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.11
+> autorest README.md --java --v4 --use=@autorest/java@4.0.11 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 ``` yaml
-input-file: swagger.json
+tag: package-chat-2021-03-07
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bf081421869ccd31d9fd87084b07a1e246aee310/specification/communication/data-plane/Microsoft.CommunicationServicesChat/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadInfo,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException,CreateChatThreadErrors,AddChatParticipantsErrors,AddChatParticipantsResult,ChatMessageContent,ChatMessageType,CommunicationError,CommunicationErrorException,CommunicationErrorResponse,CommunicationErrorResponseException
+custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false

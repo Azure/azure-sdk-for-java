@@ -1,12 +1,8 @@
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
-import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants

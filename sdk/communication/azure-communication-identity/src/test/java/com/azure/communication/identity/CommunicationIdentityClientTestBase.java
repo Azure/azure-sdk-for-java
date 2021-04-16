@@ -41,16 +41,18 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("id")
         .add("token");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ACCESSKEY))
@@ -65,7 +67,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder createClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .endpoint(ENDPOINT)
@@ -86,7 +88,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder createClientBuilderUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)
@@ -132,6 +134,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    protected boolean shouldEnableIdentityTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|identity)");
     }
 
     static class FakeCredentials implements TokenCredential {

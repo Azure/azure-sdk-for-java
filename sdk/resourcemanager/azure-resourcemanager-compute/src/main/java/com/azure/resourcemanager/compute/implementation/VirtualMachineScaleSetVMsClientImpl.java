@@ -41,8 +41,8 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMI
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
-import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMListResult;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMReimageParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -90,7 +90,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             @PathParam("instanceId") String instanceId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualMachineReimageParameters vmScaleSetVMReimageInput,
+            @BodyParam("application/json") VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -382,12 +382,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-12-01";
-        VirtualMachineReimageParameters vmScaleSetVMReimageInputInternal = null;
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInputInternal = null;
         if (tempDisk != null) {
-            vmScaleSetVMReimageInputInternal = new VirtualMachineReimageParameters();
+            vmScaleSetVMReimageInputInternal = new VirtualMachineScaleSetVMReimageParameters();
             vmScaleSetVMReimageInputInternal.withTempDisk(tempDisk);
         }
-        VirtualMachineReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
         return FluxUtil
             .withContext(
                 context ->
@@ -401,7 +401,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             this.client.getSubscriptionId(),
                             vmScaleSetVMReimageInput,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -444,12 +444,12 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-12-01";
-        VirtualMachineReimageParameters vmScaleSetVMReimageInputInternal = null;
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInputInternal = null;
         if (tempDisk != null) {
-            vmScaleSetVMReimageInputInternal = new VirtualMachineReimageParameters();
+            vmScaleSetVMReimageInputInternal = new VirtualMachineScaleSetVMReimageParameters();
             vmScaleSetVMReimageInputInternal.withTempDisk(tempDisk);
         }
-        VirtualMachineReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput = vmScaleSetVMReimageInputInternal;
         context = this.client.mergeContext(context);
         return service
             .reimage(
@@ -714,7 +714,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -974,7 +974,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1242,7 +1242,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1547,7 +1547,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1857,7 +1857,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2053,7 +2053,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2233,7 +2233,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2478,7 +2478,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2804,7 +2804,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3053,7 +3053,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3301,7 +3301,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3557,7 +3557,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3772,7 +3772,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4023,7 +4023,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4184,7 +4184,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4465,7 +4465,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

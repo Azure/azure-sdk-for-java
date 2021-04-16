@@ -3,13 +3,15 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -340,25 +342,6 @@ public class CosmosContainer {
     }
 
     /**
-     * Query items in the current container returning the results as {@link CosmosPagedIterable}.
-     *
-     * @param <T> the type parameter.
-     * @param querySpec the query spec.
-     * @param options the options.
-     * @param classType the class type.
-     * @param feedRange the feedrange
-     * @return the {@link CosmosPagedIterable}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec,
-                                                 CosmosQueryRequestOptions options,
-                                                 Class<T> classType,
-                                                 FeedRange feedRange) {
-        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType, feedRange));
-    }
-
-
-    /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
      * <p>
      * The next page can be retrieved by calling queryChangeFeed again with a new instance of
@@ -394,7 +377,6 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
@@ -411,7 +393,6 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
@@ -544,7 +525,7 @@ public class CosmosContainer {
         String itemId,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosItemRequestOptions options,
+        CosmosPatchItemRequestOptions options,
         Class<T> itemType) {
 
         return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, options, itemType));
@@ -744,52 +725,61 @@ public class CosmosContainer {
     }
 
     /**
+     * Enable the throughput control group with local control mode.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
+     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
      *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig A {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput);
+    public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        this.asyncContainer.enableLocalThroughputControlGroup(groupConfig);
     }
 
     /**
+     * Enable the throughput control group with global control mode.
+     * The defined throughput limit will be shared across different clients.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughput The target throughput for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
+     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
      *
-     * @return A {@link ThroughputControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, int targetThroughput, boolean isDefault) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughput, isDefault);
+    public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
+        this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
     }
 
     /**
+     * Initializes the container by warming up the caches and connections for the current read region.
      *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * <p><br>The execution of this method is expected to result in some RU charges to your account.
+     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
+     * item indexing, number of projections. For more information regarding RU considerations please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
+     * </p>
      *
-     * @return A {@link ThroughputControlGroup}.
+     * <p>
+     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     * </p>
+     *
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold);
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void openConnectionsAndInitCaches() {
+        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }
 
-    /**
-     *
-     * @param groupName The throughput control group name.
-     * @param targetThroughputThreshold The target throughput threshold for the control group.
-     * @param isDefault Flag to indicate whether this group will be used as default.
-     *
-     * @return A {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    ThroughputControlGroup enableThroughputLocalControlGroup(String groupName, double targetThroughputThreshold, boolean isDefault) {
-        return this.asyncContainer.enableThroughputLocalControlGroup(groupName, targetThroughputThreshold, isDefault);
+    private void blockVoidResponse(Mono<Void> voidMono) {
+        try {
+            voidMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(ex);
+            }
+        }
     }
 }

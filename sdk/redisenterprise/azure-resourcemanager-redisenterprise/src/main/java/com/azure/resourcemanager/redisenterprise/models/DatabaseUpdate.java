@@ -68,13 +68,6 @@ public class DatabaseUpdate {
     @JsonProperty(value = "properties.modules")
     private List<Module> modules;
 
-    /*
-     * Optional set of properties to configure geo replication for this
-     * database.
-     */
-    @JsonProperty(value = "properties.geoReplication")
-    private DatabasePropertiesGeoReplication geoReplication;
-
     /**
      * Get the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext
      * redis protocols. Default is TLS-encrypted.
@@ -220,26 +213,6 @@ public class DatabaseUpdate {
     }
 
     /**
-     * Get the geoReplication property: Optional set of properties to configure geo replication for this database.
-     *
-     * @return the geoReplication value.
-     */
-    public DatabasePropertiesGeoReplication geoReplication() {
-        return this.geoReplication;
-    }
-
-    /**
-     * Set the geoReplication property: Optional set of properties to configure geo replication for this database.
-     *
-     * @param geoReplication the geoReplication value to set.
-     * @return the DatabaseUpdate object itself.
-     */
-    public DatabaseUpdate withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
-        this.geoReplication = geoReplication;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -250,9 +223,6 @@ public class DatabaseUpdate {
         }
         if (modules() != null) {
             modules().forEach(e -> e.validate());
-        }
-        if (geoReplication() != null) {
-            geoReplication().validate();
         }
     }
 }

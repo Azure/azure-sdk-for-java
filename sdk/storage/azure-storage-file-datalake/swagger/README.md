@@ -4,13 +4,14 @@
 
 ### Setup
 
-Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
+> see https://github.com/Azure/autorest.java
 
 ### Generation
+> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
-autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
+mvn install
+autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
@@ -20,13 +21,18 @@ java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
 enable-xml: true
+generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+context-client-method-parameter: true
+optional-constant-as-enum: true
 models-subpackage: implementation.models
 custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders
 custom-types-subpackage: models
+customization-jar-path: target/azure-storage-file-datalake-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.file.datalake.customization.DataLakeStorageCustomization
 ```
 
 ### Adds FileSystem parameter to /{filesystem}?resource=filesystem
@@ -176,47 +182,14 @@ directive:
     return $.replace('@JsonProperty(value = "eTag")\n    private String eTag;', '@JsonProperty(value = "etag")\n    private String eTag;');
 ```
 
-### Change StorageErrorException to StorageException
+### Delete FileSystem_ListPaths x-ms-pageable as autorest doesnt allow you to set the nextLinkName to be a header.
 ``` yaml
 directive:
-- from: ServicesImpl.java
-  where: $
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}?resource=filesystem"].get
   transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
-        "com.azure.storage.file.datalake.models.DataLakeStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
-      );
-- from: FileSystemsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
-        "com.azure.storage.file.datalake.models.DataLakeStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
-      );
-- from: PathsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.datalake.implementation.models.StorageErrorException",
-        "com.azure.storage.file.datalake.models.DataLakeStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(DataLakeStorageException.class)"
-      );
+    delete $["x-ms-pageable"];
 ```
-
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
 

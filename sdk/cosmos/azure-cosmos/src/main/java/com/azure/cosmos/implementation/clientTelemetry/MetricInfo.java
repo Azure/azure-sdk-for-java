@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clientTelemetry;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MetricInfo {
     private String metricsName;
     private String unitName;

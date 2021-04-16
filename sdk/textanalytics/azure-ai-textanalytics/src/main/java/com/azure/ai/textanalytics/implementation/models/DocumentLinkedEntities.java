@@ -18,7 +18,7 @@ public final class DocumentLinkedEntities {
     private String id;
 
     /*
-     * Recognized well-known entities in the document.
+     * Recognized well known entities in the document.
      */
     @JsonProperty(value = "entities", required = true)
     private List<LinkedEntity> entities;
@@ -57,7 +57,7 @@ public final class DocumentLinkedEntities {
     }
 
     /**
-     * Get the entities property: Recognized well-known entities in the document.
+     * Get the entities property: Recognized well known entities in the document.
      *
      * @return the entities value.
      */
@@ -66,7 +66,7 @@ public final class DocumentLinkedEntities {
     }
 
     /**
-     * Set the entities property: Recognized well-known entities in the document.
+     * Set the entities property: Recognized well known entities in the document.
      *
      * @param entities the entities value to set.
      * @return the DocumentLinkedEntities object itself.

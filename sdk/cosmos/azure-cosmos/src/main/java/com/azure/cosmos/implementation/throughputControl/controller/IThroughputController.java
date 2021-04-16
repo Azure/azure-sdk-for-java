@@ -17,12 +17,6 @@ public interface IThroughputController {
     boolean canHandleRequest(RxDocumentServiceRequest request);
 
     /**
-     * Close all the scheduled tasks and any other resources need to release.
-     * @return a representation of the deferred computation of this call.
-     */
-    Mono<Void> close();
-
-    /**
      * Initialize process.
      * Will create and initialize the lower level throughput controller and schedule tasks if needed.
      * @return The initialized controller.

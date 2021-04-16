@@ -43,4 +43,7 @@ extends:
       - name: azure-communication-phonenumbers
         groupId: com.azure
         safeName: azurecommunicationphonenumbers
+      - name: azure-resourcemanager-communication
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercommunication
 

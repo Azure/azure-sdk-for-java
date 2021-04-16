@@ -14,10 +14,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -267,8 +270,8 @@ public class InterceptorManager implements AutoCloseable {
     @Override
     public void close() {
         if (allowedToRecordValues) {
-            try {
-                RECORD_MAPPER.writeValue(createRecordFile(playbackRecordName), recordedData);
+            try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
+                RECORD_MAPPER.writeValue(writer, recordedData);
             } catch (IOException ex) {
                 throw logger.logExceptionAsError(
                     new UncheckedIOException("Unable to write data to playback file.", ex));
@@ -279,8 +282,8 @@ public class InterceptorManager implements AutoCloseable {
     private RecordedData readDataFromFile() {
         File recordFile = getRecordFile();
 
-        try {
-            return RECORD_MAPPER.readValue(recordFile, RecordedData.class);
+        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
+            return RECORD_MAPPER.readValue(reader, RecordedData.class);
         } catch (IOException ex) {
             throw logger.logExceptionAsWarning(new UncheckedIOException(ex));
         }

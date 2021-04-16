@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,9 +47,23 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
-     * to the client via the resource owner user-agent.
+     * Decide which claim to be principal's name..
      */
+    private String userNameAttribute;
+
+    /**
+     * @deprecated Now the redirect-url-template is not configurable.
+     * <p>
+     * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
+     * </p>
+     * <p>
+     * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
+     * </p>
+     *
+     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
+     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
+     */
+    @Deprecated
     private String redirectUriTemplate;
 
     /**
@@ -167,10 +183,20 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.clientSecret = clientSecret;
     }
 
+    public String getUserNameAttribute() {
+        return userNameAttribute;
+    }
+
+    public void setUserNameAttribute(String userNameAttribute) {
+        this.userNameAttribute = userNameAttribute;
+    }
+
+    @Deprecated
     public String getRedirectUriTemplate() {
         return redirectUriTemplate;
     }
 
+    @Deprecated
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
     }
@@ -334,6 +360,17 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
                 + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
         }
+
+        authorizationClients.values()
+                            .stream()
+                            .filter(AuthorizationClientProperties::isOnDemand)
+                            .map(AuthorizationClientProperties::getAuthorizationGrantType)
+                            .filter(Objects::nonNull)
+                            .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
+                            .findAny()
+                            .ifPresent(notUsed -> {
+                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
+                            });
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

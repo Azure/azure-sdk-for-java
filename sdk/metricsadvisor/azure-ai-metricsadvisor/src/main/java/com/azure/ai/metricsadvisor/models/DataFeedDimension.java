@@ -23,42 +23,42 @@ public final class DataFeedDimension {
     private String displayName;
 
     /**
-     * Get the name property: dimension name.
+     * Get the dimensionName property: dimension name.
      *
-     * @return the name value.
+     * @return the dimensionName value.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Set the name property: dimension name.
+     * Set the dimensionName property: dimension name.
      *
-     * @param name the name value to set.
+     * @param dimensionName the dimensionName value to set.
      * @return the DataFeedDimension object itself.
      */
-    public DataFeedDimension setName(String name) {
-        this.name = name;
+    public DataFeedDimension setName(String dimensionName) {
+        this.name = dimensionName;
         return this;
     }
 
     /**
-     * Get the displayName property: dimension display name.
+     * Get the dimensionDisplayName property: dimension display name.
      *
-     * @return the displayName value.
+     * @return the dimensionDisplayName value.
      */
     public String getDisplayName() {
         return this.displayName;
     }
 
     /**
-     * Set the displayName property: dimension display name.
+     * Set the dimensionDisplayName property: dimension display name.
      *
-     * @param displayName the displayName value to set.
+     * @param dimensionDisplayName the dimensionDisplayName value to set.
      * @return the DataFeedDimension object itself.
      */
-    public DataFeedDimension setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public DataFeedDimension setDisplayName(String dimensionDisplayName) {
+        this.displayName = dimensionDisplayName;
         return this;
     }
 }

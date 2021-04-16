@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
-import com.azure.resourcemanager.cosmos.models.OptionsResource;
+import com.azure.resourcemanager.cosmos.models.SqlDatabaseGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,10 +27,10 @@ public class SqlDatabaseGetResultsInner extends ArmResourceProperties {
     private SqlDatabaseGetPropertiesResource resource;
 
     /*
-     * Cosmos DB options resource object
+     * The options property.
      */
-    @JsonProperty(value = "properties.options", access = JsonProperty.Access.WRITE_ONLY)
-    private OptionsResource options;
+    @JsonProperty(value = "properties.options")
+    private SqlDatabaseGetPropertiesOptions options;
 
     /**
      * Get the resource property: The resource property.
@@ -53,12 +53,23 @@ public class SqlDatabaseGetResultsInner extends ArmResourceProperties {
     }
 
     /**
-     * Get the options property: Cosmos DB options resource object.
+     * Get the options property: The options property.
      *
      * @return the options value.
      */
-    public OptionsResource options() {
+    public SqlDatabaseGetPropertiesOptions options() {
         return this.options;
+    }
+
+    /**
+     * Set the options property: The options property.
+     *
+     * @param options the options value to set.
+     * @return the SqlDatabaseGetResultsInner object itself.
+     */
+    public SqlDatabaseGetResultsInner withOptions(SqlDatabaseGetPropertiesOptions options) {
+        this.options = options;
+        return this;
     }
 
     /** {@inheritDoc} */

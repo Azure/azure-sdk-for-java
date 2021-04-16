@@ -1,6 +1,15 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 3.4.0-beta.1 (Unreleased)
+### Key Bug Fixes
+- Fix bug that user-name-attribute cannot be configured. ([#20209](https://github.com/Azure/azure-sdk-for-java/issues/20209))
+
+
+## 3.3.0 (2021-03-22)
+### New Features
+- Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
+
+## 3.2.0 (2021-03-03)
 
 
 ## 3.1.0 (2021-01-20)

@@ -52,11 +52,14 @@ public interface HttpClient {
 
         Duration connectionAcquireTimeout = httpClientConfig.getConfigs().getConnectionAcquireTimeout();
 
-        ConnectionProvider fixedConnectionProvider =
-            ConnectionProvider.fixed(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName(),
-                maxPoolSize, connectionAcquireTimeout.toMillis(), maxIdleConnectionTimeoutInMillis);
+        ConnectionProvider.Builder fixedConnectionProviderBuilder = ConnectionProvider
+            .builder(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName());
+        fixedConnectionProviderBuilder.maxConnections(maxPoolSize);
+        fixedConnectionProviderBuilder.pendingAcquireTimeout(connectionAcquireTimeout);
+        fixedConnectionProviderBuilder.maxIdleTime(maxIdleConnectionTimeoutInMillis);
 
-        return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProvider, httpClientConfig);
+        return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),
+            httpClientConfig);
     }
 
     /**

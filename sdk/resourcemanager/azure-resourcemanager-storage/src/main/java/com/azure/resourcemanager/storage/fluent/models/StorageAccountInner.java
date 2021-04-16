@@ -17,12 +17,15 @@ import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.ExtendedLocation;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.KeyCreationTime;
+import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
+import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -124,6 +127,24 @@ public class StorageAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.customDomain", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomain customDomain;
+
+    /*
+     * SasPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.sasPolicy", access = JsonProperty.Access.WRITE_ONLY)
+    private SasPolicy sasPolicy;
+
+    /*
+     * KeyPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.keyPolicy", access = JsonProperty.Access.WRITE_ONLY)
+    private KeyPolicy keyPolicy;
+
+    /*
+     * Storage account keys creation time.
+     */
+    @JsonProperty(value = "properties.keyCreationTime", access = JsonProperty.Access.WRITE_ONLY)
+    private KeyCreationTime keyCreationTime;
 
     /*
      * Gets the URLs that are used to perform a retrieval of a public blob,
@@ -384,6 +405,33 @@ public class StorageAccountInner extends Resource {
      */
     public CustomDomain customDomain() {
         return this.customDomain;
+    }
+
+    /**
+     * Get the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @return the sasPolicy value.
+     */
+    public SasPolicy sasPolicy() {
+        return this.sasPolicy;
+    }
+
+    /**
+     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @return the keyPolicy value.
+     */
+    public KeyPolicy keyPolicy() {
+        return this.keyPolicy;
+    }
+
+    /**
+     * Get the keyCreationTime property: Storage account keys creation time.
+     *
+     * @return the keyCreationTime value.
+     */
+    public KeyCreationTime keyCreationTime() {
+        return this.keyCreationTime;
     }
 
     /**
@@ -693,6 +741,15 @@ public class StorageAccountInner extends Resource {
         }
         if (customDomain() != null) {
             customDomain().validate();
+        }
+        if (sasPolicy() != null) {
+            sasPolicy().validate();
+        }
+        if (keyPolicy() != null) {
+            keyPolicy().validate();
+        }
+        if (keyCreationTime() != null) {
+            keyCreationTime().validate();
         }
         if (secondaryEndpoints() != null) {
             secondaryEndpoints().validate();

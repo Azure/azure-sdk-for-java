@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,15 +21,16 @@ import java.util.function.Function;
 
 public class DigitalTwinsTestBase extends TestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
+    private static final int DEFAULT_WAIT_TIME_IN_SECONDS = 5;
 
     protected static final String TENANT_ID = Configuration.getGlobalConfiguration()
-        .get("TENANT_ID", "tenantId");
+        .get("DIGITALTWINS_TENANT_ID", "tenantId");
 
     protected static final String CLIENT_SECRET = Configuration.getGlobalConfiguration()
-        .get("CLIENT_SECRET", "clientSecret");
+        .get("DIGITALTWINS_CLIENT_SECRET", "clientSecret");
 
     protected static final String CLIENT_ID = Configuration.getGlobalConfiguration()
-        .get("CLIENT_ID", "clientId");
+        .get("DIGITALTWINS_CLIENT_ID", "clientId");
 
     protected static final String DIGITALTWINS_URL = Configuration.getGlobalConfiguration()
         .get("DIGITALTWINS_URL", PLAYBACK_ENDPOINT);
@@ -125,5 +127,15 @@ public class DigitalTwinsTestBase extends TestBase {
     // Used for converting json strings into BasicDigitalTwins, BasicRelationships, etc.
     static <T> T deserializeJsonString(String rawJsonString, Class<T> clazz) throws JsonProcessingException {
         return new ObjectMapper().registerModule(new JavaTimeModule()).readValue(rawJsonString, clazz);
+    }
+
+    void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
+        if (this.getTestMode() == TestMode.LIVE || this.getTestMode() == TestMode.RECORD) {
+            Thread.sleep(waitTimeInSeconds * 1000);
+        }
+    }
+
+    void waitIfLive() throws InterruptedException {
+        waitIfLive(DEFAULT_WAIT_TIME_IN_SECONDS);
     }
 }

@@ -9,9 +9,7 @@ while protecting the identities of your customers at the same time.
 ## Getting started
 
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven](https://maven.apache.org/) 3.0 and above
+- [Environment checklist][environment_checklist]
 
 ### Include the package
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
@@ -19,7 +17,7 @@ while protecting the identities of your customers at the same time.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.3.0</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -127,10 +125,10 @@ This starter provides following properties to be customized:
 9. Create a new Java file named *AADB2CWebController.java* in the *controller* folder and open it in a text editor.
 
 10. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2CWebController.java#L18-L36 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/controller/WebController.java#L12-L30 -->
 ```java
 @Controller
-public class AADB2CWebController {
+public class WebController {
 
     private void initializeModel(Model model, OAuth2AuthenticationToken token) {
         if (token != null) {
@@ -155,14 +153,14 @@ public class AADB2CWebController {
 12. Create a new Java file named *AADB2COidcLoginConfigSample.java* in the *security* folder and open it in a text editor.
 
 13. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2COidcLoginConfigSample.java#L17-L36 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/security/WebSecurityConfiguration.java#L11-L29 -->
 ```java
 @EnableWebSecurity
-public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AADB2COidcLoginConfigurer configurer;
 
-    public AADB2COidcLoginConfigSample(AADB2COidcLoginConfigurer configurer) {
+    public WebSecurityConfiguration(AADB2COidcLoginConfigurer configurer) {
         this.configurer = configurer;
     }
 
@@ -170,11 +168,10 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
         http.authorizeRequests()
-                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .apply(configurer);
-        // @formatter:on
+        // @formatter:off
     }
 }
 ```
@@ -198,7 +195,7 @@ you should be redirected to login page.
 
 4. Click link with the login user flow, you should be redirected Azure AD B2C to start the authentication process.
 
-4. After you have logged in successfully, you should see the sample `home page` from the browser.
+5. After you have logged in successfully, you should see the sample `home page` from the browser.
 
 ## Troubleshooting
 ### Enable client logging
@@ -233,5 +230,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+

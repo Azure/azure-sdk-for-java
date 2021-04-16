@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.communication.common;
 
+import java.util.function.Supplier;
+import reactor.core.publisher.Mono;
+
 /**
  * Options for refreshing CommunicationTokenCredential
  */
-public class CommunicationTokenRefreshOptions {
-    private final TokenRefresher tokenRefresher;
+public final class CommunicationTokenRefreshOptions {
+    private final Supplier<Mono<String>> tokenRefresher;
     private final boolean refreshProactively;
     private final String initialToken;
 
@@ -19,7 +22,7 @@ public class CommunicationTokenRefreshOptions {
      *                           with setCallbackOffsetMinutes or default value of
      *                           two minutes
      */
-    public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively) {
+    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively) {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
         this.initialToken = null;
@@ -35,7 +38,7 @@ public class CommunicationTokenRefreshOptions {
      *                           two minutes
      * @param initialToken the optional serialized JWT token
      */
-    public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively, String initialToken) {
+    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken) {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
         this.initialToken = initialToken;
@@ -44,21 +47,21 @@ public class CommunicationTokenRefreshOptions {
     /**
      * @return the token refresher to provide capacity to fetch fresh token
      */
-    public TokenRefresher getTokenRefresher() {
+    public Supplier<Mono<String>> getTokenRefresher() {
         return tokenRefresher;
     }
 
     /**
      * @return whether or not to refresh token proactively
      */
-    public boolean getRefreshProactively() {
+    public boolean isRefreshProactively() {
         return refreshProactively;
     }
 
     /**
-     * @return the serialized JWT token
+     * @return the initial token
      */
-    public String getToken() {
+    public String getInitialToken() {
         return initialToken;
     }
 }

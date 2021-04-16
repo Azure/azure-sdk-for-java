@@ -56,6 +56,9 @@ parameters:
 - name: TestSetupSteps
   type: stepList
   default: []
+- name: TestMode
+  type: string
+  default: 'RECORD'
 - name: TestStepMavenInputs
   type: object
   default:
@@ -93,6 +96,9 @@ parameters:
 - name: MatrixFilters
   type: object
   default: []
+- name: MatrixReplace
+  type: object
+  default: []
 - name: PlatformPreSteps
   type: object
   default:
@@ -111,8 +117,9 @@ stages:
       - stage: ${{ cloud.key }}_${{ parameters.TestName }}
         dependsOn: []
         jobs:
-        - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+        - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
           parameters:
+            JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
             AdditionalParameters:
               PreSteps:
                 - ${{ parameters.PlatformPreSteps }}
@@ -128,6 +135,7 @@ stages:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
+              TestMode: ${{ parameters.TestMode }}
               TestStepMavenInputs: ${{ parameters.TestStepMavenInputs }}
               Artifacts: ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}
@@ -143,6 +151,10 @@ stages:
               - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
                 - ${{ cloudFilter }}
               - ${{ parameters.MatrixFilters }}
+            MatrixReplace:
+              - ${{ each cloudReplace in cloud.value.MatrixReplace }}:
+                - ${{ cloudReplace }}
+              - ${{ parameters.MatrixReplace }}
             CloudConfig:
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
               Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
