@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -123,7 +122,7 @@ public class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
             }
-            this.retryContext.retryEndTime = Instant.now();
+            this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
                 this.regionsContacted.add(locationEndPoint);
@@ -223,8 +222,8 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordRetryContextEndTime() {
-            this.retryContext.retryEndTime =  Instant.now();
-        }
+        this.retryContext.retryEndTime = Instant.now();
+    }
 
     public RetryContext getRetryContext() {
         return retryContext;

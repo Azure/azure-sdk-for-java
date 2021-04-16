@@ -460,8 +460,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
-                .thenReturn(Mono.error(exception), Mono.error(exception), Mono.error(exception),
-                    Mono.error(exception), Mono.error(exception), Mono.error(exception), Mono.error(exception));
+                .thenReturn(Mono.error(exception));
             ReflectionUtils.setTransportClient(consistencyWriter, mockTransportClient);
 
             try {

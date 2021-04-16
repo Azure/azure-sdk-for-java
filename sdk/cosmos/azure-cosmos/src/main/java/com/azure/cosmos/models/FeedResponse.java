@@ -71,12 +71,11 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     // TODO: need to more sure the query metrics can round trip just from the headers.
     // We can then remove it as a parameter.
     private FeedResponse(
-                List<T> results,
-                Map<String, String> header,
-                boolean useEtagAsContinuation,
-                boolean nochanges,
-                ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-
+        List<T> results,
+        Map<String, String> header,
+        boolean useEtagAsContinuation,
+        boolean nochanges,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
         this.header = header;
         this.usageHeaders = new HashMap<>();

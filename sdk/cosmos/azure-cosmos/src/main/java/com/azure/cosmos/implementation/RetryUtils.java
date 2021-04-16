@@ -200,10 +200,11 @@ public class RetryUtils {
     private static void addStatusSubStatusCodeOnRetryContext(RetryContext retryContext,
                                                              CosmosException clientException,
                                                              boolean isNonRelatedException) {
-        if (!isNonRelatedException)
+        if (!isNonRelatedException) {
             if (retryContext != null && clientException != null) {
                 retryContext.addStatusAndSubStatusCode(clientException.getStatusCode(),
                     clientException.getSubStatusCode());
             }
+        }
     }
 }

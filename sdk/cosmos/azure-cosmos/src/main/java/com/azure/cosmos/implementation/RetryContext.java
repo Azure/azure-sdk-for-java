@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RetryContext {
@@ -20,7 +21,7 @@ public class RetryContext {
 
     public void addStatusAndSubStatusCode(int statusCode, int subStatusCode) {
         if (statusAndSubStatusCodes == null) {
-            statusAndSubStatusCodes = new ArrayList<>();
+            statusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
         }
         int[] statusAndSubStatusCode = {statusCode, subStatusCode};
         statusAndSubStatusCodes.add(statusAndSubStatusCode);

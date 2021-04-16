@@ -119,23 +119,23 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
 
     private Mono<FeedResponse<T>> nextPageInternal() {
         return Mono.fromSupplier(this::nextPageCore)
-            .flatMap(Function.identity())
-            .flatMap((r) -> {
-                FeedRangeContinuation continuationSnapshot =
-                    this.changeFeedState.getContinuation();
+                   .flatMap(Function.identity())
+                   .flatMap((r) -> {
+                       FeedRangeContinuation continuationSnapshot =
+                           this.changeFeedState.getContinuation();
 
-                if (continuationSnapshot != null &&
-                    continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+                       if (continuationSnapshot != null &&
+                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
 
-                    // not all continuations have been drained yet
-                    // repeat with the next continuation
-                    this.reenableShouldFetchMoreForRetry();
-                    return Mono.empty();
-                }
+                           // not all continuations have been drained yet
+                           // repeat with the next continuation
+                           this.reenableShouldFetchMoreForRetry();
+                           return Mono.empty();
+                       }
 
-                return Mono.just(r);
-            })
-            .repeatWhenEmpty(o -> o);
+                       return Mono.just(r);
+                   })
+                   .repeatWhenEmpty(o -> o);
     }
 
     @Override
