@@ -1,5 +1,8 @@
 # Release History
 
+## 7.3.0-beta.1 (Unreleased)
+
+
 ## 7.2.0 (2021-04-12)
 ### Bug Fixes
 - Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
