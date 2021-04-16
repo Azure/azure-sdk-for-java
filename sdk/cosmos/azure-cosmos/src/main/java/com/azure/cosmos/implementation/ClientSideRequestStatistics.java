@@ -134,7 +134,6 @@ public class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
             }
-            String backendLatencyInMsHeaderValue;
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
@@ -143,20 +142,10 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.requestCharge = storeResponse
                                                            .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
-                backendLatencyInMsHeaderValue = storeResponse
-                    .getHeaderValue(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
-                if (StringUtils.isNotEmpty(backendLatencyInMsHeaderValue)) {
-                    this.gatewayStatistics.backendLatencyInMs = Double.parseDouble(backendLatencyInMsHeaderValue);
-                }
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
                 this.gatewayStatistics.requestTimeline = this.transportRequestTimeline;
-                backendLatencyInMsHeaderValue = exception.getResponseHeaders()
-                                                         .get(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
-                if (StringUtils.isNotEmpty(backendLatencyInMsHeaderValue)) {
-                    this.gatewayStatistics.backendLatencyInMs = Double.parseDouble(backendLatencyInMsHeaderValue);
-                }
             }
         }
     }
@@ -357,7 +346,6 @@ public class ClientSideRequestStatistics {
     }
 
     private static class GatewayStatistics {
-        Double backendLatencyInMs;
         String sessionToken;
         OperationType operationType;
         int statusCode;
@@ -387,10 +375,6 @@ public class ClientSideRequestStatistics {
 
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
-        }
-
-        public Double getBackendLatencyInMs() {
-            return backendLatencyInMs;
         }
     }
 }

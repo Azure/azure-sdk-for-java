@@ -147,7 +147,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
-            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotNull();
             // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
@@ -185,7 +184,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
-            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotNull();
             // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
