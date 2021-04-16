@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
 @Disabled
-public class KeyVaultLoadStoreParameterTest {
+public class KeyVaultLoadStoreParameterIT {
 
     /**
      * Test getProtectionParameter method.

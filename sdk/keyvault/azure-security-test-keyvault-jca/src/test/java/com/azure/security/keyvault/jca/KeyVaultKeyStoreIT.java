@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * The JUnit tests for the KeyVaultKeyStore class.
  */
 @Disabled
-public class KeyVaultKeyStoreTest {
+public class KeyVaultKeyStoreIT {
 
     /**
      * Stores the CER test certificate (which is valid til 2120).

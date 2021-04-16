@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * from Azure Key Vault.
  */
 @Disabled
-public class ServerSocketTest {
+public class ServerSocketIT {
 
     /**
      * Test SSLServerSocket without client trust.

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * The JUnit test for the AuthClient.
  */
 @Disabled
-public class AuthClientTest {
+public class AuthClientIT {
 
     /**
      * Test getAuthorizationToken method.

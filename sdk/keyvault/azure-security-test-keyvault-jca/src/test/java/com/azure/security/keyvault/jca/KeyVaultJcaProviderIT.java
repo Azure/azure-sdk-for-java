@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * The JUnit tests for the KeyVaultProvider class.
  */
 @Disabled
-public class KeyVaultJcaProviderTest {
+public class KeyVaultJcaProviderIT {
 
     /**
      * Test the constructor.

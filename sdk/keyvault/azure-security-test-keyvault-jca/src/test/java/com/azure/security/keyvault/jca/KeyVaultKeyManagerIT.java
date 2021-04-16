@@ -17,7 +17,7 @@ import java.security.cert.CertificateException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Disabled
-public class KeyVaultKeyManagerTest {
+public class KeyVaultKeyManagerIT {
 
     private KeyVaultKeyManager manager;
 
