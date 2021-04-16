@@ -43,7 +43,7 @@ public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
          * If we don't implement this method, the server side "overrideTrustManagerFactory: true" does not work.
          */
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", spec);
-        if(spec != null) {
+        if (spec != null) {
             try {
                 TrustManagerFactory factory = TrustManagerFactory.getInstance("PKIX", "SunJSSE");
                 factory.init(spec);
