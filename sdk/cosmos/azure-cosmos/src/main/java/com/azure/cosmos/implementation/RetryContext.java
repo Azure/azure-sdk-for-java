@@ -17,7 +17,7 @@ public class RetryContext {
     @JsonIgnore
     private volatile Instant retryEndTime;
 
-    private volatile List<int[]> statusAndSubStatusCodes;
+    private List<int[]> statusAndSubStatusCodes;
 
     public void addStatusAndSubStatusCode(int statusCode, int subStatusCode) {
         if (statusAndSubStatusCodes == null) {
