@@ -25,7 +25,7 @@ public final class StorageBlockingSink {
 
     /* Overrided implementation of LinkedBlockingQueue to effectively implement a true BlockingSink. */
     private static final class ProducerBlockingQueue<ByteBuffer> extends LinkedBlockingQueue<ByteBuffer> {
-        private transient final ClientLogger logger;
+        private final transient ClientLogger logger;
         private static final long serialVersionUID = 1;
 
         ProducerBlockingQueue(int queueSize, ClientLogger logger) {
