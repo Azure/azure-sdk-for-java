@@ -222,7 +222,7 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordRetryContextEndTime() {
-        this.retryContext.retryEndTime = Instant.now();
+        this.retryContext.updateEndTime();
     }
 
     public RetryContext getRetryContext() {

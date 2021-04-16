@@ -13,9 +13,9 @@ import java.util.List;
 
 public class RetryContext {
     @JsonIgnore
-    public volatile Instant retryStartTime;
+    private volatile Instant retryStartTime;
     @JsonIgnore
-    public volatile Instant retryEndTime;
+    private volatile Instant retryEndTime;
 
     private volatile List<int[]> statusAndSubStatusCodes;
 
