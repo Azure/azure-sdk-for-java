@@ -51,9 +51,7 @@ public class JsonNodeHelper {
      */
     public static boolean getNotNullableBooleanValue(JsonNode rootNode, String propertyName) {
         JsonNode booleanNode = rootNode.get(propertyName);
-        return booleanNode != null
-            ? booleanNode.booleanValue()
-            : false;
+        return booleanNode != null && booleanNode.booleanValue();
     }
 
     /**
@@ -74,7 +72,7 @@ public class JsonNodeHelper {
                 if (clazz.isAssignableFrom(String.class)) {
                     values.add(clazz.cast(jsonNode.textValue()));
                 } else if (clazz.isAssignableFrom(Integer.class)) {
-                    values.add(clazz.cast(Integer.valueOf(jsonNode.intValue())));
+                    values.add(clazz.cast(jsonNode.intValue()));
                 }
             }
 
@@ -84,6 +82,16 @@ public class JsonNodeHelper {
         return null;
     }
 
+    /**
+     * Gets a {@link Map} of keypair values where the value is a list of objects, from a {@link JsonNode} object.
+     * @param rootNode {@link JsonNode} object that contains the property.
+     * @param propertyName Name of the property.
+     * @param keyClazz Type of the Key in the map.
+     * @param valClazz Type of the list in the value of the map.
+     * @param <K> Generic type of the key.
+     * @param <V> Generic type of the list in the value section.
+     * @return The extracted {@link Map}.
+     */
     public static <K, V> Map<K, List<V>> getDictionaryOfListsValues(JsonNode rootNode, String propertyName, Class<K> keyClazz, Class<V> valClazz) {
         JsonNode rootObject = rootNode.get(propertyName);
         if (rootObject == null) {
@@ -102,7 +110,7 @@ public class JsonNodeHelper {
                     if (valClazz.isAssignableFrom(String.class)) {
                         list.add(valClazz.cast(jsonNode.textValue()));
                     } else if (valClazz.isAssignableFrom(Integer.class)) {
-                        list.add(valClazz.cast(Integer.valueOf(jsonNode.intValue())));
+                        list.add(valClazz.cast(jsonNode.intValue()));
                     }
                 }
 
@@ -117,6 +125,16 @@ public class JsonNodeHelper {
         return result;
     }
 
+    /**
+     * Gets a {@link Map} of keypair values  from a {@link JsonNode} object.
+     * @param rootNode {@link JsonNode} object that contains the property.
+     * @param propertyName Name of the property.
+     * @param keyClazz Type of the Key in the map.
+     * @param valClazz Type of the value of the map.
+     * @param <K> Generic type of the key.
+     * @param <V> Generic type of the  value section.
+     * @return The extracted {@link Map}.
+     */
     public static <K, V> Map<K, V> getDictionaryOfSingularValues(JsonNode rootNode, String propertyName, Class<K> keyClazz, Class<V> valClazz) {
         JsonNode rootObject = rootNode.get(propertyName);
         Map<K, V> result = new HashMap<>();
@@ -146,6 +164,11 @@ public class JsonNodeHelper {
         return result;
     }
 
+    /**
+     * Determines whether or not a string can be parsed as an integer.
+     * @param strNum The string value to check.
+     * @return True if the string value is a representation of an integer.
+     */
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
