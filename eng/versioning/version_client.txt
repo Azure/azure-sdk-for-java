@@ -266,7 +266,6 @@ com.azure.resourcemanager:azure-resourcemanager-servicefabric;1.0.0-beta.1;1.0.0
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-security-keyvault-keys;4.3.0-beta.6
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
@@ -275,3 +274,4 @@ unreleased_com.azure:azure-security-keyvault-keys;4.3.0-beta.6
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.6
