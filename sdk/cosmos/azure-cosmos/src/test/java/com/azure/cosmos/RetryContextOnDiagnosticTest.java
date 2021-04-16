@@ -42,7 +42,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,7 +63,6 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -266,6 +264,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void goneExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -348,6 +347,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void goneAndThrottlingExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -438,6 +438,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void goneExceptionFailureScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -486,6 +487,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void sessionNonAvailableExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -571,6 +573,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void throttlingExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -652,7 +655,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void throttlingExceptionGatewayModeScenario() throws JsonProcessingException {
+    @SuppressWarnings("unchecked")
+    public void throttlingExceptionGatewayModeScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY);
@@ -799,14 +803,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     private StoreResponse getStoreResponse(int statusCode) throws JsonProcessingException {
         StoreResponseBuilder storeResponseBuilder =
-            new StoreResponseBuilder().withContent(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()))
+            StoreResponseBuilder.create().withContent(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()))
                 .withStatus(statusCode);
         return storeResponseBuilder.build();
     }
 
     private StoreResponse getQueryStoreResponse() {
-        List<TestPojo> pojoList = new ArrayList<>();
-        pojoList.add(getTestPojoObject());
         String queryContent = "{\n" +
             "  \"_rid\": \"IaBwAPRwFTg=\",\n" +
             "  \"Documents\": [\n" +
@@ -823,7 +825,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             "  \"_count\": 1\n" +
             "}";
         StoreResponseBuilder storeResponseBuilder =
-            new StoreResponseBuilder().withContent(queryContent)
+            StoreResponseBuilder.create().withContent(queryContent)
                 .withStatus(200);
         return storeResponseBuilder.build();
     }
