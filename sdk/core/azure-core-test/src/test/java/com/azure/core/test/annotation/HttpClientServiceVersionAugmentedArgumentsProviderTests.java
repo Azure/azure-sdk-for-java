@@ -4,7 +4,6 @@
 package com.azure.core.test.annotation;
 
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.ServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -13,17 +12,26 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.commons.PreconditionViolationException;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.convertToArguments;
 import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.getServiceVersions;
 import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.invokeSupplierMethod;
+import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.validateSourceSupplier;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,7 +43,7 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
     /**
      * Tests {@link HttpClientServiceVersionAugmentedArgumentsProvider#getServiceVersions(String[], boolean, Class)}.
      */
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("getServiceVersionsSupplier")
     public void getServiceVersionsTest(String[] serviceVersionStrings, boolean useLatestServiceVersionOnly,
         Class<? extends ServiceVersion> serviceVersionType, List<? extends ServiceVersion> expectedServiceVersions)
@@ -84,28 +92,48 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
             ServiceVersion.class));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("invokeSupplierMethodSupplier")
-    public void invokeSupplierMethodTests(ExtensionContext context, String sourceSupplier, Object expected)
+    public void invokeSupplierMethodTests(ExtensionContext context, String sourceSupplier, Stream<Arguments> expected)
         throws Exception {
-        // Realistically these methods should return either a Stream or Iterable.
-        // But for testing purposes just make sure it invokes properly.
-        assertEquals(expected, invokeSupplierMethod(context, sourceSupplier));
+        Object actual = invokeSupplierMethod(context, sourceSupplier);
+
+        assertTrue(actual instanceof Stream);
+
+        Iterator<?> actualIterator = ((Stream<?>) actual).iterator();
+        Iterator<Arguments> expectedIterator = expected.iterator();
+
+        while (actualIterator.hasNext()) {
+            assertTrue(expectedIterator.hasNext());
+
+            Object actualNext = actualIterator.next();
+            Arguments expectedNext = expectedIterator.next();
+
+            assertTrue(actualNext instanceof Arguments);
+            assertArrayEquals(expectedNext.get(), ((Arguments) actualNext).get());
+        }
+
+        assertFalse(expectedIterator.hasNext());
     }
 
     private static Stream<Arguments> invokeSupplierMethodSupplier() {
         return Stream.of(
-            // Using a fully-qualified source.
+            // Using a fully-qualified source that's in this class.
             Arguments.of(null, "com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProviderTests"
-                + "#invokeMethodSupplierHelper", invokeMethodSupplierHelper()),
+                + "#staticAndValidReturnType", staticAndValidReturnType()),
+
+            // Using a fully-qualified source that's in another class.
+            Arguments.of(null,
+                "com.azure.core.test.annotation.FullyQualifiedSourceSupplierTestHelper#staticAndValidReturnType",
+                FullyQualifiedSourceSupplierTestHelper.staticAndValidReturnType()),
 
             // Using a relative source.
             Arguments.of(getMockExtensionContext(HttpClientServiceVersionAugmentedArgumentsProviderTests.class),
-                "invokeMethodSupplierHelper", invokeMethodSupplierHelper())
+                "staticAndValidReturnType", staticAndValidReturnType())
         );
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("invalidFullyQualifiedSourceSupplierThrowsSupplier")
     public void invalidFullyQualifiedSourceSupplierThrows(String sourceSupplier,
         Class<? extends Throwable> expectedException) {
@@ -131,12 +159,60 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
             // when Optional.get() is called.
             Arguments.of("com.azure.core.test.TestBase#notARealMethod", NoSuchElementException.class),
 
-            // Method isn't static.
-            Arguments.of("com.azure.core.test.TestBase#getTestMode", IllegalArgumentException.class)
+            // Valid return types but have parameters.
+            Arguments.of("com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProviderTests"
+                + "#staticAndValidReturnTypeButHasParameters", NoSuchElementException.class),
+            Arguments.of("com.azure.core.test.annotation.FullyQualifiedSourceSupplierTestHelper"
+                + "#staticAndValidReturnTypeButHasParameters", NoSuchElementException.class)
         );
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("validateSourceSupplierTestSupplier")
+    public void validateSourceSupplierTest(Method validSourceSupplier) {
+        assertDoesNotThrow(() -> validateSourceSupplier(validSourceSupplier));
+    }
+
+    private static Stream<Arguments> validateSourceSupplierTestSupplier() throws NoSuchMethodException {
+        Class<HttpClientServiceVersionAugmentedArgumentsProviderTests> thisClass =
+            HttpClientServiceVersionAugmentedArgumentsProviderTests.class;
+
+        Class<FullyQualifiedSourceSupplierTestHelper> anotherClass = FullyQualifiedSourceSupplierTestHelper.class;
+
+        return Stream.of(
+            Arguments.of(thisClass.getMethod("staticAndValidReturnType")),
+            Arguments.of(anotherClass.getMethod("staticAndValidReturnType"))
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("invalidSourceSupplerSupplier")
+    public void invalidSourceSupplier(Method invalidSourceSupplier) {
+        assertThrows(IllegalArgumentException.class, () -> validateSourceSupplier(invalidSourceSupplier));
+    }
+
+    private static Stream<Arguments> invalidSourceSupplerSupplier() throws NoSuchMethodException {
+        Class<HttpClientServiceVersionAugmentedArgumentsProviderTests> thisClass =
+            HttpClientServiceVersionAugmentedArgumentsProviderTests.class;
+
+        Class<FullyQualifiedSourceSupplierTestHelper> anotherClass = FullyQualifiedSourceSupplierTestHelper.class;
+
+        return Stream.of(
+            Arguments.of(thisClass.getMethod("nonStaticAndInvalidReturnTypeMethod")),
+            Arguments.of(thisClass.getMethod("anotherNonStaticAndInvalidReturnTypeMethod")),
+            Arguments.of(thisClass.getMethod("nonStaticMethod")),
+            Arguments.of(thisClass.getMethod("staticButInvalidReturnTypeMethod")),
+            Arguments.of(thisClass.getMethod("anotherStaticButInvalidReturnTypeMethod")),
+
+            Arguments.of(anotherClass.getMethod("nonStaticAndInvalidReturnTypeMethod")),
+            Arguments.of(anotherClass.getMethod("anotherNonStaticAndInvalidReturnTypeMethod")),
+            Arguments.of(anotherClass.getMethod("nonStaticMethod")),
+            Arguments.of(anotherClass.getMethod("staticButInvalidReturnTypeMethod")),
+            Arguments.of(anotherClass.getMethod("anotherStaticButInvalidReturnTypeMethod"))
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("invalidRelativelyQualifiedSourceSupplierThrows")
     public void invalidRelativelyQualifiedSourceSupplierThrows(ExtensionContext extensionContext, String sourceSupplier,
         Class<? extends Throwable> expectedException) {
@@ -169,37 +245,41 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
         return mockExtensionContext;
     }
 
-//    static List<Arguments> convertSupplierSourceToArguments(Object source) {
-//        List<Arguments> arguments = new ArrayList<>();
-//        if (source instanceof BaseStream) {
-//            Iterator<?> it = ((BaseStream<?, ?>) source).iterator();
-//
-//            while (it.hasNext()) {
-//                Object sourceValue = it.next();
-//                arguments.add(convertToArguments(sourceValue));
-//            }
-//        } else if (source.getClass().isArray()) {
-//            for (Object sourceValue : (Object[]) source) {
-//                arguments.add(convertToArguments(sourceValue));
-//            }
-//        } else {
-//            throw new RuntimeException("'sourceSupplier' returned an unsupported type:" + source.getClass());
-//        }
-//
-//        return arguments;
-//    }
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("convertToArgumentsTestSupplier")
+    public void convertToArgumentsTest(Object value, Arguments expected) {
+        Arguments actual = convertToArguments(value);
 
-//    static Arguments convertToArguments(Object value) {
-//        if (value instanceof Arguments) {
-//            return (Arguments) value;
-//        }
-//
-//        if (value instanceof Object[]) {
-//            return Arguments.of((Object[]) value);
-//        }
-//
-//        return Arguments.of(value);
-//    }
+        assertArrayEquals(expected.get(), actual.get());
+    }
+
+    private static Stream<Arguments> convertToArgumentsTestSupplier() {
+        Arguments emptyArgumentsMock = mock(Arguments.class);
+        when(emptyArgumentsMock.get()).thenReturn(null);
+
+        Arguments nonEmptyArguments = Arguments.of("1", 1, null, new byte[0]);
+
+        return Stream.of(
+            Arguments.of(emptyArgumentsMock, emptyArgumentsMock),
+            Arguments.of(nonEmptyArguments, nonEmptyArguments)
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("invalidArgumentTypesSupplier")
+    public void invalidArgumentTypes(Object argument) {
+        assertThrows(IllegalStateException.class, () -> convertToArguments(argument));
+    }
+
+    private static Stream<Arguments> invalidArgumentTypesSupplier() {
+        return Stream.of(
+            Arguments.of(1),
+            Arguments.of("1"),
+            Arguments.of(1.0),
+            Arguments.of(true),
+            Arguments.of(new Object())
+        );
+    }
 
 //    static List<Arguments> createHttpServiceVersionPermutations(List<HttpClient> httpClients,
 //        List<? extends ServiceVersion> serviceVersions) {
@@ -251,7 +331,74 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
 //        return Arguments.of(newArgs);
 //    }
 
-    static TestMode invokeMethodSupplierHelper() {
-        return TestMode.PLAYBACK;
+    /**
+     * Dummy method for testing that a non-static, non-{@code Stream<Arguments>} supplier method results in an {@link
+     * IllegalArgumentException}.
+     *
+     * @return Dummy integer.
+     */
+    public int nonStaticAndInvalidReturnTypeMethod() {
+        return 1;
+    }
+
+    /**
+     * Dummy method for testing that a non-static, non-Arguments Stream supplier method results in an {@link
+     * IllegalArgumentException}.
+     *
+     * @return Dummy integer Stream.
+     */
+    public Stream<Integer> anotherNonStaticAndInvalidReturnTypeMethod() {
+        return Stream.of(1);
+    }
+
+    /**
+     * Dummy method for testing that a non-static, {@code Stream<Arguments>} supplier method results in an {@link
+     * IllegalArgumentException}.
+     *
+     * @return Dummy Arguments Stream.
+     */
+    public Stream<Arguments> nonStaticMethod() {
+        return Stream.of(Arguments.of(1));
+    }
+
+    /**
+     * Dummy method for testing that a static, non-{@code Stream<Arguments>} supplier method results in an {@link
+     * IllegalArgumentException}.
+     *
+     * @return Dummy integer.
+     */
+    public static int staticButInvalidReturnTypeMethod() {
+        return 1;
+    }
+
+    /**
+     * Dummy method for testing that a static, non-Arguments stream supplier method results in an {@link
+     * IllegalArgumentException}.
+     *
+     * @return Dummy integer Stream.
+     */
+    public static Stream<Integer> anotherStaticButInvalidReturnTypeMethod() {
+        return Stream.of(1);
+    }
+
+    /**
+     * Dummy method for testing that a static, {@code Stream<Arguments>} supplier method that has any parameters results
+     * in a {@link RuntimeException}.
+     *
+     * @param dummyParam Dummy parameter.
+     * @return Dummy Arguements Stream.
+     */
+    public static Stream<Arguments> staticAndValidReturnTypeButHasParameters(Object dummyParam) {
+        return Stream.of(Arguments.of(dummyParam));
+    }
+
+    /**
+     * Dummy method for testing that a static, {@code Stream<Arguments>} supplier method is valid and returns the
+     * expected Stream.
+     *
+     * @return A single Arguments Stream whose only value is the integer {@code 1}.
+     */
+    public static Stream<Arguments> staticAndValidReturnType() {
+        return Stream.of(Arguments.of(1));
     }
 }

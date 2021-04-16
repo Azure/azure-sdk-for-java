@@ -16,6 +16,9 @@ import org.junit.jupiter.params.support.AnnotationConsumer;
 import org.junit.platform.commons.support.ReflectionSupport;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,6 +37,11 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
 
     private static final Map<Class<? extends ServiceVersion>, Map<String, ServiceVersion>>
         CLASS_TO_MAP_STRING_SERVICE_VERSION = new ConcurrentHashMap<>();
+
+    private static final String MUST_BE_STATIC = "Source supplier method is required to be static. Method: %s.";
+
+    private static final String MUST_BE_STREAM_ARGUMENTS =
+        "Source supplier method is required to return Stream<Arguments>. Return type: %s.";
 
     private String sourceSupplier;
     private boolean noSourceSupplier;
@@ -153,39 +161,51 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
             sourceSupplierMethod = ReflectionSupport.findMethod(sourceSupplierClass, sourceSupplier).get();
         }
 
+        validateSourceSupplier(sourceSupplierMethod);
+
         return ReflectionSupport.invokeMethod(sourceSupplierMethod, sourceSupplier);
     }
 
-    static List<Arguments> convertSupplierSourceToArguments(Object source) {
-        List<Arguments> arguments = new ArrayList<>();
-        if (source instanceof BaseStream) {
-            Iterator<?> it = ((BaseStream<?, ?>) source).iterator();
-
-            while (it.hasNext()) {
-                Object sourceValue = it.next();
-                arguments.add(convertToArguments(sourceValue));
-            }
-        } else if (source.getClass().isArray()) {
-            for (Object sourceValue : (Object[]) source) {
-                arguments.add(convertToArguments(sourceValue));
-            }
-        } else {
-            throw new RuntimeException("'sourceSupplier' returned an unsupported type:" + source.getClass());
+    static void validateSourceSupplier(Method sourceMethod) {
+        int modifiers = sourceMethod.getModifiers();
+        if ((modifiers | Modifier.STATIC) != modifiers) {
+            throw new IllegalArgumentException(String.format(MUST_BE_STATIC, sourceMethod.getName()));
         }
 
-        return arguments;
+        Type returnType = sourceMethod.getGenericReturnType();
+        boolean validReturnType = returnType instanceof ParameterizedType;
+
+        if (!validReturnType) {
+            throw new IllegalArgumentException(String.format(MUST_BE_STREAM_ARGUMENTS, returnType));
+        }
+
+        ParameterizedType parameterizedType = (ParameterizedType) returnType;
+        validReturnType = parameterizedType.getRawType() instanceof Class
+            && Stream.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())
+            && parameterizedType.getActualTypeArguments().length == 1
+            && parameterizedType.getActualTypeArguments()[0] instanceof Class
+            && Arguments.class.isAssignableFrom((Class<?>) parameterizedType.getActualTypeArguments()[0]);
+
+        if (!validReturnType) {
+            throw new IllegalArgumentException(String.format(MUST_BE_STREAM_ARGUMENTS, returnType));
+        }
+    }
+
+    static List<Arguments> convertSupplierSourceToArguments(Object source) {
+        if (source instanceof Stream) {
+            return ((Stream<?>) source).map(HttpClientServiceVersionAugmentedArgumentsProvider::convertToArguments)
+                .collect(Collectors.toList());
+        } else {
+            throw new IllegalStateException("'sourceSupplier' returned an unsupported type: " + source.getClass());
+        }
     }
 
     static Arguments convertToArguments(Object value) {
         if (value instanceof Arguments) {
             return (Arguments) value;
+        } else {
+            throw new IllegalStateException("Test parameterized source is an unsupported type: " + value.getClass());
         }
-
-        if (value instanceof Object[]) {
-            return Arguments.of((Object[]) value);
-        }
-
-        return Arguments.of(value);
     }
 
     static List<Arguments> createHttpServiceVersionPermutations(List<HttpClient> httpClients,

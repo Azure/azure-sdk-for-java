@@ -29,6 +29,12 @@ public @interface HttpClientServiceVersionAugmentedSource {
      * Name of the method, either fully-qualified with package and class information or relative to the test method,
      * which provides parameterized testing values.
      * <p>
+     * The source supplier method must be static and have a return type of {@code Stream<Arguments>}. If either of these
+     * don't hold true an {@link IllegalArgumentException} will be thrown during runtime.
+     * <p>
+     * If the return value from the source supplier method isn't {@code Stream<Arguments>} an {@link
+     * IllegalStateException} will be thrown during runtime.
+     * <p>
      * By default no additional parameterized testing values are expected.
      *
      * @return The name of the method, either fully-qualified or relative, which provides parameterized testing values.
