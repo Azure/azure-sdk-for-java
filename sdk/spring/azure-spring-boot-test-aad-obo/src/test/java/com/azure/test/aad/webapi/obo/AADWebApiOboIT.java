@@ -3,10 +3,10 @@
 
 package com.azure.test.aad.webapi.obo;
 
-import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +34,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADWebApiOboIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADWebApiOboIT.class);
@@ -49,8 +49,8 @@ public class AADWebApiOboIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
-    @Before
-    public void init() {
+    @BeforeAll
+    public void beforeAll() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
@@ -68,13 +68,6 @@ public class AADWebApiOboIT {
     @Test
     public void testCallGraph() {
         assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
-    }
-
-    private void runApp(Consumer<AppRunner> command) {
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
-            app.start();
-            command.accept(app);
-        }
     }
 
     @EnableWebSecurity
@@ -119,6 +112,7 @@ public class AADWebApiOboIT {
 
         /**
          * Call the graph resource only with annotation, return user information
+         *
          * @param graph authorized client for Graph
          * @return Response with graph data
          */
@@ -130,6 +124,7 @@ public class AADWebApiOboIT {
 
         /**
          * Call microsoft graph me endpoint
+         *
          * @param graph Authorized Client
          * @return Response string data.
          */
