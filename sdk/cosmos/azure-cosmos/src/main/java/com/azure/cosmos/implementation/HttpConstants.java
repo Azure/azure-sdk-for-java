@@ -254,6 +254,9 @@ public class HttpConstants {
         public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
         public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
         public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
+
+        // Client telemetry header
+        public static final String DATABASE_ACCOUNT_NAME = "x-ms-databaseaccount-name";
     }
 
     public static class A_IMHeaderValues {

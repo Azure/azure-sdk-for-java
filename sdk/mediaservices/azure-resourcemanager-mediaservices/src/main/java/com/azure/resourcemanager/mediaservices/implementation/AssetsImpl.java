@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.AssetsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetContainerSasInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetInner;
@@ -28,9 +27,10 @@ public final class AssetsImpl implements Assets {
 
     private final AssetsClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public AssetsImpl(AssetsClient innerClient, MediaservicesManager serviceManager) {
+    public AssetsImpl(
+        AssetsClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -272,7 +272,7 @@ public final class AssetsImpl implements Assets {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

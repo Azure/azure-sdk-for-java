@@ -13,20 +13,20 @@ public final class ManifestAttributesManifestReferences {
     /*
      * Manifest digest
      */
-    @JsonProperty(value = "digest")
+    @JsonProperty(value = "digest", required = true)
     private String digest;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture")
-    private String architecture;
+    @JsonProperty(value = "architecture", required = true)
+    private String cpuArchitecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os")
-    private String os;
+    @JsonProperty(value = "os", required = true)
+    private String operatingSystem;
 
     /**
      * Get the digest property: Manifest digest.
@@ -49,42 +49,42 @@ public final class ManifestAttributesManifestReferences {
     }
 
     /**
-     * Get the architecture property: CPU architecture.
+     * Get the cpuArchitecture property: CPU architecture.
      *
-     * @return the architecture value.
+     * @return the cpuArchitecture value.
      */
-    public String getArchitecture() {
-        return this.architecture;
+    public String getCpuArchitecture() {
+        return this.cpuArchitecture;
     }
 
     /**
-     * Set the architecture property: CPU architecture.
+     * Set the cpuArchitecture property: CPU architecture.
      *
-     * @param architecture the architecture value to set.
+     * @param cpuArchitecture the cpuArchitecture value to set.
      * @return the ManifestAttributesManifestReferences object itself.
      */
-    public ManifestAttributesManifestReferences setArchitecture(String architecture) {
-        this.architecture = architecture;
+    public ManifestAttributesManifestReferences setCpuArchitecture(String cpuArchitecture) {
+        this.cpuArchitecture = cpuArchitecture;
         return this;
     }
 
     /**
-     * Get the os property: Operating system.
+     * Get the operatingSystem property: Operating system.
      *
-     * @return the os value.
+     * @return the operatingSystem value.
      */
-    public String getOs() {
-        return this.os;
+    public String getOperatingSystem() {
+        return this.operatingSystem;
     }
 
     /**
-     * Set the os property: Operating system.
+     * Set the operatingSystem property: Operating system.
      *
-     * @param os the os value to set.
+     * @param operatingSystem the operatingSystem value to set.
      * @return the ManifestAttributesManifestReferences object itself.
      */
-    public ManifestAttributesManifestReferences setOs(String os) {
-        this.os = os;
+    public ManifestAttributesManifestReferences setOperatingSystem(String operatingSystem) {
+        this.operatingSystem = operatingSystem;
         return this;
     }
 }

@@ -61,7 +61,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e6fa7db931a3e5182e5685630971b64987719938/specification/search/data-plane/Azure.Search/preview/2020-06-30-Preview/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AutocompleteItem,AutocompleteMode,AutocompleteResult,FacetResult,IndexActionType,QueryType,ScoringStatistics,SearchMode
+custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,QueryAnswer,QueryLanguage,QuerySpeller,QueryType,ScoringStatistics,SearchMode,SuggestOptions
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
@@ -128,11 +128,11 @@ directive:
     transform: >
       for (var path in $) {
         for (var opName in $[path]) {
-          var accept = "application/json; odata.metadata=";
+          let accept = "application/json; odata.metadata=";
           accept += path.startsWith("/docs") ? "none" : "minimal";
 
-          var op = $[path][opName];
-          var param = op.parameters.find(p => p.name === "Accept");
+          let op = $[path][opName];
+          let param = op.parameters.find(p => p.name === "Accept");
           if (param === null) {
             param.enum = [ accept ];
           } else {
@@ -194,7 +194,7 @@ directive:
       $.ServiceCounters.required = $.ServiceCounters.required.splice(0,6);
 ```
 
-### Add serialization descriminator to LexicalNormalizer
+### Add serialization discriminator to LexicalNormalizer
 ``` yaml $(java)
 directive:
   - from: swagger-document
@@ -216,4 +216,80 @@ directive:
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
       $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
+```
+
+### Fix search document result answers to be an array
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchDocumentsResult.properties
+    transform: >
+      let answers = $["@search.answers"];
+      answers.type = answers.additionalProperties.type;
+      answers.items = answers.additionalProperties.items;
+      delete answers.additionalProperties;
+```
+
+### Fix search result captions to be an array
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchResult.properties
+    transform: >
+      let captions = $["@search.captions"];
+      captions.type = captions.additionalProperties.type;
+      captions.items = captions.additionalProperties.items;
+      delete captions.additionalProperties;
+```
+
+### Rename includeTotalResultCount to includeTotalCount
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.paths["/docs"].get.parameters
+    transform: >
+      let param = $.find(p => p.name === "$count");
+      param["x-ms-client-name"] = "includeTotalCount";
+```
+
+### Rename Speller to QuerySpeller
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.paths["/docs"].get.parameters
+    transform: >
+      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpeller";
+```
+
+### Rename Answers to QueryAnswer and Speller to QuerySpeller
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.Answers["x-ms-enum"].name = "QueryAnswer";
+      $.Speller["x-ms-enum"].name = "QuerySpeller";
+```
+
+### Change Answers to a string in SearchOptions and SearchRequest
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.paths["/docs"].get.parameters
+    transform: >
+      let param = $.find(p => p.name === "answers");
+      param.type = "string";
+      delete param.enum;
+      delete param["x-ms-enum"];
+```
+
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      let param = $.SearchRequest.properties.answers;
+      param.type = "string";
+      param.description = $.Answers.description;
+      delete param["$ref"];
 ```

@@ -24,7 +24,7 @@ public final class ApplicationGetHttpsEndpoint {
     /*
      * The location of the endpoint.
      */
-    @JsonProperty(value = "location")
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
@@ -36,8 +36,14 @@ public final class ApplicationGetHttpsEndpoint {
     /*
      * The public port to connect to.
      */
-    @JsonProperty(value = "publicPort")
+    @JsonProperty(value = "publicPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer publicPort;
+
+    /*
+     * The private ip address of the endpoint.
+     */
+    @JsonProperty(value = "privateIPAddress")
+    private String privateIpAddress;
 
     /*
      * The subdomain suffix of the application.
@@ -81,17 +87,6 @@ public final class ApplicationGetHttpsEndpoint {
     }
 
     /**
-     * Set the location property: The location of the endpoint.
-     *
-     * @param location the location value to set.
-     * @return the ApplicationGetHttpsEndpoint object itself.
-     */
-    public ApplicationGetHttpsEndpoint withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
      * Get the destinationPort property: The destination port to connect to.
      *
      * @return the destinationPort value.
@@ -121,13 +116,22 @@ public final class ApplicationGetHttpsEndpoint {
     }
 
     /**
-     * Set the publicPort property: The public port to connect to.
+     * Get the privateIpAddress property: The private ip address of the endpoint.
      *
-     * @param publicPort the publicPort value to set.
+     * @return the privateIpAddress value.
+     */
+    public String privateIpAddress() {
+        return this.privateIpAddress;
+    }
+
+    /**
+     * Set the privateIpAddress property: The private ip address of the endpoint.
+     *
+     * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGetHttpsEndpoint object itself.
      */
-    public ApplicationGetHttpsEndpoint withPublicPort(Integer publicPort) {
-        this.publicPort = publicPort;
+    public ApplicationGetHttpsEndpoint withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 
