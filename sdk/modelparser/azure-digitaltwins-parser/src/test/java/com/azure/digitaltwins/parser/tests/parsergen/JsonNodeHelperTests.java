@@ -45,12 +45,6 @@ public class JsonNodeHelperTests {
 
         boolean output2 = JsonNodeHelper.getNotNullableBooleanValue(complexJsonNode, "doesNotExist");
         Assertions.assertEquals(false, output2);
-
-        boolean output3 = JsonNodeHelper.getNullableBooleanValue(complexJsonNode, "booleanValue");
-        Assertions.assertEquals(true, output3);
-
-        Boolean output4 = JsonNodeHelper.getNullableBooleanValue(complexJsonNode, "doesNotExist");
-        Assertions.assertEquals(null, output4);
     }
 
     @Test

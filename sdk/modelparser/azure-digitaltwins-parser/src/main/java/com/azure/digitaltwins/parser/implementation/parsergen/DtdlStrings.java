@@ -30,4 +30,20 @@ public class DtdlStrings {
     public static final String SHADOWED = "shadowed";
     public static final String IS_KEY = "isKey";
     public static final String IS_SEGMENT = "isSeg";
+    public static final String DTDL_VERSIONS = "dtdlVersions";
+    public static final String OVERT = "overt";
+    public static final String PARTITION = "partition";
+    public static final String PARENT_CLASS = "parentClass";
+    public static final String TYPE_IDS = "typeIds";
+    public static final String CONCRETE_SUB_CLASSES = "concreteSubclasses";
+    public static final String ELEMENTAL_SUB_CLASSES = "elementalSubclasses";
+    public static final String EXTENSIBLE_MATERIAL_SUB_CLASSES = "extensibleMaterialSubclasses";
+    public static final String STANDARD_ELEMENT_IDS = "standardElementIds";
+    public static final String BAD_TYPE_CAUSE_FORMAT = "badTypeCauseFormat";
+    public static final String BAD_TYPE_ACTION_FORMAT = "badTypeActionFormat";
+    public static final String PROPERTIES = "properties";
+    public static final String INSTANCE = "instance";
+
+
+
 }

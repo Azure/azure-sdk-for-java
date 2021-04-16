@@ -169,25 +169,11 @@ public class MaterialPropertyDigest {
 
         for (Iterator<String> it = materialPropertyObj.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
-            if (isNumeric(fieldName)) {
+            if (JsonNodeHelper.isNumeric(fieldName)) {
                 map.put(Integer.parseInt(fieldName), new PropertyVersionDigest(materialPropertyObj.get(fieldName)));
             }
         }
 
         return map;
-    }
-
-    private static boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
-        }
-
-        try {
-            Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-
-        return true;
     }
 }
