@@ -6,8 +6,6 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 ## Getting started
 
 ### Prerequisites
-
-### Prerequisites
 - [Environment checklist][environment_checklist]
 
 ### Include the Package

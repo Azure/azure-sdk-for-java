@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
@@ -54,7 +55,7 @@ public class AADResourceServerClientConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADResourceServerOAuth2AuthorizedClientRepository.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AuthenticatedPrincipalOAuth2AuthorizedClientRepository.class));
     }
 
     @Test
@@ -62,7 +63,7 @@ public class AADResourceServerClientConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADResourceServerOAuth2AuthorizedClientRepository.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AuthenticatedPrincipalOAuth2AuthorizedClientRepository.class));
     }
 
     @Test
@@ -75,7 +76,7 @@ public class AADResourceServerClientConfigurationTest {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADResourceServerOAuth2AuthorizedClientRepository.class);
+                    AuthenticatedPrincipalOAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
@@ -84,6 +85,29 @@ public class AADResourceServerClientConfigurationTest {
                 assertThat(oboRepo).isExactlyInstanceOf(InMemoryClientRegistrationRepository.class);
                 assertThat(graph).isNotNull();
                 assertThat(graphScopes).containsOnly("https://graph.microsoft.com/User.Read");
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testGrantTypeIsAuthorizationCodeClient() {
+        this.contextRunner
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
+                + "authorization_code")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void clientWhichGrantTypeIsOboButOnDemandExceptionTest() {
+        this.contextRunner
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
+                + "on-behalf-of")
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.on-demand = true")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
             });
     }
 
@@ -99,7 +123,7 @@ public class AADResourceServerClientConfigurationTest {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADResourceServerOAuth2AuthorizedClientRepository.class);
+                    AuthenticatedPrincipalOAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 ClientRegistration custom = oboRepo.findByRegistrationId("custom");

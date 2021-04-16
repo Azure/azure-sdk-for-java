@@ -1,7 +1,20 @@
 # Release History
 
-## 5.7.0-beta.1 (Unreleased)
+## 5.8.0-beta.1 (Unreleased)
 
+
+## 5.7.0 (2021-04-12)
+
+## Bug Fixes
+
+- Update AMQP receive link to add credits on the link based on backpressure
+  request from downstream.
+- Update logging to be less verbose.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.15.0`.
+- Update `azure-core-amqp` dependency to `2.0.4`.
 
 ## 5.6.0 (2021-03-10)
 ### Bug Fixes

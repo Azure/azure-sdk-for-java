@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8/create?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -49,7 +49,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8/660faec3e1e641ed9fc2d47ad91a18b5?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8/660faec3e1e641ed9fc2d47ad91a18b5?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -76,7 +76,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8/660faec3e1e641ed9fc2d47ad91a18b5/wrapkey?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8/660faec3e1e641ed9fc2d47ad91a18b5/wrapkey?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -159,7 +159,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyidencryptionnotanoop0175600196622b9d954fbc8?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"

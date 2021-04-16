@@ -39,7 +39,6 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -85,14 +84,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
-    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond,"
-        + " WA";
-    private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
+    private static final String EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE = "123 Main Street Redmond, WA 98052";
+    private static final String EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
+    // TODO (Service pending) Disabled, service to provide a different png file.
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
+    static final String MULTIPAGE_RECEIPT_PDF = "contoso_allInOne_multipage_receipt.pdf";
     static final String BUSINESS_CARD_JPG = "businessCard.jpg";
     static final String BUSINESS_CARD_PNG = "businessCard.png";
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
@@ -299,10 +299,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
-        // TODO (Service Bug) https://github.com/Azure/azure-sdk-for-java/issues/18967 To be fixed in preview 3
-        // assertNotNull(actualFieldBoundingBox);
-        // assertNotNull(actualFieldBoundingBox.getPoints());
+    private static void validateBoundingBoxData(List<Float> expectedBoundingBox,
+        FieldBoundingBox actualFieldBoundingBox) {
+        assertNotNull(actualFieldBoundingBox);
+        assertNotNull(actualFieldBoundingBox.getPoints());
         if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
             int i = 0;
             for (Point point : actualFieldBoundingBox.getPoints()) {
@@ -417,9 +417,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    @Disabled
     abstract void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-    // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
 
     // Receipt - URL
 
@@ -911,40 +909,37 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     static void validateMultipageReceiptData(List<RecognizedForm> recognizedReceipts) {
-        assertEquals(3, recognizedReceipts.size());
+        assertEquals(2, recognizedReceipts.size());
         RecognizedForm receiptPage1 = recognizedReceipts.get(0);
         RecognizedForm receiptPage2 = recognizedReceipts.get(1);
-        RecognizedForm receiptPage3 = recognizedReceipts.get(2);
 
         assertEquals(1, receiptPage1.getPageRange().getFirstPageNumber());
         assertEquals(1, receiptPage1.getPageRange().getLastPageNumber());
         Map<String, FormField> receiptPage1Fields = receiptPage1.getFields();
-        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage1Fields.get("MerchantAddress")
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE, receiptPage1Fields.get("MerchantAddress")
             .getValue().asString());
-        assertEquals("Bilbo Baggins", receiptPage1Fields.get("MerchantName")
+        assertEquals("Contoso", receiptPage1Fields.get("MerchantName")
             .getValue().asString());
-        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
             .getValue().asPhoneNumber());
-        // assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
+        assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
         assertNotNull(receiptPage1.getPages());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue().asString());
 
-        // Assert no fields and lines on second page
-        assertEquals(0, receiptPage2.getFields().size());
+        assertNotNull(receiptPage2.getFields());
         List<FormPage> receipt2Pages = receiptPage2.getPages();
         assertEquals(1, receipt2Pages.size());
-        assertEquals(0, receipt2Pages.stream().findFirst().get().getLines().size());
         assertEquals(2, receiptPage2.getPageRange().getFirstPageNumber());
         assertEquals(2, receiptPage2.getPageRange().getLastPageNumber());
 
-        assertEquals(3, receiptPage3.getPageRange().getFirstPageNumber());
-        assertEquals(3, receiptPage3.getPageRange().getLastPageNumber());
-        Map<String, FormField> receiptPage3Fields = receiptPage3.getFields();
-        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress").getValue().asString());
-        assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
-        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
-        // assertNotNull(receiptPage3Fields.get("Total").getValue().asFloat());
-        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
+        Map<String, FormField> receiptPage2Fields = receiptPage2.getFields();
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE,
+            receiptPage2Fields.get("MerchantAddress").getValue().asString());
+        assertEquals("Contoso", receiptPage2Fields.get("MerchantName").getValue().asString());
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE,
+            receiptPage2Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
+        assertEquals(14.52f, receiptPage2Fields.get("Total").getValue().asFloat());
+        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage2Fields.get("ReceiptType").getValue().asString());
     }
 
     static void validateMultipageInvoiceData(List<RecognizedForm> recognizedInvoices) {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -12,10 +13,10 @@ final class StateHolder {
         throw new IllegalStateException("Should not be callable.");
     }
 
-    private static ConcurrentHashMap<String, ConfigurationSetting> etagState =
-            new ConcurrentHashMap<String, ConfigurationSetting>();
+    private static final Map<String, ConfigurationSetting> etagState =
+            new ConcurrentHashMap<>();
 
-    private static ConcurrentHashMap<String, Boolean> loadState = new ConcurrentHashMap<String, Boolean>();
+    private static final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
 
     /**
      * @return the etagState
@@ -35,8 +36,7 @@ final class StateHolder {
      * @return the loadState
      */
     static boolean getLoadState(String name) {
-        Boolean loadstate = loadState.get(name);
-        return loadstate == null ? false : loadstate;
+        return loadState.getOrDefault(name, false);
     }
 
     /**

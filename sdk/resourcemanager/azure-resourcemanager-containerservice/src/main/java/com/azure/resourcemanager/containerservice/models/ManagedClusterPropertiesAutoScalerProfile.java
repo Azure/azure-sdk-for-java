@@ -39,6 +39,12 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     private String maxGracefulTerminationSec;
 
     /*
+     * The max-node-provision-time property.
+     */
+    @JsonProperty(value = "max-node-provision-time")
+    private String maxNodeProvisionTime;
+
+    /*
      * The max-total-unready-percentage property.
      */
     @JsonProperty(value = "max-total-unready-percentage")
@@ -187,6 +193,26 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
      */
     public ManagedClusterPropertiesAutoScalerProfile withMaxGracefulTerminationSec(String maxGracefulTerminationSec) {
         this.maxGracefulTerminationSec = maxGracefulTerminationSec;
+        return this;
+    }
+
+    /**
+     * Get the maxNodeProvisionTime property: The max-node-provision-time property.
+     *
+     * @return the maxNodeProvisionTime value.
+     */
+    public String maxNodeProvisionTime() {
+        return this.maxNodeProvisionTime;
+    }
+
+    /**
+     * Set the maxNodeProvisionTime property: The max-node-provision-time property.
+     *
+     * @param maxNodeProvisionTime the maxNodeProvisionTime value to set.
+     * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
+     */
+    public ManagedClusterPropertiesAutoScalerProfile withMaxNodeProvisionTime(String maxNodeProvisionTime) {
+        this.maxNodeProvisionTime = maxNodeProvisionTime;
         return this;
     }
 
