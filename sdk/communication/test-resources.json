@@ -22,6 +22,24 @@
         "metadata": {
           "description": "The client OID to grant access to test resources."
         }
+      },
+      "tenantId": {
+        "type": "String",
+          "metadata": {
+            "description": "The tenant id to which the application and resources belong."
+        }
+      },
+      "testApplicationId": {
+        "type": "String",
+          "metadata": {
+              "description": "The application client id used to run tests."
+          }
+      },
+      "testApplicationSecret": {
+        "type": "String",
+          "metadata": {
+              "description": "The application client secret used to run tests."
+          }
       }
     },
     "variables": {
@@ -50,15 +68,15 @@
       }
     ],
     "outputs": {
-      "COMMUNICATION_TENANT_ID": {
+      "AZURE_TENANT_ID": {
             "type": "String",
             "value": "[parameters('tenantId')]"
       },
-      "COMMUNICATION_CLIENT_ID": {
+      "AZURE_CLIENT_ID": {
             "type": "String",
             "value": "[parameters('testApplicationId')]"
       },
-      "COMMUNICATION_CLIENT_SECRET": {
+      "AZURE_CLIENT_SECRET": {
             "type": "String",
             "value": "[parameters('testApplicationSecret')]"
       },
