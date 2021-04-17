@@ -1,5 +1,8 @@
 # Release History
 
+## 12.11.0-beta.4 (Unreleased)
+
+
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where connection strings with unencoded SAS's would result in URL exceptions. 
 
