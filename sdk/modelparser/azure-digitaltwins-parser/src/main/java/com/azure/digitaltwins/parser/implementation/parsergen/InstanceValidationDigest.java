@@ -66,7 +66,9 @@ public class InstanceValidationDigest {
         for (Iterator<String> it = instanceValidationObject.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
             if (JsonNodeHelper.isNumeric(fieldName)) {
-                map.put(Integer.parseInt(fieldName), new InstanceConditionDigest(instanceValidationObject.get(fieldName).get(propertyName)));
+                map.put(
+                    Integer.parseInt(fieldName),
+                    new InstanceConditionDigest(instanceValidationObject.get(fieldName).get(propertyName)));
             }
         }
 

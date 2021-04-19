@@ -203,7 +203,9 @@ public class MetamodelDigest {
 
         for (Iterator<String> it = extensibleClassNode.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
-            result.put(Integer.parseInt(fieldName), JsonNodeHelper.getArrayValues(extensibleClassNode, fieldName, String.class));
+            result.put(
+                Integer.parseInt(fieldName),
+                JsonNodeHelper.getArrayValues(extensibleClassNode, fieldName, String.class));
         }
 
         return result;
@@ -220,7 +222,9 @@ public class MetamodelDigest {
                 HashMap<Integer, StringRestriction> innerMap = new HashMap<>();
                 for (Iterator<String> inner = identifierDefRestriction.get(fieldName).fieldNames(); inner.hasNext();) {
                     String innerFieldName = inner.next();
-                    innerMap.put(Integer.parseInt(innerFieldName), new StringRestriction(innerNode.get(innerFieldName)));
+                    innerMap.put(
+                        Integer.parseInt(innerFieldName),
+                        new StringRestriction(innerNode.get(innerFieldName)));
                 }
 
                 result.put(fieldName, innerMap);
@@ -236,7 +240,9 @@ public class MetamodelDigest {
 
         for (Iterator<String> it = identifierRefRestriction.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
-            result.put(Integer.parseInt(fieldName), new StringRestriction(identifierRefRestriction.get(fieldName)));
+            result.put(
+                Integer.parseInt(fieldName),
+                new StringRestriction(identifierRefRestriction.get(fieldName)));
         }
 
         return result;
@@ -249,7 +255,9 @@ public class MetamodelDigest {
         for (Iterator<String> it = identifierDefRestriction.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
             if (JsonNodeHelper.isNumeric(fieldName)) {
-                result.put(Integer.parseInt(fieldName), new StringRestriction(identifierDefRestriction.get(fieldName)));
+                result.put(
+                    Integer.parseInt(fieldName),
+                    new StringRestriction(identifierDefRestriction.get(fieldName)));
             }
         }
 

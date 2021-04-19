@@ -199,7 +199,9 @@ public class MaterialClassDigest {
 
         for (Iterator<String> it = materialPropertyObj.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
-            map.put(fieldName, new MaterialPropertyDigest(materialPropertyObj.get(fieldName)));
+            map.put(
+                fieldName,
+                new MaterialPropertyDigest(materialPropertyObj.get(fieldName)));
         }
 
         return map;

@@ -91,7 +91,11 @@ public class JsonNodeHelper {
      * @param <V> Generic type of the list in the value section.
      * @return The extracted {@link Map}.
      */
-    public static <K, V> Map<K, List<V>> getDictionaryOfListsValues(JsonNode rootNode, String propertyName, Class<K> keyClazz, Class<V> valClazz) {
+    public static <K, V> Map<K, List<V>> getDictionaryOfListsValues(
+        JsonNode rootNode,
+        String propertyName,
+        Class<K> keyClazz,
+        Class<V> valClazz) {
         JsonNode rootObject = rootNode.get(propertyName);
         if (rootObject == null) {
             return null;
@@ -134,7 +138,11 @@ public class JsonNodeHelper {
      * @param <V> Generic type of the  value section.
      * @return The extracted {@link Map}.
      */
-    public static <K, V> Map<K, V> getDictionaryOfSingularValues(JsonNode rootNode, String propertyName, Class<K> keyClazz, Class<V> valClazz) {
+    public static <K, V> Map<K, V> getDictionaryOfSingularValues(
+        JsonNode rootNode,
+        String propertyName,
+        Class<K> keyClazz,
+        Class<V> valClazz) {
         JsonNode rootObject = rootNode.get(propertyName);
         Map<K, V> result = new HashMap<>();
 

@@ -170,7 +170,9 @@ public class MaterialPropertyDigest {
         for (Iterator<String> it = materialPropertyObj.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
             if (JsonNodeHelper.isNumeric(fieldName)) {
-                map.put(Integer.parseInt(fieldName), new PropertyVersionDigest(materialPropertyObj.get(fieldName)));
+                map.put(
+                    Integer.parseInt(fieldName),
+                    new PropertyVersionDigest(materialPropertyObj.get(fieldName)));
             }
         }
 
