@@ -228,7 +228,7 @@ public final class ContainerRegistryClientBuilder {
      * @throws NullPointerException If {@code policy} is null.
      */
     public ContainerRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "'customPolicy' cannot be null.");
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
             perCallPolicies.add(policy);
