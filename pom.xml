@@ -688,6 +688,7 @@
         <module>sdk/datafactory</module>
         <module>sdk/datamigration</module>
         <module>sdk/delegatednetwork</module>
+        <module>sdk/deploymentmanager</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
