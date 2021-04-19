@@ -672,7 +672,7 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePathWithResponse#String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context}
      *
      * @param deletedPath The deleted path
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
