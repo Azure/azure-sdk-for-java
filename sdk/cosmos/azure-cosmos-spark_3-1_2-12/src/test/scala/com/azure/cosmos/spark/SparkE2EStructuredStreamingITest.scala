@@ -130,7 +130,6 @@ class SparkE2EStructuredStreamingITest
     targetCount = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after second execution: $targetCount")
 
-    processedRecordCount.get() shouldEqual 10L
     sourceCount shouldEqual 110L
     sourceCount shouldEqual targetCount
 
