@@ -384,8 +384,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     })
                     .subscribe();
             } else {
-                logger.verbose("entityPath[{}] credits[{}] totalRequest[{}] totalSent[{}] totalCredits[{}] "
-                    + "There is no link to add credits to, yet.", entityPath, credits);
+                logger.verbose("entityPath[{}] credits[{}] There is no link to add credits to, yet.",
+                    entityPath, credits);
             }
         }
 
