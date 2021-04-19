@@ -7,7 +7,6 @@ package com.azure.containers.containerregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
@@ -17,21 +16,15 @@ import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.ImportMode;
 import com.azure.resourcemanager.containerregistry.models.ImportSource;
-import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.azure.core.test.TestBase.getHttpClients;
 
 public class TestUtils {
-    public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration().clone();
@@ -39,18 +32,13 @@ public class TestUtils {
     public static final String ALPINE_REPOSITORY_NAME = "library/alpine";
     public static final String HELLO_WORLD_REPOSITORY_NAME = "library/hello-world";
     public static final String HELLO_WORLD_SEATTLE_REPOSITORY_NAME = "library/hello-seattle";
-    public static final String LIBRARY_BUSYBOX_NAME = "library/busybox";
     public static final String LATEST_TAG_NAME = "latest";
     public static final String V1_TAG_NAME = "v1";
     public static final String TAG_TO_DELETE = "test-delete-image-by-tag";
-    public static final String ARTIFACT_TO_DELETE = "test-delete-image-by-manifest";
     public static final String TAG_TO_UPDATE = "test-update-properties";
-    public static final String TAG_TO_UPDATE_WITH_RESPONSE = "test-update-properties";
-
+    public static final String TAG_UNKNOWN = "unknowntag";
+    public static final String DIGEST_UNKNOWN = "unknown:digest";
     public static final int  PAGESIZE_2 = 2;
-    public static final int PAGESIZE_4 = 4;
-    public static final int HELLOWORLD_REPOSITORY_MANIFEST_REFERENCES_COUNT = 9;
-
     public static final String ARM64_ARCHITECTURE = "arm64";
     public static final String LINUX_OPERATING_SYSTEM = "linux";
     public static final String AMD64_ARCHITECTURE = "amd64";
@@ -58,7 +46,6 @@ public class TestUtils {
     public static final String PROPERTY_CONTAINER_REGISTRY_NAME = "CONTAINERREGISTRY_REGISTRY_NAME";
     public static final String PROPERTY_CONTAINER_REGISTRY_RESOURCEGROUP = "CONTAINERREGISTRY_RESOURCE_GROUP";
     public static final String PROPERTY_CONTAINERREGISTRY_SUBSCRIPTION_ID = "CONTAINERREGISTRY_SUBSCRIPTION_ID";
-
     public static final String REGISTRY_URI = "registry.hub.docker.com";
 
     public static final long SLEEP_TIME_IN_MILLISECONDS = 7000;
@@ -68,18 +55,6 @@ public class TestUtils {
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
         }
-    }
-
-    /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
-     * service versions that should be tested.
-     *
-     * @return A stream of HttpClient and service version combinations to test.
-     */
-    static Stream<Arguments> getTestParameters() {
-        List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients();
-        return argumentsList.stream();
     }
 
     static <T extends Comparable<? super T>> boolean isSorted(Iterable<T> iterable) {
@@ -107,8 +82,12 @@ public class TestUtils {
     }
 
     static void importImage(TestMode mode, String repository, List<String> tags) {
+        importImageAsync(mode, repository, tags).block();
+    }
+
+    static Mono<Void> importImageAsync(TestMode mode, String repository, List<String> tags) {
         if (mode == TestMode.PLAYBACK) {
-            return;
+            return Mono.empty();
         }
 
         TokenCredential credential = getCredential(mode);
@@ -121,7 +100,7 @@ public class TestUtils {
 
         ContainerRegistryManager manager = ContainerRegistryManager.authenticate(credential, new AzureProfile(AzureEnvironment.AZURE));
 
-        manager.serviceClient().getRegistries().importImage(
+        return manager.serviceClient().getRegistries().importImageAsync(
             resourceGroupName,
             registryName,
             new ImportImageParameters()
