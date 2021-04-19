@@ -84,7 +84,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private RxDocumentServiceRequest serviceRequest;
     private AddressSelector addressSelector;
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     public void backoffRetryUtilityExecuteRetry() throws Exception {
         @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
@@ -103,7 +103,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     public void backoffRetryUtilityExecuteRetryWithFailure() throws Exception {
         @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
@@ -124,7 +124,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void backoffRetryUtilityExecuteAsync() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
@@ -153,7 +153,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void backoffRetryUtilityExecuteAsyncWithFailure() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
@@ -181,7 +181,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void retryContextMockTestOnCRUDOperation() throws NoSuchFieldException, IllegalAccessException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -298,7 +298,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
             RetryContext retryContext =
                 createItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
@@ -318,7 +317,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             retryContext =
                 readItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
@@ -383,7 +381,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
             RetryContext retryContext =
                 createItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(3);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(1)[0]).isEqualTo(410);
@@ -405,7 +402,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             retryContext =
                 readItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(3);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(1)[0]).isEqualTo(429);
@@ -437,7 +433,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void goneExceptionFailureScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -471,7 +467,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                     new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
 
                 fail("Create item should no succeed");
-                System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             } catch (CosmosException ex) {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
@@ -520,7 +515,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
             RetryContext retryContext =
                 createItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(404);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
@@ -541,7 +535,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             retryContext =
                 readItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(404);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
@@ -566,6 +559,56 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(404);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
 
+        } finally {
+            safeCloseSyncClient(cosmosClient);
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 2)
+    @SuppressWarnings("unchecked")
+    public void sessionNonAvailableExceptionFailureScenario() {
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY);
+        CosmosClient cosmosClient =
+            cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig()).buildClient();
+        try {
+            CosmosAsyncContainer cosmosAsyncContainer =
+                getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
+            RxDocumentClientImpl rxDocumentClient =
+                (RxDocumentClientImpl) cosmosClient.asyncClient().getContextClient();
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+            ReplicatedResourceClient replicatedResourceClient =
+                ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+
+            TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
+            CosmosException exception = new CosmosException(404, "Session Test");
+            exception.setSubStatusCode(1002);
+
+            Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class)))
+                .thenReturn(Mono.error(exception));
+            ReflectionUtils.setTransportClient(consistencyWriter, mockTransportClient);
+
+            try {
+                CosmosContainer cosmosContainer =
+                    cosmosClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+                TestPojo testPojo = getTestPojoObject();
+                cosmosContainer.createItem(testPojo,
+                    new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
+
+                fail("Create item should no succeed");
+            } catch (CosmosException ex) {
+                RetryContext retryContext =
+                    ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
+                // One session retry max is 100 (50ms up to 5 sec)
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(100);
+                // On single region we will have 3 retry of session policy (One retry of first request, one from client retry policy and last from rename policy.
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(300);
+                assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[0]).isEqualTo(404);
+                assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[1]).isEqualTo(1002);
+            }
         } finally {
             safeCloseSyncClient(cosmosClient);
         }
@@ -605,7 +648,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
             RetryContext retryContext =
                 createItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
@@ -625,7 +667,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             retryContext =
                 readItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
@@ -703,7 +744,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
             RetryContext retryContext =
                 createItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
@@ -720,7 +760,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             retryContext =
                 readItemResponse.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-            System.out.println("RetryContextOnDiagnosticTest.goneExceptionOnCrud");
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
