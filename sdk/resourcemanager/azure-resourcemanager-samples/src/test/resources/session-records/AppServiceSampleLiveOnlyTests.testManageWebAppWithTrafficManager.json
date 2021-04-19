@@ -54,7 +54,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DomainRegistration/topLevelDomains/com/listAgreements?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DomainRegistration/topLevelDomains/com/listAgreements?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0-beta.4 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d836dc7f-e348-4418-b195-16fb2c10e36d",
@@ -83,7 +83,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.0.0-beta.4 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d064568a-14d9-47db-82b4-1204c261f35a",
@@ -106,12 +106,12 @@
       "Content-Length" : "0",
       "x-ms-request-id" : "773ba56a-a72c-4336-b165-d1ab9ea7b090",
       "X-Powered-By" : "ASP.NET",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2019-08-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2020-12-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e03e2850-6f72-46f4-a203-190c76748b4b"
@@ -133,12 +133,12 @@
       "Content-Length" : "0",
       "x-ms-request-id" : "e877ef89-a54e-4e6a-822f-ca1ce510b389",
       "X-Powered-By" : "ASP.NET",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2019-08-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2020-12-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_34984669300/providers/Microsoft.DomainRegistration/domains/jsdkdemo-493851ec.com/operationresults/257284d3-9ad2-41fa-81b2-0a9b416592c6?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e6d96694-29b1-4b87-9a6a-dfd32f5f6f2f"
