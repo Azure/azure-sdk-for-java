@@ -74,6 +74,13 @@ public interface KustoManagementClient {
     DatabasePrincipalAssignmentsClient getDatabasePrincipalAssignments();
 
     /**
+     * Gets the ScriptsClient object to access its operations.
+     *
+     * @return the ScriptsClient object.
+     */
+    ScriptsClient getScripts();
+
+    /**
      * Gets the AttachedDatabaseConfigurationsClient object to access its operations.
      *
      * @return the AttachedDatabaseConfigurationsClient object.
@@ -93,4 +100,11 @@ public interface KustoManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the OperationsResultsClient object to access its operations.
+     *
+     * @return the OperationsResultsClient object.
+     */
+    OperationsResultsClient getOperationsResults();
 }

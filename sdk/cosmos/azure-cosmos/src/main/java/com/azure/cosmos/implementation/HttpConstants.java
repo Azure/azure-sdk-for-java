@@ -258,6 +258,9 @@ public class HttpConstants {
 
         // Client telemetry header
         public static final String DATABASE_ACCOUNT_NAME = "x-ms-databaseaccount-name";
+
+        // Backend request duration header
+        public static final String BACKEND_REQUEST_DURATION_MILLISECONDS = "x-ms-request-duration-ms";
     }
 
     public static class A_IMHeaderValues {

@@ -124,5 +124,5 @@
 /eng/versioning/external_dependencies.txt           @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 /parent/                                            @JimSuplizio @alzimmermsft
 
-/**/tests.yml                                       @danieljurek
+/**/tests.yml                                       @benbp
 /**/ci.yml                                          @mitchdenny
