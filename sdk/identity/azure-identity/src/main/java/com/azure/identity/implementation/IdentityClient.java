@@ -458,6 +458,51 @@ public class IdentityClient {
         return Mono.just(token);
     }
 
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure Power Shell.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithAzurePowerShell(TokenRequestContext request) {
+
+        PowershellManager powershellManager = new PowershellManager(options.getUseLegacyPowerShell());
+        powershellManager.initSession();
+        powershellManager.executeCommand("Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru")
+            .flatMap(output -> {
+                if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not"
+                    + " loaded because no valid module file was found in any module directory")) {
+                    return Mono.error(new RuntimeException("Az.Account module >= 2.2.0 is not installed."));
+                }
+                return powershellManager.executeCommand("Get-AzAccessToken -ResourceUrl \"https://vault.azure.net\" "
+                    + "| ConvertTo-Json").flatMap(out -> {
+                        if (out.contains("Get-AzAccessToken: Run Connect-AzAccount to login.")) {
+                            return Mono.error(new RuntimeException("Run Connect-AzAccount to login to Azure account"
+                                + " in PowerShell"));
+                        }
+                        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+                        try {
+                            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
+                                SerializerEncoding.JSON);
+                            String accessToken = objectMap.get("Token");
+                            String time = objectMap.get("ExpiresOn");
+                            String timeToSecond = time.substring(0, time.indexOf("."));
+                            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
+                            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT,
+                                DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                                .atZone(ZoneId.systemDefault())
+                                .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+                             return Mono.just(new AccessToken(accessToken, expiresOn));
+                        } catch (IOException e) {
+                            return Mono.error(logger
+                                .logExceptionAsError(new RuntimeException("Encountered error when deserializing "
+                                    + "token response.", e)));
+                        }
+                    });
+            });
+    }
+
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *

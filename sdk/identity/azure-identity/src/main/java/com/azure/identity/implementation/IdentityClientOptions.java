@@ -32,6 +32,7 @@ public final class IdentityClientOptions {
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
+    private boolean useLegacyPowerShell;
     private String keePassDatabasePath;
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
@@ -293,5 +294,25 @@ public final class IdentityClientOptions {
      */
     public TokenCachePersistenceOptions getTokenCacheOptions() {
         return this.tokenCachePersistenceOptions;
+    }
+
+    /**
+     * Specifies if legacy Azure Power Shell should be used for Azure Power Shell based authentication.
+     *
+     * @param useLegacyPowerShell the flag indicating if legacy Azure Power Shell should be used for authentication.
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setUseLegacyPowerShell(boolean useLegacyPowerShell) {
+        this.useLegacyPowerShell = useLegacyPowerShell;
+        return this;
+    }
+
+    /**
+     * Get the status if legacy Azure Power Shell should be used for powershell based authentication.
+     *
+     * @return the flag indicating if legacy Azure Power Shell should be used.
+     */
+    public boolean getUseLegacyPowerShell() {
+        return this.useLegacyPowerShell;
     }
 }
