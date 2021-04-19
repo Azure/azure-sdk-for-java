@@ -96,6 +96,30 @@ public class KeyVaultProperties {
          * setting disableHostnameVerification = true. Note: this is NOT recommended for production!
          */
         private String disableHostnameVerification;
+        /**
+         * To enable auto refresh certificate, set certificatesRefreshInterval as refresh interval.
+         */
+        private long certificatesRefreshInterval;
+        /**
+         * To enable access latest certificate from portal when get unTrusted certificate
+         */
+        private boolean certificateRefreshWhenHaveUnTrustCertificate;
+
+        public boolean getCertificateRefreshWhenHaveUnTrustCertificate() {
+            return certificateRefreshWhenHaveUnTrustCertificate;
+        }
+
+        public void setCertificateRefreshWhenHaveUnTrustCertificate(boolean certificateRefreshWhenHaveUnTrustCertificate) {
+            this.certificateRefreshWhenHaveUnTrustCertificate = certificateRefreshWhenHaveUnTrustCertificate;
+        }
+
+        public long getCertificatesRefreshInterval() {
+            return certificatesRefreshInterval;
+        }
+
+        public void setCertificatesRefreshInterval(long certificatesRefreshInterval) {
+            this.certificatesRefreshInterval = certificatesRefreshInterval;
+        }
 
         public String getOverrideTrustManagerFactory() {
             return overrideTrustManagerFactory;

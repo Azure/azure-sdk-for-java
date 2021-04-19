@@ -59,7 +59,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
 
-        final Long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificates-refresh-interval"))
+        final Long refreshInterval = Optional.ofNullable(environment.getProperty("azure.keyvault.jca.certificates-refresh-interval"))
             .map(Long::valueOf)
             .orElse(0L);
         startRefresh(refreshInterval);
