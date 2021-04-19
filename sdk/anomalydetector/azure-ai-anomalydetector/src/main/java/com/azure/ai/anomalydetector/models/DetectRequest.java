@@ -21,10 +21,12 @@ public final class DetectRequest {
     private List<TimeSeriesPoint> series;
 
     /*
-     * Can only be one of yearly, monthly, weekly, daily, hourly, minutely or
-     * secondly. Granularity is used for verify whether input series is valid.
+     * Optional argument, can be one of yearly, monthly, weekly, daily, hourly,
+     * minutely, secondly, microsecond or none. If granularity is not present,
+     * it will be none by default. If granularity is none, the timestamp
+     * property in time series point can be absent.
      */
-    @JsonProperty(value = "granularity", required = true)
+    @JsonProperty(value = "granularity")
     private TimeGranularity granularity;
 
     /*
@@ -82,8 +84,9 @@ public final class DetectRequest {
     }
 
     /**
-     * Get the granularity property: Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly.
-     * Granularity is used for verify whether input series is valid.
+     * Get the granularity property: Optional argument, can be one of yearly, monthly, weekly, daily, hourly, minutely,
+     * secondly, microsecond or none. If granularity is not present, it will be none by default. If granularity is none,
+     * the timestamp property in time series point can be absent.
      *
      * @return the granularity value.
      */
@@ -92,8 +95,9 @@ public final class DetectRequest {
     }
 
     /**
-     * Set the granularity property: Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly.
-     * Granularity is used for verify whether input series is valid.
+     * Set the granularity property: Optional argument, can be one of yearly, monthly, weekly, daily, hourly, minutely,
+     * secondly, microsecond or none. If granularity is not present, it will be none by default. If granularity is none,
+     * the timestamp property in time series point can be absent.
      *
      * @param granularity the granularity value to set.
      * @return the DetectRequest object itself.
