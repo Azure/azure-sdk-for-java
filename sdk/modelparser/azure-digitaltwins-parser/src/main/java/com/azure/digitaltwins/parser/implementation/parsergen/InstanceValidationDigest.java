@@ -13,9 +13,9 @@ import java.util.Map;
  * Class that abstracts material property information extracted from the meta-model digest provided by the meta-parser.
  */
 public class InstanceValidationDigest {
-    private String criteriaText;
-    private Map<Integer, InstanceConditionDigest> elementConditions;
-    private Map<Integer, InstanceConditionDigest> childConditions;
+    private final String criteriaText;
+    private final Map<Integer, InstanceConditionDigest> elementConditions;
+    private final Map<Integer, InstanceConditionDigest> childConditions;
 
     /**
      * Initializes a new instance of the {@link InstanceValidationDigest} class.

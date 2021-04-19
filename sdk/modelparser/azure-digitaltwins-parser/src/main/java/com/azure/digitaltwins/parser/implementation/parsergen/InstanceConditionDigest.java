@@ -11,13 +11,13 @@ import java.util.List;
  * Data-type that abstracts instance validation conditions extracted from the metamodel digest provided by the meta-parser.
  */
 public class InstanceConditionDigest {
-    private String jsonType;
-    private String dataType;
-    private List<String> instanceOf;
-    private String pattern;
-    private String hasValue;
-    private String namePattern;
-    private String nameHasValue;
+    private final String jsonType;
+    private final String dataType;
+    private final List<String> instanceOf;
+    private final String pattern;
+    private final String hasValue;
+    private final String namePattern;
+    private final String nameHasValue;
 
     /**
      * Initializes a new instance of the {@link InstanceConditionDigest} class.

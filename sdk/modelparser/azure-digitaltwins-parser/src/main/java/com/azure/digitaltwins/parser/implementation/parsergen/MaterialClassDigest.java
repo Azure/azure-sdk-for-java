@@ -16,20 +16,20 @@ import java.util.Iterator;
  */
 public class MaterialClassDigest {
 
-    private List<Integer> dtdlVersions;
-    private boolean isAbstract;
-    private boolean isOvert;
-    private boolean isPartition;
-    private String parentClass;
-    private List<String> typeIds;
-    private Map<Integer, List<String>> concreteSubclasses;
-    private Map<Integer, List<String>> elementalSubclasses;
-    private Map<Integer, List<String>> extensibleMaterialSubclasses;
+    private final List<Integer> dtdlVersions;
+    private final boolean isAbstract;
+    private final boolean isOvert;
+    private final boolean isPartition;
+    private final String parentClass;
+    private final List<String> typeIds;
+    private final Map<Integer, List<String>> concreteSubclasses;
+    private final Map<Integer, List<String>> elementalSubclasses;
+    private final Map<Integer, List<String>> extensibleMaterialSubclasses;
+    private final Map<Integer, String> badTypeCauseFormat;
+    private final Map<Integer, String> badTypeActionFormat;
+    private final Map<String, MaterialPropertyDigest> properties;
+    private final InstanceValidationDigest instance;
     private Map<Integer, List<String>> standardElementIds;
-    private Map<Integer, String> badTypeCauseFormat;
-    private Map<Integer, String> badTypeActionFormat;
-    private Map<String, MaterialPropertyDigest> properties;
-    private InstanceValidationDigest instance;
 
     /**
      * Initializes a new instance of the {@link MaterialClassDigest} class.

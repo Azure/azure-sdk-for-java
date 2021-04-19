@@ -13,21 +13,21 @@ import java.util.Map;
  * Class that abstracts material property information extracted from the metamodel digest provided by the meta-parser.
  */
 public class MaterialPropertyDigest {
-    private boolean isLiteral;
-    private boolean isAbstract;
-    private boolean isPlural;
-    private boolean isOptional;
-    private boolean isInherited;
-    private boolean isShadowed;
-    private boolean isKey;
-    private boolean isSegment;
+    private final boolean isLiteral;
+    private final boolean isAbstract;
+    private final boolean isPlural;
+    private final boolean isOptional;
+    private final boolean isInherited;
+    private final boolean isShadowed;
+    private final boolean isKey;
+    private final boolean isSegment;
 
-    private String classType;
-    private String dictionaryKey;
-    private String dataType;
-    private String dtmiSegment;
+    private final String classType;
+    private final String dictionaryKey;
+    private final String dataType;
+    private final String dtmiSegment;
 
-    private Map<Integer, PropertyVersionDigest> propertyVersions;
+    private final Map<Integer, PropertyVersionDigest> propertyVersions;
 
 
     /***
