@@ -14,7 +14,7 @@ The *Spring Integration for Storage Queue* extension project provides inbound an
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-storage-queue</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
