@@ -175,11 +175,11 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.deleteRegistryArtifactWithResponse}
      *
      * @param digest The digest that uniquely identifies the artifact to be deleted.
+     * @return A REST response with completion signal.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws NullPointerException thrown if digest is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response with completion signal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRegistryArtifactWithResponse(String digest) {
@@ -210,11 +210,11 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.deleteRegistryArtifact}
      *
      * @param digest The digest that uniquely identifies the artifact to be deleted.
+     * @return the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws NullPointerException thrown if digest is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRegistryArtifact(String digest) {
@@ -231,11 +231,11 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.deleteTagWithResponse}
      *
      * @param tag The name of the tag that uniquely identifies the tag that needs to be deleted.
+     * @return A REST response with completion signal.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws NullPointerException thrown if tag is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response with completion signal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTagWithResponse(String tag) {
@@ -265,11 +265,11 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.deleteTag}
      *
      * @param tag The name of the tag that uniquely identifies the tag that needs to be deleted.
+     * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws NullPointerException thrown if tag is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return The completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTag(String tag) {
@@ -429,9 +429,9 @@ public final class ContainerRepositoryAsyncClient {
      *
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.listRegistryArtifacts}.
      *
+     * @return {@link PagedFlux} of RegistryArtifactProperties for all the artifacts in the given repository.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedFlux} of RegistryArtifactProperties for all the artifacts in the given repository.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RegistryArtifactProperties> listRegistryArtifacts() {
@@ -452,9 +452,9 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.listRegistryArtifactsWithOptions}.
      *
      * @param options the options that specifies the order in which the artifacts are returned by the service.
+     * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RegistryArtifactProperties> listRegistryArtifacts(ListRegistryArtifactOptions options) {
@@ -543,10 +543,10 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.getTagPropertiesWithResponse}.
      *
      * @param tag name of the tag that uniquely identifies a given tag.
+     * @return A REST response with the {@link TagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response with the {@link TagProperties properties} associated with the given tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TagProperties>> getTagPropertiesWithResponse(String tag) {
@@ -576,10 +576,10 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.getTagProperties}.
      *
      * @param tag name of the tag that uniquely identifies a given tag.
+     * @return The {@link TagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return The {@link TagProperties properties} associated with the given tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagProperties> getTagProperties(String tag) {
@@ -600,9 +600,9 @@ public final class ContainerRepositoryAsyncClient {
      *
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.listTagsWithOptions}.
      *
+     * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TagProperties> listTags() {
@@ -624,9 +624,9 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.listTagsWithOptions}.
      *
      * @param options The options that specifies the order in which the tags should be returned by the service.
+     * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TagProperties> listTags(ListTagsOptions options) {
@@ -687,10 +687,10 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.updatePropertiesWithResponse}.
      *
      * @param value {@link ContentProperties writeable properties} that need to be updated for the repository.
+     * @return A REST response with the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response with the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updatePropertiesWithResponse(ContentProperties value) {
@@ -721,10 +721,10 @@ public final class ContainerRepositoryAsyncClient {
      * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.updateProperties}.
      *
      * @param value {@link ContentProperties writeable properties} that need to be updated for the repository.
+     * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return The completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateProperties(ContentProperties value) {
@@ -743,10 +743,10 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param tag Name of the tag that uniquely identifies it.
      * @param value {@link ContentProperties value} to be set.
+     * @return A REST response for completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response for completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateTagPropertiesWithResponse(
@@ -784,10 +784,10 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param tag Name of the tag that uniquely identifies it.
      * @param value {@link ContentProperties value} to be set.
+     * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return The completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTagProperties(String tag, ContentProperties value) {
@@ -806,10 +806,10 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param digest Digest of the manifest to be updated.
      * @param value {@link ContentProperties value} to be set.
+     * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response for the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateManifestPropertiesWithResponse(
@@ -846,10 +846,10 @@ public final class ContainerRepositoryAsyncClient {
      *
      * @param digest Digest of the manifest to be updated.
      * @param value {@link ContentProperties value} to be set.
+     * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return The completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateManifestProperties(String digest, ContentProperties value) {

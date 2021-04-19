@@ -300,9 +300,9 @@ public final class ContainerRepositoryClient {
      *
      * {@codesnippet com.azure.containers.containerregistry.repositoryclient.listRegistryArtifacts}.
      *
+     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryArtifactProperties> listRegistryArtifacts() {
@@ -324,9 +324,9 @@ public final class ContainerRepositoryClient {
      * {@codesnippet com.azure.containers.containerregistry.repositoryclient.listRegistryArtifactsWithOptions}.
      *
      * @param options the options that specifies the order in which the artifacts are returned by the service.
+     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryArtifactProperties> listRegistryArtifacts(ListRegistryArtifactOptions options) {
@@ -344,10 +344,10 @@ public final class ContainerRepositoryClient {
      *
      * @param tag name of the tag.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response with the {@link TagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response with the {@link TagProperties properties} associated with the given tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
 
@@ -365,10 +365,10 @@ public final class ContainerRepositoryClient {
      * {@codesnippet com.azure.containers.containerregistry.repositoryclient.getTagProperties}.
      *
      * @param tag name of the tag.
+     * @return The {@link TagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return The {@link TagProperties properties} associated with the given tag.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TagProperties getTagProperties(String tag) {
@@ -389,9 +389,9 @@ public final class ContainerRepositoryClient {
      *
      * {@codesnippet com.azure.containers.containerregistry.repositoryclient.listTagsWithOptions}.
      *
+     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TagProperties> listTags() {
@@ -413,9 +413,9 @@ public final class ContainerRepositoryClient {
      * {@codesnippet com.azure.containers.containerregistry.repositoryclient.listTagsWithOptions}.
      *
      * @param options The options that specifies the order in which the tags should be returned by the service.
+     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TagProperties> listTags(ListTagsOptions options) {
@@ -434,10 +434,10 @@ public final class ContainerRepositoryClient {
      *
      * @param value {@link ContentProperties writeable properties} that need to be updated for the repository.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response with the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response with the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updatePropertiesWithResponse(ContentProperties value, Context context) {
@@ -477,10 +477,10 @@ public final class ContainerRepositoryClient {
      * @param tag Name of the tag.
      * @param value {@link ContentProperties value} to be set.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @return A REST response for the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateTagPropertiesWithResponse(String tag, ContentProperties value, Context context) {
@@ -521,9 +521,9 @@ public final class ContainerRepositoryClient {
      * @param digest Digest of the manifest to be updated.
      * @param value {@link ContentProperties value} to be set.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
-     * @return A REST response for the completion.
      */
     public Response<Void> updateManifestPropertiesWithResponse(String digest, ContentProperties value, Context context) {
         return this.asyncClient.updateManifestPropertiesWithResponse(digest, value, context).block();

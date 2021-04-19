@@ -117,8 +117,8 @@ public final class ContainerRepositoryClientBuilder {
      * Sets the repository for the Azure Container Repository instance.
      * @param repository The name of the repository including the namespace.
      *
-     * @throws NullPointerException if repository name is null.
      * @return The updated {@link ContainerRepositoryClientBuilder} object.
+     * @throws NullPointerException if repository name is null.
      */
     public ContainerRepositoryClientBuilder repository(String repository) {
         this.repository = Objects.requireNonNull(repository,
