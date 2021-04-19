@@ -227,8 +227,8 @@ public class KeyVaultKeyStoreTest {
     public void testGetKeyStore() throws Exception {
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
         KeyStore keyStore = KeyVaultKeyStore.getKeyStore();
-        assertNotNull(keyStore.getCertificate("myaliasForPEM"));
-        assertTrue(keyStore.containsAlias("myaliasForPEM"));
+        assertNotNull(keyStore.getCertificate("myalias"));
+        assertTrue(keyStore.containsAlias("myalias"));
         X509Certificate certificate;
 
         try {
@@ -255,9 +255,30 @@ public class KeyVaultKeyStoreTest {
         } catch (CertificateException e) {
             throw new ProviderException(e);
         }
-        keyStore.setCertificateEntry("myaliasForPEM", certificate);
+        assertNotNull(keyStore.getCertificate("myalias"));
+        keyStore.deleteEntry("myalias");
+        keyStore.setCertificateEntry("myalias", certificate);
         KeyVaultKeyStore.refreshCertificate();
         assertNull(keyStore.getCertificateAlias(certificate));
     }
 
+    @Test
+    public void testStartRefreshKeyStore() throws Exception{
+        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        KeyStore keyStore = KeyVaultKeyStore.getKeyStore();
+        X509Certificate certificate;
+        try {
+            byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
+        } catch (CertificateException e) {
+            throw new ProviderException(e);
+        }
+        assertNotNull(keyStore.getCertificate("myalias"));
+        keyStore.deleteEntry("myalias");
+        keyStore.setCertificateEntry("myalias", certificate);
+        KeyVaultKeyStore.startRefresh(30000);
+        Thread.sleep(60000);
+        assertNull(keyStore.getCertificateAlias(certificate));
+    }
 }
