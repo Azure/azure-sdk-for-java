@@ -30,7 +30,7 @@ public class JavaCatch extends JavaScope {
      * @param catchText Text for the parenthesized portion of the catch statement
      * @return The {@link JavaCatch} object added.
      */
-    public JavaCatch addCatch(String catchText) {
+    public JavaCatch jCatch(String catchText) {
         JavaCatch javaCatch = new JavaCatch(catchText, this.parent);
         this.parent.addStatement(javaCatch);
         return javaCatch;
@@ -41,7 +41,7 @@ public class JavaCatch extends JavaScope {
      *
      * @return The {@link JavaFinally} object added.
      */
-    public JavaFinally addFinally() {
+    public JavaFinally jFinally() {
         JavaFinally javaFinally = new JavaFinally();
         this.parent.addStatement(javaFinally);
         return javaFinally;

@@ -65,7 +65,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      * @param description  Optional text description of the field.
      * @return The {@link JavaField} object added.
      */
-    public JavaField addField(
+    public JavaField field(
         Access access,
         String type,
         String name,
@@ -108,7 +108,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      * @param multiplicity Static or Instance.
      * @return The {@link JavaConstructor} object added.
      */
-    public JavaConstructor addConstructor(Access access, Multiplicity multiplicity) {
+    public JavaConstructor constructor(Access access, Multiplicity multiplicity) {
         JavaConstructor javaConstructor = new JavaConstructor(access, this.typeName, multiplicity);
         this.constructors.add(javaConstructor);
         return javaConstructor;
@@ -123,7 +123,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      * @param name   Property name.
      * @return The {@link JavaProperty} object added.
      */
-    public JavaProperty addProperty(Access access, String type, String name) {
+    public JavaProperty property(Access access, String type, String name) {
         JavaProperty javaProperty = new JavaProperty(access, name, type)
             .setter(access, "Set " + name + " property.")
             .getter(access, "Get the " + name + " property.");
@@ -141,7 +141,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      * @param multiplicity Static or instance.
      * @return The {@link JavaMethod} object added.
      */
-    public JavaMethod addMethod(Access access, Novelty novelty, String type, String name, Multiplicity multiplicity) {
+    public JavaMethod method(Access access, Novelty novelty, String type, String name, Multiplicity multiplicity) {
         JavaMethod javaMethod = new JavaMethod(novelty != Novelty.ABSTRACT, access, novelty, type, name, multiplicity, Mutability.MUTABLE);
         this.methods.add(javaMethod);
         return javaMethod;
@@ -155,7 +155,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      * @param isSorted True if the enum values should be sorted by name.
      * @return The {@link JavaEnum} object added.
      */
-    public JavaEnum addEnum(Access access, String typeName, boolean isSorted) {
+    public JavaEnum jEnum(Access access, String typeName, boolean isSorted) {
         JavaEnum javaEnum = new JavaEnum(access, typeName, isSorted);
         this.enums.add(javaEnum);
         return javaEnum;

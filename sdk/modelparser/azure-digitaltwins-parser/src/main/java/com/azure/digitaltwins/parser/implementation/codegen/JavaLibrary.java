@@ -40,7 +40,7 @@ public class JavaLibrary {
      *
      * @param namespaceToImport The namespace for the "import" declaration.
      */
-    public void addImportStatement(String namespaceToImport) {
+    public void jImport(String namespaceToImport) {
         if (namespaceToImport.toLowerCase(Locale.getDefault()).startsWith("java")) {
             this.systemNamespaces.add(namespaceToImport);
         } else {
@@ -57,7 +57,7 @@ public class JavaLibrary {
      * @param implement Interfaces that the interface is implementing.
      * @return The {@link JavaInterface} object added itself.
      */
-    public JavaInterface addInterface(Access access, String typeName, String extend, String implement) {
+    public JavaInterface jInterface(Access access, String typeName, String extend, String implement) {
         JavaInterface javaInterface = new JavaInterface(access, typeName, extend, implement);
         this.javaFiles.add(javaInterface);
         return javaInterface;
@@ -74,7 +74,7 @@ public class JavaLibrary {
      * @param implement    Interfaces that the class implements.
      * @return The {@link JavaClass} object added itself.
      */
-    public JavaClass addClass(Access access, Novelty novelty, String typeName, Multiplicity multiplicity, String extend, String implement) {
+    public JavaClass jClass(Access access, Novelty novelty, String typeName, Multiplicity multiplicity, String extend, String implement) {
         JavaClass javaClass = new JavaClass(access, novelty, typeName, multiplicity, extend, implement);
         this.javaFiles.add(javaClass);
         return javaClass;
@@ -88,7 +88,7 @@ public class JavaLibrary {
      * @param isSorted True if the enum values should be sorted by name.
      * @return The {@link JavaClass} object added itself.
      */
-    public JavaEnum addEnum(Access access, String typeName, boolean isSorted) {
+    public JavaEnum jEnum(Access access, String typeName, boolean isSorted) {
         JavaEnum javaEnum = new JavaEnum(access, typeName, isSorted);
         this.javaFiles.add(javaEnum);
         return javaEnum;

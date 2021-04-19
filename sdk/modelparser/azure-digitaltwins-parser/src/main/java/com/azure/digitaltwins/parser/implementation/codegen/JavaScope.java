@@ -118,7 +118,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      * @param subHeadText Text for the first line of the nested scope.
      * @return The {@link JavaScope} object added.
      */
-    public JavaScope addScope(String subHeadText) {
+    public JavaScope scope(String subHeadText) {
         JavaScope javaScope = new JavaScope(subHeadText);
         this.javaStatementList.add(javaScope);
         return javaScope;
@@ -164,7 +164,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      * @param whileText Text for the parenthesized portion of the while statement.
      * @return The {@link JavaWhile} object added.
      */
-    public JavaWhile addWhile(String whileText) {
+    public JavaWhile jWhile(String whileText) {
         JavaWhile javaWhile = new JavaWhile(whileText);
         javaStatementList.add(javaWhile);
         return javaWhile;
@@ -176,7 +176,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      * @param foreText Text for the parenthesized portion of the for statement.
      * @return The {@link JavaFor} object added.
      */
-    public JavaFor addFor(String foreText) {
+    public JavaFor jFor(String foreText) {
         JavaFor javaFor = new JavaFor(foreText);
         this.javaStatementList.add(javaFor);
         return javaFor;
@@ -188,7 +188,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      * @param ifText Text for the parenthesized portion of the if statement.
      * @return The {@link JavaIf} object added.
      */
-    public JavaIf addIf(String ifText) {
+    public JavaIf jIf(String ifText) {
         JavaIf javaIf = new JavaIf(ifText, this);
         this.javaStatementList.add(javaIf);
         return javaIf;
@@ -200,7 +200,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      * @param switchText Text for the parenthesized portion of the switch statement.
      * @return The {@link JavaSwitch} object added.
      */
-    public JavaSwitch addSwitch(String switchText) {
+    public JavaSwitch jSwitch(String switchText) {
         JavaSwitch javaSwitch = new JavaSwitch(switchText);
         this.javaStatementList.add(javaSwitch);
         return javaSwitch;
@@ -211,7 +211,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      *
      * @return The {@link JavaTry} object added.
      */
-    public JavaTry addTry() {
+    public JavaTry jTry() {
         JavaTry javaTry = new JavaTry(this);
         this.javaStatementList.add(javaTry);
         return javaTry;
@@ -222,7 +222,7 @@ public class JavaScope extends JavaStatement implements StatementAdder {
      *
      * @return The {@link JavaScope} object itself.
      */
-    public JavaScope addBreak() {
+    public JavaScope jBreak() {
         this.javaStatementList.add(new JavaBreak());
         return this;
     }

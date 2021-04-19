@@ -77,7 +77,7 @@ public class JavaProperty extends JavaStatement {
         bodyScope.addStatement(
             new JavaLine("return this." + propertyName));
 
-        setterMethod.setBody(bodyScope);
+        setterMethod.body(bodyScope);
 
         this.listOfMethods.add(setterMethod);
 
@@ -103,12 +103,12 @@ public class JavaProperty extends JavaStatement {
             setterMethod.addSummary(description);
         }
 
-        setterMethod.addParameter(this.propertyType, "value", "Property value.");
+        setterMethod.parameter(this.propertyType, "value", "Property value.");
         JavaScope bodyScope = new JavaScope(null);
         bodyScope.addStatement(
             new JavaLine("this." + this.propertyName + " = value;"));
 
-        setterMethod.setBody(bodyScope);
+        setterMethod.body(bodyScope);
 
         this.listOfMethods.add(setterMethod);
 

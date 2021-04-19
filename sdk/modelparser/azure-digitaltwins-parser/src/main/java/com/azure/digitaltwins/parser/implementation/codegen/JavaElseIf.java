@@ -30,7 +30,7 @@ public class JavaElseIf extends JavaScope {
      * @param elseIfText Text for the parenthesized portion of the else if statement.
      * @return The {@link JavaElseIf} object added.
      */
-    public JavaElseIf elseIf(String elseIfText) {
+    public JavaElseIf jElseIf(String elseIfText) {
         JavaElseIf javaElseIf = new JavaElseIf(elseIfText, this.parent);
         addStatement(javaElseIf);
         return javaElseIf;
@@ -41,7 +41,7 @@ public class JavaElseIf extends JavaScope {
      *
      * @return The {@link JavaElse} object itself.
      */
-    public JavaElse addElse() {
+    public JavaElse jElse() {
         JavaElse javaElse = new JavaElse();
         this.parent.addStatement(javaElse);
         return javaElse;

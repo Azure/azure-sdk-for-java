@@ -287,7 +287,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        JavaConstructor constructor = javaClass.constructor(Access.PUBLIC, Multiplicity.INSTANCE);
 
         javaClass.generateCode(codeWriter);
 
@@ -316,7 +316,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        JavaConstructor constructor = javaClass.constructor(Access.PUBLIC, Multiplicity.INSTANCE);
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
         constructor.addRemarks("This is remarks.");
@@ -347,8 +347,8 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
-        constructor.addParameter("String", "firstParam", "This is my first parameter.");
+        JavaConstructor constructor = javaClass.constructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        constructor.parameter("String", "firstParam", "This is my first parameter.");
 
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
@@ -380,9 +380,9 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
-        constructor.addParameter("String", "firstParam", "This is my first parameter.");
-        constructor.addParameter("int", "secondParam", "This is my second parameter.");
+        JavaConstructor constructor = javaClass.constructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        constructor.parameter("String", "firstParam", "This is my first parameter.");
+        constructor.parameter("int", "secondParam", "This is my second parameter.");
 
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
@@ -415,13 +415,13 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        javaClass.addField(Access.PRIVATE, "String", "FIELD_1", "\"default string value\"", Multiplicity.STATIC, Mutability.FINAL, "field 1 description.");
-        javaClass.addField(Access.PRIVATE, "String", "field2", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "field 2 description.");
-        javaClass.addField(Access.PRIVATE, "int", "field3", "2", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 3 description.");
-        javaClass.addField(Access.PRIVATE, "boolean", "field4", "false", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 4 description.");
-        javaClass.addField(Access.PRIVATE, "String", "field5", "\"default string value\"", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 5 description.");
+        javaClass.field(Access.PRIVATE, "String", "FIELD_1", "\"default string value\"", Multiplicity.STATIC, Mutability.FINAL, "field 1 description.");
+        javaClass.field(Access.PRIVATE, "String", "field2", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "field 2 description.");
+        javaClass.field(Access.PRIVATE, "int", "field3", "2", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 3 description.");
+        javaClass.field(Access.PRIVATE, "boolean", "field4", "false", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 4 description.");
+        javaClass.field(Access.PRIVATE, "String", "field5", "\"default string value\"", Multiplicity.INSTANCE, Mutability.MUTABLE, "field 5 description.");
 
-        javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        javaClass.constructor(Access.PUBLIC, Multiplicity.INSTANCE);
 
         javaClass.generateCode(codeWriter);
 
@@ -450,12 +450,12 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        javaClass.addField(Access.PRIVATE, "String", "field1", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "field 1 description.");
+        javaClass.field(Access.PRIVATE, "String", "field1", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "field 1 description.");
 
-        JavaConstructor constructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        JavaConstructor constructor = javaClass.constructor(Access.PUBLIC, Multiplicity.INSTANCE);
 
-        constructor.addParameter("String", "firstParam", "This is my first parameter.");
-        constructor.addParameter("int", "secondParam", "This is my second parameter.");
+        constructor.parameter("String", "firstParam", "This is my first parameter.");
+        constructor.parameter("int", "secondParam", "This is my second parameter.");
 
         constructor.addSummary("This is more information.");
         constructor.addSummary("This is even more information.");
@@ -463,7 +463,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         JavaScope body = new JavaScope(null);
         body.addStatement(new JavaLine("this.field1 = firstParam;"));
-        constructor.setBody(body);
+        constructor.body(body);
 
         javaClass.generateCode(codeWriter);
         codeWriter.close();
@@ -491,9 +491,9 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE);
-        javaClass.addMethod(Access.PRIVATE, Novelty.NORMAL, "int", "getNothing2", Multiplicity.STATIC);
-        javaClass.addMethod(Access.PRIVATE, Novelty.ABSTRACT, "void", "getNothing3", Multiplicity.INSTANCE);
+        javaClass.method(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE);
+        javaClass.method(Access.PRIVATE, Novelty.NORMAL, "int", "getNothing2", Multiplicity.STATIC);
+        javaClass.method(Access.PRIVATE, Novelty.ABSTRACT, "void", "getNothing3", Multiplicity.INSTANCE);
 
         javaClass.generateCode(codeWriter);
 
@@ -522,9 +522,9 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE)
-            .addParameter("String", "name", "Name of the thing.")
-            .addParameter("int", "howMany", null);
+        JavaMethod javaMethod = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE)
+            .parameter("String", "name", "Name of the thing.")
+            .parameter("int", "howMany", null);
         javaMethod.addSummary("This is method summary.");
         javaMethod.addRemarks("This is remarks.");
 
@@ -554,19 +554,19 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE)
+        JavaMethod javaMethod = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "String", "getNothing", Multiplicity.INSTANCE)
             .typeParam("T", "Generic Type of the thing.")
-            .addParameter("T", "name", "Name of the thing.")
-            .addParameter("int", "howMany", "Really, how many.");
+            .parameter("T", "name", "Name of the thing.")
+            .parameter("int", "howMany", "Really, how many.");
 
         javaMethod.addSummary("This is method summary.");
         javaMethod.addRemarks("This is remarks.");
 
-        JavaMethod javaMethod2 = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "int", "getNothing2", Multiplicity.INSTANCE)
+        JavaMethod javaMethod2 = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "int", "getNothing2", Multiplicity.INSTANCE)
             .typeParam("T", "Generic Type of the thing.")
             .typeParam("T2", "2nd generic Type of the thing.")
-            .addParameter("T", "name", "Name of the thing.")
-            .addParameter("T2", "howMany", "Really, how many.");
+            .parameter("T", "name", "Name of the thing.")
+            .parameter("T2", "howMany", "Really, how many.");
 
         javaMethod2.addSummary("This is method 2 summary.");
         javaMethod2.addRemarks("This is remarks.");
@@ -597,18 +597,18 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
-            .addParameter("String", "input", "String to convert case.")
+        JavaMethod javaMethod = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .parameter("String", "input", "String to convert case.")
             .addReturnComment("Input in upper case.");
 
         javaMethod.addSummary("Converts string to upper case.");
         JavaScope body = new JavaScope(null);
 
-        body.addIf("input != null")
+        body.jIf("input != null")
             .line("return input.toUpperCase();");
 
         body.line("return null;");
-        javaMethod.setBody(body);
+        javaMethod.body(body);
         javaClass.generateCode(codeWriter);
 
         codeWriter.close();
@@ -636,22 +636,22 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
-            .addParameter("String", "input", "String to convert case.")
+        JavaMethod javaMethod = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .parameter("String", "input", "String to convert case.")
             .addReturnComment("Input in upper case.");
 
         javaMethod.addSummary("Converts string to upper case.");
 
         JavaScope body = new JavaScope(null);
 
-        JavaIf ifStatement = body.addIf("input != null").line("return input.toUpperCase();");
+        JavaIf ifStatement = body.jIf("input != null").line("return input.toUpperCase();");
 
-        ifStatement.addElse()
+        ifStatement.jElse()
             .line("return input;");
 
         body.line("return null;");
 
-        javaMethod.setBody(body);
+        javaMethod.body(body);
         javaClass.generateCode(codeWriter);
         codeWriter.close();
 
@@ -678,25 +678,25 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
-            .addParameter("String", "input", "String to convert case.")
+        JavaMethod javaMethod = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .parameter("String", "input", "String to convert case.")
             .addReturnComment("Input in upper case.");
 
         javaMethod.addSummary("Converts string to upper case.");
 
         JavaScope body = new JavaScope(null);
 
-        JavaIf ifStatement = body.addIf("input != null");
+        JavaIf ifStatement = body.jIf("input != null");
         JavaIf oneNestedIf = ifStatement
-            .addIf("input.startsWith(\"a\")")
+            .jIf("input.startsWith(\"a\")")
             .line("return input.toUpperCase();");
 
         oneNestedIf
-            .addIf("input.startsWith(\"ab\")")
+            .jIf("input.startsWith(\"ab\")")
             .line("return null;");
 
         ifStatement
-            .addElse()
+            .jElse()
             .line("return input;");
 
         ifStatement
@@ -704,7 +704,7 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         body.line("return null;");
 
-        javaMethod.setBody(body);
+        javaMethod.body(body);
 
         javaClass.generateCode(codeWriter);
 
@@ -733,27 +733,27 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
-            .addParameter("String", "input", "String to convert case.")
+        JavaMethod javaMethod = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "String", "toUpper", Multiplicity.STATIC)
+            .parameter("String", "input", "String to convert case.")
             .addReturnComment("Input in upper case.");
 
         javaMethod.addSummary("Converts string to upper case.");
         JavaScope body = new JavaScope(null);
 
         JavaIf ifStatement = body
-            .addIf("input != null")
+            .jIf("input != null")
             .line("return input.toUpperCase();");
 
-        JavaElseIf javaElseIf = ifStatement.addElseIf("input.startsWith(\"a\")")
+        JavaElseIf javaElseIf = ifStatement.jElseIf("input.startsWith(\"a\")")
             .line("return null;");
 
         JavaElse javaElse = javaElseIf
-            .addElse()
+            .jElse()
             .line("return \"\";");
 
         body.line("return null;");
 
-        javaMethod.setBody(body);
+        javaMethod.body(body);
 
         javaClass.generateCode(codeWriter);
 
@@ -784,11 +784,11 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         JavaScope methodBody = new JavaScope(null);
         methodBody
-            .addFor("int i = 0; i<10; i++")
+            .jFor("int i = 0; i<10; i++")
             .line("// do nothing.");
 
-        javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "void", "doNothing", Multiplicity.INSTANCE)
-            .setBody(methodBody);
+        javaClass.method(Access.PUBLIC, Novelty.NORMAL, "void", "doNothing", Multiplicity.INSTANCE)
+            .body(methodBody);
 
         javaClass.generateCode(codeWriter);
 
@@ -817,16 +817,16 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        JavaMethod javaMethod = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "void", "doNothing", Multiplicity.INSTANCE);
+        JavaMethod javaMethod = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "void", "doNothing", Multiplicity.INSTANCE);
 
         JavaScope methodBody = new JavaScope(null);
-        methodBody.addFor("int i = 0; i<10; i++")
-            .addIf("i == 1")
+        methodBody.jFor("int i = 0; i<10; i++")
+            .jIf("i == 1")
             .line("System.out.println(\"yay\");")
-            .addElse()
+            .jElse()
             .line("continue;");
 
-        javaMethod.setBody(methodBody);
+        javaMethod.body(methodBody);
         javaClass.generateCode(codeWriter);
 
         codeWriter.close();
@@ -854,9 +854,9 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        javaClass.addProperty(Access.PUBLIC, "String", "stringProp");
-        javaClass.addProperty(Access.PROTECTED, "int", "intProp");
-        javaClass.addProperty(Access.PRIVATE, "String", "privateStringProp");
+        javaClass.property(Access.PUBLIC, "String", "stringProp");
+        javaClass.property(Access.PROTECTED, "int", "intProp");
+        javaClass.property(Access.PRIVATE, "String", "privateStringProp");
 
         javaClass.generateCode(codeWriter);
 
@@ -886,21 +886,21 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         JavaMethod javaMethod = javaClass
-            .addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toLower", Multiplicity.INSTANCE)
-            .addParameter("String", "input", "String input.");
+            .method(Access.PUBLIC, Novelty.NORMAL, "String", "toLower", Multiplicity.INSTANCE)
+            .parameter("String", "input", "String input.");
 
         javaMethod.addSummary("Converts input to lowercase.");
         javaMethod.addReturnComment("Converted input in lowercase.");
 
         JavaScope methodBody = new JavaScope(null);
-        JavaTry javaTry = methodBody.addTry();
-        javaTry.addCatch("Exception ex").line("return null;");
-        javaTry.addIf("input != null")
+        JavaTry javaTry = methodBody.jTry();
+        javaTry.jCatch("Exception ex").line("return null;");
+        javaTry.jIf("input != null")
             .line("return input.toLowerCase();")
-            .addElse()
+            .jElse()
             .line("return input;");
 
-        javaMethod.setBody(methodBody);
+        javaMethod.body(methodBody);
         javaClass.generateCode(codeWriter);
 
         codeWriter.close();
@@ -929,18 +929,18 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null);
 
         JavaMethod javaMethod = javaClass
-            .addMethod(Access.PUBLIC, Novelty.NORMAL, "String", "toLower", Multiplicity.INSTANCE)
-            .addParameter("String", "input", "String input.");
+            .method(Access.PUBLIC, Novelty.NORMAL, "String", "toLower", Multiplicity.INSTANCE)
+            .parameter("String", "input", "String input.");
 
         javaMethod.addSummary("Converts input to lowercase.");
         javaMethod.addReturnComment("Converted input in lowercase.");
 
         JavaScope methodBody = new JavaScope(null);
-        JavaWhile javaWhile = methodBody.addWhile("input.size() > 0");
-        javaWhile.addIf("input != null").line("continue;");
+        JavaWhile javaWhile = methodBody.jWhile("input.size() > 0");
+        javaWhile.jIf("input != null").line("continue;");
         javaWhile.line("input = input.substring(1);");
 
-        javaMethod.setBody(methodBody);
+        javaMethod.body(methodBody);
         javaClass.generateCode(codeWriter);
 
         codeWriter.close();
@@ -997,8 +997,8 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PRIVATE, "String", "field", null, Multiplicity.STATIC, Mutability.FINAL, "field description."));
-        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field", null, Multiplicity.INSTANCE, Mutability.FINAL, "field description."));
-        Assertions.assertThrows(StyleException.class, () -> javaClass.addField(Access.PUBLIC, "String", "field", null, Multiplicity.STATIC, Mutability.MUTABLE, "field description."));
+        Assertions.assertThrows(StyleException.class, () -> javaClass.field(Access.PRIVATE, "String", "field", null, Multiplicity.STATIC, Mutability.FINAL, "field description."));
+        Assertions.assertThrows(StyleException.class, () -> javaClass.field(Access.PUBLIC, "String", "field", null, Multiplicity.INSTANCE, Mutability.FINAL, "field description."));
+        Assertions.assertThrows(StyleException.class, () -> javaClass.field(Access.PUBLIC, "String", "field", null, Multiplicity.STATIC, Mutability.MUTABLE, "field description."));
     }
 }

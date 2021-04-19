@@ -24,7 +24,7 @@ public class JavaSwitch extends JavaScope {
      * @param value Case value.
      * @return The {@link JavaSwitch} itself.
      */
-    public JavaSwitch addCase(String value) {
+    public JavaSwitch jCase(String value) {
         JavaCase javaCase = new JavaCase(value);
         ((StatementAdder) this).addStatement(javaCase);
         return this;
@@ -35,7 +35,7 @@ public class JavaSwitch extends JavaScope {
      *
      * @return The {@link JavaSwitch} object itself.
      */
-    public JavaSwitch addDefault() {
+    public JavaSwitch jDefault() {
         JavaDefault javaDefault = new JavaDefault();
         ((StatementAdder) this).addStatement(javaDefault);
         return this;
