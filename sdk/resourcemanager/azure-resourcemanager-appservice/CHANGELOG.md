@@ -4,6 +4,7 @@
 
 - Updated `api-version` to `2020-12-01`
 - Enum `IpFilterTag` changed to subclass of `ExpandableStringEnum`
+- Major changes to `AppServiceEnvironment`
 
 ## 2.3.0 (2021-03-30)
 
