@@ -9,9 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.compute.models.RunCommandResult;
+import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
@@ -33,6 +32,8 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.jcraft.jsch.JSch;
+
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
@@ -87,12 +88,15 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
 
     protected void deprovisionAgentInLinuxVM(VirtualMachine virtualMachine) {
         System.out.println("Trying to de-provision");
-        RunCommandResult result = virtualMachine
-            .runShellScript(Collections.singletonList("sudo waagent -deprovision+user --force"), null);
 
-        if (result != null && !CoreUtils.isNullOrEmpty(result.value())) {
-            System.out.println(result.value().iterator().next().message());
-        }
+        virtualMachine.manager().serviceClient().getVirtualMachines().beginRunCommand(
+            virtualMachine.resourceGroupName(), virtualMachine.name(),
+            new RunCommandInput()
+                .withCommandId("RunShellScript")
+                .withScript(Collections.singletonList("sudo waagent -deprovision+user --force")));
+
+        // wait as above command will not return as sync
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
     }
 
     protected void ensureCanDoSsh(String fqdn, int sshPort, String uname, String password) {
