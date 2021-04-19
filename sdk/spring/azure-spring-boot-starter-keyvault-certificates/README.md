@@ -170,17 +170,11 @@ Make sure the client-id can access target Key Vault.
 
 Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L45 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L39 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
-    KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-        System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.tenant-id"),
-        System.getProperty("azure.keyvault.client-id"),
-        System.getProperty("azure.keyvault.client-secret"));
-    trustStore.load(parameter);
+    KeyStore trustStore = KeyVaultKeyStore.getKeyStore();
     SSLContext sslContext = SSLContexts.custom()
                                        .loadTrustMaterial(trustStore, null)
                                        .build();
@@ -245,20 +239,14 @@ server:
 
 Step 2. On the client side, update `RestTemplate`. Example:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L47-L75 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L41-L56 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
-    KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
-    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-        System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.tenant-id"),
-        System.getProperty("azure.keyvault.client-id"),
-        System.getProperty("azure.keyvault.client-secret"));
-    azuerKeyVaultKeyStore.load(parameter);
+    KeyStore azureKeyVaultKeyStore = KeyVaultKeyStore.getKeyStore();
     SSLContext sslContext = SSLContexts.custom()
-                                       .loadTrustMaterial(azuerKeyVaultKeyStore, null)
-                                       .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                       .loadTrustMaterial(azureKeyVaultKeyStore, null)
+                                       .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
                                        .build();
     SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
         (hostname, session) -> true);
@@ -314,6 +302,35 @@ spring:
       httpclient:
         ssl:
           useInsecureTrustManager: true
+```
+
+You can also enable the application to obtain the latest version of the certificate on the portal
+when the inbound certificate is not recognized by using the configuration below.
+
+```yaml
+azure:
+  keyvault:
+    jca:
+      certificate-refresh-when-have-untrust-certificate: true
+```
+
+Note: If you enable the function of obtaining the latest certificate, your server will be vulnerable
+to attack, because every untrusted certificate will cause the server to send a re-acquire certificate request.
+
+### Refresh certificate which changed on portal
+
+This starter allows you to refresh automatically when the certificate on the portal is modified,
+add the following configuration.
+```yaml
+azure:
+  keyvault:
+    jca:
+       certificates-refresh-interval: 1800000
+```
+
+You can also manually refresh the certificate by calling this method:
+```java
+KeyVaultKeyStore.refreshCertificate();
 ```
 
 ### Side-loading certificates
