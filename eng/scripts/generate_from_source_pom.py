@@ -225,7 +225,7 @@ def element_find(element: ET.Element, path: str):
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '--pl', type=str)
-    parser.add_argument('--set-pipeline-variable', type=str, default=False)
+    parser.add_argument('--set-pipeline-variable', action='store_true', default=False)
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')

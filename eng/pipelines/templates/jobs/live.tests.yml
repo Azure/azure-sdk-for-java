@@ -43,7 +43,13 @@ jobs:
       container: $[ variables['Container'] ]
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+        condition: eq(variables['TestFromSource'], 'true')
+
+      - template: /eng//pipelines/templates/steps/sparse-checkout-dynamic.yml
         parameters:
           Paths:
             - '${{ parameters.ServiceDirectory }}'
@@ -79,18 +85,12 @@ jobs:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
 
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
-        inputs:
-          versionSpec: '3.6'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
       - task: PythonScript@0
         displayName: 'Set versions for source build'
         inputs:
           scriptPath: 'eng/versioning/set_versions.py'
           arguments: '--build-type client --pst'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+        condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
       - task: PythonScript@0
         displayName: 'Update versions for source build'

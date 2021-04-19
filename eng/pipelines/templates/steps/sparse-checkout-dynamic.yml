@@ -1,0 +1,34 @@
+parameters:
+  - name: Paths
+    type: object
+    default: []
+
+steps:
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      Repositories:
+        - Name: Azure/azure-sdk-for-java
+          Commitish: $(Build.SourceVersion)
+          WorkingDirectory: $(System.DefaultWorkingDirectory)/generate_sparse_directories
+      Paths:
+        - eng/scripts/generate_from_source_pom.py
+
+  - task: UsePythonVersion@0
+    displayName: 'Use Python 3.6'
+    inputs:
+      versionSpec: '3.6'
+    condition: eq(variables['TestFromSource'], 'true')
+
+  - task: PythonScript@0
+    displayName: 'Generate sparse checkout directories'
+    inputs:
+      scriptPath: 'eng/scripts/generate_from_source_pom.py'
+      arguments: '--set-pipeline-variable'
+      workingDirectory: $(System.DefaultWorkingDirectory)/generate_sparse_directories
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      Paths: ${{ parameters.Paths }}
+      PathsJson: coalesce(variables['FromSourceDirectories'], '[]')
+      SkipDefaultCheckout: true

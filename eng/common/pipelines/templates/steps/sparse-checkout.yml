@@ -2,6 +2,11 @@ parameters:
   - name: Paths
     type: object
     default: []
+  # Enables passing in an array as a json string, in order to source
+  # paths generated dynamically in previous steps
+  - name: PathsJson
+    type: string
+    default: '[]'
   - name: Repositories
     type: object
     default:
@@ -32,6 +37,15 @@ steps:
       - pwsh: git sparse-checkout add ${{ path }}
         displayName: Add sparse checkout path ${{ path }}
         workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
+
+    - pwsh: |
+        $paths = '${{ parameters.PathsJson }}' | ConvertFrom-Json
+        foreach ($path in $paths) {
+          Write-Host 'git sparse-checkout add $path'
+          git sparse-checkout add $path
+        }
+      displayName: Add sparse checkout paths from json
+      workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
 
     - pwsh: git checkout ${{ repo.Commitish }}
       displayName: Sparse checkout at ${{ repo.Commitish }}
