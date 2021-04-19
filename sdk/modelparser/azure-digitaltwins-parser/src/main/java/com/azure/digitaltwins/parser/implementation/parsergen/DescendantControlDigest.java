@@ -26,7 +26,7 @@ public class DescendantControlDigest {
      * @param descendantControlObject A {@link JsonNode} that is the descendant control object extracted from the metamodel digest.
      */
     public DescendantControlDigest(JsonNode descendantControlObject) {
-        this.dtdlVersion = JsonNodeHelper.getNullableIntegerValue(descendantControlObject, DtdlStrings.DTDL_VERSIONS);
+        this.dtdlVersion = JsonNodeHelper.getNullableIntegerValue(descendantControlObject, DtdlStrings.DTDL_VERSION);
         this.rootClass = JsonNodeHelper.getTextValue(descendantControlObject, DtdlStrings.ROOT_CLASS);
         this.definingClass = JsonNodeHelper.getTextValue(descendantControlObject, DtdlStrings.DEFINING_CLASS);
         this.propertyNames = JsonNodeHelper.getArrayValues(descendantControlObject, DtdlStrings.PROPERTIES, String.class);

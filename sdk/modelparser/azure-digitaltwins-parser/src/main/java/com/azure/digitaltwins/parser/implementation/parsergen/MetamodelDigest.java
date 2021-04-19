@@ -54,7 +54,7 @@ public class MetamodelDigest {
         this.materialClasses = findAndCreateMaterialClasses(digest);
         this.descendantControls = findAndCreateDescendantControls(digest);
         this.supplementalTypes = findAndCreateSupplementalTypes(digest);
-        this.elementsJsonText = digest.get(DtdlStrings.ELEMENTS).asText();
+        this.elementsJsonText = digest.get(DtdlStrings.ELEMENTS).toString();
     }
 
     /**
@@ -210,7 +210,7 @@ public class MetamodelDigest {
     }
 
     private Map<String, Map<Integer, StringRestriction>> findAndCreateClassIdDefRestrictions(JsonNode digest) {
-        JsonNode identifierDefRestriction = digest.get(DtdlStrings.IDENTIFIER_REFERENCE);
+        JsonNode identifierDefRestriction = digest.get(DtdlStrings.IDENTIFIER_DEFINITION);
         HashMap<String, Map<Integer, StringRestriction>> result = new HashMap<>();
 
         for (Iterator<String> it = identifierDefRestriction.fieldNames(); it.hasNext();) {
@@ -236,7 +236,7 @@ public class MetamodelDigest {
 
         for (Iterator<String> it = identifierRefRestriction.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
-            result.put(Integer.parseInt(fieldName), new StringRestriction(digest.get(fieldName)));
+            result.put(Integer.parseInt(fieldName), new StringRestriction(identifierRefRestriction.get(fieldName)));
         }
 
         return result;
@@ -249,7 +249,7 @@ public class MetamodelDigest {
         for (Iterator<String> it = identifierDefRestriction.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
             if (JsonNodeHelper.isNumeric(fieldName)) {
-                result.put(Integer.parseInt(fieldName), new StringRestriction(digest.get(fieldName)));
+                result.put(Integer.parseInt(fieldName), new StringRestriction(identifierDefRestriction.get(fieldName)));
             }
         }
 

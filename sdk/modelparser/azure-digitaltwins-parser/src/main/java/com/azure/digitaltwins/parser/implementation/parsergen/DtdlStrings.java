@@ -34,6 +34,7 @@ public class DtdlStrings {
     public static final String IS_KEY = "isKey";
     public static final String IS_SEGMENT = "isSeg";
     public static final String DTDL_VERSIONS = "dtdlVersions";
+    public static final String DTDL_VERSION = "dtdlVersion";
     public static final String OVERT = "overt";
     public static final String PARTITION = "partition";
     public static final String PARENT_CLASS = "parentClass";
