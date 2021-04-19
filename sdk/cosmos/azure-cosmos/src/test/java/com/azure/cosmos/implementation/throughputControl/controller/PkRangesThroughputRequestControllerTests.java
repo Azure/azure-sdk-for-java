@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.throughputControl.controller;
 
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -31,9 +30,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 public class PkRangesThroughputRequestControllerTests {
     private static final Range<String> RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES = new Range<String>(
@@ -62,11 +60,11 @@ public class PkRangesThroughputRequestControllerTests {
         pkRangeCache = Mockito.mock(RxPartitionKeyRangeCache.class);
         Mockito.when(
             pkRangeCache.tryGetOverlappingRangesAsync(
-                any(MetadataDiagnosticsContext.class),
+                any(),
                 eq(targetCollectionRid),
                 eq(RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES),
                 eq(true),
-                anyMapOf(String.class, Object.class))
+                any())
         ).thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
     }
 

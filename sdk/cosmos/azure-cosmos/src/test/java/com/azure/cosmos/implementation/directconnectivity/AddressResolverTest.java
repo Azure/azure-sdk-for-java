@@ -359,10 +359,10 @@ public class AddressResolverTest {
 
             return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null);
         }).when(this.collectionRoutingMapCache).tryLookupAsync(
-            Mockito.any(MetadataDiagnosticsContext.class),
-            Mockito.anyString(),
-            Mockito.any(CollectionRoutingMap.class),
-            Mockito.anyMapOf(String.class, Object.class));
+            Mockito.any(),
+            Mockito.any(),
+            Mockito.any(),
+            Mockito.any());
 
         // Refresh case
         Mockito.doAnswer(invocationOnMock -> {
@@ -399,11 +399,11 @@ public class AddressResolverTest {
 
             return Mono.error(new NotImplementedException("not mocked"));
         }).when(this.collectionRoutingMapCache).tryLookupAsync(
-            Mockito.any(MetadataDiagnosticsContext.class),
-            Mockito.anyString(),
-            Mockito.any(CollectionRoutingMap.class),
+            Mockito.any(),
+            Mockito.any(),
+            Mockito.any(),
             Mockito.anyBoolean(),
-            Mockito.anyMapOf(String.class, Object.class));
+            Mockito.any());
 
 
         // Fabric Address Cache

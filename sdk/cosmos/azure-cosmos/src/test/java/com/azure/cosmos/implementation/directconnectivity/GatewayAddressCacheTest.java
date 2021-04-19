@@ -27,7 +27,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -457,8 +457,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         partitionKeyRangeIds,
                         forceRefresh);
             }
-        }).when(spyCache).getServerAddressesViaGatewayAsync(Matchers.any(RxDocumentServiceRequest.class), Matchers.anyString(),
-                Matchers.anyListOf(String.class), Matchers.anyBoolean());
+        }).when(spyCache).getServerAddressesViaGatewayAsync(ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
 
         httpClientWrapper.capturedRequests.clear();
 
@@ -697,8 +697,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         useMasterCollectionResolver,
                         null);
                 }
-            }).when(spyCache).getMasterAddressesViaGatewayAsync(Matchers.any(RxDocumentServiceRequest.class), Matchers.any(ResourceType.class), Matchers.anyString(),
-                Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
+            }).when(spyCache).getMasterAddressesViaGatewayAsync(ArgumentMatchers.any(RxDocumentServiceRequest.class), ArgumentMatchers.any(ResourceType.class), ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(), ArgumentMatchers.anyBoolean(), ArgumentMatchers.anyBoolean(), ArgumentMatchers.any());
 
 
         RxDocumentServiceRequest req =
@@ -792,8 +792,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         useMasterCollectionResolver,
                         null);
             }
-        }).when(spyCache).getMasterAddressesViaGatewayAsync(Matchers.any(RxDocumentServiceRequest.class), Matchers.any(ResourceType.class), Matchers.anyString(),
-                Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
+        }).when(spyCache).getMasterAddressesViaGatewayAsync(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any(), ArgumentMatchers.anyBoolean(), ArgumentMatchers.anyBoolean(), ArgumentMatchers.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
