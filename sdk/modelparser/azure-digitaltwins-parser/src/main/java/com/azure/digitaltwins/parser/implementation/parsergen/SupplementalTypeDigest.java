@@ -15,14 +15,14 @@ import java.util.ArrayList;
  * Class that abstracts supplemental type information extracted from the meta-model digest provided by the meta-parser.
  */
 public class SupplementalTypeDigest {
-    private boolean isAbstract;
-    private String parent;
-    private String extensionKind;
-    private String extensionContext;
-    private List<String> coTypes;
-    private List<Integer> coTypeVersions;
-    private Map<String, SupplementalPropertyDigest> properties;
-    private List<SupplementalConstraintDigest> constraints;
+    private final boolean isAbstract;
+    private final String parent;
+    private final String extensionKind;
+    private final String extensionContext;
+    private final List<String> coTypes;
+    private final List<Integer> coTypeVersions;
+    private final Map<String, SupplementalPropertyDigest> properties;
+    private final List<SupplementalConstraintDigest> constraints;
 
     /**
      * Initializes a new instance of the {@link SupplementalTypeDigest} class.

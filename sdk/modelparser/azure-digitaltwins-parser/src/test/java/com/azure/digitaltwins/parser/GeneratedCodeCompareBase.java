@@ -60,8 +60,6 @@ public class GeneratedCodeCompareBase {
                 .map(s -> s.getName())
                 .collect(Collectors.toList()));
 
-        List<String> verifiedFiles = new ArrayList<>();
-
         for (File expectedFile : expectedDirectoryFiles) {
             // look for corresponding generated file.
             // This step verifies all files that are found look identical in terms of contents;
@@ -96,7 +94,6 @@ public class GeneratedCodeCompareBase {
 
                     // If we find a corresponding file, we remove it from the unverified file list and add it to verified file list.
                     unverifiedFiles.remove(expectedFile.getName());
-                    verifiedFiles.add(expectedFile.getName());
                     break;
                 }
             }

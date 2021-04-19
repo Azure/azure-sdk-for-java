@@ -23,13 +23,13 @@ public class DescendantControlDigestTests {
     public void testAll() {
         DescendantControlDigest controlDigest = new DescendantControlDigest(complexJsonNode);
 
-        Assertions.assertTrue(controlDigest.getDtdlVersion() == 2);
-        Assertions.assertTrue(controlDigest.getMaxDepth() == 5);
-        Assertions.assertTrue(controlDigest.getDefiningClass().equals("ComplexSchema"));
+        Assertions.assertEquals(controlDigest.getDtdlVersion(), 2);
+        Assertions.assertEquals((int) controlDigest.getMaxDepth(), 5);
+        Assertions.assertEquals(controlDigest.getDefiningClass(), "ComplexSchema");
         Assertions.assertNull(controlDigest.getExcludeType());
-        Assertions.assertTrue(controlDigest.getPropertyNames().size() == 2);
+        Assertions.assertEquals(controlDigest.getPropertyNames().size(), 2);
         Assertions.assertFalse(controlDigest.isNarrow());
-        Assertions.assertTrue(controlDigest.getRootClass().equals("Array"));
+        Assertions.assertEquals(controlDigest.getRootClass(), "Array");
         Assertions.assertNull(controlDigest.getDataTypeProperty());
         Assertions.assertNull(controlDigest.getImportProperties());
     }

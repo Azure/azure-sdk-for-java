@@ -158,7 +158,7 @@ public class MaterialPropertyDigest {
     }
 
     /**
-     * @return Gets a dictionary that maps from DTDL version to a <see cref="PropertyVersionDigest"/> object providing version-specific details about the property.
+     * @return Gets a dictionary that maps from DTDL version to a {@link PropertyVersionDigest} object providing version-specific details about the property.
      */
     public Map<Integer, PropertyVersionDigest> getPropertyVersions() {
         return this.propertyVersions;

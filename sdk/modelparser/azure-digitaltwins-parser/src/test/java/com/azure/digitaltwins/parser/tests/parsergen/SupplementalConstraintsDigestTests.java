@@ -22,9 +22,9 @@ public class SupplementalConstraintsDigestTests {
     @Test
     public void testAll() {
         SupplementalConstraintDigest constraintDigest = new SupplementalConstraintDigest(complexJsonNode);
-        Assertions.assertTrue(constraintDigest.getPropertyName().equals("schema"));
-        Assertions.assertTrue(constraintDigest.getRequiredValues().size() == 1);
-        Assertions.assertTrue(constraintDigest.getRequiredValueString().equals("vector"));
+        Assertions.assertEquals(constraintDigest.getPropertyName(), "schema");
+        Assertions.assertEquals(constraintDigest.getRequiredValues().size(), 1);
+        Assertions.assertEquals(constraintDigest.getRequiredValueString(), "vector");
         Assertions.assertNull(constraintDigest.getRequiredTypes());
         Assertions.assertNull(constraintDigest.getRequiredTypesString());
     }

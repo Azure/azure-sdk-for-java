@@ -23,12 +23,12 @@ public class InstanceValidationDigestTests {
     public void testAll() {
         InstanceValidationDigest instanceValidationDigest = new InstanceValidationDigest(complexJsonNode);
         Assertions.assertEquals("is a string value that conforms to the RFC 3339 definition of 'date'", instanceValidationDigest.getCriteriaText());
-        Assertions.assertTrue(instanceValidationDigest.getElementConditions().size() == 2);
-        Assertions.assertTrue(instanceValidationDigest.getElementConditions().get(2).getDataType().equals("date"));
-        Assertions.assertTrue(instanceValidationDigest.getElementConditions().get(2).getJsonType().equals("string"));
-        Assertions.assertTrue(instanceValidationDigest.getElementConditions().get(2).getPattern().equals("^[0-9]{4}-[0-9]{2}-[0-9]{2}$"));
+        Assertions.assertEquals(instanceValidationDigest.getElementConditions().size(), 2);
+        Assertions.assertEquals(instanceValidationDigest.getElementConditions().get(2).getDataType(), "date");
+        Assertions.assertEquals(instanceValidationDigest.getElementConditions().get(2).getJsonType(), "string");
+        Assertions.assertEquals(instanceValidationDigest.getElementConditions().get(2).getPattern(), "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
 
-        Assertions.assertTrue(instanceValidationDigest.getChildConditions().size() == 2);
+        Assertions.assertEquals(instanceValidationDigest.getChildConditions().size(), 2);
         Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getDataType());
         Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getJsonType());
         Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getHasValue());

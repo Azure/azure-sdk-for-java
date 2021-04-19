@@ -24,7 +24,7 @@ public class CodeWriter {
      * Initializes a new instance of {@link CodeWriter}.
      *
      * @param filePath Full path of file to be generated.
-     * @throws IOException
+     * @throws IOException IOException
      */
     public CodeWriter(String filePath) throws IOException {
         FileOutputStream fileStream = new FileOutputStream(filePath);
@@ -37,7 +37,7 @@ public class CodeWriter {
      *
      * @param filePath Full path of file to be generated.
      * @param isDebug  Boolean indicating whether or not debug mode is on or not.
-     * @throws IOException
+     * @throws IOException IOException
      */
     public CodeWriter(String filePath, boolean isDebug) throws IOException {
         FileOutputStream fileStream = new FileOutputStream(filePath);
@@ -48,7 +48,7 @@ public class CodeWriter {
     /**
      * Closes the file and flushes it.
      *
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void close() throws IOException {
         this.indentedFileWriter.close();
@@ -69,7 +69,7 @@ public class CodeWriter {
     /**
      * Write an open brace and increase indent level.
      *
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void openScope() throws IOException {
         indentedFileWriter.writeLineWithNoIndent("{");
@@ -81,7 +81,7 @@ public class CodeWriter {
     /**
      * Decrease indent level and Write a close brace.
      *
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void closeScope() throws IOException {
         indentedFileWriter.decreaseIndent();

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class SuplementalTypeDigestTests {
+public class SupplementalTypeDigestTests {
     static JsonNode complexJsonNode;
 
     @BeforeAll
@@ -22,13 +22,13 @@ public class SuplementalTypeDigestTests {
     @Test
     public void testAll() {
         SupplementalTypeDigest typeDigest = new SupplementalTypeDigest(complexJsonNode);
-        Assertions.assertTrue(typeDigest.getConstraints().size() == 0);
-        Assertions.assertTrue(typeDigest.getProperties().size() == 0);
-        Assertions.assertTrue(typeDigest.getCoTypes().size() == 1);
-        Assertions.assertTrue(typeDigest.getCoTypeVersions().size() == 2);
-        Assertions.assertTrue(typeDigest.getExtensionContext().equals("dtmi:dtdl:extension:historization;1"));
-        Assertions.assertTrue(typeDigest.getExtensionKind().equals("AdjunctType"));
-        Assertions.assertTrue(typeDigest.getParent().equals("dtmi:dtdl:class:AdjunctType;3"));
+        Assertions.assertEquals(typeDigest.getConstraints().size(), 0);
+        Assertions.assertEquals(typeDigest.getProperties().size(), 0);
+        Assertions.assertEquals(typeDigest.getCoTypes().size(), 1);
+        Assertions.assertEquals(typeDigest.getCoTypeVersions().size(), 2);
+        Assertions.assertEquals(typeDigest.getExtensionContext(), "dtmi:dtdl:extension:historization;1");
+        Assertions.assertEquals(typeDigest.getExtensionKind(), "AdjunctType");
+        Assertions.assertEquals(typeDigest.getParent(), "dtmi:dtdl:class:AdjunctType;3");
         Assertions.assertFalse(typeDigest.isAbstract());
     }
 

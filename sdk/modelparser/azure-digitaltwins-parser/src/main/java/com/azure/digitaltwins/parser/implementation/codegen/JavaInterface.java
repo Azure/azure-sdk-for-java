@@ -13,10 +13,10 @@ import java.util.List;
  */
 public class JavaInterface extends JavaDeclaration implements JavaFile {
 
-    private String extend;
-    private String implement;
-    private String typeName;
-    private List<JavaMethod> methods;
+    private final String extend;
+    private final String implement;
+    private final String typeName;
+    private final List<JavaMethod> methods;
 
     /**
      * Initializes a new instance of the {@link JavaInterface} class.

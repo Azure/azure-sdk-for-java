@@ -10,11 +10,11 @@ import java.util.List;
  * Class that abstracts supplemental constraint information extracted from the meta-model digest provided by the meta-parser.
  */
 public class SupplementalConstraintDigest {
-    private String propertyName;
-    private List<String> requiredTypes;
-    private String requiredTypesString;
-    private List<String> requiredValues;
-    private String requiredValueString;
+    private final String propertyName;
+    private final List<String> requiredTypes;
+    private final String requiredTypesString;
+    private final List<String> requiredValues;
+    private final String requiredValueString;
 
     /**
      * Initializes a new instance of the {@link SupplementalConstraintDigest} class.

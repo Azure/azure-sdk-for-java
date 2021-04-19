@@ -22,11 +22,11 @@ public class SupplementalPropertyDigestTests {
     @Test
     public void testAll() {
         SupplementalPropertyDigest propertyDigest = new SupplementalPropertyDigest(complexJsonNode);
-        Assertions.assertTrue(propertyDigest.getMaxCount() == 1);
-        Assertions.assertTrue(propertyDigest.getMinCount() == 1);
+        Assertions.assertEquals((int) propertyDigest.getMaxCount(), 1);
+        Assertions.assertEquals((int) propertyDigest.getMinCount(), 1);
         Assertions.assertNull(propertyDigest.getDictionaryKey());
-        Assertions.assertTrue(propertyDigest.getInstanceOfProperty().equals("schema"));
-        Assertions.assertTrue(propertyDigest.getTypeUri().equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON"));
+        Assertions.assertEquals(propertyDigest.getInstanceOfProperty(), "schema");
+        Assertions.assertEquals(propertyDigest.getTypeUri(), "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON");
         Assertions.assertFalse(propertyDigest.isOptional());
         Assertions.assertFalse(propertyDigest.isPlural());
     }

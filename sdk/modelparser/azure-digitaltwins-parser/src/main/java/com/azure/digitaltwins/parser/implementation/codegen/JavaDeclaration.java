@@ -119,7 +119,7 @@ public class JavaDeclaration {
         }
 
         if (typeParams != null && !typeParams.isEmpty()) {
-            decoratedName.append(typeParams + " ");
+            decoratedName.append(typeParams).append(" ");
         }
 
         if (multiplicity == Multiplicity.STATIC) {
@@ -191,7 +191,7 @@ public class JavaDeclaration {
      * Write the summary comments for the declaration.
      *
      * @param codeWriter A {@link CodeWriter} object for writing the declaration comments.
-     * @throws IOException
+     * @throws IOException IOException
      */
     protected void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
         codeWriter.addNewLine();

@@ -10,7 +10,7 @@ class IndentedFileWriter {
     private final OutputStreamWriter fileWriter;
     private int indent;
     private final String indentation;
-    private boolean isDebug;
+    private final boolean isDebug;
     private StringBuilder stringBuilder;
 
     IndentedFileWriter(OutputStreamWriter fileWriter, String indentation, boolean isDebug) {

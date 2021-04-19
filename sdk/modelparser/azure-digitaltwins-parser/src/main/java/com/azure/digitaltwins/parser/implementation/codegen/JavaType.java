@@ -16,16 +16,16 @@ import java.util.Locale;
  */
 public class JavaType extends JavaDeclaration implements JavaFile {
 
-    private ClientLogger logger = new ClientLogger(JavaType.class);
-    private String typeName;
+    private final ClientLogger logger = new ClientLogger(JavaType.class);
+    private final String typeName;
 
     private String extend;
     private String implement;
-    private List<JavaField> fields;
-    private List<JavaConstructor> constructors;
-    private List<JavaEnum> enums;
-    private List<JavaProperty> properties;
-    private List<JavaMethod> methods;
+    private final List<JavaField> fields;
+    private final List<JavaConstructor> constructors;
+    private final List<JavaEnum> enums;
+    private final List<JavaProperty> properties;
+    private final List<JavaMethod> methods;
 
     /**
      * Initializes a new instance of the {@link JavaType} class.

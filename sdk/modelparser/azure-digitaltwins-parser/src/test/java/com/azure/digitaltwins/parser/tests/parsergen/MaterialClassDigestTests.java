@@ -22,9 +22,9 @@ public class MaterialClassDigestTests {
     @Test
     public void testAll() {
         MaterialClassDigest classDigest = new MaterialClassDigest(complexJsonNode);
-        Assertions.assertEquals(classDigest.isAbstract(), true);
-        Assertions.assertEquals(classDigest.isOvert(), false);
-        Assertions.assertEquals(classDigest.isPartition(), false);
+        Assertions.assertTrue(classDigest.isAbstract());
+        Assertions.assertFalse(classDigest.isOvert());
+        Assertions.assertFalse(classDigest.isPartition());
         Assertions.assertEquals(classDigest.getParentClass(), "Schema");
         Assertions.assertEquals(classDigest.getDtdlVersions().size(), 2);
         Assertions.assertEquals(classDigest.getTypeIds().size(), 3);

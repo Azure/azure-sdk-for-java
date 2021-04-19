@@ -16,12 +16,12 @@ import java.util.Locale;
  * With java properties, there is a field, a getter and a setter.
  */
 public class JavaProperty extends JavaStatement {
-    private ClientLogger logger = new ClientLogger(JavaProperty.class);
+    private final ClientLogger logger = new ClientLogger(JavaProperty.class);
 
-    private String propertyName;
-    private String propertyType;
-    private JavaField field;
-    private List<JavaMethod> listOfMethods;
+    private final String propertyName;
+    private final String propertyType;
+    private final JavaField field;
+    private final List<JavaMethod> listOfMethods;
 
     /**
      * Initializes a new instance of the {@link JavaProperty} class.

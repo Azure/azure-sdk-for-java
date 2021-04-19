@@ -41,10 +41,10 @@ public class JsonNodeHelperTests {
     @Test
     public void getBooleanValue() {
         boolean output = JsonNodeHelper.getNotNullableBooleanValue(complexJsonNode, "booleanValue");
-        Assertions.assertEquals(true, output);
+        Assertions.assertTrue(output);
 
         boolean output2 = JsonNodeHelper.getNotNullableBooleanValue(complexJsonNode, "doesNotExist");
-        Assertions.assertEquals(false, output2);
+        Assertions.assertFalse(output2);
     }
 
     @Test

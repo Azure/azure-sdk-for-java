@@ -9,13 +9,13 @@ import com.fasterxml.jackson.databind.JsonNode;
  * Class that abstracts supplemental property information extracted from the meta-model digest provided by the meta-parser.
  */
 public class SupplementalPropertyDigest {
-    private String typeUri;
-    private Integer maxCount;
-    private Integer minCount;
-    private boolean isPlural;
-    private boolean isOptional;
-    private String dictionaryKey;
-    private String instanceOfProperty;
+    private final String typeUri;
+    private final Integer maxCount;
+    private final Integer minCount;
+    private final boolean isPlural;
+    private final boolean isOptional;
+    private final String dictionaryKey;
+    private final String instanceOfProperty;
 
     /**
      * Initializes a new instance of the {@link SupplementalPropertyDigest} class.

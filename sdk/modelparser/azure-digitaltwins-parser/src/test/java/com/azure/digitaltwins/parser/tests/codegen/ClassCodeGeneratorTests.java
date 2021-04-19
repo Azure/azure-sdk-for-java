@@ -984,11 +984,9 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
     /**
      * No files are generated.
-     *
-     * @throws IOException IOException.
      */
     @Test
-    public void publicClassWithInvalidFieldCasing() throws IOException {
+    public void publicClassWithInvalidFieldCasing() {
         final String typeName = "NoOpType";
 
         JavaClass javaClass = new JavaClass(

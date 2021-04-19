@@ -14,10 +14,10 @@ import java.util.List;
  * Generator for java enum
  */
 public class JavaEnum extends JavaDeclaration implements JavaFile {
-    private static ClientLogger logger = new ClientLogger(JavaEnum.class);
-    private List<EnumVal> enumValues;
-    private boolean isSorted;
-    private String typeName;
+    private static final ClientLogger LOGGER = new ClientLogger(JavaEnum.class);
+    private final List<EnumVal> enumValues;
+    private final boolean isSorted;
+    private final String typeName;
 
     /**
      * Initializes a new instance of the {@link JavaEnum} class.
@@ -43,7 +43,7 @@ public class JavaEnum extends JavaDeclaration implements JavaFile {
      */
     public JavaEnum value(String name, String description) {
         if (description != null && !description.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Documentation text of enum value '" + name + "' must end with a period. -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Documentation text of enum value '" + name + "' must end with a period. -- SA1629."));
         }
 
         this.enumValues.add(

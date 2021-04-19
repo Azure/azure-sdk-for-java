@@ -16,9 +16,9 @@ public class JavaLibrary {
     private final String outputDirectory;
     private final String libraryNamespace;
 
-    private List<String> systemNamespaces;
-    private List<String> otherNamespaces;
-    private List<JavaFile> javaFiles;
+    private final List<String> systemNamespaces;
+    private final List<String> otherNamespaces;
+    private final List<JavaFile> javaFiles;
 
     /**
      * Initializes a new instance of the {@link JavaLibrary} class.
@@ -98,7 +98,7 @@ public class JavaLibrary {
      * Generates code for the library.
      *
      * @return A list of generated file names.
-     * @throws IOException
+     * @throws IOException IOException
      */
     public List<String> generate() throws IOException {
         List<String> filePaths = new ArrayList<>();
