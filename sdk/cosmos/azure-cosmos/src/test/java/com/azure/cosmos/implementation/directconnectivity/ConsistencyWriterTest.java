@@ -156,7 +156,7 @@ public class ConsistencyWriterTest {
         assertThat(b.getNumberWaiting()).isEqualTo(1);
         b.await(1000, TimeUnit.MILLISECONDS);
         assertThat(invocationOnMocks).hasSize(1);
-        assertThat(invocationOnMocks.get(0).getArgumentAt(1, Boolean.class)).isTrue();
+        assertThat(invocationOnMocks.get(0).getArgument(1, Boolean.class)).isTrue();
     }
 
     @Test(groups = "unit")
