@@ -41,6 +41,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
+    private final AtomicBoolean linkHasNoCredits = new AtomicBoolean();
     private final Object creditsAdded = new Object();
 
     private final AtomicReference<CoreSubscriber<? super Message>> downstream = new AtomicReference<>();
@@ -168,6 +169,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 final int credits;
                 synchronized (creditsAdded) {
                     credits = getCreditsToAdd();
+
+                    if (credits < 1) {
+                        linkHasNoCredits.compareAndSet(false, true);
+                    }
                 }
 
                 return credits;
@@ -373,16 +378,22 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         synchronized (creditsAdded) {
             credits = getCreditsToAdd();
 
-            logger.verbose("linkName[{}] entityPath[{}] request[{}] credits[{}] Backpressure request from downstream.",
-                currentLinkName, entityPath, request, credits);
-
             if (link != null && credits > 0) {
-                link.addCredits(credits)
-                    .onErrorResume(IllegalStateException.class, error -> {
+                final boolean hadNoCredits = linkHasNoCredits.compareAndSet(true, false);
+
+                logger.verbose("linkName[{}] entityPath[{}] request[{}] credits[{}] hadNoCredits[{}]"
+                        + " Backpressure request from downstream.",
+                    currentLinkName, entityPath, request, credits, hadNoCredits);
+
+                if (hadNoCredits) {
+                    link.addCredits(credits).onErrorResume(IllegalStateException.class, error -> {
                         logger.info("linkName[{}] was already closed. Could not add credits.", link.getLinkName());
+
+                        // On an error, reset it back because we didn't add any.
+                        linkHasNoCredits.compareAndSet(false, true);
                         return Mono.empty();
-                    })
-                    .subscribe();
+                    }).subscribe();
+                }
             } else {
                 logger.verbose("entityPath[{}] credits[{}] There is no link to add credits to, yet.",
                     entityPath, credits);
@@ -516,11 +527,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 final int creditsToAdd = getCreditsToAdd();
                 final AmqpReceiveLink link = currentLink;
 
-                if (link != null && creditsToAdd > 0) {
+                if (link != null && creditsToAdd > 0
+                    && linkHasNoCredits.compareAndSet(true, false)) {
+
                     link.addCredits(creditsToAdd)
                         .onErrorResume(error -> {
                             logger.info("linkName[{}] entityPath[{}] Unable to add credits in drain loop.",
                                 link.getLinkName(), link.getEntityPath(), error);
+
+                            linkHasNoCredits.compareAndSet(false, true);
                             return Mono.empty();
                         }).subscribe();
                 }
@@ -561,9 +576,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             final int size = messageQueue.size();
             final int remaining = Long.valueOf(request).intValue() - size;
             credits = Math.max(remaining, 0);
-
-            logger.verbose("linkName[{}] requested[{}] queue[{}] credits[{}] creditsToAdd method", currentLinkName,
-                requested, size, credits);
         }
 
         return credits;
