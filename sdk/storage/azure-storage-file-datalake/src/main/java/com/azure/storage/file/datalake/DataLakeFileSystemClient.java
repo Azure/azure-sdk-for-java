@@ -678,6 +678,8 @@ public class DataLakeFileSystemClient {
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
      * multiple have been soft deleted at this location.
      * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a client pointing to the restored resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -27,7 +27,6 @@ import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAP
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
-import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
@@ -477,8 +476,7 @@ public class DataLakeFileSystemAsyncClient {
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
         Duration timeout) {
         BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
-            (marker, pageSize) ->
-            {
+            (marker, pageSize) -> {
                 ListPathsOptions finalOptions;
                 if (pageSize != null) {
                     if (options == null) {

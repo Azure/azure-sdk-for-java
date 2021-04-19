@@ -9,11 +9,11 @@ import java.time.OffsetDateTime;
  * A path that has been soft deleted.
  */
 public class PathDeletedItem {
-    private String name;
-    private boolean isPrefix;
-    private String deletionId;
-    private OffsetDateTime deletedOn;
-    private Integer remainingRetentionDays;
+    private final String name;
+    private final boolean isPrefix;
+    private final String deletionId;
+    private final OffsetDateTime deletedOn;
+    private final Integer remainingRetentionDays;
 
     /**
      * Constructs a {@link PathDeletedItem}.

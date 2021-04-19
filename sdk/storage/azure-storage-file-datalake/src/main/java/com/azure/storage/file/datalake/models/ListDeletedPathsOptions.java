@@ -12,7 +12,7 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
  * on each of the options. Null may be passed in place of an object of this type if no options are desirable.
  */
 public class ListDeletedPathsOptions {
-    private final ClientLogger logger = new ClientLogger(ListPathsOptions.class);
+    private final ClientLogger logger = new ClientLogger(ListDeletedPathsOptions.class);
 
     private String path;
     private Integer maxResults;

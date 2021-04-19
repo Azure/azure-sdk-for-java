@@ -342,7 +342,7 @@ public class DataLakeServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeServiceProperties>> getPropertiesWithResponse() {
-        try{
+        try {
             return this.blobServiceAsyncClient.getPropertiesWithResponse()
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response ->
@@ -392,7 +392,7 @@ public class DataLakeServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponse(DataLakeServiceProperties properties) {
-        try{
+        try {
             return this.blobServiceAsyncClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
