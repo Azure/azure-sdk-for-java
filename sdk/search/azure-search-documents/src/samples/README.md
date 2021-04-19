@@ -3,7 +3,7 @@ page_type: sample
 languages: java
 products:
   - azure
-  - azure-search-documents
+  - azure-cognitive-search
 urlFragment: search-samples
 ---
 
@@ -29,7 +29,7 @@ Maven dependency for Azure Cognitive Search Client library. Add it to your proje
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.2.0</version>
+    <version>11.3.1</version>
 </dependency>
 ```
 

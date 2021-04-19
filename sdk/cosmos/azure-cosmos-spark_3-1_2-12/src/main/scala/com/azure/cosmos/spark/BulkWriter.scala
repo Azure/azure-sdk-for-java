@@ -31,7 +31,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   // TODO: moderakh this requires tuning.
   // TODO: moderakh should we do a max on the max memory to ensure we don't run out of memory?
   private val maxConcurrency = writeConfig.maxConcurrencyOpt
-    .getOrElse(SparkUtils.getNumberOfHostCPUCores() * MaxNumberOfThreadsPerCPUCore)
+    .getOrElse(SparkUtils.getNumberOfHostCPUCores * MaxNumberOfThreadsPerCPUCore)
 
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock

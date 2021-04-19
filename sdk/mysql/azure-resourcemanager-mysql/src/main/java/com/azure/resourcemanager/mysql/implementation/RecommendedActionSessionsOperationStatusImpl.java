@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.RecommendedActionSessionsOperationStatusInner;
 import com.azure.resourcemanager.mysql.models.RecommendedActionSessionsOperationStatus;
 import java.time.OffsetDateTime;
@@ -12,10 +11,11 @@ import java.time.OffsetDateTime;
 public final class RecommendedActionSessionsOperationStatusImpl implements RecommendedActionSessionsOperationStatus {
     private RecommendedActionSessionsOperationStatusInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     RecommendedActionSessionsOperationStatusImpl(
-        RecommendedActionSessionsOperationStatusInner innerObject, MySqlManager serviceManager) {
+        RecommendedActionSessionsOperationStatusInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -36,7 +36,7 @@ public final class RecommendedActionSessionsOperationStatusImpl implements Recom
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

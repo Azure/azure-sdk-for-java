@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.OperationInner;
 import com.azure.resourcemanager.kusto.models.Operation;
 import com.azure.resourcemanager.kusto.models.OperationDisplay;
@@ -12,9 +11,9 @@ import com.azure.resourcemanager.kusto.models.OperationDisplay;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, KustoManager serviceManager) {
+    OperationImpl(OperationInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +38,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

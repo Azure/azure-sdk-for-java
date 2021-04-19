@@ -71,7 +71,7 @@ public class DataLoader {
             _configuration.getBulkloadBatchSize());
         final DataGenerationIterator dataGenerator =
             new DataGenerationIterator(_entityConfiguration.dataGenerator(),
-                _configuration.getNumberOfPreCreatedDocuments(),
+                documentsToLoad,
                 _configuration.getBulkloadBatchSize());
 
         while (dataGenerator.hasNext()) {

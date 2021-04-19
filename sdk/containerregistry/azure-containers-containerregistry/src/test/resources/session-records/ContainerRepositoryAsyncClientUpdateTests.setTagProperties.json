@@ -1,0 +1,33 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle/_tags/test-update-properties",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5218b8ba-a368-4ef6-9c22-6a00f4014805",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "422",
+      "StatusCode" : "200",
+      "Body" : "{\"registry\":\"pallavitcontainerregistry.azurecr.io\",\"imageName\":\"library/hello-seattle\",\"tag\":{\"name\":\"test-update-properties\",\"digest\":\"sha256:5c9ac9b2b91bacbe58641a89cb130d6b1cdb8b040e48a76751335d01ef5d76b7\",\"createdTime\":\"2021-04-15T18:54:34.187478Z\",\"lastUpdateTime\":\"2021-04-15T18:54:34.187478Z\",\"signed\":false,\"changeableAttributes\":{\"deleteEnabled\":false,\"writeEnabled\":true,\"readEnabled\":true,\"listEnabled\":true}}}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle/_tags/test-update-properties",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e44cc297-4822-467a-bbf6-c447ec75f046"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "422",
+      "StatusCode" : "200",
+      "Body" : "{\"registry\":\"pallavitcontainerregistry.azurecr.io\",\"imageName\":\"library/hello-seattle\",\"tag\":{\"name\":\"test-update-properties\",\"digest\":\"sha256:5c9ac9b2b91bacbe58641a89cb130d6b1cdb8b040e48a76751335d01ef5d76b7\",\"createdTime\":\"2021-04-15T18:54:34.187478Z\",\"lastUpdateTime\":\"2021-04-15T18:54:34.187478Z\",\"signed\":false,\"changeableAttributes\":{\"deleteEnabled\":false,\"writeEnabled\":true,\"readEnabled\":true,\"listEnabled\":true}}}\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

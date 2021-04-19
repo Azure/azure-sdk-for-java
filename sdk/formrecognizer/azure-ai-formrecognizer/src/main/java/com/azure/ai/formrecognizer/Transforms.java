@@ -113,25 +113,27 @@ final class Transforms {
             }
         } else {
             extractedFormList = new ArrayList<>();
-            forEachWithIndex(pageResults, ((index, pageResultItem) -> {
-                StringBuilder formType = new StringBuilder("form-");
-                int pageNumber = pageResultItem.getPage();
-                Integer clusterId = pageResultItem.getClusterId();
-                if (clusterId != null) {
-                    formType.append(clusterId);
-                }
-                Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
-                    pageResultItem, pageNumber);
+            if (!CoreUtils.isNullOrEmpty(pageResults)) {
+                forEachWithIndex(pageResults, ((index, pageResultItem) -> {
+                    StringBuilder formType = new StringBuilder("form-");
+                    int pageNumber = pageResultItem.getPage();
+                    Integer clusterId = pageResultItem.getClusterId();
+                    if (clusterId != null) {
+                        formType.append(clusterId);
+                    }
+                    Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
+                        pageResultItem, pageNumber);
 
-                final RecognizedForm recognizedForm = new RecognizedForm(
-                    extractedFieldMap,
-                    formType.toString(),
-                    new FormPageRange(pageNumber, pageNumber),
-                    Collections.singletonList(formPages.get(index)));
+                    final RecognizedForm recognizedForm = new RecognizedForm(
+                        extractedFieldMap,
+                        formType.toString(),
+                        new FormPageRange(pageNumber, pageNumber),
+                        Collections.singletonList(formPages.get(index)));
 
-                RecognizedFormHelper.setModelId(recognizedForm, modelId);
-                extractedFormList.add(recognizedForm);
-            }));
+                    RecognizedFormHelper.setModelId(recognizedForm, modelId);
+                    extractedFormList.add(recognizedForm);
+                }));
+            }
         }
         return extractedFormList;
     }
