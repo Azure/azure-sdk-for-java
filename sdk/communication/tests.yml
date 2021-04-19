@@ -61,7 +61,6 @@ stages:
           reportDirectory: sdk/communication/target/site/jacoco-aggregate/
           failIfCoverageEmpty: false
     EnvVars:
-      AZURE_SUBSCRIPTION_ID: $(acs-subscription-id)
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
       TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}
