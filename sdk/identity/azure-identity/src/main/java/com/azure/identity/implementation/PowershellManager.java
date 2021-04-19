@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -6,13 +9,19 @@ import com.sun.jna.Platform;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class PowershellManager {
 
-    private static final ClientLogger logger = new ClientLogger(PowershellManager.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PowershellManager.class);
     private Process process;
     private PrintWriter commandWriter;
     private boolean closed = false;
@@ -20,7 +29,7 @@ public class PowershellManager {
     private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "poweshell.exe";
     private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
     private static final String LEGACY_LINUX_PS_EXECUTABLE = "powershell";
-    private int waitPause = 5000;
+    private int waitPause = 3000;
     private long maxWait = 10000L;
     private final boolean legacyPowershell;
 
@@ -31,8 +40,8 @@ public class PowershellManager {
 
     public Mono<PowershellManager> initSession() {
 
-        String powerShellExecutablePath = legacyPowershell ?
-            (Platform.isWindows() ? LEGACY_WINDOWS_PS_EXECUTABLE : LEGACY_LINUX_PS_EXECUTABLE)
+        String powerShellExecutablePath = legacyPowershell
+            ? (Platform.isWindows() ? LEGACY_WINDOWS_PS_EXECUTABLE : LEGACY_LINUX_PS_EXECUTABLE)
             : (Platform.isWindows() ? DEFAULT_WINDOWS_PS_EXECUTABLE : DEFAULT_LINUX_PS_EXECUTABLE);
 
         ProcessBuilder pb;
@@ -50,14 +59,15 @@ public class PowershellManager {
             try {
                 this.process = pb.start();
                 this.commandWriter = new PrintWriter(
-                    new OutputStreamWriter(new BufferedOutputStream(process.getOutputStream())), true);
+                    new OutputStreamWriter(new BufferedOutputStream(process.getOutputStream()), StandardCharsets.UTF_8),
+                    true);
                 if (this.process.waitFor(5L, TimeUnit.SECONDS) && !this.process.isAlive()) {
-                    throw new CredentialUnavailableException("Unable to execute PowerShell. Please make sure that"
-                        + " it is installed in your system.");
+                    throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell."
+                        + " Please make sure that it is installed in your system."));
                 }
             } catch (InterruptedException | IOException e) {
-                throw new CredentialUnavailableException("Unable to execute PowerShell. Please make sure"
-                    + " that it is installed in your system", e);
+                throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell. "
+                    + "Please make sure that it is installed in your system", e));
             }
             return this;
         }));
@@ -65,12 +75,8 @@ public class PowershellManager {
 
 
     public Mono<String> executeCommand(String command) {
-        String commandOutput = "";
-        boolean isError = false;
-        boolean timeout = false;
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        this.waitPause = waitPause;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
+            StandardCharsets.UTF_8));
         StringBuilder powerShellOutput = new StringBuilder();
         commandWriter.println(command);
         return canRead(reader)
@@ -90,7 +96,8 @@ public class PowershellManager {
         return Mono.defer(() -> {
             String line;
             try {
-                if (null != (line = reader.readLine())) {
+                line = reader.readLine();
+                if (line != null) {
                     powerShellOutput.append(line).append("\r\n");
                     return canRead(reader).flatMap(b -> {
                         if (!this.closed && b) {
@@ -116,7 +123,7 @@ public class PowershellManager {
                         return false;
                     }
                 } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException("Powershell reader not ready for reading");
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Powershell reader not ready for reading"));
                 }
                 return true;
             }
@@ -130,7 +137,7 @@ public class PowershellManager {
                 try {
                     this.process.waitFor(maxWait, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
-                    logger.logExceptionAsError(new RuntimeException("PowerShell process encountered unexpcted"
+                    LOGGER.logExceptionAsError(new RuntimeException("PowerShell process encountered unexpcted"
                             + " error when closing.", e));
                 } finally {
                     this.commandWriter.close();
@@ -140,7 +147,7 @@ public class PowershellManager {
                             process.getInputStream().close();
                         }
                     } catch (IOException ex) {
-                        logger.logExceptionAsError(new RuntimeException("PowerShell stream encountered unexpcted"
+                        LOGGER.logExceptionAsError(new RuntimeException("PowerShell stream encountered unexpcted"
                                 + " error when closing.", ex));
                     }
                     this.closed = true;

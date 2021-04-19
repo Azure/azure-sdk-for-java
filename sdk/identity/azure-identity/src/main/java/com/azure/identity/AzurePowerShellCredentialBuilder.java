@@ -3,8 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.IdentityClientOptions;
-
 /**
  * Fluent credential builder for instantiating a {@link AzurePowerShellCredential}.
  *
@@ -18,7 +16,7 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      * @param useLegacyPowerShell the flag indicating if legacy Azure Power Shell should be used for authentication.
      * @return An updated instance of the AzurePowerShellCredentialBuilder.
      */
-    public AzurePowerShellCredentialBuilder setUseLegacyPowerShell(boolean useLegacyPowerShell) {
+    public AzurePowerShellCredentialBuilder useLegacyPowerShell(boolean useLegacyPowerShell) {
         this.identityClientOptions.setUseLegacyPowerShell(useLegacyPowerShell);
         return this;
     }

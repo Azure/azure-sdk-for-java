@@ -469,7 +469,7 @@ public class IdentityClient {
 
         PowershellManager powershellManager = new PowershellManager(options.getUseLegacyPowerShell());
         powershellManager.initSession();
-        powershellManager.executeCommand("Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru")
+        return powershellManager.executeCommand("Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru")
             .flatMap(output -> {
                 if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not"
                     + " loaded because no valid module file was found in any module directory")) {
@@ -493,7 +493,7 @@ public class IdentityClient {
                                 DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                                 .atZone(ZoneId.systemDefault())
                                 .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-                             return Mono.just(new AccessToken(accessToken, expiresOn));
+                            return Mono.just(new AccessToken(accessToken, expiresOn));
                         } catch (IOException e) {
                             return Mono.error(logger
                                 .logExceptionAsError(new RuntimeException("Encountered error when deserializing "
