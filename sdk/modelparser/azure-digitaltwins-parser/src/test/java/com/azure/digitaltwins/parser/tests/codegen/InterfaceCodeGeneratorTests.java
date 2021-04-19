@@ -152,13 +152,13 @@ public class InterfaceCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         JavaMethod method1 = javaInterface.method(Access.PUBLIC, "String", "getNothing");
         method1.addSummary("This returns nothing.");
-        method1.addParameter("String", "input", "input description.");
-        method1.addParameter("int", "value", "value description.");
+        method1.parameter("String", "input", "input description.");
+        method1.parameter("int", "value", "value description.");
 
         JavaMethod method2 = javaInterface.method(Access.PRIVATE, "int", "getSomething");
         method1.addSummary("This returns something.");
-        method2.addParameter("String", "input", "input description.");
-        method2.addParameter("int", "value", "value description.");
+        method2.parameter("String", "input", "input description.");
+        method2.parameter("int", "value", "value description.");
 
         javaInterface.generateCode(codeWriter);
         codeWriter.close();

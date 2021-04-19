@@ -64,7 +64,7 @@ public class JavaMethod extends JavaDeclaration {
      * @param body Body content as a scope.
      * @return The {@link JavaMethod} object itself.
      */
-    public JavaMethod setBody(JavaScope body) {
+    public JavaMethod body(JavaScope body) {
         this.body = body;
         return this;
     }
@@ -112,7 +112,7 @@ public class JavaMethod extends JavaDeclaration {
      * @param description Optional text description of parameter.
      * @return The {@link JavaMethod} object itself.
      */
-    public JavaMethod addParameter(String type, String name, String description) {
+    public JavaMethod parameter(String type, String name, String description) {
         if (description != null && !description.endsWith(".")) {
             throw LOGGER.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }

@@ -147,6 +147,7 @@ public class JavaDeclaration {
      * Add a line of summary text describing the declaration.
      *
      * @param text Text for the summary.
+     * @return The {@link JavaDeclaration} object itself.
      */
     public JavaDeclaration addSummary(String text) {
         if (!text.endsWith(".")) {
@@ -161,13 +162,15 @@ public class JavaDeclaration {
      * Add a line of remarks text for the declaration.
      *
      * @param text Text for the remarks.
+     * @return The {@link JavaDeclaration} object itself.
      */
-    public void addRemarks(String text) {
+    public JavaDeclaration addRemarks(String text) {
         if (!text.endsWith(".")) {
             throw LOGGER.logExceptionAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.remarksLines.add(text);
+        return this;
     }
 
     /**

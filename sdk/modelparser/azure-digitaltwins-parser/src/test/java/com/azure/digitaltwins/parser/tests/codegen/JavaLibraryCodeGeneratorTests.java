@@ -40,12 +40,12 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test;");
 
-        library.addClass(Access.PUBLIC, Novelty.NORMAL, classTypeName, Multiplicity.INSTANCE, null, null);
-        library.addInterface(Access.PUBLIC, interfaceTypeName, null, null);
-        library.addEnum(Access.PUBLIC, enumTypeName, true);
+        library.jClass(Access.PUBLIC, Novelty.NORMAL, classTypeName, Multiplicity.INSTANCE, null, null);
+        library.jInterface(Access.PUBLIC, interfaceTypeName, null, null);
+        library.jEnum(Access.PUBLIC, enumTypeName, true);
 
-        library.addImportStatement("com.azure.imports;");
-        library.addImportStatement("java.utils;");
+        library.jImport("com.azure.imports;");
+        library.jImport("java.utils;");
 
         library.generate();
         compareDirectoryContents(TEST_SUB_DIRECTORY + "/" + testSubDirectory, EXPECTED_FILE_DIRECTORY);
@@ -68,12 +68,12 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test;");
 
-        JavaClass javaClass = library.addClass(Access.PUBLIC, Novelty.NORMAL, classTypeName, Multiplicity.INSTANCE, "SomeType", interfaceTypeName);
-        JavaInterface javaInterface = library.addInterface(Access.PUBLIC, interfaceTypeName, null, "AnotherInterface");
-        JavaEnum javaEnum = library.addEnum(Access.PUBLIC, enumTypeName, true);
+        JavaClass javaClass = library.jClass(Access.PUBLIC, Novelty.NORMAL, classTypeName, Multiplicity.INSTANCE, "SomeType", interfaceTypeName);
+        JavaInterface javaInterface = library.jInterface(Access.PUBLIC, interfaceTypeName, null, "AnotherInterface");
+        JavaEnum javaEnum = library.jEnum(Access.PUBLIC, enumTypeName, true);
 
-        library.addImportStatement("com.azure.imports;");
-        library.addImportStatement("java.utils;");
+        library.jImport("com.azure.imports;");
+        library.jImport("java.utils;");
 
         createComplexJavaClass(javaClass);
         createComplexJavaInterface(javaInterface);
@@ -89,29 +89,29 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
         javaClass.addSummary("This class is of type {@link " + javaClass.getName() + "}.");
         javaClass.addRemarks("And it has a remarks section.");
 
-        javaClass.addField(Access.PRIVATE, "boolean", "field1", "false", Multiplicity.INSTANCE, Mutability.MUTABLE, "This is an instance field.");
-        javaClass.addField(Access.PUBLIC, "String", "FIELD_2", "Static value", Multiplicity.STATIC, Mutability.FINAL, "This is a final static field.");
-        javaClass.addField(Access.PRIVATE, "String", "field3", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "This is a string field.");
-        javaClass.addField(Access.PRIVATE, "int", "field4", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "This is an integer field.");
+        javaClass.field(Access.PRIVATE, "boolean", "field1", "false", Multiplicity.INSTANCE, Mutability.MUTABLE, "This is an instance field.");
+        javaClass.field(Access.PUBLIC, "String", "FIELD_2", "Static value", Multiplicity.STATIC, Mutability.FINAL, "This is a final static field.");
+        javaClass.field(Access.PRIVATE, "String", "field3", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "This is a string field.");
+        javaClass.field(Access.PRIVATE, "int", "field4", null, Multiplicity.INSTANCE, Mutability.MUTABLE, "This is an integer field.");
 
-        JavaConstructor javaConstructor = javaClass.addConstructor(Access.PUBLIC, Multiplicity.INSTANCE);
+        JavaConstructor javaConstructor = javaClass.constructor(Access.PUBLIC, Multiplicity.INSTANCE);
         javaConstructor.addSummary("We already know what this does.");
         javaConstructor
-            .addParameter("String", "input1", "Some text to initialize the class with.")
-            .addParameter("int", "input2", "Some number to do things to.");
+            .parameter("String", "input1", "Some text to initialize the class with.")
+            .parameter("int", "input2", "Some number to do things to.");
 
         JavaScope constructorBody = new JavaScope(null);
         constructorBody.line("this.field1 = true;")
             .line("this.field3 = input1;")
             .line("this.field4 = input2;");
 
-        javaConstructor.setBody(constructorBody);
+        javaConstructor.body(constructorBody);
 
-        javaClass.addProperty(Access.PUBLIC, "String", "propertyNumberOne");
-        javaClass.addProperty(Access.PROTECTED, "int", "propertyNumberTwo");
+        javaClass.property(Access.PUBLIC, "String", "propertyNumberOne");
+        javaClass.property(Access.PROTECTED, "int", "propertyNumberTwo");
 
 
-        JavaMethod method1 = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, javaClass.getType(), "getCurrentObject", Multiplicity.INSTANCE);
+        JavaMethod method1 = javaClass.method(Access.PUBLIC, Novelty.NORMAL, javaClass.getType(), "getCurrentObject", Multiplicity.INSTANCE);
         method1
             .addReturnComment("This object.")
             .addSummary("This method returns this object.")
@@ -119,9 +119,9 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
             .addRemarks("And it has some remarks.");
 
         JavaScope method1Body = new JavaScope(null);
-        method1.setBody(method1Body.line("return this;"));
+        method1.body(method1Body.line("return this;"));
 
-        JavaMethod method2 = javaClass.addMethod(Access.PROTECTED, Novelty.NORMAL, "int", "getHashCode", Multiplicity.INSTANCE);
+        JavaMethod method2 = javaClass.method(Access.PROTECTED, Novelty.NORMAL, "int", "getHashCode", Multiplicity.INSTANCE);
         method2
             .addReturnComment("The object hashcode.")
             .addSummary("This method returns this object's hashcode.")
@@ -129,31 +129,31 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
             .addRemarks("And it has some remarks.");
 
         JavaScope method2Body = new JavaScope(null);
-        method2.setBody(method2Body.line("return this.hashCode();"));
+        method2.body(method2Body.line("return this.hashCode();"));
 
-        JavaMethod method3 = javaClass.addMethod(Access.PROTECTED, Novelty.NORMAL, "int", "countChars", Multiplicity.INSTANCE);
+        JavaMethod method3 = javaClass.method(Access.PROTECTED, Novelty.NORMAL, "int", "countChars", Multiplicity.INSTANCE);
         method3.addAttributes("Override");
-        method3.addParameter("String", "input", "The String to count.");
+        method3.parameter("String", "input", "The String to count.");
         method3.setInheritDoc(true);
 
         JavaScope method3Body = new JavaScope(null);
-        JavaTry javaTry = method3Body.addTry();
-        javaTry.addIf("input == null").line("throw new ArgumentNullException();");
+        JavaTry javaTry = method3Body.jTry();
+        javaTry.jIf("input == null").line("throw new ArgumentNullException();");
         javaTry.line("return input.size();");
-        javaTry.addCatch("ArgumentException ex").line("return 0;");
-        method3.setBody(method3Body);
+        javaTry.jCatch("ArgumentException ex").line("return 0;");
+        method3.body(method3Body);
 
 
-        JavaMethod method4 = javaClass.addMethod(Access.PUBLIC, Novelty.NORMAL, "void", "printHashCode", Multiplicity.INSTANCE);
+        JavaMethod method4 = javaClass.method(Access.PUBLIC, Novelty.NORMAL, "void", "printHashCode", Multiplicity.INSTANCE);
         method4.setInheritDoc(true);
         method4.addAttributes("Override");
         JavaScope method4Body = new JavaScope(null);
-        method4.setBody(method4Body.line("System.out.println(this.getCurrentObject().getHashCode());"));
+        method4.body(method4Body.line("System.out.println(this.getCurrentObject().getHashCode());"));
         return javaClass;
     }
 
     private JavaInterface createComplexJavaInterface(JavaInterface javaInterface) {
-        JavaMethod javaMethod = javaInterface.method(Access.PROTECTED, "int", "countChars").addParameter("String", "input", "The String to count.");
+        JavaMethod javaMethod = javaInterface.method(Access.PROTECTED, "int", "countChars").parameter("String", "input", "The String to count.");
         javaMethod.addSummary("Count characters in a string.");
 
         JavaMethod javaMethod2 = javaInterface.method(Access.PUBLIC, "void", "printHashCode");
