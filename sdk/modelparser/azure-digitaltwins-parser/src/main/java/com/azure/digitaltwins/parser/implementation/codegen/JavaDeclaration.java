@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaDeclaration {
-    private final ClientLogger logger = new ClientLogger(JavaDeclaration.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JavaDeclaration.class);
 
     private final Access access;
     private final Novelty novelty;
@@ -115,7 +115,7 @@ public class JavaDeclaration {
                 decoratedName.append("private ");
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Unexpected value: " + access));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: " + access));
         }
 
         if (typeParams != null && !typeParams.isEmpty()) {
@@ -150,7 +150,7 @@ public class JavaDeclaration {
      */
     public JavaDeclaration addSummary(String text) {
         if (!text.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.summaryLines.add(text);
@@ -164,7 +164,7 @@ public class JavaDeclaration {
      */
     public void addRemarks(String text) {
         if (!text.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.remarksLines.add(text);

@@ -16,7 +16,7 @@ import java.util.Locale;
  */
 public class JavaType extends JavaDeclaration implements JavaFile {
 
-    private final ClientLogger logger = new ClientLogger(JavaType.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JavaType.class);
     private final String typeName;
 
     private String extend;
@@ -75,21 +75,21 @@ public class JavaType extends JavaDeclaration implements JavaFile {
         String description) {
 
         if (access != Access.PRIVATE && (multiplicity != Multiplicity.STATIC || mutability != Mutability.FINAL)) {
-            throw logger.logExceptionAsError(new StyleException("Field '" + name + "' must be private unless it's static and final. --SA1401."));
+            throw LOGGER.logExceptionAsError(new StyleException("Field '" + name + "' must be private unless it's static and final. --SA1401."));
         }
 
         if (multiplicity == Multiplicity.STATIC && mutability == Mutability.FINAL) {
             if (!name.toUpperCase(Locale.getDefault()).equals(name)) {
-                throw logger.logExceptionAsError(new StyleException("Static final field name '" + name + "' must be all uppercase letters. --SA13311"));
+                throw LOGGER.logExceptionAsError(new StyleException("Static final field name '" + name + "' must be all uppercase letters. --SA13311"));
             }
         } else {
             if (name.charAt(0) < 'a' || name.charAt(0) > 'z') {
-                throw logger.logExceptionAsError(new StyleException("Field name '" + name + "' must begin with a lowercase letter. --SA1306."));
+                throw LOGGER.logExceptionAsError(new StyleException("Field name '" + name + "' must begin with a lowercase letter. --SA1306."));
             }
         }
 
         if (description != null && !description.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Documentation text of field '" + name + "' must end with a period. -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Documentation text of field '" + name + "' must end with a period. -- SA1629."));
         }
 
         JavaField field = new JavaField(access, type, name, value, multiplicity, mutability);
