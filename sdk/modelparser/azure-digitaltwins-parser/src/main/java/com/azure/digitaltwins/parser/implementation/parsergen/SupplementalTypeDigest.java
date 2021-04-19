@@ -5,7 +5,11 @@ package com.azure.digitaltwins.parser.implementation.parsergen;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Class that abstracts supplemental type information extracted from the meta-model digest provided by the meta-parser.

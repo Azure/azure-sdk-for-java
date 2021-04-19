@@ -63,7 +63,7 @@ public class DtdlStrings {
     public static final String IMPORT_PROPERTIES = "importProperties";
     public static final String MAX_DEPTH = "maxDepth";
     public static final String CONTEXTS = "contexts";
-    public static final String BASE_CLASS= "baseClass";
+    public static final String BASE_CLASS = "baseClass";
     public static final String PARTITION_CLASSES = "partitionClasses";
     public static final String ROOTABLE_CLASSES = "rootableClasses";
     public static final String IDENTIFIER_DEFINITION = "identifierDefinition";

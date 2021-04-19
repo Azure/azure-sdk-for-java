@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.parser.implementation.parsergen;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.List;
 
 /**
