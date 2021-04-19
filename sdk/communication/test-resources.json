@@ -17,12 +17,6 @@
         "defaultValue": ".communication.azure.com",
         "type": "string"
       },
-      "communicationPhoneNumber": {
-        "type": "string",
-        "metadata": {
-          "description": "The phone number static resource."
-        }
-      },
       "subscriptionId": {
         "type": "string",
         "metadata": {
