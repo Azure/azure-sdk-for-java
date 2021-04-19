@@ -27,8 +27,20 @@ public enum WorkerSizeOptions {
     /** Enum value D3. */
     D3("D3"),
 
+    /** Enum value SmallV3. */
+    SMALL_V3("SmallV3"),
+
+    /** Enum value MediumV3. */
+    MEDIUM_V3("MediumV3"),
+
+    /** Enum value LargeV3. */
+    LARGE_V3("LargeV3"),
+
     /** Enum value NestedSmall. */
     NESTED_SMALL("NestedSmall"),
+
+    /** Enum value NestedSmallLinux. */
+    NESTED_SMALL_LINUX("NestedSmallLinux"),
 
     /** Enum value Default. */
     DEFAULT("Default");

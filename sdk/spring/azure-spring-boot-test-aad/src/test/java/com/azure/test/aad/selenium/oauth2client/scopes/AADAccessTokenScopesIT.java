@@ -5,9 +5,10 @@ package com.azure.test.aad.selenium.oauth2client.scopes;
 
 import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -23,6 +24,7 @@ import java.util.Set;
 import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAccessTokenScopesIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
@@ -41,24 +43,24 @@ public class AADAccessTokenScopesIT {
         aadSeleniumITHelper.logIn();
 
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
-        Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
-        Assert.assertTrue(httpResponse.contains("User.Read"));
+        Assertions.assertTrue(httpResponse.contains("profile"));
+        Assertions.assertTrue(httpResponse.contains("Directory.Read.All"));
+        Assertions.assertTrue(httpResponse.contains("User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
-        Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("Directory.Read.All"));
-        Assert.assertTrue(httpResponse.contains("User.Read"));
+        Assertions.assertTrue(httpResponse.contains("profile"));
+        Assertions.assertTrue(httpResponse.contains("Directory.Read.All"));
+        Assertions.assertTrue(httpResponse.contains("User.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/arm");
-        Assert.assertFalse(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("user_impersonation"));
+        Assertions.assertFalse(httpResponse.contains("profile"));
+        Assertions.assertTrue(httpResponse.contains("user_impersonation"));
 
         httpResponse = aadSeleniumITHelper.httpGet("notExist");
-        Assert.assertNotEquals(httpResponse, "notExist");
+        Assertions.assertNotEquals(httpResponse, "notExist");
     }
 
-    @After
+    @AfterAll
     public void destroy() {
         aadSeleniumITHelper.destroy();
     }

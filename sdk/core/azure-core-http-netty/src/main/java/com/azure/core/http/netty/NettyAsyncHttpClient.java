@@ -27,6 +27,7 @@ import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.util.retry.Retry;
 
+import javax.net.ssl.SSLException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -82,6 +83,17 @@ class NettyAsyncHttpClient implements HttpClient {
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse))
             .single()
+            .onErrorMap(throwable -> {
+                // The exception was an SSLException that was caused by a failure to connect to a proxy.
+                // Extract the inner ProxyConnectException and propagate that instead.
+                if (throwable instanceof SSLException) {
+                    if (throwable.getCause() instanceof ProxyConnectException) {
+                        return throwable.getCause();
+                    }
+                }
+
+                return throwable;
+            })
             .retryWhen(Retry.max(1).filter(throwable -> throwable instanceof ProxyConnectException)
                 .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
     }

@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.routing.LocationHelper
+import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
@@ -27,10 +28,6 @@ import scala.collection.JavaConverters._
 
 // scalastyle:off multiple.string.literals
 
-// each config category will be a case class:
-// TODO moderakh more configs
-//case class ClientConfig()
-//case class CosmosBatchWriteConfig()
 
 private object CosmosConfig {
   def getEffectiveConfig
@@ -260,6 +257,30 @@ private object CosmosViewRepositoryConfig {
 }
 
 private[cosmos] case class CosmosContainerConfig(database: String, container: String)
+
+private case class DiagnosticsConfig(mode: Option[String])
+
+private object DiagnosticsConfig {
+
+  private val diagnosticsMode = CosmosConfigEntry[String](key = "spark.cosmos.diagnostics",
+    mandatory = false,
+    parseFromStringFunction = diagnostics => {
+      if (diagnostics == "simple") {
+        classOf[SimpleDiagnostics].getName
+      } else {
+        // this is experimental and to be used by cosmos db dev engineers.
+        Class.forName(diagnostics).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
+        diagnostics
+      }
+    },
+    helpMessage = "Cosmos DB Spark Diagnostics, supported value, 'simple'")
+
+  def parseDiagnosticsConfig(cfg: Map[String, String]): DiagnosticsConfig = {
+    val diagnosticsModeOpt = CosmosConfigEntry.parse(cfg, diagnosticsMode)
+    DiagnosticsConfig(diagnosticsModeOpt)
+  }
+}
+
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
@@ -716,7 +737,6 @@ private object CosmosConfigEntry {
   }
 
   def parse[T](configuration: Map[String, String], configEntry: CosmosConfigEntry[T]): Option[T] = {
-    // TODO moderakh: where should we handle case sensitivity?
     // we are doing this here per config parsing for now
     val opt = configuration
       .map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }
