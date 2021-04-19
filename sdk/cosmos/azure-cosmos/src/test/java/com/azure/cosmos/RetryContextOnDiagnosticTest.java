@@ -602,10 +602,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             } catch (CosmosException ex) {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-                // One session retry max is 100 (50ms up to 5 sec)
+                // On session not found,  max retry via SessionTokenMismatchRetryPolicy is 105 (0, 5,10,20, 40 , then 50ms
+                // up to 5 sec).
+                // On single region we will have 3 retry of session policy (One retry from first request, one from
+                // client retry policy and last from rename policy.
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(100);
-                // On single region we will have 3 retry of session policy (One retry of first request, one from client retry policy and last from rename policy.
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(300);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(315);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[0]).isEqualTo(404);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[1]).isEqualTo(1002);
             }
