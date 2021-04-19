@@ -11,27 +11,22 @@ import com.azure.containers.containerregistry.models.RegistryArtifactProperties;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.containers.containerregistry.models.TagProperties;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.DIGEST_UNKNOWN;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.LIBRARY_BUSYBOX_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,66 +34,49 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestBase {
+    private String recordFileName;
+    private static final String PARENT_FILENAME = "ContainerRepositoryClientAsyncIntegrationTests";
+    private ContainerRepositoryClient client;
 
-    @BeforeAll
-    static void beforeAll() {
-        TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
-        TestUtils.importImage(ImplUtils.getTestMode(), ALPINE_REPOSITORY_NAME, Arrays.asList("latest"));
+    private ContainerRepositoryClient getContainerRepositoryClient() {
+        return getContainerRepositoryBuilder(HELLO_WORLD_REPOSITORY_NAME, new LocalHttpClient(recordFileName)).buildClient();
     }
 
-    private static final String UNKNOWN_REPOSITORY_NAME = "unknownrepo";
-
-    private ContainerRepositoryClient getContainerRepositoryClient(HttpClient httpClient) {
-        return getContainerRepositoryBuilder(HELLO_WORLD_REPOSITORY_NAME, httpClient).buildClient();
+    private ContainerRepositoryClient getContainerRepositoryClientUnknownRepo() {
+        return getContainerRepositoryBuilder("Unknown", new LocalHttpClient(recordFileName)).buildClient();
     }
 
-    private ContainerRepositoryClient getContainerRepositoryWritableClient(HttpClient httpClient) {
-        return getContainerRepositoryBuilder(LIBRARY_BUSYBOX_NAME, httpClient).buildClient();
+    @Test
+    public void getRepositoryProperties() {
+        recordFileName = PARENT_FILENAME + "." + "getRepositoryPropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
+        RepositoryProperties props = client.getProperties();
+        validateProperties(props);
     }
 
-    private ContainerRepositoryClient getContainerRepositoryClientUnknownRepo(HttpClient httpClient) {
-        return getContainerRepositoryBuilder(UNKNOWN_REPOSITORY_NAME, httpClient).buildClient();
-    }
-
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getRepositoryProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        RepositoryProperties properties = client.getProperties();
-        validateProperties(properties);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getRepositoryPropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void getRepositoryPropertiesWithResponse() {
+        recordFileName = PARENT_FILENAME + "." + "getRepositoryPropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
         Response<RepositoryProperties> response = client.getPropertiesWithResponse(Context.NONE);
-        validateResponse(response);
+        validateProperties(response);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getRepositoryPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClientUnknownRepo(httpClient);
+    @Test
+    public void getUnknownRepositoryPropertiesWithResponse() {
+        recordFileName = "ContainerRepositoryClientAsyncIntegrationTests.getUnknownRepositoryPropertiesWithResponse[1].json";        client = getContainerRepositoryClientUnknownRepo();
+        client = getContainerRepositoryClientUnknownRepo();
+
         assertThrows(ResourceNotFoundException.class, () -> client.getProperties());
         assertThrows(ResourceNotFoundException.class, () -> client.getPropertiesWithResponse(Context.NONE));
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setRepositoryPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClientUnknownRepo(httpClient);
-
-        assertThrows(ResourceNotFoundException.class, () ->  client.setProperties(writeableProperties));
-        assertThrows(ResourceNotFoundException.class, () ->  client.setPropertiesWithResponse(writeableProperties, Context.NONE));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getMultiArchitectureImageProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void getMultiArchitectureImageProperties() {
+        recordFileName = PARENT_FILENAME + "." + "getMultiArchitectureImagePropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
         // 1. Getting manifest properties from a tag works.
         RegistryArtifactProperties props = client.getRegistryArtifactProperties(LATEST_TAG_NAME);
@@ -107,90 +85,58 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         String digest = props.getDigest();
         props = client.getRegistryArtifactProperties(digest);
         validateArtifactProperties(props, true, false);
-
-        //2. Try to get the child manifest.
-        List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
-        String childDigest = getChildArtifactDigest(repositories);
-        props = client.getRegistryArtifactProperties(childDigest);
-        validateArtifactProperties(props, false, true);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getMultiArchitectureImagePropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void getMultiArchitectureImagePropertiesWithResponse() {
+        recordFileName = "ContainerRepositoryClientAsyncIntegrationTests.getMultiArchitectureImagePropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
         // 1. Getting manifest properties from a tag works.
-        Response<RegistryArtifactProperties> response = client.getRegistryArtifactPropertiesWithResponse(LATEST_TAG_NAME, Context.NONE);
-        validateArtifactProperties(response, true, false);
+        Response<RegistryArtifactProperties> props = client.getRegistryArtifactPropertiesWithResponse(LATEST_TAG_NAME, Context.NONE);
+        validateArtifactProperties(props, true, false);
 
-        String digest = response.getValue().getDigest();
-        response = client.getRegistryArtifactPropertiesWithResponse(digest, Context.NONE);
-        validateArtifactProperties(response, true, false);
-
-        //2. Try to get the child manifest.
-        List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
-        String childDigest = getChildArtifactDigest(repositories);
-        response = client.getRegistryArtifactPropertiesWithResponse(childDigest, Context.NONE);
-        validateArtifactProperties(response, false, true);
+        String digest = props.getValue().getDigest();
+        props = client.getRegistryArtifactPropertiesWithResponse(digest, Context.NONE);
+        validateArtifactProperties(props, true, false);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getRegistryArtifactPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void getRegistryArtifactPropertiesThrows() {
+        recordFileName = PARENT_FILENAME + "." + "getMultiArchitectureImagePropertiesWithResponseThrows[1].json";
+        client = getContainerRepositoryClient();
+
         assertThrows(NullPointerException.class, () -> client.getRegistryArtifactProperties(null));
         assertThrows(NullPointerException.class, () -> client.getRegistryArtifactPropertiesWithResponse(null, Context.NONE));
+
+        assertThrows(ResourceNotFoundException.class, () -> client.getRegistryArtifactProperties(DIGEST_UNKNOWN));
+        assertThrows(ResourceNotFoundException.class, () -> client.getRegistryArtifactPropertiesWithResponse(DIGEST_UNKNOWN, Context.NONE));
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void deleteRegistryArtifactThrows(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifact(null));
-
-        String digest = "some:digest";
-        assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifactWithResponse(null, Context.NONE));
-
-        assertThrows(HttpResponseException.class, () -> client.deleteRegistryArtifact("unknownDigest"));
-        assertThrows(HttpResponseException.class, () -> client.deleteRegistryArtifactWithResponse("someValue", Context.NONE));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setManifestPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        assertThrows(NullPointerException.class, () -> client.setManifestProperties(null, writeableProperties));
-        assertThrows(NullPointerException.class, () -> client.setManifestProperties("unknownTag", null));
-        assertThrows(ResourceNotFoundException.class, () -> client.setManifestProperties("unknownTag", writeableProperties));
-    }
-
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifacts(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        RepositoryProperties registryProps = client.getProperties();
+    @Test
+    public void listArtifacts() {
+        recordFileName = PARENT_FILENAME + "." + "listArtifacts[1].json";
+        client = getContainerRepositoryClient();
 
         List<RegistryArtifactProperties> artifacts = client.listRegistryArtifacts().stream().collect(Collectors.toList());
         validateListArtifacts(artifacts);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithPageSize(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void listArtifactsWithPageSize() {
+        recordFileName = PARENT_FILENAME + "." + "listArtifactsWithPageSize[1].json";
+        client = getContainerRepositoryClient();
 
         ArrayList<RegistryArtifactProperties> artifacts = new ArrayList<>();
         client.listRegistryArtifacts().iterableByPage(PAGESIZE_2).forEach(res -> res.getValue().forEach(repo -> artifacts.add(repo)));
         validateListArtifacts(artifacts);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithPageSizeAndOrderBy(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void listArtifactsWithPageSizeAndOrderBy() {
+        recordFileName = PARENT_FILENAME + "." + "listArtifactsWithPageSizeAndOrderBy[1].json";
+        client = getContainerRepositoryClient();
+
         ListRegistryArtifactOptions options = new ListRegistryArtifactOptions().setRegistryArtifactOrderBy(RegistryArtifactOrderBy.LAST_UPDATED_ON_ASCENDING);
 
         ArrayList<RegistryArtifactProperties> artifacts = new ArrayList<>();
@@ -206,10 +152,11 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         assertTrue(isSorted(lastUpdatedOn));
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithPageSizeNoOrderBy(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void listArtifactsWithPageSizeNoOrderBy() {
+        recordFileName = PARENT_FILENAME + "." + "listArtifactsWithPageSizeNoOrderBy[1].json";
+        client = getContainerRepositoryClient();
+
         ListRegistryArtifactOptions options = new ListRegistryArtifactOptions();
 
         ArrayList<RegistryArtifactProperties> artifacts = new ArrayList<>();
@@ -221,19 +168,19 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         validateListArtifacts(artifacts);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTags(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void listTags() {
+        recordFileName = PARENT_FILENAME + "." + "listTags[1].json";
+        client = getContainerRepositoryClient();
 
         List<TagProperties> tags = client.listTags().stream().collect(Collectors.toList());
         validateListTags(tags);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithPageSize(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void listTagsWithPageSize() {
+        recordFileName = PARENT_FILENAME + "." + "listTagsWithPageSize[1].json";
+        client = getContainerRepositoryClient();
 
         ArrayList<TagProperties> tags = new ArrayList<>();
         client.listTags().iterableByPage(PAGESIZE_2).forEach(res -> res.getValue().forEach(repo -> tags.add(repo)));
@@ -241,12 +188,12 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
     }
 
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithPageSizeAndOrderBy(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        ListTagsOptions options = new ListTagsOptions().setTagOrderBy(TagOrderBy.LAST_UPDATED_ON_ASCENDING);
+    @Test
+    public void listTagsWithPageSizeAndOrderBy() {
+        recordFileName = PARENT_FILENAME + "." + "listTagsWithPageSizeAndOrderBy[1].json";
+        client = getContainerRepositoryClient();
 
+        ListTagsOptions options = new ListTagsOptions().setTagOrderBy(TagOrderBy.LAST_UPDATED_ON_ASCENDING);
         ArrayList<TagProperties> tags = new ArrayList<>();
         client.listTags(options).iterableByPage(PAGESIZE_2).forEach(res -> {
             assertTrue(res.getValue().size() <= 2);
@@ -260,10 +207,11 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         assertTrue(isSorted(lastUpdatedOn));
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithPageSizeNoOrderBy(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void listTagsWithPageSizeNoOrderBy() {
+        recordFileName = PARENT_FILENAME + "." + "listTagsWithPageSizeNoOrderBy[1].json";
+        client = getContainerRepositoryClient();
+
         ListTagsOptions options = new ListTagsOptions();
 
         ArrayList<TagProperties> tags = new ArrayList<>();
@@ -275,28 +223,30 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         validateListTags(tags);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getTagProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void getTagProperties() {
+        recordFileName = PARENT_FILENAME + "." + "getTagPropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
         TagProperties tagProps = client.getTagProperties(LATEST_TAG_NAME);
         validateTagProperties(tagProps, LATEST_TAG_NAME);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getTagPropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    @Test
+    public void getTagPropertiesWithResponse() {
+        recordFileName = PARENT_FILENAME + "." + "getTagPropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
-        Response<TagProperties> response = client.getTagPropertiesWithResponse(LATEST_TAG_NAME, Context.NONE);
-        validateTagProperties(response, LATEST_TAG_NAME);
+        Response<TagProperties> tagProps = client.getTagPropertiesWithResponse(LATEST_TAG_NAME, Context.NONE);
+        validateTagProperties(tagProps, LATEST_TAG_NAME);
     }
 
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getTagPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+    public void getTagPropertiesThrows() {
+        recordFileName = PARENT_FILENAME + "." + "getTagPropertiesWithResponseThrows[1].json";
+        client = getContainerRepositoryClient();
 
         assertThrows(NullPointerException.class, () -> client.getTagProperties(null));
 
@@ -304,19 +254,19 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
         assertThrows(ResourceNotFoundException.class, () -> client.getTagPropertiesWithResponse("unknown", Context.NONE));
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setTagPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-
-        assertThrows(NullPointerException.class, () -> client.setTagProperties(null, writeableProperties));
-
-        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(null, writeableProperties, Context.NONE));
-
-        assertThrows(NullPointerException.class, () -> client.setTagProperties(LATEST_TAG_NAME,  null));
-        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(LATEST_TAG_NAME,  null, Context.NONE));
-
-        assertThrows(ResourceNotFoundException.class, () -> client.setTagProperties("unknown", writeableProperties));
-        assertThrows(ResourceNotFoundException.class, () -> client.setTagPropertiesWithResponse("unknown", writeableProperties, Context.NONE));
-    }
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("getHttpClients")
+//    public void setTagPropertiesThrows() {
+//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+//
+//        assertThrows(NullPointerException.class, () -> client.setTagProperties(null, writeableProperties));
+//
+//        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(null, writeableProperties, Context.NONE));
+//
+//        assertThrows(NullPointerException.class, () -> client.setTagProperties(LATEST_TAG_NAME,  null));
+//        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(LATEST_TAG_NAME,  null, Context.NONE));
+//
+//        assertThrows(ResourceNotFoundException.class, () -> client.setTagProperties("unknown", writeableProperties));
+//        assertThrows(ResourceNotFoundException.class, () -> client.setTagPropertiesWithResponse("unknown", writeableProperties, Context.NONE));
+//    }
 }
