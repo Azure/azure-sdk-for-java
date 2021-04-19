@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.4.0-beta.1 (Unreleased)
-
+### New Features
+- Support client credential flow.
 
 ## 3.3.0 (2021-03-22)
 ### New Features
