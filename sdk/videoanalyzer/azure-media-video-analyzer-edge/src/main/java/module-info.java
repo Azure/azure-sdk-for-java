@@ -7,7 +7,5 @@
 module com.azure.media.analytics {
     requires transitive com.azure.core;
 
-    exports com.azure.media.video.analyzer.edge;
-
     opens com.azure.media.video.analyzer.edge.models to com.fasterxml.jackson.databind, com.azure.core;
 }

@@ -6,10 +6,10 @@
 
 ```yaml
 package-name: "@azure/media-video-analyzer-edge"
-title: GeneratedClient
+title: Microsoft Azure SDK for Media Video Analyzer Edge
 description: This package contains Microsoft Azure SDK for Media Video Analyzer Edge.
 generate-metadata: false
-license-header: MICROSOFT_MIT_NO_VERSION
+license-header: MICROSOFT_MIT_SMALL
 output-folder: ../
 source-code-folder-path: ./src/generated
 java: true
@@ -22,11 +22,12 @@ sync-methods: none
 add-context-parameter: true
 models-subpackage: models
 custom-types-subpacakge: models
+context-client-method-parameter: true
+use: '@autorest/java@4.0.24'
+model-override-setter-from-superclass: true
+required-fields-as-ctor-args: true
 customization-class: MethodRequestCustomizations
 customization-jar-path: target/azure-media-video-analyzer-customizations-1.0.0-beta.1.jar
-context-client-method-parameter: true
-use: '@autorest/java@4.0.22'
-model-override-setter-from-superclass: true
 ```
 
 ### discriminator vs default enum

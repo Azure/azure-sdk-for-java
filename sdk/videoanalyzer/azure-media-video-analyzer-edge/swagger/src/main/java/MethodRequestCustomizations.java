@@ -24,24 +24,26 @@ public class MethodRequestCustomizations extends Customization {
     private void customizePipelineSetRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
             "public String getPayloadAsJson() {\n" +
-                "    PipelineTopologySetRequestBody setRequestBody = new PipelineTopologySetRequestBody();\n" +
-                "    setRequestBody.setName(this.pipelineTopology.getName());\n" +
+                "    PipelineTopologySetRequestBody setRequestBody = new PipelineTopologySetRequestBody(this.pipelineTopology.getName());\n" +
                 "    setRequestBody.setSystemData(this.pipelineTopology.getSystemData());\n" +
                 "    setRequestBody.setProperties(this.pipelineTopology.getProperties());\n" +
                 "    return setRequestBody.getPayloadAsJson();\n" +
                 "}"
         );
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
     }
     private void customizeLivePipelineSetRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
             "public String getPayloadAsJson() {\n" +
-                "    LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody();\n" +
-                "    setRequestBody.setName(this.livePipeline.getName());\n" +
+                "    LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody(this.livePipeline.getName());\n" +
                 "    setRequestBody.setSystemData(this.livePipeline.getSystemData());\n" +
                 "    setRequestBody.setProperties(this.livePipeline.getProperties());\n" +
                 "    return setRequestBody.getPayloadAsJson();\n" +
                 "}"
         );
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
     }
     private void customizeMethodRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
@@ -49,11 +51,15 @@ public class MethodRequestCustomizations extends Customization {
                 "    ObjectSerializer serializer = JsonSerializerProviders.createInstance();\n" +
                 "    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();\n" +
                 "    serializer.serialize(outputStream, this);\n" +
-                "    String payload = outputStream.toString(StandardCharsets.UTF_8);\n" +
+                "    String payload = outputStream.toString();\n" +
                 "    return payload;\n" +
                 "}"
         );
         classCustomization.getMethod("getPayloadAsJson").addAnnotation("@JsonIgnore");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
+
+
     }
 
 }
