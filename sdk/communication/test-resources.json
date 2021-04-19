@@ -17,12 +17,6 @@
         "defaultValue": ".communication.azure.com",
         "type": "string"
       },
-      "subscriptionId": {
-        "type": "string",
-        "metadata": {
-          "description": "The client subscription to grant access to test resources."
-        }
-      },
       "testApplicationOid": {
         "type": "string",
         "metadata": {
