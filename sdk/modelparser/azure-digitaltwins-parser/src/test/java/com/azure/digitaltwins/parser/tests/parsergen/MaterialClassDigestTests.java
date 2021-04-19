@@ -53,6 +53,8 @@ public class MaterialClassDigestTests {
 
         Assertions.assertNotNull(classDigest.getProperties());
         Assertions.assertEquals(classDigest.getProperties().size(), 4);
+
+        Assertions.assertNull(classDigest.getInstance());
     }
 
 

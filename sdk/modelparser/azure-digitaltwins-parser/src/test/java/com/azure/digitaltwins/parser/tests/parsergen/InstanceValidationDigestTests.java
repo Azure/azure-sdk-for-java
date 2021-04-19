@@ -32,6 +32,9 @@ public class InstanceValidationDigestTests {
         Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getDataType());
         Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getJsonType());
         Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getHasValue());
+        Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getInstanceOf());
+        Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getNamePattern());
+        Assertions.assertNull(instanceValidationDigest.getChildConditions().get(2).getNameHasValue());
     }
 
     private static JsonNode constructJsonNode() throws JsonProcessingException {

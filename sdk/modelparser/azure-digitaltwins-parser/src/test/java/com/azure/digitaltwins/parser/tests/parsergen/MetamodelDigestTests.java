@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class FullDigestionTests extends GeneratedCodeCompareBase {
+public class MetamodelDigestTests extends GeneratedCodeCompareBase {
     private static final String TEST_SUB_DIRECTORY = "FullDigestionResources";
 
     @Test
@@ -19,6 +19,8 @@ public class FullDigestionTests extends GeneratedCodeCompareBase {
         String fullDigest = FileHelpers.getFileContentsByFileName(TEST_SUB_DIRECTORY, "digest.json");
 
         MetamodelDigest digest = new MetamodelDigest(fullDigest);
+        Assertions.assertNotNull(digest.getContexts());
+        Assertions.assertNotNull(digest.getDtdlVersions());
         Assertions.assertNotNull(digest.getBaseClass());
         Assertions.assertNotNull(digest.getPartitionClasses());
         Assertions.assertNotNull(digest.getRootableClasses());
@@ -31,5 +33,6 @@ public class FullDigestionTests extends GeneratedCodeCompareBase {
         Assertions.assertNotNull(digest.getDescendantControls());
         Assertions.assertNotNull(digest.getSupplementalTypes());
         Assertions.assertNotNull(digest.getElementsJsonText());
+        Assertions.assertNotNull(digest.getDtdlVersionsAllowingLocalTerms());
     }
 }
