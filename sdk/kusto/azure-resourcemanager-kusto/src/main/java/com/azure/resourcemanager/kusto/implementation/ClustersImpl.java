@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.ClustersClient;
 import com.azure.resourcemanager.kusto.fluent.models.AzureResourceSkuInner;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
@@ -35,9 +34,9 @@ public final class ClustersImpl implements Clusters {
 
     private final ClustersClient innerClient;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public ClustersImpl(ClustersClient innerClient, KustoManager serviceManager) {
+    public ClustersImpl(ClustersClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -94,14 +93,14 @@ public final class ClustersImpl implements Clusters {
         String resourceGroupName, String clusterName) {
         PagedIterable<FollowerDatabaseDefinitionInner> inner =
             this.serviceClient().listFollowerDatabases(resourceGroupName, clusterName);
-        return inner.mapPage(inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(
         String resourceGroupName, String clusterName, Context context) {
         PagedIterable<FollowerDatabaseDefinitionInner> inner =
             this.serviceClient().listFollowerDatabases(resourceGroupName, clusterName, context);
-        return inner.mapPage(inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
     }
 
     public void detachFollowerDatabases(
@@ -140,32 +139,32 @@ public final class ClustersImpl implements Clusters {
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> list() {
         PagedIterable<ClusterInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Cluster> list(Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ClusterImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuDescription> listSkus() {
         PagedIterable<SkuDescriptionInner> inner = this.serviceClient().listSkus();
-        return inner.mapPage(inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuDescription> listSkus(Context context) {
         PagedIterable<SkuDescriptionInner> inner = this.serviceClient().listSkus(context);
-        return inner.mapPage(inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
     }
 
     public CheckNameResult checkNameAvailability(String location, ClusterCheckNameRequest clusterName) {
@@ -195,27 +194,27 @@ public final class ClustersImpl implements Clusters {
     public PagedIterable<AzureResourceSku> listSkusByResource(String resourceGroupName, String clusterName) {
         PagedIterable<AzureResourceSkuInner> inner =
             this.serviceClient().listSkusByResource(resourceGroupName, clusterName);
-        return inner.mapPage(inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureResourceSku> listSkusByResource(
         String resourceGroupName, String clusterName, Context context) {
         PagedIterable<AzureResourceSkuInner> inner =
             this.serviceClient().listSkusByResource(resourceGroupName, clusterName, context);
-        return inner.mapPage(inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions(String resourceGroupName, String clusterName) {
         PagedIterable<LanguageExtensionInner> inner =
             this.serviceClient().listLanguageExtensions(resourceGroupName, clusterName);
-        return inner.mapPage(inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions(
         String resourceGroupName, String clusterName, Context context) {
         PagedIterable<LanguageExtensionInner> inner =
             this.serviceClient().listLanguageExtensions(resourceGroupName, clusterName, context);
-        return inner.mapPage(inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
     }
 
     public void addLanguageExtensions(
@@ -323,7 +322,7 @@ public final class ClustersImpl implements Clusters {
         return this.innerClient;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 

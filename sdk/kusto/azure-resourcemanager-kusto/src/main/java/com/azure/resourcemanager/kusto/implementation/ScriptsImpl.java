@@ -9,37 +9,77 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.kusto.fluent.DatabasePrincipalAssignmentsClient;
+import com.azure.resourcemanager.kusto.fluent.ScriptsClient;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
-import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignmentInner;
+import com.azure.resourcemanager.kusto.fluent.models.ScriptInner;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
-import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignment;
-import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignmentCheckNameRequest;
-import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignments;
+import com.azure.resourcemanager.kusto.models.Script;
+import com.azure.resourcemanager.kusto.models.ScriptCheckNameRequest;
+import com.azure.resourcemanager.kusto.models.Scripts;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipalAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentsImpl.class);
+public final class ScriptsImpl implements Scripts {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptsImpl.class);
 
-    private final DatabasePrincipalAssignmentsClient innerClient;
+    private final ScriptsClient innerClient;
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public DatabasePrincipalAssignmentsImpl(
-        DatabasePrincipalAssignmentsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public ScriptsImpl(ScriptsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
+    public PagedIterable<Script> listByDatabase(String resourceGroupName, String clusterName, String databaseName) {
+        PagedIterable<ScriptInner> inner =
+            this.serviceClient().listByDatabase(resourceGroupName, clusterName, databaseName);
+        return Utils.mapPage(inner, inner1 -> new ScriptImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Script> listByDatabase(
+        String resourceGroupName, String clusterName, String databaseName, Context context) {
+        PagedIterable<ScriptInner> inner =
+            this.serviceClient().listByDatabase(resourceGroupName, clusterName, databaseName, context);
+        return Utils.mapPage(inner, inner1 -> new ScriptImpl(inner1, this.manager()));
+    }
+
+    public Script get(String resourceGroupName, String clusterName, String databaseName, String scriptName) {
+        ScriptInner inner = this.serviceClient().get(resourceGroupName, clusterName, databaseName, scriptName);
+        if (inner != null) {
+            return new ScriptImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Script> getWithResponse(
+        String resourceGroupName, String clusterName, String databaseName, String scriptName, Context context) {
+        Response<ScriptInner> inner =
+            this.serviceClient().getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ScriptImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public void delete(String resourceGroupName, String clusterName, String databaseName, String scriptName) {
+        this.serviceClient().delete(resourceGroupName, clusterName, databaseName, scriptName);
+    }
+
+    public void delete(
+        String resourceGroupName, String clusterName, String databaseName, String scriptName, Context context) {
+        this.serviceClient().delete(resourceGroupName, clusterName, databaseName, scriptName, context);
+    }
+
     public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        String resourceGroupName, String clusterName, String databaseName, ScriptCheckNameRequest scriptName) {
         CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(resourceGroupName, clusterName, databaseName, principalAssignmentName);
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, databaseName, scriptName);
         if (inner != null) {
             return new CheckNameResultImpl(inner, this.manager());
         } else {
@@ -51,13 +91,12 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         String resourceGroupName,
         String clusterName,
         String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
+        ScriptCheckNameRequest scriptName,
         Context context) {
         Response<CheckNameResultInner> inner =
             this
                 .serviceClient()
-                .checkNameAvailabilityWithResponse(
-                    resourceGroupName, clusterName, databaseName, principalAssignmentName, context);
+                .checkNameAvailabilityWithResponse(resourceGroupName, clusterName, databaseName, scriptName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -69,67 +108,7 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         }
     }
 
-    public DatabasePrincipalAssignment get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        DatabasePrincipalAssignmentInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, databaseName, principalAssignmentName);
-        if (inner != null) {
-            return new DatabasePrincipalAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<DatabasePrincipalAssignment> getWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
-        Response<DatabasePrincipalAssignmentInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, clusterName, databaseName, principalAssignmentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DatabasePrincipalAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, databaseName, principalAssignmentName);
-    }
-
-    public void delete(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
-        this.serviceClient().delete(resourceGroupName, clusterName, databaseName, principalAssignmentName, context);
-    }
-
-    public PagedIterable<DatabasePrincipalAssignment> list(
-        String resourceGroupName, String clusterName, String databaseName) {
-        PagedIterable<DatabasePrincipalAssignmentInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterName, databaseName);
-        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<DatabasePrincipalAssignment> list(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
-        PagedIterable<DatabasePrincipalAssignmentInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterName, databaseName, context);
-        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
-    }
-
-    public DatabasePrincipalAssignment getById(String id) {
+    public Script getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -152,22 +131,17 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
-        if (principalAssignmentName == null) {
+        String scriptName = Utils.getValueFromIdByName(id, "scripts");
+        if (scriptName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, clusterName, databaseName, principalAssignmentName, Context.NONE)
-            .getValue();
+        return this.getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, Context.NONE).getValue();
     }
 
-    public Response<DatabasePrincipalAssignment> getByIdWithResponse(String id, Context context) {
+    public Response<Script> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -190,17 +164,14 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
-        if (principalAssignmentName == null) {
+        String scriptName = Utils.getValueFromIdByName(id, "scripts");
+        if (scriptName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, clusterName, databaseName, principalAssignmentName, context);
+        return this.getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, context);
     }
 
     public void deleteById(String id) {
@@ -226,17 +197,14 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
-        if (principalAssignmentName == null) {
+        String scriptName = Utils.getValueFromIdByName(id, "scripts");
+        if (scriptName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));
         }
-        this.delete(resourceGroupName, clusterName, databaseName, principalAssignmentName, Context.NONE);
+        this.delete(resourceGroupName, clusterName, databaseName, scriptName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
@@ -262,20 +230,17 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
-        if (principalAssignmentName == null) {
+        String scriptName = Utils.getValueFromIdByName(id, "scripts");
+        if (scriptName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));
         }
-        this.delete(resourceGroupName, clusterName, databaseName, principalAssignmentName, context);
+        this.delete(resourceGroupName, clusterName, databaseName, scriptName, context);
     }
 
-    private DatabasePrincipalAssignmentsClient serviceClient() {
+    private ScriptsClient serviceClient() {
         return this.innerClient;
     }
 
@@ -283,7 +248,7 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         return this.serviceManager;
     }
 
-    public DatabasePrincipalAssignmentImpl define(String name) {
-        return new DatabasePrincipalAssignmentImpl(name, this.manager());
+    public ScriptImpl define(String name) {
+        return new ScriptImpl(name, this.manager());
     }
 }
