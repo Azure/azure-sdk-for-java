@@ -72,8 +72,19 @@ gateway_connection_poolsize=5
 
 protocol=Tcp
 
-col_name="testCol"
+if [ -z "$ctl_database_name" ]
+then
 db_name="testdb"
+else
+db_name=$ctl_database_name
+fi
+
+if [ -z "$ctl_container_name" ]
+then
+col_name="testCol"
+else
+col_name=$ctl_container_name
+fi
 
 log_filename="/tmp/javactl.log"
 
