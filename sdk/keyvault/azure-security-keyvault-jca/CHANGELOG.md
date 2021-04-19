@@ -1,7 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.6 (Unreleased)
-
+### Breaking Changes
+ - Remove configurable property of azure.keyvault.aad-authentication-url.
 
 ## 1.0.0-beta.5 (2021-03-22)
 
