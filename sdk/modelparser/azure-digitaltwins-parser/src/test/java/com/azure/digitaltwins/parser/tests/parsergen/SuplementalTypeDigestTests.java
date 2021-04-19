@@ -3,7 +3,6 @@
 
 package com.azure.digitaltwins.parser.tests.parsergen;
 
-import com.azure.digitaltwins.parser.implementation.parsergen.MaterialPropertyDigest;
 import com.azure.digitaltwins.parser.implementation.parsergen.SupplementalTypeDigest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

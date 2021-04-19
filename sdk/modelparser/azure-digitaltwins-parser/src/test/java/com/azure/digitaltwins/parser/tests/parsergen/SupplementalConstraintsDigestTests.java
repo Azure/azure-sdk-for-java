@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.parser.tests.parsergen;
 
 import com.azure.digitaltwins.parser.implementation.parsergen.SupplementalConstraintDigest;
-import com.azure.digitaltwins.parser.implementation.parsergen.SupplementalPropertyDigest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,13 +31,13 @@ public class SupplementalConstraintsDigestTests {
 
     private static JsonNode constructJsonNode() throws JsonProcessingException {
         final String content =
-            "   {" +
-            "       \"property\": \"schema\"," +
-            "       \"requiredValues\": [" +
-            "         \"dtmi:iotcentral:schema:vector;2\"" +
-            "       ]," +
-            "       \"requiredValuesString\": \"vector\"" +
-            "   }";
+            "   {"
+            + "       \"property\": \"schema\","
+            + "       \"requiredValues\": ["
+            + "         \"dtmi:iotcentral:schema:vector;2\""
+            + "       ],"
+            + "       \"requiredValuesString\": \"vector\""
+            + "   }";
 
         return new ObjectMapper().readValue(content, JsonNode.class);
     }
