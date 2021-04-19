@@ -44,7 +44,7 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(1000)
+    Thread.sleep(5000)
 
     val changeFeedCfg = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -78,9 +78,8 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    microBatchQuery.processAllAvailable()
-
-    Thread.sleep(1000)
+    Thread.sleep(20000)
+    microBatchQuery.stop()
 
     var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
     logInfo(s"RecordCount in source container after first execution: $sourceCount")
@@ -104,7 +103,7 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(1000)
+    Thread.sleep(5000)
 
     val secondChangeFeedDF = spark
       .readStream
@@ -121,9 +120,8 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    secondMicroBatchQuery.processAllAvailable()
-
-    Thread.sleep(1000)
+    Thread.sleep(20000)
+    secondMicroBatchQuery.stop()
 
     sourceCount = getRecordCountOfContainer(sourceContainer)
     logInfo(s"RecordCount in source container after second execution: $sourceCount")
