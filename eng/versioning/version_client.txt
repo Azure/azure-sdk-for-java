@@ -260,6 +260,7 @@ com.azure.resourcemanager:azure-resourcemanager-mariadb;1.0.0-beta.1;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-servicefabric;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-peering;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-policyinsights;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-support;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
