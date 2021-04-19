@@ -26,7 +26,6 @@ import java.util.Hashtable;
 public final class SSHShell {
     private final Session session;
     private final ChannelShell channel;
-    private final StringBuilder shellBuffer = new StringBuilder();
 
     /**
      * Creates SSHShell.
