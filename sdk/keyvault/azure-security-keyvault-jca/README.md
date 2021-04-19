@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
