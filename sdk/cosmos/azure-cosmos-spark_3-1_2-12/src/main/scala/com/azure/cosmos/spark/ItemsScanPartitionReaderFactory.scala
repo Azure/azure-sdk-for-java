@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.CosmosParameterizedQuery
+import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.read.{InputPartition, PartitionReader, PartitionReaderFactory}
@@ -15,7 +16,9 @@ private case class ItemsScanPartitionReaderFactory
   config: Map[String, String],
   readSchema: StructType,
   cosmosQuery: CosmosParameterizedQuery,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  diagnosticsOperationContext: DiagnosticsContext,
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 ) extends PartitionReaderFactory with CosmosLoggingTrait {
 
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
@@ -28,6 +31,9 @@ private case class ItemsScanPartitionReaderFactory
       feedRange,
       readSchema,
       cosmosQuery,
-      cosmosClientStateHandle)
+      diagnosticsOperationContext,
+      cosmosClientStateHandle,
+      diagnosticsConfig
+    )
   }
 }

@@ -35,7 +35,7 @@ FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL=<SAS url for container with training d
    java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
    
    java -jar sdk/formrecognizer/azure-ai-formrecognizer-perf/target/azure-ai-formrecognizer-perf-1.0.0-beta.1-jar-with-dependencies.jar custommodelrecognitiontest --warmup 1 --iterations 1 --parallel 5 --duration 120 --count 2
-```
+    ```
 
 #### Common perf test command line options for Form Recognizer
 - `--duration` - Number of seconds to run the main test for. Default is 10.

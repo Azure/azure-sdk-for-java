@@ -94,8 +94,15 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(response);
         assertNotNull(response.getDeletedTags());
         assertNotNull(response.getDeletedRegistryArtifactDigests());
-//        assertEquals(expectedArtifactCount, response.getDeletedRegistryArtifactDigests().size());
-//        assertEquals(expectedTagCount, response.getDeletedTags().size());
+    }
+
+    void validateDeletedRepositoryResponse(Response<DeleteRepositoryResult> response) {
+        validateResponse(response);
+
+        DeleteRepositoryResult result = response.getValue();
+        assertNotNull(result);
+        assertNotNull(result.getDeletedTags());
+        assertNotNull(result.getDeletedRegistryArtifactDigests());
     }
 
     void validateProperties(RepositoryProperties properties) {
@@ -202,6 +209,10 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     void importImage(String repositoryName, List<String> tags) {
         TestUtils.importImage(getTestMode(), repositoryName, tags);
+    }
+
+    Mono<Void> importImageAsync(String repositoryName, List<String> tags) {
+        return TestUtils.importImageAsync(getTestMode(), repositoryName, tags);
     }
 
     ContainerRepositoryClientBuilder getContainerRepositoryBuilder(String repositoryName, HttpClient httpClient) {

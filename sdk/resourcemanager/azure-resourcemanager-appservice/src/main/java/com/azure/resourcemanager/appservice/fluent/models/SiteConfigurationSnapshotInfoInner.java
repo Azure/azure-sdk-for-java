@@ -48,6 +48,13 @@ public class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
         return this.snapshotId;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SiteConfigurationSnapshotInfoInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

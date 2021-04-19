@@ -7,220 +7,226 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.RegistryArtifactProperties;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.test.TestMode;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.containers.containerregistry.TestUtils.LIBRARY_BUSYBOX_NAME;
+import static com.azure.containers.containerregistry.TestUtils.DIGEST_UNKNOWN;
+import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.TAG_TO_DELETE;
 import static com.azure.containers.containerregistry.TestUtils.TAG_TO_UPDATE;
+import static com.azure.containers.containerregistry.TestUtils.TAG_UNKNOWN;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTestBase {
+    private String recordFileName;
+    private static final String PARENT_FILENAME = "ContainerRepositoryAsyncClientUpdateIntegrationTests.";
+    private ContainerRepositoryClient client;
 
-    private ContainerRepositoryClient getContainerRepositoryClient(HttpClient httpClient) {
-        return getContainerRepositoryBuilder(LIBRARY_BUSYBOX_NAME, httpClient).buildClient();
+    private ContainerRepositoryClient getContainerRepositoryClient() {
+        return getContainerRepositoryBuilder(HELLO_WORLD_SEATTLE_REPOSITORY_NAME, new LocalHttpClient(recordFileName)).buildClient();
     }
 
-    private ContainerRegistryClient getContainerRegistryClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(httpClient).buildClient();
+    private ContainerRepositoryClient getUnknownContainerRepositoryClient() {
+        return getContainerRepositoryBuilder(TAG_UNKNOWN, new LocalHttpClient(recordFileName)).buildClient();
     }
 
-    private boolean resetTag;
-    private boolean resetRepository;
-    private String digest;
-
-    @BeforeEach
-    public void setup() {
-        resetTag = false;
-        digest = null;
-        importImage(LIBRARY_BUSYBOX_NAME, Arrays.asList(TAG_TO_UPDATE, TAG_TO_DELETE));
+    private ContainerRegistryClient getContainerRegistryClient() {
+        return getContainerRegistryBuilder(new LocalHttpClient(recordFileName)).buildClient();
     }
 
-    @AfterEach
-    public void cleanup() {
-        ContainerRepositoryClient client = getContainerRepositoryClient(new NettyAsyncHttpClientBuilder().build());
-
-        if (getTestMode() != TestMode.PLAYBACK) {
-
-            if (digest != null) {
-                client.setManifestProperties(digest, defaultProperties);
-            }
-
-            if (resetTag) {
-                client.setTagProperties(TAG_TO_UPDATE, defaultProperties);
-            }
-
-            if (resetRepository) {
-                client.setProperties(defaultProperties);
-            }
-        }
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setRepositoryProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        resetRepository = true;
+    @Test
+    public void setRepositoryProperties() {
+        recordFileName = PARENT_FILENAME + "setRepositoryPropertiesWithResponse[1].json";
+        ContainerRepositoryClient client = getContainerRepositoryClient();
 
         client.setProperties(writeableProperties);
         testDelay();
         validateContentProperties(client.getProperties().getWriteableProperties());
     }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void setRepositoryPropertiesWithResponse(HttpClient httpClient) {
-//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-//        resetRepository = true;
-//        client.setPropertiesWithResponse(writeableProperties, Context.NONE);
-//        testDelay();
-//        validateContentProperties(client.getProperties().getWriteableProperties());
-//    }
+    @Test
+    public void setRepositoryPropertiesWithResponse() {
+        recordFileName = PARENT_FILENAME + "setRepositoryPropertiesWithResponse[1].json";
+        ContainerRepositoryClient client = getContainerRepositoryClient();
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setManifestProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+        client.setPropertiesWithResponse(writeableProperties, Context.NONE);
+        validateContentProperties(client.getProperties().getWriteableProperties());
+    }
+
+    @Test
+    public void setRepositoryPropertiesThrows() {
+        recordFileName = PARENT_FILENAME + "setRepositoryPropertiesThrowsWithResponse[1].json";
+        client = getUnknownContainerRepositoryClient();
+
+        assertThrows(NullPointerException.class, () -> client.setProperties(null));
+        assertThrows(NullPointerException.class, () -> client.setPropertiesWithResponse(null, Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.setPropertiesWithResponse(defaultProperties, Context.NONE));
+    }
+
+
+    @Test
+    public void setManifestProperties() {
+        recordFileName = PARENT_FILENAME + "setManifestPropertiesWithResponse[1].json";
+        ContainerRepositoryClient client = getContainerRepositoryClient();
 
         List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
-        digest = getChildArtifactDigest(repositories);
+        String digest = getChildArtifactDigest(repositories);
         client.setManifestProperties(digest, writeableProperties);
-        testDelay();
         RegistryArtifactProperties acProps = client.getRegistryArtifactProperties(digest);
         assertNotNull(acProps);
         validateContentProperties(acProps.getWriteableProperties());
     }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void setManifestPropertiesWithResponse(HttpClient httpClient) {
-//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-//
-//        digest = digests.get(1);
-//        client.setManifestPropertiesWithResponse(digest, writeableProperties, Context.NONE);
-//        testDelay();
-//        RegistryArtifactProperties acProps = client.getRegistryArtifactProperties(digest);
-//        assertNotNull(acProps);
-//        validateContentProperties(acProps.getWriteableProperties());
-//    }
+    @Test
+    public void setManifestPropertiesWithResponse() {
+        recordFileName = PARENT_FILENAME + "setManifestPropertiesWithResponse[1].json";
+        ContainerRepositoryClient client = getContainerRepositoryClient();
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteRegistryArtifact(HttpClient httpClient) {
-//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-//
-//        TagProperties props = client.getTagProperties(TAG_TO_UPDATE);
-//        props.getDigest()
-//        //1. Delete the child artifact.
-//        List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
-//        digest = getChildArtifactDigest(repositories);
-//        client.deleteRegistryArtifact(digest);
-//
-//        testDelay();
-//        assertThrows(ResourceNotFoundException.class, () -> client.getRegistryArtifactProperties(digest));
-//    }
+        List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
+        String digest = getChildArtifactDigest(repositories);
+        client.setManifestPropertiesWithResponse(digest, writeableProperties, Context.NONE);
+        RegistryArtifactProperties acProps = client.getRegistryArtifactProperties(digest);
+        assertNotNull(acProps);
+        validateContentProperties(acProps.getWriteableProperties());
+    }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteRegistryArtifactWithResponse(HttpClient httpClient) {
-//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-//
-//        //1. Delete the child artifact.
-//        String digest = digests.get(2);
-//        client.deleteRegistryArtifactWithResponse(digest, Context.NONE);
-//
-//        testDelay();
-//        assertThrows(ResourceNotFoundException.class, () -> client.getRegistryArtifactProperties(digest));
-//    }
+    @Test
+    public void setManifestPropertiesThrows() {
+        recordFileName = PARENT_FILENAME + "setManifestPropertiesThrowsWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setTagProperties(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-        resetTag = true;
+        assertThrows(NullPointerException.class, () -> client.setManifestProperties(null, writeableProperties));
+        assertThrows(NullPointerException.class, () -> client.setManifestProperties(DIGEST_UNKNOWN, null));
+        assertThrows(NullPointerException.class, () -> client.setManifestPropertiesWithResponse(null, writeableProperties, Context.NONE));
+        assertThrows(NullPointerException.class, () -> client.setManifestPropertiesWithResponse(DIGEST_UNKNOWN, null, Context.NONE));
+
+        assertThrows(ResourceNotFoundException.class, () -> client.setManifestProperties(DIGEST_UNKNOWN, writeableProperties));
+        assertThrows(ResourceNotFoundException.class, () -> client.setManifestPropertiesWithResponse(DIGEST_UNKNOWN, writeableProperties, Context.NONE));
+    }
+
+    @Test
+    public void deleteRegistryArtifact() {
+        recordFileName = PARENT_FILENAME + "deleteRegistryArtifactWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
+        PagedIterable<RegistryArtifactProperties> props = client.listRegistryArtifacts();
+        List<RegistryArtifactProperties> repositories = props.stream().collect(Collectors.toList());
+        String digest = getChildArtifactDigest(repositories);
+        client.deleteRegistryArtifact(digest);
+        assertThrows(ResourceNotFoundException.class, () -> client.getRegistryArtifactProperties(digest));
+    }
+
+    @Test
+    public void deleteRegistryArtifactWithResponse() {
+        recordFileName = "ContainerRepositoryAsyncClientUpdateIntegrationTests.deleteRegistryArtifactWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
+        PagedIterable<RegistryArtifactProperties> props = client.listRegistryArtifacts();
+        List<RegistryArtifactProperties> repositories = props.stream().collect(Collectors.toList());
+        String digest = getChildArtifactDigest(repositories);
+        client.deleteRegistryArtifactWithResponse(digest, Context.NONE);
+        assertThrows(ResourceNotFoundException.class, () -> client.getRegistryArtifactProperties(digest));
+    }
+
+    @Test
+    public void deleteRegistryArtifactThrows() {
+        recordFileName = PARENT_FILENAME + "deleteRegistryArtifactThrowsWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
+        assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifact(null));
+        assertThrows(NullPointerException.class, () -> client.deleteRegistryArtifactWithResponse(null, Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteRegistryArtifact(DIGEST_UNKNOWN));
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteRegistryArtifactWithResponse(DIGEST_UNKNOWN, Context.NONE));
+    }
+
+    @Test
+    public void setTagProperties() {
+        recordFileName = PARENT_FILENAME + "setTagPropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
         client.setTagProperties(TAG_TO_UPDATE, writeableProperties);
-        testDelay();
         validateContentProperties(client.getTagProperties(TAG_TO_UPDATE).getWriteableProperties());
     }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void setTagPropertiesWithResponse(HttpClient httpClient) {
-//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-//        resetTag = true;
-//
-//        client.setTagPropertiesWithResponse(TAG_TO_UPDATE, writeableProperties, Context.NONE);
-//        testDelay();
-//        validateContentProperties(client.getTagProperties(TAG_TO_UPDATE).getWriteableProperties());
-//    }
+    @Test
+    public void setTagPropertiesWithResponse() {
+        recordFileName = PARENT_FILENAME + "setTagPropertiesWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void deleteTag(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+        client.setTagPropertiesWithResponse(TAG_TO_UPDATE, writeableProperties, Context.NONE);
+        validateContentProperties(client.getTagProperties(TAG_TO_UPDATE).getWriteableProperties());
+    }
+
+    @Test
+    public void setTagPropertiesThrows() {
+        recordFileName = PARENT_FILENAME + "setTagPropertiesThrowsWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
+        assertThrows(NullPointerException.class, () -> client.setTagProperties(null, defaultProperties));
+        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(null, defaultProperties, Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.setTagProperties(TAG_UNKNOWN, defaultProperties));
+        assertThrows(ResourceNotFoundException.class, () -> client.setTagPropertiesWithResponse(TAG_UNKNOWN, defaultProperties, Context.NONE));
+    }
+
+    @Test
+    public void deleteTag() {
+        recordFileName = PARENT_FILENAME + "deleteTagWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
         client.deleteTag(TAG_TO_DELETE);
-        testDelay();
         assertThrows(ResourceNotFoundException.class, () -> client.getTagProperties(TAG_TO_DELETE));
     }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteTagWithResponse(HttpClient httpClient) {
-//        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
-//        client.deleteTagWithResponse(TAG_TO_DELETE, Context.NONE);
-//        testDelay();
-//        assertThrows(ResourceNotFoundException.class, () -> client.getTagProperties(TAG_TO_DELETE));
-//    }
+    @Test
+    public void deleteTagWithResponse() {
+        recordFileName = PARENT_FILENAME + "deleteTagWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void deleteRepository(HttpClient httpClient) {
-        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
+        client.deleteTagWithResponse(TAG_TO_DELETE, Context.NONE);
+        assertThrows(ResourceNotFoundException.class, () -> client.getTagProperties(TAG_TO_DELETE));
+    }
+
+    @Test
+    public void deleteTagThrows() {
+        recordFileName = PARENT_FILENAME + "deleteTagThrowsWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
+        assertThrows(NullPointerException.class, () -> client.deleteTag(null));
+        assertThrows(NullPointerException.class, () -> client.deleteTagWithResponse(null, Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteTag(TAG_UNKNOWN));
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteTagWithResponse(TAG_UNKNOWN, Context.NONE));
+    }
+
+    @Test
+    public void deleteRepository() {
+        recordFileName = PARENT_FILENAME + "deleteRepositoryWithResponse[1].json";
+        client = getContainerRepositoryClient();
+
         DeleteRepositoryResult deletedRepo = client.delete();
         validateDeletedRepositoryResponse(deletedRepo);
-        testDelay();
-        assertThrows(ResourceNotFoundException.class, () -> client.getProperties());
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void deleteRepositoriesViaParent(HttpClient httpClient) {
-        ContainerRegistryClient client = getContainerRegistryClient(httpClient);
-        ContainerRepositoryClient repoClient = client.getRepositoryClient(LIBRARY_BUSYBOX_NAME);
+    @Test
+    public void deleteRepositoryWithResponse() {
+        recordFileName = PARENT_FILENAME + "deleteRepositoryWithResponse[1].json";
+        client = getContainerRepositoryClient();
 
-        DeleteRepositoryResult deletedRepo = client.deleteRepository(LIBRARY_BUSYBOX_NAME);
+        Response<DeleteRepositoryResult> deletedRepo = client.deleteWithResponse(Context.NONE);
         validateDeletedRepositoryResponse(deletedRepo);
-        testDelay();
-
-        assertThrows(ResourceNotFoundException.class, () -> repoClient.getProperties());
     }
 
-    // What is the prescribed way of running delete test scenarios.
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void deleteRepositoriesWithResponseViaParent(HttpClient httpClient) {
-//        ContainerRegistryClient client = getContainerRegistryClient(httpClient);
-//        ContainerRepositoryClient repoClient = client.getRepositoryClient(LIBRARY_BUSYBOX_NAME);
-//        RepositoryProperties props = repoClient.getProperties();
-//
-//        Response<DeleteRepositoryResult> deletedRepo = client.deleteRepositoryWithResponse(LIBRARY_BUSYBOX_NAME, Context.NONE);
-//        validateDeletedRepositoryResponse(deletedRepo.getValue(), props.getRegistryArtifactCount(), props.getTagCount());
-//        testDelay();
-//
-//        assertThrows(ResourceNotFoundException.class, () -> repoClient.getProperties());
-//    }
+    @Test
+    public void deleteRepositoryThrows() {
+        recordFileName = PARENT_FILENAME + "deleteRepositoryThrowsWithResponse[1].json";
+        client = getUnknownContainerRepositoryClient();
+
+        assertThrows(ResourceNotFoundException.class, () -> client.delete());
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteWithResponse(Context.NONE));
+    }
 }
