@@ -7,9 +7,12 @@
 * The beta-2 is feature-complete now
 * Spark structured streaming (micro batches) for consuming change feed
 * Spark structured streaming (micro batches) support added for writes (TableCapability.STREAMING_WRITE)
+* Allowing configuration of "Cosmos views" in the Spark catalog to enable direct queries against Spark catalog
 
 #### Key Bug Fixes
 * Perf validation and optimizations (resulting in significant better throughput for read code path)
+* Row conversion: Allow configuration of behavior on schema mismatch - error vs. null
+* Row conversion: Supporting InternalRow type to avoid failures when using nested StructType of InternalRow (not Row)
 
 ### Known limitations
 * No support for continuous processing (change feed) yet. (will be added after GA)
