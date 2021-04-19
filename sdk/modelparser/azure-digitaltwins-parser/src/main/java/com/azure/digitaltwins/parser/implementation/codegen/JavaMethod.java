@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * Generator for java method.
  */
 public class JavaMethod extends JavaDeclaration {
-    private final ClientLogger logger = new ClientLogger(JavaMethod.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JavaMethod.class);
 
     private final List<TypeParameter> typeParameters;
     private final List<Parameter> parameters;
@@ -89,11 +89,11 @@ public class JavaMethod extends JavaDeclaration {
      */
     public JavaMethod typeParam(String name, String description) {
         if (name.charAt(0) != 'T') {
-            throw logger.logExceptionAsError(new StyleException("Type parameter name `" + name + "' of method '" + this.getName() + "' must begin with a 'T' -- SA1314"));
+            throw LOGGER.logExceptionAsError(new StyleException("Type parameter name `" + name + "' of method '" + this.getName() + "' must begin with a 'T' -- SA1314"));
         }
 
         if (description != null && !description.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
         this.typeParameters.add(
@@ -114,7 +114,7 @@ public class JavaMethod extends JavaDeclaration {
      */
     public JavaMethod addParameter(String type, String name, String description) {
         if (description != null && !description.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period -- SA1629."));
         }
 
         this.parameters.add(
@@ -134,11 +134,11 @@ public class JavaMethod extends JavaDeclaration {
      */
     public JavaMethod addReturnComment(String returnDescription) {
         if (this.getType().equals("void")) {
-            throw logger.logExceptionAsError(new StyleException("Void return value of method '" + this.getName() + "' must not be documented. -- SA1617"));
+            throw LOGGER.logExceptionAsError(new StyleException("Void return value of method '" + this.getName() + "' must not be documented. -- SA1617"));
         }
 
         if (!returnDescription.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period. -- SA1629"));
+            throw LOGGER.logExceptionAsError(new StyleException("Documentation text of method '" + this.getName() + "' must end with a period. -- SA1629"));
         }
 
         this.returnDescription = returnDescription;

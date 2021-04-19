@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class GeneratedCodeCompareBase {
+public class GeneratedCodeCompareBase {
     private static final String DASH_SEPARATOR = "------------------------------------------------------------------------------------------------------------------------";
     private static final String EXPECTED_CODE_FILE_EXTENSION = ".expected";
     private static final String GENERATED_CODE_FILE_EXTENSION = ".temp.generated";
@@ -60,8 +60,6 @@ class GeneratedCodeCompareBase {
                 .map(s -> s.getName())
                 .collect(Collectors.toList()));
 
-        List<String> verifiedFiles = new ArrayList<>();
-
         for (File expectedFile : expectedDirectoryFiles) {
             // look for corresponding generated file.
             // This step verifies all files that are found look identical in terms of contents;
@@ -96,7 +94,6 @@ class GeneratedCodeCompareBase {
 
                     // If we find a corresponding file, we remove it from the unverified file list and add it to verified file list.
                     unverifiedFiles.remove(expectedFile.getName());
-                    verifiedFiles.add(expectedFile.getName());
                     break;
                 }
             }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaDeclaration {
-    private final ClientLogger logger = new ClientLogger(JavaDeclaration.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JavaDeclaration.class);
 
     private final Access access;
     private final Novelty novelty;
@@ -115,11 +115,11 @@ public class JavaDeclaration {
                 decoratedName.append("private ");
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Unexpected value: " + access));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: " + access));
         }
 
         if (typeParams != null && !typeParams.isEmpty()) {
-            decoratedName.append(typeParams + " ");
+            decoratedName.append(typeParams).append(" ");
         }
 
         if (multiplicity == Multiplicity.STATIC) {
@@ -150,7 +150,7 @@ public class JavaDeclaration {
      */
     public JavaDeclaration addSummary(String text) {
         if (!text.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Summary text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.summaryLines.add(text);
@@ -164,7 +164,7 @@ public class JavaDeclaration {
      */
     public void addRemarks(String text) {
         if (!text.endsWith(".")) {
-            throw logger.logExceptionAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
+            throw LOGGER.logExceptionAsError(new StyleException("Remarks text of declaration '" + this.name + "' must end with a period -- SA1629."));
         }
 
         this.remarksLines.add(text);
@@ -191,7 +191,7 @@ public class JavaDeclaration {
      * Write the summary comments for the declaration.
      *
      * @param codeWriter A {@link CodeWriter} object for writing the declaration comments.
-     * @throws IOException
+     * @throws IOException IOException
      */
     protected void writeSummaryAndRemarks(CodeWriter codeWriter) throws IOException {
         codeWriter.addNewLine();

@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.parser;
+package com.azure.digitaltwins.parser.tests.codegen;
 
+import com.azure.digitaltwins.parser.GeneratedCodeCompareBase;
 import com.azure.digitaltwins.parser.implementation.codegen.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -983,11 +984,9 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
 
     /**
      * No files are generated.
-     *
-     * @throws IOException IOException.
      */
     @Test
-    public void publicClassWithInvalidFieldCasing() throws IOException {
+    public void publicClassWithInvalidFieldCasing() {
         final String typeName = "NoOpType";
 
         JavaClass javaClass = new JavaClass(

@@ -16,12 +16,12 @@ import java.util.Locale;
  * With java properties, there is a field, a getter and a setter.
  */
 public class JavaProperty extends JavaStatement {
-    private ClientLogger logger = new ClientLogger(JavaProperty.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JavaProperty.class);
 
-    private String propertyName;
-    private String propertyType;
-    private JavaField field;
-    private List<JavaMethod> listOfMethods;
+    private final String propertyName;
+    private final String propertyType;
+    private final JavaField field;
+    private final List<JavaMethod> listOfMethods;
 
     /**
      * Initializes a new instance of the {@link JavaProperty} class.
@@ -32,7 +32,7 @@ public class JavaProperty extends JavaStatement {
     public JavaProperty(Access access, String propertyName, String propertyType) {
         // propertyName should start with a lowercase character.
         if (!Character.isLowerCase(propertyName.charAt(0))) {
-            throw logger.logExceptionAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character."));
+            throw LOGGER.logExceptionAsError(new StyleException("Property name '" + propertyName + "' should start with a lowercase character."));
         }
 
         this.propertyName = propertyName;
@@ -66,7 +66,7 @@ public class JavaProperty extends JavaStatement {
 
         if (description != null) {
             if (!description.endsWith(".")) {
-                throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + getterMethodName + "' must end with a period. -- SA1629"));
+                throw LOGGER.logExceptionAsError(new StyleException("Documentation text of method '" + getterMethodName + "' must end with a period. -- SA1629"));
             }
 
             setterMethod.addSummary(description);
@@ -97,7 +97,7 @@ public class JavaProperty extends JavaStatement {
 
         if (description != null) {
             if (!description.endsWith(".")) {
-                throw logger.logExceptionAsError(new StyleException("Documentation text of method '" + setterMethodName + "' must end with a period. -- SA1629"));
+                throw LOGGER.logExceptionAsError(new StyleException("Documentation text of method '" + setterMethodName + "' must end with a period. -- SA1629"));
             }
 
             setterMethod.addSummary(description);

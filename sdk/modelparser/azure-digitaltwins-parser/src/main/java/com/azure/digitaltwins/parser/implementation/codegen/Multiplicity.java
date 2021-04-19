@@ -13,7 +13,7 @@ public enum Multiplicity {
     STATIC,
 
     /**
-     * Not Static
+     * Instance.
      */
     INSTANCE,
 }
