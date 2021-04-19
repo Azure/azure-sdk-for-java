@@ -7,7 +7,9 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -16,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
@@ -24,6 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBase {
     private ContainerRegistryClient client;
+
+    @BeforeAll
+    static void beforeAll() {
+        TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
+        TestUtils.importImage(ImplUtils.getTestMode(), ALPINE_REPOSITORY_NAME, Arrays.asList("latest"));
+    }
 
     private ContainerRegistryClient getContainerRegistryClient(HttpClient httpClient) {
         return getContainerRegistryBuilder(httpClient).buildClient();
