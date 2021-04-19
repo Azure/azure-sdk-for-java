@@ -55,15 +55,15 @@ class JsonConfigurationParser {
         return settings;
     }
 
-    static void parseSetting(String currentKey, JsonNode currentValue, HashMap<String, Object> settings) {
-        switch (currentValue.getNodeType()) {
-            case ARRAY:
+    static void parseSetting(String currentKey, final JsonNode currentValue, HashMap<String, Object> settings) {
+        switch (currentValue.getNodeType().name()) {
+            case "ARRAY":
                 for (int i = 0; i < currentValue.size(); i++) {
                     String newKey = currentKey + "[" + i + "]";
                     parseSetting(newKey, currentValue.get(i), settings);
                 }
                 break;
-            case OBJECT:
+            case "OBJECT":
                 Iterator<String> fieldNames = currentValue.fieldNames();
                 while (fieldNames.hasNext()) {
                     String fieldName = fieldNames.next();

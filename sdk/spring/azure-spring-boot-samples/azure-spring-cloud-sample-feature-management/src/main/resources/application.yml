@@ -5,9 +5,9 @@ feature-management:
       -
         name: percentageFilter
         parameters:
-          percentage-filter-setting: "50"
+          Value: "50"
       -
         name: timeWindowFilter
         parameters:
-          time-window-filter-setting-start: "Fri, 6 Dec 2019 00:59:30 GMT"
-          time-window-filter-setting-end: "Sat, 2 May 2020 22:59:30 GMT"
+          Start: "Fri, 6 Dec 2019 00:59:30 GMT"
+          End: "Mon, 19 Apr 2021 22:59:30 GMT"

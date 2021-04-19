@@ -41,5 +41,5 @@ feature-management::
               rolloutPercentage: 100
             - 
               name: Ring1
-              rolloutPercentage: 100
+              rolloutPercentage: 50
           defaultRolloutPercentage: 0
