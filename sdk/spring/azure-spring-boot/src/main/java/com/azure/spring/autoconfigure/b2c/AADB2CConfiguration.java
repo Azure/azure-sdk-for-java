@@ -3,6 +3,8 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,7 +26,6 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +34,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Configure the B2C necessary beans used for client registration.
+ * Configuration for aad b2c OAuth2 client support, when depends on the Spring OAuth2 Client module.
  */
 @Configuration
 @EnableConfigurationProperties(AADB2CProperties.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AADB2CConfiguration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CConfiguration.class);
     private final AADB2CProperties properties;
 
     public AADB2CConfiguration(@NonNull AADB2CProperties properties) {
@@ -48,15 +50,8 @@ public class AADB2CConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @Conditional({ AnyCondition.class})
+    @Conditional(AADB2CCondition.class)
     public ClientRegistrationRepository clientRegistrationRepository() {
-        long invalidCount = properties.getAuthorizationClients()
-                                      .entrySet()
-                                      .stream()
-                                      .filter(entry -> entry.getValue().getAuthorizationGrantType() != null
-                                          && !AADAuthorizationGrantType.CLIENT_CREDENTIALS.equals(entry.getValue().getAuthorizationGrantType()))
-                                      .count();
-        Assert.isTrue(invalidCount == 0, "Web Application does not support non 'client_credentials' grant type.");
         final List<ClientRegistration> clientRegistrations = new ArrayList<>();
         clientRegistrations.addAll(properties.getUserFlows()
                   .entrySet()
@@ -79,7 +74,7 @@ public class AADB2CConfiguration {
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUri(properties.getReplyUrl())
-                                 .scope(properties.getClientId(), "openid")
+                                 .scope(properties.getClientId(), "openid", "offline_access")
                                  .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getBaseUri()))
                                  .tokenUri(AADB2CURL.getTokenUrl(properties.getBaseUri(), client.getValue()))
                                  .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getBaseUri(), client.getValue()))
@@ -88,24 +83,25 @@ public class AADB2CConfiguration {
     }
 
     /**
-     * Create client credential registration by default.
+     * Create client credential registration.
      *
      * @param client each client properties
      * @return ClientRegistration
      */
     private ClientRegistration b2cClientCredentialRegistration(Map.Entry<String, AuthorizationClientProperties> client) {
-        AuthorizationGrantType authorizationGrantType = Optional.ofNullable(client.getValue().getAuthorizationGrantType())
+        AuthorizationGrantType authGrantType = Optional.ofNullable(client.getValue().getAuthorizationGrantType())
                                                                 .map(AADAuthorizationGrantType::getValue)
                                                                 .map(AuthorizationGrantType::new)
-                                                                .orElse(AuthorizationGrantType.CLIENT_CREDENTIALS);
-
-
+                                                                .orElse(null);
+        if (authGrantType == null || !authGrantType.equals(AuthorizationGrantType.CLIENT_CREDENTIALS)) {
+            LOGGER.warn("Found {} registration of non client-credentials authorization type.", client.getKey());
+        }
         return ClientRegistration.withRegistrationId(client.getKey())
                                  .clientName(client.getKey())
                                  .clientId(properties.getClientId())
                                  .clientSecret(properties.getClientSecret())
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                                 .authorizationGrantType(authorizationGrantType)
+                                 .authorizationGrantType(authGrantType)
                                  .scope(client.getValue().getScopes())
                                  .tokenUri(AADB2CURL.getAADTokenUrl(properties.getTenantId()))
                                  .jwkSetUri(AADB2CURL.getAADJwkSetUrl(properties.getTenantId()))
@@ -114,7 +110,7 @@ public class AADB2CConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @Conditional({ AnyCondition.class})
+    @Conditional(AADB2CCondition.class)
     public OAuth2AuthorizedClientManager authorizeClientManager(ClientRegistrationRepository clients,
                                                          OAuth2AuthorizedClientRepository authorizedClients) {
         DefaultOAuth2AuthorizedClientManager manager =
@@ -132,8 +128,11 @@ public class AADB2CConfiguration {
         return manager;
     }
 
-    protected static final class AnyCondition extends AnyNestedCondition {
-        AnyCondition() {
+    /**
+     * Condition to trigger web application or web resource server scenario.
+     */
+    protected static final class AADB2CCondition extends AnyNestedCondition {
+        AADB2CCondition() {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 

@@ -11,6 +11,7 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,10 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Automatic configuration class of AADB2CResourceServer
+ * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C resource server authorization.
+ * Import {@link AADB2CConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@Conditional({ AADB2CConfiguration.AnyCondition.class})
+@Conditional(AADB2CConfiguration.AADB2CCondition.class)
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 @EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2CConfiguration.class)

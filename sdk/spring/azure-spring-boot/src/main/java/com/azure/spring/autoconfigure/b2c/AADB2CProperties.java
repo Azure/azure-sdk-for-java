@@ -121,7 +121,14 @@ public class AADB2CProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        // only as web app verification
+        validateWebappProperties();
+        validateCommonProperties();
+    }
+
+    /**
+     * Validate web app scenario properties configuration when using user flows.
+     */
+    private void validateWebappProperties() {
         if (!CollectionUtils.isEmpty(userFlows)) {
             if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
                 throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
@@ -131,8 +138,12 @@ public class AADB2CProperties implements InitializingBean {
                     + loginFlow + "' is not in 'user-flows' map.");
             }
         }
+    }
 
-        // web app and web api public verification
+    /**
+     * Validate common scenario properties configuration.
+     */
+    private void validateCommonProperties() {
         if (!CollectionUtils.isEmpty(authorizationClients) && !StringUtils.hasText(tenantId)) {
             throw new AADB2CConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");

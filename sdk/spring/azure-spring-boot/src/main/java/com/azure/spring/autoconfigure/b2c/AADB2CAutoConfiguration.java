@@ -24,14 +24,11 @@ import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C Authentication.
- * <p>
- * The configuration will not be activated if no {@literal azure.activedirectory.b2c.client-id,
- * client-secret and sign-in-user-flow} property provided.
- * </p>
+ * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C authentication.
+ * Import {@link AADB2CConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@Conditional({ AADB2CConfiguration.AnyCondition.class})
+@Conditional({ AADB2CConfiguration.AADB2CCondition.class })
 @ConditionalOnMissingClass({"org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken"})
 @EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2CConfiguration.class)
