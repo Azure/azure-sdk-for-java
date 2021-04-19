@@ -170,14 +170,13 @@ Make sure the client-id can access target Key Vault.
 
 Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L46 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L45 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
     KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
     KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.aad-authentication-url"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
         System.getProperty("azure.keyvault.client-secret"));
@@ -246,14 +245,13 @@ server:
 
 Step 2. On the client side, update `RestTemplate`. Example:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L48-L77 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L47-L75 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
     KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
     KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.aad-authentication-url"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
         System.getProperty("azure.keyvault.client-secret"));
