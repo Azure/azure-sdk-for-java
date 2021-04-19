@@ -439,4 +439,19 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
         }
     }
+
+    public static KeyStore getKeyStore() throws Exception {
+
+        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.aad-authentication-url"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"));
+        trustStore.load(parameter);
+        return trustStore;
+    }
+
+
 }

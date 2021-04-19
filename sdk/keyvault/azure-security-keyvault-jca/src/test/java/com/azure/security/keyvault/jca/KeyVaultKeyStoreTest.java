@@ -3,26 +3,44 @@
 
 package com.azure.security.keyvault.jca;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
-import java.security.ProviderException;
+import java.io.IOException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
 @Disabled
 public class KeyVaultKeyStoreTest {
+
+    public static void putEnvironmentPropertyToSystemProperty(String key) {
+        Optional.of(key)
+            .map(System::getenv)
+            .filter(a -> a != null && !"".equals(a))
+            .ifPresent(value -> System.getProperties().put(key, value));
+    }
+
+
+    @BeforeEach
+    public void setEnv() {
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.uri");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.tenant-id");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-id");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-secret");
+    }
+
 
     /**
      * Stores the CER test certificate (which is valid til 2120).
@@ -212,4 +230,42 @@ public class KeyVaultKeyStoreTest {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineStore(null, null);
     }
+
+    @Test
+    public void testGetKeyStore() throws Exception {
+        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        KeyStore keyStore = KeyVaultKeyStore.getKeyStore();
+        assertNotNull(keyStore.getCertificate("myaliasForPEM"));
+        assertTrue(keyStore.containsAlias("myaliasForPEM"));
+        X509Certificate certificate;
+
+        try {
+            byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
+        } catch (CertificateException e) {
+            throw new ProviderException(e);
+        }
+
+        keyStore.setCertificateEntry("setcert", certificate);
+        assertNotNull(keyStore.getCertificateAlias(certificate), "setcert");
+    }
+
+    @Test
+    public void testRefreshKeyStore() throws Exception {
+        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        KeyStore keyStore = KeyVaultKeyStore.getKeyStore();
+        X509Certificate certificate;
+        try {
+            byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
+        } catch (CertificateException e) {
+            throw new ProviderException(e);
+        }
+        keyStore.setCertificateEntry("myaliasForPEM", certificate);
+        KeyVaultKeyStore.refreshCertificate();
+        assertNull(keyStore.getCertificateAlias(certificate));
+    }
+
 }

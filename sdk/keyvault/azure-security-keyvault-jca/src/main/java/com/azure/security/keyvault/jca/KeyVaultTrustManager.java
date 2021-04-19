@@ -198,19 +198,6 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
         }
     }
 
-    public static KeyStore getKeyStore() throws Exception {
-
-        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        trustStore.load(parameter);
-        return trustStore;
-    }
-
     @Override
     public X509Certificate[] getAcceptedIssuers() {
         return new X509Certificate[0];
