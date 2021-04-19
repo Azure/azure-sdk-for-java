@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-datalake</artifactId>
-  <version>12.5.0-beta.3</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+  <version>12.5.0-beta.4</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
 
   <name>Microsoft Azure client library for File Storage Data Lake</name>
   <description>This module contains client library for Microsoft Azure File Storage Data Lake.</description>
@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.11.0-beta.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.11.0-beta.4</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
