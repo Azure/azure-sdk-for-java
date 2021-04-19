@@ -38,15 +38,6 @@ steps:
         displayName: Add sparse checkout path ${{ path }}
         workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
 
-    - pwsh: |
-        $paths = '${{ parameters.PathsJson }}' | ConvertFrom-Json
-        foreach ($path in $paths) {
-          Write-Host 'git sparse-checkout add $path'
-          git sparse-checkout add $path
-        }
-      displayName: Add sparse checkout paths from json
-      workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
-
     - pwsh: git checkout ${{ repo.Commitish }}
       displayName: Sparse checkout at ${{ repo.Commitish }}
       workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
