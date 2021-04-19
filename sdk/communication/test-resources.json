@@ -17,6 +17,12 @@
         "defaultValue": ".communication.azure.com",
         "type": "string"
       },
+      "communicationPhoneNumber": {
+        "type": "string",
+        "metadata": {
+          "description": "The phone number static resource."
+        }
+      },
       "subscriptionId": {
         "type": "string",
         "metadata": {
@@ -89,6 +95,10 @@
       "AZURE_CLIENT_SECRET": {
             "type": "String",
             "value": "[parameters('testApplicationSecret')]"
+      },
+      "COMMUNICATION_PHONE_NUMBER": {
+            "type": "String",
+            "value": "[parameters('communicationPhoneNumber')]"
       },
       "COMMUNICATION_CONNECTION_STRING": {
         "type": "string",
