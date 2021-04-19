@@ -59,7 +59,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Constructor
-     * @param trustManager
+     * @param trustManager The passed-in trust manager.
      */
     public KeyVaultTrustManager(TrustManager trustManager) {
 
