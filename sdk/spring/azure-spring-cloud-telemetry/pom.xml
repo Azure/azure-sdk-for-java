@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-telemetry</artifactId>
-  <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
+  <version>2.4.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
 
   <name>Azure Spring Cloud Telemetry</name>
 
