@@ -20,6 +20,12 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationFailureDetailsInner.class);
 
     /*
+     * Text describing the validation outcome.
+     */
+    @JsonProperty(value = "properties.message")
+    private String message;
+
+    /*
      * A flag describing whether or not validation failed.
      */
     @JsonProperty(value = "properties.failed")
@@ -30,6 +36,32 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.failedTests")
     private List<VnetValidationTestFailure> failedTests;
+
+    /*
+     * A list of warnings generated during validation.
+     */
+    @JsonProperty(value = "properties.warnings")
+    private List<VnetValidationTestFailure> warnings;
+
+    /**
+     * Get the message property: Text describing the validation outcome.
+     *
+     * @return the message value.
+     */
+    public String message() {
+        return this.message;
+    }
+
+    /**
+     * Set the message property: Text describing the validation outcome.
+     *
+     * @param message the message value to set.
+     * @return the VnetValidationFailureDetailsInner object itself.
+     */
+    public VnetValidationFailureDetailsInner withMessage(String message) {
+        this.message = message;
+        return this;
+    }
 
     /**
      * Get the failed property: A flag describing whether or not validation failed.
@@ -72,6 +104,33 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the warnings property: A list of warnings generated during validation.
+     *
+     * @return the warnings value.
+     */
+    public List<VnetValidationTestFailure> warnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Set the warnings property: A list of warnings generated during validation.
+     *
+     * @param warnings the warnings value to set.
+     * @return the VnetValidationFailureDetailsInner object itself.
+     */
+    public VnetValidationFailureDetailsInner withWarnings(List<VnetValidationTestFailure> warnings) {
+        this.warnings = warnings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VnetValidationFailureDetailsInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -81,6 +140,9 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
         super.validate();
         if (failedTests() != null) {
             failedTests().forEach(e -> e.validate());
+        }
+        if (warnings() != null) {
+            warnings().forEach(e -> e.validate());
         }
     }
 }
