@@ -53,7 +53,7 @@ public class PropertyVersionDigest {
 
         this.values = JsonNodeHelper.getArrayValues(propertyVersionObject, DtdlStrings.VALUES, String.class);
         this.uniqueProperties = JsonNodeHelper.getArrayValues(propertyVersionObject, DtdlStrings.UNIQUE_PROPERTIES, String.class);
-        this.classVersions = JsonNodeHelper.getArrayValues(propertyVersionObject, DtdlStrings.VALUES, Integer.class);
+        this.classVersions = JsonNodeHelper.getArrayValues(propertyVersionObject, DtdlStrings.VERSIONS, Integer.class);
     }
 
     /**
