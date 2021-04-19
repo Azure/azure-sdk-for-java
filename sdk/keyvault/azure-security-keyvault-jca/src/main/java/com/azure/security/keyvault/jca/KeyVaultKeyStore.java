@@ -99,13 +99,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public KeyVaultKeyStore() {
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String aadAuthenticationUrl = System.getProperty("azure.keyvault.aad-authentication-url");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
         if (clientId != null) {
-            setKeyVaultClient(new KeyVaultClient(keyVaultUri, aadAuthenticationUrl, tenantId, clientId, clientSecret));
+            setKeyVaultClient(new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret));
         } else {
             setKeyVaultClient(new KeyVaultClient(keyVaultUri, managedIdentity));
         }
@@ -303,7 +302,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             if (parameter.getClientId() != null) {
                 setKeyVaultClient(new KeyVaultClient(
                         parameter.getUri(),
-                        parameter.getAadAuthenticationUrl(),
                         parameter.getTenantId(),
                         parameter.getClientId(),
                         parameter.getClientSecret()));
@@ -440,12 +438,16 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         }
     }
 
+    /**
+     * provide keyStore for user to define own SSLContext
+     * @return keyStore can access certificates from portal
+     * @throws Exception exceptions throws from keyStore
+     */
     public static KeyStore getKeyStore() throws Exception {
 
         KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));

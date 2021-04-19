@@ -44,13 +44,6 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
 </project>
