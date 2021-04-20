@@ -70,7 +70,7 @@ public class NameFormatterTests {
             return;
         }
 
-        Assertions.assertEquals(NameFormatter.formatNameAsEnum(input), expected);
+        Assertions.assertEquals(expected, NameFormatter.formatNameAsEnum(input));
     }
 
     @ParameterizedTest
@@ -86,13 +86,13 @@ public class NameFormatterTests {
             return;
         }
 
-        Assertions.assertEquals(NameFormatter.formatNameAsEnumProperty(input), expected);
+        Assertions.assertEquals(expected, NameFormatter.formatNameAsEnumProperty(input));
     }
 
     @ParameterizedTest
     @CsvSource(value = {
-        "someRandomValue    |   SOMERANDOMVALUE",
-        "SomeRandomValue    |   SOMERANDOMVALUE",
+        "someRandomValue    |   SOME_RANDOM_VALUE",
+        "SomeRandomValue    |   SOME_RANDOM_VALUE",
         "some RandomValue   |   ",
         "                   |   "
     }, delimiter = '|')
@@ -102,7 +102,7 @@ public class NameFormatterTests {
             return;
         }
 
-        Assertions.assertEquals(NameFormatter.formatNameAsEnumValue(input), expected);
+        Assertions.assertEquals(expected, NameFormatter.formatNameAsEnumValue(input));
     }
 
     @ParameterizedTest
