@@ -55,13 +55,14 @@ jobs:
       - template: ../variables/globals.yml
 
     steps:
-      - template: /eng/pipelines/templates/steps/initialize-environment.yml
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           Paths:
             - '${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
+            - '**/*.md'
 
       - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
 

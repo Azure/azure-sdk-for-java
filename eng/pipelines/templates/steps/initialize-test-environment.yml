@@ -16,9 +16,7 @@ steps:
         - Name: Azure/azure-sdk-for-java
           Commitish: $(Build.SourceVersion)
           WorkingDirectory: $(System.DefaultWorkingDirectory)
-      Paths:
-        - '**/pom*.xml'
-        - '**/*.md'
+      Paths: ${{ parameters.Paths }}
 
   - task: UsePythonVersion@0
     displayName: 'Use Python 3.6'

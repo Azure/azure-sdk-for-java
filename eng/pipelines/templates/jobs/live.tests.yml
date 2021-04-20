@@ -43,13 +43,14 @@ jobs:
       container: $[ variables['Container'] ]
 
     steps:
-      - template: /eng/pipelines/templates/steps/initialize-environment.yml
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           Paths:
             - '${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
+            - '**/*.md'
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ if parameters.TestResourceDirectories }}:
