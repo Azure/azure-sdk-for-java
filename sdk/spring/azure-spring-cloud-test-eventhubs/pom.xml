@@ -15,6 +15,7 @@
   <artifactId>azure-spring-cloud-test-eventhubs</artifactId>
   <version>1.0.0</version>  <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-eventhubs;current} -->
 
+  <groupId>com.azure.spring</groupId>
   <name>azure-spring-cloud-test-eventhubs</name>
   <description>EventHubs Test project for Spring Cloud</description>
 

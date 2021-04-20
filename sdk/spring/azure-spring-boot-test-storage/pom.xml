@@ -12,6 +12,7 @@
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-storage</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-storage;current} -->
 
