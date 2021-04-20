@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.9.0-beta.4 (Unreleased)
-
+- BlobLeaseClient now remembers the Lease ID after a lease change.
 
 ## 12.9.0-beta.3 (2021-04-16)
 - Updated azure-storage-common dependencies.
