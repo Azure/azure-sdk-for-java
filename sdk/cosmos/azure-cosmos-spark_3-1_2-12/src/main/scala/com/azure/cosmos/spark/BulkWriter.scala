@@ -12,10 +12,13 @@ import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
-
 import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
+
+import reactor.core.publisher.Sinks.EmitFailureHandler
+import reactor.core.publisher.Sinks.EmitResult
+
 import scala.collection.concurrent.TrieMap
 
 //scalastyle:off null
@@ -39,6 +42,8 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+  private val emitFailureHandler: EmitFailureHandler =
+      (signalType, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
   // TODO: moderakh discuss the context issue in the core SDK bulk api with the team.
   // public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
   //    Flux<CosmosItemOperation> operations,
@@ -172,7 +177,9 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
 
     activeOperations.put(bulkItemOperation, operationContext)
-    bulkInputEmitter.tryEmitNext(bulkItemOperation)
+
+    // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+    bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
   }
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
