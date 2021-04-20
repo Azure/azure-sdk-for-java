@@ -64,7 +64,7 @@ public final class BlobLeaseAsyncClient {
     private final AzureBlobStorageImpl client;
     private final String accountName;
 
-    private String leaseId;
+    private volatile String leaseId;
 
     BlobLeaseAsyncClient(HttpPipeline pipeline, String url, String containerName, String blobName, String leaseId,
         boolean isBlob, String accountName, String serviceVersion) {
