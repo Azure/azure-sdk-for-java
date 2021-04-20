@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.http.*;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorRedirectPolicy;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 

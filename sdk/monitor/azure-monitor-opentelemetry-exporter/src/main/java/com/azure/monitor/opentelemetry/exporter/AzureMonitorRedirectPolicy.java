@@ -18,8 +18,8 @@ import java.net.HttpURLConnection;
  */
 public final class AzureMonitorRedirectPolicy implements HttpPipelinePolicy {
 
-    private final static int PERMANENT_REDIRECT_STATUS_CODE = 308;
-    private final static int MAX_REDIRECT_RETRIES = 10;
+    private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
+    private static final int MAX_REDIRECT_RETRIES = 10;
     private final ClientLogger logger = new ClientLogger(AzureMonitorRedirectPolicy.class);
     private String redirectedEndpointUrl;
 
