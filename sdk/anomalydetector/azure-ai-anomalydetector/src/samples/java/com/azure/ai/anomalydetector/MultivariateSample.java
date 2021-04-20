@@ -125,8 +125,8 @@ public class MultivariateSample {
 
 
     public static void main(final String[] args) throws IOException, InterruptedException {
-        String endpoint = "<placeholder>";
-        String key = "<placeholder>";
+        String endpoint = "<anomaly-detector-resource-endpoint>";
+        String key = "<anomaly-detector-resource-key>";
         //Get multivariate client
         AnomalyDetectorClient client = getClient(endpoint, key);
 
@@ -137,7 +137,7 @@ public class MultivariateSample {
         FillNAMethod fillNAMethod = FillNAMethod.LINEAR;
         Integer paddingValue = 0;
         AlignPolicy alignPolicy = new AlignPolicy().setAlignMode(alignMode).setFillNAMethod(fillNAMethod).setPaddingValue(paddingValue);
-        String source = "<placeholder>";
+        String source = "<Your own data source>";
         OffsetDateTime startTime = OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         ;
         OffsetDateTime endTime = OffsetDateTime.of(2021, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC);
@@ -173,7 +173,7 @@ public class MultivariateSample {
         }
 
         //Export result files to local
-        String path = "<placeholder>"; //path for the saving zip file
+        String path = "<path for the saving zip file>";
         ExportResult(client, modelId, path);
 
 
