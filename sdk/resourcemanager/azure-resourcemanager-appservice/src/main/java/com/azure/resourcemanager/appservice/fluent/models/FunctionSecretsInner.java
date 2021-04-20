@@ -5,28 +5,25 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Function secrets. */
-@JsonFlatten
 @Fluent
-public class FunctionSecretsInner extends ProxyOnlyResource {
+public final class FunctionSecretsInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionSecretsInner.class);
 
     /*
      * Secret key.
      */
-    @JsonProperty(value = "properties.key")
+    @JsonProperty(value = "key")
     private String key;
 
     /*
      * Trigger URL.
      */
-    @JsonProperty(value = "properties.trigger_url")
+    @JsonProperty(value = "trigger_url")
     private String triggerUrl;
 
     /**
@@ -74,8 +71,6 @@ public class FunctionSecretsInner extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }
