@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -127,7 +128,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
         replacement = "azure.activedirectory.user-group.allowed-groups")
-    public List<String> getActiveDirectoryGroups() {
+    public List<UserGroup> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
 
@@ -143,9 +144,7 @@ public class AADAuthenticationProperties implements InitializingBean {
          * Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph
          * API Call.
          */
-        private List<String> allowedGroups = new ArrayList<>();
-
-        private Set<String> allowedGroupsId = new HashSet<>();
+        private List<UserGroup> allowedGroups = new ArrayList<>();
 
         public boolean isEnableGroupId() {
             return enableGroupId;
@@ -155,22 +154,64 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.enableGroupId = enableGroupId;
         }
 
-        public Set<String> getAllowedGroupsId() {
-            return allowedGroupsId;
-        }
-
-        public void setAllowedGroupsId(Set<String> allowedGroupsId) {
-            this.allowedGroupsId = allowedGroupsId;
-        }
-
-        public List<String> getAllowedGroups() {
+        public List<UserGroup> getAllowedGroups() {
             return allowedGroups;
         }
 
-        public void setAllowedGroups(List<String> allowedGroups) {
+        public void setAllowedGroups(List<UserGroup> allowedGroups) {
             this.allowedGroups = allowedGroups;
         }
 
+        public Iterator<UserGroup> groupIterator(){
+            return allowedGroups.iterator();
+        }
+
+        public List<String> allowedGroupsName(){
+            Iterator<UserGroup> iterator = groupIterator();
+            List<String> allowedGroupsName = new ArrayList<>();
+            while (iterator.hasNext()){
+                allowedGroupsName.add(iterator.next().getGroupName());
+            }
+            return allowedGroupsName;
+        }
+
+        public Set<String> allowedGroupsId(){
+            Iterator<UserGroup> iterator = groupIterator();
+            Set<String> allowedGroupsId = new HashSet<>();
+            while (iterator.hasNext()){
+                allowedGroupsId.add(iterator.next().getGroupId());
+            }
+            return allowedGroupsId;
+        }
+
+    }
+    public static class UserGroup{
+        private String groupName;
+        private String groupId;
+
+        public String getGroupName() {
+            return groupName;
+        }
+
+        public void setGroupName(String groupName) {
+            this.groupName = groupName;
+        }
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(String groupId) {
+            this.groupId = groupId;
+        }
+
+        @Override
+        public String toString() {
+            return "UserGroup{" +
+                "groupName='" + groupName + '\'' +
+                ", groupId='" + groupId + '\'' +
+                '}';
+        }
     }
 
     public boolean allowedGroupsConfigured() {
@@ -178,11 +219,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .map(AADAuthenticationProperties::getUserGroup)
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
                        .map(allowedGroups -> !allowedGroups.isEmpty())
-                       .orElse(false)
-            || Optional.of(this)
-                       .map(AADAuthenticationProperties::getUserGroup)
-                       .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupsId)
-                       .map(allowedGroupsId -> !allowedGroupsId.isEmpty())
                        .orElse(false);
     }
 
@@ -229,7 +265,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     @Deprecated
-    public void setActiveDirectoryGroups(List<String> activeDirectoryGroups) {
+    public void setActiveDirectoryGroups(List<UserGroup> activeDirectoryGroups) {
         this.userGroup.setAllowedGroups(activeDirectoryGroups);
     }
 
@@ -347,11 +383,11 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public boolean isAllowedGroup(String group) {
         return Optional.ofNullable(getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroups)
+                       .map(UserGroupProperties::allowedGroupsName)
                        .orElseGet(Collections::emptyList)
                        .contains(group)
             || Optional.ofNullable(getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroupsId)
+                       .map(UserGroupProperties::allowedGroupsId)
                        .orElseGet(Collections::emptySet)
                        .contains(group);
     }
@@ -390,13 +426,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "azure.activedirectory.user-group.allowed-groups should be empty. "
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
                 + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
-        }
-
-        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupsId().isEmpty()) {
-            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
-                + "azure.activedirectory.user-group.allowed-groups-id should be empty. "
-                + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-groups-id=" + userGroup.getAllowedGroupsId());
         }
 
         authorizationClients.values()

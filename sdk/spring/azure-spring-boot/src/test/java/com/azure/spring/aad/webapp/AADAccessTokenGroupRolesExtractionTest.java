@@ -66,8 +66,8 @@ public class AADAccessTokenGroupRolesExtractionTest {
         when(properties.getUserGroup()).thenReturn(userGroup);
         when(properties.getUserGroup().isEnableGroupId()).thenReturn(true);
         when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
-        when(userGroup.getAllowedGroupsId()).thenReturn(allowedGroupsId);
-        when(userGroup.getAllowedGroups()).thenReturn(allowedGroupsName);
+        when(userGroup.allowedGroupsId()).thenReturn(allowedGroupsId);
+        when(userGroup.allowedGroupsName()).thenReturn(allowedGroupsName);
         when(accessToken.getTokenValue()).thenReturn("fake-access-token");
     }
 

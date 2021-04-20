@@ -68,11 +68,10 @@ azure:
     client-secret: <client-secret>
     tenant-id: <tenant-id>
     user-group:
-      allowed-groups: group1, group2    # By default, groups name is used for permission control.
-#     enable-group-id: true             # If enable-group-id=true, allow-groups-id will be used for permission control. The allowed-groups will be invalidated.
-#     allowed-groups-id:       
-#       - "xxxxxxxx-xxxx-<group1-id>-xxxxxxxxxx"
-#       - "xxxxxxxx-xxxx-<group2-id>-xxxxxxxxxx"
+#     enable-group-id: true             # If enable-group-id=true, group id will be used for permission control. The allowed group name will be invalidated.
+      allowed-groups:
+        - groupName:  <group-name>
+          groupId: <group-id>
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:

@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 public class AADAuthenticationFilterTest {
     private static final String TOKEN = "dummy-token";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class));
     private final UserPrincipalManager userPrincipalManager;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
@@ -56,10 +56,13 @@ public class AADAuthenticationFilterTest {
     @Ignore
     public void doFilterInternal() {
         this.contextRunner.withPropertyValues("azure.activedirectory.client-id", TestConstants.CLIENT_ID)
-                .withPropertyValues("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET)
-                .withPropertyValues("azure.activedirectory.client-secret",
-                        TestConstants.TARGETED_GROUPS.toString()
-                                                     .replace("[", "").replace("]", ""));
+                          .withPropertyValues("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET)
+                          .withPropertyValues("azure.activedirectory.user-group.allowed-groups[0].groupName", "group1")
+                          .withPropertyValues("azure.activedirectory.user-group.allowed-groups[0].groupId", "xxxx"
+                              + "-xxxx-group1-id-xxxx-xxxx")
+                          .withPropertyValues("azure.activedirectory.user-group.allowed-groups[0].groupName", "group2")
+                          .withPropertyValues("azure.activedirectory.user-group.allowed-groups[0].groupId", "xxxx"
+                              + "-xxxx-group2-id-xxxx-xxxx");
 
         this.contextRunner.run(context -> {
             final HttpServletRequest request = mock(HttpServletRequest.class);
@@ -81,7 +84,7 @@ public class AADAuthenticationFilterTest {
             assertThat(authentication.getAuthorities()).isNotNull();
             assertThat(authentication.getAuthorities().size()).isEqualTo(2);
             assertThat(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_group1"))
-                    && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_group2"))
+                && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_group2"))
             ).isTrue();
 
             final UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();

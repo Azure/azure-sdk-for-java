@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,7 +11,17 @@ public class TestConstants {
 
     public static final String CLIENT_ID = "real_client_id";
     public static final String CLIENT_SECRET = "real_client_secret";
-    public static final List<String> TARGETED_GROUPS = Arrays.asList("group1", "group2", "group3");
+
+    public static List<AADAuthenticationProperties.UserGroup> targetedGroups(){
+        List<AADAuthenticationProperties.UserGroup> userGroups = new ArrayList<>();
+        for (int i = 1; i < 3; i++) {
+            AADAuthenticationProperties.UserGroup userGroup = new AADAuthenticationProperties.UserGroup();
+            userGroup.setGroupName("group" + i);
+            userGroup.setGroupId("xxxx-xxxx-group" + i + "-id-xxxx-xxxx");
+            userGroups.add(userGroup);
+        }
+        return userGroups;
+    }
 
     public static final String TOKEN_HEADER = "Authorization";
     public static final String BEARER_TOKEN = "Bearer real_jwt_bearer_token";

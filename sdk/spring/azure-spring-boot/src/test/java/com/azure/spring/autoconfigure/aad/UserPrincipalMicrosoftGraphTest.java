@@ -23,8 +23,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.text.ParseException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,7 +81,14 @@ public class UserPrincipalMicrosoftGraphTest {
 
     @Test
     public void getGroups() throws Exception {
-        properties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
+        List<AADAuthenticationProperties.UserGroup> userGroups = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            AADAuthenticationProperties.UserGroup userGroup = new AADAuthenticationProperties.UserGroup();
+            userGroup.setGroupName("group" + i);
+            userGroup.setGroupId("xxxx-xxxx-group" + i + "-id-xxxx-xxxx");
+            userGroups.add(userGroup);
+        }
+        properties.getUserGroup().setAllowedGroups(userGroups);
         AzureADGraphClient graphClientMock = new AzureADGraphClient(clientId, clientSecret, properties,
             endpoints);
 
