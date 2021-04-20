@@ -174,7 +174,7 @@ Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
-    KeyStore trustStore = KeyVaultKeyStore.getKeyStore();
+    KeyStore trustStore = KeyVaultCertificateFunctions.getKeyStore();
     SSLContext sslContext = SSLContexts.custom()
                                        .loadTrustMaterial(trustStore, null)
                                        .build();
@@ -239,7 +239,7 @@ server:
 
 Step 2. On the client side, update `RestTemplate`. Example:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L41-L64 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L41-L63 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
