@@ -44,7 +44,7 @@ import java.util.Objects;
 
 /**
  * Entry point to DeploymentManager. REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
- * See https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
+ * See https://docs.microsoft.com/azure/azure-resource-manager/deployment-manager-overview for more information.
  */
 public final class DeploymentManager {
     private ServiceTopologies serviceTopologies;

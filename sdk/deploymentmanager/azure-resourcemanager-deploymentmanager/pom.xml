@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Deployment Management</name>
-    <description>This package contains Microsoft Azure SDK for Deployment Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information. Package tag package-2019-11-01-preview.</description>
+    <description>This package contains Microsoft Azure SDK for Deployment Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See https://docs.microsoft.com/azure/azure-resource-manager/deployment-manager-overview for more information. Package tag package-2019-11-01-preview.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <licenses>
