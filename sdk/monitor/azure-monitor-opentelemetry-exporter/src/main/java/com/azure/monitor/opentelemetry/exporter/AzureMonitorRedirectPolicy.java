@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter.policy;
+package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -16,27 +16,12 @@ import java.net.HttpURLConnection;
 /**
  * A HttpPipeline policy that retries when a HTTP Redirect is received as response.
  */
-public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
+public final class AzureMonitorRedirectPolicy implements HttpPipelinePolicy {
 
-    private final ClientLogger logger = new ClientLogger(AzureMonitorRedirectCustomPolicy.class);
-    private final int maxRedirectRetries;
+    private final static int PERMANENT_REDIRECT_STATUS_CODE = 308;
+    private final static int MAX_REDIRECT_RETRIES = 10;
+    private final ClientLogger logger = new ClientLogger(AzureMonitorRedirectPolicy.class);
     private String redirectedEndpointUrl;
-
-    /**
-     * Creates {@link AzureMonitorRedirectCustomPolicy} with default maxRedirectRetries values as 10.
-     */
-    public AzureMonitorRedirectCustomPolicy() {
-        maxRedirectRetries = 10;
-    }
-
-    /**
-     * Creates {@link AzureMonitorRedirectCustomPolicy} with provided maxRedirectRetries.
-     *
-     * @param maxRedirectRetries The maximum retries through pipeline when a redirect is received as response
-     */
-    public AzureMonitorRedirectCustomPolicy(int maxRedirectRetries) {
-        this.maxRedirectRetries = maxRedirectRetries;
-    }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -66,13 +51,11 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
                     }
                 }
                 return Mono.just(httpResponse);
-            }).onErrorResume(err -> Mono.error(new RuntimeException(
-                String.format("Retry with redirect error details: %s", err.getMessage()),
-                err)));
+            });
     }
 
     /**
-     * Determines the delay duration that should be waited before retrying.
+     * Determines if its a valid retry scenario based on statusCode and tryCount.
      *
      * @param statusCode HTTP response status code
      * @param tryCount Redirect retries so far
@@ -80,13 +63,13 @@ public class AzureMonitorRedirectCustomPolicy implements HttpPipelinePolicy {
      * retries is less than {@code maxRedirectRetries}.
      */
     private boolean shouldRetryWithRedirect(int statusCode, int tryCount) {
-        if (tryCount >= maxRedirectRetries) {
-            logger.verbose("Max redirect retries limit reached:%d.", maxRedirectRetries);
+        if (tryCount >= MAX_REDIRECT_RETRIES) {
+            logger.verbose("Max redirect retries limit reached:%d.", MAX_REDIRECT_RETRIES);
             return false;
         }
         return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
                 || statusCode == HttpURLConnection.HTTP_MOVED_PERM
-                || statusCode == 308;
+                || statusCode == PERMANENT_REDIRECT_STATUS_CODE;
     }
 
 }

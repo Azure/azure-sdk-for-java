@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter.policy;
+package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.http.*;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorRedirectPolicy;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -16,7 +17,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AzureMonitorRedirectCustomPolicyTest {
+public class AzureMonitorRedirectPolicyTest {
 
     @Test
     public void retryWith308Test() throws Exception {
@@ -33,7 +34,7 @@ public class AzureMonitorRedirectCustomPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new AzureMonitorRedirectCustomPolicy())
+            .policies(new AzureMonitorRedirectPolicy())
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
@@ -54,13 +55,13 @@ public class AzureMonitorRedirectCustomPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new AzureMonitorRedirectCustomPolicy(3))
+            .policies(new AzureMonitorRedirectPolicy())
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
         // redirect is captured only 3 times
-        assertEquals(4, httpClient.getCount());
+        assertEquals(11, httpClient.getCount());
         assertEquals(308, response.getStatusCode());
     }
 
@@ -79,7 +80,7 @@ public class AzureMonitorRedirectCustomPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new AzureMonitorRedirectCustomPolicy())
+            .policies(new AzureMonitorRedirectPolicy())
             .build();
 
         assertEquals(0, httpClient.getCount());
