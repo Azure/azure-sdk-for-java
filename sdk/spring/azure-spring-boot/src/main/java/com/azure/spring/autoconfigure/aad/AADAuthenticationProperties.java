@@ -162,30 +162,31 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.allowedGroups = allowedGroups;
         }
 
-        public Iterator<UserGroup> groupIterator(){
+        public Iterator<UserGroup> groupIterator() {
             return allowedGroups.iterator();
         }
 
-        public List<String> allowedGroupsName(){
+        public List<String> allowedGroupsName() {
             Iterator<UserGroup> iterator = groupIterator();
             List<String> allowedGroupsName = new ArrayList<>();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 allowedGroupsName.add(iterator.next().getGroupName());
             }
             return allowedGroupsName;
         }
 
-        public Set<String> allowedGroupsId(){
+        public Set<String> allowedGroupsId() {
             Iterator<UserGroup> iterator = groupIterator();
             Set<String> allowedGroupsId = new HashSet<>();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 allowedGroupsId.add(iterator.next().getGroupId());
             }
             return allowedGroupsId;
         }
 
     }
-    public static class UserGroup{
+
+    public static class UserGroup {
         private String groupName;
         private String groupId;
 
@@ -207,10 +208,9 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         @Override
         public String toString() {
-            return "UserGroup{" +
-                "groupName='" + groupName + '\'' +
-                ", groupId='" + groupId + '\'' +
-                '}';
+            return "UserGroup{"
+                + "groupName='" + groupName + '\''
+                + ", groupId='" + groupId + '\'' + '}';
         }
     }
 

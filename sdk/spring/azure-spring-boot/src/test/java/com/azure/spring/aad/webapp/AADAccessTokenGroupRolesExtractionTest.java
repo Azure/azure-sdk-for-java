@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 public class AADAccessTokenGroupRolesExtractionTest {
 
-    private final String MEMBERSHIPS_JSON = "{\"@odata.context\":\"https://graph.microsoft.com/v1"
+    private final String membershipJson = "{\"@odata.context\":\"https://graph.microsoft.com/v1"
         + ".0/$metadata#directoryObjects\",\"value\":[{\"@odata.type\":\"#microsoft.graph.group\","
         + "\"id\":\"d07c0bd6-4aab-45ac-b87c-23e8d00194ab\",\"deletedDateTime\":null,\"classification\":null,"
         + "\"createdDateTime\":\"2021-04-13T02:00:25Z\",\"creationOptions\":[],\"description\":\"group1\","
@@ -122,7 +122,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
         }
 
         public String getUserMemberships() {
-            return MEMBERSHIPS_JSON;
+            return membershipJson;
         }
 
         public boolean isGroupObject(final Membership membership) {

@@ -46,7 +46,7 @@ public class AADAuthenticationFilterPropertiesTest {
             assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
-                    .toString()).isEqualTo(TestConstants.targetedGroups().toString());
+                                 .toString()).isEqualTo(TestConstants.targetedGroups().toString());
         }
     }
 
@@ -54,10 +54,12 @@ public class AADAuthenticationFilterPropertiesTest {
         System.setProperty("azure.activedirectory.tenant-id", "demo-tenant-id");
         System.setProperty("azure.activedirectory.client-id", TestConstants.CLIENT_ID);
         System.setProperty("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET);
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[0].groupName","group1");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[0].groupId","xxxx-xxxx-group1-id-xxxx-xxxx");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[1].groupName","group2");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[1].groupId","xxxx-xxxx-group2-id-xxxx-xxxx");
+        System.setProperty("azure.activedirectory.user-group.allowed-groups[0].groupName", "group1");
+        System.setProperty("azure.activedirectory.user-group.allowed-groups[0].groupId",
+            "xxxx-xxxx-group1-id-xxxx-xxxx");
+        System.setProperty("azure.activedirectory.user-group.allowed-groups[1].groupName", "group2");
+        System.setProperty("azure.activedirectory.user-group.allowed-groups[1].groupId",
+            "xxxx-xxxx-group2-id-xxxx-xxxx");
         System.setProperty("azure.activedirectory.allow-telemetry", "false");
     }
 

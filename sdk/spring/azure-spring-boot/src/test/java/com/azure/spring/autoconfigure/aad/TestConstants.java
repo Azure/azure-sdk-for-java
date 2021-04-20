@@ -4,7 +4,6 @@
 package com.azure.spring.autoconfigure.aad;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TestConstants {
@@ -12,7 +11,7 @@ public class TestConstants {
     public static final String CLIENT_ID = "real_client_id";
     public static final String CLIENT_SECRET = "real_client_secret";
 
-    public static List<AADAuthenticationProperties.UserGroup> targetedGroups(){
+    public static List<AADAuthenticationProperties.UserGroup> targetedGroups() {
         List<AADAuthenticationProperties.UserGroup> userGroups = new ArrayList<>();
         for (int i = 1; i < 3; i++) {
             AADAuthenticationProperties.UserGroup userGroup = new AADAuthenticationProperties.UserGroup();
@@ -26,7 +25,9 @@ public class TestConstants {
     public static final String TOKEN_HEADER = "Authorization";
     public static final String BEARER_TOKEN = "Bearer real_jwt_bearer_token";
 
-    /** Token from https://docs.microsoft.com/azure/active-directory/develop/v2-id-and-access-tokens */
+    /**
+     * Token from https://docs.microsoft.com/azure/active-directory/develop/v2-id-and-access-tokens
+     */
     public static final String JWT_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1"
         + "iYTlnb0VLWSJ9.eyJhdWQiOiI2NzMxZGU3Ni0xNGE2LTQ5YWUtOTdiYy02ZWJhNjkxNDM5MWUiLCJpc3MiOiJodHRwczovL2xvZ2lu"
         + "Lm1pY3Jvc29mdG9ubGluZS5jb20vYjk0MTk4MTgtMDlhZi00OWMyLWIwYzMtNjUzYWRjMWYzNzZlL3YyLjAiLCJpYXQiOjE0NTIyOD"
