@@ -21,7 +21,7 @@ public class WebApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebApiController.class);
 
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/webapiA";
+    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8081/webapiA/webapiB";
 
     @Autowired
     private WebClient webClient;

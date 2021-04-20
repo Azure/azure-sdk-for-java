@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -11,8 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
-@Disabled
-public class KeyVaultLoadStoreParameterTest {
+public class KeyVaultLoadStoreParameterIT {
 
     /**
      * Test getProtectionParameter method.
