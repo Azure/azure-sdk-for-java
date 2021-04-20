@@ -9,8 +9,10 @@ steps:
       Repositories:
         - Name: Azure/azure-sdk-for-java
           Commitish: $(Build.SourceVersion)
+          WorkingDirectory: $(System.DefaultWorkingDirectory)
       Paths:
         - eng/scripts/generate_from_source_pom.py
+        - eng/versioning/version_client.txt
         - '**/pom*.xml'
 
   - task: UsePythonVersion@0
@@ -22,8 +24,9 @@ steps:
   - task: PythonScript@0
     displayName: 'Generate sparse checkout directories'
     inputs:
-      scriptPath: '$(System.DefaultWorkingDirectory)/eng/scripts/generate_from_source_pom.py'
+      scriptPath: 'eng/scripts/generate_from_source_pom.py'
       arguments: '--set-pipeline-variable'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - pwsh: |
