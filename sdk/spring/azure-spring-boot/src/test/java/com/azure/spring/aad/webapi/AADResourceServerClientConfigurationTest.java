@@ -5,12 +5,8 @@ package com.azure.spring.aad.webapi;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -24,12 +20,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADResourceServerClientConfigurationTest {
-
-    @EnableWebSecurity
-    @Import(OAuth2ClientAutoConfiguration.class)
-    public static class WebOAuth2ClientApp {
-
-    }
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withPropertyValues(
@@ -51,7 +41,7 @@ public class AADResourceServerClientConfigurationTest {
     @Test
     public void testWithRequiredPropertiesSet() {
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADResourceServerClientConfiguration.class))
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
@@ -79,7 +69,7 @@ public class AADResourceServerClientConfigurationTest {
     @Test
     public void testOnlyGraphClient() {
         this.contextRunner
-            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADResourceServerClientConfiguration.class))
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .run(context -> {
@@ -124,7 +114,7 @@ public class AADResourceServerClientConfigurationTest {
     @Test
     public void testExistCustomAndGraphClient() {
         this.contextRunner
-            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADResourceServerClientConfiguration.class))
+            .withUserConfiguration(AADResourceServerClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .withPropertyValues("azure.activedirectory.authorization-clients.custom.scopes="

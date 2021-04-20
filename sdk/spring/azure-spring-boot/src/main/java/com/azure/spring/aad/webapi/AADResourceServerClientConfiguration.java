@@ -54,8 +54,8 @@ public class AADResourceServerClientConfiguration {
 
 
     @Bean
-    public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
-                                                          OAuth2AuthorizedClientRepository authorizedClients) {
+    OAuth2AuthorizedClientManager authorizeClientManager(ClientRegistrationRepository clients,
+                                                         OAuth2AuthorizedClientRepository authorizedClients) {
 
         DefaultOAuth2AuthorizedClientManager manager =
             new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
@@ -81,6 +81,26 @@ public class AADResourceServerClientConfiguration {
             return registrationId -> null;
         }
         return new InMemoryClientRegistrationRepository(clients);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+    }
+
+    /**
+     * Use InMemoryClientRegistrationRepository and ClientRegistrationRepository to create
+     * AADResourceServerOAuth2AuthorizedClientRepository
+     *
+     * @param oAuth2AuthorizedClientService authorized client repository
+     * @return AADResourceServerOAuth2AuthorizedClientRepository Bean
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
+        OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService);
     }
 
     /**
