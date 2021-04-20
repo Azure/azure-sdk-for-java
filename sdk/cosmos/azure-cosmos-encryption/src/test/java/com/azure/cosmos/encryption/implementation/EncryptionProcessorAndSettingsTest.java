@@ -197,7 +197,7 @@ public class EncryptionProcessorAndSettingsTest {
         byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa" +
             " " +
             "ae 1e d9 1c").replace(" ", ""));
-        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
         return new CosmosClientEncryptionKeyProperties("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, key, metadata);
     }

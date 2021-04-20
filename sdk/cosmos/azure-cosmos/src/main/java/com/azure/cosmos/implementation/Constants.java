@@ -207,6 +207,7 @@ public final class Constants {
         public static final String  EncryptedInfo = "_ei";
         public final static  String RANDOMIZED = "Randomized";
         public final static  String DETERMINISTIC = "Deterministic";
+        public final static  String PLAIN_TEXT = "Plaintext";
 
         // Feed Ranges
         public static final String RANGE = "Range";

@@ -132,7 +132,7 @@ public class Program {
             throw new IllegalArgumentException("Please specify a valid MasterKeyUrl in the appSettings.json");
         }
 
-        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(dataEncryptionKeyId, masterKeyUrlFromConfig);
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata("custom", dataEncryptionKeyId, masterKeyUrlFromConfig);
 
         /// Generates an encryption key, wraps it using the key wrap metadata provided
         /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.

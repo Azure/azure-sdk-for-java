@@ -112,8 +112,9 @@ public final class ClientEncryptionPolicy {
         }
 
         if (!clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.DETERMINISTIC) &&
-            !clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.RANDOMIZED)) {
-            throw new IllegalArgumentException("EncryptionType should be either 'Deterministic' or 'Randomized'.");
+            !clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.RANDOMIZED) &&
+            !clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.PLAIN_TEXT)) {
+            throw new IllegalArgumentException("EncryptionType should be either 'Deterministic' or 'Randomized' or 'Plaintext'.");
         }
 
         if (StringUtils.isEmpty(clientEncryptionIncludedPath.getEncryptionAlgorithm())) {

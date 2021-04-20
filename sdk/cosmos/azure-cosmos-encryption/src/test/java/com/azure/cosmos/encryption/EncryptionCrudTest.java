@@ -71,8 +71,8 @@ public class EncryptionCrudTest extends TestSuiteBase {
         properties.setClientEncryptionPolicy(clientEncryptionPolicy);
         cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
         cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
-        metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
+        metadata2 = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
@@ -101,7 +101,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
-    public void upsertItem_readItem() throws Exception {
+    public void upsertItem_readItem() {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.upsertItem(properties,
             new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();

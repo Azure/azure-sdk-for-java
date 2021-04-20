@@ -133,9 +133,9 @@ public class EncryptionCodeSnippet {
     }
 
     void createClientEncryptionKey(CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase) {
-        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
-        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
-        new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
+        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
+        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("custom","key2", "tempmetadata2");
+        new EncryptionKeyWrapMetadata("custom","key1", "tempmetadata1");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block().getProperties();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
