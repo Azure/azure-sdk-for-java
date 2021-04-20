@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/missingRepo",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1b7495bb-cc42-488b-b5b5-0310d63342ad"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/missingRepo",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4ebc9e1c-a648-4a33-8a1d-760f58401e9d"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

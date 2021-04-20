@@ -47,7 +47,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -107,7 +107,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -161,7 +161,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -223,7 +223,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -387,7 +387,19 @@ Here are some examples about how to use these properties:
 #### Support access control by id token in web application 
 
 This starter supports creating `GrantedAuthority` from id_token's `roles` claim to allow using `id_token` for authorization in web application. Developers can use the
-`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. 
+
+Note:
+ - The `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+ - When using `appRoles` as `roles` claim, please avoid configuring group attribute as `roles` at the same time. The latter will override the claim to contain group information instead of `appRoles`. Below configuration in manifest should be avoided:
+    ```
+    "optionalClaims": {
+        "idtoken": [{
+            "name": "groups",
+            "additionalProperties": ["emit_as_roles"]
+        }]
+    }
+    ```
 
 Follow the guide to [add app roles in your application and assign to users or groups](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 

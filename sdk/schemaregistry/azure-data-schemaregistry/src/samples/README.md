@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-data-schemaregistry
+  - azure-event-hubs
 urlFragment: schemaregistry-samples
 ---
 

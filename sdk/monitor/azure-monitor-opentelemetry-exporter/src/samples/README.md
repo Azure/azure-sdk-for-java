@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-monitor-opentelemetry-exporter
+  - azure-monitor
 urlFragment: exporter-azuremonitor-java-samples
 ---
 

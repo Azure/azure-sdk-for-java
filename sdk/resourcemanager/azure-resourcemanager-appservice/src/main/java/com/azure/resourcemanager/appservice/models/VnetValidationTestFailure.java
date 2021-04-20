@@ -69,6 +69,13 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VnetValidationTestFailure withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -169,6 +169,10 @@ jobs:
             Directory: sdk/${{ parameters.ServiceDirectory }}
           CheckLinkGuidance: $true
 
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
       # Use BasePathLength of 38 instead of the default 49 as some GA'd files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
         parameters:
