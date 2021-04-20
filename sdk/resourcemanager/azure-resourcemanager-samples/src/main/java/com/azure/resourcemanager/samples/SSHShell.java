@@ -34,12 +34,9 @@ public final class SSHShell {
      * @param port the ssh port
      * @param userName the ssh user name
      * @param password the ssh password
-     * @return the shell
      * @throws JSchException the JSchException
-     * @throws IOException the IOException
      */
-    private SSHShell(String host, int port, String userName, String password)
-            throws JSchException, IOException {
+    private SSHShell(String host, int port, String userName, String password) throws JSchException {
         JSch jsch = new JSch();
         this.session = jsch.getSession(userName, host, port);
         session.setPassword(password);
