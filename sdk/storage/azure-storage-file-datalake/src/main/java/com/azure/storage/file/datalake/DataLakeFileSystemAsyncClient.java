@@ -885,7 +885,8 @@ public class DataLakeFileSystemAsyncClient {
 
         context = context == null ? Context.NONE : context;
         String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(blobDataLakeStorageFs.getUrl(), "blob", "dfs");
-        //blobUrl = StorageImplUtils.appendToUrlPath(blobUrl, deletedPath).toString();
+
+        // This instance is to have a datalake impl that points to the blob endpoint
         AzureDataLakeStorageRestAPIImpl blobDataLakeStoragePath = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(blobDataLakeStorageFs.getHttpPipeline())
             .url(blobUrl)
