@@ -25,7 +25,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -155,7 +155,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -184,7 +184,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/web?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/web?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -239,7 +239,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -267,7 +267,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -295,7 +295,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -324,7 +324,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/hostNameBindings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/hostNameBindings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -353,7 +353,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -381,7 +381,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -409,7 +409,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/connectionstrings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/connectionstrings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -437,7 +437,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -465,7 +465,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -493,7 +493,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -522,7 +522,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/web?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/web?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -577,7 +577,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -605,7 +605,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -633,7 +633,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -662,7 +662,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/hostNameBindings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/hostNameBindings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -691,7 +691,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -719,7 +719,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -747,7 +747,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/connectionstrings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/connectionstrings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -775,7 +775,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -803,7 +803,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -832,7 +832,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/web?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/web?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -887,7 +887,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/serverfarms/webapp1-0a3763364fplanec701332c?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -915,7 +915,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -943,7 +943,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/appsettings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/appsettings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -972,7 +972,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/hostNameBindings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/hostNameBindings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1001,7 +1001,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1029,7 +1029,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1057,7 +1057,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/connectionstrings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/connectionstrings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1085,7 +1085,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1113,7 +1113,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/publishxml?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/publishxml?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1140,7 +1140,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/hostNameBindings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/hostNameBindings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1169,7 +1169,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1197,7 +1197,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1225,7 +1225,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/connectionstrings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/connectionstrings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1253,7 +1253,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp1-0a3763364f/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1310,7 +1310,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/publishxml?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/publishxml?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1337,7 +1337,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/hostNameBindings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/hostNameBindings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1366,7 +1366,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1394,7 +1394,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1422,7 +1422,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/connectionstrings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/connectionstrings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1450,7 +1450,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1478,7 +1478,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/functions/admin/token?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/functions/admin/token?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1528,7 +1528,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/functions/admin/token?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp2-6b752958e9/functions/admin/token?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1578,7 +1578,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/extensions/MSDeploy?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/extensions/MSDeploy?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -1603,11 +1603,11 @@
       "cache-control" : "no-cache",
       "x-ms-request-id" : "5d7bcf20-b558-498c-af3a-2f8761f7001b",
       "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/extensions/MSDeploy\",\r\n  \"name\": \"MSDeploy\",\r\n  \"type\": \"Microsoft.Web/sites/extensions\",\r\n  \"location\": \"West US\",\r\n  \"properties\": {\r\n    \"deployer\": \"EDB0C694F68FB1AC109AB0AE21C710971F8AFBC3\",\r\n    \"provisioningState\": \"accepted\",\r\n    \"startTime\": \"0001-01-01T00:00:00\",\r\n    \"endTime\": \"0001-01-01T00:00:00\",\r\n    \"complete\": false\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/extensions/MSDeploy/status?api-version=2019-08-01"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/extensions/MSDeploy/status?api-version=2020-12-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/extensions/MSDeploy/status?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_2e0186452f14/providers/Microsoft.Web/sites/webapp3-bc021343f6/extensions/MSDeploy/status?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4c4be74f6c8257dbbe008416a4d411a9aabf191a80fa2bd61b630c829c3c3edd Java:11.0.4 (WebSiteManagementClient, 2019-08-01)"
     },

@@ -2457,4 +2457,10 @@
     <Class name="~com.azure.security.attestation.models\.[\w]+"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
+
+  <!-- Generated implementation of Anomaly Detector is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
 </FindBugsFilter>

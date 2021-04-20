@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.DatabasePrincipalAssignmentsClient;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignmentInner;
@@ -24,10 +23,10 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
 
     private final DatabasePrincipalAssignmentsClient innerClient;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
     public DatabasePrincipalAssignmentsImpl(
-        DatabasePrincipalAssignmentsClient innerClient, KustoManager serviceManager) {
+        DatabasePrincipalAssignmentsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -120,14 +119,14 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         String resourceGroupName, String clusterName, String databaseName) {
         PagedIterable<DatabasePrincipalAssignmentInner> inner =
             this.serviceClient().list(resourceGroupName, clusterName, databaseName);
-        return inner.mapPage(inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DatabasePrincipalAssignment> list(
         String resourceGroupName, String clusterName, String databaseName, Context context) {
         PagedIterable<DatabasePrincipalAssignmentInner> inner =
             this.serviceClient().list(resourceGroupName, clusterName, databaseName, context);
-        return inner.mapPage(inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public DatabasePrincipalAssignment getById(String id) {
@@ -280,7 +279,7 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         return this.innerClient;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 
