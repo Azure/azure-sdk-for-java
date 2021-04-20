@@ -5,9 +5,9 @@ package com.azure.test.aad.selenium.oauth2client.issuedat;
 
 import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -22,7 +22,9 @@ import java.util.Optional;
 
 import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADOauth2AuthorizedClientCachedIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
@@ -42,20 +44,20 @@ public class AADOauth2AuthorizedClientCachedIT {
         aadSeleniumITHelper.logIn();
 
         // If Oauth2AuthorizedClient is cached, the issuedAt value should be equal.
-        Assert.assertEquals(
+        assertEquals(
             aadSeleniumITHelper.httpGet("accessTokenIssuedAt/azure"),
             aadSeleniumITHelper.httpGet("accessTokenIssuedAt/azure"));
 
-        Assert.assertEquals(
+        assertEquals(
             aadSeleniumITHelper.httpGet("accessTokenIssuedAt/graph"),
             aadSeleniumITHelper.httpGet("accessTokenIssuedAt/graph"));
 
-        Assert.assertEquals(
+        assertEquals(
             aadSeleniumITHelper.httpGet("accessTokenIssuedAt/arm"),
             aadSeleniumITHelper.httpGet("accessTokenIssuedAt/arm"));
     }
 
-    @After
+    @AfterAll
     public void destroy() {
         aadSeleniumITHelper.destroy();
     }

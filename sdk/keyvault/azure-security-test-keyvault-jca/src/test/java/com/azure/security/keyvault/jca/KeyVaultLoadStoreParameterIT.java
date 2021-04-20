@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -10,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
-public class KeyVaultLoadStoreParameterIT {
+@Disabled
+public class KeyVaultLoadStoreParameterTest {
 
     /**
      * Test getProtectionParameter method.
@@ -19,7 +21,6 @@ public class KeyVaultLoadStoreParameterIT {
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
             null,
             null,
             null

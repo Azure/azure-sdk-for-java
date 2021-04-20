@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.security.KeyStore;
@@ -14,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * The JUnit tests for the KeyVaultProvider class.
  */
-public class KeyVaultJcaProviderIT {
+@Disabled
+public class KeyVaultJcaProviderTest {
 
     /**
      * Test the constructor.
@@ -36,7 +38,6 @@ public class KeyVaultJcaProviderIT {
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
