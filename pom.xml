@@ -741,6 +741,7 @@
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
+        <module>sdk/storageimportexport</module>
         <module>sdk/subscription</module>
         <module>sdk/support</module>
         <module>sdk/synapse</module>
