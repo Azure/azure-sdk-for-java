@@ -722,6 +722,7 @@
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
+        <module>sdk/powerbidedicated</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/redisenterprise</module>
@@ -740,6 +741,8 @@
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
+        <module>sdk/subscription</module>
+        <module>sdk/support</module>
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>

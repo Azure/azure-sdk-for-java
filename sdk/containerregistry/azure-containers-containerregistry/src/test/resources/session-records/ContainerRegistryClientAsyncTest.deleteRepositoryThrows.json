@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/missingRepo",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "90baabc9-dd6d-418d-876a-a6f73cadbcac"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

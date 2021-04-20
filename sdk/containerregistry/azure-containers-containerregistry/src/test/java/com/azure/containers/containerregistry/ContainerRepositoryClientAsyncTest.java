@@ -4,67 +4,35 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.ListRegistryArtifactOptions;
-import com.azure.containers.containerregistry.models.ListTagsOptions;
-import com.azure.containers.containerregistry.models.RegistryArtifactOrderBy;
 import com.azure.containers.containerregistry.models.RegistryArtifactProperties;
-import com.azure.containers.containerregistry.models.TagOrderBy;
-import com.azure.containers.containerregistry.models.TagProperties;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.implementation.ImplUtils;
-import com.azure.core.util.Context;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-
-import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
-import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.containers.containerregistry.TestUtils.DIGEST_UNKNOWN;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
-import static com.azure.containers.containerregistry.TestUtils.isSorted;
+import static com.azure.containers.containerregistry.TestUtils.TAG_UNKNOWN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ContainerRepositoryClientAsyncTest extends ContainerRegistryClientsTestBase {
+    private String recordFileName;
+    private static final String PARENT_FILENAME = "ContainerRepositoryClientAsyncIntegrationTests";
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
-        TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
-        TestUtils.importImage(ImplUtils.getTestMode(), ALPINE_REPOSITORY_NAME, Arrays.asList("latest"));
+    private ContainerRepositoryAsyncClient getContainerRepositoryAsyncClient() {
+        return getContainerRepositoryBuilder(HELLO_WORLD_REPOSITORY_NAME, new LocalHttpClient(recordFileName)).buildAsyncClient();
     }
 
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
+    private ContainerRepositoryAsyncClient getUnknownContainerRepositoryAsyncClient() {
+        return getContainerRepositoryBuilder("Unknown", new LocalHttpClient(recordFileName)).buildAsyncClient();
     }
 
-    private ContainerRepositoryAsyncClient getContainerRepositoryAsyncClient(HttpClient httpClient) {
-        return getContainerRepositoryBuilder(HELLO_WORLD_REPOSITORY_NAME, httpClient).buildAsyncClient();
-    }
-
-    private ContainerRepositoryAsyncClient getUnknownContainerRepositoryAsyncClient(HttpClient httpClient) {
-        return getContainerRepositoryBuilder("Unknown", httpClient).buildAsyncClient();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getRepositoryProperties(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
+    @Test
+    public void getRepositoryProperties() {
+        recordFileName = PARENT_FILENAME + "." + "getRepositoryPropertiesWithResponse[1].json";
+        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
         StepVerifier.create(client.getProperties())
             .assertNext(res -> {
@@ -74,343 +42,58 @@ public class ContainerRepositoryClientAsyncTest extends ContainerRegistryClients
             .verifyComplete();
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getUnknownRepositoryProperties(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getUnknownContainerRepositoryAsyncClient(httpClient);
+    @Test
+    public void getUnknownRepositoryProperties() {
+        recordFileName = PARENT_FILENAME + "." + "getUnknownRepositoryPropertiesWithResponse[1].json";
+        ContainerRepositoryAsyncClient client = getUnknownContainerRepositoryAsyncClient();
 
         StepVerifier.create(client.getProperties())
-            .expectErrorMatches(res -> res instanceof ResourceNotFoundException)
+            .expectError(ResourceNotFoundException.class)
             .verify();
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setRepositoryPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        StepVerifier.create(client.setProperties(null))
-            .expectError(NullPointerException.class)
-            .verify();
-    }
+    @Test
+    public void getMultiArchitectureImageProperties() {
+        recordFileName = PARENT_FILENAME + "." + "getMultiArchitectureImagePropertiesWithResponse[1].json";
+        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getMultiArchitectureImageProperties(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-
-        AtomicReference<String> digest = new AtomicReference<>();
-        StepVerifier.create(client.getRegistryArtifactProperties(LATEST_TAG_NAME))
-            .assertNext(res -> {
-                digest.set(res.getDigest());
+        Mono<RegistryArtifactProperties> safeTestRegistyArtifacts = client.getRegistryArtifactProperties(LATEST_TAG_NAME)
+            .flatMap(res -> {
                 validateArtifactProperties(res, true, false);
-            })
-            .verifyComplete();
+                return Mono.just(res);
+            }).flatMap(res -> client.getRegistryArtifactProperties(res.getDigest()));
 
-        StepVerifier.create(client.getRegistryArtifactProperties(digest.get()))
+        StepVerifier.create(safeTestRegistyArtifacts)
             .assertNext(res -> validateArtifactProperties(res, true, false))
             .verifyComplete();
-
-        PagedIterable<RegistryArtifactProperties> props = new PagedIterable<>(client.listRegistryArtifacts());
-        List<RegistryArtifactProperties> repositories = props.stream().collect(Collectors.toList());
-        String childDigest = getChildArtifactDigest(repositories);
-
-        StepVerifier.create(client.getRegistryArtifactProperties(childDigest))
-            .assertNext(res -> validateArtifactProperties(res, false, true))
-            .verifyComplete();
-
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getMultiArchitectureImagePropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
+    @Test
+    public void getRegistryArtifactPropertiesThrows() {
+        recordFileName = PARENT_FILENAME + "." + "getMultiArchitectureImagePropertiesWithResponseThrows[1].json";
+        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
-        AtomicReference<String> digest = new AtomicReference<>();
-        StepVerifier.create(client.getRegistryArtifactPropertiesWithResponse(LATEST_TAG_NAME))
-            .assertNext(res -> {
-                digest.set(res.getValue().getDigest());
-                validateArtifactProperties(res, true, false);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(client.getRegistryArtifactPropertiesWithResponse(digest.get()))
-            .assertNext(res -> validateArtifactProperties(res, true, false))
-            .verifyComplete();
-
-        PagedIterable<RegistryArtifactProperties> props = new PagedIterable<>(client.listRegistryArtifacts());
-        List<RegistryArtifactProperties> repositories = props.stream().collect(Collectors.toList());
-        String childDigest = getChildArtifactDigest(repositories);
-
-        StepVerifier.create(client.getRegistryArtifactPropertiesWithResponse(childDigest))
-            .assertNext(res -> validateArtifactProperties(res, false, true))
-            .verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getArtifactPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        StepVerifier.create(client.getRegistryArtifactProperties(null))
-            .expectError(NullPointerException.class)
-            .verify();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void deleteRegistryArtifactThrows(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        StepVerifier.create(client.deleteRegistryArtifact(null))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        String digest = "some:digest";
-        StepVerifier.create(client.deleteRegistryArtifactWithResponse(null, Context.NONE))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        StepVerifier.create(client.deleteRegistryArtifact("unknown:Digest"))
-            .expectError(ResourceNotFoundException.class)
-            .verify();
-
-        StepVerifier.create(client.deleteRegistryArtifactWithResponse("some:Value", Context.NONE))
+        StepVerifier.create(client.getRegistryArtifactPropertiesWithResponse(DIGEST_UNKNOWN))
             .expectError(ResourceNotFoundException.class)
             .verify();
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setManifestPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        StepVerifier.create(client.setManifestProperties(null, new ContentProperties()))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        StepVerifier.create(client.setManifestProperties("unknownTag", null))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        StepVerifier.create(client.setManifestProperties("unknownTag", new ContentProperties()))
-            .expectError(ResourceNotFoundException.class)
-            .verify();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifacts(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-
-        StepVerifier.create(client.listRegistryArtifacts())
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(artifacts -> {
-                validateListArtifacts(artifacts);
-                return true;
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithPageSize(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-
-        StepVerifier.create(client.listRegistryArtifacts().byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> {
-
-                List<RegistryArtifactProperties> props = new ArrayList<>();
-                pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-
-                validateListArtifacts(props);
-                return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2);
-            }).verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithInvalidPageSize(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        StepVerifier.create(client.listRegistryArtifacts().byPage(-1)).expectError(IllegalArgumentException.class).verify();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithPageSizeAndOrderBy(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        ListRegistryArtifactOptions options = new ListRegistryArtifactOptions().setRegistryArtifactOrderBy(RegistryArtifactOrderBy.LAST_UPDATED_ON_ASCENDING);
-
-        StepVerifier.create(client.listRegistryArtifacts(options).byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> {
-                List<RegistryArtifactProperties> props = new ArrayList<>();
-                pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-                List<OffsetDateTime> lastUpdatedOn = props.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
-
-
-                validateListArtifacts(props);
-                return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
-                    && isSorted(lastUpdatedOn);
-            }).verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listArtifactsWithPageSizeNoOrderBy(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        ListRegistryArtifactOptions options = new ListRegistryArtifactOptions();
-
-        StepVerifier.create(client.listRegistryArtifacts(options).byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> {
-                List<RegistryArtifactProperties> props = new ArrayList<>();
-                pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-                List<OffsetDateTime> lastUpdatedOn = props.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
-                validateListArtifacts(props);
-                return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2);
-            }).verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTags(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-
-        StepVerifier.create(client.listTags())
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(tags -> {
-                validateListTags(tags);
-                return true;
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithPageSize(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-
-        StepVerifier.create(client.listTags().byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> {
-                List<TagProperties> props = new ArrayList<>();
-                pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-
-                validateListTags(props);
-                return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2);
-            }).verifyComplete();
-    }
-
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithInvalidPageSize(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        StepVerifier.create(client.listTags().byPage(-1)).expectError(IllegalArgumentException.class).verify();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithPageSizeAndOrderBy(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        ListTagsOptions options = new ListTagsOptions().setTagOrderBy(TagOrderBy.LAST_UPDATED_ON_ASCENDING);
-
-        StepVerifier.create(client.listTags(options).byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> {
-
-                List<TagProperties> props = new ArrayList<>();
-                pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-                List<OffsetDateTime> lastUpdatedOn = props.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
-
-                validateListTags(props);
-                return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
-                    && isSorted(lastUpdatedOn);
-
-            }).verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void listTagsWithPageSizeNoOrderBy(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-        ListTagsOptions options = new ListTagsOptions();
-
-        StepVerifier.create(client.listTags(options).byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> {
-
-                List<TagProperties> props = new ArrayList<>();
-                pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-
-                validateListTags(props);
-                return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2);
-
-            }).verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getTagProperties(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
+    @Test
+    public void getTagProperties() {
+        recordFileName = PARENT_FILENAME + "." + "getTagPropertiesWithResponse[1].json";
+        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
         StepVerifier.create(client.getTagProperties(LATEST_TAG_NAME))
             .assertNext(res -> validateTagProperties(res, LATEST_TAG_NAME))
             .verifyComplete();
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getTagPropertiesWithResponse(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
+    @Test
+    public void getTagPropertiesThrows() {
+        recordFileName = PARENT_FILENAME + "." + "getTagPropertiesWithResponseThrows[1].json";
+        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
-        StepVerifier.create(client.getTagPropertiesWithResponse(LATEST_TAG_NAME))
-            .assertNext(res -> validateTagProperties(res, LATEST_TAG_NAME))
-            .verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void getTagPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-
-        StepVerifier.create(client.getTagProperties(null))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        StepVerifier.create(client.getTagProperties("unknown"))
-            .expectError(ResourceNotFoundException.class)
-            .verify();
-
-        StepVerifier.create(client.getTagPropertiesWithResponse(null))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        StepVerifier.create(client.getTagPropertiesWithResponse("unknown"))
-            .expectError(ResourceNotFoundException.class)
-            .verify();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void setTagPropertiesThrows(HttpClient httpClient) {
-        ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
-
-        StepVerifier.create(client.setTagProperties(null, new ContentProperties()))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        StepVerifier.create(client.setTagProperties(LATEST_TAG_NAME, null))
-            .expectError(NullPointerException.class)
-            .verify();
-
-        StepVerifier.create(client.setTagProperties("unknown", writeableProperties))
+        StepVerifier.create(client.getTagPropertiesWithResponse(TAG_UNKNOWN))
             .expectError(ResourceNotFoundException.class)
             .verify();
     }
