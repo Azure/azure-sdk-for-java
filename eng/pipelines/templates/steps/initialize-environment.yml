@@ -35,7 +35,7 @@ steps:
       AdditionalModules: ${{parameters.AdditionalModules}}
 
   - task: PythonScript@0
-    displayName: 'Generate sparse checkout directories'
+    displayName: 'Generate FromSourceDirectories variable for sparse checkout'
     inputs:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
       arguments: '--set-pipeline-variable --project-list $(ProjectList)'
@@ -45,9 +45,10 @@ steps:
   - pwsh: |
       $paths = '$(FromSourceDirectories)' | ConvertFrom-Json
       foreach ($path in $paths) {
-        Write-Host 'git sparse-checkout add $path'
+        Write-Host "git sparse-checkout add $path"
         git sparse-checkout add $path
       }
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Set versions for source build'
