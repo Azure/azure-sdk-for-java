@@ -57,12 +57,6 @@ public class KeyVaultCertificateFunctions {
     /**
      * provide keyStore for user to define own SSLContext
      * @return keyStore can access certificates from portal
-     * @throws Exception exceptions throws from keyStore
-     */
-
-    /**
-     * provide keyStore for user to define own SSLContext
-     * @return keyStore can access certificates from portal
      * @throws KeyStoreException if KeyStore not support specified type
      * @throws CertificateException if any of the certificates in the
      *          keystore could not be loaded
