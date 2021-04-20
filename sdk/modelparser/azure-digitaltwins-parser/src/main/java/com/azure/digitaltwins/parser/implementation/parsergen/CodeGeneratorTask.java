@@ -80,6 +80,7 @@ public final class CodeGeneratorTask {
 
         typeGenerators.add(new AggregateContextGenerator(metamodelDigest.getContexts(), metamodelDigest.getDtdlVersionsAllowingLocalTerms()));
         typeGenerators.add(new BaseKindEnumGenerator(metamodelDigest.getMaterialClasses(), metamodelDigest.getBaseClass()));
+        typeGenerators.add(new MaterialTypeNameCollectionGenerator(metamodelDigest.getMaterialClasses().keySet(), metamodelDigest.getContexts().values()));
 
         for (TypeGenerator typeGenerator : typeGenerators) {
             typeGenerator.generateCode(parserLibrary);
