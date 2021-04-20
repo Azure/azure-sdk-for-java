@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -21,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
-@Disabled
 public class KeyVaultKeyStoreIT {
 
     /**

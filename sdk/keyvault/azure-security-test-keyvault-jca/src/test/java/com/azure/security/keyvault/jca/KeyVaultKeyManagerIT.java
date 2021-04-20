@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.security.cert.CertificateException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Disabled
 public class KeyVaultKeyManagerIT {
 
     private KeyVaultKeyManager manager;

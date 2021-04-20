@@ -14,7 +14,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -34,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * The unit test validating the ServerSocket is created using a certificate 
  * from Azure Key Vault.
  */
-@Disabled
 public class ServerSocketIT {
 
     /**
