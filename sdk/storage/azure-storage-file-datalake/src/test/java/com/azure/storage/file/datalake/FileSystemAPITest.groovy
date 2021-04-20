@@ -20,6 +20,7 @@ import com.azure.storage.file.datalake.models.PathItem
 import com.azure.storage.file.datalake.models.PublicAccessType
 import spock.lang.Unroll
 
+import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
@@ -1072,7 +1073,7 @@ class FileSystemAPITest extends APISpec {
         def deletionId = fsc.listDeletedPaths().first().getDeletionId()
 
         when:
-        fsc.restorePath(URLEncoder.encode(dir.getDirectoryName()), deletionId)
+        fsc.restorePath(URLEncoder.encode(dir.getDirectoryName(), StandardCharsets.UTF_8), deletionId)
 
         then:
         dir.getProperties() != null
