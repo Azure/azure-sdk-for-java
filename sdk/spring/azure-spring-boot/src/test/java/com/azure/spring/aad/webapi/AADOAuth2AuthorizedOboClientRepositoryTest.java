@@ -29,7 +29,7 @@ import static org.springframework.test.context.support.TestPropertySourceUtils.a
 public class AADOAuth2AuthorizedOboClientRepositoryTest {
 
     @Configuration
-    public static class WebOAuth2ClientApp {
+    public static class WebOAuth2ClientConfiguration {
 
         @Bean
         OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
@@ -68,7 +68,7 @@ public class AADOAuth2AuthorizedOboClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
             AAD_PROPERTY_PREFIX + "authorization-clients.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
-        context.register(WebOAuth2ClientApp.class, AADResourceServerClientConfiguration.class);
+        context.register(WebOAuth2ClientConfiguration.class, AADResourceServerClientConfiguration.class);
         context.refresh();
 
         clientRegistrationsRepo = context.getBean(InMemoryClientRegistrationRepository.class);
