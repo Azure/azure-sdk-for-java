@@ -62,7 +62,6 @@ public final class QueriesImpl {
                 @PathParam("workspaceId") String workspaceId,
                 @QueryParam("query") String query,
                 @QueryParam("timespan") Duration timespan,
-                @QueryParam("workspaces") String workspaces,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -95,15 +94,13 @@ public final class QueriesImpl {
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
      *     timespan is applied in addition to any that are specified in the query expression.
-     * @param workspaces Comma separated workspace IDs to include in cross-workspace queries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains the tables, columns &amp; rows resulting from a query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> getWithResponseAsync(
-            String workspaceId, String query, Duration timespan, String workspaces) {
+    public Mono<Response<QueryResults>> getWithResponseAsync(String workspaceId, String query, Duration timespan) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -116,8 +113,7 @@ public final class QueriesImpl {
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.get(this.client.getHost(), workspaceId, query, timespan, workspaces, accept, context));
+                context -> service.get(this.client.getHost(), workspaceId, query, timespan, accept, context));
     }
 
     /**
@@ -128,7 +124,6 @@ public final class QueriesImpl {
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
      *     timespan is applied in addition to any that are specified in the query expression.
-     * @param workspaces Comma separated workspace IDs to include in cross-workspace queries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -137,7 +132,7 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> getWithResponseAsync(
-            String workspaceId, String query, Duration timespan, String workspaces, Context context) {
+            String workspaceId, String query, Duration timespan, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -149,7 +144,7 @@ public final class QueriesImpl {
             return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
         }
         final String accept = "application/json";
-        return service.get(this.client.getHost(), workspaceId, query, timespan, workspaces, accept, context);
+        return service.get(this.client.getHost(), workspaceId, query, timespan, accept, context);
     }
 
     /**
@@ -160,15 +155,14 @@ public final class QueriesImpl {
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
      *     timespan is applied in addition to any that are specified in the query expression.
-     * @param workspaces Comma separated workspace IDs to include in cross-workspace queries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains the tables, columns &amp; rows resulting from a query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueryResults> getAsync(String workspaceId, String query, Duration timespan, String workspaces) {
-        return getWithResponseAsync(workspaceId, query, timespan, workspaces)
+    public Mono<QueryResults> getAsync(String workspaceId, String query, Duration timespan) {
+        return getWithResponseAsync(workspaceId, query, timespan)
                 .flatMap(
                         (Response<QueryResults> res) -> {
                             if (res.getValue() != null) {
@@ -187,7 +181,6 @@ public final class QueriesImpl {
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
      *     timespan is applied in addition to any that are specified in the query expression.
-     * @param workspaces Comma separated workspace IDs to include in cross-workspace queries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -195,9 +188,8 @@ public final class QueriesImpl {
      * @return contains the tables, columns &amp; rows resulting from a query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueryResults> getAsync(
-            String workspaceId, String query, Duration timespan, String workspaces, Context context) {
-        return getWithResponseAsync(workspaceId, query, timespan, workspaces, context)
+    public Mono<QueryResults> getAsync(String workspaceId, String query, Duration timespan, Context context) {
+        return getWithResponseAsync(workspaceId, query, timespan, context)
                 .flatMap(
                         (Response<QueryResults> res) -> {
                             if (res.getValue() != null) {
@@ -216,15 +208,14 @@ public final class QueriesImpl {
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
      *     timespan is applied in addition to any that are specified in the query expression.
-     * @param workspaces Comma separated workspace IDs to include in cross-workspace queries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains the tables, columns &amp; rows resulting from a query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResults get(String workspaceId, String query, Duration timespan, String workspaces) {
-        return getAsync(workspaceId, query, timespan, workspaces).block();
+    public QueryResults get(String workspaceId, String query, Duration timespan) {
+        return getAsync(workspaceId, query, timespan).block();
     }
 
     /**
@@ -235,7 +226,6 @@ public final class QueriesImpl {
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
      *     timespan is applied in addition to any that are specified in the query expression.
-     * @param workspaces Comma separated workspace IDs to include in cross-workspace queries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -244,8 +234,8 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResults> getWithResponse(
-            String workspaceId, String query, Duration timespan, String workspaces, Context context) {
-        return getWithResponseAsync(workspaceId, query, timespan, workspaces, context).block();
+            String workspaceId, String query, Duration timespan, Context context) {
+        return getWithResponseAsync(workspaceId, query, timespan, context).block();
     }
 
     /**

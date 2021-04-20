@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-public class AzureMetricQueryAsyncClient {
+class AzureMetricQueryAsyncClient {
     private final MonitorManagementClientImpl innerClient;
 
     public AzureMetricQueryAsyncClient(MonitorManagementClientImpl innerClient) {

@@ -6,15 +6,17 @@ package com.azure.monitor.query;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.monitor.query.log.implementation.AzureLogAnalyticsImplBuilder;
 
-public final class AzureLogQueryClientBuilder {
+final class AzureLogQueryClientBuilder {
 
     private final AzureLogAnalyticsImplBuilder innerBuilder = new AzureLogAnalyticsImplBuilder();
+    private TokenCredential tokenCredential;
 
     /**
      * Sets server parameter.
@@ -100,6 +102,7 @@ public final class AzureLogQueryClientBuilder {
      * @return the AzureLogQueryClientBuilder.
      */
     public AzureLogQueryClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
         innerBuilder.credential(tokenCredential);
         return this;
     }
@@ -109,6 +112,9 @@ public final class AzureLogQueryClientBuilder {
     }
 
     private AzureLogQueryAsyncClient buildAsyncClient() {
+        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, " https://api.loganalytics.io" +
+            "/.default");
+        innerBuilder.addPolicy(tokenPolicy);
         return new AzureLogQueryAsyncClient(innerBuilder.buildClient());
     }
 }

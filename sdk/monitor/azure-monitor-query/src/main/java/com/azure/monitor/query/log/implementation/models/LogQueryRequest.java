@@ -6,6 +6,7 @@ package com.azure.monitor.query.log.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** An single request in a batch. */
 @Fluent
@@ -15,6 +16,12 @@ public final class LogQueryRequest {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * Dictionary of <string>
+     */
+    @JsonProperty(value = "headers")
+    private Map<String, String> headers;
 
     /*
      * The Analytics query. Learn more about the [Analytics query
@@ -36,7 +43,7 @@ public final class LogQueryRequest {
     private String method;
 
     /*
-     * Workspace name
+     * Workspace Id to be included in the query
      */
     @JsonProperty(value = "workspace")
     private String workspace;
@@ -58,6 +65,26 @@ public final class LogQueryRequest {
      */
     public LogQueryRequest setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the headers property: Dictionary of &lt;string&gt;.
+     *
+     * @return the headers value.
+     */
+    public Map<String, String> getHeaders() {
+        return this.headers;
+    }
+
+    /**
+     * Set the headers property: Dictionary of &lt;string&gt;.
+     *
+     * @param headers the headers value to set.
+     * @return the LogQueryRequest object itself.
+     */
+    public LogQueryRequest setHeaders(Map<String, String> headers) {
+        this.headers = headers;
         return this;
     }
 
@@ -124,7 +151,7 @@ public final class LogQueryRequest {
     }
 
     /**
-     * Get the workspace property: Workspace name.
+     * Get the workspace property: Workspace Id to be included in the query.
      *
      * @return the workspace value.
      */
@@ -133,7 +160,7 @@ public final class LogQueryRequest {
     }
 
     /**
-     * Set the workspace property: Workspace name.
+     * Set the workspace property: Workspace Id to be included in the query.
      *
      * @param workspace the workspace value to set.
      * @return the LogQueryRequest object itself.

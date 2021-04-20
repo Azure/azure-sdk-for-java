@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.monitor.query.metric.implementation.MonitorManagementClientImplBuilder;
 
-public class AzureMetricQueryClientBuilder {
+class AzureMetricQueryClientBuilder {
 
     private final MonitorManagementClientImplBuilder innerBuilder = new MonitorManagementClientImplBuilder();
 

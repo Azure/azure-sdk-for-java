@@ -5,7 +5,6 @@
 package com.azure.monitor.query.log.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,18 +14,14 @@ public final class QueryResults {
     /*
      * The list of tables, columns and rows.
      */
-    @JsonProperty(value = "tables", required = true)
+    @JsonProperty(value = "tables")
     private List<Table> tables;
 
-    /**
-     * Creates an instance of QueryResults class.
-     *
-     * @param tables the tables value to set.
+    /*
+     * The errors property.
      */
-    @JsonCreator
-    public QueryResults(@JsonProperty(value = "tables", required = true) List<Table> tables) {
-        this.tables = tables;
-    }
+    @JsonProperty(value = "errors")
+    private ErrorDetails errors;
 
     /**
      * Get the tables property: The list of tables, columns and rows.
@@ -38,15 +33,47 @@ public final class QueryResults {
     }
 
     /**
+     * Set the tables property: The list of tables, columns and rows.
+     *
+     * @param tables the tables value to set.
+     * @return the QueryResults object itself.
+     */
+    public QueryResults setTables(List<Table> tables) {
+        this.tables = tables;
+        return this;
+    }
+
+    /**
+     * Get the errors property: The errors property.
+     *
+     * @return the errors value.
+     */
+    public ErrorDetails getErrors() {
+        return this.errors;
+    }
+
+    /**
+     * Set the errors property: The errors property.
+     *
+     * @param errors the errors value to set.
+     * @return the QueryResults object itself.
+     */
+    public QueryResults setErrors(ErrorDetails errors) {
+        this.errors = errors;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getTables() == null) {
-            throw new IllegalArgumentException("Missing required property tables in model QueryResults");
-        } else {
+        if (getTables() != null) {
             getTables().forEach(e -> e.validate());
+        }
+        if (getErrors() != null) {
+            getErrors().validate();
         }
     }
 }

@@ -37,7 +37,7 @@ public final class ErrorInfo {
     private ErrorInfo innererror;
 
     /*
-     * Any object
+     * Additional properties that can be provided on the error info object
      */
     @JsonProperty(value = "additionalProperties")
     private Object additionalProperties;
@@ -115,7 +115,7 @@ public final class ErrorInfo {
     }
 
     /**
-     * Get the additionalProperties property: Any object.
+     * Get the additionalProperties property: Additional properties that can be provided on the error info object.
      *
      * @return the additionalProperties value.
      */
@@ -124,7 +124,7 @@ public final class ErrorInfo {
     }
 
     /**
-     * Set the additionalProperties property: Any object.
+     * Set the additionalProperties property: Additional properties that can be provided on the error info object.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ErrorInfo object itself.

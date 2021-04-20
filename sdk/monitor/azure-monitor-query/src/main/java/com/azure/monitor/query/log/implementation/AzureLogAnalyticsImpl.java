@@ -62,6 +62,18 @@ public final class AzureLogAnalyticsImpl {
         return this.queries;
     }
 
+    /** The MetadatasImpl object to access its operations. */
+    private final MetadatasImpl metadatas;
+
+    /**
+     * Gets the MetadatasImpl object to access its operations.
+     *
+     * @return the MetadatasImpl object.
+     */
+    public MetadatasImpl getMetadatas() {
+        return this.metadatas;
+    }
+
     /**
      * Initializes an instance of AzureLogAnalytics client.
      *
@@ -98,5 +110,6 @@ public final class AzureLogAnalyticsImpl {
         this.serializerAdapter = serializerAdapter;
         this.host = host;
         this.queries = new QueriesImpl(this);
+        this.metadatas = new MetadatasImpl(this);
     }
 }

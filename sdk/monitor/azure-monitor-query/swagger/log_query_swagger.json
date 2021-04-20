@@ -292,7 +292,28 @@
       "type": "string"
     },
     "workspacesParam": {
+      "description": "Workspace names to include in cross-workspace queries.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "workspaceIdsParam": {
       "description": "Workspace IDs to include in cross-workspace queries.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "qualifiedNamesParam": {
+      "description": "Qualified Name - string with format <subscriptionName>/<resourceGroup>/<workspaceName>.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "azureResourceIdsParam": {
+      "description": "Azure Resource ID - string with format /subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/microsoft.operationalinsights/workspaces/<workspaceName>.",
       "type": "array",
       "items": {
         "type": "string"
@@ -313,6 +334,18 @@
         "workspaces": {
           "description": "A list of workspaces that are included in the query.",
           "$ref": "#/definitions/workspacesParam"
+        },
+        "qualifiedNames": {
+          "description": "A list of qualified workspace names that are included in the query.",
+          "$ref": "#/definitions/qualifiedNamesParam"
+        },
+        "workspaceIds": {
+          "description": "A list of workspace IDs that are included in the query.",
+          "$ref": "#/definitions/workspaceIdsParam"
+        },
+        "azureResourceIds": {
+          "description": "A list of Azure resource IDs that are included in the query.",
+          "$ref": "#/definitions/azureResourceIdsParam"
         }
       },
       "required": [
@@ -330,11 +363,11 @@
           "items": {
             "$ref": "#/definitions/table"
           }
+        },
+        "errors": {
+          "$ref": "#/definitions/errorDetails"
         }
-      },
-      "required": [
-        "tables"
-      ]
+      }
     },
     "table": {
       "title": "A query response table.",
@@ -1305,6 +1338,12 @@
           "description": "The error details.",
           "type": "string"
         },
+        "headers" : {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
         "body": {
           "$ref": "#/definitions/queryBody"
         },
@@ -1317,7 +1356,7 @@
           "enum": ["POST"]
         },
         "workspace": {
-          "description": "Workspace name",
+          "description": "Workspace Id to be included in the query",
           "type": "string"
         }
       }

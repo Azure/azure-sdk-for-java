@@ -9,7 +9,7 @@ import com.azure.monitor.query.log.implementation.models.QueryResults;
 
 import java.util.List;
 
-public final class AzureLogQueryClient {
+final class AzureLogQueryClient {
 
     private final AzureLogQueryAsyncClient asyncClient;
 

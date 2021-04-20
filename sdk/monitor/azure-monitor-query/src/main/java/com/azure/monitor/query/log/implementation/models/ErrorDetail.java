@@ -43,7 +43,7 @@ public final class ErrorDetail {
     private List<String> resources;
 
     /*
-     * Any object
+     * Additional properties that can be provided on the error details object
      */
     @JsonProperty(value = "additionalProperties")
     private Object additionalProperties;
@@ -141,7 +141,7 @@ public final class ErrorDetail {
     }
 
     /**
-     * Get the additionalProperties property: Any object.
+     * Get the additionalProperties property: Additional properties that can be provided on the error details object.
      *
      * @return the additionalProperties value.
      */
@@ -150,7 +150,7 @@ public final class ErrorDetail {
     }
 
     /**
-     * Set the additionalProperties property: Any object.
+     * Set the additionalProperties property: Additional properties that can be provided on the error details object.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ErrorDetail object itself.

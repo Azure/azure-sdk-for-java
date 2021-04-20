@@ -8,7 +8,7 @@ import com.azure.monitor.query.metric.implementation.models.ResultType;
 
 import java.time.Duration;
 
-public class AzureMetricQueryClient {
+class AzureMetricQueryClient {
     private final AzureMetricQueryAsyncClient asyncClient;
 
     public AzureMetricQueryClient(AzureMetricQueryAsyncClient asyncClient) {
