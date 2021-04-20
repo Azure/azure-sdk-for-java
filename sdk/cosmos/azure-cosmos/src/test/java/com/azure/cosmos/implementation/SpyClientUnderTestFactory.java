@@ -146,9 +146,20 @@ public class SpyClientUnderTestFactory {
                 .doOnError(f::completeExceptionally);
         }
 
+        private Mono<HttpResponse> captureHttpRequestWithoutTimeout(InvocationOnMock invocationOnMock) {
+            HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+            CompletableFuture<HttpResponse> f = new CompletableFuture<>();
+            this.requestsResponsePairs.add(Pair.of(httpRequest, f));
+
+            return origHttpClient
+                .send(httpRequest)
+                .doOnNext(httpResponse -> f.complete(httpResponse.buffer()))
+                .doOnError(f::completeExceptionally);
+        }
+
         private HttpClient initHttpRequestCapture(HttpClient originalClient) {
             HttpClient spyHttpClient = spy(originalClient);
-            doAnswer(this::captureHttpRequest)
+            doAnswer(this::captureHttpRequestWithoutTimeout)
                 .when(spyHttpClient)
                 .send(Mockito.any(HttpRequest.class));
             doAnswer(this::captureHttpRequest)
