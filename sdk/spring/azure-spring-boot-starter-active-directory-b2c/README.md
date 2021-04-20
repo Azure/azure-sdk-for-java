@@ -51,6 +51,12 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
 
 1. Choose **Sign up or in**, **Profile editing** and **Password reset** to create user flows
    respectively. Specify your user flow **Name** and **User attributes and claims**, click **Create**.
+
+1. Select **API permissions** > **Add a permission** > **Microsoft APIs**, select ***Microsoft Graph***,
+   select **Delegated permissions**, check **offline_access** and **openid** permissions, select **Add permission** to complete the process.
+
+1. Grant admin consent for ***Graph*** permissions.
+   ![Add Graph permissions](resource/add-graph-permissions.png)
    
 1. Add the following dependencies in your *pom.xml*.
 
@@ -89,7 +95,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
    ```
    [//]: # "{x-version-update-end}"
 
-1. Add properties in *application.yml* using the values you created earlier; for example:
+1. Add properties in *application.yml* using the values you created earlier, for example:
 
    ```yaml
    azure:
@@ -108,6 +114,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
            ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
          user-name-attribute-name: ${your-user-name-attribute-name}
    ```
+   
 1. Write your Java code.
     
     Controller code can refer to the following:
@@ -161,7 +168,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
     Copy the *home.html* from [Azure AD B2C Spring Boot Sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
     `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
     respectively that completed earlier.
-
+    
 1. Build and test your app
    
    Let `Webapp` run on port *8080*.
@@ -207,8 +214,6 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 1. Select **API permissions** > **Add a permission** > **My APIs**, select ***WebApiA*** application name, 
    select **Application Permissions**, select **WebApiA.SampleScope** permission, select **Add permission** to complete the process.
    
-   ![Select MyAPIs](resource/select-application-permission.png)
-   
 1. Grant admin consent for ***WebApiA*** permissions.
    ![Select MyAPIs](resource/add-api-permission.png)
    
@@ -223,6 +228,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
          tenant-id: ${your-tenant-id}
          authorization-clients:
            ${your-resource-server-a-name}:
+             authorization-grant-type: client_credentials
              scopes: ${your-web-api-a-app-id-url}/.default
    ```
 
@@ -394,6 +400,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
          client-secret: ${your-web-api-a-client-secret}
          authorization-clients:
            ${your-resource-server-b-name}:
+             authorization-grant-type: client_credentials
              scopes: ${your-web-api-b-app-id-url}/.default
    ```
 
