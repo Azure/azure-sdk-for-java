@@ -1064,7 +1064,7 @@ class FileSystemAPITest extends APISpec {
         setup:
         enableSoftDelete()
 
-        dirName = URLEncoder.encode(dirName)
+        dirName = Utility.urlEncode(dirName)
         def dir = fsc.getDirectoryClient(dirName)
         dir.create()
         dir.delete()
