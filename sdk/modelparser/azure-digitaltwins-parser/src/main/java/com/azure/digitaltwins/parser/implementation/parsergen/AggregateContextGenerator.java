@@ -42,7 +42,14 @@ public class AggregateContextGenerator implements TypeGenerator {
      */
     @Override
     public void generateCode(JavaLibrary parserLibrary) {
-        JavaClass contextClass = parserLibrary.jClass(Access.PACKAGE_PRIVATE, Novelty.NORMAL, "AggregateContext", Multiplicity.INSTANCE, null, null);
+        JavaClass contextClass = parserLibrary.jClass(
+            Access.PACKAGE_PRIVATE,
+            Novelty.NORMAL,
+            "AggregateContext",
+            Multiplicity.INSTANCE,
+            null,
+            null);
+
         contextClass.addSummary("Class for parsing and storing information from JSON-LD context blocks.");
         generateFields(contextClass);
         generateStaticConstructor(contextClass);
@@ -72,7 +79,13 @@ public class AggregateContextGenerator implements TypeGenerator {
             .line("affiliateContextHistories = new HashMap<String, ContextHistory>();")
             .jBreak();
 
-        JavaMethod dtdlContextMethod = contextClass.method(Access.PRIVATE, Novelty.NORMAL, "ContextHistory", "getDtdlContextHistory", Multiplicity.STATIC);
+        JavaMethod dtdlContextMethod = contextClass.method(
+            Access.PRIVATE,
+            Novelty.NORMAL,
+            "ContextHistory",
+            "getDtdlContextHistory",
+            Multiplicity.STATIC);
+
         dtdlContextMethod
             .getBody()
             .line("List<VersionedContext> versionedContexts = new ArrayList<>();")
@@ -108,7 +121,9 @@ public class AggregateContextGenerator implements TypeGenerator {
                     affiliateContextMethods.put(affiliateIndex, affiliateContextMethod);
                 }
 
-                addContextVersion(affiliateContextMethods.get(affiliateIndex).getBody(), contextSpecifier, contextPair.getValue());
+                addContextVersion(
+                    affiliateContextMethods.get(affiliateIndex).getBody(),
+                    contextSpecifier, contextPair.getValue());
             }
         }
 
@@ -119,7 +134,9 @@ public class AggregateContextGenerator implements TypeGenerator {
         }
 
         for (Map.Entry<String, Integer> affiliateIndex : affiliateIndices.entrySet()) {
-            constructor.getBody().line("affiliateContextHistories.put(\"" + affiliateIndex.getKey() + "\", getAffiliate" + affiliateIndex.getValue() + "ContextHistory());");
+            constructor
+                .getBody()
+                .line("affiliateContextHistories.put(\"" + affiliateIndex.getKey() + "\", getAffiliate" + affiliateIndex.getValue() + "ContextHistory());");
         }
     }
 
@@ -129,9 +146,13 @@ public class AggregateContextGenerator implements TypeGenerator {
         int majorVersion = Integer.parseInt(versionString);
         int minorVersion = dotIx < 0 ? 0 : Integer.parseInt(versionString.substring(dotIx + 1));
 
-        String contextVar = "context".concat(String.valueOf(majorVersion)).concat("_").concat(String.valueOf(minorVersion));
+        String contextVar = "context"
+            .concat(String.valueOf(majorVersion))
+            .concat("_")
+            .concat(String.valueOf(minorVersion));
 
-        contextMethodBody.line(String.format("VersionedContext %s = new VersionedContext(%s, %s);", contextVar, majorVersion, minorVersion));
+        contextMethodBody
+            .line(String.format("VersionedContext %s = new VersionedContext(%s, %s);", contextVar, majorVersion, minorVersion));
 
         for (Map.Entry<String, String> kvp : termDefinitions.entrySet()) {
             contextMethodBody
