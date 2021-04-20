@@ -16,6 +16,7 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
 
+import com.azure.cosmos.spark.BulkWriter.emitFailureHandler
 import reactor.core.publisher.Sinks.EmitFailureHandler
 import reactor.core.publisher.Sinks.EmitResult
 
@@ -42,8 +43,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
-  private val emitFailureHandler: EmitFailureHandler =
-      (signalType, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
+
   // TODO: moderakh discuss the context issue in the core SDK bulk api with the team.
   // public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
   //    Flux<CosmosItemOperation> operations,
@@ -287,6 +287,9 @@ private object BulkWriter {
   // 2 * 1024 * 167 items should get buffered on a 16 CPU core VM
   // so per CPU core we want (2 * 1024 * 167 / 16) max items to be buffered
   val MaxNumberOfThreadsPerCPUCore = 2 * 1024 * 167 / 16
+
+  val emitFailureHandler: EmitFailureHandler =
+        (signalType, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
 }
 
 //scalastyle:on multiple.string.literals
