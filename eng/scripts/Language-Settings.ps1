@@ -245,6 +245,17 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     output_path = "docs-ref-autogen"
     packages = @()
   }
+  # Read package list from package.json
+  $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
+  if (-not (Test-Path $pkgJsonLoc)) {
+    Write-Error "Unable to locate package csv at location $pkgJsonLoc, exiting."
+    exit(1)
+  }
+  $allCSVRows = Get-Content $pkgJsonLoc | Out-String | ConvertFrom-Json
+  $latestHash = @{}
+  $previewHash = @{}
+  $allCSVRows[0].packages | foreach { $latestHash["$($_.packageGroupId):$($_.packageArtifactId)"] = $_ }
+  $allCSVRows[1].packages | foreach { $previewHash["$($_.packageGroupId):$($_.packageArtifactId)"] = $_ }
   for ($i=0; $i -lt $metadata.Length; $i++) {
     if (!$metadata[$i].Package) {
       continue
@@ -259,6 +270,10 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
       $latest_object["packageGroupId"] = $metadata[$i].GroupId
       $latest_object["packageArtifactId"] = $metadata[$i].Package
       $latest_object["packageVersion"] = $metadata[$i].VersionGA
+      $excludePackages = $latestHash["$($metadata[$i].GroupId):$($metadata[$i].Package)"].excludePackages
+      if ($excludePackages) {
+        $latest_object["excludepackages"] = $excludePackages
+      }
       $latest.packages += $latest_object
     }
     if ($metadata[$i].VersionPreview) {
@@ -271,17 +286,15 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
       $preview_object["packageGroupId"] = $metadata[$i].GroupId
       $preview_object["packageArtifactId"] = $metadata[$i].Package
       $preview_object["packageVersion"] = $metadata[$i].VersionPreview
+      $excludePackages = $previewHash["$($metadata[$i].GroupId):$($metadata[$i].Package)"].excludePackages
+      if ($excludePackages) {
+        $preview_object["excludepackages"] = $excludePackages
+      }
       $preview.packages += $preview_object
     }
   }
   $jsonRepresentation = @($latest, $preview)
-  # Read package list from package.json
-  $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
-  if (-not (Test-Path $pkgJsonLoc)) {
-    Write-Error "Unable to locate package csv at location $pkgJsonLoc, exiting."
-    exit(1)
-  }
-  $allCSVRows = Get-Content $pkgJsonLoc | Out-String | ConvertFrom-Json
+
 
   for ($i=0; $i -lt $allCSVRows.Length; $i++) {
     $packages = $allCSVRows[$i].packages
