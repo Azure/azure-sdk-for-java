@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.security.keyvault.certificates.sample.client.side;
 
-import com.azure.security.keyvault.jca.KeyVaultKeyStore;
+import com.azure.security.keyvault.jca.KeyVaultCertificateFunctions;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -24,7 +24,7 @@ public class SampleApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplateWithTLS() throws Exception {
-        KeyStore trustStore = KeyVaultKeyStore.getKeyStore();
+        KeyStore trustStore = KeyVaultCertificateFunctions.getKeyStore();
         SSLContext sslContext = SSLContexts.custom()
                                            .loadTrustMaterial(trustStore, null)
                                            .build();
@@ -40,7 +40,7 @@ public class SampleApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplateWithMTLS() throws Exception {
-        KeyStore azureKeyVaultKeyStore = KeyVaultKeyStore.getKeyStore();
+        KeyStore azureKeyVaultKeyStore = KeyVaultCertificateFunctions.getKeyStore();
         SSLContext sslContext = SSLContexts.custom()
                                            .loadTrustMaterial(azureKeyVaultKeyStore, null)
                                            .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())

@@ -18,7 +18,7 @@ import java.security.Security;
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.azure.security.keyvault.jca.KeyVaultKeyStore.startRefresh;
+import static com.azure.security.keyvault.jca.KeyVaultCertificateFunctions.startRefresh;
 
 /**
  * Leverage {@link EnvironmentPostProcessor} to add Key Store property source.

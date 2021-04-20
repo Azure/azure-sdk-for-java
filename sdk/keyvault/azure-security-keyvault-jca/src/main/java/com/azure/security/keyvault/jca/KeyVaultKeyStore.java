@@ -26,8 +26,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Optional;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -80,7 +78,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private static KeyVaultClient keyVaultClient;
 
-    private static Timer timer;
 
     /**
      * Constructor.
@@ -119,34 +116,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     /**
-     * auto refresh certificate by user set Interval time
-     *
-     * @param refreshInterval refresh Interval time
-     */
-    public static void startRefresh(long refreshInterval) {
-        if (refreshInterval > 0) {
-            synchronized (KeyVaultKeyStore.class) {
-                if (timer != null) {
-                    try {
-                        timer.cancel();
-                        timer.purge();
-                    } catch (RuntimeException runtimeException) {
-                        LOGGER.log(WARNING, "Error of terminating Timer", runtimeException);
-                    }
-                }
-                timer = new Timer(true);
-                final TimerTask task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        refreshCertificate();
-                    }
-                };
-                timer.scheduleAtFixedRate(task, refreshInterval, refreshInterval);
-            }
-        }
-    }
-
-    /**
      * refresh certificate and KeyVaultTrustManager trustManager
      */
     public static void refreshCertificate() {
@@ -160,7 +129,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                         CERTIFICATES.put(alias, certificate);
                     }
                 });
-        KeyVaultTrustManager.refreshTrustManagerByKeyStore();
     }
 
     @Override
@@ -439,23 +407,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
         }
-    }
-
-    /**
-     * provide keyStore for user to define own SSLContext
-     * @return keyStore can access certificates from portal
-     * @throws Exception exceptions throws from keyStore
-     */
-    public static KeyStore getKeyStore() throws Exception {
-
-        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        trustStore.load(parameter);
-        return trustStore;
     }
 
 

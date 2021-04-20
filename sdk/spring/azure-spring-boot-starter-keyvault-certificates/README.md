@@ -239,11 +239,11 @@ server:
 
 Step 2. On the client side, update `RestTemplate`. Example:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L41-L56 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L41-L64 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
-    KeyStore azureKeyVaultKeyStore = KeyVaultKeyStore.getKeyStore();
+    KeyStore azureKeyVaultKeyStore = KeyVaultCertificateFunctions.getKeyStore();
     SSLContext sslContext = SSLContexts.custom()
                                        .loadTrustMaterial(azureKeyVaultKeyStore, null)
                                        .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
