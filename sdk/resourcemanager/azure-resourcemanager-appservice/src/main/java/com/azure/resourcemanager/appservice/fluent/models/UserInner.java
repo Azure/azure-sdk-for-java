@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,19 +27,19 @@ public class UserInner extends ProxyOnlyResource {
      * Password used for publishing.
      */
     @JsonProperty(value = "properties.publishingPassword")
-    private TokenCredential publishingPassword;
+    private String publishingPassword;
 
     /*
      * Password hash used for publishing.
      */
     @JsonProperty(value = "properties.publishingPasswordHash")
-    private TokenCredential publishingPasswordHash;
+    private String publishingPasswordHash;
 
     /*
      * Password hash salt used for publishing.
      */
     @JsonProperty(value = "properties.publishingPasswordHashSalt")
-    private TokenCredential publishingPasswordHashSalt;
+    private String publishingPasswordHashSalt;
 
     /*
      * Url of SCM site.
@@ -73,7 +72,7 @@ public class UserInner extends ProxyOnlyResource {
      *
      * @return the publishingPassword value.
      */
-    public TokenCredential publishingPassword() {
+    public String publishingPassword() {
         return this.publishingPassword;
     }
 
@@ -83,7 +82,7 @@ public class UserInner extends ProxyOnlyResource {
      * @param publishingPassword the publishingPassword value to set.
      * @return the UserInner object itself.
      */
-    public UserInner withPublishingPassword(TokenCredential publishingPassword) {
+    public UserInner withPublishingPassword(String publishingPassword) {
         this.publishingPassword = publishingPassword;
         return this;
     }
@@ -93,7 +92,7 @@ public class UserInner extends ProxyOnlyResource {
      *
      * @return the publishingPasswordHash value.
      */
-    public TokenCredential publishingPasswordHash() {
+    public String publishingPasswordHash() {
         return this.publishingPasswordHash;
     }
 
@@ -103,7 +102,7 @@ public class UserInner extends ProxyOnlyResource {
      * @param publishingPasswordHash the publishingPasswordHash value to set.
      * @return the UserInner object itself.
      */
-    public UserInner withPublishingPasswordHash(TokenCredential publishingPasswordHash) {
+    public UserInner withPublishingPasswordHash(String publishingPasswordHash) {
         this.publishingPasswordHash = publishingPasswordHash;
         return this;
     }
@@ -113,7 +112,7 @@ public class UserInner extends ProxyOnlyResource {
      *
      * @return the publishingPasswordHashSalt value.
      */
-    public TokenCredential publishingPasswordHashSalt() {
+    public String publishingPasswordHashSalt() {
         return this.publishingPasswordHashSalt;
     }
 
@@ -123,7 +122,7 @@ public class UserInner extends ProxyOnlyResource {
      * @param publishingPasswordHashSalt the publishingPasswordHashSalt value to set.
      * @return the UserInner object itself.
      */
-    public UserInner withPublishingPasswordHashSalt(TokenCredential publishingPasswordHashSalt) {
+    public UserInner withPublishingPasswordHashSalt(String publishingPasswordHashSalt) {
         this.publishingPasswordHashSalt = publishingPasswordHashSalt;
         return this;
     }
@@ -145,6 +144,13 @@ public class UserInner extends ProxyOnlyResource {
      */
     public UserInner withScmUri(String scmUri) {
         this.scmUri = scmUri;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserInner withKind(String kind) {
+        super.withKind(kind);
         return this;
     }
 

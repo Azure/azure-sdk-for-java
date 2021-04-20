@@ -101,8 +101,7 @@ parameters:
   default: []
 - name: PlatformPreSteps
   type: object
-  default:
-    - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
+  default: []
 - name: PlatformPostSteps
   type: object
   default: []

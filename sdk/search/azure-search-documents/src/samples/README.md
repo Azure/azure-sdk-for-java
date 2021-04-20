@@ -3,7 +3,7 @@ page_type: sample
 languages: java
 products:
   - azure
-  - azure-search-documents
+  - azure-cognitive-search
 urlFragment: search-samples
 ---
 

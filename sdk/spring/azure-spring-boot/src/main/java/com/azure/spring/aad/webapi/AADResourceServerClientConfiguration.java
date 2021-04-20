@@ -54,8 +54,8 @@ public class AADResourceServerClientConfiguration {
 
 
     @Bean
-    public OAuth2AuthorizedClientManager authorizeClientManager(ClientRegistrationRepository clients,
-                                                         OAuth2AuthorizedClientRepository authorizedClients) {
+    public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
+                                                          OAuth2AuthorizedClientRepository authorizedClients) {
 
         DefaultOAuth2AuthorizedClientManager manager =
             new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);

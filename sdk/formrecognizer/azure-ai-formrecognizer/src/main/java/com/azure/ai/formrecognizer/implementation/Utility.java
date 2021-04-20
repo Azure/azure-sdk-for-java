@@ -10,15 +10,16 @@ import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -129,28 +130,14 @@ public final class Utility {
      * @param inputStream InputStream to back the Flux
      *
      * @return Flux of ByteBuffer backed by the InputStream
+     * @throws NullPointerException If {@code inputStream} is null.
      */
     public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
-        Pair pair = new Pair();
-        return Flux.just(true)
-            .repeat()
-            .map(ignore -> {
-                byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
-                try {
-                    int numBytes = inputStream.read(buffer);
-                    if (numBytes > 0) {
-                        return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
-                    } else {
-                        return pair.buffer(null).readBytes(numBytes);
-                    }
-                } catch (IOException ioe) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ioe));
-                }
-            })
-            .takeUntil(p -> p.readBytes() == -1)
-            .filter(p -> p.readBytes() > 0)
-            .map(Pair::buffer)
-            .cache();
+        Objects.requireNonNull(inputStream, "'inputStream' is required and cannot be null.");
+        return FluxUtil
+            .toFluxByteBuffer(inputStream)
+            .cache()
+            .map(ByteBuffer::duplicate);
     }
 
     /**
@@ -182,29 +169,6 @@ public final class Utility {
     public static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
         int[] index = new int[]{0};
         iterable.forEach(element -> biConsumer.accept(index[0]++, element));
-    }
-
-    private static class Pair {
-        private ByteBuffer byteBuffer;
-        private int readBytes;
-
-        ByteBuffer buffer() {
-            return this.byteBuffer;
-        }
-
-        int readBytes() {
-            return this.readBytes;
-        }
-
-        Pair buffer(ByteBuffer byteBuffer) {
-            this.byteBuffer = byteBuffer;
-            return this;
-        }
-
-        Pair readBytes(int cnt) {
-            this.readBytes = cnt;
-            return this;
-        }
     }
 
     /**

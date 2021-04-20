@@ -15,7 +15,7 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
