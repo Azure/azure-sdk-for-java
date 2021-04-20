@@ -191,10 +191,7 @@ public final class BlobLeaseAsyncClient {
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
-        response = response.map(r -> {
-            this.leaseId = r.getValue();
-            return r;
-        });
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
         return response;
     }
 
@@ -279,10 +276,7 @@ public final class BlobLeaseAsyncClient {
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
-        response = response.map(r -> {
-            this.leaseId = r.getValue();
-            return r;
-        });
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
         return response;
     }
 
@@ -547,10 +541,7 @@ public final class BlobLeaseAsyncClient {
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
-        response = response.map(r -> {
-            this.leaseId = r.getValue();
-            return r;
-        });
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
         return response;
     }
 
