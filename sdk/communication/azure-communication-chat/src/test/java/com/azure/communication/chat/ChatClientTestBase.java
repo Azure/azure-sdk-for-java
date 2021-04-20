@@ -46,6 +46,9 @@ public class ChatClientTestBase extends TestBase {
     protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
 
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("token");
@@ -210,6 +213,10 @@ public class ChatClientTestBase extends TestBase {
 
     protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+
+    protected boolean shouldEnableChatTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|chat)");
     }
 
     private String redact(String content, Matcher matcher, String replacement) {

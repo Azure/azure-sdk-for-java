@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,7 +47,7 @@ public final class SearchDocumentsResult {
      * query parameter was not specified or set to 'none'.
      */
     @JsonProperty(value = "@search.answers", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, List<AnswerResult>> answers;
+    private List<AnswerResult> answers;
 
     /*
      * Continuation JSON payload returned when Azure Cognitive Search can't
@@ -123,7 +124,7 @@ public final class SearchDocumentsResult {
      *
      * @return the answers value.
      */
-    public Map<String, List<AnswerResult>> getAnswers() {
+    public List<AnswerResult> getAnswers() {
         return this.answers;
     }
 

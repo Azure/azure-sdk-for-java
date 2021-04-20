@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.postgresql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresql.models.Configuration;
 
 public final class ConfigurationImpl implements Configuration, Configuration.Definition, Configuration.Update {
     private ConfigurationInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -54,7 +53,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 
@@ -88,7 +87,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
         return this;
     }
 
-    ConfigurationImpl(String name, PostgreSqlManager serviceManager) {
+    ConfigurationImpl(String name, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = new ConfigurationInner();
         this.serviceManager = serviceManager;
         this.configurationName = name;
@@ -116,7 +115,8 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
         return this;
     }
 
-    ConfigurationImpl(ConfigurationInner innerObject, PostgreSqlManager serviceManager) {
+    ConfigurationImpl(
+        ConfigurationInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

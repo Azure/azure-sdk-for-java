@@ -16,7 +16,7 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-eventhubs</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

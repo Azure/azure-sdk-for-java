@@ -1035,9 +1035,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         }, MessagingFactory.INTERNAL_THREAD_POOL);
     }
 
-    // In case we need to support peek on a topic
+    // In case we need to support peek on a topic, don't associate a send link
     public CompletableFuture<Collection<Message>> peekMessagesAsync(long fromSequenceNumber, int messageCount) {
         TRACE_LOGGER.debug("Peeking '{}' messages in '{}' from sequence number '{}'", messageCount, this.sendPath, fromSequenceNumber);
-        return this.createRequestResponseLink().thenComposeAsync((v) -> CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, null, this.sendLink.getName()), MessagingFactory.INTERNAL_THREAD_POOL);
+        return this.createRequestResponseLink().thenComposeAsync((v) -> CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, null, null), MessagingFactory.INTERNAL_THREAD_POOL);
     }
 }

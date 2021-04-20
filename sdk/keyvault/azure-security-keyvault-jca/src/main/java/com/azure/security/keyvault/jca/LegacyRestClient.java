@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.io.entity.HttpEntities;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -39,16 +39,7 @@ class LegacyRestClient implements RestClient {
                     httpGet.addHeader(key, value);
                 });
             }
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = null;
-                if (status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-                    result1 = entity != null ? EntityUtils.toString(entity) : null;
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
+            result = client.execute(httpGet, createResponseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -60,20 +51,24 @@ class LegacyRestClient implements RestClient {
         String result = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
-            httpPost.setEntity(HttpEntities.create(body, ContentType.create(contentType)));
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = null;
-                if (status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-                    result1 = entity != null ? EntityUtils.toString(entity) : null;
-                }
-                return result1;
-            };
-            result = client.execute(httpPost, responseHandler);
+            httpPost.setEntity(
+                new StringEntity(body, ContentType.create(contentType)));
+            result = client.execute(httpPost, createResponseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         return result;
+    }
+
+    private ResponseHandler<String> createResponseHandler() {
+        return (HttpResponse response) -> {
+            int status = response.getStatusLine().getStatusCode();
+            String result = null;
+            if (status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                result = entity != null ? EntityUtils.toString(entity) : null;
+            }
+            return result;
+        };
     }
 }
