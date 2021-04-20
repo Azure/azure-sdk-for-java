@@ -18,6 +18,7 @@ steps:
           WorkingDirectory: $(System.DefaultWorkingDirectory)
       Paths:
         - '**/pom*.xml'
+        - '**/*.md'
 
   - task: UsePythonVersion@0
     displayName: 'Use Python 3.6'
