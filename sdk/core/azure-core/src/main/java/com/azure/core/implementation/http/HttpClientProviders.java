@@ -30,7 +30,7 @@ public final class HttpClientProviders {
         // System classloader to load HttpClientProvider classes.
         ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(
             HttpClientProvider.class,
-            HttpClientProvider.class.getClassLoader());
+            HttpClientProviders.class.getClassLoader());
         // Use the first provider found in the service loader iterator.
         Iterator<HttpClientProvider> it = serviceLoader.iterator();
         if (it.hasNext()) {
