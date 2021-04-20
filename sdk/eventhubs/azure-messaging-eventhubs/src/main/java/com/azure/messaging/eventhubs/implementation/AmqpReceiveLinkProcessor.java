@@ -381,7 +381,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             if (link != null && credits > 0) {
                 final boolean hadNoCredits = linkHasNoCredits.compareAndSet(true, false);
 
-                logger.verbose("linkName[{}] entityPath[{}] request[{}] credits[{}] hadNoCredits[{}]"
+                logger.verbose("linkName[{}] entityPath[{}] request[{}] creditsToAdd[{}] hadNoCredits[{}]"
                         + " Backpressure request from downstream.",
                     currentLinkName, entityPath, request, credits, hadNoCredits);
 
