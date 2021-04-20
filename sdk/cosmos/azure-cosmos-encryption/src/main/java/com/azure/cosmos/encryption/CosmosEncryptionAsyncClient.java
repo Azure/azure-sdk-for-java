@@ -24,11 +24,11 @@ import reactor.core.publisher.Mono;
  * CosmosClient with Encryption support.
  */
 public class CosmosEncryptionAsyncClient {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
     private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
-    private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
 
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
