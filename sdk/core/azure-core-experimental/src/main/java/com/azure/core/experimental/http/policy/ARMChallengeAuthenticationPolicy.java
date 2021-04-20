@@ -49,14 +49,14 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
      */
     public ARMChallengeAuthenticationPolicy(TokenCredential credential,
                                             AzureEnvironment environment, String... scopes) {
-        super(credential);
+        super(credential, scopes);
         this.scopes = scopes;
         this.environment = environment;
     }
 
 
     @Override
-    public Mono<Void> AuthorizeRequest(HttpPipelineCallContext context) {
+    public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
             String[] scopes = this.scopes;
             scopes = getScopes(context, scopes);
@@ -66,7 +66,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
     }
 
     @Override
-    public Mono<Boolean> AuthorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
+    public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
             if (!(response.getStatusCode() == 401 && authHeader != null)) {

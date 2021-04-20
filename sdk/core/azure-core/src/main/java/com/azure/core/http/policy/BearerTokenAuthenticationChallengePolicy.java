@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.http.policy;
+package com.azure.core.http.policy;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.AccessTokenCacheImpl;
 import reactor.core.publisher.Mono;
 
@@ -21,9 +20,9 @@ import java.util.Objects;
 public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePolicy {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER = "Bearer";
-    static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
 
-    private final com.azure.core.implementation.AccessTokenCacheImpl cache;
+    private final AccessTokenCacheImpl cache;
     private final String[] scopes;
 
     /**
@@ -73,19 +72,19 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
 
         return authorizeRequest(context)
             .then(Mono.defer(() -> next.process()))
-            .flatMap(httpResponse -> {
-                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
-                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                    return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
-                        if (retry) {
-                            return nextPolicy.process();
-                        } else {
-                            return Mono.just(httpResponse);
-                        }
-                    });
-                }
-                return Mono.just(httpResponse);
-            });
+               .flatMap(httpResponse -> {
+                   String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                   if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                       return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
+                           if (retry) {
+                               return nextPolicy.process();
+                           } else {
+                               return Mono.just(httpResponse);
+                           }
+                       });
+                   }
+                   return Mono.just(httpResponse);
+               });
     }
 
     /**
@@ -97,10 +96,10 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
      */
     public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return cache.getToken(tokenRequestContext)
-            .flatMap(token -> {
-                context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
-                return Mono.empty();
-            });
+           .flatMap(token -> {
+               context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
+               return Mono.empty();
+           });
     }
 }
 
