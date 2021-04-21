@@ -864,6 +864,7 @@ public class DataLakeFileSystemAsyncClient {
      * multiple have been soft deleted at this location.
      * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if deletedPath or deletionId is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakePathAsyncClient> restorePath(String deletedPath, String deletionId) {
@@ -884,6 +885,7 @@ public class DataLakeFileSystemAsyncClient {
      * multiple have been soft deleted at this location.
      * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if deletedPath or deletionId is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakePathAsyncClient>> restorePathWithResponse(String deletedPath, String deletionId) {
