@@ -309,6 +309,22 @@ class StorageAccountImpl
     }
 
     @Override
+    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
+        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                null,
+                new com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState()
+                    .withStatus(
+                        com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus.REJECTED))
+            .then();
+    }
+
+    @Override
     public Mono<StorageAccount> refreshAsync() {
         return super
             .refreshAsync()
@@ -727,7 +743,7 @@ class StorageAccountImpl
         private final PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
         private final PrivateEndpointConnectionProvisioningState provisioningState;
 
-        public PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
+        private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
             this.innerModel = innerModel;
 
             this.privateEndpoint = innerModel.privateEndpoint() == null

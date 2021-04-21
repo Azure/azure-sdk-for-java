@@ -23,6 +23,7 @@ import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -142,6 +143,11 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         List<PrivateEndpointConnection> storageAccountConnections = storageAccount.listPrivateEndpointConnections().stream().collect(Collectors.toList());
         Assertions.assertEquals(1, storageAccountConnections.size());
         PrivateEndpointConnection storageAccountConnection = storageAccountConnections.iterator().next();
+        Assertions.assertNotNull(storageAccountConnection.id());
+        Assertions.assertNotNull(storageAccountConnection.privateEndpoint());
+        Assertions.assertNotNull(storageAccountConnection.privateEndpoint().id());
+        Assertions.assertNotNull(storageAccountConnection.privateLinkServiceConnectionState());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, storageAccountConnection.privateLinkServiceConnectionState().status());
         storageAccount.approvePrivateEndpointConnection(storageAccountConnection.name());
 
         // check again

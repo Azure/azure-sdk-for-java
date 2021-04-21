@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.models;
 
 import java.util.List;
 
-/** An interface representing a Private link resource. */
+/** An interface representing a private link resource. */
 public interface PrivateLinkResource {
 
     /** @return The group ID of Private link resource. */
