@@ -752,6 +752,7 @@
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
+        <module>sdk/timeseriesinsights</module>
       </modules>
     </profile>
   </profiles>
