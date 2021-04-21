@@ -215,7 +215,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
    select **Application Permissions**, select **WebApiA.SampleScope** permission, select **Add permission** to complete the process.
    
 1. Grant admin consent for ***WebApiA*** permissions.
-   ![Select MyAPIs](resource/add-api-permission.png)
+   ![Add WebApiA permission](resource/add-webapia-permission.png)
    
 1. Use the same dependencies with **Accessing a web application** scenario.
 
