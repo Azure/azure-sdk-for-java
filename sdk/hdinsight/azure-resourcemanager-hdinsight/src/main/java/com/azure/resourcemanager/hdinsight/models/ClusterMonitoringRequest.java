@@ -9,25 +9,25 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Operations Management Suite (OMS) parameters. */
+/** The cluster monitor parameters. */
 @Fluent
 public final class ClusterMonitoringRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterMonitoringRequest.class);
 
     /*
-     * The Operations Management Suite (OMS) workspace ID.
+     * The cluster monitor workspace ID.
      */
     @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
     /*
-     * The Operations Management Suite (OMS) workspace key.
+     * The cluster monitor workspace key.
      */
     @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /**
-     * Get the workspaceId property: The Operations Management Suite (OMS) workspace ID.
+     * Get the workspaceId property: The cluster monitor workspace ID.
      *
      * @return the workspaceId value.
      */
@@ -36,7 +36,7 @@ public final class ClusterMonitoringRequest {
     }
 
     /**
-     * Set the workspaceId property: The Operations Management Suite (OMS) workspace ID.
+     * Set the workspaceId property: The cluster monitor workspace ID.
      *
      * @param workspaceId the workspaceId value to set.
      * @return the ClusterMonitoringRequest object itself.
@@ -47,7 +47,7 @@ public final class ClusterMonitoringRequest {
     }
 
     /**
-     * Get the primaryKey property: The Operations Management Suite (OMS) workspace key.
+     * Get the primaryKey property: The cluster monitor workspace key.
      *
      * @return the primaryKey value.
      */
@@ -56,7 +56,7 @@ public final class ClusterMonitoringRequest {
     }
 
     /**
-     * Set the primaryKey property: The Operations Management Suite (OMS) workspace key.
+     * Set the primaryKey property: The cluster monitor workspace key.
      *
      * @param primaryKey the primaryKey value to set.
      * @return the ClusterMonitoringRequest object itself.

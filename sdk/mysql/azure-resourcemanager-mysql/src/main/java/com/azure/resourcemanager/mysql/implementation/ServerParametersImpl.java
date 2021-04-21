@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mysql.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.ServerParametersClient;
 import com.azure.resourcemanager.mysql.fluent.models.ConfigurationListResultInner;
 import com.azure.resourcemanager.mysql.models.ConfigurationListResult;
@@ -18,9 +17,10 @@ public final class ServerParametersImpl implements ServerParameters {
 
     private final ServerParametersClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public ServerParametersImpl(ServerParametersClient innerClient, MySqlManager serviceManager) {
+    public ServerParametersImpl(
+        ServerParametersClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -51,7 +51,7 @@ public final class ServerParametersImpl implements ServerParameters {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }
