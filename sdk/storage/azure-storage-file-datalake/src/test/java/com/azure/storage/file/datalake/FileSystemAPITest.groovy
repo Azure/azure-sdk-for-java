@@ -1011,7 +1011,7 @@ class FileSystemAPITest extends APISpec {
         fc2.delete()
 
         when:
-        def deletedBlobs = fsc.listDeletedPaths(new ListDeletedPathsOptions().setPath(dir.getDirectoryName()), null)
+        def deletedBlobs = fsc.listDeletedPaths(new ListDeletedPathsOptions().setPath(dir.getDirectoryName()), null, null)
 
         then:
         deletedBlobs.size() == 1
@@ -1043,7 +1043,7 @@ class FileSystemAPITest extends APISpec {
         def options = new ListDeletedPathsOptions().setPath(dir.getDirectoryName())
 
         expect:
-        def pagedIterable = fsc.listDeletedPaths(options, null);
+        def pagedIterable = fsc.listDeletedPaths(options, null, null);
 
         def iterableByPage = pagedIterable.iterableByPage(1)
         for (def page : iterableByPage) {

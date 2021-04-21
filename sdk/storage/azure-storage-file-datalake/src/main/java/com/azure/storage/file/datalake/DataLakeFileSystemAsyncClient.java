@@ -553,59 +553,70 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathDeletedItem> listDeletedPaths(ListDeletedPathsOptions options) {
-        return listDeletedPathsWithOptionalTimeout(options, null);
+        try {
+            return new PagedFlux<>(pageSize -> withContext(context -> listDeletedPaths(null, pageSize, options,
+                null, context)),
+                (marker, pageSize) -> withContext(context -> listDeletedPaths(marker, pageSize, options, null,
+                    context)));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PathDeletedItem> listDeletedPathsWithOptionalTimeout(ListDeletedPathsOptions options,
-        Duration timeout) {
-        BiFunction<String, Integer, Mono<PagedResponse<PathDeletedItem>>> func =
-            (marker, pageSize) -> {
-                ListDeletedPathsOptions finalOptions;
-                /*
-                 If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
-                 Otherwise, prefer the new value.
-                 */
-                if (pageSize != null) {
-                    if (options == null) {
-                        finalOptions = new ListDeletedPathsOptions().setMaxResults(pageSize);
-                    } else {
-                        // Note that this prefers the value passed to .byPage(int) over the value on the options
-                        finalOptions = new ListDeletedPathsOptions()
-                            .setMaxResults(pageSize)
-                            .setPath(options.getPath());
-                    }
-                    } else {
-                        finalOptions = options;
-                    }
-                    return listDeletedPathsSegment(marker, finalOptions, timeout)
-                        .map(response -> {
-                            List<PathDeletedItem> value = response.getValue().getSegment() == null
-                                ? Collections.emptyList()
-                                : Stream.concat(
-                                response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
-                                response.getValue().getSegment().getBlobPrefixes().stream()
-                                    .map(Transforms::toPathDeletedItem)
-                            ).collect(Collectors.toList());
-                            return new PagedResponseBase<>(
-                                response.getRequest(),
-                                response.getStatusCode(),
-                                response.getHeaders(),
-                                value,
-                                response.getValue().getNextMarker(),
-                                response.getDeserializedHeaders());
-                        });
-                };
-        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
+        Duration timeout, Context context) {
+        return new PagedFlux<>(pageSize -> listDeletedPaths(null, pageSize, options, timeout, context),
+            (marker, pageSize) -> listDeletedPaths(marker, pageSize, options, timeout, context));
+    }
+
+    private Mono<PagedResponse<PathDeletedItem>> listDeletedPaths(String marker, Integer pageSize,
+        ListDeletedPathsOptions options, Duration timeout, Context context) {
+        ListDeletedPathsOptions finalOptions;
+        /*
+        If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+        Otherwise, prefer the new value.
+        */
+        if (pageSize != null) {
+            if (options == null) {
+                finalOptions = new ListDeletedPathsOptions().setMaxResults(pageSize);
+            } else {
+                // Note that this prefers the value passed to .byPage(int) over the value on the options
+                finalOptions = new ListDeletedPathsOptions()
+                    .setMaxResults(pageSize)
+                    .setPath(options.getPath());
+            }
+        } else {
+            finalOptions = options;
+        }
+        return listDeletedPathsSegment(marker, finalOptions, timeout, context)
+            .map(response -> {
+                List<PathDeletedItem> value = response.getValue().getSegment() == null
+                    ? Collections.emptyList()
+                    : Stream.concat(
+                    response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
+                    response.getValue().getSegment().getBlobPrefixes().stream()
+                        .map(Transforms::toPathDeletedItem)
+                ).collect(Collectors.toList());
+                return new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    value,
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders());
+            });
     }
 
     private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
-        ListDeletedPathsOptions options, Duration timeout) {
+        ListDeletedPathsOptions options, Duration timeout, Context context) {
         options = options == null ? new ListDeletedPathsOptions() : options;
+        context = context == null ? Context.NONE : context;
 
         return StorageImplUtils.applyOptionalTimeout(
             this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
                 null, options.getPath(), marker, options.getMaxResults(),
-                null, ListBlobsShowOnly.DELETED, null, null, Context.NONE), timeout);
+                null, ListBlobsShowOnly.DELETED, null, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout);
     }
 
     /**

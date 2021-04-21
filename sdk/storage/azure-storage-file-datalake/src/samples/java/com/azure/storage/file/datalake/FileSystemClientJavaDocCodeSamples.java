@@ -338,20 +338,22 @@ public class FileSystemClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakeFileSystemClient#listDeletedPaths()} and
-     * {@link DataLakeFileSystemClient#listDeletedPaths(ListDeletedPathsOptions, Duration)}
+     * {@link DataLakeFileSystemClient#listDeletedPaths(ListDeletedPathsOptions, Duration, Context)}
      */
     public void listDeletedPaths() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
         client.listDeletedPaths().forEach(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration-Context
+        Context context = new Context("Key", "Value");
         ListDeletedPathsOptions options = new ListDeletedPathsOptions()
             .setPath("pathPrefixToMatch")
             .setMaxResults(10);
 
-        client.listDeletedPaths(options, timeout).forEach(path -> System.out.printf("Name: %s%n", path.getName()));
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration
+        client.listDeletedPaths(options, timeout, context)
+            .forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration-Context
     }
 
     /**
