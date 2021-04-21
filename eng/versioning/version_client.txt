@@ -214,7 +214,7 @@ com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagecache;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0-beta.2;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridkubernetes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-iothub;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-datadog;1.0.0-beta.2;1.0.0-beta.3
@@ -222,7 +222,7 @@ com.azure.resourcemanager:azure-resourcemanager-communication;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-apimanagement;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0-beta.1;1.0.0-beta.2
