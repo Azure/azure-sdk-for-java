@@ -186,6 +186,9 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     }
 
+    /**
+     * The entity class of the group
+     */
     public static class UserGroup {
         private String groupName;
         private String groupId;
