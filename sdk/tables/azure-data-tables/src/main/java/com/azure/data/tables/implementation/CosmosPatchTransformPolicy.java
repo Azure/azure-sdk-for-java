@@ -35,7 +35,7 @@ public class CosmosPatchTransformPolicy implements HttpPipelinePolicy {
      * @param request The pipeline's {@link HttpRequest}.
      */
     private void transformPatchToCosmosPost(HttpRequest request) {
-        request.setHttpMethod(HttpMethod.PATCH);
+        request.setHttpMethod(HttpMethod.POST);
         request.setHeader("X-HTTP-Method", "MERGE");
     }
 }
