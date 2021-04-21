@@ -56,7 +56,7 @@ public class EncryptionProcessor {
     private EncryptionSettings encryptionSettings;
     private AtomicBoolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
-    private final static int STRING_SIZE_ENCRYPTION_LIMIT = 1024;
+    private final static int STRING_SIZE_ENCRYPTION_LIMIT = 8000;
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
                                CosmosEncryptionAsyncClient encryptionCosmosClient) {

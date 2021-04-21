@@ -6,8 +6,10 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -19,7 +21,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,6 +99,31 @@ public class EncryptionCrudTest extends TestSuiteBase {
         Pojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
             new CosmosItemRequestOptions(), Pojo.class).block().getItem();
         validateResponse(properties, readItem);
+
+        //Check for max length support of 8000
+        properties = getItem(UUID.randomUUID().toString());
+        String longString = "";
+        for (int i = 0; i < 8000; i++) {
+            longString += "a";
+        }
+        properties.sensitiveString = longString;
+        itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        responseItem = itemResponse.getItem();
+        validateResponse(properties, responseItem);
+
+        //Check for exception for length greater that 8000
+        longString += "a";
+        properties.sensitiveString = longString;
+        try {
+            cosmosEncryptionAsyncContainer.createItem(properties,
+                new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+            fail("Item create should fail as length of encryption field  is greater than 8000");
+        } catch (CosmosException ex) {
+            assertThat(ex.getMessage()).contains("Unable to convert JSON to byte[]");
+            assertThat(ex.getCause() instanceof MicrosoftDataEncryptionException).isTrue();
+        }
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
