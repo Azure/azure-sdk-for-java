@@ -8,6 +8,7 @@ import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosItemResponse;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,5 +59,9 @@ public class ReflectionUtils {
 
     public static void setEncryptionSettings(EncryptionProcessor encryptionProcessor, EncryptionSettings encryptionSettings) {
         set(encryptionProcessor, encryptionSettings,"encryptionSettings");
+    }
+
+    public static byte[] getResponseBodyAsByteArray(CosmosItemResponse cosmosItemResponse) {
+        return get(cosmosItemResponse, "responseBodyAsByteArray");
     }
 }

@@ -7,10 +7,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -26,16 +26,14 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.ISerializer;
 import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
-import com.microsoft.data.encryption.cryptography.SqlSerializerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,7 +90,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
-    public void createItemEncrypt_readItemDecrypt() throws MicrosoftDataEncryptionException {
+    public void createItemEncrypt_readItemDecrypt() throws MicrosoftDataEncryptionException, IOException {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
             new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
@@ -104,9 +102,12 @@ public class EncryptionCrudTest extends TestSuiteBase {
             new CosmosItemRequestOptions(), Pojo.class).block().getItem();
         validateResponse(properties, readItem);
 
-        PojoEncrypted readItemWithoutDecryption = cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().readItem(properties.id, new PartitionKey(properties.mypk),
-            new CosmosItemRequestOptions(), PojoEncrypted.class).block().getItem();
-        validateResponseWithoutDecryption(properties, readItemWithoutDecryption);
+        CosmosItemResponse<PojoEncrypted> readItemWithoutDecryption =
+            cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().readItem(properties.id,
+                new PartitionKey(properties.mypk),
+            new CosmosItemRequestOptions(), PojoEncrypted.class).block();
+        validateResponseWithoutDecryption(properties, readItemWithoutDecryption.getItem(),
+            ReflectionUtils.getResponseBodyAsByteArray(readItemWithoutDecryption));
 
         //Check for max length support of 8000
         properties = getItem(UUID.randomUUID().toString());
@@ -336,7 +337,8 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray);
     }
 
-    private void validateResponseWithoutDecryption(Pojo originalItem, PojoEncrypted encryptedResult) throws MicrosoftDataEncryptionException {
+    private void validateResponseWithoutDecryption(Pojo originalItem, PojoEncrypted encryptedResult,
+                                                   byte[] responseBodyAsByteArray) throws MicrosoftDataEncryptionException, IOException {
         assertThat(encryptedResult.id).isEqualTo(originalItem.id);
         assertThat(encryptedResult.mypk).isEqualTo(originalItem.mypk);
         assertThat(encryptedResult.nonSensitive).isEqualTo(originalItem.nonSensitive);
@@ -350,7 +352,9 @@ public class EncryptionCrudTest extends TestSuiteBase {
         //TODO plain text not working as expected
 //        ISerializer sqlVarcharSerializer = SqlSerializerFactory.getOrCreate("varchar", 8000, 0, 0,
 //            StandardCharsets.UTF_8.toString());
-//        byte[] encryptedPlainText = Utils.getUTF8Bytes(encryptedResult.plainText);
+//        ObjectNode itemJObj = Utils.parse(responseBodyAsByteArray, ObjectNode.class);
+//        JsonNode plainText = itemJObj.get("plainText");
+//        byte[] encryptedPlainText = plainText.binaryValue();
 //        byte[] plainTextFromEncryptedPlainText = new byte[encryptedPlainText.length - 1];
 //        System.arraycopy(encryptedPlainText, 1, plainTextFromEncryptedPlainText, 0,
 //            encryptedPlainText.length - 1);
