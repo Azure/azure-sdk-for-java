@@ -9,24 +9,29 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PrivateDnsZoneGroup;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
@@ -140,15 +145,15 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         Assertions.assertEquals("request message", privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
 
         // approve the connection
-        List<PrivateEndpointConnectionInner> storageAccountConnections = azureResourceManager.storageAccounts().manager().serviceClient().getPrivateEndpointConnections().list(rgName, saName).stream().collect(Collectors.toList());
+        List<PrivateEndpointConnection> storageAccountConnections = storageAccount.listPrivateEndpointConnections().stream().collect(Collectors.toList());
         Assertions.assertEquals(1, storageAccountConnections.size());
-        PrivateEndpointConnectionInner storageAccountConnection = storageAccountConnections.iterator().next();
-        Response<PrivateEndpointConnectionInner> approvalResponse = azureResourceManager.storageAccounts().manager().serviceClient().getPrivateEndpointConnections()
-            .putWithResponse(rgName, saName, storageAccountConnection.name(),
-                storageAccountConnection.privateEndpoint(),
-                storageAccountConnection.privateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED),
-                Context.NONE);
-        Assertions.assertEquals(200, approvalResponse.getStatusCode());
+        PrivateEndpointConnection storageAccountConnection = storageAccountConnections.iterator().next();
+        Assertions.assertNotNull(storageAccountConnection.id());
+        Assertions.assertNotNull(storageAccountConnection.privateEndpoint());
+        Assertions.assertNotNull(storageAccountConnection.privateEndpoint().id());
+        Assertions.assertNotNull(storageAccountConnection.privateLinkServiceConnectionState());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, storageAccountConnection.privateLinkServiceConnectionState().status());
+        storageAccount.approvePrivateEndpointConnection(storageAccountConnection.name());
 
         // check again
         privateEndpoint.refresh();
@@ -335,5 +340,99 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
         // delete private dns zone group
         privateEndpoint.privateDnsZoneGroups().deleteById(privateDnsZoneGroup.id());
+    }
+
+    @Test
+    public void testStoragePrivateLinkResources() {
+        StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .create();
+
+        validatePrivateLinkResource(storageAccount, PrivateLinkSubResourceName.STORAGE_BLOB.toString());
+    }
+
+    @Test
+    public void testPrivateEndpointVault() {
+        String vaultName = generateRandomResourceName("vault", 10);
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.VAULT;
+
+        Vault vault = azureResourceManager.vaults().define(vaultName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withEmptyAccessPolicy()
+            .create();
+
+        validatePrivateLinkResource(vault, subResourceName.toString());
+
+        validateApprovePrivatePrivateEndpointConnection(vault, subResourceName);
+    }
+
+    @Test
+    public void testPrivateEndpointCosmos() {
+        String cosmosName = generateRandomResourceName("cosmos", 10);
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.COSMOS_SQL;
+
+        CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(cosmosName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withDataModelSql()
+            .withStrongConsistency()
+            .create();
+
+        PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(cosmosDBAccount, subResourceName);
+
+        com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection connection = cosmosDBAccount.listPrivateEndpointConnection().values().iterator().next();
+        cosmosDBAccount.approvePrivateEndpointConnection(connection.name());
+
+        privateEndpoint.refresh();
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+    }
+
+    private void validatePrivateLinkResource(SupportsListingPrivateLinkResource resource, String requiredGroupId) {
+        PagedIterable<PrivateLinkResource> privateLinkResources = resource.listPrivateLinkResources();
+        List<PrivateLinkResource> privateLinkResourceList = privateLinkResources.stream().collect(Collectors.toList());
+
+        Assertions.assertFalse(privateLinkResourceList.isEmpty());
+        Assertions.assertTrue(privateLinkResourceList.stream().anyMatch(r -> requiredGroupId.equals(r.groupId())));
+    }
+
+    private PrivateEndpoint createPrivateEndpointForManualApproval(Resource resource, PrivateLinkSubResourceName subResourceName) {
+        Network network = azureResourceManager.networks().define(vnName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace(vnAddressSpace)
+            .defineSubnet(subnetName)
+            .withAddressPrefix(vnAddressSpace)
+            .disableNetworkPoliciesOnPrivateEndpoint()
+            .attach()
+            .create();
+
+        // private endpoint with manual approval
+        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSubnet(network.subnets().get(subnetName))
+            .definePrivateLinkServiceConnection(pecName)
+            .withResource(resource)
+            .withSubResource(subResourceName)
+            .withManualApproval("request message")
+            .attach()
+            .create();
+        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+
+        return privateEndpoint;
+    }
+
+    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void validateApprovePrivatePrivateEndpointConnection(
+        T resource, PrivateLinkSubResourceName subResourceName) {
+
+        PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(resource, subResourceName);
+
+        resource.approvePrivateEndpointConnection(pecName);
+
+        // check again
+        privateEndpoint.refresh();
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
     }
 }

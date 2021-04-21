@@ -7,7 +7,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
-import com.azure.containers.containerregistry.implementation.Utils;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;

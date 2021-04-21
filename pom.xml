@@ -714,6 +714,7 @@
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/mariadb</module>
+        <module>sdk/marketplaceordering</module>
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
         <module>sdk/mixedreality</module>
@@ -722,6 +723,7 @@
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
+        <module>sdk/operationsmanagement</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
@@ -745,12 +747,14 @@
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
         <module>sdk/storageimportexport</module>
+        <module>sdk/streamanalytics</module>
         <module>sdk/subscription</module>
         <module>sdk/support</module>
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
+        <module>sdk/timeseriesinsights</module>
       </modules>
     </profile>
   </profiles>

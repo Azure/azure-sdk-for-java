@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.implementation.ContainerRegistries
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryRepositoriesImpl;
-import com.azure.containers.containerregistry.implementation.Utils;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesManifestReferences;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
