@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.containers.containerregistry.implementation.authentication;
+package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenRequestContext;
+import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -22,7 +24,7 @@ import java.time.OffsetDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ContainerRegistryClientPolicyImplTest {
+public class ContainerRegistryCredentialPolicyTests {
 
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String AUTHENTICATE_HEADER = "Bearer realm=\"https://mytest.azurecr.io/oauth2/token\",service=\"mytest.azurecr.io\",scope=\"registry:catalog:*\",error=\"invalid_token\"";
@@ -113,7 +115,6 @@ public class ContainerRegistryClientPolicyImplTest {
         // Validate that the onChallenge ran successfully.
         assertTrue(onChallenge);
 
-        // Validate that the request has the correct authorization header.
         String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
@@ -121,7 +122,7 @@ public class ContainerRegistryClientPolicyImplTest {
 
         // Validate that the token creation was called with the correct arguments.
         ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
-        verify(spyPolicy).authorizeRequest(any(HttpPipelineCallContext.class), argument.capture());
+        verify(spyPolicy).addAuthorization(any(HttpPipelineCallContext.class), argument.capture());
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
         assertEquals(SERVICENAME, requestContext.getServiceName());
