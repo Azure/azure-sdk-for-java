@@ -7,7 +7,6 @@ package com.azure.resourcemanager.batchai.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -101,112 +100,6 @@ public interface FileServersClient {
         String fileServerName,
         FileServerCreateParameters parameters,
         Context context);
-
-    /**
-     * Deletes a File Server.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only
-     *     contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be
-     *     from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String fileServerName);
-
-    /**
-     * Deletes a File Server.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only
-     *     contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be
-     *     from 1 through 64 characters long.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context);
-
-    /**
-     * Deletes a File Server.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only
-     *     contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be
-     *     from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String fileServerName);
-
-    /**
-     * Deletes a File Server.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only
-     *     contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be
-     *     from 1 through 64 characters long.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String fileServerName, Context context);
-
-    /**
-     * Gets information about a File Server.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only
-     *     contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be
-     *     from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a File Server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    FileServerInner get(String resourceGroupName, String workspaceName, String fileServerName);
-
-    /**
-     * Gets information about a File Server.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only
-     *     contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be
-     *     from 1 through 64 characters long.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a File Server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileServerInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context);
 
     /**
      * Gets a list of File Servers associated with the specified workspace.

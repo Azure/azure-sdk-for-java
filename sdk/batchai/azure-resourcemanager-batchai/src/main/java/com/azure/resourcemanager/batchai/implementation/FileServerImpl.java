@@ -116,26 +116,6 @@ public final class FileServerImpl implements FileServer, FileServer.Definition {
         this.createParameters = new FileServerCreateParameters();
     }
 
-    public FileServer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileServers()
-                .getWithResponse(resourceGroupName, workspaceName, fileServerName, Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public FileServer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileServers()
-                .getWithResponse(resourceGroupName, workspaceName, fileServerName, context)
-                .getValue();
-        return this;
-    }
-
     public FileServerImpl withVmSize(String vmSize) {
         this.createParameters.withVmSize(vmSize);
         return this;
