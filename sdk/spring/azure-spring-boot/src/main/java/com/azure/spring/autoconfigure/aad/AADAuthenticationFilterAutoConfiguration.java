@@ -42,7 +42,8 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
-@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
+// TODO(rujche): Update changelog.
+@ConditionalOnExpression("${azure.activedirectory.enable-authentication-filter:false} == true")
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {

@@ -54,6 +54,7 @@ public class AADAuthenticationFilterIT {
         properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         properties.put("azure.activedirectory.client-id", clientId);
         properties.put("azure.activedirectory.client-secret", clientSecret);
+        properties.put("azure.activedirectory.enable-authentication-filter", "true");
         properties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         return new AADWebApiITHelper(
             TestApp.class,
