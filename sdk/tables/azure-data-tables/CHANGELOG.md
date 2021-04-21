@@ -2,6 +2,9 @@
 
 ## 12.0.0-beta.7 (Unreleased)
 
+### Bug Fixes
+
+- Merge operations no longer fail for Cosmos table endpoints.
 
 ## 12.0.0-beta.6 (2021-04-07)
 
