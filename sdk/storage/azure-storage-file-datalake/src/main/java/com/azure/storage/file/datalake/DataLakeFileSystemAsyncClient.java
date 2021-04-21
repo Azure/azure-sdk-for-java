@@ -548,7 +548,7 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#ListDeletedPathsOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String}
      *
      * @param prefix Specifies the path to filter the results to.
      * @return A reactive response emitting the list of files/directories.
