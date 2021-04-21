@@ -548,4 +548,8 @@ the main ServiceBusClientBuilder. -->
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.core.test.AzureTestWatcher.java"/>
+
+  <!-- This policy is purely an implementation detail and should not be used by customers -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.data.tables.implementation.CosmosPatchTransformPolicy"/>
 </suppressions>
