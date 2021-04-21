@@ -26,6 +26,7 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -353,6 +354,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
     @Test
     public void testPrivateEndpointVault() {
         String vaultName = generateRandomResourceName("vault", 10);
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.VAULT;
 
         Vault vault = azureResourceManager.vaults().define(vaultName)
             .withRegion(region)
@@ -360,9 +362,9 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .withEmptyAccessPolicy()
             .create();
 
-        validatePrivateLinkResource(vault, PrivateLinkSubResourceName.VAULT.toString());
+        validatePrivateLinkResource(vault, subResourceName.toString());
 
-        validateApprovePrivatePrivateEndpointConnection(vault, vault.id(), PrivateLinkSubResourceName.VAULT);
+        validateApprovePrivatePrivateEndpointConnection(vault, subResourceName);
     }
 
     private void validatePrivateLinkResource(SupportsListingPrivateLinkResource resource, String requiredGroupId) {
@@ -373,7 +375,9 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         Assertions.assertTrue(privateLinkResourceList.stream().anyMatch(r -> requiredGroupId.equals(r.groupId())));
     }
 
-    private void validateApprovePrivatePrivateEndpointConnection(SupportsUpdatingPrivateEndpointConnection resource, String resourceId, PrivateLinkSubResourceName subResourceName) {
+    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void validateApprovePrivatePrivateEndpointConnection(
+        T resource, PrivateLinkSubResourceName subResourceName) {
+
         Network network = azureResourceManager.networks().define(vnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -390,7 +394,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .withExistingResourceGroup(rgName)
             .withSubnet(network.subnets().get(subnetName))
             .definePrivateLinkServiceConnection(pecName)
-            .withResourceId(resourceId)
+            .withResource(resource)
             .withSubResource(subResourceName)
             .withManualApproval("request message")
             .attach()
