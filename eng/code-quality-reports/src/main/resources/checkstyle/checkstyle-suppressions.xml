@@ -138,7 +138,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.storage.blob.specialized.BlobLeaseAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.file.specialized.ShareLeaseAsyncClient.java"/>
+            files="com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.java"/>
 
   <!-- Any code in any package, it should never be a 'throw' keyword in the client library codebase except for in the client logger -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
