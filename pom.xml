@@ -122,6 +122,9 @@
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
 
+        <!-- Translation -->
+        <module>sdk/translation/azure-rest-ai-documenttranslator</module>
+
       </modules>
 
       <distributionManagement>
