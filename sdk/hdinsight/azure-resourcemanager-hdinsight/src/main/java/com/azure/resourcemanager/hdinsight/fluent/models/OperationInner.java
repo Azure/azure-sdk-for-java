@@ -7,6 +7,7 @@ package com.azure.resourcemanager.hdinsight.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.OperationDisplay;
+import com.azure.resourcemanager.hdinsight.models.OperationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,6 +27,12 @@ public final class OperationInner {
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /*
+     * The operation properties.
+     */
+    @JsonProperty(value = "properties")
+    private OperationProperties properties;
 
     /**
      * Get the name property: The operation name: {provider}/{resource}/{operation}.
@@ -68,6 +75,26 @@ public final class OperationInner {
     }
 
     /**
+     * Get the properties property: The operation properties.
+     *
+     * @return the properties value.
+     */
+    public OperationProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The operation properties.
+     *
+     * @param properties the properties value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withProperties(OperationProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -75,6 +102,9 @@ public final class OperationInner {
     public void validate() {
         if (display() != null) {
             display().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

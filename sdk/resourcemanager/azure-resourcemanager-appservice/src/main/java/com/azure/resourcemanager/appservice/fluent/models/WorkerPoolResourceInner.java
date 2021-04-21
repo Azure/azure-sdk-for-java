@@ -165,6 +165,13 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
         return this.instanceNames;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public WorkerPoolResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -17,7 +17,7 @@ while protecting the identities of your customers at the same time.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -125,10 +125,10 @@ This starter provides following properties to be customized:
 9. Create a new Java file named *AADB2CWebController.java* in the *controller* folder and open it in a text editor.
 
 10. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2CWebController.java#L18-L36 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/controller/WebController.java#L12-L30 -->
 ```java
 @Controller
-public class AADB2CWebController {
+public class WebController {
 
     private void initializeModel(Model model, OAuth2AuthenticationToken token) {
         if (token != null) {
@@ -153,14 +153,14 @@ public class AADB2CWebController {
 12. Create a new Java file named *AADB2COidcLoginConfigSample.java* in the *security* folder and open it in a text editor.
 
 13. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2COidcLoginConfigSample.java#L17-L36 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/security/WebSecurityConfiguration.java#L11-L29 -->
 ```java
 @EnableWebSecurity
-public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AADB2COidcLoginConfigurer configurer;
 
-    public AADB2COidcLoginConfigSample(AADB2COidcLoginConfigurer configurer) {
+    public WebSecurityConfiguration(AADB2COidcLoginConfigurer configurer) {
         this.configurer = configurer;
     }
 
@@ -168,11 +168,10 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
         http.authorizeRequests()
-                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .apply(configurer);
-        // @formatter:on
+        // @formatter:off
     }
 }
 ```
@@ -196,7 +195,7 @@ you should be redirected to login page.
 
 4. Click link with the login user flow, you should be redirected Azure AD B2C to start the authentication process.
 
-4. After you have logged in successfully, you should see the sample `home page` from the browser.
+5. After you have logged in successfully, you should see the sample `home page` from the browser.
 
 ## Troubleshooting
 ### Enable client logging

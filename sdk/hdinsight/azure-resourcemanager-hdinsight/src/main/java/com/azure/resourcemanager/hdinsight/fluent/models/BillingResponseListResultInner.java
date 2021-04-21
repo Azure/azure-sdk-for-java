@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.BillingResources;
 import com.azure.resourcemanager.hdinsight.models.VmSizeCompatibilityFilterV2;
+import com.azure.resourcemanager.hdinsight.models.VmSizeProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,11 +25,23 @@ public final class BillingResponseListResultInner {
     private List<String> vmSizes;
 
     /*
+     * The vm sizes which enable encryption at host.
+     */
+    @JsonProperty(value = "vmSizesWithEncryptionAtHost")
+    private List<String> vmSizesWithEncryptionAtHost;
+
+    /*
      * The virtual machine filtering mode. Effectively this can enabling or
      * disabling the virtual machine sizes in a particular set.
      */
     @JsonProperty(value = "vmSizeFilters")
     private List<VmSizeCompatibilityFilterV2> vmSizeFilters;
+
+    /*
+     * The vm size properties.
+     */
+    @JsonProperty(value = "vmSizeProperties", access = JsonProperty.Access.WRITE_ONLY)
+    private List<VmSizeProperty> vmSizeProperties;
 
     /*
      * The billing and managed disk billing resources for a region.
@@ -57,6 +70,26 @@ public final class BillingResponseListResultInner {
     }
 
     /**
+     * Get the vmSizesWithEncryptionAtHost property: The vm sizes which enable encryption at host.
+     *
+     * @return the vmSizesWithEncryptionAtHost value.
+     */
+    public List<String> vmSizesWithEncryptionAtHost() {
+        return this.vmSizesWithEncryptionAtHost;
+    }
+
+    /**
+     * Set the vmSizesWithEncryptionAtHost property: The vm sizes which enable encryption at host.
+     *
+     * @param vmSizesWithEncryptionAtHost the vmSizesWithEncryptionAtHost value to set.
+     * @return the BillingResponseListResultInner object itself.
+     */
+    public BillingResponseListResultInner withVmSizesWithEncryptionAtHost(List<String> vmSizesWithEncryptionAtHost) {
+        this.vmSizesWithEncryptionAtHost = vmSizesWithEncryptionAtHost;
+        return this;
+    }
+
+    /**
      * Get the vmSizeFilters property: The virtual machine filtering mode. Effectively this can enabling or disabling
      * the virtual machine sizes in a particular set.
      *
@@ -76,6 +109,15 @@ public final class BillingResponseListResultInner {
     public BillingResponseListResultInner withVmSizeFilters(List<VmSizeCompatibilityFilterV2> vmSizeFilters) {
         this.vmSizeFilters = vmSizeFilters;
         return this;
+    }
+
+    /**
+     * Get the vmSizeProperties property: The vm size properties.
+     *
+     * @return the vmSizeProperties value.
+     */
+    public List<VmSizeProperty> vmSizeProperties() {
+        return this.vmSizeProperties;
     }
 
     /**
@@ -106,6 +148,9 @@ public final class BillingResponseListResultInner {
     public void validate() {
         if (vmSizeFilters() != null) {
             vmSizeFilters().forEach(e -> e.validate());
+        }
+        if (vmSizeProperties() != null) {
+            vmSizeProperties().forEach(e -> e.validate());
         }
         if (billingResources() != null) {
             billingResources().forEach(e -> e.validate());

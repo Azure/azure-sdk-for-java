@@ -456,37 +456,6 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
-    /**
-     * Tests that a key can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            client.createKey(createKeyOptions);
-            KeyVaultKey exportedKey = client.exportKey(createKeyOptions.getName(), "testEnvironment");
-            assertKeyEquals(createKeyOptions, exportedKey);
-        });
-    }
-
-    /**
-     * Tests that a specific key version can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            KeyVaultKey originalKey = client.createKey(createKeyOptions);
-            KeyVaultKey exportedKey =
-                client.exportKey(originalKey.getName(), originalKey.getProperties().getVersion(), "testEnvironment");
-            assertKeyEquals(createKeyOptions, exportedKey);
-        });
-    }
-
     private DeletedKey pollOnKeyPurge(String keyName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 10) {

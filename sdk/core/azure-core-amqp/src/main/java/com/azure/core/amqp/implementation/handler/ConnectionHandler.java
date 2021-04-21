@@ -160,6 +160,11 @@ public class ConnectionHandler extends Handler {
             getConnectionId(), getHostname(), connectionOptions.getFullyQualifiedNamespace());
 
         final Connection connection = event.getConnection();
+        if (connection == null) {
+            logger.warning("connectionId[{}] Underlying connection is null. Should not be possible.");
+            close();
+            return;
+        }
 
         // Set the hostname of the AMQP message broker. This may be different from the actual underlying transport
         // in the case we are using an intermediary to connect to Event Hubs.
@@ -199,7 +204,7 @@ public class ConnectionHandler extends Handler {
             connection.free();
         }
 
-        onNext(connection.getRemoteState());
+        close();
     }
 
     @Override
@@ -290,7 +295,7 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition error = connection.getCondition();
 
         logErrorCondition("onConnectionFinal", connection, error);
-        onNext(connection.getRemoteState());
+        onNext(EndpointState.CLOSED);
 
         // Complete the processors because they no longer have any work to do.
         close();

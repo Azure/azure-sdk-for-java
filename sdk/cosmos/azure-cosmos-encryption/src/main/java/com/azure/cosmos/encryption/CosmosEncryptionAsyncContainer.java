@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor;
 import com.azure.cosmos.implementation.ItemDeserializer;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -329,7 +328,7 @@ public class CosmosEncryptionAsyncContainer {
 
     private <T> byte[] cosmosSerializerToStream(T item) {
         // TODO:
-        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), item);
+        return EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), item);
     }
 
     ItemDeserializer getItemDeserializer() {

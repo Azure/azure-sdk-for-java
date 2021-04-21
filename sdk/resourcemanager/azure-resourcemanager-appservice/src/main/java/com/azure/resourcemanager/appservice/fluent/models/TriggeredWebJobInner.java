@@ -280,6 +280,13 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public TriggeredWebJobInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

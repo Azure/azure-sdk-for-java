@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** A copy activity DelimitedText source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -25,6 +26,13 @@ public final class DelimitedTextSource extends CopySource {
      */
     @JsonProperty(value = "formatSettings")
     private DelimitedTextReadSettings formatSettings;
+
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
 
     /**
      * Get the storeSettings property: DelimitedText store settings.
@@ -63,6 +71,28 @@ public final class DelimitedTextSource extends CopySource {
      */
     public DelimitedTextSource setFormatSettings(DelimitedTextReadSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public List<AdditionalColumns> getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the DelimitedTextSource object itself.
+     */
+    public DelimitedTextSource setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

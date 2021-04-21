@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.QueryTextsClient;
 import com.azure.resourcemanager.mysql.fluent.models.QueryTextInner;
 import com.azure.resourcemanager.mysql.models.QueryText;
@@ -22,9 +21,9 @@ public final class QueryTextsImpl implements QueryTexts {
 
     private final QueryTextsClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public QueryTextsImpl(QueryTextsClient innerClient, MySqlManager serviceManager) {
+    public QueryTextsImpl(QueryTextsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -56,21 +55,21 @@ public final class QueryTextsImpl implements QueryTexts {
     public PagedIterable<QueryText> listByServer(String resourceGroupName, String serverName, List<String> queryIds) {
         PagedIterable<QueryTextInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, queryIds);
-        return inner.mapPage(inner1 -> new QueryTextImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new QueryTextImpl(inner1, this.manager()));
     }
 
     public PagedIterable<QueryText> listByServer(
         String resourceGroupName, String serverName, List<String> queryIds, Context context) {
         PagedIterable<QueryTextInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, queryIds, context);
-        return inner.mapPage(inner1 -> new QueryTextImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new QueryTextImpl(inner1, this.manager()));
     }
 
     private QueryTextsClient serviceClient() {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

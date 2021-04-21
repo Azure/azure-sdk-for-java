@@ -20,8 +20,8 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @zhenlan @stliu
-/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @zhenlan @stliu
+/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
 
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
@@ -36,7 +36,7 @@
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 
 # PRLabel: %Azure.Core
-/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
+/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
@@ -101,10 +101,6 @@
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
-# PRLabel: %azure-spring
-/sdk/spring/azure-spring-boot-starter-keyvault-certificates    @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
-# PRLabel: %azure-spring
-/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates          @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -128,5 +124,5 @@
 /eng/versioning/external_dependencies.txt           @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 /parent/                                            @JimSuplizio @alzimmermsft
 
-/**/tests.yml                                       @danieljurek
+/**/tests.yml                                       @benbp
 /**/ci.yml                                          @mitchdenny

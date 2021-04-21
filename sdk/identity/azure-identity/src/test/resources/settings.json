@@ -1,0 +1,15 @@
+{
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "window.zoomLevel": 0,
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "workbench.startupEditor": "newUntitledFile",
+    "python.jediEnabled": false,
+    "java.configuration.checkProjectSettingsExclusions": false,
+    "java.requirements.JDK11Warning": false,
+    "java.semanticHighlighting.enabled": true,
+    "java.home": "/Contents/Home",
+    "python.languageServer": "Microsoft",
+  // this is a dummy comment.
+    "[azure-pipelines].customSchemaFile": "",
+}

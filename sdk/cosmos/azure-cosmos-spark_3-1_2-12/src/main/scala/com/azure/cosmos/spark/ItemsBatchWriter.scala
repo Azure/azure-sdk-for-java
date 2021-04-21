@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.connector.write.streaming.{StreamingDataWriterFactory, StreamingWrite}
 import org.apache.spark.sql.connector.write.{BatchWrite, DataWriterFactory, PhysicalWriteInfo, WriterCommitMessage}
 import org.apache.spark.sql.types.StructType
 
@@ -14,6 +15,7 @@ private class ItemsBatchWriter
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
 )
   extends BatchWrite
+    with StreamingWrite
     with CosmosLoggingTrait {
 
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
@@ -22,11 +24,23 @@ private class ItemsBatchWriter
     new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle)
   }
 
+  override def createStreamingWriterFactory(physicalWriteInfo: PhysicalWriteInfo): StreamingDataWriterFactory = {
+    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle)
+  }
+
   override def commit(writerCommitMessages: Array[WriterCommitMessage]): Unit = {
     // TODO
   }
 
+  override def commit(epochId: Long, writerCommitMessages: Array[WriterCommitMessage]): Unit = {
+    // TODO
+  }
+
   override def abort(writerCommitMessages: Array[WriterCommitMessage]): Unit = {
+    // TODO
+  }
+
+  override def abort(epochId: Long, writerCommitMessages: Array[WriterCommitMessage]): Unit = {
     // TODO
   }
 }

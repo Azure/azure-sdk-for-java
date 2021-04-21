@@ -37,6 +37,16 @@ import static java.util.logging.Level.WARNING;
 public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
+     * Stores the key-store name.
+     */
+    public static final String KEY_STORE_TYPE = "AzureKeyVault";
+
+    /**
+     * Stores the algorithm name.
+     */
+    public static final String ALGORITHM_NAME = KEY_STORE_TYPE;
+
+    /**
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
@@ -83,13 +93,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public KeyVaultKeyStore() {
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String aadAuthenticationUrl = System.getProperty("azure.keyvault.aad-authentication-url");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
         if (clientId != null) {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, aadAuthenticationUrl, tenantId, clientId, clientSecret);
+            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
@@ -126,6 +135,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             certificate = keyVaultClient.getCertificate(alias);
             if (certificate != null) {
                 certificates.put(alias, certificate);
+                if (aliases == null) {
+                    aliases = keyVaultClient.getAliases();
+                }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
@@ -213,7 +225,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             if (parameter.getClientId() != null) {
                 keyVaultClient = new KeyVaultClient(
                         parameter.getUri(),
-                        parameter.getAadAuthenticationUrl(),
                         parameter.getTenantId(),
                         parameter.getClientId(),
                         parameter.getClientSecret());

@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;

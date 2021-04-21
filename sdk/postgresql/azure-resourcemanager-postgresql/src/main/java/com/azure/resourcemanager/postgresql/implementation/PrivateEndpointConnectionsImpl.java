@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.postgresql.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.postgresql.models.PrivateEndpointConnection;
@@ -21,10 +20,11 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     private final PrivateEndpointConnectionsClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public PrivateEndpointConnectionsImpl(
-        PrivateEndpointConnectionsClient innerClient, PostgreSqlManager serviceManager) {
+        PrivateEndpointConnectionsClient innerClient,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -67,14 +67,14 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     public PagedIterable<PrivateEndpointConnection> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<PrivateEndpointConnectionInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnection> listByServer(
         String resourceGroupName, String serverName, Context context) {
         PagedIterable<PrivateEndpointConnectionInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PrivateEndpointConnection getById(String id) {
@@ -199,7 +199,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 

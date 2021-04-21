@@ -24,18 +24,15 @@ public final class SearchResultConverter {
         if (obj == null) {
             return null;
         }
+
         SearchResult searchResult = new SearchResult(obj.getScore());
 
-        if (obj.getHighlights() != null) {
-            Map<String, List<String>> highlights =
-                obj.getHighlights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                    Map.Entry::getValue));
-            SearchResultHelper.setHighlights(searchResult, highlights);
-        }
+        SearchResultHelper.setRerankerScore(searchResult, obj.getRerankerScore());
+        SearchResultHelper.setHighlights(searchResult, obj.getHighlights());
+        SearchResultHelper.setCaptions(searchResult, obj.getCaptions());
+        SearchResultHelper.setAdditionalProperties(searchResult, new SearchDocument(obj.getAdditionalProperties()));
         SearchResultHelper.setJsonSerializer(searchResult, (JsonSerializer) serializer);
 
-        SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
-        SearchResultHelper.setAdditionalProperties(searchResult, additionalProperties);
         return searchResult;
     }
 

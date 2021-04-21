@@ -7,6 +7,7 @@ from form documents. It includes the following main functionalities:
 * Prebuilt receipt model - Recognize data from sales receipts using a prebuilt model.
 * Prebuilt invoice model - Recognize data from USA sales invoices using a prebuilt model.
 * Prebuilt business card model - Recognize data from business cards using a prebuilt model.
+* Prebuilt ID document model - Recognize data from ID documents using a prebuilt model.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -23,7 +24,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.5</version>
+    <version>3.1.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -564,7 +565,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/README.md
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/
 [manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/ManageCustomModels.java
 [manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/ManageCustomModelsAsync.java
 [recognize_content]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeContent.java

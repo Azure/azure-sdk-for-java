@@ -46,6 +46,13 @@ public class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResour
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CsmPublishingCredentialsPoliciesEntityInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

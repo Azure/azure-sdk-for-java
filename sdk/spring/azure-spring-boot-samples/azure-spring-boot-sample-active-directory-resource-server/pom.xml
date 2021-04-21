@@ -14,11 +14,21 @@
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-      <version>3.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+      <version>3.4.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
     </dependency>
 
     <!-- spring boot starter dependencies. -->

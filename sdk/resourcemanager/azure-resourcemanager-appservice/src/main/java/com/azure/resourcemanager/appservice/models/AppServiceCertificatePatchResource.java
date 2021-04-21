@@ -83,6 +83,13 @@ public class AppServiceCertificatePatchResource extends ProxyOnlyResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AppServiceCertificatePatchResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
