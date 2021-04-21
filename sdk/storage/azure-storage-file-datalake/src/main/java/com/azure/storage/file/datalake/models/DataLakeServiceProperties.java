@@ -12,7 +12,7 @@ import java.util.List;
  * Storage Service Properties.
  */
 @Fluent
-public class DataLakeServiceProperties {
+public final class DataLakeServiceProperties {
     /*
      * The logging property.
      */

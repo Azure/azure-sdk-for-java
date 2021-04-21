@@ -23,7 +23,6 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
-import com.azure.storage.file.datalake.models.ListDeletedPathsOptions;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -398,7 +397,7 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathDeletedItem> listDeletedPaths() {
-        return this.listDeletedPaths(new ListDeletedPathsOptions(), null, null);
+        return this.listDeletedPaths(null, null, null);
     }
 
     /**
@@ -409,17 +408,17 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#ListDeletedPathsOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context}
      *
-     * @param options A {@link ListDeletedPathsOptions} which specifies what data should be returned by the service.
+     * @param prefix Specifies the path to filter the results to.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PathDeletedItem> listDeletedPaths(ListDeletedPathsOptions options, Duration timeout,
+    public PagedIterable<PathDeletedItem> listDeletedPaths(String prefix, Duration timeout,
         Context context) {
-        return new PagedIterable<>(dataLakeFileSystemAsyncClient.listDeletedPathsWithOptionalTimeout(options, timeout,
+        return new PagedIterable<>(dataLakeFileSystemAsyncClient.listDeletedPathsWithOptionalTimeout(prefix, timeout,
             context));
     }
 

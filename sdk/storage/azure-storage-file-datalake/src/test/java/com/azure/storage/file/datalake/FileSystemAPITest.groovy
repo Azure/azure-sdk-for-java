@@ -11,7 +11,6 @@ import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
-import com.azure.storage.file.datalake.models.ListDeletedPathsOptions
 import com.azure.storage.file.datalake.models.ListPathsOptions
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
 import com.azure.storage.file.datalake.models.PathDeletedItem
@@ -1011,7 +1010,7 @@ class FileSystemAPITest extends APISpec {
         fc2.delete()
 
         when:
-        def deletedBlobs = fsc.listDeletedPaths(new ListDeletedPathsOptions().setPath(dir.getDirectoryName()), null, null)
+        def deletedBlobs = fsc.listDeletedPaths(dir.getDirectoryName(), null, null)
 
         then:
         deletedBlobs.size() == 1
@@ -1028,7 +1027,7 @@ class FileSystemAPITest extends APISpec {
 
         def dir = fsc.getDirectoryClient(generatePathName())
         dir.create()
-        def fc1 = dir.getFileClient(generatePathName()) // Create two file under the path
+        def fc1 = dir.getFileClient(generatePathName())
         fc1.create(true)
         fc1.delete()
 
@@ -1036,14 +1035,12 @@ class FileSystemAPITest extends APISpec {
         fc2.create(true)
         fc2.delete()
 
-        def fc3 = fsc.getFileClient(generatePathName()) // Create another file not under the path
+        def fc3 = fsc.getFileClient(generatePathName())
         fc3.create()
         fc3.delete()
 
-        def options = new ListDeletedPathsOptions().setPath(dir.getDirectoryName())
-
         expect:
-        def pagedIterable = fsc.listDeletedPaths(options, null, null);
+        def pagedIterable = fsc.listDeletedPaths();
 
         def iterableByPage = pagedIterable.iterableByPage(1)
         for (def page : iterableByPage) {

@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * Azure Analytics Logging settings.
  */
 @Fluent
-public class DataLakeAnalyticsLogging {
+public final class DataLakeAnalyticsLogging {
     /*
      * The version of Storage Analytics to configure.
      */

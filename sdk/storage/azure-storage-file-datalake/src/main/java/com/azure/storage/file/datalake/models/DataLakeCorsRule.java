@@ -13,7 +13,7 @@ import com.azure.core.annotation.Fluent;
  * one domain (the origin domain) to call APIs in another domain.
  */
 @Fluent
-public class DataLakeCorsRule {
+public final class DataLakeCorsRule {
 
     /*
      * The origin domains that are permitted to make a request against the

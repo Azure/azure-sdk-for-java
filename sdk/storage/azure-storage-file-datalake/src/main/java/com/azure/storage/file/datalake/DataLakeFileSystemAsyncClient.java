@@ -34,7 +34,6 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
-import com.azure.storage.file.datalake.models.ListDeletedPathsOptions;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -534,7 +533,7 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathDeletedItem> listDeletedPaths() {
         try {
-            return this.listDeletedPaths(new ListDeletedPathsOptions());
+            return this.listDeletedPaths(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -542,53 +541,38 @@ public class DataLakeFileSystemAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
-     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * Note: You can specify the page size by using byPaged methods that accept an integer such as
+     * {@link PagedFlux#byPage(int)}. Please refer to the REST docs above for limitations on page size
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#ListDeletedPathsOptions}
      *
-     * @param options A {@link ListDeletedPathsOptions} which specifies what data should be returned by the service.
+     * @param prefix Specifies the path to filter the results to.
      * @return A reactive response emitting the list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PathDeletedItem> listDeletedPaths(ListDeletedPathsOptions options) {
+    public PagedFlux<PathDeletedItem> listDeletedPaths(String prefix) {
         try {
-            return new PagedFlux<>(pageSize -> withContext(context -> listDeletedPaths(null, pageSize, options,
+            return new PagedFlux<>(pageSize -> withContext(context -> listDeletedPaths(null, pageSize, prefix,
                 null, context)),
-                (marker, pageSize) -> withContext(context -> listDeletedPaths(marker, pageSize, options, null,
+                (marker, pageSize) -> withContext(context -> listDeletedPaths(marker, pageSize, prefix, null,
                     context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<PathDeletedItem> listDeletedPathsWithOptionalTimeout(ListDeletedPathsOptions options,
-        Duration timeout, Context context) {
-        return new PagedFlux<>(pageSize -> listDeletedPaths(null, pageSize, options, timeout, context),
-            (marker, pageSize) -> listDeletedPaths(marker, pageSize, options, timeout, context));
+    PagedFlux<PathDeletedItem> listDeletedPathsWithOptionalTimeout(String prefix, Duration timeout, Context context) {
+        return new PagedFlux<>(pageSize -> listDeletedPaths(null, pageSize, prefix, timeout, context),
+            (marker, pageSize) -> listDeletedPaths(marker, pageSize, prefix, timeout, context));
     }
 
     private Mono<PagedResponse<PathDeletedItem>> listDeletedPaths(String marker, Integer pageSize,
-        ListDeletedPathsOptions options, Duration timeout, Context context) {
-        ListDeletedPathsOptions finalOptions;
-        /*
-        If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
-        Otherwise, prefer the new value.
-        */
-        if (pageSize != null) {
-            if (options == null) {
-                finalOptions = new ListDeletedPathsOptions().setMaxResults(pageSize);
-            } else {
-                // Note that this prefers the value passed to .byPage(int) over the value on the options
-                finalOptions = new ListDeletedPathsOptions()
-                    .setMaxResults(pageSize)
-                    .setPath(options.getPath());
-            }
-        } else {
-            finalOptions = options;
-        }
-        return listDeletedPathsSegment(marker, finalOptions, timeout, context)
+        String prefix, Duration timeout, Context context) {
+        return listDeletedPathsSegment(marker, prefix, pageSize, timeout, context)
             .map(response -> {
                 List<PathDeletedItem> value = response.getValue().getSegment() == null
                     ? Collections.emptyList()
@@ -608,13 +592,12 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
-        ListDeletedPathsOptions options, Duration timeout, Context context) {
-        options = options == null ? new ListDeletedPathsOptions() : options;
+        String prefix, Integer maxResults, Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
 
         return StorageImplUtils.applyOptionalTimeout(
             this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
-                null, options.getPath(), marker, options.getMaxResults(),
+                null, prefix, marker, maxResults,
                 null, ListBlobsShowOnly.DELETED, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout);
     }

@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * persist.
  */
 @Fluent
-public class DataLakeRetentionPolicy {
+public final class DataLakeRetentionPolicy {
     /*
      * Indicates whether a retention policy is enabled for the storage service
      */

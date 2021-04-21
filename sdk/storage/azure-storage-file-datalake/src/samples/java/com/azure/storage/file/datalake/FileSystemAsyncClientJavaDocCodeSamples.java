@@ -8,7 +8,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
-import com.azure.storage.file.datalake.models.ListDeletedPathsOptions;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -309,20 +308,21 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakeFileSystemAsyncClient#listDeletedPaths()} and
-     * {@link DataLakeFileSystemAsyncClient#listDeletedPaths(ListDeletedPathsOptions)}
+     * {@link DataLakeFileSystemAsyncClient#listDeletedPaths(String)}
      */
     public void listDeletedPaths() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
         client.listDeletedPaths().subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#ListDeletedPathsOptions
-        ListDeletedPathsOptions options = new ListDeletedPathsOptions()
-            .setPath("PathNamePrefixToMatch")
-            .setMaxResults(10);
-
-        client.listDeletedPaths(options).subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#ListDeletedPathsOptions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
+        int pageSize = 10;
+        client.listDeletedPaths("PathNamePrefixToMatch")
+            .byPage(pageSize)
+            .subscribe(page ->
+                page.getValue().forEach(path ->
+                    System.out.printf("Name: %s%n", path.getName())));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
     }
 
     /**
