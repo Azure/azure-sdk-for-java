@@ -110,7 +110,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         clientEncryptionPolicyMonoSingle.setAccessible(true);
         Mono<ClientEncryptionPolicy> clientEncryptionPolicyMono = (Mono<ClientEncryptionPolicy>) clientEncryptionPolicyMonoSingle.get(clientEncryptionPolicyAyncLazy);
         ClientEncryptionPolicy clientEncryptionPolicy = clientEncryptionPolicyMono.block();
-        assertThat(clientEncryptionPolicy.getIncludedPaths().size()).isEqualTo(13);
+        assertThat(clientEncryptionPolicy.getIncludedPaths().size()).isEqualTo(14);
 
         //Testing clientEncryptionKey cache
         AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesAsyncCache =  ReflectionUtils.getClientEncryptionKeyPropertiesCacheByKeyId(cosmosEncryptionAsyncClient);

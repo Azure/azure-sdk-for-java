@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -25,13 +26,16 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
+import com.microsoft.data.encryption.cryptography.ISerializer;
 import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
+import com.microsoft.data.encryption.cryptography.SqlSerializerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +48,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class EncryptionCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private static final int TIMEOUT = 6000_000;
+    private static final int TIMEOUT = 600000_000;
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
@@ -88,7 +92,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
-    public void createItemEncrypt_readItemDecrypt() {
+    public void createItemEncrypt_readItemDecrypt() throws MicrosoftDataEncryptionException {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
             new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
@@ -99,6 +103,10 @@ public class EncryptionCrudTest extends TestSuiteBase {
         Pojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
             new CosmosItemRequestOptions(), Pojo.class).block().getItem();
         validateResponse(properties, readItem);
+
+        PojoEncrypted readItemWithoutDecryption = cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().readItem(properties.id, new PartitionKey(properties.mypk),
+            new CosmosItemRequestOptions(), PojoEncrypted.class).block().getItem();
+        validateResponseWithoutDecryption(properties, readItemWithoutDecryption);
 
         //Check for max length support of 8000
         properties = getItem(UUID.randomUUID().toString());
@@ -284,6 +292,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(result.mypk).isEqualTo(originalItem.mypk);
         assertThat(result.nonSensitive).isEqualTo(originalItem.nonSensitive);
         assertThat(result.sensitiveString).isEqualTo(originalItem.sensitiveString);
+        assertThat(result.plainText).isEqualTo(originalItem.plainText);
         assertThat(result.sensitiveInt).isEqualTo(originalItem.sensitiveInt);
         assertThat(result.sensitiveFloat).isEqualTo(originalItem.sensitiveFloat);
         assertThat(result.sensitiveLong).isEqualTo(originalItem.sensitiveLong);
@@ -325,7 +334,47 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveIntArray).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveIntArray);
         assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveStringArray).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveStringArray);
         assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray);
+    }
 
+    private void validateResponseWithoutDecryption(Pojo originalItem, PojoEncrypted encryptedResult) throws MicrosoftDataEncryptionException {
+        assertThat(encryptedResult.id).isEqualTo(originalItem.id);
+        assertThat(encryptedResult.mypk).isEqualTo(originalItem.mypk);
+        assertThat(encryptedResult.nonSensitive).isEqualTo(originalItem.nonSensitive);
+        assertThat(encryptedResult.sensitiveString).isNotEqualTo(originalItem.sensitiveString);
+
+        assertThat(encryptedResult.sensitiveDouble).isNotEqualTo(originalItem.sensitiveDouble);
+        assertThat(encryptedResult.sensitiveStringArray).isNotEqualTo(originalItem.sensitiveStringArray);
+        assertThat(encryptedResult.sensitiveString3DArray).isNotEqualTo(originalItem.sensitiveString3DArray);
+
+        assertThat(encryptedResult.plainText).isNotEqualTo(originalItem.plainText);
+        //TODO plain text not working as expected
+//        ISerializer sqlVarcharSerializer = SqlSerializerFactory.getOrCreate("varchar", 8000, 0, 0,
+//            StandardCharsets.UTF_8.toString());
+//        byte[] encryptedPlainText = Utils.getUTF8Bytes(encryptedResult.plainText);
+//        byte[] plainTextFromEncryptedPlainText = new byte[encryptedPlainText.length - 1];
+//        System.arraycopy(encryptedPlainText, 1, plainTextFromEncryptedPlainText, 0,
+//            encryptedPlainText.length - 1);
+//
+//        String plainTextStringFromEncryptedPlainText =
+//            (String) sqlVarcharSerializer.deserialize(plainTextFromEncryptedPlainText);
+//        assertThat(plainTextStringFromEncryptedPlainText).isEqualTo(originalItem.plainText);
+
+        assertThat(encryptedResult.sensitiveNestedPojo.id).isNotEqualTo(originalItem.sensitiveNestedPojo.id);
+        assertThat(encryptedResult.sensitiveNestedPojo.mypk).isNotEqualTo(originalItem.sensitiveNestedPojo.mypk);
+        assertThat(encryptedResult.sensitiveNestedPojo.nonSensitive).isEqualTo(originalItem.sensitiveNestedPojo.nonSensitive);
+        assertThat(encryptedResult.sensitiveNestedPojo.sensitiveString).isNotEqualTo(originalItem.sensitiveNestedPojo.sensitiveString);
+        assertThat(encryptedResult.sensitiveNestedPojo.sensitiveStringArray).isNotEqualTo(originalItem.sensitiveNestedPojo.sensitiveStringArray);
+        assertThat(encryptedResult.sensitiveNestedPojo.sensitiveString3DArray).isNotEqualTo(originalItem.sensitiveNestedPojo.sensitiveString3DArray);
+
+        assertThat(encryptedResult.sensitiveChildPojoList.size()).isEqualTo(originalItem.sensitiveChildPojoList.size());
+        assertThat(encryptedResult.sensitiveChildPojoList.get(0).sensitiveString).isNotEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveString);
+        assertThat(encryptedResult.sensitiveChildPojoList.get(0).sensitiveStringArray).isNotEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveStringArray);
+        assertThat(encryptedResult.sensitiveChildPojoList.get(0).sensitiveString3DArray).isNotEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveString3DArray);
+
+        assertThat(encryptedResult.sensitiveChildPojo2DArray.length).isEqualTo(originalItem.sensitiveChildPojo2DArray.length);
+        assertThat(encryptedResult.sensitiveChildPojo2DArray[0][0].sensitiveString).isNotEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveString);
+        assertThat(encryptedResult.sensitiveChildPojo2DArray[0][0].sensitiveStringArray).isNotEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveStringArray);
+        assertThat(encryptedResult.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray).isNotEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray);
     }
 
     public static Pojo getItem(String documentId) {
@@ -334,6 +383,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         pojo.mypk = documentId;
         pojo.nonSensitive = UUID.randomUUID().toString();
         pojo.sensitiveString = "testingString";
+        pojo.plainText = "plainText";
         pojo.sensitiveDouble = 10.123;
         pojo.sensitiveFloat = 20.0f;
         pojo.sensitiveInt = 30;
@@ -342,10 +392,14 @@ public class EncryptionCrudTest extends TestSuiteBase {
 
         Pojo nestedPojo = new Pojo();
         nestedPojo.id = "nestedPojo";
+        nestedPojo.mypk = "nestedPojo";
         nestedPojo.sensitiveString = "nestedPojo";
         nestedPojo.sensitiveDouble = 10.123;
         nestedPojo.sensitiveInt = 123;
         nestedPojo.sensitiveLong = 1234;
+        nestedPojo.sensitiveStringArray = new String[]{"str1", "str1"};
+        nestedPojo.sensitiveString3DArray = new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+            "str7", "str8"}}};
         nestedPojo.sensitiveBoolean = true;
 
         pojo.sensitiveNestedPojo = nestedPojo;
@@ -362,7 +416,9 @@ public class EncryptionCrudTest extends TestSuiteBase {
         childPojo1.sensitiveInt = 123;
         childPojo1.sensitiveLong = 1234;
         childPojo1.sensitiveBoolean = true;
-
+        childPojo1.sensitiveStringArray = new String[]{"str1", "str1"};
+        childPojo1.sensitiveString3DArray = new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+            "str7", "str8"}}};
         Pojo childPojo2 = new Pojo();
         childPojo2.id = "childPojo2";
         childPojo2.sensitiveString = "child2TestingString";
@@ -390,6 +446,8 @@ public class EncryptionCrudTest extends TestSuiteBase {
         @JsonProperty
         public String sensitiveString;
         @JsonProperty
+        public String plainText;
+        @JsonProperty
         public int sensitiveInt;
         @JsonProperty
         public float sensitiveFloat;
@@ -411,6 +469,40 @@ public class EncryptionCrudTest extends TestSuiteBase {
         public Pojo[][] sensitiveChildPojo2DArray;
         @JsonProperty
         public List<Pojo> sensitiveChildPojoList;
+    }
+
+    public static class PojoEncrypted {
+        public String id;
+        @JsonProperty
+        public String mypk;
+        @JsonProperty
+        public String nonSensitive;
+        @JsonProperty
+        public String sensitiveString;
+        @JsonProperty
+        public String plainText;
+        @JsonProperty
+        public String sensitiveInt;
+        @JsonProperty
+        public String sensitiveFloat;
+        @JsonProperty
+        public String sensitiveLong;
+        @JsonProperty
+        public String sensitiveDouble;
+        @JsonProperty
+        public String sensitiveBoolean;
+        @JsonProperty
+        public PojoEncrypted sensitiveNestedPojo;
+        @JsonProperty
+        public String[] sensitiveIntArray;
+        @JsonProperty
+        public String[] sensitiveStringArray;
+        @JsonProperty
+        public String[][][] sensitiveString3DArray;
+        @JsonProperty
+        public PojoEncrypted[][] sensitiveChildPojo2DArray;
+        @JsonProperty
+        public List<PojoEncrypted> sensitiveChildPojoList;
     }
 
     public static class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
@@ -501,7 +593,6 @@ public class EncryptionCrudTest extends TestSuiteBase {
         includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
         includedPath8.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
-
         ClientEncryptionIncludedPath includedPath9 = new ClientEncryptionIncludedPath();
         includedPath9.setClientEncryptionKeyId("key1");
         includedPath9.setPath("/sensitiveIntArray");
@@ -532,6 +623,12 @@ public class EncryptionCrudTest extends TestSuiteBase {
         includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
         includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
 
+        ClientEncryptionIncludedPath includedPath14 = new ClientEncryptionIncludedPath();
+        includedPath14.setClientEncryptionKeyId("key1");
+        includedPath14.setPath("/plainText");
+        includedPath14.setEncryptionType(CosmosEncryptionType.PLAIN_TEXT);
+        includedPath14.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
         paths.add(includedPath2);
@@ -546,6 +643,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
         paths.add(includedPath11);
         paths.add(includedPath12);
         paths.add(includedPath13);
+        paths.add(includedPath14);
 
         return paths;
     }

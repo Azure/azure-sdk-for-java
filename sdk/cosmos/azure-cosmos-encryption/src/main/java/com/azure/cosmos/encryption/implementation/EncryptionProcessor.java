@@ -378,7 +378,7 @@ public class EncryptionProcessor {
         if (propertyValueHolder.isObject()) {
             for (Iterator<Map.Entry<String, JsonNode>> it = propertyValueHolder.fields(); it.hasNext(); ) {
                 Map.Entry<String, JsonNode> child = it.next();
-                if (child.getValue().isObject()) {
+                if (child.getValue().isObject() || child.getValue().isArray()) {
                     decryptAndSerializeProperty(encryptionSettings, (ObjectNode) propertyValueHolder,
                         child.getValue(), propertyName);
                 } else if (!child.getValue().isNull()) {
