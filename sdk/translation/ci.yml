@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/translatortext/
+      - sdk/translation/
 
 pr:
   branches:
@@ -20,13 +20,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/translatortext/
+      - sdk/translation/
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: translatortext
+    ServiceDirectory: translation
     Artifacts:
-      - name: azure-ai-translatortext
-        groupId: com.azure
-        safeName: azureaitranslatortext
+      - name: azure-rest-ai-documenttranslator
+        groupId: com.azure.rest
+        safeName: azurerestaidocumenttranslator

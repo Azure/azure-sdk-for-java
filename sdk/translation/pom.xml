@@ -5,21 +5,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-translatortext-service</artifactId>
+  <artifactId>azure-translation-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <profiles>
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-ai-translatortext</module>
+        <module>azure-rest-ai-documenttranslator</module>
       </modules>
 
       <dependencies>
         <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-ai-translatortext</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-translatortext;current} -->
+          <groupId>com.azure.rest</groupId>
+          <artifactId>azure-rest-ai-documenttranslator</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.rest:azure-rest-ai-documenttranslator;current} -->
         </dependency>
       </dependencies>
 
@@ -51,7 +51,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-ai-anomalydetector</module>
+        <module>azure-rest-ai-documenttranslator</module>
       </modules>
     </profile>
   </profiles>
