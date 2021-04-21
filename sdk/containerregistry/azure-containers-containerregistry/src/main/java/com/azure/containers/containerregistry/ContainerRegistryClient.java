@@ -26,8 +26,8 @@ public final class ContainerRegistryClient {
     /**
      * List all the repository names in this registry.
      *
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @return list of repositories.
+     * @throws ClientAuthenticationException thrown if the client credentials do not have access to perform this operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositories() {
@@ -38,10 +38,10 @@ public final class ContainerRegistryClient {
      * Delete the repository identified by 'name'.
      *
      * @param name Name of the repository (including the namespace).
+     * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
      * @throws NullPointerException thrown if the name is null.
-     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteRepositoryResult deleteRepository(String name) {
@@ -53,10 +53,10 @@ public final class ContainerRegistryClient {
      *
      * @param name Name of the repository (including the namespace).
      * @param context The context to associate with this operation.
+     * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
      * @throws NullPointerException thrown if the name is null.
-     * @return deleted repository properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String name, Context context) {
