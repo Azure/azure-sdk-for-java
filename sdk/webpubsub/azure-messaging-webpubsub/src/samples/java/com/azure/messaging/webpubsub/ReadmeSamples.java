@@ -27,6 +27,7 @@ public class ReadmeSamples {
     public void createClientWithKey() {
         WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
             .credential(new AzureKeyCredential("{access-key}"))
+            .endpoint("<Insert endpoint from Azure Portal>")
             .hub("chat")
             .buildClient();
     }
@@ -39,7 +40,6 @@ public class ReadmeSamples {
             .credential(new AzureKeyCredential("{access-key}"))
             .hub("chat")
             .buildClient();
-
         WebPubSubGroup javaGroup = webPubSubServiceClient.getGroup("java");
     }
 

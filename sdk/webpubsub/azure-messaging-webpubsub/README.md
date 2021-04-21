@@ -46,7 +46,7 @@ WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
 
 ### Create a Web PubSub client using access key
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L28-L31 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L28-L32 -->
 ```java
 WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
     .credential(new AzureKeyCredential("{access-key}"))
@@ -55,7 +55,7 @@ WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
 ```
 
 ### Create a Web PubSub Group client
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L38-L43 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L39-L43 -->
 ```java
 WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
     .credential(new AzureKeyCredential("{access-key}"))

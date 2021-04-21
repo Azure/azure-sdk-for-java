@@ -39,7 +39,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String}
      *
      * @param message The message to send.
      */
@@ -55,7 +55,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -73,12 +73,12 @@ public final class WebPubSubGroup {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse}
      *
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to a List and pass that in as the second argument:</p>
+     * excluded connection IDs to a List and pass that in as the third argument:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.withexclusion}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -102,7 +102,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllBytes.byte.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte}
      *
      * @param message The binary message to send.
      */
@@ -118,7 +118,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllBytes.byte.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte.WebPubSubContentType}
      *
      * @param message The binary message to send.
      * @param contentType The content type of the message.
@@ -136,12 +136,12 @@ public final class WebPubSubGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllBytes.byte.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte}
      *
      * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
      * add the excluded connection IDs to the end of the method call as var-args:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllBytes.byte.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte.withexclusion}
      *
      * @param message The binary message to send.
      * @param contentType The content type of the message.

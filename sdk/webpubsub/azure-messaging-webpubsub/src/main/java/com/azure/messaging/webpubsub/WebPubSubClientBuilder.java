@@ -55,6 +55,8 @@ import java.util.Objects;
  * <p>Of course, synchronous clients may also be instantiated, by calling {@link #buildClient() buildClient} rather than
  * {@link #buildAsyncClient() buildAsyncClient}.</p>
  *
+ * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync}
+ *
  * @see WebPubSubAsyncServiceClient
  * @see WebPubSubServiceClient
  */
