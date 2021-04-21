@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.rest.ai.documenttranslator;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -49,4 +52,5 @@ public class BatchDocumentTranslationClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
                 ? "https://localhost:8080"
                 : Configuration.getGlobalConfiguration().get("AZURE_DOCUMENT_TRANSLATOR_ENDPOINT");
-    }}
+    }
+}
