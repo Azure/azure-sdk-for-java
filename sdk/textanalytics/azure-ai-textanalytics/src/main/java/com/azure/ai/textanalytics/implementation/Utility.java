@@ -78,6 +78,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -705,5 +706,19 @@ public final class Utility {
         final List<PiiCategory> piiCategories = new ArrayList<>();
         categoriesFilter.forEach(category -> piiCategories.add(PiiCategory.fromString(category.toString())));
         return piiCategories;
+    }
+
+    /**
+     * Throw a {@link TextAnalyticsException} if result has isError true and when a non-error property was accessed.
+     */
+    public static void throwExceptionIfError(ClientLogger logger, boolean isError,
+        com.azure.ai.textanalytics.models.TextAnalyticsError error, String className) {
+        if (isError) {
+            throw logger.logExceptionAsError(new TextAnalyticsException(
+                String.format(Locale.ROOT,
+                    "Error in accessing the property on action result, when %s returned with an error: %s",
+                    className, error.getMessage()),
+                error.getErrorCode(), null));
+        }
     }
 }

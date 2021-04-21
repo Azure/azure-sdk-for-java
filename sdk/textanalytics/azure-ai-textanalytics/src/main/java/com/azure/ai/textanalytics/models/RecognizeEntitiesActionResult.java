@@ -5,16 +5,74 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.time.OffsetDateTime;
+
+import static com.azure.ai.textanalytics.implementation.Utility.throwExceptionIfError;
 
 /**
  * The {@link RecognizeEntitiesActionResult} model.
  */
-public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResult {
+public final class RecognizeEntitiesActionResult {
+    private final ClientLogger logger = new ClientLogger(RecognizeEntitiesActionResult.class);
+
+    private OffsetDateTime completedAt;
+    private TextAnalyticsError error;
+    private boolean isError;
     private RecognizeEntitiesResultCollection result;
 
     static {
         RecognizeEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, result) -> actionsResult.setResult(result));
+            new RecognizeEntitiesActionResultPropertiesHelper.RecognizeEntitiesActionResultAccessor() {
+                @Override
+                public void setCompletedAt(RecognizeEntitiesActionResult actionsResult, OffsetDateTime completedAt) {
+                    actionsResult.setCompletedAt(completedAt);
+                }
+
+                @Override
+                public void setError(RecognizeEntitiesActionResult actionResult, TextAnalyticsError error) {
+                    actionResult.setError(error);
+                }
+
+                @Override
+                public void setIsError(RecognizeEntitiesActionResult actionResult, boolean isError) {
+                    actionResult.setIsError(isError);
+                }
+
+                @Override
+                public void setResult(RecognizeEntitiesActionResult actionsResult,
+                    RecognizeEntitiesResultCollection result) {
+                    actionsResult.setResult(result);
+                }
+            });
+    }
+
+    /**
+     * Gets the time when the action was completed.
+     *
+     * @return the time when the action was completed.
+     */
+    public OffsetDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    /**
+     * Get the error of action.
+     *
+     * @return The error of action.
+     */
+    public TextAnalyticsError getError() {
+        return error;
+    }
+
+    /**
+     * Get the boolean value indicates if the action result is error or not.
+     *
+     * @return A boolean indicates if the action result is error or not.
+     */
+    public boolean isError() {
+        return isError;
     }
 
     /**
@@ -25,10 +83,21 @@ public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResu
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    @Override
     public RecognizeEntitiesResultCollection getResult() {
-        throwExceptionIfError();
+        throwExceptionIfError(logger, isError, error, this.getClass().getSimpleName());
         return result;
+    }
+
+    private void setCompletedAt(OffsetDateTime completedAt) {
+        this.completedAt = completedAt;
+    }
+
+    private void setError(TextAnalyticsError error) {
+        this.error = error;
+    }
+
+    private void setIsError(boolean isError) {
+        this.isError = isError;
     }
 
     private void setResult(RecognizeEntitiesResultCollection result) {

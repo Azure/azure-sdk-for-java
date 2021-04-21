@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPr
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
@@ -43,9 +42,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.PagedFlux;
@@ -85,6 +82,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageI
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -119,8 +117,6 @@ class AnalyzeBatchActionsAsyncClient {
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: Be able to set the poll interval manually by user.
-                //  https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
@@ -159,8 +155,6 @@ class AnalyzeBatchActionsAsyncClient {
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: Be able to set the poll interval manually by user.
-                //  https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
@@ -374,7 +368,7 @@ class AnalyzeBatchActionsAsyncClient {
                     RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
                         toRecognizeEntitiesResultCollectionResponse(results));
                 }
-                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                RecognizeEntitiesActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeEntitiesActionResults.add(actionResult);
             }
@@ -388,7 +382,7 @@ class AnalyzeBatchActionsAsyncClient {
                     RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
                         toRecognizePiiEntitiesResultCollection(results));
                 }
-                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                RecognizePiiEntitiesActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizePiiEntitiesActionResults.add(actionResult);
             }
@@ -402,7 +396,7 @@ class AnalyzeBatchActionsAsyncClient {
                     ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
                         toExtractKeyPhrasesResultCollection(results));
                 }
-                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                ExtractKeyPhrasesActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 extractKeyPhrasesActionResults.add(actionResult);
             }
@@ -417,7 +411,7 @@ class AnalyzeBatchActionsAsyncClient {
                     RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult,
                         toRecognizeLinkedEntitiesResultCollection(results));
                 }
-                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                RecognizeLinkedEntitiesActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeLinkedEntitiesActionResults.add(actionResult);
             }
@@ -429,26 +423,30 @@ class AnalyzeBatchActionsAsyncClient {
                 final String[] targetPair = parseActionErrorTarget(error.getTarget());
                 final String taskName = targetPair[0];
                 final Integer taskIndex = Integer.valueOf(targetPair[1]);
-                final TextAnalyticsActionResult actionResult;
                 if (ENTITY_RECOGNITION_TASKS.equals(taskName)) {
-                    actionResult = recognizeEntitiesActionResults.get(taskIndex);
+                    final RecognizeEntitiesActionResult actionResult = recognizeEntitiesActionResults.get(taskIndex);
+                    RecognizeEntitiesActionResultPropertiesHelper.setIsError(actionResult, true);
+                    RecognizeEntitiesActionResultPropertiesHelper.setError(actionResult, toTextAnalyticsError(error));
                 } else if (ENTITY_RECOGNITION_PII_TASKS.equals(taskName)) {
-                    actionResult = recognizePiiEntitiesActionResults.get(taskIndex);
+                    final RecognizePiiEntitiesActionResult actionResult =
+                        recognizePiiEntitiesActionResults.get(taskIndex);
+                    RecognizePiiEntitiesActionResultPropertiesHelper.setIsError(actionResult, true);
+                    RecognizePiiEntitiesActionResultPropertiesHelper.setError(actionResult,
+                        toTextAnalyticsError(error));
                 } else if (KEY_PHRASE_EXTRACTION_TASKS.equals(taskName)) {
-                    actionResult = extractKeyPhrasesActionResults.get(taskIndex);
+                    final ExtractKeyPhrasesActionResult actionResult = extractKeyPhrasesActionResults.get(taskIndex);
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setIsError(actionResult, true);
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setError(actionResult, toTextAnalyticsError(error));
                 } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
-                    actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
+                    final RecognizeLinkedEntitiesActionResult actionResult =
+                        recognizeLinkedEntitiesActionResults.get(taskIndex);
+                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setIsError(actionResult, true);
+                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setError(actionResult,
+                        toTextAnalyticsError(error));
                 } else {
                     throw logger.logExceptionAsError(new RuntimeException(
                         "Invalid task name in target reference, " + taskName));
                 }
-
-                TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, true);
-                TextAnalyticsActionResultPropertiesHelper.setError(actionResult,
-                    new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                        TextAnalyticsErrorCode.fromString(
-                            error.getCode() == null ? null : error.getCode().toString()),
-                        error.getMessage(), null));
             }
         }
 

@@ -4,7 +4,10 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+
+import java.time.OffsetDateTime;
 
 /**
  * The helper class to set the non-public properties of an {@link ExtractKeyPhrasesActionResult} instance.
@@ -19,6 +22,9 @@ public final class ExtractKeyPhrasesActionResultPropertiesHelper {
      * instance.
      */
     public interface ExtractKeyPhrasesActionResultAccessor {
+        void setCompletedAt(ExtractKeyPhrasesActionResult actionsResult, OffsetDateTime completedAt);
+        void setError(ExtractKeyPhrasesActionResult actionResult, TextAnalyticsError error);
+        void setIsError(ExtractKeyPhrasesActionResult actionResult, boolean isError);
         void setResult(ExtractKeyPhrasesActionResult actionsResult, ExtractKeyPhrasesResultCollection result);
     }
 
@@ -29,6 +35,18 @@ public final class ExtractKeyPhrasesActionResultPropertiesHelper {
      */
     public static void setAccessor(final ExtractKeyPhrasesActionResultAccessor extractKeyPhrasesActionResultAccessor) {
         accessor = extractKeyPhrasesActionResultAccessor;
+    }
+
+    public static void setCompletedAt(ExtractKeyPhrasesActionResult actionsResult, OffsetDateTime completedAt) {
+        accessor.setCompletedAt(actionsResult, completedAt);
+    }
+
+    public static void setError(ExtractKeyPhrasesActionResult actionResult, TextAnalyticsError error) {
+        accessor.setError(actionResult, error);
+    }
+
+    public static void setIsError(ExtractKeyPhrasesActionResult actionResult, boolean isError) {
+        accessor.setIsError(actionResult, isError);
     }
 
     public static void setResult(ExtractKeyPhrasesActionResult actionResult, ExtractKeyPhrasesResultCollection result) {

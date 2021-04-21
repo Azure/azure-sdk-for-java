@@ -4,7 +4,10 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+
+import java.time.OffsetDateTime;
 
 /**
  * The helper class to set the non-public properties of an {@link RecognizeEntitiesActionResult} instance.
@@ -19,6 +22,9 @@ public final class RecognizeEntitiesActionResultPropertiesHelper {
      * instance.
      */
     public interface RecognizeEntitiesActionResultAccessor {
+        void setCompletedAt(RecognizeEntitiesActionResult actionsResult, OffsetDateTime completedAt);
+        void setError(RecognizeEntitiesActionResult actionResult, TextAnalyticsError error);
+        void setIsError(RecognizeEntitiesActionResult actionResult, boolean isError);
         void setResult(RecognizeEntitiesActionResult actionsResult, RecognizeEntitiesResultCollection result);
     }
 
@@ -29,6 +35,18 @@ public final class RecognizeEntitiesActionResultPropertiesHelper {
      */
     public static void setAccessor(final RecognizeEntitiesActionResultAccessor recognizeEntitiesActionResultAccessor) {
         accessor = recognizeEntitiesActionResultAccessor;
+    }
+
+    public static void setCompletedAt(RecognizeEntitiesActionResult actionsResult, OffsetDateTime completedAt) {
+        accessor.setCompletedAt(actionsResult, completedAt);
+    }
+
+    public static void setError(RecognizeEntitiesActionResult actionResult, TextAnalyticsError error) {
+        accessor.setError(actionResult, error);
+    }
+
+    public static void setIsError(RecognizeEntitiesActionResult actionResult, boolean isError) {
+        accessor.setIsError(actionResult, isError);
     }
 
     public static void setResult(RecognizeEntitiesActionResult actionResult, RecognizeEntitiesResultCollection result) {

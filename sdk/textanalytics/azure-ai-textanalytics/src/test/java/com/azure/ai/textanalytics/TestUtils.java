@@ -18,7 +18,6 @@ import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResul
 import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -940,9 +939,9 @@ final class TestUtils {
         OffsetDateTime completeAt, RecognizeEntitiesResultCollection resultCollection, TextAnalyticsError actionError) {
         RecognizeEntitiesActionResult recognizeEntitiesActionResult = new RecognizeEntitiesActionResult();
         RecognizeEntitiesActionResultPropertiesHelper.setResult(recognizeEntitiesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, completeAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(recognizeEntitiesActionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(recognizeEntitiesActionResult, actionError);
+        RecognizeEntitiesActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, completeAt);
+        RecognizeEntitiesActionResultPropertiesHelper.setIsError(recognizeEntitiesActionResult, isError);
+        RecognizeEntitiesActionResultPropertiesHelper.setError(recognizeEntitiesActionResult, actionError);
         return recognizeEntitiesActionResult;
     }
 
@@ -951,9 +950,9 @@ final class TestUtils {
         TextAnalyticsError actionError) {
         RecognizePiiEntitiesActionResult recognizePiiEntitiesActionResult = new RecognizePiiEntitiesActionResult();
         RecognizePiiEntitiesActionResultPropertiesHelper.setResult(recognizePiiEntitiesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, completedAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(recognizePiiEntitiesActionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(recognizePiiEntitiesActionResult, actionError);
+        RecognizePiiEntitiesActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, completedAt);
+        RecognizePiiEntitiesActionResultPropertiesHelper.setIsError(recognizePiiEntitiesActionResult, isError);
+        RecognizePiiEntitiesActionResultPropertiesHelper.setError(recognizePiiEntitiesActionResult, actionError);
         return recognizePiiEntitiesActionResult;
     }
 
@@ -962,9 +961,9 @@ final class TestUtils {
         TextAnalyticsError actionError) {
         ExtractKeyPhrasesActionResult extractKeyPhrasesActionResult = new ExtractKeyPhrasesActionResult();
         ExtractKeyPhrasesActionResultPropertiesHelper.setResult(extractKeyPhrasesActionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, completedAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(extractKeyPhrasesActionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(extractKeyPhrasesActionResult, actionError);
+        ExtractKeyPhrasesActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, completedAt);
+        ExtractKeyPhrasesActionResultPropertiesHelper.setIsError(extractKeyPhrasesActionResult, isError);
+        ExtractKeyPhrasesActionResultPropertiesHelper.setError(extractKeyPhrasesActionResult, actionError);
         return extractKeyPhrasesActionResult;
     }
 
@@ -973,9 +972,9 @@ final class TestUtils {
         TextAnalyticsError actionError) {
         RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
         RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        RecognizeLinkedEntitiesActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        RecognizeLinkedEntitiesActionResultPropertiesHelper.setIsError(actionResult, isError);
+        RecognizeLinkedEntitiesActionResultPropertiesHelper.setError(actionResult, actionError);
         return actionResult;
     }
 
