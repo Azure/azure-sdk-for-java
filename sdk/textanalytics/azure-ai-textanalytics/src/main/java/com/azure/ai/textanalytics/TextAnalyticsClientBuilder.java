@@ -72,11 +72,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
-    private static final String ACCEPT_HEADER = "Accept";
-    private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String NAME = "name";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
@@ -85,11 +81,8 @@ public final class TextAnalyticsClientBuilder {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
-    private static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders()
-        .set(ECHO_REQUEST_ID_HEADER, "true")
-        .set(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-        .set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
-    
+    private static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders();
+
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
