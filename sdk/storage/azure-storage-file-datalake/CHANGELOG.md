@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.5.0-beta.4 (Unreleased)
-
+- DataLakeLeaseClient now remembers the Lease ID after a lease change.
 
 ## 12.5.0-beta.3 (2021-04-16)
 - Updated `azure-storage-blob` version to `12.11.0-beta.3` to pickup fixes for blob output stream.
