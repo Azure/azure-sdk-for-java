@@ -312,7 +312,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void listDeletedPaths() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
-        client.listDeletedPaths().subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
+        client.listDeletedPaths().subscribe(path -> System.out.printf("Name: %s%n", path.getPath()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
@@ -321,7 +321,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .byPage(pageSize)
             .subscribe(page ->
                 page.getValue().forEach(path ->
-                    System.out.printf("Name: %s%n", path.getName())));
+                    System.out.printf("Name: %s%n", path.getPath())));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
     }
 

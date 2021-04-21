@@ -341,7 +341,7 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void listDeletedPaths() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
-        client.listDeletedPaths().forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        client.listDeletedPaths().forEach(path -> System.out.printf("Name: %s%n", path.getPath()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context
@@ -352,7 +352,7 @@ public class FileSystemClientJavaDocCodeSamples {
             .iterableByPage(pageSize)
             .forEach(page ->
                 page.getValue().forEach(path ->
-                    System.out.printf("Name: %s%n", path.getName())));
+                    System.out.printf("Name: %s%n", path.getPath())));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context
     }
 

@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
  * A path that has been soft deleted.
  */
 public class PathDeletedItem {
-    private final String name;
+    private final String path;
     private final boolean isPrefix;
     private final String deletionId;
     private final OffsetDateTime deletedOn;
@@ -18,16 +18,16 @@ public class PathDeletedItem {
     /**
      * Constructs a {@link PathDeletedItem}.
      *
-     * @param name The name of the path
+     * @param path The name of the path
      * @param isPrefix Whether the item is a prefix
      * @param deletionId The deletion id associated with the deleted path to uniquely identify it from other items
      * deleted at this path
      * @param deletedOn When the path was deleted
      * @param remainingRetentionDays The number of days left before the soft deleted path will be permanently deleted
      */
-    public PathDeletedItem(String name, boolean isPrefix, String deletionId, OffsetDateTime deletedOn,
+    public PathDeletedItem(String path, boolean isPrefix, String deletionId, OffsetDateTime deletedOn,
         Integer remainingRetentionDays) {
-        this.name = name;
+        this.path = path;
         this.isPrefix = isPrefix;
         this.deletionId = deletionId;
         this.deletedOn = deletedOn;
@@ -39,8 +39,8 @@ public class PathDeletedItem {
      *
      * @return the name of the path
      */
-    public String getName() {
-        return name;
+    public String getPath() {
+        return path;
     }
 
     /**

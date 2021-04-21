@@ -986,7 +986,7 @@ class FileSystemAPITest extends APISpec {
         then:
         deletedBlobs.size() == 1
         !deletedBlobs.get(0).isPrefix()
-        deletedBlobs.get(0).getName() == fc1.getFileName()
+        deletedBlobs.get(0).getPath() == fc1.getFileName()
         deletedBlobs.get(0).getDeletedOn() != null
         deletedBlobs.get(0).getDeletionId() != null
         deletedBlobs.get(0).getRemainingRetentionDays() != null
@@ -1015,7 +1015,7 @@ class FileSystemAPITest extends APISpec {
         then:
         deletedBlobs.size() == 1
         !deletedBlobs.first().isPrefix()
-        deletedBlobs.first().getName() == dir.getDirectoryName() + "/" + fc1.getFileName()
+        deletedBlobs.first().getPath() == dir.getDirectoryName() + "/" + fc1.getFileName()
 
         cleanup:
         disableSoftDelete()
