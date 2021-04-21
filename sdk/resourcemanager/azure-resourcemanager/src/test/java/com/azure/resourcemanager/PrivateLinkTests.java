@@ -17,6 +17,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PrivateDnsZoneGroup;
@@ -367,6 +368,27 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         validateApprovePrivatePrivateEndpointConnection(vault, subResourceName);
     }
 
+    @Test
+    public void testPrivateEndpointCosmos() {
+        String cosmosName = generateRandomResourceName("cosmos", 10);
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.COSMOS_SQL;
+
+        CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(cosmosName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withDataModelSql()
+            .withStrongConsistency()
+            .create();
+
+        PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(cosmosDBAccount, subResourceName);
+
+        com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection connection = cosmosDBAccount.listPrivateEndpointConnection().values().iterator().next();
+        cosmosDBAccount.approvePrivateEndpointConnection(connection.name());
+
+        privateEndpoint.refresh();
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+    }
+
     private void validatePrivateLinkResource(SupportsListingPrivateLinkResource resource, String requiredGroupId) {
         PagedIterable<PrivateLinkResource> privateLinkResources = resource.listPrivateLinkResources();
         List<PrivateLinkResource> privateLinkResourceList = privateLinkResources.stream().collect(Collectors.toList());
@@ -375,9 +397,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         Assertions.assertTrue(privateLinkResourceList.stream().anyMatch(r -> requiredGroupId.equals(r.groupId())));
     }
 
-    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void validateApprovePrivatePrivateEndpointConnection(
-        T resource, PrivateLinkSubResourceName subResourceName) {
-
+    private PrivateEndpoint createPrivateEndpointForManualApproval(Resource resource, PrivateLinkSubResourceName subResourceName) {
         Network network = azureResourceManager.networks().define(vnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -400,6 +420,14 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .attach()
             .create();
         Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+
+        return privateEndpoint;
+    }
+
+    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void validateApprovePrivatePrivateEndpointConnection(
+        T resource, PrivateLinkSubResourceName subResourceName) {
+
+        PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(resource, subResourceName);
 
         resource.approvePrivateEndpointConnection(pecName);
 
