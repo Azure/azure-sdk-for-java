@@ -273,13 +273,13 @@ public final class WebPubSubJavaDocCodeSnippets {
             Context.NONE);
         // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte.withexclusions
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte.withexclusion
         List<String> excludedConnectionIds = getExcludedConnectionIds();
         client.sendToAllWithResponse("Hello world!".getBytes(),
             WebPubSubContentType.APPLICATION_OCTET_STREAM,
             excludedConnectionIds,
             Context.NONE);
-        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte.withexclusions
+        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte.withexclusion
     }
 
     // MISC

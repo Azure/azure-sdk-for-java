@@ -43,9 +43,9 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/webpubsub/azure-messaging-webpubsub/README.md#adding-the-package-to-your-product
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/webpubsub/azure-messaging-webpubsub/README.md#next-steps
 
-[broadcast_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tsdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/BroadcastingSample.java
-[direct_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tsdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/DirectMessageSample.java
-[manage_group_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tsdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/ManagingGroupsSample.java
-[simple_chat_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tsdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/SimpleChatClient.java
+[broadcast_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/BroadcastingSample.java
+[direct_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/DirectMessageSample.java
+[manage_group_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/ManagingGroupsSample.java
+[simple_chat_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/SimpleChatClient.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub%2FREADME.png)

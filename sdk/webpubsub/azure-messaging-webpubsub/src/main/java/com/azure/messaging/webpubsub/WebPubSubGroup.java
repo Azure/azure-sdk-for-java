@@ -78,7 +78,7 @@ public final class WebPubSubGroup {
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
      * excluded connection IDs to a List and pass that in as the third argument:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.withexclusion}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.withexclusions}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
