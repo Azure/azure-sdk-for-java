@@ -26,9 +26,6 @@ import com.azure.core.util.Context;
  * Operations allowed by the client are listing, retrieving, deleting, setting writeable properties.
  * These operations are supported on the repository and the respective tags and manifests in it.
  *
- * Listing operations on tags also support {@link ListTagsOptions options}
- * Listing operations on artifacts also support {@link ListRegistryArtifactOptions options.}
- *
  * <p><strong>Instantiating Container Repository Client</strong></p>
  *
  * {@codesnippet com.azure.containers.containerregistry.repositoryclient.instantiation}
@@ -67,6 +64,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
+     * Gets the repository name for the current instance.
      * Gets the repository name for the current instance.
      * @return Name of the repository for the current instance.
      * */
@@ -115,8 +113,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Deletes the registry artifact with the matching digest in the given {@link #getRepository() respository.}
-     * The delete operation supports delete of both child as well as a multi-arch artifact.
+     * Deletes the registry artifact with the matching digest in the given {@link #getRepository() respository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -138,8 +135,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Deletes the registry artifact with the matching digest in the given {@link #getRepository() respository.}
-     * The delete operation supports delete of both child as well as a multi-arch artifact.
+     * Deletes the registry artifact with the matching digest in the given {@link #getRepository() respository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -159,7 +155,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Deletes the tag with the matching tag name for the given {@link #getRepository() repository.}
+     * Deletes the tag with the matching tag name for the given {@link #getRepository() repository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -181,7 +177,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Deletes the tag with the matching tag name for the given {@link #getRepository() repository.}
+     * Deletes the tag with the matching tag name for the given {@link #getRepository() repository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -201,7 +197,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Gets the {@link RepositoryProperties properties} associated with the given {@link #getRepository() repository.}
+     * Gets the {@link RepositoryProperties properties} associated with the given {@link #getRepository() repository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -221,7 +217,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Gets the {@link RepositoryProperties properties} associated with the given {@link #getRepository() repository.}
+     * Gets the {@link RepositoryProperties properties} associated with the given {@link #getRepository() repository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -240,7 +236,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Gets the {@link RegistryArtifactProperties properties} associated with an artifact in given {@link #getRepository() repository.}
+     * Gets the {@link RegistryArtifactProperties properties} associated with an artifact in given {@link #getRepository() repository}.
      *
      * <p>This method can take in both a digest as well as a tag.<br>
      * In case a tag is provided it calls the service to get the digest associated with the given tag.</p>
@@ -264,7 +260,7 @@ public final class ContainerRepositoryClient {
     }
 
     /**
-     * Gets the {@link RegistryArtifactProperties properties} associated with an artifact in given {@link #getRepository() repository.}
+     * Gets the {@link RegistryArtifactProperties properties} associated with an artifact in given {@link #getRepository() repository}.
      *
      * <p>This method can take in both a digest as well as a tag.<br>
      * In case a tag is provided it calls the service to get the digest associated with the given tag.</p>

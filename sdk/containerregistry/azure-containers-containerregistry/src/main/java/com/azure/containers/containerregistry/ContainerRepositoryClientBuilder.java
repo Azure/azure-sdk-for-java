@@ -10,7 +10,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -35,9 +34,7 @@ import java.util.Objects;
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  *
- * <p>The client needs the service endpoint of the Azure Container Registry, repository name and azure access credentials. The client
- * internally converts these credentials into Container Registry specific credentials to access the REST APIs.
- *
+ * <p>The client needs the service endpoint of the Azure Container Registry and Azure access credentials.
  * <p><strong>Instantiating an asynchronous {@link ContainerRepositoryAsyncClient}</strong></p>
  *
  * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.instantiation}
@@ -51,6 +48,10 @@ import java.util.Objects;
  * {@link #pipeline(HttpPipeline) this} and set the service endpoint with {@link #endpoint(String) this}. Using a
  * pipeline requires additional setup but allows for finer control on how the {@link ContainerRepositoryClient} and {@link
  * ContainerRepositoryAsyncClient} is built.</p>
+ * <p>The service does not directly support AAD credentials and as a result the clients internally depend on a policy that converts
+ * the AAD credentials to the Azure Container Registry specific service credentials. In case you use your own pipeline, you
+ * would need to provide implementation for this policy as well.
+ * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
  *
  * <p><strong>Instantiating an asynchronous {@link ContainerRepositoryAsyncClient}</strong></p>
  *
@@ -127,9 +128,9 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authenticate REST Api calls.
+     * Sets the {@link TokenCredential} used to authenticate REST API calls.
      *
-     * @param credential Azure Token credentials used to authenticate HTTP requests.
+     * @param credential Azure token credentials used to authenticate HTTP requests.
      * @return The updated {@link ContainerRepositoryClientBuilder} object.
      * @throws NullPointerException if credential is null.
      */
@@ -163,9 +164,8 @@ public final class ContainerRepositoryClientBuilder {
     /**
      * Sets the {@link ContainerRegistryServiceVersion} that is used when making API requests.
      * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * If a service version is not provided, the service version that will be used will be the latest known service version and so
+     * newer version of the client library may result in moving to a newer service version.
      *
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      * @return The updated {@link ContainerRepositoryClientBuilder} object.
@@ -205,10 +205,10 @@ public final class ContainerRepositoryClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * <p>The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.</p>
      *
-     * @param configuration The configuration store used to
+     * @param configuration The configuration store to be used.
      * @return The updated {@link ContainerRepositoryClientBuilder} object.
      */
     public ContainerRepositoryClientBuilder configuration(Configuration configuration) {
@@ -218,8 +218,8 @@ public final class ContainerRepositoryClientBuilder {
 
     /**
      * Sets the logging configuration for HTTP requests and responses.
-     * <p>
-     * If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     *
+     * <p> If logLevel is not provided, HTTP request or response logging will not happen.</p>
      *
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link ContainerRepositoryClientBuilder} object.
@@ -238,7 +238,7 @@ public final class ContainerRepositoryClientBuilder {
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests. For example,
      * {@link RetryPolicy} can be used to retry requests.
      *
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ContainerRepositoryClientBuilder object.
      */
     public ContainerRepositoryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
@@ -249,7 +249,7 @@ public final class ContainerRepositoryClientBuilder {
      * Adds a policy to the set of existing policies.
      *
      * @param policy The policy for service requests.
-     * @return The updated ConfigurationClientBuilder object.
+     * @return The updated ContainerRepositoryClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
     public ContainerRepositoryClientBuilder addPolicy(HttpPipelinePolicy policy) {

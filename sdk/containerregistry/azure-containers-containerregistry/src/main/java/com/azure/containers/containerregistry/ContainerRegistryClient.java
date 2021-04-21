@@ -27,7 +27,7 @@ public final class ContainerRegistryClient {
      * List all the repository names in this registry.
      *
      * @return list of repositories.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client credentials do not have access to perform this operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositories() {
