@@ -33,7 +33,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +77,7 @@ public final class TextAnalyticsClientBuilder {
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
     private static final String VERSION = "version";
 
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
     private static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders();
