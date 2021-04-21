@@ -1022,6 +1022,38 @@ class FileSystemAPITest extends APISpec {
         disableSoftDelete()
     }
 
+    def "List deleted paths options maxResults by page"() {
+        setup:
+        enableSoftDelete()
+
+        def dir = fsc.getDirectoryClient(generatePathName())
+        dir.create()
+        def fc1 = dir.getFileClient(generatePathName()) // Create two file under the path
+        fc1.create(true)
+        fc1.delete()
+
+        def fc2 = dir.getFileClient(generatePathName())
+        fc2.create(true)
+        fc2.delete()
+
+        def fc3 = fsc.getFileClient(generatePathName()) // Create another file not under the path
+        fc3.create()
+        fc3.delete()
+
+        def options = new ListDeletedPathsOptions().setPath(dir.getDirectoryName())
+
+        expect:
+        def pagedIterable = fsc.listDeletedPaths(options, null);
+
+        def iterableByPage = pagedIterable.iterableByPage(1)
+        for (def page : iterableByPage) {
+            assert page.value.size() == 1
+        }
+
+        cleanup:
+        disableSoftDelete()
+    }
+
     def "List deleted paths error"() {
         setup:
         enableSoftDelete()

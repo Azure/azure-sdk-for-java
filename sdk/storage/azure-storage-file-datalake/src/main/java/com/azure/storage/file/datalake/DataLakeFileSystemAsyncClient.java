@@ -50,10 +50,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.function.BiFunction;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -559,27 +558,44 @@ public class DataLakeFileSystemAsyncClient {
 
     PagedFlux<PathDeletedItem> listDeletedPathsWithOptionalTimeout(ListDeletedPathsOptions options,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<PathDeletedItem>>> func =
-            marker -> listDeletedPathsSegment(marker, options, timeout)
-                .map(response -> {
-                    List<PathDeletedItem> value = response.getValue().getSegment() == null
-                        ? Collections.emptyList()
-                        : Stream.concat(
-                        response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
-                        response.getValue().getSegment().getBlobPrefixes().stream()
-                            .map(Transforms::toPathDeletedItem)
-                    ).collect(Collectors.toList());
-
-                    return new PagedResponseBase<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        value,
-                        response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders());
-                });
-
-        return new PagedFlux<>(() -> func.apply(null), func);
+        BiFunction<String, Integer, Mono<PagedResponse<PathDeletedItem>>> func =
+            (marker, pageSize) -> {
+                ListDeletedPathsOptions finalOptions;
+                /*
+                 If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+                 Otherwise, prefer the new value.
+                 */
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListDeletedPathsOptions().setMaxResults(pageSize);
+                    } else {
+                        // Note that this prefers the value passed to .byPage(int) over the value on the options
+                        finalOptions = new ListDeletedPathsOptions()
+                            .setMaxResults(pageSize)
+                            .setPath(options.getPath());
+                    }
+                    } else {
+                        finalOptions = options;
+                    }
+                    return listDeletedPathsSegment(marker, finalOptions, timeout)
+                        .map(response -> {
+                            List<PathDeletedItem> value = response.getValue().getSegment() == null
+                                ? Collections.emptyList()
+                                : Stream.concat(
+                                response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
+                                response.getValue().getSegment().getBlobPrefixes().stream()
+                                    .map(Transforms::toPathDeletedItem)
+                            ).collect(Collectors.toList());
+                            return new PagedResponseBase<>(
+                                response.getRequest(),
+                                response.getStatusCode(),
+                                response.getHeaders(),
+                                value,
+                                response.getValue().getNextMarker(),
+                                response.getDeserializedHeaders());
+                        });
+                };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
