@@ -65,29 +65,6 @@ public final class WebPubSubGroup {
         sendToAllWithResponse(message, contentType, null, Context.NONE);
     }
 
-//    /**
-//     * Broadcast a text message to all connections in this group, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List}
-//     *
-//     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-//     * excluded connection IDs to a List and pass that in as the second argument:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAll.String.List.2}
-//     *
-//     * @param message The message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public void sendToAll(final String message, final List<String> excludedConnectionIds) {
-//        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
-//    }
-
     /**
      * Broadcast a text message to all connections in this group, excluding any connection IDs provided in the
      * {@code excludedConnectionIds} list.
@@ -150,29 +127,6 @@ public final class WebPubSubGroup {
     public void sendToAll(final byte[] message, final WebPubSubContentType contentType) {
         sendToAllWithResponse(message, contentType, null, Context.NONE);
     }
-
-//    /**
-//     * Broadcast a binary message to all connections in this group, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List}
-//     *
-//     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-//     * add the excluded connection IDs to the end of the method call as var-args:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroupclient.sendToAllBytes.byte.List.2}
-//     *
-//     * @param message The binary message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public void sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
-//        sendToAllWithResponse(message, excludedConnectionIds, Context.NONE);
-//    }
 
     /**
      * Broadcast a binary message to all connections in this group, excluding any connection IDs provided in the
