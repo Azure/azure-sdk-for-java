@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.Utils;
 import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
