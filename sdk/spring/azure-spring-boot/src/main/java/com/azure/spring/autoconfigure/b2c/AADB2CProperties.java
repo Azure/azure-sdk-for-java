@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
+
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
@@ -144,7 +146,12 @@ public class AADB2CProperties implements InitializingBean {
      * Validate common scenario properties configuration.
      */
     private void validateCommonProperties() {
-        if (!CollectionUtils.isEmpty(authorizationClients) && !StringUtils.hasText(tenantId)) {
+        long credentialCount = authorizationClients.values()
+                                                   .stream()
+                                                   .map(authClient -> authClient.getAuthorizationGrantType())
+                                                   .filter(client -> CLIENT_CREDENTIALS == client)
+                                                   .count();
+        if (credentialCount > 0 && !StringUtils.hasText(tenantId)) {
             throw new AADB2CConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");
         }

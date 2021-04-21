@@ -11,7 +11,6 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,14 +32,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C resource server authorization.
- * Import {@link AADB2CConfiguration} class for AAD B2C OAuth2 client support.
+ *
+ * When the configuration matches the {@link AADB2COAuth2ClientConfiguration.AADB2CCondition.WebApiMode} condition,
+ * configure the necessary beans for AAD B2C resource server beans,
+ * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@Conditional(AADB2CConfiguration.AADB2CCondition.class)
+@Conditional(AADB2COAuth2ClientConfiguration.AADB2CCondition.class)
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 @EnableConfigurationProperties(AADB2CProperties.class)
-@Import(AADB2CConfiguration.class)
+@Import(AADB2COAuth2ClientConfiguration.class)
 public class AADB2CResourceServerAutoConfiguration {
 
     private final AADB2CProperties properties;

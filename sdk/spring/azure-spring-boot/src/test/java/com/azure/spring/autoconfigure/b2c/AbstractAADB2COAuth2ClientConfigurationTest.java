@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 
 import java.util.Map;
 
-public class AbstractAADB2CConfiguration {
+public abstract class AbstractAADB2COAuth2ClientConfigurationTest {
 
     @EnableWebSecurity
     @Import(OAuth2ClientAutoConfiguration.class)
@@ -63,7 +63,7 @@ public class AbstractAADB2CConfiguration {
         this.contextRunner
             .withPropertyValues(getClientCredentialConfig())
             .run(c -> {
-                final AADB2CConfiguration config = c.getBean(AADB2CConfiguration.class);
+                final AADB2COAuth2ClientConfiguration config = c.getBean(AADB2COAuth2ClientConfiguration.class);
                 final ClientRegistrationRepository clientRepo = c.getBean(ClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientService clientService = c.getBean(OAuth2AuthorizedClientService.class);
                 final OAuth2AuthorizedClientRepository authorizedClientRepo =

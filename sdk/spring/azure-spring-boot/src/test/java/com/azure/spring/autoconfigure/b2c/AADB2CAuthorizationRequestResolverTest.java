@@ -20,7 +20,7 @@ public class AADB2CAuthorizationRequestResolverTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withConfiguration(AutoConfigurations.of(AbstractAADB2CConfiguration.WebOAuth2ClientApp.class,
+        .withConfiguration(AutoConfigurations.of(AbstractAADB2COAuth2ClientConfigurationTest.WebOAuth2ClientApp.class,
             AADB2CAutoConfiguration.class))
         .withPropertyValues(
             String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),

@@ -34,17 +34,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Configuration for aad b2c OAuth2 client support, when depends on the Spring OAuth2 Client module.
+ * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
  */
 @Configuration
 @EnableConfigurationProperties(AADB2CProperties.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
-public class AADB2CConfiguration {
+public class AADB2COAuth2ClientConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2COAuth2ClientConfiguration.class);
     private final AADB2CProperties properties;
 
-    public AADB2CConfiguration(@NonNull AADB2CProperties properties) {
+    public AADB2COAuth2ClientConfiguration(@NonNull AADB2CProperties properties) {
         this.properties = properties;
     }
 
@@ -56,7 +56,7 @@ public class AADB2CConfiguration {
         clientRegistrations.addAll(properties.getUserFlows()
                   .entrySet()
                   .stream()
-                  .map(this::b2cClientRegistration)
+                  .map(this::b2cUserFlowClientRegistration)
                   .collect(Collectors.toList()));
         clientRegistrations.addAll(properties.getAuthorizationClients()
                                              .entrySet()
@@ -66,7 +66,7 @@ public class AADB2CConfiguration {
         return new AADB2CClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
     }
 
-    private ClientRegistration b2cClientRegistration(Map.Entry<String, String> client) {
+    private ClientRegistration b2cUserFlowClientRegistration(Map.Entry<String, String> client) {
         return ClientRegistration.withRegistrationId(client.getValue()) // Use flow as registration Id.
                                  .clientName(client.getKey())
                                  .clientId(properties.getClientId())
@@ -93,7 +93,7 @@ public class AADB2CConfiguration {
                                                                 .map(AADAuthorizationGrantType::getValue)
                                                                 .map(AuthorizationGrantType::new)
                                                                 .orElse(null);
-        if (authGrantType == null || !authGrantType.equals(AuthorizationGrantType.CLIENT_CREDENTIALS)) {
+        if (!AuthorizationGrantType.CLIENT_CREDENTIALS.equals(authGrantType)) {
             LOGGER.warn("Found {} registration of non client-credentials authorization type.", client.getKey());
         }
         return ClientRegistration.withRegistrationId(client.getKey())
@@ -116,14 +116,12 @@ public class AADB2CConfiguration {
         DefaultOAuth2AuthorizedClientManager manager =
             new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
 
-        // @formatter:off
         OAuth2AuthorizedClientProvider authorizedClientProviders = OAuth2AuthorizedClientProviderBuilder.builder()
                                                                     .authorizationCode()
                                                                     .refreshToken()
                                                                     .clientCredentials()
                                                                     .password()
                                                                     .build();
-        // @formatter:on
         manager.setAuthorizedClientProvider(authorizedClientProviders);
         return manager;
     }
@@ -136,6 +134,9 @@ public class AADB2CConfiguration {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 
+        /**
+         * Web application scenario condition.
+         */
         @ConditionalOnWebApplication
         @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
         @ConditionalOnProperty(
@@ -149,6 +150,9 @@ public class AADB2CConfiguration {
 
         }
 
+        /**
+         * Web resource server scenario condition.
+         */
         @ConditionalOnWebApplication
         @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
         @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })

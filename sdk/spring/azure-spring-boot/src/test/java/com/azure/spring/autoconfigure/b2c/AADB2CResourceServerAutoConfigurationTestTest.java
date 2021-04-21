@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
-public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2CConfiguration {
+public class AADB2CResourceServerAutoConfigurationTestTest extends AbstractAADB2COAuth2ClientConfigurationTest {
 
     private final WebApplicationContextRunner resourceServerContextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
@@ -22,7 +22,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2CCon
             AADB2CResourceServerAutoConfiguration.class))
         .withPropertyValues(getB2CResourceServerProperties());
 
-    public AADB2CResourceServerAutoConfigurationTest() {
+    public AADB2CResourceServerAutoConfigurationTestTest() {
         contextRunner = new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class,
                 AADB2CResourceServerAutoConfiguration.class))

@@ -3,7 +3,6 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.telemetry.TelemetrySender;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,14 +23,15 @@ import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C authentication.
- * Import {@link AADB2CConfiguration} class for AAD B2C OAuth2 client support.
+ * When the configuration matches the {@link AADB2COAuth2ClientConfiguration.AADB2CCondition.WebAppMode} condition,
+ * configure the necessary beans for AAD B2C authentication and authorization,
+ * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@Conditional({ AADB2CConfiguration.AADB2CCondition.class })
+@Conditional({ AADB2COAuth2ClientConfiguration.AADB2CCondition.class })
 @ConditionalOnMissingClass({"org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken"})
 @EnableConfigurationProperties(AADB2CProperties.class)
-@Import(AADB2CConfiguration.class)
+@Import(AADB2COAuth2ClientConfiguration.class)
 public class AADB2CAutoConfiguration {
 
     private final ClientRegistrationRepository repository;

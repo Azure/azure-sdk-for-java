@@ -14,9 +14,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class AADB2CAutoConfigurationTest extends AbstractAADB2CConfiguration {
+public class AADB2CAutoConfigurationTestTest extends AbstractAADB2COAuth2ClientConfigurationTest {
 
-    public AADB2CAutoConfigurationTest() {
+    public AADB2CAutoConfigurationTestTest() {
         contextRunner = new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
