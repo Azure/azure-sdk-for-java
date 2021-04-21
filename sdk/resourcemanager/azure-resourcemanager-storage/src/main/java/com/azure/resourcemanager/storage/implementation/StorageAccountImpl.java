@@ -11,9 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -30,6 +28,8 @@ import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
+import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicEndpoints;
 import com.azure.resourcemanager.storage.models.Sku;
@@ -318,9 +318,9 @@ class StorageAccountImpl
         return this.manager().serviceClient().getPrivateEndpointConnections()
             .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
                 null,
-                new com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState()
+                new PrivateLinkServiceConnectionState()
                     .withStatus(
-                        com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus.REJECTED))
+                        PrivateEndpointServiceConnectionStatus.REJECTED))
             .then();
     }
 
@@ -740,7 +740,8 @@ class StorageAccountImpl
         private final PrivateEndpointConnectionInner innerModel;
 
         private final PrivateEndpoint privateEndpoint;
-        private final PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState;
         private final PrivateEndpointConnectionProvisioningState provisioningState;
 
         private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
@@ -751,13 +752,13 @@ class StorageAccountImpl
                 : new PrivateEndpoint(innerModel.privateEndpoint().id());
             this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
                 ? null
-                : new PrivateLinkServiceConnectionState(
-                    innerModel.privateLinkServiceConnectionState().status() == null
-                        ? null
-                        : PrivateEndpointServiceConnectionStatus
-                        .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
-                    innerModel.privateLinkServiceConnectionState().description(),
-                    innerModel.privateLinkServiceConnectionState().actionRequired());
+                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
+                innerModel.privateLinkServiceConnectionState().status() == null
+                    ? null
+                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                innerModel.privateLinkServiceConnectionState().description(),
+                innerModel.privateLinkServiceConnectionState().actionRequired());
             this.provisioningState = innerModel.provisioningState() == null
                 ? null
                 : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
@@ -784,7 +785,8 @@ class StorageAccountImpl
         }
 
         @Override
-        public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
+        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState() {
             return privateLinkServiceConnectionState;
         }
 

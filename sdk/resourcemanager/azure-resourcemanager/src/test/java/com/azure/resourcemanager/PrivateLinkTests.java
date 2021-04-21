@@ -17,6 +17,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PrivateDnsZoneGroup;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
@@ -25,6 +26,8 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -344,10 +347,60 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
             .withNewResourceGroup(rgName)
             .create();
 
-        PagedIterable<PrivateLinkResource> privateLinkResources = storageAccount.listPrivateLinkResources();
+        validatePrivateLinkResource(storageAccount, PrivateLinkSubResourceName.STORAGE_BLOB.toString());
+    }
+
+    @Test
+    public void testPrivateEndpointVault() {
+        String vaultName = generateRandomResourceName("vault", 10);
+
+        Vault vault = azureResourceManager.vaults().define(vaultName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withEmptyAccessPolicy()
+            .create();
+
+        validatePrivateLinkResource(vault, PrivateLinkSubResourceName.VAULT.toString());
+
+        validateApprovePrivatePrivateEndpointConnection(vault, vault.id(), PrivateLinkSubResourceName.VAULT);
+    }
+
+    private void validatePrivateLinkResource(SupportsListingPrivateLinkResource resource, String requiredGroupId) {
+        PagedIterable<PrivateLinkResource> privateLinkResources = resource.listPrivateLinkResources();
         List<PrivateLinkResource> privateLinkResourceList = privateLinkResources.stream().collect(Collectors.toList());
 
         Assertions.assertFalse(privateLinkResourceList.isEmpty());
-        Assertions.assertTrue(privateLinkResourceList.stream().anyMatch(r -> "blob".equals(r.groupId())));
+        Assertions.assertTrue(privateLinkResourceList.stream().anyMatch(r -> requiredGroupId.equals(r.groupId())));
+    }
+
+    private void validateApprovePrivatePrivateEndpointConnection(SupportsUpdatingPrivateEndpointConnection resource, String resourceId, PrivateLinkSubResourceName subResourceName) {
+        Network network = azureResourceManager.networks().define(vnName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace(vnAddressSpace)
+            .defineSubnet(subnetName)
+            .withAddressPrefix(vnAddressSpace)
+            .disableNetworkPoliciesOnPrivateEndpoint()
+            .attach()
+            .create();
+
+        // private endpoint with manual approval
+        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSubnet(network.subnets().get(subnetName))
+            .definePrivateLinkServiceConnection(pecName)
+            .withResourceId(resourceId)
+            .withSubResource(subResourceName)
+            .withManualApproval("request message")
+            .attach()
+            .create();
+        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+
+        resource.approvePrivateEndpointConnection(pecName);
+
+        // check again
+        privateEndpoint.refresh();
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
     }
 }
