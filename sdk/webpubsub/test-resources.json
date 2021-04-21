@@ -1,0 +1,44 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "skuName": {
+      "type": "string"
+    },
+    "tier": {
+      "type": "string"
+    },
+    "capacity": {
+      "type": "int"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('name')]",
+      "type": "Microsoft.SignalRService/WebPubSub",
+      "apiVersion": "2021-04-01-preview",
+      "location": "[parameters('location')]",
+      "properties": {},
+      "sku": {
+        "name": "[parameters('skuName')]",
+        "tier": "[parameters('tier')]",
+        "capacity": "[parameters('capacity')]"
+      },
+      "dependsOn": [],
+      "tags": {}
+    }
+  ],
+  "outputs": {
+    "AZURE_WEBPUBSUB_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
+    }
+  }
+}
