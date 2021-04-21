@@ -9,14 +9,22 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Header;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +45,7 @@ import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.validateKey
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.validatePrimaryLanguage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for Text Analytics client builder
@@ -216,6 +225,58 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
                 validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));
             }
         });
+    }
+
+    @Test
+    @DoNotRecord
+    public void applicationIdFallsBackToLogOptions() {
+        TextAnalyticsClient textAnalyticsClient =
+            new TextAnalyticsClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .httpClient(httpRequest -> {
+                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class, () -> textAnalyticsClient.detectLanguage("hello world"));
+    }
+
+    @Test
+    @DoNotRecord
+    public void clientOptionsIsPreferredOverLogOptions() {
+        TextAnalyticsClient textAnalyticsClient =
+            new TextAnalyticsClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+                .httpClient(httpRequest -> {
+                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class, () -> textAnalyticsClient.detectLanguage("hello world"));
+    }
+
+    @Test
+    @DoNotRecord
+    public void clientOptionHeadersAreAddedLast() {
+        TextAnalyticsClient textAnalyticsClient =
+            new TextAnalyticsClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .clientOptions(new ClientOptions()
+                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .httpClient(httpRequest -> {
+                    assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class, () -> textAnalyticsClient.detectLanguage("hello world"));
     }
 
     // Client builder runner
