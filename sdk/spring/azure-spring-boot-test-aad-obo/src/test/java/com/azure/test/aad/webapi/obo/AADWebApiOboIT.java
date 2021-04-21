@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -51,7 +50,7 @@ public class AADWebApiOboIT {
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
         properties.put("azure.activedirectory.app-id-uri", "api://" + AAD_MULTI_TENANT_CLIENT_ID);
         properties.put(
-            "azure.activedirectory.authorization-clients.graph.authorization-grant-type", "authorization_code");
+            "azure.activedirectory.authorization-clients.graph.authorization-grant-type", "on-behalf-of");
         properties.put("azure.activedirectory.authorization-clients.graph.scopes",
             "https://graph.microsoft.com/User.Read");
         aadWebApiITHelper = new AADWebApiITHelper(
