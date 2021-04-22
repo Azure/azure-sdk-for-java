@@ -48,8 +48,8 @@ public class TokenGenerationTest {
             // HTTP
             Arguments.of(
                 new GetAuthenticationTokenOptions(),
-                "Endpoint=http://http.webpubsubdev.azure.com;" +
-                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "Endpoint=http://http.webpubsubdev.azure.com;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "ws://http.webpubsubdev.azure.com/"),
 
             // HTTP with port
@@ -57,16 +57,16 @@ public class TokenGenerationTest {
                 new GetAuthenticationTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1)),
-                "Endpoint=http://testendpoint.webpubsubdev.azure.com;" +
-                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080",
+                "Endpoint=http://testendpoint.webpubsubdev.azure.com;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080",
                 "ws://testendpoint.webpubsubdev.azure.com:8080/"),
 
             // HTTP with "http" in domain name
             Arguments.of(
                 new GetAuthenticationTokenOptions()
                     .setUserId("foo"),
-                "Endpoint=http://http.webpubsubdev.azure.com;" +
-                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "Endpoint=http://http.webpubsubdev.azure.com;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "ws://http.webpubsubdev.azure.com/"),
 
             // HTTPS
@@ -74,8 +74,8 @@ public class TokenGenerationTest {
                 new GetAuthenticationTokenOptions()
                     .setUserId("foo")
                     .addRole("admin"),
-                "Endpoint=https://testendpoint.webpubsubdev.azure.com;" +
-                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "Endpoint=https://testendpoint.webpubsubdev.azure.com;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "wss://testendpoint.webpubsubdev.azure.com/"),
 
             // HTTPS with port
@@ -84,8 +84,8 @@ public class TokenGenerationTest {
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .addRole("admin"),
-                "Endpoint=https://testendpoint.webpubsubdev.azure.com;Port=8080;" +
-                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "Endpoint=https://testendpoint.webpubsubdev.azure.com;Port=8080;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "wss://testendpoint.webpubsubdev.azure.com:8080/"),
 
             // HTTPS with "https" in domain name
@@ -94,9 +94,19 @@ public class TokenGenerationTest {
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .setRoles(Arrays.asList("admin", "owner")),
-                "Endpoint=https://https.webpubsubdev.azure.com;" +
-                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
-                "wss://https.webpubsubdev.azure.com/")
+                "Endpoint=https://https.webpubsubdev.azure.com;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "wss://https.webpubsubdev.azure.com/"),
+
+            // Endpoint with path fragments
+            Arguments.of(
+                new GetAuthenticationTokenOptions()
+                    .setUserId("foo")
+                    .setExpiresAfter(Duration.ofDays(1))
+                    .setRoles(Arrays.asList("admin", "owner")),
+                "Endpoint=https://testendpoint.webpubsubdev.azure.com/test/path?query_param=value;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080",
+                "wss://testendpoint.webpubsubdev.azure.com:8080/")
         );
     }
 }

@@ -503,11 +503,14 @@ public final class WebPubSubServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the specific
+     * permission.
      * @return A Boolean value representing whether the connection has the specified permission.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkPermissionExists(final WebPubSubPermission permission, final String connectionId) {
-        return checkPermissionExistsWithResponse(permission, connectionId, null, Context.NONE).getValue();
+    public boolean checkPermissionExists(final WebPubSubPermission permission, final String connectionId,
+                                         final String targetName) {
+        return checkPermissionExistsWithResponse(permission, connectionId, targetName, Context.NONE).getValue();
     }
 
     /**
@@ -515,12 +518,12 @@ public final class WebPubSubServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
-     * @param targetName Optional. If not set, get the permission for all targets. If set, get the permission for the
-     *     specific target. The meaning of the target depends on the specific permission.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the specific
+     * permission.
      * @param context The context to associate with this operation.
      * @return A {@link Response} with a Boolean value representing whether the connection
-     *     has the specified permission, as well as status code and response headers representing the response from
-     *      the service.
+     * has the specified permission, as well as status code and response headers representing the response from
+     * the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkPermissionExistsWithResponse(final WebPubSubPermission permission,

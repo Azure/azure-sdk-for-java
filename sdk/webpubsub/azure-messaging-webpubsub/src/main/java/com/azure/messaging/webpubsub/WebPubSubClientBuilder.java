@@ -21,9 +21,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestAPIImplBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -135,6 +138,11 @@ public final class WebPubSubClientBuilder {
      */
     public WebPubSubClientBuilder endpoint(final String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        try {
+            new URL(endpoint);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be valid URL", e));
+        }
         this.endpoint = endpoint;
         return this;
     }
@@ -290,11 +298,19 @@ public final class WebPubSubClientBuilder {
             final String accessKey = csParams.get("accesskey");
 
             this.credential = new AzureKeyCredential(accessKey);
-            this.endpoint = csParams.get("endpoint");
+            String csEndpoint = csParams.get("endpoint");
+            URL url;
+            try {
+                url = new URL(csEndpoint);
+                this.endpoint = csEndpoint;
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsWarning(new IllegalArgumentException("Connection string contains invalid "
+                    + "endpoint", e));
+            }
 
             String port = csParams.get("port");
             if (!CoreUtils.isNullOrEmpty(port)) {
-                this.endpoint = this.endpoint + ":" + port;
+                this.endpoint = UrlBuilder.parse(url).setPort(port).toString();
             }
         }
 
