@@ -242,6 +242,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
   if (Test-Path $ignorePackagePath)
   {
     $ignorePackages = [Array](Get-Content $ignorePackagePath | ForEach-Object { ($_ -replace "#.*", "").Trim() } | Where-Object { $_ -ne "" })
+    Write-Host $ignorePackages
   }
   Write-Host "Updating the package.json in Java"
   # Read release csv file, and filter out by New=true, Hide!=true
