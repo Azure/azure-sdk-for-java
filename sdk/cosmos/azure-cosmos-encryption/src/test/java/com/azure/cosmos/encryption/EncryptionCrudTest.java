@@ -45,7 +45,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class EncryptionCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private static final int TIMEOUT = 600000_000;
+    private static final int TIMEOUT = 6000_000;
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
@@ -285,7 +285,6 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(result.mypk).isEqualTo(originalItem.mypk);
         assertThat(result.nonSensitive).isEqualTo(originalItem.nonSensitive);
         assertThat(result.sensitiveString).isEqualTo(originalItem.sensitiveString);
-        assertThat(result.plainText).isEqualTo(originalItem.plainText);
         assertThat(result.sensitiveInt).isEqualTo(originalItem.sensitiveInt);
         assertThat(result.sensitiveFloat).isEqualTo(originalItem.sensitiveFloat);
         assertThat(result.sensitiveLong).isEqualTo(originalItem.sensitiveLong);
@@ -335,7 +334,6 @@ public class EncryptionCrudTest extends TestSuiteBase {
         pojo.mypk = documentId;
         pojo.nonSensitive = UUID.randomUUID().toString();
         pojo.sensitiveString = "testingString";
-        pojo.plainText = "plainText";
         pojo.sensitiveDouble = 10.123;
         pojo.sensitiveFloat = 20.0f;
         pojo.sensitiveInt = 30;
@@ -398,8 +396,6 @@ public class EncryptionCrudTest extends TestSuiteBase {
         @JsonProperty
         public String sensitiveString;
         @JsonProperty
-        public String plainText;
-        @JsonProperty
         public int sensitiveInt;
         @JsonProperty
         public float sensitiveFloat;
@@ -421,38 +417,6 @@ public class EncryptionCrudTest extends TestSuiteBase {
         public Pojo[][] sensitiveChildPojo2DArray;
         @JsonProperty
         public List<Pojo> sensitiveChildPojoList;
-    }
-
-    public static class PojoEncrypted {
-        public String id;
-        @JsonProperty
-        public String mypk;
-        @JsonProperty
-        public String nonSensitive;
-        @JsonProperty
-        public String sensitiveString;
-        @JsonProperty
-        public String sensitiveInt;
-        @JsonProperty
-        public String sensitiveFloat;
-        @JsonProperty
-        public String sensitiveLong;
-        @JsonProperty
-        public String sensitiveDouble;
-        @JsonProperty
-        public String sensitiveBoolean;
-        @JsonProperty
-        public PojoEncrypted sensitiveNestedPojo;
-        @JsonProperty
-        public String[] sensitiveIntArray;
-        @JsonProperty
-        public String[] sensitiveStringArray;
-        @JsonProperty
-        public String[][][] sensitiveString3DArray;
-        @JsonProperty
-        public PojoEncrypted[][] sensitiveChildPojo2DArray;
-        @JsonProperty
-        public List<PojoEncrypted> sensitiveChildPojoList;
     }
 
     public static class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
