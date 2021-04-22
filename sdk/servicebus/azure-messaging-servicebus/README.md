@@ -292,6 +292,15 @@ between clients which can be achieved by sharing the top level builder as shown 
         .buildClient();
 }
 ```
+### Receiver V/S Processor
+ When to use  'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 
+ is built using 'ServiceBusReceiverAsyncClient'. The processor provides a convenient way of receiving message with 
+ default auto complete and auto renew of message locks in 'PEEK_LOCK' mode. The processor makes more sense where 
+ the applications have not made complete move to async client but want to process message in parallel. The 
+ 'ServiceBusProcessorClient:processMessage()' function call is made for each message in parallel.
+ You can instead use 'ServiceBusReceiverClient', it is lower level client and provided wider range of API. If async 
+ processing is suitable for your application, you can use 'ServiceBusReceiverAsyncClient'. 
+
 ## Troubleshooting
 
 ### Enable client logging
