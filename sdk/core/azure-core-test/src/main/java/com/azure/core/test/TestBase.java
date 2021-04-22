@@ -173,7 +173,7 @@ public abstract class TestBase implements BeforeEachCallback {
          * implementation it will use.
          */
         if (testMode == TestMode.PLAYBACK) {
-            return Stream.of();
+            return Stream.of(new HttpClient[] { null });
         }
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
