@@ -688,6 +688,7 @@
         <module>sdk/datadog</module>
         <module>sdk/datafactory</module>
         <module>sdk/datalakeanalytics</module>
+        <module>sdk/datalakestore</module>
         <module>sdk/datamigration</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
