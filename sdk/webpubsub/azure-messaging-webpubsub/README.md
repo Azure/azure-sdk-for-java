@@ -24,7 +24,6 @@ requests, can also use Azure Web PubSub service.
 [//]: # ({x-version-update-start;com.azure:azure-messaging-webpubsub;current})
 
 ```xml
-
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
