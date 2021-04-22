@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Contains customizations for Azure Search's service swagger code generation.
@@ -19,11 +20,11 @@ public class SearchServiceCustomizations extends Customization {
     private static final int PUBLIC_ABSTRACT = Modifier.PUBLIC | Modifier.ABSTRACT;
     private static final int PUBLIC_FINAL = Modifier.PUBLIC | Modifier.FINAL;
 
-    private static final String VARARG_METHOD_TEMPLATE =
-        "public %s %s(%s... %s) {"
-            + "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);\n"
-            + "    return this;\n"
-            + "}";
+    private static final String VARARG_METHOD_TEMPLATE = joinWithNewline(
+        "public %s %s(%s... %s) {",
+        "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);",
+        "    return this;",
+        "}");
 
     // Packages
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.indexes.implementation.models";
@@ -39,7 +40,8 @@ public class SearchServiceCustomizations extends Customization {
         // Customize models.
         // Change class modifiers to 'public abstract'.
         bulkChangeClassModifiers(publicCustomization, PUBLIC_ABSTRACT, "ScoringFunction", "DataChangeDetectionPolicy",
-            "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount", "SearchIndexerSkill");
+            "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount", "SearchIndexerSkill",
+            "LexicalAnalyzer");
 
         // Change class modifiers to 'public final'.
         bulkChangeClassModifiers(publicCustomization, PUBLIC_FINAL, "BM25SimilarityAlgorithm",
@@ -68,13 +70,18 @@ public class SearchServiceCustomizations extends Customization {
         customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
         customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
             implCustomization.getClass("AzureActiveDirectoryApplicationCredentials"));
+        customizeSearchSuggester(publicCustomization.getClass("SearchSuggester"));
+        customizeCustomAnalyzer(publicCustomization.getClass("CustomAnalyzer"));
+        customizePatternAnalyzer(publicCustomization.getClass("PatternAnalyzer"));
+        customizeLuceneStandardAnalyzer(publicCustomization.getClass("LuceneStandardAnalyzer"));
+        customizeStopAnalyzer(publicCustomization.getClass("StopAnalyzer"));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
-        classCustomization.addMethod(
-            "public static SearchFieldDataType collection(SearchFieldDataType dataType) {\n"
-                + "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n"
-                + "}")
+        classCustomization.addMethod(joinWithNewline(
+            "public static SearchFieldDataType collection(SearchFieldDataType dataType) {",
+            "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));",
+            "}"))
             .addAnnotation("@JsonCreator")
             .getJavadoc()
             .setDescription("Returns a collection of a specific SearchFieldDataType")
@@ -95,18 +102,18 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
-        classCustomization.addMethod(
-            "/**\n"
-                + " * Set the key property: The key used to provision the cognitive service\n"
-                + " * resource attached to a skillset.\n"
-                + " *\n"
-                + " * @param key the key value to set.\n"
-                + " * @return the CognitiveServicesAccountKey object itself.\n"
-                + " */\n"
-                + "public CognitiveServicesAccountKey setKey(String key) {\n"
-                + "    this.key = key;\n"
-                + "    return this;\n"
-                + "}");
+        classCustomization.addMethod(joinWithNewline(
+            "/**",
+            " * Set the key property: The key used to provision the cognitive service",
+            " * resource attached to a skillset.",
+            " *",
+            " * @param key the key value to set.",
+            " * @return the CognitiveServicesAccountKey object itself.",
+            " */",
+            "public CognitiveServicesAccountKey setKey(String key) {",
+            "    this.key = key;",
+            "    return this;",
+            "}"));
     }
 
     private void customizeOcrSkill(ClassCustomization classCustomization) {
@@ -115,10 +122,10 @@ public class SearchServiceCustomizations extends Customization {
         JavadocCustomization javadocToCopy = classCustomization.getMethod("isShouldDetectOrientation")
             .getJavadoc();
 
-        JavadocCustomization newJavadoc = classCustomization.addMethod(
-            "public Boolean setShouldDetectOrientation() {\n"
-                + "    return this.shouldDetectOrientation;\n"
-                + "}")
+        JavadocCustomization newJavadoc = classCustomization.addMethod(joinWithNewline(
+            "public Boolean setShouldDetectOrientation() {",
+            "    return this.shouldDetectOrientation;",
+            "}"))
             .addAnnotation("@Deprecated")
             .getJavadoc();
 
@@ -151,11 +158,10 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSearchField(ClassCustomization classCustomization) {
-        classCustomization.getMethod("setHidden")
-            .replaceBody(
-                "this.hidden = (hidden == null) ? null : !hidden;\n"
-                    + "return this;"
-            );
+        classCustomization.getMethod("setHidden").replaceBody(joinWithNewline(
+            "this.hidden = (hidden == null) ? null : !hidden;",
+            "return this;"
+        ));
 
         classCustomization.getMethod("isHidden")
             .replaceBody("return (this.hidden == null) ? null : !this.hidden;");
@@ -169,18 +175,20 @@ public class SearchServiceCustomizations extends Customization {
         classCustomization.getMethod("setFormat").setModifier(Modifier.PRIVATE);
         classCustomization.getMethod("setName").setModifier(Modifier.PRIVATE);
 
-        classCustomization.addConstructor("public SynonymMap(String name) {\n"
-            + "    this(name, null);\n"
-            + "}")
+        classCustomization.addConstructor(joinWithNewline(
+            "public SynonymMap(String name) {",
+            "    this(name, null);",
+            "}"))
             .getJavadoc()
             .setDescription("Constructor of {@link SynonymMap}.")
             .setParam("name", "The name of the synonym map.");
 
-        classCustomization.addConstructor("public SynonymMap(@JsonProperty(value = \"name\") String name, @JsonProperty(value = \"synonyms\") String synonyms) {\n"
-            + "    this.format = \"solr\";\n"
-            + "    this.name = name;\n"
-            + "    this.synonyms = synonyms;\n"
-            + "}")
+        classCustomization.addConstructor(joinWithNewline(
+            "public SynonymMap(@JsonProperty(value = \"name\") String name, @JsonProperty(value = \"synonyms\") String synonyms) {",
+            "    this.format = \"solr\";",
+            "    this.name = name;",
+            "    this.synonyms = synonyms;",
+            "}"))
             .addAnnotation("@JsonCreator")
             .getJavadoc()
             .setDescription("Constructor of {@link SynonymMap}.")
@@ -194,41 +202,105 @@ public class SearchServiceCustomizations extends Customization {
         String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").setModifier(Modifier.PRIVATE)
             .getJavadoc().getReturn();
 
-        JavadocCustomization javadoc = keyCustomization.addMethod("public String getApplicationId() {\n"
-            + "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();\n"
-            + "}")
+        JavadocCustomization javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public String getApplicationId() {",
+            "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();",
+            "}"))
             .getJavadoc();
         copyJavadocs(credentialCustomization.getMethod("getApplicationId").getJavadoc(), javadoc);
 
-        javadoc = keyCustomization.addMethod("public SearchResourceEncryptionKey setApplicationId(String applicationId) {\n"
-            + "    if (this.accessCredentials == null) {\n"
-            + "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();\n"
-            + "    }\n"
-            + "\n"
-            + "    this.accessCredentials.setApplicationId(applicationId);\n"
-            + "    return this;\n"
-            + "}")
+        javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public SearchResourceEncryptionKey setApplicationId(String applicationId) {",
+            "    if (this.accessCredentials == null) {",
+            "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
+            "    }",
+            "",
+            "    this.accessCredentials.setApplicationId(applicationId);",
+            "    return this;",
+            "}"))
             .getJavadoc();
         copyJavadocs(credentialCustomization.getMethod("setApplicationId").getJavadoc(), javadoc)
             .setReturn(setterReturnJavadoc);
 
-        javadoc = keyCustomization.addMethod("public String getApplicationSecret() {\n"
-            + "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();\n"
-            + "}")
+        javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public String getApplicationSecret() {",
+            "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();",
+            "}"))
             .getJavadoc();
         copyJavadocs(credentialCustomization.getMethod("getApplicationSecret").getJavadoc(), javadoc);
 
-        javadoc = keyCustomization.addMethod("public SearchResourceEncryptionKey setApplicationSecret(String applicationSecret) {\n"
-            + "    if (this.accessCredentials == null) {\n"
-            + "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();\n"
-            + "    }\n"
-            + "\n"
-            + "    this.accessCredentials.setApplicationSecret(applicationSecret);\n"
-            + "    return this;\n"
-            + "}")
+        javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public SearchResourceEncryptionKey setApplicationSecret(String applicationSecret) {",
+            "    if (this.accessCredentials == null) {",
+            "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
+            "    }",
+            "",
+            "    this.accessCredentials.setApplicationSecret(applicationSecret);",
+            "    return this;",
+            "}"))
             .getJavadoc();
         copyJavadocs(credentialCustomization.getMethod("setApplicationSecret").getJavadoc(), javadoc)
             .setReturn(setterReturnJavadoc);
+    }
+
+    private void customizeSearchSuggester(ClassCustomization classCustomization) {
+        classCustomization.getConstructor("SearchSuggester").replaceBody(joinWithNewline(
+            "this.searchMode = \"analyzingInfixMatching\";",
+            "this.name = name;",
+            "this.sourceFields = sourceFields;"));
+
+        classCustomization.getMethod("setSearchMode").setModifier(Modifier.PRIVATE);
+    }
+
+    private void customizeCustomAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
+        addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
+    }
+
+    private void customizePatternAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        classCustomization.getMethod("isLowerCaseTerms").rename("areLowerCaseTerms");
+        addVarArgsOverload(classCustomization, "stopwords", "String");
+
+        classCustomization.getMethod("getFlags").setReturnType("List<RegexFlags>", "%s")
+            .replaceBody(joinWithNewline(
+                "if (this.flags == null) {",
+                "    return null;",
+                "} else {",
+                "    String[] flagStrings = this.flags.toString().split(\"\\\\|\");",
+                "    return java.util.Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());",
+                "}"));
+
+        classCustomization.getMethod("setFlags").replaceParameters("List<RegexFlags> flags")
+            .replaceBody(joinWithNewline(
+                "if (flags == null) {",
+                "    this.flags = null;",
+                "} else {",
+                "    String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));",
+                "    this.flags = RegexFlags.fromString(flagString);",
+                "}",
+                "",
+                "return this;"));
+        addVarArgsOverload(classCustomization, "flags", "RegexFlags");
+        classCustomization.getMethod("setFlags(RegexFlags... flags)")
+            .replaceBody(joinWithNewline(
+                "if (flags == null) {",
+                "    this.flags = null;",
+                "    return this;",
+                "} else {",
+                "    return setFlags(java.util.Arrays.asList(flags));",
+                "}"));
+    }
+
+    private void customizeLuceneStandardAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "stopwords", "String");
+    }
+
+    private void customizeStopAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "stopwords", "String");
     }
 
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,
@@ -279,5 +351,9 @@ public class SearchServiceCustomizations extends Customization {
         from.getSees().forEach(to::addSee);
 
         return to;
+    }
+
+    private static String joinWithNewline(String... lines) {
+        return String.join("\n", lines);
     }
 }

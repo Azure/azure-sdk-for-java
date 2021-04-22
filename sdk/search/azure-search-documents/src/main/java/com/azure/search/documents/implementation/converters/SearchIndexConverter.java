@@ -3,10 +3,8 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.LexicalAnalyzer;
 import com.azure.search.documents.indexes.models.LexicalTokenizer;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TokenFilter;
 
 import java.util.List;
@@ -34,12 +32,7 @@ public final class SearchIndexConverter {
             searchIndex.setTokenizers(tokenizers);
         }
 
-        if (obj.getSuggesters() != null) {
-            List<SearchSuggester> searchSuggesters =
-                obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
-            searchIndex.setSuggesters(searchSuggesters);
-        }
-
+        searchIndex.setSuggesters(obj.getSuggesters());
         searchIndex.setCharFilters(obj.getCharFilters());
         searchIndex.setNormalizers(obj.getNormalizers());
 
@@ -51,13 +44,7 @@ public final class SearchIndexConverter {
 
         searchIndex.setEncryptionKey(obj.getEncryptionKey());
         searchIndex.setDefaultScoringProfile(obj.getDefaultScoringProfile());
-
-        if (obj.getAnalyzers() != null) {
-            List<LexicalAnalyzer> analyzers =
-                obj.getAnalyzers().stream().map(LexicalAnalyzerConverter::map).collect(Collectors.toList());
-            searchIndex.setAnalyzers(analyzers);
-        }
-
+        searchIndex.setAnalyzers(obj.getAnalyzers());
         searchIndex.setSimilarity(obj.getSimilarity());
         searchIndex.setCorsOptions(obj.getCorsOptions());
         searchIndex.setETag(obj.getETag());
@@ -85,12 +72,7 @@ public final class SearchIndexConverter {
             searchIndex.setTokenizers(tokenizers);
         }
 
-        if (obj.getSuggesters() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.Suggester> suggesters =
-                obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
-            searchIndex.setSuggesters(suggesters);
-        }
-
+        searchIndex.setSuggesters(obj.getSuggesters());
         searchIndex.setCharFilters(obj.getCharFilters());
         searchIndex.setNormalizers(obj.getNormalizers());
 
@@ -102,13 +84,7 @@ public final class SearchIndexConverter {
 
         searchIndex.setEncryptionKey(obj.getEncryptionKey());
         searchIndex.setDefaultScoringProfile(obj.getDefaultScoringProfile());
-
-        if (obj.getAnalyzers() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.LexicalAnalyzer> analyzers =
-                obj.getAnalyzers().stream().map(LexicalAnalyzerConverter::map).collect(Collectors.toList());
-            searchIndex.setAnalyzers(analyzers);
-        }
-
+        searchIndex.setAnalyzers(obj.getAnalyzers());
         searchIndex.setSimilarity(obj.getSimilarity());
         searchIndex.setCorsOptions(obj.getCorsOptions());
         searchIndex.setETag(obj.getETag());
