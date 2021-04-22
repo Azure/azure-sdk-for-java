@@ -5,7 +5,7 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $MavenDownloadSite = "https://repo1.maven.org/maven2"
-$ignorePackagePath = "/eng/docms-ignore-packages.txt"
+$ignorePackagePath = "eng/docms-ignore-packages.txt"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
