@@ -5,6 +5,7 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $MavenDownloadSite = "https://repo1.maven.org/maven2"
+$ignorePackagePath = "$PSScriptRoot/docms-ignore-packages.txt"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -232,6 +233,11 @@ function check-source-jar($artifactId, $groudId, $version)
 # https://review.docs.microsoft.com/en-us/help/onboard/admin/reference/dotnet/documenting-nuget?branch=master#set-up-the-ci-job
 function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
+  $ignorePackages = @();
+  if (Test-Path $ignorePackagePath)
+  {
+    $ignorePackages = [Array](Get-Content $ignorePackagePath | ForEach-Object { ($_ -replace "#.*", "").Trim() } | Where-Object { $_ -ne "" })
+  }
   Write-Host "Updating the package.json in Java"
   # Read release csv file, and filter out by New=true, Hide!=true
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri | Where-Object {$_.New -eq "true"}  | Where-Object {$_.Hide -ne "true"} 
@@ -303,6 +309,14 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
       $groupId = $packages[$j].packageGroupId
       if (!($metadata.Package -contains $pkg -and $metadata.GroupId -contains $groupId)) {
         $jsonRepresentation[$i].packages += $packages[$j]
+      }
+    }
+  }
+  for ($i=0; $i -lt $jsonRepresentation.Length; $i++) {
+    $packages = $jsonRepresentation[$i]
+    for ($j=0; $j -lt $packages.Length; $j++) {
+      if ($ignorePackages -contains "$($packages[$j].packageGroupId):$($packages[$j].packageGroupId)") {
+        $jsonRepresentation[$i].packages -= $packages[$j]
       }
     }
   }
