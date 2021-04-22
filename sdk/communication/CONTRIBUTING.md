@@ -4,7 +4,7 @@ This a contributing guide made specifically for the Azure Communication Services
 
 The Azure Communication Services SDK for Java currently consists of 5 different packages. While each package has its own set of environment variables to make their tests run successfully, all of them follow a similar structure that allows a smooth onboarding process.
 
-Let's get started with how to setup the repo itself.
+Let's get started with how to setup the repository itself.
 
 ## Installation process
 
