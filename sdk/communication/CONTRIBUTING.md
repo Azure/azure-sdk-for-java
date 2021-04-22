@@ -1,10 +1,10 @@
 # Contributing Guide
 
-This is a contributing guide made specifically for the Azure Communication Services SDK. The Azure SDK repo also has a contributing guide that might help you in some other general processes. If you haven't checked that one out yet, you can find it [here](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).  This guide assumes you have set up your development environment for this repository.
+This is a contributing guide made specifically for the Azure Communication Services SDK. The Azure SDK repository also has a contributing guide that might help you in some other general processes. If you haven't checked that one out yet, you can find it [here](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md). This guide assumes you have set up your development environment for this repository.
 
 The Azure Communication Services SDK for Java currently consists of 5 different packages. While each package has its own set of environment variables to make their tests run successfully, all of them follow a similar structure that allows a smooth onboarding process.
 
-Let's get started with how to setup the repository itself.
+Let's get started with additional setup steps for this package.
 
 ## Installation process
 
@@ -14,8 +14,9 @@ Once the packages have been installed on your machine, let's jump on how to run 
 
 ## Testing
 
-Make sure to check out the general contributing guide the Azure SDK repo has for a more in-depth look at testing and setting up your dev environment. You can check out the contributing file [here](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md)
+Tests run against a target resource, which is nothing more than an Azure Communication Services instance that can be acquired from the Azure Portal itself. The target resource can manage phone numbers and identities depending on which SDK is used. Because these tests run against this instance, we must first create the resource from the Azure Portal and then obtain the connection string and set it up in an environment variable which we'll talk about later. 
 
+There are three modes these tests can run in. One of them is RECORD mode, where we test our code against the resource directly and record the response in a series of recording files. These recording files can then be used to run the tests in PLAYBACK mode and avoid running them against the instance every time we may want to verify everything is in order with our code. The last mode is called LIVE mode, where we test against the resource directly but not record the response from the server.
 
 When you go inside the tests folder of the package you are working with, you will see a folder called `resources` that has another folder named `session-records`. This folder contains, as its name suggests, recordings of successful calls to the API that allow us to run the tests in PLAYBACK mode and remove the necessity of hitting the actual resources every time we may want to test.
 
@@ -23,13 +24,11 @@ When you go inside the tests folder of the package you are working with, you wil
 
 To run the tests in PLAYBACK mode, set an environment variable called `AZURE_TEST_MODE` and set its value to `PLAYBACK` (If the variable if not set, the default will be `PLAYBACK`). After your variable has been set, change directory to the root folder of the package you're working on and run the `mvn verify` command.
 
-If the tests are successful, we can proceed to run the tests in LIVE mode.
-
 ### Live mode
 
-Because in LIVE mode we are hitting an actual resource, we must set the appropriate environment variable to make sure the code tests against the resource we want. Set up an env variable called `COMMUNICATION_LIVETEST_CONNECTION_STRING` and set it to the connection string of the resource you want to test against. 
+Because in LIVE mode we are hitting an actual resource, we must set the appropriate environment variable to make sure the code tests against the resource we want. Set up two env variables called `COMMUNICATION_LIVETEST_CONNECTION_STRING` and `COMMUNICATION_CONNECTION_STRING` and set them to the connection string of the target communication resource you want to test against. The value of the connection strings can be obtained from Azure portal. [Access your connection strings and service endpoints](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp)
 
-Depending on which package you are testing, it may need special environment variables to test succesfully. All packages have a TestBase file inside their corresponding test folder and each one of these contain the special environment variables the tests need in order to run. Make sure to set these variables before running the tests themselves. You may need to restart your development environment after creating or updating these environment variables.
+Depending on which package you are testing, it may need special environment variables to test successfully. All packages have a *TestBase.java file inside their corresponding test folder and each one of these contain the special environment variables the tests need in order to run. Make sure to set these variables before running the tests themselves. You may need to restart your development environment after creating or updating these environment variables.
 
 You can run the `mvn verify` command after setting the `AZURE_TEST_MODE` variable to `LIVE`.
 
@@ -39,8 +38,7 @@ RECORD mode is similar to LIVE mode because it also hits an actual resource. In 
 
 These newly generated files will have to be copied to the previosly mentioned `resources/session-records` after completion to make sure the PLAYBACK tests run with an updated version of the calls we made. Make sure to change the name of the recording files to match the names of the ones that are already in the `resources/session-records` folder. 
 
-If you would like to generate new recordings for a test, setting `AZURE_TEST_MODE` to `RECORD`, reopen Visual Studio, and run the tests normally.
-
+If you would like to generate new recordings for a single test, setting `AZURE_TEST_MODE` to `RECORD`, reopen Visual Studio, and run the test in Visual Studio normally.
 ### Managed Identity Tests
 
 If you ran the tests in LIVE mode, you may have noticed that the files inside the recordings folder were updated. If any of the tests failed, you will see the error message right there in the recording file as well as in your terminal logs.
@@ -63,10 +61,6 @@ That guide also serves as a great starting point for ideas on how to run the cod
 
 ## Submitting a Pull Request
 
-The easiest way for you to test and not worry about any breaking changes you may cause is to create a fork from the [Java Azure SDK repo](https://github.com/Azure/azure-sdk-for-java). After downloading your repo, make sure to add the original repo as an upstream. To do this, use the `git remote add upstream https://github.com/Azure/azure-sdk-for-java`.
-
-Create a branch for any new feature you may want to add and when your changes are ready, push your branch to the origin. Because the upstream was already set, if you go to the Java Azure SDK repo you will see a message saying that you pushed changes to your fork and give you the option to create a PR from your fork to the original repo.
-
-Make sure to name your PR with the following format when you are ready to submit it: [Communication] - `package-you-are-updating` - `pr-description`.
+Follow the general [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) for instructions on the GitHub Forks / Pull requests model we use for our submissions. Make sure to name your PR with the following format once you are ready to submit it: [Communication] - `package-you-are-updating` - `pr-description`.
 
 Additionally, write a good description about what your PR does in the description section of the PR itself. This will help your reviewers have a better understanding of what you are trying to accomplish in your PR.
