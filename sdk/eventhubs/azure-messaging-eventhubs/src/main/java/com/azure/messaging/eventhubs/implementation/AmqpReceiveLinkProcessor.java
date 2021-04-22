@@ -545,7 +545,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             if (linkHasNoCredits.compareAndSet(true, false)) {
                 logger.info("linkName[{}] entityPath[{}] creditsToAdd[{}] There are no more credits on link."
-                        +" Adding more. {}", linkName, entityPath, credits, message);
+                        + " Adding more. {}", linkName, entityPath, credits, message);
 
                 link.addCredits(credits).subscribe(noop -> {
                 }, error -> {
