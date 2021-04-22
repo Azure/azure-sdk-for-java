@@ -15,6 +15,7 @@ import com.azure.storage.file.datalake.models.DataLakeCorsRule
 import com.azure.storage.file.datalake.models.DataLakeMetrics
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties
+import com.azure.storage.file.datalake.models.DataLakeStaticWebsite
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
@@ -59,7 +60,11 @@ class ServiceAPITest extends APISpec {
             received.getMinuteMetrics().getVersion() == sent.getMinuteMetrics().getVersion() &&
 
             received.getDeleteRetentionPolicy().isEnabled() == sent.getDeleteRetentionPolicy().isEnabled() &&
-            received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays()
+            received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays() &&
+
+            received.getStaticWebsite().isEnabled() == sent.getStaticWebsite().isEnabled() &&
+            received.getStaticWebsite().getIndexDocument() == sent.getStaticWebsite().getIndexDocument() &&
+            received.getStaticWebsite().getErrorDocument404Path() == sent.getStaticWebsite().getErrorDocument404Path()
     }
 
     def "Set get properties"() {
@@ -78,11 +83,15 @@ class ServiceAPITest extends APISpec {
             .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
         def minuteMetrics = new DataLakeMetrics().setEnabled(true).setVersion("1.0")
             .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
+        def website = new DataLakeStaticWebsite().setEnabled(true)
+            .setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html")
 
         def sentProperties = new DataLakeServiceProperties()
             .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
             .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
             .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website)
 
         def headers = primaryDataLakeServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders()
 
@@ -115,12 +124,16 @@ class ServiceAPITest extends APISpec {
             .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
         def minuteMetrics = new DataLakeMetrics().setEnabled(true).setVersion("1.0")
             .setRetentionPolicy(retentionPolicy).setIncludeApis(true)
+        def website = new DataLakeStaticWebsite().setEnabled(true)
+            .setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html")
 
 
         def sentProperties = new DataLakeServiceProperties()
             .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
             .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
             .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website)
 
         expect:
         primaryDataLakeServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
@@ -141,6 +154,29 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
+    }
+
+    def "Set props static website"() {
+        setup:
+        def serviceProperties = primaryDataLakeServiceClient.getProperties()
+        def errorDocument404Path = "error/404.html"
+        def defaultIndexDocumentPath = "index.html"
+
+        serviceProperties.setStaticWebsite(new DataLakeStaticWebsite()
+            .setEnabled(true)
+            .setErrorDocument404Path(errorDocument404Path)
+            .setDefaultIndexDocumentPath(defaultIndexDocumentPath)
+        )
+
+        when:
+        Response<Void> resp = primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProperties, null, null)
+
+        then:
+        resp.getStatusCode() == 202
+        def staticWebsite = primaryDataLakeServiceClient.getProperties().getStaticWebsite()
+        staticWebsite.isEnabled()
+        staticWebsite.getErrorDocument404Path() == errorDocument404Path
+        staticWebsite.getDefaultIndexDocumentPath() == defaultIndexDocumentPath
     }
 
     def "Set props error"() {

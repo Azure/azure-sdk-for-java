@@ -45,6 +45,12 @@ public final class DataLakeServiceProperties {
      */
     private DataLakeRetentionPolicy deleteRetentionPolicy;
 
+
+    /*
+     * The properties that enable an account to host a static website
+     */
+    private DataLakeStaticWebsite staticWebsite;
+
     /**
      * Get the logging property: The logging property.
      *
@@ -173,6 +179,26 @@ public final class DataLakeServiceProperties {
      */
     public DataLakeServiceProperties setDeleteRetentionPolicy(DataLakeRetentionPolicy deleteRetentionPolicy) {
         this.deleteRetentionPolicy = deleteRetentionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the staticWebsite property: The properties that enable an account to host a static website.
+     *
+     * @return the staticWebsite value.
+     */
+    public DataLakeStaticWebsite getStaticWebsite() {
+        return this.staticWebsite;
+    }
+
+    /**
+     * Set the staticWebsite property: The properties that enable an account to host a static website.
+     *
+     * @param staticWebsite the staticWebsite value to set.
+     * @return the DataLakeServiceProperties object itself.
+     */
+    public DataLakeServiceProperties setStaticWebsite(DataLakeStaticWebsite staticWebsite) {
+        this.staticWebsite = staticWebsite;
         return this;
     }
 }

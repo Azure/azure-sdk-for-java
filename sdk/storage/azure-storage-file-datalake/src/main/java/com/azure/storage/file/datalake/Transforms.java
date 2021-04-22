@@ -35,6 +35,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
@@ -51,6 +52,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.DataLakeStaticWebsite;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryArrowField;
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization;
@@ -607,7 +609,20 @@ class Transforms {
             .setDeleteRetentionPolicy(toDataLakeRetentionPolicy(blobProps.getDeleteRetentionPolicy()))
             .setHourMetrics(toDataLakeMetrics(blobProps.getHourMetrics()))
             .setMinuteMetrics(toDataLakeMetrics(blobProps.getMinuteMetrics()))
-            .setLogging(toDataLakeAnalyticsLogging(blobProps.getLogging()));
+            .setLogging(toDataLakeAnalyticsLogging(blobProps.getLogging()))
+            .setStaticWebsite(toDataLakeStaticWebsite(blobProps.getStaticWebsite()));
+    }
+
+    static DataLakeStaticWebsite toDataLakeStaticWebsite(StaticWebsite staticWebsite) {
+        if (staticWebsite == null) {
+            return null;
+        }
+
+        return new DataLakeStaticWebsite()
+            .setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
+            .setEnabled(staticWebsite.isEnabled())
+            .setErrorDocument404Path(staticWebsite.getErrorDocument404Path())
+            .setIndexDocument(staticWebsite.getIndexDocument());
     }
 
     static DataLakeAnalyticsLogging toDataLakeAnalyticsLogging(BlobAnalyticsLogging blobLogging) {
@@ -669,7 +684,20 @@ class Transforms {
             .setDeleteRetentionPolicy(toBlobRetentionPolicy(datalakeProperties.getDeleteRetentionPolicy()))
             .setHourMetrics(toBlobMetrics(datalakeProperties.getHourMetrics()))
             .setMinuteMetrics(toBlobMetrics(datalakeProperties.getMinuteMetrics()))
-            .setLogging(toBlobAnalyticsLogging(datalakeProperties.getLogging()));
+            .setLogging(toBlobAnalyticsLogging(datalakeProperties.getLogging()))
+            .setStaticWebsite(toBlobStaticWebsite(datalakeProperties.getStaticWebsite()));
+    }
+
+    static StaticWebsite toBlobStaticWebsite(DataLakeStaticWebsite staticWebsite) {
+        if (staticWebsite == null) {
+            return null;
+        }
+
+        return new StaticWebsite()
+            .setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
+            .setEnabled(staticWebsite.isEnabled())
+            .setErrorDocument404Path(staticWebsite.getErrorDocument404Path())
+            .setIndexDocument(staticWebsite.getIndexDocument());
     }
 
     static BlobAnalyticsLogging toBlobAnalyticsLogging(DataLakeAnalyticsLogging datalakeLogging) {
