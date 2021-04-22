@@ -715,6 +715,7 @@
         <module>sdk/keyvault</module>
         <module>sdk/kubernetesconfiguration</module>
         <module>sdk/kusto</module>
+        <module>sdk/labservices</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/machinelearningservices</module>
