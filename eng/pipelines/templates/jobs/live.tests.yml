@@ -133,7 +133,7 @@ jobs:
           - template: /eng/common/TestResources/remove-test-resources.yml
             parameters:
               ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-              SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
 
       - template: ../steps/upload-repository-on-failure.yml
 
