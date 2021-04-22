@@ -67,19 +67,19 @@ public class EncryptionCrudTest extends TestSuiteBase {
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);
 
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
-        String containerId = UUID.randomUUID().toString();
-        CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
-        properties.setClientEncryptionPolicy(clientEncryptionPolicy);
-        cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
-        cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
         metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
         metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block();
-        cosmosEncryptionAsyncDatabase.rewrapClientEncryptionKey("key2", metadata2).block();
+
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
+        String containerId = UUID.randomUUID().toString();
+        CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
+        properties.setClientEncryptionPolicy(clientEncryptionPolicy);
+        cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
+        cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
