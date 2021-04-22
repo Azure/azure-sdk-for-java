@@ -70,8 +70,8 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
             cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerProperties.getId());
 
         //Create collection with ClientEncryptionKeys
-        metadata1 = new EncryptionKeyWrapMetadata("custom","key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
+        metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
@@ -110,7 +110,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         clientEncryptionPolicyMonoSingle.setAccessible(true);
         Mono<ClientEncryptionPolicy> clientEncryptionPolicyMono = (Mono<ClientEncryptionPolicy>) clientEncryptionPolicyMonoSingle.get(clientEncryptionPolicyAyncLazy);
         ClientEncryptionPolicy clientEncryptionPolicy = clientEncryptionPolicyMono.block();
-        assertThat(clientEncryptionPolicy.getIncludedPaths().size()).isEqualTo(14);
+        assertThat(clientEncryptionPolicy.getIncludedPaths().size()).isEqualTo(13);
 
         //Testing clientEncryptionKey cache
         AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesAsyncCache =  ReflectionUtils.getClientEncryptionKeyPropertiesCacheByKeyId(cosmosEncryptionAsyncClient);

@@ -42,7 +42,11 @@ public final class EncryptionKeyWrapMetadata {
      * @param value Value of the metadata.
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public EncryptionKeyWrapMetadata(String type, String name, String value) {
+    public EncryptionKeyWrapMetadata(String name, String value) {
+        this("custom", name, value);
+    }
+
+    private EncryptionKeyWrapMetadata(String type, String name, String value) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
         this.type = type;
@@ -61,18 +65,6 @@ public final class EncryptionKeyWrapMetadata {
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
-
-    /**
-     * Serialized form of metadata.
-     * Note: This value is saved in the Cosmos DB service.
-     * implementors of derived implementations should ensure that this does not have (private) key material or
-     * credential information.
-     * @return name of metadata.
-     */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getType() {
-        return type;
-    }
 
     /**
      * Serialized form of metadata.

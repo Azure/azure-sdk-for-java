@@ -16,9 +16,4 @@ public class CosmosEncryptionType {
      * Deterministic encryption always generates the same encrypted value for any given plain text value.
      */
     public final static  String DETERMINISTIC = "Deterministic";
-
-    /**
-     * Plaintext unencrypted data.
-     */
-    public final static  String PLAIN_TEXT = "Plaintext";
 }
