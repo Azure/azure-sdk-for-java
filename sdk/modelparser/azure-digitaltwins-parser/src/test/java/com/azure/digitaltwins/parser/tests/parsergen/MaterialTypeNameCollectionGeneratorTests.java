@@ -24,7 +24,7 @@ public class MaterialTypeNameCollectionGeneratorTests extends GeneratedCodeCompa
         String fullDigest = FileHelpers.getFileContentsByFileName("", "digest.json");
         MetamodelDigest digest = new MetamodelDigest(fullDigest);
 
-        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test;");
+        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test");
 
         MaterialTypeNameCollectionGenerator materialTypeCollectionGen = new MaterialTypeNameCollectionGenerator(digest.getMaterialClasses().keySet(), digest.getContexts().values());
         materialTypeCollectionGen.generateCode(library);

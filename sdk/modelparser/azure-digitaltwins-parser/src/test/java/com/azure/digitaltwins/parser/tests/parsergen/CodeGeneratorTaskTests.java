@@ -5,32 +5,31 @@ package com.azure.digitaltwins.parser.tests.parsergen;
 
 import com.azure.digitaltwins.parser.FileHelpers;
 import com.azure.digitaltwins.parser.GeneratedCodeCompareBase;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaLibrary;
-import com.azure.digitaltwins.parser.implementation.parsergen.AggregateContextGenerator;
+import com.azure.digitaltwins.parser.implementation.parsergen.CodeGeneratorTask;
 import com.azure.digitaltwins.parser.implementation.parsergen.MetamodelDigest;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class AggregateContextGeneratorTests extends GeneratedCodeCompareBase {
-    private static final String TEST_SUB_DIRECTORY = "AggregateContext";
+public class CodeGeneratorTaskTests extends GeneratedCodeCompareBase {
+    private static final String TEST_SUB_DIRECTORY = "CodeGeneratorTask";
     private static final String EXPECTED_FILE_DIRECTORY = "Expected";
 
     @Test
     public void generateAggregateContextClass() throws IOException {
-        final String testSubDirectory = "AggregateContextFullClass";
+        final String testSubDirectory = "CodeGeneratorTaskLibrary";
         cleanUpGeneratedCodes(testSubDirectory);
 
         String fullDigest = FileHelpers.getFileContentsByFileName("", "digest.json");
         MetamodelDigest digest = new MetamodelDigest(fullDigest);
 
-        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test");
+        CodeGeneratorTask codeGeneratorTask = new CodeGeneratorTask(
+            FileHelpers.getTestResourceFilePath("", "digest.json"),
+            FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory));
 
-        AggregateContextGenerator contextGenerator = new AggregateContextGenerator(digest.getContexts(), digest.getDtdlVersionsAllowingLocalTerms());
-        contextGenerator.generateCode(library);
-
-        library.generate();
-        compareDirectoryContents(TEST_SUB_DIRECTORY + "/" + testSubDirectory, EXPECTED_FILE_DIRECTORY);
+        // Uncomment out the following line to inspect the generated code.
+        // codeGeneratorTask.run();
+        // cleanUpGeneratedCodes(testSubDirectory);
     }
 
     // Clean up every generated code for each test directory

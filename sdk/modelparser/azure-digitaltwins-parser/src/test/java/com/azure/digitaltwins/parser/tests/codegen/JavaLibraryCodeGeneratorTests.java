@@ -38,14 +38,14 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
         String enumTypeName = "MyEnum";
         String interfaceTypeName = "EmptyPublicInterface";
 
-        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test;");
+        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test");
 
         library.jClass(Access.PUBLIC, Novelty.NORMAL, classTypeName, Multiplicity.INSTANCE, null, null);
         library.jInterface(Access.PUBLIC, interfaceTypeName, null, null);
         library.jEnum(Access.PUBLIC, enumTypeName, true);
 
-        library.jImport("com.azure.imports;");
-        library.jImport("java.utils;");
+        library.jImport("com.azure.imports");
+        library.jImport("java.utils");
 
         library.generate();
         compareDirectoryContents(TEST_SUB_DIRECTORY + "/" + testSubDirectory, EXPECTED_FILE_DIRECTORY);
@@ -66,14 +66,14 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
         String enumTypeName = "ComplexEnum";
         String interfaceTypeName = "ComplexInterface";
 
-        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test;");
+        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test");
 
         JavaClass javaClass = library.jClass(Access.PUBLIC, Novelty.NORMAL, classTypeName, Multiplicity.INSTANCE, "SomeType", interfaceTypeName);
         JavaInterface javaInterface = library.jInterface(Access.PUBLIC, interfaceTypeName, null, "AnotherInterface");
         JavaEnum javaEnum = library.jEnum(Access.PUBLIC, enumTypeName, true);
 
-        library.jImport("com.azure.imports;");
-        library.jImport("java.utils;");
+        library.jImport("com.azure.imports");
+        library.jImport("java.utils");
 
         createComplexJavaClass(javaClass);
         createComplexJavaInterface(javaInterface);

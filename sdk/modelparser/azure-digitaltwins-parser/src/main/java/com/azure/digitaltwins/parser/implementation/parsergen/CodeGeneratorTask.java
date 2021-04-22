@@ -6,6 +6,10 @@ package com.azure.digitaltwins.parser.implementation.parsergen;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.parser.implementation.codegen.JavaLibrary;
+import com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator.DescendantControl;
+import com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator.DescendantControlFactory;
+import com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator.ExtensibleMaterialClass;
+import com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator.MaterialClass;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
@@ -13,7 +17,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Entry point for generating parser code base.
@@ -44,7 +50,7 @@ public final class CodeGeneratorTask {
         this.outputDirectory = outputDirectory;
     }
 
-    public boolean run() {
+    public boolean run() throws IOException {
         logger.info("Reading metamodel digest file from directory: " + this.digestFilePath);
 
         String digestText;
@@ -73,6 +79,7 @@ public final class CodeGeneratorTask {
         parserLibrary.jImport("java.util.Iterator");
         parserLibrary.jImport("java.util.Map");
         parserLibrary.jImport("java.util.HashSet");
+        parserLibrary.jImport("java.util.regex.Pattern");
 
         logger.info("Base class is " + metamodelDigest.getBaseClass());
 
@@ -82,10 +89,60 @@ public final class CodeGeneratorTask {
         typeGenerators.add(new BaseKindEnumGenerator(metamodelDigest.getMaterialClasses(), metamodelDigest.getBaseClass()));
         typeGenerators.add(new MaterialTypeNameCollectionGenerator(metamodelDigest.getMaterialClasses().keySet(), metamodelDigest.getContexts().values()));
 
+        typeGenerators.addAll(generateMaterialClasses(metamodelDigest));
+
         for (TypeGenerator typeGenerator : typeGenerators) {
             typeGenerator.generateCode(parserLibrary);
         }
 
+        parserLibrary.generate();
         return true;
+    }
+
+    private List<TypeGenerator> generateMaterialClasses(MetamodelDigest metamodelDigest) {
+        String baseKindEnum = NameFormatter.formatNameAsEnum(metamodelDigest.getBaseClass());
+        String baseKindProperty = NameFormatter.formatNameAsEnumProperty(metamodelDigest.getBaseClass());
+
+        Map<Integer, List<ExtensibleMaterialClass>> extensibleMaterialClasses = new HashMap<>();
+
+        for (Map.Entry<Integer, List<String>> kvp : metamodelDigest.getExtensibleMaterialClasses().entrySet()) {
+            extensibleMaterialClasses.put(kvp.getKey(), new ArrayList<>());
+
+            for (String extensibleMaterialClassName : kvp.getValue()) {
+                extensibleMaterialClasses.get(kvp.getKey()).add(new ExtensibleMaterialClass(kvp.getKey(), extensibleMaterialClassName, baseKindEnum));
+            }
+        }
+
+        DescendantControlFactory descendantControlFactory = new DescendantControlFactory(baseKindEnum, baseKindProperty);
+        List<DescendantControl> descendantControls = new ArrayList<>();
+
+        for (DescendantControlDigest descendantControlDigest : metamodelDigest.getDescendantControls()) {
+            descendantControls.addAll(descendantControlFactory.create(descendantControlDigest));
+        }
+
+        List<TypeGenerator> typeGenerators = new ArrayList<>();
+        for (Map.Entry<String, MaterialClassDigest> kvp: metamodelDigest.getMaterialClasses().entrySet()) {
+            typeGenerators.add(new MaterialClass(
+                kvp.getKey(),
+                kvp.getValue().getParentClass(),
+                metamodelDigest.getBaseClass(),
+                kvp.getValue(),
+                metamodelDigest.getContexts(),
+                metamodelDigest.getClassIdentifierDefinitionRestrictions(),
+                extensibleMaterialClasses,
+                descendantControls));
+        }
+
+        typeGenerators.add(new MaterialClass(
+            ParserGeneratorStringValues.REFERENCE_OBVERSE_NAME,
+            metamodelDigest.getBaseClass(),
+            metamodelDigest.getBaseClass(),
+            new MaterialClassDigest(),
+            metamodelDigest.getContexts(),
+            metamodelDigest.getClassIdentifierDefinitionRestrictions(),
+            extensibleMaterialClasses,
+            descendantControls));
+
+        return typeGenerators;
     }
 }

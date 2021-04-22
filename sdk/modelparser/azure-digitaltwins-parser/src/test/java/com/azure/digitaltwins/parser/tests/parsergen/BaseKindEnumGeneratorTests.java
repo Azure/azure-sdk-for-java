@@ -24,7 +24,7 @@ public class BaseKindEnumGeneratorTests extends GeneratedCodeCompareBase {
         String fullDigest = FileHelpers.getFileContentsByFileName("", "digest.json");
         MetamodelDigest digest = new MetamodelDigest(fullDigest);
 
-        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test;");
+        JavaLibrary library = new JavaLibrary(FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory), "com.azure.test");
 
         BaseKindEnumGenerator baseKindEnumGenerator = new BaseKindEnumGenerator(digest.getMaterialClasses(), digest.getBaseClass());
         baseKindEnumGenerator.generateCode(library);
