@@ -340,7 +340,7 @@ exception occurred and if possible, how to mitigate this exception. A list of al
 [OASIS AMQP Version 1.0 Transport Errors][oasis_amqp_v1_error].
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
-[Service Bus Messaging Exceptions][] guidance.
+[Service Bus Messaging Exceptions][servicebus_messaging_exceptions] guidance.
 
 ## Next steps
 
