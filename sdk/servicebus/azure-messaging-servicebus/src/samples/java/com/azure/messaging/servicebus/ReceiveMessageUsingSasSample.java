@@ -16,7 +16,7 @@ import java.util.Base64;
  * Sample showing how to generate Shared Access Signatures for specific resource, an Azure Service Bus Queue or Topic
  * and receive messages.
  */
-public class ReceiveMessageAsyncUsingSasSample {
+public class ReceiveMessageUsingSasSample {
     /**
      * Sample showing how to generate Shared Access Signatures for specific resource, an Azure Service Bus Queue or
      * Topic and receive messages.
