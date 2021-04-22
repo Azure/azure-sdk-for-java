@@ -76,15 +76,15 @@ public class ContainerRepositoryAsyncClientUpdateIntegrationTests extends Contai
         ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(new NettyAsyncHttpClientBuilder().build());
 
         if (digest != null) {
-            client.setManifestProperties(digest, defaultProperties).block();
+            client.updateManifestProperties(digest, defaultProperties).block();
         }
 
         if (resetTag) {
-            client.setTagProperties(TAG_TO_UPDATE, defaultProperties).block();
+            client.updateTagProperties(TAG_TO_UPDATE, defaultProperties).block();
         }
 
         if (resetRepository) {
-            client.setProperties(defaultProperties).block();
+            client.updateProperties(defaultProperties).block();
         }
     }
 
@@ -99,7 +99,7 @@ public class ContainerRepositoryAsyncClientUpdateIntegrationTests extends Contai
         client = getContainerRepositoryAsyncClient(httpClient);
         resetRepository = true;
 
-        StepVerifier.create(client.setPropertiesWithResponse(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
+        StepVerifier.create(client.updatePropertiesWithResponse(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
             .assertNext(res -> validateContentProperties(res.getWriteableProperties()))
             .verifyComplete();
     }
@@ -109,7 +109,7 @@ public class ContainerRepositoryAsyncClientUpdateIntegrationTests extends Contai
     public void setRepositoryPropertiesThrowsWithResponse(HttpClient httpClient) {
         client = getUnknownContainerRepositoryAsyncClient(httpClient);
 
-        StepVerifier.create(client.setPropertiesWithResponse(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
+        StepVerifier.create(client.updatePropertiesWithResponse(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
             .expectError(ResourceNotFoundException.class)
             .verify();
     }
@@ -123,7 +123,7 @@ public class ContainerRepositoryAsyncClientUpdateIntegrationTests extends Contai
         List<RegistryArtifactProperties> repositories = props.stream().collect(Collectors.toList());
         digest = getChildArtifactDigest(repositories);
 
-        StepVerifier.create(client.setManifestPropertiesWithResponse(digest, writeableProperties).then(monoDelay().flatMap(res -> client.getRegistryArtifactProperties(digest))))
+        StepVerifier.create(client.updateManifestPropertiesWithResponse(digest, writeableProperties).then(monoDelay().flatMap(res -> client.getRegistryArtifactProperties(digest))))
             .assertNext(res -> validateContentProperties(res.getWriteableProperties()))
             .verifyComplete();
     }
@@ -133,7 +133,7 @@ public class ContainerRepositoryAsyncClientUpdateIntegrationTests extends Contai
     public void setManifestPropertiesThrowsWithResponse(HttpClient httpClient) {
         client = getContainerRepositoryAsyncClient(httpClient);
 
-        StepVerifier.create(client.setManifestPropertiesWithResponse(DIGEST_UNKNOWN, writeableProperties).then(monoDelay().flatMap(res -> client.getRegistryArtifactProperties(digest))))
+        StepVerifier.create(client.updateManifestPropertiesWithResponse(DIGEST_UNKNOWN, writeableProperties).then(monoDelay().flatMap(res -> client.getRegistryArtifactProperties(digest))))
             .expectError(ResourceNotFoundException.class)
             .verify();
     }
@@ -170,7 +170,7 @@ public class ContainerRepositoryAsyncClientUpdateIntegrationTests extends Contai
         ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
         resetTag = true;
 
-        StepVerifier.create(client.setTagPropertiesWithResponse(TAG_TO_UPDATE, writeableProperties).then(monoDelay().flatMap(res -> client.getTagProperties(TAG_TO_UPDATE))))
+        StepVerifier.create(client.updateTagPropertiesWithResponse(TAG_TO_UPDATE, writeableProperties).then(monoDelay().flatMap(res -> client.getTagProperties(TAG_TO_UPDATE))))
             .assertNext(res -> validateContentProperties(res.getWriteableProperties()))
             .verifyComplete();
     }
@@ -180,7 +180,7 @@ public class ContainerRepositoryAsyncClientUpdateIntegrationTests extends Contai
     public void setTagPropertiesThrowsWithResponse(HttpClient httpClient) {
         ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient(httpClient);
 
-        StepVerifier.create(client.setTagPropertiesWithResponse(TAG_UNKNOWN, writeableProperties))
+        StepVerifier.create(client.updateTagPropertiesWithResponse(TAG_UNKNOWN, writeableProperties))
             .expectError(ResourceNotFoundException.class)
             .verify();
     }

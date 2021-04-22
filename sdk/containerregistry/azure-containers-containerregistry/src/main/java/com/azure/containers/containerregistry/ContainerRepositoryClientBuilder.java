@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -26,18 +27,58 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the ContainerRegistry type. */
+/**
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
+ * ContainerRepositoryClient ContainerRepositoryClients} and {@link ContainerRepositoryAsyncClient ContainerRepositoryAsyncClients}, call {@link
+ * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
+ * the desired client.
+ *
+ * <p>The client needs the service endpoint of the Azure Container Registry and Azure access credentials.
+ * <p><strong>Instantiating an asynchronous {@link ContainerRepositoryAsyncClient}</strong></p>
+ *
+ * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
+ *
+ * {@codesnippet com.azure.containers.containerregistry.repositoryclient.instantiation}
+ *
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
+ * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
+ * {@link #pipeline(HttpPipeline) this} and set the service endpoint with {@link #endpoint(String) this}. Using a
+ * pipeline requires additional setup but allows for finer control on how the {@link ContainerRepositoryClient} and {@link
+ * ContainerRepositoryAsyncClient} is built.</p>
+ * <p>The service does not directly support AAD credentials and as a result the clients internally depend on a policy that converts
+ * the AAD credentials to the Azure Container Registry specific service credentials. In case you use your own pipeline, you
+ * would need to provide implementation for this policy as well.
+ * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
+ *
+ * <p><strong>Instantiating an asynchronous {@link ContainerRepositoryAsyncClient}</strong></p>
+ *
+ * {@codesnippet com.azure.containers.containerregistry.async.repositoryclient.pipeline.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
+ *
+ * {@codesnippet com.azure.containers.containerregistry.repositoryclient.pipeline.instantiation}
+ *
+ *
+ * @see ContainerRepositoryAsyncClient
+ * @see ContainerRepositoryClient
+ */
 @ServiceClientBuilder(
     serviceClients = {
         ContainerRepositoryClient.class,
         ContainerRepositoryAsyncClient.class
     })
 public final class ContainerRepositoryClientBuilder {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-containers-containerregistry.properties");
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
 
-    private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
-    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    static {
+        Map<String, String> properties =
+            CoreUtils.getProperties("azure-containers-containerregistry.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     private final ClientLogger logger = new ClientLogger(ContainerRepositoryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -55,11 +96,11 @@ public final class ContainerRepositoryClientBuilder {
     private ContainerRegistryServiceVersion version;
 
     /**
-     * Sets Registry login URL.
+     * Sets the service endpoint for the Azure Container Registry instance.
      *
-     * @throws IllegalArgumentException if endpoint is not a valid URL.
-     * @param endpoint the endpoint value.
-     * @return the ContainerRepositoryClientBuilder.
+     * @param endpoint The URL of the Container Registry instance.
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
+     * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public ContainerRepositoryClientBuilder endpoint(String endpoint) {
         try {
@@ -73,11 +114,11 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets repository name.
-     * @param repository non null repository name
+     * Sets the repository for the Azure Container Repository instance.
+     * @param repository The name of the repository including the namespace.
      *
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
      * @throws NullPointerException if repository name is null.
-     * @return the ContainerRepositoryClientBuilder.
      */
     public ContainerRepositoryClientBuilder repository(String repository) {
         this.repository = Objects.requireNonNull(repository,
@@ -86,11 +127,11 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets Registry login URL.
+     * Sets the {@link TokenCredential} used to authenticate REST API calls.
      *
-     * @param credential the credential to use to access registry.
+     * @param credential Azure token credentials used to authenticate HTTP requests.
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
      * @throws NullPointerException if credential is null.
-     * @return the ContainerRepositoryClientBuilder.
      */
     public ContainerRepositoryClientBuilder credential(TokenCredential credential) {
         this.credential = Objects.requireNonNull(credential,
@@ -99,10 +140,20 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets The HTTP httpPipeline to send requests through.
+     * Sets the HTTP pipeline to use for the service client.
+     * <p>
+     * If {@code pipeline} is set, all settings other than
+     * {@link #endpoint(String) endpoint}, {@link #repository(String) repository} are ignored
+     * to build {@link ContainerRepositoryAsyncClient} or {@link ContainerRepositoryClient}.<br>
+     * </p>
      *
-     * @param httpPipeline the httpPipeline value.
-     * @return the ContainerRepositoryClientBuilder.
+     * This service takes dependency on an internal policy which converts Azure token credentials into Azure Container Registry specific service credentials.
+     * In case you use your own pipeline you will have to create your own credential policy.<br>
+     *
+     * {For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a> }.
+     *
+     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
      */
     public ContainerRepositoryClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
@@ -110,10 +161,13 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets the service version that will be targeted by the client.
+     * Sets the {@link ContainerRegistryServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service version and so
+     * newer version of the client library may result in moving to a newer service version.
      *
-     * @param version the service version to target.
-     * @return the ContainerRegistryBuilder.
+     * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
      */
     public ContainerRepositoryClientBuilder serviceVersion(ContainerRegistryServiceVersion version) {
         this.version = version;
@@ -121,10 +175,10 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets The HTTP client used to send the request.
+     * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient the httpClient value.
-     * @return the ContainerRepositoryClientBuilder.
+     * @param httpClient The HTTP client to use for requests.
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
      */
     public ContainerRepositoryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
@@ -132,10 +186,15 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets the client options such as application ID and custom headers to set on a request.
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
      *
-     * @param clientOptions The {@link ClientOptions}.
-     * @return The updated {@code TableClientBuilder}.
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions {@link ClientOptions}.
+     *
+     * @return the updated {@link ContainerRepositoryClientBuilder} object
      */
     public ContainerRepositoryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -143,10 +202,13 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets The configuration store that is used during construction of the service client.
+     * Sets the configuration store that is used during construction of the service client.
      *
-     * @param configuration the configuration value.
-     * @return the ContainerRepositoryClientBuilder.
+     * <p>The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.</p>
+     *
+     * @param configuration The configuration store to be used.
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
      */
     public ContainerRepositoryClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -154,10 +216,12 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets The logging configuration for HTTP requests and responses.
+     * Sets the logging configuration for HTTP requests and responses.
      *
-     * @param httpLogOptions the httpLogOptions value.
-     * @return the ContainerRepositoryClientBuilder.
+     * <p> If logLevel is not provided, HTTP request or response logging will not happen.</p>
+     *
+     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @return The updated {@link ContainerRepositoryClientBuilder} object.
      */
     public ContainerRepositoryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
@@ -165,10 +229,15 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Sets The retry policy that will attempt to retry failed requests, if applicable.
+     * Sets the {@link HttpPipelinePolicy} that is used to retry requests.
+     * <p>
+     * The default retry policy will be used if not provided {@link #buildAsyncClient()} to
+     * build {@link ContainerRepositoryClient} or {@link ContainerRepositoryAsyncClient}.
      *
-     * @param retryPolicy the retryPolicy value.
-     * @return the ContainerRepositoryClientBuilder.
+     * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests. For example,
+     * {@link RetryPolicy} can be used to retry requests.
+     *
+     * @return The updated ContainerRepositoryClientBuilder object.
      */
     public ContainerRepositoryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
@@ -176,28 +245,36 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Adds a custom Http httpPipeline policy.
+     * Adds a policy to the set of existing policies.
      *
-     * @param customPolicy The custom Http httpPipeline policy to add.
-     * @throws NullPointerException custom policy can't be null.
-     * @return the ContainerRepositoryClientBuilder.
+     * @param policy The policy for service requests.
+     * @return The updated ContainerRepositoryClientBuilder object.
+     * @throws NullPointerException If {@code policy} is null.
      */
-    public ContainerRepositoryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
+    public ContainerRepositoryClientBuilder addPolicy(HttpPipelinePolicy policy) {
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
 
-        if (customPolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
-            perCallPolicies.add(customPolicy);
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
         } else {
-            perRetryPolicies.add(customPolicy);
+            perRetryPolicies.add(policy);
         }
 
         return this;
     }
 
     /**
-     * Builds an instance of ContainerRegistryImpl with the provided parameters.
+     * Creates a {@link ContainerRepositoryAsyncClient} based on options set in the Builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link ContainerRepositoryAsyncClient} is created.
+     * <p>
+     * If {@link #pipeline(HttpPipeline)}  pipeline} is set, then the {@code pipeline}, {@link #repository(String) repository}
+     * and {@link #endpoint(String) endpoint} are used to create the {@link ContainerRepositoryAsyncClient client}.
+     * All other builder settings are ignored.
      *
-     * @return an instance of ContainerRegistryImpl.
+     * @return A {@link ContainerRepositoryAsyncClient} with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
+     * @throws NullPointerException If {@code repository} has not been set. You can set it by calling {@link #endpoint(String)}.
+     * @throws NullPointerException If {@code credential} or {@code httpPipeline} has not been set.
      */
     public ContainerRepositoryAsyncClient buildAsyncClient() {
         if (serializerAdapter == null) {
@@ -234,9 +311,17 @@ public final class ContainerRepositoryClientBuilder {
     }
 
     /**
-     * Builds an instance of ContainerRegistryClient sync client.
+     * Creates a {@link ContainerRepositoryClient} based on options set in the Builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link ContainerRepositoryClient} is created.
+     * <p>
+     * If {@link #pipeline(HttpPipeline)}  pipeline} is set, then the {@code pipeline}, {@link #repository(String) repository}
+     * and {@link #endpoint(String) endpoint} are used to create the {@link ContainerRepositoryClient client}.
+     * All other builder settings are ignored.
      *
-     * @return an instance of ContainerRegistryClient.
+     * @return A {@link ContainerRepositoryClient} with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
+     * @throws NullPointerException If {@code repository} has not been set. You can set it by calling {@link #endpoint(String)}.
+     * @throws NullPointerException If {@code credential} or {@code httpPipeline} has not been set.
      */
     public ContainerRepositoryClient buildClient() {
         return new ContainerRepositoryClient(buildAsyncClient());
