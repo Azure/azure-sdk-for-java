@@ -9,7 +9,7 @@
 
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-policyinsights</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-policyinsights;current} -->
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-policyinsights;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for PolicyInsights Management</name>
