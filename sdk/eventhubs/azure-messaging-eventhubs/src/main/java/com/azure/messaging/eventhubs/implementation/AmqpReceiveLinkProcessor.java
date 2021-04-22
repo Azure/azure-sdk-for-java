@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.function.Supplier;
 
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
@@ -164,12 +165,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             currentLink = next;
             currentLinkName = next.getLinkName();
 
-            // For a new link, add the prefetch as credits.
+            // Empty credit listener is invoked when there are no credits left on the underlying link.
             next.setEmptyCreditListener(() -> {
                 final int credits;
                 synchronized (creditsAdded) {
                     credits = getCreditsToAdd();
 
+                    // This means that considering the downstream request and current size of the message queue, we
+                    // have enough messages to satisfy them.
+                    // Thus, there are no credits on the link AND we are not going to add anymore.
+                    // We'll wait until the next time downstream calls request(long) to get more events.
                     if (credits < 1) {
                         linkHasNoCredits.compareAndSet(false, true);
                     } else {
@@ -182,6 +187,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             });
 
             currentLinkSubscriptions = Disposables.composite(
+                // For a new link, add the prefetch as credits.
                 next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next()
                     .flatMap(state -> {
                         // If there was already a subscriber downstream who made a request, see if that is more than
@@ -520,7 +526,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     /**
-     * Consolidates all credits calculation when checking to see if more should be added.
+     * Consolidates all credits calculation when checking to see if more should be added. This is invoked in
+     * {@link #drainQueue()} and {@link #request(long)}.
+     *
+     * Calculates if there are enough credits to satisfy the downstream subscriber. If there is not AND the link has no
+     * more credits, we will add them onto the link.
+     *
+     * In the case that the link has some credits, but _not_ enough to satisfy the request, when the link is empty, it
+     * will call {@link AmqpReceiveLink#setEmptyCreditListener(Supplier)} to get how much is remaining.
      *
      * @param message Additional message for context.
      */
@@ -557,6 +570,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
     }
 
+    /**
+     * Gets the number of credits to add based on {@link #requested} and how many messages are still in queue.
+     * If {@link #requested} is {@link Long#MAX_VALUE}, then we add credits 1 by 1. Similar to Track 1's behaviour.
+     *
+     * @return The number of credits to add.
+     */
     private int getCreditsToAdd() {
         final CoreSubscriber<? super Message> subscriber = downstream.get();
         final long request = REQUESTED.get(this);
