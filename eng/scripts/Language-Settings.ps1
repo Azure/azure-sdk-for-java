@@ -239,7 +239,6 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
   # Add ignore package list in file eng/docms-ignore-packages.txt, so that we can exclude the package from package.json in a quick way.
   $ignorePackages = @()
-  #$ignorePackagePath = Join-Path -Path ../ $ignorePackagePath
   Write-Host $ignorePackagePath
   if (Test-Path $ignorePackagePath)
   {
