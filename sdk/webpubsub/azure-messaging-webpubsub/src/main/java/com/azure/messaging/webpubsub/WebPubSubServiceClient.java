@@ -547,6 +547,7 @@ public final class WebPubSubServiceClient {
      * @param permission The permission to be granted to the given connection ID.
      * @param connectionId Target connection ID.
      * @param targetName The specific target that will have the permission granted.
+     * @param context The context to associate with the operation.
      * @return A void {@link Response}, enabling retrieval of the status code and response
      *      headers from the service.
      */
