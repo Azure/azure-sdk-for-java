@@ -2,6 +2,7 @@
 
 ## 2.4.0-beta.1 (Unreleased)
 
+- Supported Private Link in `StorageAccount`.
 
 ## 2.3.0 (2021-03-30)
 

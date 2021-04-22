@@ -73,6 +73,13 @@ public class EventHubDataConnection extends DataConnectionInner {
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /*
+     * The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub.
+     */
+    @JsonProperty(value = "properties.managedIdentityResourceId")
+    private String managedIdentityResourceId;
+
     /**
      * Get the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.
      *
@@ -226,6 +233,28 @@ public class EventHubDataConnection extends DataConnectionInner {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub.
+     *
+     * @return the managedIdentityResourceId value.
+     */
+    public String managedIdentityResourceId() {
+        return this.managedIdentityResourceId;
+    }
+
+    /**
+     * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub.
+     *
+     * @param managedIdentityResourceId the managedIdentityResourceId value to set.
+     * @return the EventHubDataConnection object itself.
+     */
+    public EventHubDataConnection withManagedIdentityResourceId(String managedIdentityResourceId) {
+        this.managedIdentityResourceId = managedIdentityResourceId;
+        return this;
     }
 
     /** {@inheritDoc} */

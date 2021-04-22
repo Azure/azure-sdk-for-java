@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Premier add-on. */
 @JsonFlatten
@@ -170,6 +171,20 @@ public class PremierAddOnInner extends Resource {
      */
     public PremierAddOnInner withKind(String kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PremierAddOnInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PremierAddOnInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
