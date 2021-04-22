@@ -12,6 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -20,6 +22,9 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.Network;
@@ -44,8 +49,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -395,6 +403,56 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
     }
 
     @Test
+    public void testPrivateEndpointAKS() {
+        String clusterName = generateRandomResourceName("aks", 8);
+        String apName = "ap" + clusterName;
+        String dnsPrefix = "dns" + clusterName;
+
+        String clientId = "clientId";
+        String clientSecret = "secret";
+        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
+        if (envSecondaryServicePrincipal == null
+            || envSecondaryServicePrincipal.isEmpty()
+            || !(new File(envSecondaryServicePrincipal).exists())) {
+            envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
+        }
+        try {
+            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
+            clientId = credentialsMap.get("clientId");
+            clientSecret = credentialsMap.get("clientSecret");
+        } catch (Exception e) {
+        }
+
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.KUBERNETES_MANAGEMENT;
+
+        KubernetesCluster cluster = azureResourceManager.kubernetesClusters().define(clusterName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("aksadmin")
+            .withSshKey(sshPublicKey())
+            .withServicePrincipalClientId(clientId)
+            .withServicePrincipalSecret(clientSecret)
+            .defineAgentPool(apName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(dnsPrefix)
+            .enablePrivateCluster()
+            .create();
+
+        validatePrivateLinkResource(cluster, subResourceName.toString());
+
+        // private dns zone and private endpoint connection is created by AKS
+
+        List<PrivateEndpointConnection> connections = cluster.listPrivateEndpointConnections().stream().collect(Collectors.toList());
+        Assertions.assertEquals(1, connections.size());
+        PrivateEndpointConnection connection = connections.iterator().next();
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, connection.privateLinkServiceConnectionState().status());
+    }
+
+    @Test
     @Disabled("invalid response of WebAppsClient.getPrivateEndpointConnectionListAsync")
     public void testPrivateEndpointWeb() {
         String webappName = generateRandomResourceName("webapp", 20);
@@ -493,5 +551,12 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         // check again
         privateEndpoint.refresh();
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+    }
+
+    private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
+        String content = Files.readString(new File(authFilename).toPath()).trim();
+        HashMap<String, String> auth = new HashMap<>();
+        auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+        return auth;
     }
 }

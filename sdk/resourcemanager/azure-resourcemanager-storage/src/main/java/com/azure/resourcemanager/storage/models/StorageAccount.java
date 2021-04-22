@@ -23,12 +23,12 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure storage account. */
 @Fluent
 public interface StorageAccount
-    extends SupportsListingPrivateLinkResource,
-        SupportsListingPrivateEndpointConnection,
-        SupportsUpdatingPrivateEndpointConnection,
-        GroupableResource<StorageManager, StorageAccountInner>,
-        Refreshable<StorageAccount>,
-        Updatable<StorageAccount.Update> {
+    extends GroupableResource<StorageManager, StorageAccountInner>,
+    Refreshable<StorageAccount>,
+    Updatable<StorageAccount.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
 
     /**
      * @return the status indicating whether the primary and secondary location of the storage account is available or
