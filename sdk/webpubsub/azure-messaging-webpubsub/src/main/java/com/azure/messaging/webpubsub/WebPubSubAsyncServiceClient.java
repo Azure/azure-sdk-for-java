@@ -123,7 +123,7 @@ public final class WebPubSubAsyncServiceClient {
         final String authToken = WebPubSubAuthenticationPolicy.getAuthenticationToken(
             audience, options, webPubSubAuthPolicy.getCredential());
 
-        final String clientEndpoint = endpoint.replaceAll("(https)|(http)", "ws");
+        final String clientEndpoint = endpoint.replaceAll("http", "ws");
         final String clientUrl = clientEndpoint + "client/hubs/" + hub;
 
         final String url = clientUrl + "?access_token=" + authToken;

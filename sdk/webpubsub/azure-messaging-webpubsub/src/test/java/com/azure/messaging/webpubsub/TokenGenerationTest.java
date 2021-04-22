@@ -24,11 +24,27 @@ public class TokenGenerationTest {
 
     @ParameterizedTest
     @MethodSource("getTokenOptions")
-    public void testTokenGeneration(GetAuthenticationTokenOptions tokenOptions) {
+    public void testTokenGenerationWithHttps(GetAuthenticationTokenOptions tokenOptions) {
         WebPubSubServiceClient client = new WebPubSubClientBuilder()
             .hub("test")
             // this connection string has a dummy access key for testing purposes
             .connectionString("Endpoint=https://testendpoint.webpubsubdev.azure.com;"
+                + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;")
+            .buildClient();
+        WebPubSubAuthenticationToken authenticationToken = client.getAuthenticationToken(tokenOptions);
+
+        assertNotNull(authenticationToken.getAuthToken());
+        assertTrue(authenticationToken.getUrl().startsWith("wss://testendpoint.webpubsubdev.azure.com"));
+        assertTrue(authenticationToken.getUrl().endsWith("access_token=" + authenticationToken.getAuthToken()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTokenOptions")
+    public void testTokenGenerationWithHttp(GetAuthenticationTokenOptions tokenOptions) {
+        WebPubSubServiceClient client = new WebPubSubClientBuilder()
+            .hub("test")
+            // this connection string has a dummy access key for testing purposes
+            .connectionString("Endpoint=http://testendpoint.webpubsubdev.azure.com;"
                 + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;")
             .buildClient();
         WebPubSubAuthenticationToken authenticationToken = client.getAuthenticationToken(tokenOptions);
