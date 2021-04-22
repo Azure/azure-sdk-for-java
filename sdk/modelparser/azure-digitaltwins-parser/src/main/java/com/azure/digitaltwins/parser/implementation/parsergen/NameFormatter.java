@@ -3,8 +3,6 @@
 
 package com.azure.digitaltwins.parser.implementation.parsergen;
 
-import java.util.Locale;
-
 /**
  * Class that formats obverse names as various java element names.
  */
@@ -96,7 +94,7 @@ public class NameFormatter {
             throw new IllegalArgumentException("Expected a non-null input with at least 2 characters and no spaces. Found: '" + name + "'");
         }
 
-        return name.toUpperCase(Locale.getDefault());
+        return camelCaseToUnderScoreUpperCase(name);
     }
 
     public static String formatNameAsField(String name) {
@@ -105,5 +103,34 @@ public class NameFormatter {
         }
 
         return Character.toLowerCase(name.charAt(0)) + name.substring(1);
+    }
+
+    private static String camelCaseToUnderScoreUpperCase(String camelCase) {
+        StringBuilder result = new StringBuilder();
+        boolean prevUpperCase = false;
+        for (int i = 0; i < camelCase.length(); i++) {
+            char c = camelCase.charAt(i);
+            if (!Character.isLetter(c)) {
+                return camelCase;
+            }
+
+            if (Character.isUpperCase(c)) {
+                if (prevUpperCase) {
+                    return camelCase;
+                }
+
+                result.append("_").append(c);
+                prevUpperCase = true;
+            } else {
+                result.append(Character.toUpperCase(c));
+                prevUpperCase = false;
+            }
+        }
+
+        if (result.toString().startsWith("_")) {
+            result = new StringBuilder(result.substring(1));
+        }
+
+        return result.toString();
     }
 }

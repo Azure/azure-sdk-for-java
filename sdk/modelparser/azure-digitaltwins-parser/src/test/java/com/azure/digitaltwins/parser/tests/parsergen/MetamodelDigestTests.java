@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 public class MetamodelDigestTests extends GeneratedCodeCompareBase {
-    private static final String TEST_SUB_DIRECTORY = "FullDigestionResources";
-
     @Test
     public void readFullTreeTest() throws IOException {
-        String fullDigest = FileHelpers.getFileContentsByFileName(TEST_SUB_DIRECTORY, "digest.json");
+        String fullDigest = FileHelpers.getFileContentsByFileName("", "digest.json");
 
         MetamodelDigest digest = new MetamodelDigest(fullDigest);
         Assertions.assertNotNull(digest.getContexts());
