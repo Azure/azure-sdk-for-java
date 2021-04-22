@@ -208,6 +208,7 @@ function check-source-jar($artifactId, $groudId, $version)
     $resp = Invoke-WebRequest $MavenDownloadUrl
     $source_jar_existence = $resp -and $resp.Links.href.Contains($sourceJarName)
     if (!$source_jar_existence) {
+      Write-Host "The package $sourceJarName does not publish in site $MavenDownloadUrl. Please double check your release."
       return $false
     }
     # Download the maven package to local
@@ -217,6 +218,9 @@ function check-source-jar($artifactId, $groudId, $version)
     Invoke-WebRequest $MavenDownloadLink -OutFile "$artifactId-$version-sources.jar" >$null 2>&1
     jar xf "$artifactId-$version-sources.jar" >$null 2>&1
     $check_source_code_existence = Test-Path -Path ./com
+    if (!$check_source_code_existence) {
+      Write-Host "The package $sourceJarName does not contain any source code with path ./com. Please check whether it has real API doc to publish."
+    }
     Pop-Location 
     # Clean up the package folder
     Remove-Item ./package -Recurse
@@ -233,6 +237,7 @@ function check-source-jar($artifactId, $groudId, $version)
 # https://review.docs.microsoft.com/en-us/help/onboard/admin/reference/dotnet/documenting-nuget?branch=master#set-up-the-ci-job
 function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
+  # Add ignore package list in file docms-ignore-packages.txt, so that we can exclude the package from package.json in a quick way.
   $ignorePackages = @();
   if (Test-Path $ignorePackagePath)
   {
@@ -257,7 +262,9 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     Write-Error "Unable to locate package csv at location $pkgJsonLoc, exiting."
     exit(1)
   }
+  # Read the pacakge from package.json, if not show up in release csv, retain it in package.json as it is.
   $allCSVRows = Get-Content $pkgJsonLoc | Out-String | ConvertFrom-Json
+  # Used for retaining config from package json. E.g. excludePackaages.
   $latestHash = @{}
   $previewHash = @{}
   $allCSVRows[0].packages | foreach { $latestHash["$($_.packageGroupId):$($_.packageArtifactId)"] = $_ }
@@ -266,8 +273,9 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     if (!$metadata[$i].Package) {
       continue
     }
+    # Fill in the latest first
     if ($metadata[$i].VersionGA) {
-      # Fill in the latest first
+      # Check whether the source jar exists in maven site or whether it has source code API docs. Exclude from package json if returns false.
       if (!(check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionGA)) {
         continue
       }
@@ -282,8 +290,8 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
       }
       $latest.packages += $latest_object
     }
+    # Then fill in the preview 
     if ($metadata[$i].VersionPreview) {
-      # Then fill in the preview 
       if (!(check-source-jar -artifactId $metadata[$i].Package -groudId $metadata[$i].GroupId -version $metadata[$i].VersionPreview)) {
         continue
       }
@@ -292,6 +300,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
       $preview_object["packageGroupId"] = $metadata[$i].GroupId
       $preview_object["packageArtifactId"] = $metadata[$i].Package
       $preview_object["packageVersion"] = $metadata[$i].VersionPreview
+      # We currently only retain the excludePacakges in package.json.
       $excludePackages = $previewHash["$($metadata[$i].GroupId):$($metadata[$i].Package)"].excludePackages
       if ($excludePackages) {
         $preview_object["excludepackages"] = $excludePackages
@@ -301,7 +310,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
   }
   $jsonRepresentation = @($latest, $preview)
 
-
+  # Check the package which is not in release csv but in package.json. Maintain the config in pacakge.json
   for ($i=0; $i -lt $allCSVRows.Length; $i++) {
     $packages = $allCSVRows[$i].packages
     for ($j=0; $j -lt $packages.Length; $j++) {
@@ -316,6 +325,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     $packages = $jsonRepresentation[$i]
     for ($j=0; $j -lt $packages.Length; $j++) {
       if ($ignorePackages -contains "$($packages[$j].packageGroupId):$($packages[$j].packageGroupId)") {
+        Write-Host "The package "$($packages[$j].packageGroupId):$($packages[$j].packageGroupId) exists in ignore list."
         $jsonRepresentation[$i].packages -= $packages[$j]
       }
     }
