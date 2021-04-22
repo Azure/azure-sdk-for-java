@@ -5,7 +5,7 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $MavenDownloadSite = "https://repo1.maven.org/maven2"
-$ignorePackagePath = "../docms-ignore-packages.txt"
+$ignorePackagePath = "/eng/docms-ignore-packages.txt"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -237,8 +237,9 @@ function check-source-jar($artifactId, $groudId, $version)
 # https://review.docs.microsoft.com/en-us/help/onboard/admin/reference/dotnet/documenting-nuget?branch=master#set-up-the-ci-job
 function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
-  # Add ignore package list in file docms-ignore-packages.txt, so that we can exclude the package from package.json in a quick way.
+  # Add ignore package list in file eng/docms-ignore-packages.txt, so that we can exclude the package from package.json in a quick way.
   $ignorePackages = @()
+  #$ignorePackagePath = Join-Path -Path ../ $ignorePackagePath
   Write-Host $ignorePackagePath
   if (Test-Path $ignorePackagePath)
   {
