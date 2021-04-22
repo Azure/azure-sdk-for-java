@@ -66,10 +66,5 @@ public class TableBatchOperations {
 
         // Finally, let's submit the batch of operations and inspect all the responses.
         List<BatchOperationResponse> batchOperationResponses = tableBatch.submitTransaction();
-        int position = 0;
-
-        for (BatchOperationResponse response : batchOperationResponses) {
-            System.out.printf("Operation in position %d has status code: %d\n", position++, response.getStatusCode());
-        }
     }
 }
