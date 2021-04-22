@@ -232,7 +232,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
              scopes: ${your-web-api-a-app-id-url}/.default
    ```
 
-1. Write your Java code.
+1. Write your `Webapp` Java code.
 
    Controller code can refer to the following:
     <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceController.java#L24-L42 -->
@@ -270,6 +270,8 @@ This scenario is based on **Accessing a web application** scenario to allow appl
                         .build();
     }
     ```
+
+1. Please refer to **Accessing a resource server** section to write your `WebApiA` Java code.
 
 1. Build and test your app
    
