@@ -362,8 +362,7 @@ class KuduClient {
                                     && (throwable instanceof TimeoutException
                                     || throwable instanceof SocketTimeoutException
                                     || (throwable instanceof HttpResponseException
-                                    && ((HttpResponseException) throwable).getResponse().getStatusCode() == 502)
-                                )) {
+                                    && ((HttpResponseException) throwable).getResponse().getStatusCode() == 502))) {
                                     return count;
                                 } else {
                                     throw logger.logExceptionAsError(Exceptions.propagate(throwable));
