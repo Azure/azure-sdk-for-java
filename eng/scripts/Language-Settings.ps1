@@ -238,7 +238,8 @@ function check-source-jar($artifactId, $groudId, $version)
 function Update-java-CIConfig($ciRepo, $locationInDocRepo)
 { 
   # Add ignore package list in file docms-ignore-packages.txt, so that we can exclude the package from package.json in a quick way.
-  $ignorePackages = @();
+  $ignorePackages = @()
+  Write-Host $ignorePackagePath
   if (Test-Path $ignorePackagePath)
   {
     $ignorePackages = [Array](Get-Content $ignorePackagePath | ForEach-Object { ($_ -replace "#.*", "").Trim() } | Where-Object { $_ -ne "" })
