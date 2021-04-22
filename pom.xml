@@ -707,6 +707,7 @@
         <module>sdk/hybridcompute</module>
         <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
+        <module>sdk/iotcentral</module>
         <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
         <module>sdk/kubernetesconfiguration</module>
