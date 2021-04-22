@@ -282,14 +282,19 @@ public final class WebPubSubClientBuilder {
 
         if (endpoint == null && credential == null) {
             final Map<String, String> csParams = parseConnectionString(connectionString);
+            if (!csParams.containsKey("endpoint") && !csParams.containsKey("accesskey")) {
+                logger.logThrowableAsError(new IllegalArgumentException(
+                    "Connection string does not contain required 'endpoint' and 'accesskey' values"));
+            }
+
             final String accessKey = csParams.get("accesskey");
 
             this.credential = new AzureKeyCredential(accessKey);
             this.endpoint = csParams.get("endpoint");
 
-            if (!csParams.containsKey("endpoint") && !csParams.containsKey("accesskey")) {
-                logger.logThrowableAsError(new IllegalArgumentException(
-                    "Connection string does not contain required 'endpoint' and 'accesskey' values"));
+            String port = csParams.get("port");
+            if (!CoreUtils.isNullOrEmpty(port)) {
+                this.endpoint = this.endpoint + ":" + port;
             }
         }
 

@@ -24,33 +24,16 @@ public class TokenGenerationTest {
 
     @ParameterizedTest
     @MethodSource("getTokenOptions")
-    public void testTokenGenerationWithHttps(GetAuthenticationTokenOptions tokenOptions) {
+    public void testTokenGeneration(GetAuthenticationTokenOptions tokenOptions, String connectionString,
+                                            String expectedUrlPrefix) {
         WebPubSubServiceClient client = new WebPubSubClientBuilder()
             .hub("test")
-            // this connection string has a dummy access key for testing purposes
-            .connectionString("Endpoint=https://testendpoint.webpubsubdev.azure.com;"
-                + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;")
+            .connectionString(connectionString)
             .buildClient();
         WebPubSubAuthenticationToken authenticationToken = client.getAuthenticationToken(tokenOptions);
 
         assertNotNull(authenticationToken.getAuthToken());
-        assertTrue(authenticationToken.getUrl().startsWith("wss://testendpoint.webpubsubdev.azure.com"));
-        assertTrue(authenticationToken.getUrl().endsWith("access_token=" + authenticationToken.getAuthToken()));
-    }
-
-    @ParameterizedTest
-    @MethodSource("getTokenOptions")
-    public void testTokenGenerationWithHttp(GetAuthenticationTokenOptions tokenOptions) {
-        WebPubSubServiceClient client = new WebPubSubClientBuilder()
-            .hub("test")
-            // this connection string has a dummy access key for testing purposes
-            .connectionString("Endpoint=http://testendpoint.webpubsubdev.azure.com;"
-                + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;")
-            .buildClient();
-        WebPubSubAuthenticationToken authenticationToken = client.getAuthenticationToken(tokenOptions);
-
-        assertNotNull(authenticationToken.getAuthToken());
-        assertTrue(authenticationToken.getUrl().startsWith("ws://testendpoint.webpubsubdev.azure.com"));
+        assertTrue(authenticationToken.getUrl().startsWith(expectedUrlPrefix));
         assertTrue(authenticationToken.getUrl().endsWith("access_token=" + authenticationToken.getAuthToken()));
     }
 
@@ -59,35 +42,61 @@ public class TokenGenerationTest {
      * @return A stream of options to parameterized test.
      */
     private static Stream<Arguments> getTokenOptions() {
+        // connection strings have dummy access key for testing purposes
         return Stream.of(
-            Arguments.of(
-                new GetAuthenticationTokenOptions()),
 
+            // HTTP
             Arguments.of(
-                new GetAuthenticationTokenOptions()
-                    .setUserId("foo")),
+                new GetAuthenticationTokenOptions(),
+                "Endpoint=http://http.webpubsubdev.azure.com;" +
+                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "ws://http.webpubsubdev.azure.com/"),
 
-            Arguments.of(
-                new GetAuthenticationTokenOptions()
-                    .setUserId("foo")
-                    .addRole("admin")),
-
+            // HTTP with port
             Arguments.of(
                 new GetAuthenticationTokenOptions()
                     .setUserId("foo")
-                    .setExpiresAfter(Duration.ofDays(1))),
+                    .setExpiresAfter(Duration.ofDays(1)),
+                "Endpoint=http://testendpoint.webpubsubdev.azure.com;" +
+                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080",
+                "ws://testendpoint.webpubsubdev.azure.com:8080/"),
 
+            // HTTP with "http" in domain name
+            Arguments.of(
+                new GetAuthenticationTokenOptions()
+                    .setUserId("foo"),
+                "Endpoint=http://http.webpubsubdev.azure.com;" +
+                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "ws://http.webpubsubdev.azure.com/"),
+
+            // HTTPS
+            Arguments.of(
+                new GetAuthenticationTokenOptions()
+                    .setUserId("foo")
+                    .addRole("admin"),
+                "Endpoint=https://testendpoint.webpubsubdev.azure.com;" +
+                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "wss://testendpoint.webpubsubdev.azure.com/"),
+
+            // HTTPS with port
             Arguments.of(
                 new GetAuthenticationTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
-                    .addRole("admin")),
+                    .addRole("admin"),
+                "Endpoint=https://testendpoint.webpubsubdev.azure.com;Port=8080;" +
+                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "wss://testendpoint.webpubsubdev.azure.com:8080/"),
 
+            // HTTPS with "https" in domain name
             Arguments.of(
                 new GetAuthenticationTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
-                    .setRoles(Arrays.asList("admin", "owner")))
+                    .setRoles(Arrays.asList("admin", "owner")),
+                "Endpoint=https://https.webpubsubdev.azure.com;" +
+                    "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
+                "wss://https.webpubsubdev.azure.com/")
         );
     }
 }

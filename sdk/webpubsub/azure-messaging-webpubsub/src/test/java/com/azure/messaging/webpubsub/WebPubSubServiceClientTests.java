@@ -25,10 +25,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         .get("WEB_PUB_SUB_CS", DEFAULT_CONNECTION_STRING);
 
     private WebPubSubServiceClient client;
-    private WebPubSubGroup groupClient;
-
     private WebPubSubAsyncServiceClient asyncClient;
-    private WebPubSubAsyncGroup asyncGroupClient;
 
     @BeforeEach
     public void setup() {
@@ -45,11 +42,9 @@ public class WebPubSubServiceClientTests extends TestBase {
 
         this.client = webPubSubClientBuilder
             .buildClient();
-        this.groupClient = client.getGroup("test_group");
 
         this.asyncClient = webPubSubClientBuilder
             .buildAsyncClient();
-        this.asyncGroupClient = asyncClient.getAsyncGroup("test_async_group");
     }
 
     private void assertResponse(Response<?> response, int expectedCode) {
