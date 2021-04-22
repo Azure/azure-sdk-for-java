@@ -218,6 +218,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-webpubsub</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
       <version>11.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
