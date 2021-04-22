@@ -50,6 +50,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -554,7 +555,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
     }
 
     private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
-        String content = Files.readString(new File(authFilename).toPath()).trim();
+        String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
         auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
         return auth;
