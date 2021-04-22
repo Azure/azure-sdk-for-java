@@ -38,13 +38,13 @@ public final class AzureQueueStorageImplBuilder {
     }
 
     /*
-     * The URL of the service account, queue or message that is the targe of
+     * The URL of the service account, queue or message that is the target of
      * the desired operation.
      */
     private String url;
 
     /**
-     * Sets The URL of the service account, queue or message that is the targe of the desired operation.
+     * Sets The URL of the service account, queue or message that is the target of the desired operation.
      *
      * @param url the url value.
      * @return the AzureQueueStorageImplBuilder.
