@@ -11,7 +11,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

@@ -47,13 +47,13 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void asyncSendToAllVarArgs() {
         WebPubSubAsyncServiceClient client = getAsyncClient();
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String
+        // BEGIN: com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.sendToAll#String
         client.sendToAll("Hello world!").block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String
+        // END: com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.sendToAll#String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#String-WebPubSubContentType
         client.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.WebPubSubContentType
+        // END: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#String-WebPubSubContentType
 
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse
@@ -72,13 +72,13 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void asyncSendToAllBytesVarArgs() {
         WebPubSubAsyncServiceClient client = getAsyncClient();
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.byte
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte
         client.sendToAll("Hello world!".getBytes()).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.byte
+        // END: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.byte.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte-WebPubSubContentType
         client.sendToAll("Hello world!".getBytes(), WebPubSubContentType.APPLICATION_OCTET_STREAM).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.byte.WebPubSubContentType
+        // END: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte-WebPubSubContentType
 
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse.byte
@@ -111,13 +111,13 @@ public final class WebPubSubJavaDocCodeSnippets {
     public void groupAsyncSendToAllVarArgs() {
         WebPubSubAsyncGroup groupClient = null;
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String
         groupClient.sendToAll("Hello world!").block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String
+        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String-WebPubSubContentType
         groupClient.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.WebPubSubContentType
+        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String-WebPubSubContentType
 
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse
@@ -137,13 +137,13 @@ public final class WebPubSubJavaDocCodeSnippets {
     public void groupAsyncSendToAllBytesVarArgs() {
         WebPubSubAsyncGroup groupClient = null;
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.byte
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte
         groupClient.sendToAll("Hello world!".getBytes()).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.byte
+        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.byte.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte-WebPubSubContentType
         groupClient.sendToAll("Hello world!".getBytes(), WebPubSubContentType.APPLICATION_OCTET_STREAM).block();
-        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.byte.WebPubSubContentType
+        // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte-WebPubSubContentType
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse.byte
         groupClient.sendToAllWithResponse("Hello world!".getBytes(),
@@ -174,13 +174,13 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void sendToAllVarArgs() {
         WebPubSubServiceClient client = getSyncClient();
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String
         client.sendToAll("Hello world!");
-        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String
+        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String-WebPubSubContentType
         client.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN);
-        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.String.WebPubSubContentType
+        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String-WebPubSubContentType
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse
         client.sendToAllWithResponse(
@@ -201,46 +201,46 @@ public final class WebPubSubJavaDocCodeSnippets {
 
     public void sendToAllBytesVarArgs() {
         WebPubSubServiceClient client = getSyncClient();
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.byte
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#byte
         client.sendToAll("Hello world!".getBytes());
-        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.byte
+        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#byte
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.byte.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#byte-WebPubSubContentType
         client.sendToAll("Hello world!".getBytes(), WebPubSubContentType.APPLICATION_OCTET_STREAM);
-        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll.byte.WebPubSubContentType
+        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#byte-WebPubSubContentType
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.byte
         client.sendToAllWithResponse(
             "Hello world!".getBytes(),
             WebPubSubContentType.APPLICATION_OCTET_STREAM,
             Collections.emptyList(),
             Context.NONE);
-        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse
+        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.byte
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.withexclusion
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.byte.withexclusion
         client.sendToAllWithResponse(
             "Hello world!".getBytes(),
             WebPubSubContentType.APPLICATION_OCTET_STREAM,
             Arrays.asList("excluded-connection-id-1", "excluded-connection-id-2"),
             Context.NONE);
-        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.withexclusion
+        // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAllWithResponse.byte.withexclusion
     }
 
     // SYNC - GROUP
 
     public void groupSendToAllVarArgs() {
-        WebPubSubGroup client = null;
+        WebPubSubGroup adminGroup = null;
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String
-        client.sendToAll("Hello world!");
-        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String
+        adminGroup.sendToAll("Hello world!");
+        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.WebPubSubContentType
-        client.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN);
-        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String-WebPubSubContentType
+        adminGroup.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN);
+        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String-WebPubSubContentType
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse
-        client.sendToAllWithResponse("Hello world!",
+        adminGroup.sendToAllWithResponse("Hello world!",
             WebPubSubContentType.TEXT_PLAIN,
             Collections.emptyList(),
             Context.NONE);
@@ -248,7 +248,7 @@ public final class WebPubSubJavaDocCodeSnippets {
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.withexclusions
         List<String> excludedConnectionIds = getExcludedConnectionIds();
-        client.sendToAllWithResponse("Hello world!",
+        adminGroup.sendToAllWithResponse("Hello world!",
             WebPubSubContentType.TEXT_PLAIN,
             excludedConnectionIds,
             Context.NONE);
@@ -256,18 +256,18 @@ public final class WebPubSubJavaDocCodeSnippets {
     }
 
     public void groupSendToAllBytesVarArgs() {
-        WebPubSubGroup client = null;
+        WebPubSubGroup adminGroup = null;
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte
-        client.sendToAll("Hello world!".getBytes());
-        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#byte
+        adminGroup.sendToAll("Hello world!".getBytes());
+        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#byte
 
-        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte.WebPubSubContentType
-        client.sendToAll("Hello world!".getBytes(), WebPubSubContentType.APPLICATION_OCTET_STREAM);
-        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte.WebPubSubContentType
+        // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#byte-WebPubSubContentType
+        adminGroup.sendToAll("Hello world!".getBytes(), WebPubSubContentType.APPLICATION_OCTET_STREAM);
+        // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#byte-WebPubSubContentType
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte
-        client.sendToAllWithResponse("Hello world!".getBytes(),
+        adminGroup.sendToAllWithResponse("Hello world!".getBytes(),
             WebPubSubContentType.APPLICATION_OCTET_STREAM,
             Collections.emptyList(),
             Context.NONE);
@@ -275,7 +275,7 @@ public final class WebPubSubJavaDocCodeSnippets {
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAllWithResponse.byte.withexclusion
         List<String> excludedConnectionIds = getExcludedConnectionIds();
-        client.sendToAllWithResponse("Hello world!".getBytes(),
+        adminGroup.sendToAllWithResponse("Hello world!".getBytes(),
             WebPubSubContentType.APPLICATION_OCTET_STREAM,
             excludedConnectionIds,
             Context.NONE);

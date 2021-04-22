@@ -138,7 +138,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String}
+     * {@codesnippet com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.sendToAll#String}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -155,7 +155,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.WebPubSubContentType}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#String-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -223,7 +223,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.byte}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -240,7 +240,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.byte.WebPubSubContentType}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.

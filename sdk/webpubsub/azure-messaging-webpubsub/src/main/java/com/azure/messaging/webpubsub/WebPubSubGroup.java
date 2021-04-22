@@ -39,7 +39,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String}
      *
      * @param message The message to send.
      */
@@ -55,7 +55,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.String.WebPubSubContentType}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -102,7 +102,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#byte}
      *
      * @param message The binary message to send.
      */
@@ -118,7 +118,7 @@ public final class WebPubSubGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll.byte.WebPubSubContentType}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#byte-WebPubSubContentType}
      *
      * @param message The binary message to send.
      * @param contentType The content type of the message.

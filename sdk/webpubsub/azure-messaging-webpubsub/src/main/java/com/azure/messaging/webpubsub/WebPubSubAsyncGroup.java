@@ -61,7 +61,7 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String}
      *
      *  @param message The message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
@@ -80,7 +80,7 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.WebPubSubContentType}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String-WebPubSubContentType}
      *
      *  @param message The message to send.
      * @param contentType The content type of the message.
@@ -103,7 +103,7 @@ public final class WebPubSubAsyncGroup {
      * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse}
      *
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to a List and pass that in as the second argument:</p>
+     * excluded connection IDs to a List and pass that in as the third argument:</p>
      *
      * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse.withexclusions}
      *
@@ -148,7 +148,7 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.byte}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte}
      *
      * @param message The binary message to send.
      * @return An empty {@link Mono}.
@@ -166,7 +166,7 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.byte.WebPubSubContentType}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte-WebPubSubContentType}
      *
      * @param message The binary message to send.
      * @param contentType The content type of the message.
