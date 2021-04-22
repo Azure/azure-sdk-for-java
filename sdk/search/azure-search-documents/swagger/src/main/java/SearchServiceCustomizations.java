@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 /**
  * Contains customizations for Azure Search's service swagger code generation.
@@ -171,9 +170,9 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSynonymMap(ClassCustomization classCustomization) {
-        classCustomization.getMethod("getFormat").setModifier(Modifier.PRIVATE);
-        classCustomization.getMethod("setFormat").setModifier(Modifier.PRIVATE);
-        classCustomization.getMethod("setName").setModifier(Modifier.PRIVATE);
+        classCustomization.removeMethod("getFormat");
+        classCustomization.removeMethod("setFormat");
+        classCustomization.removeMethod("setName");
 
         classCustomization.addConstructor(joinWithNewline(
             "public SynonymMap(String name) {",
@@ -198,9 +197,10 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchResourceEncryptionKey(ClassCustomization keyCustomization,
         ClassCustomization credentialCustomization) {
-        keyCustomization.getMethod("getAccessCredentials").setModifier(Modifier.PRIVATE);
-        String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").setModifier(Modifier.PRIVATE)
-            .getJavadoc().getReturn();
+        keyCustomization.removeMethod("getAccessCredentials");
+
+        String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").getJavadoc().getReturn();
+        keyCustomization.removeMethod("setAccessCredentials");
 
         JavadocCustomization javadoc = keyCustomization.addMethod(joinWithNewline(
             "public String getApplicationId() {",
@@ -249,7 +249,7 @@ public class SearchServiceCustomizations extends Customization {
             "this.name = name;",
             "this.sourceFields = sourceFields;"));
 
-        classCustomization.getMethod("setSearchMode").setModifier(Modifier.PRIVATE);
+        classCustomization.removeMethod("setSearchMode");
     }
 
     private void customizeCustomAnalyzer(ClassCustomization classCustomization) {

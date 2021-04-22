@@ -67,17 +67,6 @@ public final class SearchSuggester {
     }
 
     /**
-     * Set the searchMode property: A value indicating the capabilities of the suggester.
-     *
-     * @param searchMode the searchMode value to set.
-     * @return the SearchSuggester object itself.
-     */
-    private SearchSuggester setSearchMode(String searchMode) {
-        this.searchMode = searchMode;
-        return this;
-    }
-
-    /**
      * Get the sourceFields property: The list of field names to which the suggester applies. Each field must be
      * searchable.
      *
