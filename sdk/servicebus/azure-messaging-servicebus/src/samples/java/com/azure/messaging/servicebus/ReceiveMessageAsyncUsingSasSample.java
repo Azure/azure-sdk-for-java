@@ -15,8 +15,6 @@ import java.util.Base64;
 /**
  * Sample showing how to generate Shared Access Signatures for specific resource, an Azure Service Bus Queue or Topic
  * and receive messages.
- * <p>
- * Messages <b>must</b> be manually settled.
  */
 public class ReceiveMessageAsyncUsingSasSample {
     /**
@@ -27,9 +25,9 @@ public class ReceiveMessageAsyncUsingSasSample {
     public static void main(String[] args) {
 
         // The connection string value can be obtained by:
-        // 1. sharedAccesskey, sharedAccesskeyName : You can create them and resource specific on portal under your
+        // 1. sharedAccesskey, sharedAccesskeyName: They can specific to a resource. Go on portal under your
         //    service bus namespace, navigate to specific queue or topic and  click on "shared  access policies". Here
-        //    you can create appropriate resource specific  policies.
+        //    you can create appropriate resource specific policies.
         // 2. Now generate SAS token using: https://docs.microsoft.com/en-us/rest/api/eventhub/generate-sas-token
         // 3. More about SAS Tokens explained: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas
 
@@ -88,8 +86,7 @@ public class ReceiveMessageAsyncUsingSasSample {
         return sasToken;
     }
 
-
-    public static String getHMAC256(String key, String input) {
+    private static String getHMAC256(String key, String input) {
         Mac sha256_HMAC;
         String hash = null;
         try {
@@ -106,5 +103,4 @@ public class ReceiveMessageAsyncUsingSasSample {
 
         return hash;
     }
-
 }

@@ -403,7 +403,7 @@ shown below.
 
 ```java
 String SHARED_ACCESS_SIGNATURE_TOKEN = "<Shared Access Signatures for specific Resource>";
-String connectionString = "Endpoint=sb://namespace_DNS_Name;SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN";
+String connectionString = "Endpoint=sb://namespace_DNS_Name;SharedAccessSignatureToken=" + SHARED_ACCESS_SIGNATURE_TOKEN;
 
 ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(connectionString, "<YOUR-QUEUE-NAME>");
 QueueClient receiveClient = new QueueClient(connectionStringBuilder, ReceiveMode.PEEKLOCK);
@@ -426,7 +426,7 @@ ServiceBusReceiverClient receiver = builder
                     .buildClient();
 
 ```
-You can read more about hot to generate Shared Access Signatures [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas).
+You can read more about how to generate Shared Access Signatures [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas).
 
 ## Upcoming features
  - [Cross entity transactions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via) 
