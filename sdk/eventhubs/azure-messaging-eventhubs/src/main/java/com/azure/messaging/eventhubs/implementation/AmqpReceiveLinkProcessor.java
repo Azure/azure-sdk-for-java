@@ -172,6 +172,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
                     if (credits < 1) {
                         linkHasNoCredits.compareAndSet(false, true);
+                    } else {
+                        logger.info("linkName[{}] entityPath[{}] credits[{}] Link is empty. Adding more credits.",
+                            linkName, entityPath, credits);
                     }
                 }
 
@@ -369,32 +372,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         Operators.addCap(REQUESTED, this, request);
 
-        final AmqpReceiveLink link = currentLink;
-        final int credits;
-
-        synchronized (creditsAdded) {
-            credits = getCreditsToAdd();
-
-            if (link != null && credits > 0) {
-                final boolean hadNoCredits = linkHasNoCredits.compareAndSet(true, false);
-
-                logger.verbose("linkName[{}] entityPath[{}] request[{}] creditsToAdd[{}] hadNoCredits[{}]"
-                        + " Backpressure request from downstream.",
-                    currentLinkName, entityPath, request, credits, hadNoCredits);
-
-                if (hadNoCredits) {
-                    link.addCredits(credits).subscribe(noop -> {
-                    }, error -> {
-                        logger.info("linkName[{}] was already closed. Could not add credits.", link.getLinkName());
-                        linkHasNoCredits.compareAndSet(false, true);
-                    });
-                }
-            } else {
-                logger.verbose("entityPath[{}] credits[{}] There is no link to add credits to, yet.",
-                    entityPath, credits);
-            }
-        }
-
+        addCreditsToLink("Backpressure request from downstream. Request: " + request);
         drain();
     }
 
@@ -518,26 +496,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         if (numberRequested > 0L && isEmpty) {
-            synchronized (creditsAdded) {
-                final int creditsToAdd = getCreditsToAdd();
-                final AmqpReceiveLink link = currentLink;
-
-                if (link != null && creditsToAdd > 0
-                    && linkHasNoCredits.compareAndSet(true, false)) {
-
-                    logger.verbose("linkName[{}] entityPath[{}] creditsToAdd[] Adding more credits in drain loop.",
-                        link.getLinkName(), link.getEntityPath(), creditsToAdd);
-
-                    link.addCredits(creditsToAdd).subscribe(noop -> {
-
-                    }, error -> {
-                        logger.info("linkName[{}] entityPath[{}] Unable to add credits in drain loop.",
-                            link.getLinkName(), link.getEntityPath(), error);
-                        linkHasNoCredits.compareAndSet(false, true);
-                    });
-                }
-            }
-
+            addCreditsToLink("Adding more credits in drain loop.");
         }
     }
 
@@ -558,6 +517,44 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         messageQueue.clear();
         return true;
+    }
+
+    /**
+     * Consolidates all credits calculation when checking to see if more should be added.
+     *
+     * @param message Additional message for context.
+     */
+    private void addCreditsToLink(String message) {
+        synchronized (creditsAdded) {
+            final AmqpReceiveLink link = currentLink;
+            final int credits = getCreditsToAdd();
+
+            if (link == null) {
+                logger.verbose("entityPath[{}] creditsToAdd[{}] There is no link to add credits to.",
+                    entityPath, credits);
+                return;
+            }
+
+            final String linkName = link.getLinkName();
+
+            if (credits < 1) {
+                logger.verbose("linkName[{}] entityPath[{}] creditsToAdd[{}] There are no additional credits to add.",
+                    linkName, entityPath, credits);
+                return;
+            }
+
+            if (linkHasNoCredits.compareAndSet(true, false)) {
+                logger.info("linkName[{}] entityPath[{}] creditsToAdd[{}] There are no more credits on link."
+                        +" Adding more. {}", linkName, entityPath, credits, message);
+
+                link.addCredits(credits).subscribe(noop -> {
+                }, error -> {
+                    logger.info("linkName[{}] entityPath[{}] was already closed. Could not add credits.",
+                        linkName, entityPath);
+                    linkHasNoCredits.compareAndSet(false, true);
+                });
+            }
+        }
     }
 
     private int getCreditsToAdd() {
