@@ -762,6 +762,7 @@
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
         <module>sdk/timeseriesinsights</module>
+        <module>sdk/vmwarecloudsimple</module>
         <module>sdk/webpubsub</module>
       </modules>
     </profile>
