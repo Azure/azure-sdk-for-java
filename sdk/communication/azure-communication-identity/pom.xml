@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+  <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
 
   <name>Microsoft Azure identity client library for communication</name>
   <description>
@@ -49,8 +49,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.89</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.73</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.88</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
