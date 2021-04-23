@@ -61,6 +61,9 @@ public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLink
     /** Static value searchService (of cognitive search) for PrivateLinkSubResourceName. */
     public static final PrivateLinkSubResourceName SEARCH = fromString("searchService");
 
+    /** Static value redisCache (of Redis) for PrivateLinkSubResourceName. */
+    public static final PrivateLinkSubResourceName REDIS_CACHE = fromString("redisCache");
+
     /**
      * Creates or finds a PrivateLinkSubResourceName from its string representation.
      *
