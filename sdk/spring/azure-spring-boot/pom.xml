@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -40,13 +40,13 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -66,37 +66,37 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-core;external_dependency} -->
+      <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-web;external_dependency} -->
+      <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-web;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+      <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-resource-server</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+      <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>5.4.5</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
+      <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -129,7 +129,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -137,7 +137,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -193,7 +193,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure-processor</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -231,7 +231,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -243,7 +243,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -273,18 +273,18 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
+      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-webflux;external_dependency} -->
+      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-webflux;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -335,24 +335,24 @@
                 <include>javax.validation:validation-api:[2.0.1.Final]</include> <!-- {x-include-update;javax.validation:validation-api;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.7.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.springframework:spring-core:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
-                <include>org.springframework:spring-context:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-jms:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
-                <include>org.springframework:spring-webflux:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-webflux;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-test:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-web:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-webflux:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework.security:spring-security-core:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-client:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-resource-server:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-jose:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
-                <include>org.springframework.security:spring-security-web:[5.4.5]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
+                <include>org.springframework:spring-core:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-jms:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-webflux:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-webflux;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-test:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-webflux:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework.security:spring-security-core:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-client:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-jose:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-web:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
               </includes>
             </bannedDependencies>

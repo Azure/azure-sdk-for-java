@@ -22,12 +22,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -58,8 +58,8 @@
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-core:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.3.0]</include> <!-- {x-include-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-validation:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-validation:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
