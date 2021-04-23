@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -694,11 +695,20 @@ public class DataLakeFileSystemClient {
 
         Response<DataLakePathAsyncClient> asyncClientResponse =
             StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-        DataLakePathAsyncClient asyncClient = asyncClientResponse.getValue();
-        DataLakePathClient pathClient = new DataLakePathClient(asyncClient,
-            blobContainerClient.getBlobClient(deletedPath).getBlockBlobClient());
-        return new SimpleResponse<>(asyncClientResponse.getRequest(), asyncClientResponse.getStatusCode(),
-            asyncClientResponse.getHeaders(), pathClient);
+        DataLakePathAsyncClient pathAsyncClient = asyncClientResponse.getValue();
+        BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient(deletedPath).getBlockBlobClient();
+        if (pathAsyncClient instanceof DataLakeDirectoryAsyncClient) {
+            return new SimpleResponse<>(asyncClientResponse.getRequest(), asyncClientResponse.getStatusCode(),
+                asyncClientResponse.getHeaders(),
+                new DataLakeDirectoryClient((DataLakeDirectoryAsyncClient) pathAsyncClient, blockBlobClient));
+        } else if (pathAsyncClient instanceof DataLakeFileAsyncClient) {
+            return new SimpleResponse<>(asyncClientResponse.getRequest(), asyncClientResponse.getStatusCode(),
+                asyncClientResponse.getHeaders(),
+                new DataLakeFileClient((DataLakeFileAsyncClient) pathAsyncClient, blockBlobClient));
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either a file "
+                + "or directory client."));
+        }
     }
 
     /**

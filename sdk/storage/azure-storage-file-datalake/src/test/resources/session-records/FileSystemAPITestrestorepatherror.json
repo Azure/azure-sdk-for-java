@@ -1,64 +1,64 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorepatherror0filesystemapitestrestorepatherror38e81256?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorepatherror0filesystemapitestrestorepatherrore1812460?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "89ed8bec-9e82-4f42-b814-924272e1b5d2"
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.4 azsdk-java-azure-storage-file-datalake/12.5.0-beta.4 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "71415a98-c813-41e5-994c-78b9604ec20e"
     },
     "Response" : {
-      "x-ms-version" : "2020-06-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8D8F61A3244CCB3",
-      "Last-Modified" : "Fri, 02 Apr 2021 20:59:24 GMT",
+      "eTag" : "0x8D9069A87EFB8DE",
+      "Last-Modified" : "Fri, 23 Apr 2021 20:58:22 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "71e32b73-d01e-0077-1c03-289834000000",
-      "x-ms-client-request-id" : "89ed8bec-9e82-4f42-b814-924272e1b5d2",
-      "Date" : "Fri, 02 Apr 2021 20:59:23 GMT"
+      "x-ms-request-id" : "605d3056-501e-001b-7c83-3873a3000000",
+      "x-ms-client-request-id" : "71415a98-c813-41e5-994c-78b9604ec20e",
+      "Date" : "Fri, 23 Apr 2021 20:58:22 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3e9d14b7-1a87-4568-8ba3-4b874b1b131a",
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.4 azsdk-java-azure-storage-file-datalake/12.5.0-beta.4 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "764825fb-9b25-4110-9873-c936fce9ef26",
       "Content-Type" : "application/xml"
     },
     "Response" : {
-      "x-ms-version" : "2020-06-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "71e32d56-d01e-0077-3a03-289834000000",
-      "x-ms-client-request-id" : "3e9d14b7-1a87-4568-8ba3-4b874b1b131a",
-      "Date" : "Fri, 02 Apr 2021 20:59:24 GMT"
+      "x-ms-request-id" : "605d309c-501e-001b-3483-3873a3000000",
+      "x-ms-client-request-id" : "764825fb-9b25-4110-9873-c936fce9ef26",
+      "Date" : "Fri, 23 Apr 2021 20:58:22 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorepatherror1filesystemapitestrestorepatherror38e74626/foo?comp=undelete",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorepatherror1filesystemapitestrestorepatherrore1835032/foo?comp=undelete",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "50860af1-9362-4752-8622-a8f36da12226"
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.5.0-beta.4 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "129e3830-84d1-4da3-b89b-49f20678f909"
     },
     "Response" : {
+      "content-length" : "341",
       "x-ms-version" : "2020-08-04",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidHeaderValue",
       "retry-after" : "0",
-      "Content-Length" : "341",
       "StatusCode" : "400",
-      "x-ms-request-id" : "71e3a1ce-d01e-0077-3b03-289834000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:71e3a1ce-d01e-0077-3b03-289834000000\nTime:2021-04-02T20:59:55.1752024Z</Message><HeaderName>x-ms-undelete-source</HeaderName><HeaderValue>?deletionid=bar</HeaderValue></Error>",
-      "x-ms-client-request-id" : "50860af1-9362-4752-8622-a8f36da12226",
-      "Date" : "Fri, 02 Apr 2021 20:59:54 GMT",
+      "x-ms-request-id" : "605d4102-501e-001b-0883-3873a3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:605d4102-501e-001b-0883-3873a3000000\nTime:2021-04-23T20:58:53.2316390Z</Message><HeaderName>x-ms-undelete-source</HeaderName><HeaderValue>?deletionid=bar</HeaderValue></Error>",
+      "x-ms-client-request-id" : "129e3830-84d1-4da3-b89b-49f20678f909",
+      "Date" : "Fri, 23 Apr 2021 20:58:52 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -66,62 +66,62 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ff9fb46d-7e0d-4214-aef4-d6fc13cc995a",
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.4 azsdk-java-azure-storage-file-datalake/12.5.0-beta.4 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3d4cae06-304d-4b0f-b45f-49483222852e",
       "Content-Type" : "application/xml"
     },
     "Response" : {
-      "x-ms-version" : "2020-06-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "71e3a287-d01e-0077-2903-289834000000",
-      "x-ms-client-request-id" : "ff9fb46d-7e0d-4214-aef4-d6fc13cc995a",
-      "Date" : "Fri, 02 Apr 2021 20:59:54 GMT"
+      "x-ms-request-id" : "605d4132-501e-001b-3683-3873a3000000",
+      "x-ms-client-request-id" : "3d4cae06-304d-4b0f-b45f-49483222852e",
+      "Date" : "Fri, 23 Apr 2021 20:58:52 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
     "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtfsrestorepatherror",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e4a320cc-9711-4296-bedf-f1432eee72f5"
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.4 azsdk-java-azure-storage-file-datalake/12.5.0-beta.4 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7850cb0b-1e43-4bb5-8806-ed1d29e72a90"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2020-08-04",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "71e41cb6-d01e-0077-1f03-289834000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seannsecanary.blob.core.windows.net/\"><Prefix>jtfsrestorepatherror</Prefix><Containers><Container><Name>jtfsrestorepatherror0filesystemapitestrestorepatherror38e81256</Name><Properties><Last-Modified>Fri, 02 Apr 2021 20:59:24 GMT</Last-Modified><Etag>\"0x8D8F61A3244CCB3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><VersionLevelWormEnabled>false</VersionLevelWormEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "x-ms-client-request-id" : "e4a320cc-9711-4296-bedf-f1432eee72f5",
-      "Date" : "Fri, 02 Apr 2021 21:00:25 GMT",
+      "x-ms-request-id" : "605d5626-501e-001b-2d83-3873a3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seannsecanary.blob.core.windows.net/\"><Prefix>jtfsrestorepatherror</Prefix><Containers><Container><Name>jtfsrestorepatherror0filesystemapitestrestorepatherrore1812460</Name><Properties><Last-Modified>Fri, 23 Apr 2021 20:58:22 GMT</Last-Modified><Etag>\"0x8D9069A87EFB8DE\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><VersionLevelWormEnabled>false</VersionLevelWormEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "7850cb0b-1e43-4bb5-8806-ed1d29e72a90",
+      "Date" : "Fri, 23 Apr 2021 20:59:23 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorepatherror0filesystemapitestrestorepatherror38e81256?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorepatherror0filesystemapitestrestorepatherrore1812460?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.3 azsdk-java-azure-storage-file-datalake/12.5.0-beta.3 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3cd36e8f-c884-4ed0-9cf2-81042b846dbb"
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.4 azsdk-java-azure-storage-file-datalake/12.5.0-beta.4 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b914930d-7257-49e8-8ef2-0296d146b4dd"
     },
     "Response" : {
-      "x-ms-version" : "2020-06-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "71e41e45-d01e-0077-0703-289834000000",
-      "x-ms-client-request-id" : "3cd36e8f-c884-4ed0-9cf2-81042b846dbb",
-      "Date" : "Fri, 02 Apr 2021 21:00:26 GMT"
+      "x-ms-request-id" : "605d5639-501e-001b-3983-3873a3000000",
+      "x-ms-client-request-id" : "b914930d-7257-49e8-8ef2-0296d146b4dd",
+      "Date" : "Fri, 23 Apr 2021 20:59:23 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfsrestorepatherror0filesystemapitestrestorepatherror38e81256", "jtfsrestorepatherror1filesystemapitestrestorepatherror38e74626" ]
+  "variables" : [ "jtfsrestorepatherror0filesystemapitestrestorepatherrore1812460", "jtfsrestorepatherror1filesystemapitestrestorepatherrore1835032" ]
 }

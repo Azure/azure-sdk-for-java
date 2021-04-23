@@ -1075,14 +1075,30 @@ class FileSystemAPITest extends APISpec {
         dir.create()
         dir.delete()
 
-        def deletionId = fsc.listDeletedPaths().first().getDeletionId()
+        def file = fsc.getFileClient(generatePathName())
+        file.create()
+        file.delete()
+
+        def paths = fsc.listDeletedPaths().iterator()
+
+        def dirDeletionId = paths.next().getDeletionId()
+        def fileDeletionId = paths.next().getDeletionId()
 
         when:
-        def returnedClient = fsc.undeletePath(dir.getDirectoryName(), deletionId)
+        def returnedClient = fsc.undeletePath(dir.getDirectoryName(), dirDeletionId)
 
         then:
+        returnedClient instanceof DataLakeDirectoryClient
         dir.getProperties() != null
         returnedClient.getPathUrl() == dir.getPathUrl()
+
+        when:
+        returnedClient = fsc.undeletePath(file.getFileName(), fileDeletionId)
+
+        then:
+        returnedClient instanceof DataLakeFileClient
+        file.getProperties() != null
+        returnedClient.getPathUrl() == file.getPathUrl()
 
         cleanup:
         disableSoftDelete()
@@ -1093,24 +1109,39 @@ class FileSystemAPITest extends APISpec {
         setup:
         enableSoftDelete()
 
-        dirName = Utility.urlEncode(dirName)
-        def dir = fsc.getDirectoryClient(dirName)
+        name = Utility.urlEncode(name)
+        def dir = fsc.getDirectoryClient("dir" + name)
         dir.create()
         dir.delete()
 
-        def deletionId = fsc.listDeletedPaths().first().getDeletionId()
+        def file = fsc.getFileClient("file" + name)
+        file.create()
+        file.delete()
+
+        def paths = fsc.listDeletedPaths().iterator()
+
+        def dirDeletionId = paths.next().getDeletionId()
+        def fileDeletionId = paths.next().getDeletionId()
 
         when:
-        fsc.undeletePath(Utility.urlEncode(dir.getDirectoryName()), deletionId)
+        def returnedClient = fsc.undeletePath(Utility.urlEncode(dir.getDirectoryName()), dirDeletionId)
 
         then:
+        returnedClient instanceof DataLakeDirectoryClient
         dir.getProperties() != null
+
+        when:
+        returnedClient = fsc.undeletePath(Utility.urlEncode(file.getFileName()), fileDeletionId)
+
+        then:
+        returnedClient instanceof DataLakeFileClient
+        file.getProperties() != null
 
         cleanup:
         disableSoftDelete()
 
         where:
-        dirName                                                   | _
+        name                                                   | _
         "!'();[]@&%=+\$,#äÄöÖüÜß;"                                | _
         "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B" | _
         " my cool directory "                                     | _

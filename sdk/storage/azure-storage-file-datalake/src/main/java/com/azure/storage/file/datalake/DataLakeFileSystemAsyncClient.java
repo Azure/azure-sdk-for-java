@@ -911,21 +911,23 @@ public class DataLakeFileSystemAsyncClient {
         return blobDataLakeStoragePath.getPaths().undeleteWithResponseAsync(null,
             String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            /*
-            Perform a get properties to determine if it's a file or directory. Zip with the original response for
-            constructing the final response later
-             */
-            .flatMap(response -> Mono.zip(Mono.just(response),
-                this.blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null).getProperties())
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 // Construct the new client and final response from the undelete + getProperties responses
-                .map(tuple2 -> new SimpleResponse<>(tuple2.getT1(),
-                    new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(),
+                .map(response -> {
+                    DataLakePathAsyncClient client = new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(),
                         serviceVersion, accountName, fileSystemName, deletedPath,
-                        tuple2.getT2().getMetadata().getOrDefault("hdi_isfolder", "").equals("true")
-                            ? PathResourceType.DIRECTORY : PathResourceType.FILE, // Determine directory or file
+                        PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
                         blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
-                            .getBlockBlobAsyncClient()))));
+                            .getBlockBlobAsyncClient());
+                    if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
+                        return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
+                    } else if (PathResourceType.FILE.equals(client.pathResourceType)) {
+                        return new SimpleResponse<>(response, new DataLakeFileAsyncClient(client));
+                    } else {
+                        throw logger.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either "
+                            + "a file or directory client."));
+                    }
+                });
     }
 
     /**
