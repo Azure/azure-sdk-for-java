@@ -220,7 +220,12 @@ def create_artifact_identifier(element: ET.Element):
 
 # Gets the dependency version.
 def get_dependency_version(element: ET.Element):
-    return element_find(element, 'version')
+    dependency_version = element_find(element, 'version')
+
+    if dependency_version is None:
+        return None
+
+    return dependency_version.text
 
 # Helper function for finding an XML element which handles adding the namespace.
 def element_find(element: ET.Element, path: str):
