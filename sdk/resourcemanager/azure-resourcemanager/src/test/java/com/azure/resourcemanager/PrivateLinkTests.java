@@ -12,11 +12,19 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.RuntimeStack;
+import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.Network;
@@ -28,6 +36,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -37,10 +46,15 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -389,6 +403,98 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
     }
 
+    @Test
+    public void testPrivateEndpointAKS() {
+        String clusterName = generateRandomResourceName("aks", 8);
+        String apName = "ap" + clusterName;
+        String dnsPrefix = "dns" + clusterName;
+
+        String clientId = "clientId";
+        String clientSecret = "secret";
+        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
+        if (envSecondaryServicePrincipal == null
+            || envSecondaryServicePrincipal.isEmpty()
+            || !(new File(envSecondaryServicePrincipal).exists())) {
+            envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
+        }
+        try {
+            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
+            clientId = credentialsMap.get("clientId");
+            clientSecret = credentialsMap.get("clientSecret");
+        } catch (Exception e) {
+        }
+
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.KUBERNETES_MANAGEMENT;
+
+        KubernetesCluster cluster = azureResourceManager.kubernetesClusters().define(clusterName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("aksadmin")
+            .withSshKey(sshPublicKey())
+            .withServicePrincipalClientId(clientId)
+            .withServicePrincipalSecret(clientSecret)
+            .defineAgentPool(apName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(dnsPrefix)
+            .enablePrivateCluster()
+            .create();
+
+        validatePrivateLinkResource(cluster, subResourceName.toString());
+
+        // private dns zone and private endpoint connection is created by AKS
+
+        List<PrivateEndpointConnection> connections = cluster.listPrivateEndpointConnections().stream().collect(Collectors.toList());
+        Assertions.assertEquals(1, connections.size());
+        PrivateEndpointConnection connection = connections.iterator().next();
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, connection.privateLinkServiceConnectionState().status());
+    }
+
+    @Test
+    @Disabled("invalid response of WebAppsClient.getPrivateEndpointConnectionListAsync")
+    public void testPrivateEndpointWeb() {
+        String webappName = generateRandomResourceName("webapp", 20);
+
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.WEB_SITES;
+
+        WebApp webapp = azureResourceManager.webApps().define(webappName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewLinuxPlan(PricingTier.PREMIUM_P2V3) // requires P2 or P3
+            .withBuiltInImage(RuntimeStack.JAVA_11_JAVA11)
+            .create();
+
+        validatePrivateLinkResource(webapp, subResourceName.toString());
+
+        validateListAndApprovePrivatePrivateEndpointConnection(webapp, subResourceName);
+    }
+
+//    @Test
+//    public void testPrivateEndpointWebSlot() {
+//        String webappName = generateRandomResourceName("webapp", 20);
+//        String webappSlotName = generateRandomResourceName("webappslot", 20);
+//
+//        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.WEB_SITES;
+//
+//        WebApp webapp = azureResourceManager.webApps().define(webappName)
+//            .withRegion(region)
+//            .withNewResourceGroup(rgName)
+//            .withNewLinuxPlan(PricingTier.PREMIUM_P2V3) // requires P2 or P3
+//            .withBuiltInImage(RuntimeStack.JAVA_11_JAVA11)
+//            .create();
+//
+//        DeploymentSlot slot = webapp.deploymentSlots().define(webappSlotName)
+//            .withConfigurationFromParent()
+//            .create();
+//
+//        validatePrivateLinkResource(slot, subResourceName.toString());
+//
+//        validateListAndApprovePrivatePrivateEndpointConnection(slot, subResourceName);
+//    }
+
     private void validatePrivateLinkResource(SupportsListingPrivateLinkResource resource, String requiredGroupId) {
         PagedIterable<PrivateLinkResource> privateLinkResources = resource.listPrivateLinkResources();
         List<PrivateLinkResource> privateLinkResourceList = privateLinkResources.stream().collect(Collectors.toList());
@@ -424,9 +530,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         return privateEndpoint;
     }
 
-    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void validateApprovePrivatePrivateEndpointConnection(
-        T resource, PrivateLinkSubResourceName subResourceName) {
-
+    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void validateApprovePrivatePrivateEndpointConnection(T resource, PrivateLinkSubResourceName subResourceName) {
         PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(resource, subResourceName);
 
         resource.approvePrivateEndpointConnection(pecName);
@@ -434,5 +538,26 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         // check again
         privateEndpoint.refresh();
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+    }
+
+    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection & SupportsListingPrivateEndpointConnection> void validateListAndApprovePrivatePrivateEndpointConnection(T resource, PrivateLinkSubResourceName subResourceName) {
+        PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(resource, subResourceName);
+
+        List<PrivateEndpointConnection> connections = resource.listPrivateEndpointConnections().stream().collect(Collectors.toList());
+        Assertions.assertEquals(1, connections.size());
+        PrivateEndpointConnection connection = connections.iterator().next();
+
+        resource.approvePrivateEndpointConnection(connection.name());
+
+        // check again
+        privateEndpoint.refresh();
+        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+    }
+
+    private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
+        String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
+        HashMap<String, String> auth = new HashMap<>();
+        auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+        return auth;
     }
 }

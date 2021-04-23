@@ -3,6 +3,7 @@
 ## 2.4.0-beta.1 (Unreleased)
 
 - Updated `api-version` to `2021-03-01`
+- Supported Private Link in `KubernetesCluster`
 
 ## 2.3.0 (2021-03-30)
 
