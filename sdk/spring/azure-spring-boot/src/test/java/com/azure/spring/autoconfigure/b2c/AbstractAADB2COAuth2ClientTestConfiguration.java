@@ -3,8 +3,8 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Import;
@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 
 import java.util.Map;
 
-public abstract class AbstractAADB2COAuth2ClientConfigurationTest {
+public abstract class AbstractAADB2COAuth2ClientTestConfiguration {
 
     @EnableWebSecurity
     @Import(OAuth2ClientAutoConfiguration.class)

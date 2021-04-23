@@ -56,17 +56,22 @@ public class AADB2COAuth2ClientConfiguration {
         clientRegistrations.addAll(properties.getUserFlows()
                   .entrySet()
                   .stream()
-                  .map(this::b2cUserFlowClientRegistration)
+                  .map(this::buildUserFlowClientRegistration)
                   .collect(Collectors.toList()));
         clientRegistrations.addAll(properties.getAuthorizationClients()
                                              .entrySet()
                                              .stream()
-                                             .map(this::b2cClientCredentialRegistration)
+                                             .map(this::buildClientRegistration)
                                              .collect(Collectors.toList()));
         return new AADB2CClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
     }
 
-    private ClientRegistration b2cUserFlowClientRegistration(Map.Entry<String, String> client) {
+    /**
+     * Build user flow client registration.
+     * @param client user flow properties
+     * @return ClientRegistration
+     */
+    private ClientRegistration buildUserFlowClientRegistration(Map.Entry<String, String> client) {
         return ClientRegistration.withRegistrationId(client.getValue()) // Use flow as registration Id.
                                  .clientName(client.getKey())
                                  .clientId(properties.getClientId())
@@ -83,18 +88,18 @@ public class AADB2COAuth2ClientConfiguration {
     }
 
     /**
-     * Create client credential registration.
+     * Create client registration, only support OAuth2 client credentials.
      *
      * @param client each client properties
      * @return ClientRegistration
      */
-    private ClientRegistration b2cClientCredentialRegistration(Map.Entry<String, AuthorizationClientProperties> client) {
+    private ClientRegistration buildClientRegistration(Map.Entry<String, AuthorizationClientProperties> client) {
         AuthorizationGrantType authGrantType = Optional.ofNullable(client.getValue().getAuthorizationGrantType())
                                                                 .map(AADAuthorizationGrantType::getValue)
                                                                 .map(AuthorizationGrantType::new)
                                                                 .orElse(null);
         if (!AuthorizationGrantType.CLIENT_CREDENTIALS.equals(authGrantType)) {
-            LOGGER.warn("Found {} registration of non client-credentials authorization type.", client.getKey());
+            LOGGER.warn("The authorization type of the {} client registration is not supported.", client.getKey());
         }
         return ClientRegistration.withRegistrationId(client.getKey())
                                  .clientName(client.getKey())
@@ -111,7 +116,7 @@ public class AADB2COAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Conditional(AADB2CCondition.class)
-    public OAuth2AuthorizedClientManager authorizeClientManager(ClientRegistrationRepository clients,
+    public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
                                                          OAuth2AuthorizedClientRepository authorizedClients) {
         DefaultOAuth2AuthorizedClientManager manager =
             new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);

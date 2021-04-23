@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -14,9 +14,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class AADB2CAutoConfigurationTestTest extends AbstractAADB2COAuth2ClientConfigurationTest {
+public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfiguration {
 
-    public AADB2CAutoConfigurationTestTest() {
+    public AADB2CAutoConfigurationTest() {
         contextRunner = new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))

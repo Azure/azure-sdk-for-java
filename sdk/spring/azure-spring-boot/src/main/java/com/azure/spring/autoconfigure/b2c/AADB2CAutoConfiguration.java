@@ -39,8 +39,8 @@ public class AADB2CAutoConfiguration {
 
     public AADB2CAutoConfiguration(@NonNull ClientRegistrationRepository repository,
                                    @NonNull AADB2CProperties properties) {
-        this.properties = properties;
         this.repository = repository;
+        this.properties = properties;
     }
 
     @Bean

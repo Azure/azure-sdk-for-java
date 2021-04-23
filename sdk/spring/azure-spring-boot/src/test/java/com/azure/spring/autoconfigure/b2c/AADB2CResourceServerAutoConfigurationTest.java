@@ -4,8 +4,8 @@ package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.aad.AADIssuerJWSKeySelector;
 import com.azure.spring.aad.AADTrustedIssuerRepository;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ContextConsumer;
@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
-public class AADB2CResourceServerAutoConfigurationTestTest extends AbstractAADB2COAuth2ClientConfigurationTest {
+public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfiguration {
 
     private final WebApplicationContextRunner resourceServerContextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
@@ -22,7 +22,7 @@ public class AADB2CResourceServerAutoConfigurationTestTest extends AbstractAADB2
             AADB2CResourceServerAutoConfiguration.class))
         .withPropertyValues(getB2CResourceServerProperties());
 
-    public AADB2CResourceServerAutoConfigurationTestTest() {
+    public AADB2CResourceServerAutoConfigurationTest() {
         contextRunner = new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class,
                 AADB2CResourceServerAutoConfiguration.class))
