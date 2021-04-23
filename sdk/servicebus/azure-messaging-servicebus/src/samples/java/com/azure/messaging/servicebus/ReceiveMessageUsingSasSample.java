@@ -28,8 +28,8 @@ public class ReceiveMessageUsingSasSample {
         // 1. sharedAccesskey, sharedAccesskeyName: They can specific to a resource. Go on portal under your
         //    service bus namespace, navigate to specific queue or topic and  click on "shared  access policies". Here
         //    you can create appropriate resource specific policies.
-        // 2. Now generate SAS token using: https://docs.microsoft.com/en-us/rest/api/eventhub/generate-sas-token
-        // 3. More about SAS Tokens explained: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas
+        // 2. Now generate SAS token using: https://docs.microsoft.com/rest/api/eventhub/generate-sas-token
+        // 3. More about SAS Tokens explained: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas
 
         String sharedAccesskeyName = "<Resource Specific Key name from Portal>";
         String sharedAccesskey = "<Resource Specific Key from Portal>";
@@ -69,8 +69,7 @@ public class ReceiveMessageUsingSasSample {
     }
 
     /**
-     * This method generate SAS Token for given resource uri , you can read more about how to generate SAS token using link below.
-     * @see <a href="https://docs.microsoft.com/rest/api/eventhub/generate-sas-token ">Generate SAS Token</a>
+     * This method generate SAS Token for given resource uri.
      */
     private static String getSASToken(String resourceUri, String keyName, String key) {
         long epoch = System.currentTimeMillis() / 1000L;
