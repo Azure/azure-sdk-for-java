@@ -597,7 +597,7 @@ public class DataLakeFileSystemAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(
             this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
-                null, prefix, marker, maxResults,
+                prefix, null, marker, maxResults,
                 null, ListBlobsShowOnly.DELETED, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout);
     }
