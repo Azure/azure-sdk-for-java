@@ -50,7 +50,7 @@
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.67</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.66</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
