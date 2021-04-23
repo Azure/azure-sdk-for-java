@@ -387,12 +387,12 @@ public final class FileSystemsImpl {
     }
 
     /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
+     * The List Blobs operation returns a list of the blobs under the specified container.
      *
+     * @param prefix Filters results to filesystems within the specified prefix.
      * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
      *     response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
      *     appearance of the delimiter character. The delimiter may be a single character or a string.
-     * @param prefix Filters results to filesystems within the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next
      *     listing operation. The operation returns the NextMarker value within the response body if the listing
      *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
@@ -415,8 +415,8 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithResponseAsync(
-            String delimiter,
             String prefix,
+            String delimiter,
             String marker,
             Integer maxResults,
             List<ListBlobsIncludeItem> include,
@@ -426,7 +426,7 @@ public final class FileSystemsImpl {
             Context context) {
         final String restype = "container";
         final String comp = "list";
-        final String accept = "application/json";
+        final String accept = "application/xml";
         String includeConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(

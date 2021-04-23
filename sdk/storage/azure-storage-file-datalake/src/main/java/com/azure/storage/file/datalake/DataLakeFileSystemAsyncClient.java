@@ -851,7 +851,7 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePath#String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String}
      *
      * @param deletedPath The deleted path
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
@@ -861,8 +861,8 @@ public class DataLakeFileSystemAsyncClient {
      * @throws NullPointerException if deletedPath or deletionId is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataLakePathAsyncClient> restorePath(String deletedPath, String deletionId) {
-        return restorePathWithResponse(deletedPath, deletionId).flatMap(FluxUtil::toMono);
+    public Mono<DataLakePathAsyncClient> undeletePath(String deletedPath, String deletionId) {
+        return undeletePathWithResponse(deletedPath, deletionId).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -872,7 +872,7 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String}
      *
      * @param deletedPath The deleted path
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
@@ -882,15 +882,15 @@ public class DataLakeFileSystemAsyncClient {
      * @throws NullPointerException if deletedPath or deletionId is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakePathAsyncClient>> restorePathWithResponse(String deletedPath, String deletionId) {
+    public Mono<Response<DataLakePathAsyncClient>> undeletePathWithResponse(String deletedPath, String deletionId) {
         try {
-            return withContext(context -> restorePathWithResponse(deletedPath, deletionId, context));
+            return withContext(context -> undeletePathWithResponse(deletedPath, deletionId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<DataLakePathAsyncClient>> restorePathWithResponse(String deletedPath, String deletionId,
+    Mono<Response<DataLakePathAsyncClient>> undeletePathWithResponse(String deletedPath, String deletionId,
         Context context) {
         Objects.requireNonNull(deletedPath);
         Objects.requireNonNull(deletionId);

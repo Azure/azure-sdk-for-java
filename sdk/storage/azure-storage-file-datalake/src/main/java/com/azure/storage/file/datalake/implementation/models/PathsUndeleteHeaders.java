@@ -33,6 +33,12 @@ public final class PathsUndeleteHeaders {
     private String xMsClientRequestId;
 
     /*
+     * The x-ms-resource-type property.
+     */
+    @JsonProperty(value = "x-ms-resource-type")
+    private String xMsResourceType;
+
+    /*
      * The Date property.
      */
     @JsonProperty(value = "Date")
@@ -95,6 +101,26 @@ public final class PathsUndeleteHeaders {
      */
     public PathsUndeleteHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsResourceType property: The x-ms-resource-type property.
+     *
+     * @return the xMsResourceType value.
+     */
+    public String getXMsResourceType() {
+        return this.xMsResourceType;
+    }
+
+    /**
+     * Set the xMsResourceType property: The x-ms-resource-type property.
+     *
+     * @param xMsResourceType the xMsResourceType value to set.
+     * @return the PathsUndeleteHeaders object itself.
+     */
+    public PathsUndeleteHeaders setXMsResourceType(String xMsResourceType) {
+        this.xMsResourceType = xMsResourceType;
         return this;
     }
 

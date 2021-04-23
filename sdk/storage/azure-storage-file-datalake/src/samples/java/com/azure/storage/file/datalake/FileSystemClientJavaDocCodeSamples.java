@@ -300,21 +300,21 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link DataLakeFileSystemClient#restorePath(String, String)}
+     * Code snippet for {@link DataLakeFileSystemClient#undeletePath(String, String)}
      */
     public void restorePathCodeSnippet() {
         String deletedPath = null;
         String deletionId = null;
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePath#String-String
-        client.restorePath(deletedPath, deletionId);
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String
+        client.undeletePath(deletedPath, deletionId);
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePath#String-String
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
-        client.restorePathWithResponse(deletedPath, deletionId, timeout, new Context(key1, value1));
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context
+        client.undeletePathWithResponse(deletedPath, deletionId, timeout, new Context(key1, value1));
         System.out.println("Delete request completed");
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context
     }
 
     /**

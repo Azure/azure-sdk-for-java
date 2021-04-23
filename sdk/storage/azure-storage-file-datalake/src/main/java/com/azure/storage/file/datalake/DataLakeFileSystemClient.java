@@ -654,7 +654,7 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePath#String-String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String}
      *
      * @param deletedPath The deleted path
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
@@ -664,8 +664,8 @@ public class DataLakeFileSystemClient {
      * @throws NullPointerException if deletedPath or deletionId is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataLakePathClient restorePath(String deletedPath, String deletionId) {
-        return restorePathWithResponse(deletedPath, deletionId, null, Context.NONE).getValue();
+    public DataLakePathClient undeletePath(String deletedPath, String deletionId) {
+        return undeletePathWithResponse(deletedPath, deletionId, null, Context.NONE).getValue();
     }
 
     /**
@@ -675,7 +675,7 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.restorePathWithResponse#String-String-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context}
      *
      * @param deletedPath The deleted path
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
@@ -687,10 +687,10 @@ public class DataLakeFileSystemClient {
      * @throws NullPointerException if deletedPath or deletionId is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakePathClient> restorePathWithResponse(String deletedPath, String deletionId,
+    public Response<DataLakePathClient> undeletePathWithResponse(String deletedPath, String deletionId,
         Duration timeout, Context context) {
         Mono<Response<DataLakePathAsyncClient>> response =
-            dataLakeFileSystemAsyncClient.restorePathWithResponse(deletedPath, deletionId, context);
+            dataLakeFileSystemAsyncClient.undeletePathWithResponse(deletedPath, deletionId, context);
 
         Response<DataLakePathAsyncClient> asyncClientResponse =
             StorageImplUtils.blockWithOptionalTimeout(response, timeout);

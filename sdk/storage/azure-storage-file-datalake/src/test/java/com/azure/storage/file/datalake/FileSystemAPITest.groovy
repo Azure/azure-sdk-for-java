@@ -1078,7 +1078,7 @@ class FileSystemAPITest extends APISpec {
         def deletionId = fsc.listDeletedPaths().first().getDeletionId()
 
         when:
-        def returnedClient = fsc.restorePath(dir.getDirectoryName(), deletionId)
+        def returnedClient = fsc.undeletePath(dir.getDirectoryName(), deletionId)
 
         then:
         dir.getProperties() != null
@@ -1101,7 +1101,7 @@ class FileSystemAPITest extends APISpec {
         def deletionId = fsc.listDeletedPaths().first().getDeletionId()
 
         when:
-        fsc.restorePath(Utility.urlEncode(dir.getDirectoryName()), deletionId)
+        fsc.undeletePath(Utility.urlEncode(dir.getDirectoryName()), deletionId)
 
         then:
         dir.getProperties() != null
@@ -1124,7 +1124,7 @@ class FileSystemAPITest extends APISpec {
         fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
 
         when:
-        fsc.restorePath("foo", "bar")
+        fsc.undeletePath("foo", "bar")
 
         then:
         thrown(DataLakeStorageException)

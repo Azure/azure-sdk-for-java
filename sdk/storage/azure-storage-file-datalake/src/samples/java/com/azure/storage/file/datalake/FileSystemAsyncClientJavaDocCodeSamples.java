@@ -272,20 +272,20 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link DataLakeFileSystemAsyncClient#restorePath(String, String)}
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#undeletePath(String, String)}
      */
     public void restorePathCodeSnippet() {
         String deletedPath = null;
         String deletionId = null;
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePath#String-String
-        client.restorePath(deletedPath, deletionId).doOnSuccess(response -> System.out.println("Completed undelete"));
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePath#String-String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String
+        client.undeletePath(deletedPath, deletionId).doOnSuccess(response -> System.out.println("Completed undelete"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String
-        client.restorePathWithResponse(deletedPath, deletionId)
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String
+        client.undeletePathWithResponse(deletedPath, deletionId)
             .doOnSuccess(response -> System.out.println("Completed undelete"));
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.restorePathWithResponse#String-String
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String
     }
 
     /**
