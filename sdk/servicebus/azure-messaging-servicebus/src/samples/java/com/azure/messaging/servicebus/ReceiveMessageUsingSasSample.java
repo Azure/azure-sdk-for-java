@@ -76,12 +76,15 @@ public class ReceiveMessageUsingSasSample {
         // NOTE : This is for demo one, Change this for your application specific expiry duration.
         int week = 60 * 60 * 24 * 7;
         String expiry = Long.toString(epoch + week);
-
-        String stringToSign = URLEncoder.encode(resourceUri, StandardCharsets.UTF_8) + "\n" + expiry;
-        String signature = getHMAC256(key, stringToSign);
-        String sasToken = "SharedAccessSignature sr=" + URLEncoder.encode(resourceUri, StandardCharsets.UTF_8) + "&sig=" +
-            URLEncoder.encode(signature, StandardCharsets.UTF_8) + "&se=" + expiry + "&skn=" + keyName;
-
+        String sasToken = null;
+        try {
+            String stringToSign = URLEncoder.encode(resourceUri, StandardCharsets.UTF_8.toString()) + "\n" + expiry;
+            String signature = getHMAC256(key, stringToSign);
+            sasToken = "SharedAccessSignature sr=" + URLEncoder.encode(resourceUri, StandardCharsets.UTF_8) + "&sig=" +
+                URLEncoder.encode(signature, StandardCharsets.UTF_8.toString()) + "&se=" + expiry + "&skn=" + keyName;
+        } catch(Exception e) {
+            System.err.println(" Could not url encode " +  e.getMessage());
+        }
         return sasToken;
     }
 
