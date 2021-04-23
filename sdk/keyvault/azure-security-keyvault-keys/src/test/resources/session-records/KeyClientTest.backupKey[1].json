@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/848dac76-3cf2-4c8f-9d88-cbb64e81179a-testKey8/create?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey8/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/848dac76-3cf2-4c8f-9d88-cbb64e81179a-testKey8/create?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey8/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -53,7 +53,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/848dac76-3cf2-4c8f-9d88-cbb64e81179a-testKey8/create?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey8/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -79,7 +79,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/848dac76-3cf2-4c8f-9d88-cbb64e81179a-testKey8/create?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey8/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -105,7 +105,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/848dac76-3cf2-4c8f-9d88-cbb64e81179a-testKey8/create?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey8/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -124,14 +124,14 @@
       "Expires" : "-1",
       "x-ms-request-id" : "f1c9987b-04c4-4e91-b460-533acc295329",
       "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/848dac76-3cf2-4c8f-9d88-cbb64e81179a-testKey8/20277ee8339e4868aa3480fadd506c8d\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"nMvvYYyVsz8GaPuh4XeISzLqJ2OMc6Wz3fhYQxqg0SXX9vo7K8zHiSlDI5VHM-QZzFEt3XWw8GtbkD2R61-cla55XbKR8qsiXXGCi_-6NA6L1zSsJvHBdHWMcR-yM_3Le0IbO4YO628F4QdT0YlSY67bHlv3pZCUKG9mMpruTwdi3ABnDGMI10F0tjtJbE65u_z8AKarm-Xx_uVGjdGpi8HwRA_L27foYLBqLufJVvKwcEewzJ1pokk8mb_DmSUyBki8YlXcXAAfRicGQdRWMg98OWUg7rwpTRsc3-7XbqUYDu6tCWDYKRZ7lt_rjCT4NRxi0anwc2WrZykeEvQraQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1619164154,\"updated\":1619164154,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testKey8/20277ee8339e4868aa3480fadd506c8d\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"nMvvYYyVsz8GaPuh4XeISzLqJ2OMc6Wz3fhYQxqg0SXX9vo7K8zHiSlDI5VHM-QZzFEt3XWw8GtbkD2R61-cla55XbKR8qsiXXGCi_-6NA6L1zSsJvHBdHWMcR-yM_3Le0IbO4YO628F4QdT0YlSY67bHlv3pZCUKG9mMpruTwdi3ABnDGMI10F0tjtJbE65u_z8AKarm-Xx_uVGjdGpi8HwRA_L27foYLBqLufJVvKwcEewzJ1pokk8mb_DmSUyBki8YlXcXAAfRicGQdRWMg98OWUg7rwpTRsc3-7XbqUYDu6tCWDYKRZ7lt_rjCT4NRxi0anwc2WrZykeEvQraQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1619164154,\"updated\":1619164154,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/848dac76-3cf2-4c8f-9d88-cbb64e81179a-testKey8/backup?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey8/backup?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
