@@ -326,7 +326,7 @@ Here are some examples about how to use these properties:
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L26 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L40 -->
     ```java
     @Controller
     public class RoleController {
@@ -342,6 +342,20 @@ Here are some examples about how to use these properties:
         @PreAuthorize("hasRole('ROLE_group2')")
         public String group2() {
             return "group2 message";
+        }
+    
+        @GetMapping("group1Id")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_<group1-id>')")
+        public String group1Id() {
+            return "group1Id message";
+        }
+    
+        @GetMapping("group2Id")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_<group2-id>')")
+        public String group2Id() {
+            return "group2Id message";
         }
     }
     ```
