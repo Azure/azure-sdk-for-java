@@ -112,7 +112,6 @@ public class AADB2CUserPrincipalTest {
     @Test
     public void testParameterConstructorExtractScopeAuthorities() {
         when(jwt.containsClaim("scp")).thenReturn(true);
-//        when(jwt.containsClaim("roles")).thenReturn(false);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter("scp");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADB2COAuth2AuthenticatedPrincipal.class));
