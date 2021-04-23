@@ -23,11 +23,11 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
 
 or
 
-[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-appconfiguration-config-config-web;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+    <artifactId>spring-cloud-azure-appconfiguration-config-config-web</artifactId>
     <version>1.3.0</version>
 </dependency>
 ```
