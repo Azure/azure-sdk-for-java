@@ -13,8 +13,8 @@
     </parent>
 
     <groupId>com.azure</groupId>
-    <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <artifactId>azure-jca</artifactId>
+    <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>

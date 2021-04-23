@@ -13,7 +13,7 @@ trigger:
       - sdk/keyvault/pom.xml
       - sdk/keyvault/azure-security-keyvault-administration
       - sdk/keyvault/azure-security-keyvault-certificates
-      - sdk/keyvault/azure-security-keyvault-jca
+      - sdk/keyvault/azure-jca
       - sdk/keyvault/azure-security-keyvault-keys
       - sdk/keyvault/azure-security-keyvault-secrets
 
@@ -33,7 +33,7 @@ pr:
       - sdk/keyvault/tests.yml
       - sdk/keyvault/azure-security-keyvault-administration
       - sdk/keyvault/azure-security-keyvault-certificates
-      - sdk/keyvault/azure-security-keyvault-jca
+      - sdk/keyvault/azure-jca
       - sdk/keyvault/azure-security-keyvault-keys
       - sdk/keyvault/azure-security-keyvault-secrets
 
@@ -48,7 +48,7 @@ extends:
       - name: azure-security-keyvault-certificates
         groupId: com.azure
         safeName: azuresecuritykeyvaultcertificates
-      - name: azure-security-keyvault-jca
+      - name: azure-jca
         groupId: com.azure
         safeName: azuresecuritykeyvaultjca
       - name: azure-security-keyvault-keys

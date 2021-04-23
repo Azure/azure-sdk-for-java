@@ -137,15 +137,15 @@
         groupId: com.azure
         artifactId: azure-security-keyvault-certificates
       artifacts:
-        - artifactId: azure-security-keyvault-jca
+        - artifactId: azure-jca
           groupId: com.azure
           versionPreview: 1.0.0-beta.4
           type: client
           links:
-            repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
+            repopath: https://search.maven.org/artifact/com.azure/azure-jca
             msdocs: https://docs.microsoft.com/java/api/overview/azure/security-keyvault-jca-readme?view=azure-java-preview
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/1.0.0-beta.4/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-jca
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-jca/1.0.0-beta.4/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-jca
         - artifactId: azure-spring-boot-starter-keyvault-certificates
           groupId: com.azure.spring
           versionPreview: 3.0.0-beta.4
