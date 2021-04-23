@@ -341,10 +341,7 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=",
-                "azure.activedirectory.user-group.allowed-groups[0].groupnName = group1",
-                "azure.activedirectory.user-group.allowed-groups[0].groupId = xxxx-xxxx-group1-id-xxxx-xxxx",
-                "azure.activedirectory.user-group.allowed-groups[1].groupnName = group2",
-                "azure.activedirectory.user-group.allowed-groups[1].groupId = xxxx-xxxx-group2-id-xxxx-xxxx"
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
@@ -357,10 +354,7 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=common",
-                "azure.activedirectory.user-group.allowed-groups[0].groupnName = group1",
-                "azure.activedirectory.user-group.allowed-groups[0].groupId = xxxx-xxxx-group1-id-xxxx-xxxx",
-                "azure.activedirectory.user-group.allowed-groups[1].groupnName = group2",
-                "azure.activedirectory.user-group.allowed-groups[1].groupId = xxxx-xxxx-group2-id-xxxx-xxxx"
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
@@ -373,10 +367,63 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=organizations",
-                "azure.activedirectory.user-group.allowed-groups[0].groupnName = group1",
-                "azure.activedirectory.user-group.allowed-groups[0].groupId = xxxx-xxxx-group1-id-xxxx-xxxx",
-                "azure.activedirectory.user-group.allowed-groups[1].groupnName = group2",
-                "azure.activedirectory.user-group.allowed-groups[1].groupId = xxxx-xxxx-group2-id-xxxx-xxxx"
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest1() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=",
+                "azure.activedirectory.user-group.allowed-groups-id = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest2() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=common",
+                "azure.activedirectory.user-group.allowed-groups-id = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest3() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=organizations",
+                "azure.activedirectory.user-group.allowed-groups-id = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest4() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=consumers",
+                "azure.activedirectory.user-group.allowed-groups-id = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
@@ -389,10 +436,7 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=consumers",
-                "azure.activedirectory.user-group.allowed-groups[0].groupnName = group1",
-                "azure.activedirectory.user-group.allowed-groups[0].groupId = xxxx-xxxx-group1-id-xxxx-xxxx",
-                "azure.activedirectory.user-group.allowed-groups[1].groupnName = group2",
-                "azure.activedirectory.user-group.allowed-groups[1].groupId = xxxx-xxxx-group2-id-xxxx-xxxx"
+                "azure.activedirectory.user-group.allowed-groups=group1,group2"
             )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
@@ -403,10 +447,25 @@ public class AADWebAppConfigurationTest {
     public void groupsNameConfiguration() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
-            .withPropertyValues("azure.activedirectory.user-group.allowed-groups[0].groupnName = group1",
-                "azure.activedirectory.user-group.allowed-groups[0].groupId = xxxx-xxxx-group1-id-xxxx-xxxx",
-                "azure.activedirectory.user-group.allowed-groups[1].groupnName = group2",
-                "azure.activedirectory.user-group.allowed-groups[1].groupId = xxxx-xxxx-group2-id-xxxx-xxxx")
+            .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
+            .run(context -> {
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "https://graph.microsoft.com/User.Read",
+                    "https://graph.microsoft.com/Directory.Read.All"
+                );
+            });
+    }
+
+    @Test
+    public void groupsIdConfiguration() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.user-group.allowed-groups-id = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718, "
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo =
                     context.getBean(AADWebAppClientRegistrationRepository.class);

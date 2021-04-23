@@ -27,10 +27,7 @@ public class AADAuthenticationFilterPropertiesTest {
         System.clearProperty("azure.activedirectory.tenant-id");
         System.clearProperty("azure.activedirectory.client-id");
         System.clearProperty("azure.activedirectory.client-secret");
-        System.clearProperty("azure.activedirectory.user-group.allowed-groups[0].groupName");
-        System.clearProperty("azure.activedirectory.user-group.allowed-groups[0].groupId");
-        System.clearProperty("azure.activedirectory.user-group.allowed-groups[1].groupName");
-        System.clearProperty("azure.activedirectory.user-group.allowed-groups[1].groupId");
+        System.clearProperty("azure.activedirectory.user-group.allowed-groups");
     }
 
     @Test
@@ -46,7 +43,7 @@ public class AADAuthenticationFilterPropertiesTest {
             assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
-                                 .toString()).isEqualTo(TestConstants.targetedGroups().toString());
+                    .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
     }
 
@@ -54,12 +51,8 @@ public class AADAuthenticationFilterPropertiesTest {
         System.setProperty("azure.activedirectory.tenant-id", "demo-tenant-id");
         System.setProperty("azure.activedirectory.client-id", TestConstants.CLIENT_ID);
         System.setProperty("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET);
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[0].groupName", "group1");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[0].groupId",
-            "xxxx-xxxx-group1-id-xxxx-xxxx");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[1].groupName", "group2");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups[1].groupId",
-            "xxxx-xxxx-group2-id-xxxx-xxxx");
+        System.setProperty("azure.activedirectory.user-group.allowed-groups",
+            TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", ""));
         System.setProperty("azure.activedirectory.allow-telemetry", "false");
     }
 
