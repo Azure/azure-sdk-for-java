@@ -21,16 +21,21 @@ import static org.mockito.Mockito.when;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADB2CUserPrincipalTest {
 
-    private Jwt jwt = mock(Jwt.class);
-    private Map<String, Object> claims = new HashMap<>();
-    private Map<String, Object> headers = new HashMap<>();
+    private Jwt jwt;
+    private Map<String, Object> claims;
+    private Map<String, Object> headers;
     private JSONArray jsonArray = new JSONArray().appendElement("User.read").appendElement("User.write");
 
     @BeforeEach
     public void init() {
+        claims = new HashMap<>();
         claims.put("iss", "fake-issuer");
         claims.put("tid", "fake-tid");
+
+        headers = new HashMap<>();
         headers.put("kid", "kg2LYs2T0CTjIfj4rt6JIynen38");
+
+        jwt = mock(Jwt.class);
         when(jwt.getClaim("scp")).thenReturn("Order.read Order.write");
         when(jwt.getClaim("roles")).thenReturn(jsonArray);
         when(jwt.getTokenValue()).thenReturn("fake-token-value");
@@ -71,7 +76,7 @@ public class AADB2CUserPrincipalTest {
     @Test
     public void testNoArgumentsConstructorExtractScopeAuthorities() {
         when(jwt.containsClaim("scp")).thenReturn(true);
-        when(jwt.containsClaim("roles")).thenReturn(false);
+//        when(jwt.containsClaim("roles")).thenReturn(false);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADB2COAuth2AuthenticatedPrincipal.class));
@@ -89,7 +94,7 @@ public class AADB2CUserPrincipalTest {
     @Test
     public void testNoArgumentsConstructorExtractRoleAuthorities() {
         when(jwt.containsClaim("roles")).thenReturn(true);
-        when(jwt.containsClaim("scp")).thenReturn(false);
+//        when(jwt.containsClaim("scp")).thenReturn(false);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADB2COAuth2AuthenticatedPrincipal.class));
@@ -107,7 +112,7 @@ public class AADB2CUserPrincipalTest {
     @Test
     public void testParameterConstructorExtractScopeAuthorities() {
         when(jwt.containsClaim("scp")).thenReturn(true);
-        when(jwt.containsClaim("roles")).thenReturn(false);
+//        when(jwt.containsClaim("roles")).thenReturn(false);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter("scp");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADB2COAuth2AuthenticatedPrincipal.class));
