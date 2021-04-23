@@ -40,6 +40,11 @@
       <artifactId>azure-core</artifactId>
       <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.12</version>  <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+    </dependency>
      <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>

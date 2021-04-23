@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -75,7 +74,6 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @ParameterizedTest
     @EnumSource(value = AmqpTransportType.class)
-    @Disabled("Works part of the time: https://github.com/Azure/azure-sdk-for-java/issues/9659")
     void parallelEventHubClients(AmqpTransportType transportType) throws InterruptedException {
         // Arrange
         final int numberOfClients = 3;

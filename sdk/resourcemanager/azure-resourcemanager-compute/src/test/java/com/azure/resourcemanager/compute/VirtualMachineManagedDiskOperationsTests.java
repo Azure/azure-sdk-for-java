@@ -315,7 +315,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .create();
         System.out.println("Waiting for some time before de-provision");
         sleep(60 * 1000); // Wait for some time to ensure vm is publicly accessible
-        deprovisionAgentInLinuxVM(virtualMachine1.getPrimaryPublicIPAddress().fqdn(), 22, uname, password);
+        deprovisionAgentInLinuxVM(virtualMachine1);
 
         virtualMachine1.deallocate();
         virtualMachine1.generalize();

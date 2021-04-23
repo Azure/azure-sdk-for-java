@@ -86,11 +86,6 @@
       <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.github.cverges.expect4j</groupId>
-      <artifactId>expect4j</artifactId>
-      <version>1.6</version> <!-- {x-version-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
@@ -210,7 +205,6 @@
                 <include>com.github.docker-java:docker-java:[3.2.1]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[8.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
-                <include>com.github.cverges.expect4j:expect4j:[1.6]</include> <!-- {x-include-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
                 <include>commons-net:commons-net:[3.6]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
