@@ -24,7 +24,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import io.reactivex.subscribers.TestSubscriber;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -37,8 +37,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import static com.azure.cosmos.implementation.TestUtils.*;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -97,8 +97,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryPolicy = new TestRetryPolicy();
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
-        Mono<CosmosException> exceptionMono = Mono.error(exception);
-        Mockito.when(parameterizedCallbackMethod.apply(Matchers.any(Quadruple.class))).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
+        Mono<StoreResponse> exceptionMono = Mono.error(exception);
+        Mockito.when(parameterizedCallbackMethod.apply(ArgumentMatchers.any())).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
             .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
@@ -123,8 +123,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosException exception = new CosmosException(410, exceptionText);
-        Mono<CosmosException> exceptionMono = Mono.error(exception);
-        Mockito.when(parameterizedCallbackMethod.apply(Matchers.any(Quadruple.class))).thenReturn(exceptionMono);
+        Mono<StoreResponse> exceptionMono = Mono.error(exception);
+        Mockito.when(parameterizedCallbackMethod.apply(ArgumentMatchers.any())).thenReturn(exceptionMono);
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.schedule(() -> {
             ((TestRetryPolicy) retryPolicy).noRetry = true;
@@ -167,7 +167,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
 
         Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
-        Mockito.when(mockStoreModel.processMessage(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(mockRxDocumentServiceResponse));
+        Mockito.when(mockStoreModel.processMessage(ArgumentMatchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(mockRxDocumentServiceResponse));
         Mockito.when(mockRxDocumentServiceResponse.getResource(Document.class)).thenReturn(new Document());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(new PartitionKey("TestPk"));
