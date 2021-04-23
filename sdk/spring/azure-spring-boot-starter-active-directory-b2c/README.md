@@ -221,8 +221,8 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 
     ```xml
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webflux</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
     ```
 
@@ -399,8 +399,8 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
      <artifactId>spring-boot-starter-oauth2-client</artifactId>
    </dependency>
    <dependency>
-     <groupId>org.springframework</groupId>
-     <artifactId>spring-webflux</artifactId>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-webflux</artifactId>
    </dependency>
    ```
    
