@@ -16,7 +16,7 @@ import java.util.List;
 @JsonTypeName("ForEach")
 @JsonFlatten
 @Fluent
-public class ForEachActivity extends Activity {
+public class ForEachActivity extends ControlActivity {
     /*
      * Should the loop be executed in sequence or in parallel (max 50)
      */

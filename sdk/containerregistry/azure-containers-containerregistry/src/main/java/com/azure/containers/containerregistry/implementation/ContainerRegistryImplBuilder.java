@@ -38,18 +38,18 @@ public final class ContainerRegistryImplBuilder {
     }
 
     /*
-     * Registry login endpoint
+     * Registry login URL
      */
-    private String endpoint;
+    private String url;
 
     /**
-     * Sets Registry login endpoint.
+     * Sets Registry login URL.
      *
-     * @param endpoint the endpoint value.
+     * @param url the url value.
      * @return the ContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public ContainerRegistryImplBuilder url(String url) {
+        this.url = url;
         return this;
     }
 
@@ -179,7 +179,7 @@ public final class ContainerRegistryImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        ContainerRegistryImpl client = new ContainerRegistryImpl(pipeline, serializerAdapter, endpoint);
+        ContainerRegistryImpl client = new ContainerRegistryImpl(pipeline, serializerAdapter, url);
         return client;
     }
 

@@ -28,7 +28,13 @@ public final class AnomalyAlertingConfigurationPatch {
      * cross metrics operator
      */
     @JsonProperty(value = "crossMetricsOperator")
-    private AnomalyAlertingConfigurationPatchCrossMetricsOperator crossMetricsOperator;
+    private AnomalyAlertingConfigurationLogicType crossMetricsOperator;
+
+    /*
+     * dimensions used to split alert
+     */
+    @JsonProperty(value = "splitAlertByDimensions")
+    private List<String> splitAlertByDimensions;
 
     /*
      * hook unique ids
@@ -87,7 +93,7 @@ public final class AnomalyAlertingConfigurationPatch {
      *
      * @return the crossMetricsOperator value.
      */
-    public AnomalyAlertingConfigurationPatchCrossMetricsOperator getCrossMetricsOperator() {
+    public AnomalyAlertingConfigurationLogicType getCrossMetricsOperator() {
         return this.crossMetricsOperator;
     }
 
@@ -98,8 +104,28 @@ public final class AnomalyAlertingConfigurationPatch {
      * @return the AnomalyAlertingConfigurationPatch object itself.
      */
     public AnomalyAlertingConfigurationPatch setCrossMetricsOperator(
-            AnomalyAlertingConfigurationPatchCrossMetricsOperator crossMetricsOperator) {
+            AnomalyAlertingConfigurationLogicType crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
+        return this;
+    }
+
+    /**
+     * Get the splitAlertByDimensions property: dimensions used to split alert.
+     *
+     * @return the splitAlertByDimensions value.
+     */
+    public List<String> getSplitAlertByDimensions() {
+        return this.splitAlertByDimensions;
+    }
+
+    /**
+     * Set the splitAlertByDimensions property: dimensions used to split alert.
+     *
+     * @param splitAlertByDimensions the splitAlertByDimensions value to set.
+     * @return the AnomalyAlertingConfigurationPatch object itself.
+     */
+    public AnomalyAlertingConfigurationPatch setSplitAlertByDimensions(List<String> splitAlertByDimensions) {
+        this.splitAlertByDimensions = splitAlertByDimensions;
         return this;
     }
 

@@ -14,8 +14,8 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision;
 import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionClient;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorResponseException;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
@@ -29,7 +29,9 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -160,7 +162,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @param credentials the management credentials for Azure
      */
     public ComputerVisionClientImpl(ServiceClientCredentials credentials) {
-        this("https://{Endpoint}/vision/v3.1", credentials);
+        this("https://{Endpoint}/vision/v3.2", credentials);
     }
 
     /**
@@ -199,6 +201,6 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionClient", "3.1");
+        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionClient", "3.2");
     }
 }

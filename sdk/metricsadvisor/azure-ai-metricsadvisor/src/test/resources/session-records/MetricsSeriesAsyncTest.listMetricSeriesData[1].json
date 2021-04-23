@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/data/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "c5e95fd8-6316-4cbe-9ad9-511a62b368fa",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "b027d6d7-788a-49b7-b764-024bd5e2a90e",
+      "x-envoy-upstream-service-time" : "205",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b027d6d7-788a-49b7-b764-024bd5e2a90e",
+      "retry-after" : "0",
+      "Content-Length" : "169",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"id\":{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"timestampList\":[],\"valueList\":[]}]}",
+      "Date" : "Tue, 30 Mar 2021 15:56:41 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

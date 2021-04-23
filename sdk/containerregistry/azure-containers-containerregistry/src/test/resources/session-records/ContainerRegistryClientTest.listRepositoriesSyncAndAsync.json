@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c49e9814-e777-4ebe-996c-87c5db41c28f"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "82",
+      "StatusCode" : "200",
+      "Body" : "{\"repositories\":[\"library/alpine\",\"library/hello-seattle\",\"library/hello-world\"]}\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

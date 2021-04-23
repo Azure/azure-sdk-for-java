@@ -1,7 +1,23 @@
 # Release History
 
-## 12.0.0-beta.6 (Unreleased)
+## 12.0.0-beta.7 (Unreleased)
 
+### Bug Fixes
+
+- Merge operations no longer fail for Cosmos table endpoints.
+- Fixed issue with `TablesJacksonSerializer` where it could not handle HTTP responses with empty bodies.
+
+## 12.0.0-beta.6 (2021-04-07)
+
+### Breaking Changes
+
+- All clients and batch classes now throw a public `TableServiceErrorException` instead of the one in the implementation package.
+- All operation error details (`errorCode`, `languageCode`, `errorMessage`) are now contained in the public `TableServiceError`, as opposed to the implementation `TableServiceError` that contains a `TableServiceErrorOdataError` containing a `TableServiceErrorOdataErrorMessage`.
+- `TableClientBuilder` fluent setters now throw an `IllegalArgumentException` instead of `NullPointerException` when given invalid arguments.
+
+### Dependency Updates
+- Updated dependency version of `azure-core` to 1.15.0.
+- Updated dependency version of `azure-storage-common` to 12.10.1.
 
 ## 12.0.0-beta.5 (2021-03-10)
 

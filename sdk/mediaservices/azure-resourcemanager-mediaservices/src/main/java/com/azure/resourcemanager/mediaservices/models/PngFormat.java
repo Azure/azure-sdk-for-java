@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.PngFormat")
 @JsonFlatten
 @Immutable
-public class PngFormat extends Format {
+public class PngFormat extends ImageFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PngFormat.class);
 
     /** {@inheritDoc} */

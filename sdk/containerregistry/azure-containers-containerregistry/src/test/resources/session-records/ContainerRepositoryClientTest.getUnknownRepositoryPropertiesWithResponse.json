@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/Unknown",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "57a81e51-1a3c-4463-849c-09e3330483ec"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/Unknown",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ac53094-9067-4944-840d-a1da028e566f"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
