@@ -10,6 +10,8 @@ import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -17,10 +19,12 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
+import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ser.std.NullSerializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -39,6 +43,7 @@ import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +58,9 @@ import java.util.regex.Pattern;
  */
 public class JacksonAdapter implements SerializerAdapter {
     private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
+
+    private static final JsonInclude.Value INCLUDE_ALWAYS = JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,
+        JsonInclude.Include.ALWAYS);
 
     private static final String MUTABLE_COERCION_CONFIG = "com.fasterxml.jackson.databind.cfg.MutableCoercionConfig";
     private static final String COERCION_INPUT_SHAPE = "com.fasterxml.jackson.databind.cfg.CoercionInputShape";
@@ -127,47 +135,49 @@ public class JacksonAdapter implements SerializerAdapter {
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
-        this.simpleMapper = initializeMapperBuilder(JsonMapper.builder())
-            .build();
+        this.simpleMapper = setMapToIncludeAlways(initializeMapperBuilder(JsonMapper.builder()).build());
 
-        this.headerMapper = initializeMapperBuilder(JsonMapper.builder())
+        this.headerMapper = setMapToIncludeAlways(initializeMapperBuilder(JsonMapper.builder())
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-            .build();
+            .build());
 
-        this.xmlMapper = initializeMapperBuilder(XmlMapper.builder())
+        this.xmlMapper = setMapToIncludeAlways(initializeMapperBuilder(XmlMapper.builder())
             .defaultUseWrapper(false)
             .enable(ToXmlGenerator.Feature.WRITE_XML_DECLARATION)
-            /*
-             * In Jackson 2.12 the default value of this feature changed from true to false.
-             * https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12#xml-module
-             */
-            .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
-            .build();
+            .build());
 
+//        if (USE_REFLECTION_TO_SET_COERCION) {
+//            try {
+//                Object object = COERCION_CONFIG_DEFAULTS.invoke(this.xmlMapper);
+//                SET_COERCION.invoke(object, COERCION_INPUT_SHAPE_EMPTY_STRING, COERCION_ACTION_AS_NULL);
+//            } catch (Throwable e) {
+//                logger.verbose("Failed to set coercion actions.", e);
+//            }
+//        } else {
+//            logger.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
+//        }
 
-        if (USE_REFLECTION_TO_SET_COERCION) {
-            try {
-                Object object = COERCION_CONFIG_DEFAULTS.invoke(this.xmlMapper);
-                SET_COERCION.invoke(object, COERCION_INPUT_SHAPE_EMPTY_STRING, COERCION_ACTION_AS_NULL);
-            } catch (Throwable e) {
-                logger.verbose("Failed to set coercion actions.", e);
-            }
-        } else {
-            logger.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
-        }
-
-        ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
+        ObjectMapper flatteningMapper = setMapToIncludeAlways(initializeMapperBuilder(JsonMapper.builder())
             .addModule(FlatteningSerializer.getModule(simpleMapper()))
             .addModule(FlatteningDeserializer.getModule(simpleMapper()))
-            .build();
+            .build());
 
-        this.mapper = initializeMapperBuilder(JsonMapper.builder())
+        this.mapper = setMapToIncludeAlways(initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
             .addModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
             .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .addModule(FlatteningSerializer.getModule(simpleMapper()))
             .addModule(FlatteningDeserializer.getModule(simpleMapper()))
-            .build();
+            .build());
+    }
+
+    private <T extends ObjectMapper> T setMapToIncludeAlways(T mapper) {
+        mapper.getSerializerProvider().setNullKeySerializer(NullSerializer.instance);
+        mapper.configOverride(Map.class).setFormat(JsonFormat.Value.empty());
+        mapper.configOverride(Map.class).setInclude(INCLUDE_ALWAYS);
+        mapper.configOverride(Map.class).setIgnorals(JsonIgnoreProperties.Value.construct(Collections.singleton(null),
+            false, false, false, false));
+        return mapper;
     }
 
     /**
@@ -386,12 +396,12 @@ public class JacksonAdapter implements SerializerAdapter {
     @SuppressWarnings("deprecation")
     private static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
         mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
-            .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+            .disable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)
+            .disable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .serializationInclusion(JsonInclude.Include.NON_NULL)
             .addModule(new JavaTimeModule())
             .addModule(ByteArraySerializer.getModule())
             .addModule(Base64UrlSerializer.getModule())
