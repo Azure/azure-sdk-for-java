@@ -62,7 +62,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
 
    [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
    ```xml
-   <dependency>
+    <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
       <version>3.4.0</version>
@@ -217,7 +217,14 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 1. Grant admin consent for ***WebApiA*** permissions.
    ![Add WebApiA permission](resource/add-webapia-permission.png)
    
-1. Use the same dependencies with **Accessing a web application** scenario.
+1. Add the following dependency on the basis of **Accessing a web application** scenario.
+
+    ```xml
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webflux</artifactId>
+    </dependency>
+    ```
 
 1. Add the following configuration on the basis of **Accessing a web application** scenario.
 
@@ -291,20 +298,20 @@ This scenario not support login. Just protect the server by validating the acces
    [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
    ```xml
    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-      <version>3.4.0</version>
-    </dependency>
+     <groupId>com.azure.spring</groupId>
+     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
+     <version>3.4.0</version>
+   </dependency>
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
+   <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-web</artifactId>
+   </dependency>
    
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-    </dependency>
+   <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+   </dependency>
    ```
    [//]: # "{x-version-update-end}"
 
@@ -380,19 +387,23 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
     ```
 
    ![Configure WebApiB appRoles](resource/expose-web-api-b-approle.png)
-
-1. 
    
 1. Grant admin consent for ***WebApiB*** permissions.
    ![Add WebApiB permission](resource/add-webapib-permission-to-webapia.png)
 
 1. On the basis of **Accessing a resource server**, add a dependency in your *pom.xml*.
+   
    ```xml
    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-oauth2-client</artifactId>
+   </dependency>
+   <dependency>
+     <groupId>org.springframework</groupId>
+     <artifactId>spring-webflux</artifactId>
    </dependency>
    ```
+   
 1. Add the following configuration on the basis of **Accessing a resource server** scenario configuration.
 
    ```yaml
