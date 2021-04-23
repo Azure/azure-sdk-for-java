@@ -7,14 +7,14 @@
 
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.12.2
-com.fasterxml.jackson.core:jackson-core;2.12.2
-com.fasterxml.jackson.core:jackson-databind;2.12.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.12.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.2
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.2
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.2
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.2
+com.fasterxml.jackson.core:jackson-annotations;2.12.3
+com.fasterxml.jackson.core:jackson-core;2.12.3
+com.fasterxml.jackson.core:jackson-databind;2.12.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.12.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.3
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.3
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.3
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.3
 com.github.spotbugs:spotbugs;4.2.0
 com.github.spotbugs:spotbugs-annotations;4.2.0
 com.github.spotbugs:spotbugs-maven-plugin;4.2.0
@@ -34,18 +34,18 @@ com.microsoft.azure:azure-servicebus-jms;0.0.7
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
-com.microsoft.sqlserver:mssql-jdbc;8.4.1.jre8
+com.microsoft.sqlserver:mssql-jdbc;9.2.1.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
 com.squareup.okhttp3:okhttp;4.8.1
-com.zaxxer:HikariCP;3.4.5
+com.zaxxer:HikariCP;4.0.3
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
 io.fabric8:kubernetes-client;4.13.2
 io.github.bonigarcia:webdrivermanager;4.3.1
-io.micrometer:micrometer-core;1.6.6
-io.micrometer:micrometer-registry-azure-monitor;1.6.6
-io.micrometer:micrometer-registry-graphite;1.6.6
+io.micrometer:micrometer-core;1.7.0-RC1
+io.micrometer:micrometer-registry-azure-monitor;1.7.0-RC1
+io.micrometer:micrometer-registry-graphite;1.7.0-RC1
 io.netty:netty-buffer;4.1.63.Final
 io.netty:netty-common;4.1.63.Final
 io.netty:netty-codec-http;4.1.63.Final
@@ -67,16 +67,16 @@ javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 javax.websocket:javax.websocket-api;1.1
 mysql:mysql-connector-java;8.0.23
-net.minidev:json-smart;2.3
+net.minidev:json-smart;2.4.2
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.10.1
 org.apache.avro:avro-maven-plugin;1.10.1
 org.apache.commons:commons-compress;1.20
-org.apache.commons:commons-lang3;3.11
+org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.13
-org.apache.logging.log4j:log4j-api;2.13.3
-org.apache.logging.log4j:log4j-core;2.13.3
-org.apache.logging.log4j:log4j-slf4j-impl;2.13.3
+org.apache.logging.log4j:log4j-api;2.14.1
+org.apache.logging.log4j:log4j-core;2.14.1
+org.apache.logging.log4j:log4j-slf4j-impl;2.14.1
 org.apache.qpid:proton-j;0.33.4
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
@@ -86,7 +86,7 @@ org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-container-grizzly;1.2.1
 org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
-org.hibernate.validator:hibernate-validator;6.1.7.Final
+org.hibernate.validator:hibernate-validator;6.2.0.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.powermock:powermock-api-mockito2;2.0.2
@@ -97,34 +97,34 @@ org.slf4j:slf4j-nop;1.7.30
 org.slf4j:slf4j-simple;1.7.30
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-dependencies;2.4.5
-org.springframework.boot:spring-boot-actuator-autoconfigure;2.4.5
-org.springframework.boot:spring-boot-autoconfigure-processor;2.4.5
-org.springframework.boot:spring-boot-autoconfigure;2.4.5
-org.springframework.boot:spring-boot-configuration-processor;2.4.5
-org.springframework.boot:spring-boot-starter-actuator;2.4.5
-org.springframework.boot:spring-boot-starter-aop;2.4.5
-org.springframework.boot:spring-boot-starter-cache;2.4.5
-org.springframework.boot:spring-boot-starter-data-redis;2.4.5
-org.springframework.boot:spring-boot-starter-logging;2.4.5
-org.springframework.boot:spring-boot-starter-test;2.4.5
-org.springframework.boot:spring-boot-starter-validation;2.4.5
-org.springframework.boot:spring-boot-starter-web;2.4.5
-org.springframework.boot:spring-boot-starter-webflux;2.4.5
-org.springframework.boot:spring-boot-starter;2.4.5
-org.springframework.boot:spring-boot;2.4.5
-org.springframework.data:spring-data-commons;2.4.8
-org.springframework.data:spring-data-mongodb;3.1.8
-org.springframework.data:spring-data-redis;2.4.8
-org.springframework.integration:spring-integration-core;5.4.6
-org.springframework.kafka:spring-kafka;2.6.7
-org.springframework.security:spring-security-config;5.4.6
-org.springframework.security:spring-security-core;5.4.6
-org.springframework.security:spring-security-oauth2-client;5.4.6
-org.springframework.security:spring-security-oauth2-resource-server;5.4.6
-org.springframework.security:spring-security-oauth2-core;5.4.6
-org.springframework.security:spring-security-oauth2-jose;5.4.6
-org.springframework.security:spring-security-web;5.4.6
+org.springframework.boot:spring-boot-dependencies;2.5.0-RC1
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.5.0-RC1
+org.springframework.boot:spring-boot-autoconfigure-processor;2.5.0-RC1
+org.springframework.boot:spring-boot-autoconfigure;2.5.0-RC1
+org.springframework.boot:spring-boot-configuration-processor;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-actuator;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-aop;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-cache;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-data-redis;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-logging;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-test;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-validation;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-web;2.5.0-RC1
+org.springframework.boot:spring-boot-starter-webflux;2.5.0-RC1
+org.springframework.boot:spring-boot-starter;2.5.0-RC1
+org.springframework.boot:spring-boot;2.5.0-RC1
+org.springframework.data:spring-data-commons;2.5.0
+org.springframework.data:spring-data-mongodb;3.2.0
+org.springframework.data:spring-data-redis;2.5.0
+org.springframework.integration:spring-integration-core;5.5.0-RC1
+org.springframework.kafka:spring-kafka;2.7.0
+org.springframework.security:spring-security-config;5.5.0-RC1
+org.springframework.security:spring-security-core;5.5.0-RC1
+org.springframework.security:spring-security-oauth2-client;5.5.0-RC1
+org.springframework.security:spring-security-oauth2-resource-server;5.5.0-RC1
+org.springframework.security:spring-security-oauth2-core;5.5.0-RC1
+org.springframework.security:spring-security-oauth2-jose;5.5.0-RC1
+org.springframework.security:spring-security-web;5.5.0-RC1
 org.springframework:spring-beans;5.3.6
 org.springframework:spring-context-support;5.3.6
 org.springframework:spring-context;5.3.6
@@ -138,7 +138,7 @@ org.springframework:spring-web;5.3.6
 org.springframework:spring-webmvc;5.3.6
 org.springframework:spring-webflux;5.3.6
 
-org.springframework.boot:spring-boot-starter-parent;2.4.5
+org.springframework.boot:spring-boot-starter-parent;2.5.0-RC1
 
 ## Spring cloud dependency versions
 org.springframework.cloud:spring-cloud-dependencies;2020.0.2
@@ -182,7 +182,7 @@ org.apache.maven:maven-compat;3.6.2
 org.apache.maven:maven-embedder;3.6.2
 org.apache.maven.wagon:wagon-http;3.3.4
 org.apache.maven.wagon:wagon-provider-api;3.3.4
-org.assertj:assertj-core;3.18.1
+org.assertj:assertj-core;3.19.0
 org.bouncycastle:bcprov-jdk15on;1.68
 org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
@@ -215,8 +215,8 @@ uk.org.lidalia:slf4j-test;1.2.0
 com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
-com.nimbusds:nimbus-jose-jwt;8.20.2
-com.nimbusds:oauth2-oidc-sdk;8.36.1
+com.nimbusds:nimbus-jose-jwt;9.8.1
+com.nimbusds:oauth2-oidc-sdk;9.3.3
 com.puppycrawl.tools:checkstyle;8.40
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
@@ -260,7 +260,7 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
-org.mockito:mockito-core;3.6.28
+org.mockito:mockito-core;3.9.0
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 
