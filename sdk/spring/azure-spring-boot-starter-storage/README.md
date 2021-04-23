@@ -15,7 +15,7 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-storage</artifactId>
-    <version>3.4.0</version>
+    <version>3.5.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

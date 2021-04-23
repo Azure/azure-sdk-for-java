@@ -30,7 +30,7 @@ dependency `azure-spring-cloud-messaging`.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-messaging</artifactId>
-    <version>2.4.0</version>
+    <version>2.5.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
