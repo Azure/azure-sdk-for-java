@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * The JUnit test for the AuthClient.
  */
-public class AuthClientIT {
+public class AuthClientTest {
 
     /**
      * Test getAuthorizationToken method.
@@ -21,9 +21,9 @@ public class AuthClientIT {
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
+        String tenantId = System.getenv("SPRING_TENANT_ID");
+        String clientId = System.getenv("SPRING_CLIENT_ID");
+        String clientSecret = System.getenv("SPRING_CLIENT_SECRET");
         AuthClient authClient = new AuthClient();
         String result = authClient.getAccessToken(
             "https://management.azure.com/",

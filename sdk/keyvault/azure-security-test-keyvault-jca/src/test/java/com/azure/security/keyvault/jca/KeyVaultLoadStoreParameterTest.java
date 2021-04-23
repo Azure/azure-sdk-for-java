@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
-public class KeyVaultLoadStoreParameterIT {
+public class KeyVaultLoadStoreParameterTest {
 
     /**
      * Test getProtectionParameter method.
@@ -18,10 +18,10 @@ public class KeyVaultLoadStoreParameterIT {
     @Test
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            null,
-            null,
-            null
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
+            System.getenv("SPRING_TENANT_ID"),
+            System.getenv("SPRING_CLIENT_ID"),
+            System.getenv("SPRING_CLIENT_SECRET")
         );
         assertNull(parameter.getProtectionParameter());
     }

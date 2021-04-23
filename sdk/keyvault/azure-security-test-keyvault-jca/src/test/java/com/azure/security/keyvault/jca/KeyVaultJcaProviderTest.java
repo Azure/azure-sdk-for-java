@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * The JUnit tests for the KeyVaultProvider class.
  */
-public class KeyVaultJcaProviderIT {
+public class KeyVaultJcaProviderTest {
 
     /**
      * Test the constructor.
@@ -35,11 +35,11 @@ public class KeyVaultJcaProviderIT {
         Security.addProvider(new KeyVaultJcaProvider());
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
+            System.getenv("SPRING_TENANT_ID"),
+            System.getenv("SPRING_CLIENT_ID"),
+            System.getenv("SPRING_CLIENT_SECRET"));
         keystore.load(parameter);
-        assertNull(keystore.getCertificate("myalias"));
+        assertNull(keystore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
     }
 }

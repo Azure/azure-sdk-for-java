@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
-public class KeyVaultKeyStoreIT {
+public class KeyVaultKeyStoreTest {
 
     /**
      * Stores the CER test certificate (which is valid til 2120).
@@ -46,63 +47,44 @@ public class KeyVaultKeyStoreIT {
         + "U/aIAdQRfDaSE9jhtcVu5d5kCgBs7nz5AzeCisDPo5zIt4Mxej3iVaAJ79oEbHOE"
         + "p192KLXLV/pscA4Wgb+PJ8AAEa5B6xq8p9JO+Q==";
 
-    @Test
-    public void testEngineGetCertificate() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+    private KeyVaultKeyStore keystore;
+
+    private String AZURE_KEYVAULT_CERTIFICATE_NAME;
+
+    @BeforeEach
+    public void setEnvironmentProperty() {
+        keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
         keystore.engineLoad(parameter);
-        assertNull(keystore.engineGetCertificate("myalias"));
+        AZURE_KEYVAULT_CERTIFICATE_NAME = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+    }
+
+    @Test
+    public void testEngineGetCertificate() {
+        assertNull(keystore.engineGetCertificate(AZURE_KEYVAULT_CERTIFICATE_NAME));
     }
 
     @Test
     public void testEngineGetCertificateAlias() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
         assertNull(keystore.engineGetCertificateAlias(null));
     }
 
     @Test
     public void testEngineGetCertificateChain() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
-        assertNull(keystore.engineGetCertificateChain("myalias"));
+        assertNull(keystore.engineGetCertificateChain(AZURE_KEYVAULT_CERTIFICATE_NAME));
     }
 
     @Test
     public void testEngineIsCertificateEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
-        assertFalse(keystore.engineIsCertificateEntry("myalias"));
+        assertFalse(keystore.engineIsCertificateEntry(AZURE_KEYVAULT_CERTIFICATE_NAME));
     }
 
     @Test
     public void testEngineSetCertificateEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
 
         X509Certificate certificate;
 
@@ -120,25 +102,11 @@ public class KeyVaultKeyStoreIT {
 
     @Test
     public void testEngineGetKey() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
         assertNull(keystore.engineGetKey("myalias", null));
     }
 
     @Test
     public void testEngineIsKeyEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
         assertFalse(keystore.engineIsKeyEntry("myalias"));
     }
 
@@ -156,25 +124,11 @@ public class KeyVaultKeyStoreIT {
 
     @Test
     public void testEngineAliases() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
         assertTrue(keystore.engineAliases().hasMoreElements());
     }
 
     @Test
     public void testEngineContainsAlias() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keystore.engineLoad(parameter);
         assertFalse(keystore.engineContainsAlias("myalias"));
     }
 

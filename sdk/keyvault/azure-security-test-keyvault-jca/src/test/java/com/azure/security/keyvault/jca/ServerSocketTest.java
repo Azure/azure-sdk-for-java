@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * The unit test validating the ServerSocket is created using a certificate 
  * from Azure Key Vault.
  */
-public class ServerSocketIT {
+public class ServerSocketTest {
 
     /**
      * Test SSLServerSocket without client trust.

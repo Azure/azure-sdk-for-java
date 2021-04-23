@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-test-keyvault-jca</artifactId>
-  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-test-keyvault-jca;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-security-test-keyvault-jca;current} -->
   <name>JCA Provider for Azure Key Vault Test</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault Test</description>
 

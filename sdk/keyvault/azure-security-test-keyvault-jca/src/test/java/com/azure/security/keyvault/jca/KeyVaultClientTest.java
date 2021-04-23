@@ -9,17 +9,19 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class KeyVaultClientIT {
+public class KeyVaultClientTest {
     private KeyVaultClient keyVaultClient;
+    private String AZURE_KEYVAULT_CERTIFICATE_NAME;
 
     @BeforeEach
     public void setEnvironmentProperty() {
         keyVaultClient = new KeyVaultClient(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
+            System.getenv("azure.keyvault.aad-authentication-url"),
+            System.getenv("SPRING_TENANT_ID"),
+            System.getenv("SPRING_CLIENT_ID"),
+            System.getenv("SPRING_CLIENT_SECRET"));
+        AZURE_KEYVAULT_CERTIFICATE_NAME = System.getenv("AZURE_CERTIFICATE_NAME");
     }
 
     @Test
@@ -29,11 +31,11 @@ public class KeyVaultClientIT {
 
     @Test
     public void testGetCertificate() {
-        assertNotNull(keyVaultClient.getCertificate("myalias"));
+        assertNotNull(keyVaultClient.getCertificate(AZURE_KEYVAULT_CERTIFICATE_NAME));
     }
 
     @Test
     public void testGetKey() {
-        assertNull(keyVaultClient.getKey("myalias", null));
+        assertNull(keyVaultClient.getKey(AZURE_KEYVAULT_CERTIFICATE_NAME, null));
     }
 }

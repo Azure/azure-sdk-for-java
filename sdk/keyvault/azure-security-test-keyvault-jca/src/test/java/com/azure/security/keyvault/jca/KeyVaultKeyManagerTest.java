@@ -15,9 +15,10 @@ import java.security.cert.CertificateException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class KeyVaultKeyManagerIT {
+public class KeyVaultKeyManagerTest {
 
     private KeyVaultKeyManager manager;
+    private String AZURE_KEYVAULT_CERTIFICATE_NAME;
 
     @BeforeEach
     public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
@@ -25,22 +26,23 @@ public class KeyVaultKeyManagerIT {
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
+            System.getenv("SPRING_TENANT_ID"),
+            System.getenv("SPRING_CLIENT_ID"),
+            System.getenv("SPRING_CLIENT_SECRET"));
         keyStore.load(parameter);
         manager = new KeyVaultKeyManager(keyStore, null);
+        AZURE_KEYVAULT_CERTIFICATE_NAME = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
     public void testPrivateKey() {
-        assertNotNull(manager.getPrivateKey("myalias"));
+        assertNotNull(manager.getPrivateKey(AZURE_KEYVAULT_CERTIFICATE_NAME));
     }
 
 
     @Test
     public void testGetCertificateChain() {
-        assertNotNull(manager.getCertificateChain("myalias"));
+        assertNotNull(manager.getCertificateChain(AZURE_KEYVAULT_CERTIFICATE_NAME));
     }
 }
