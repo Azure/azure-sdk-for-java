@@ -126,7 +126,7 @@ jobs:
     - pwsh: |
         $results = (Get-Content "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.sarif" | ConvertFrom-Json).runs.results
         $csvRows = @()
-        $pathMatchRegex = $(Build.SourcesDirectory) -replace "\\", "/"
+        $pathMatchRegex = ("$(Build.SourcesDirectory)" -replace "\\", "/")
         $results | ForEach-Object {
           $csvRows += [pscustomobject]@{
             ruleId = $_.ruleId
