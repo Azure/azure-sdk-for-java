@@ -335,16 +335,19 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
     }
   }
   # remove package from package.json
+  $finalResults = @()
   for ($i=0; $i -lt $jsonRepresentation.Length; $i++) {
     $packages = $jsonRepresentation[$i].packages
     for ($j=0; $j -lt $packages.Length; $j++) {
       if ($ignorePackages -contains "$($packages[$j].packageGroupId):$($packages[$j].packageArtifactId)") {
         Write-Host "The package $($packages[$j].packageGroupId):$($packages[$j].packageArtifactId) exists in ignore list."
-        $jsonRepresentation[$i].packages = $jsonRepresentation[$i].packages - $packages[$j]
+      }
+      else {
+        $finalResults += $packages[$j]
       }
     }
   }
-  $jsonRepresentation | ConvertTo-Json -depth 100 | Out-File $pkgJsonLoc
+  $finalResults | ConvertTo-Json -depth 100 | Out-File $pkgJsonLoc
 }
 
 # function is used to filter packages to submit to API view tool
