@@ -4,31 +4,47 @@
 
 package com.azure.containers.containerregistry.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for TagOrderBy. */
-public final class TagOrderBy extends ExpandableStringEnum<TagOrderBy> {
-    /** Static value timedesc for TagOrderBy. */
-    public static final TagOrderBy LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
+public enum TagOrderBy {
+    /** Enum value none. */
+    NONE("none"),
 
-    /** Static value timeasc for TagOrderBy. */
-    public static final TagOrderBy LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
+    /** Enum value timedesc. */
+    LAST_UPDATED_ON_DESCENDING("timedesc"),
 
-    /**
-     * Creates or finds a TagOrderBy from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding TagOrderBy.
-     */
-    @JsonCreator
-    public static TagOrderBy fromString(String name) {
-        return fromString(name, TagOrderBy.class);
+    /** Enum value timeasc. */
+    LAST_UPDATED_ON_ASCENDING("timeasc");
+
+    /** The actual serialized value for a TagOrderBy instance. */
+    private final String value;
+
+    TagOrderBy(String value) {
+        this.value = value;
     }
 
-    /** @return known TagOrderBy values. */
-    public static Collection<TagOrderBy> values() {
-        return values(TagOrderBy.class);
+    /**
+     * Parses a serialized value to a TagOrderBy instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed TagOrderBy object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static TagOrderBy fromString(String value) {
+        TagOrderBy[] items = TagOrderBy.values();
+        for (TagOrderBy item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

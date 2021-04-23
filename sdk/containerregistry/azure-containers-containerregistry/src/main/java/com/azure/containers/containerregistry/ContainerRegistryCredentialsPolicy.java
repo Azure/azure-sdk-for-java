@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.implementation.authentication.Cont
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.experimental.http.policy.BearerTokenAuthenticationChallengePolicy;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -58,35 +57,6 @@ final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthentication
     ContainerRegistryCredentialsPolicy(ContainerRegistryTokenService tokenService) {
         super(tokenService);
         this.tokenService = tokenService;
-    }
-
-    /**
-     * Creates an instance of ContainerRegistryCredentialsPolicy.
-     *
-     * @param context call context for the http pipeline.
-     * @param next next http policy to run.
-     */
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
-        }
-
-        HttpPipelineNextPolicy nextPolicy = next.clone();
-        return next.process()
-            .flatMap(httpResponse -> {
-                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
-                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                    return onChallenge(context, httpResponse).flatMap(retry -> {
-                        if (retry) {
-                            return nextPolicy.process();
-                        } else {
-                            return Mono.just(httpResponse);
-                        }
-                    });
-                }
-                return Mono.just(httpResponse);
-            });
     }
 
     /**

@@ -1,0 +1,102 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b51b28a3-24c3-49f5-9230-b472614fb4fe"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "640",
+      "StatusCode" : "202",
+      "Body" : "{\"manifestsDeleted\":[\"sha256:5de788243acadd50526e70868b86d12ad79f3793619719ae22e0d09e8c873a66\",\"sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f\",\"sha256:827525365ff718681b0688621e09912af49a17611701ee4d421ba50d57c13f7e\",\"sha256:8f18fae117ec6e5777cc62ba78cbb3be10a8a38639ccfb949521abd95c8301a4\",\"sha256:9663906b1c3bf891618ebcac857961531357525b25493ef717bca0f86f581ad6\",\"sha256:a090d7c93c8e9ab88946367500756c5f50cd660e09deb4c57494989c1f23fa5a\",\"sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748\",\"sha256:ea73ecf48cd45e250f65eb731dd35808175ae37d70cca5d41f9ef57210737f04\"],\"tagsDeleted\":[\"latest\"]}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cf2e0784-b851-4fe8-b5f4-d4c26b63a0f5"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "640",
+      "StatusCode" : "202",
+      "Body" : "{\"manifestsDeleted\":[\"sha256:5de788243acadd50526e70868b86d12ad79f3793619719ae22e0d09e8c873a66\",\"sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f\",\"sha256:827525365ff718681b0688621e09912af49a17611701ee4d421ba50d57c13f7e\",\"sha256:8f18fae117ec6e5777cc62ba78cbb3be10a8a38639ccfb949521abd95c8301a4\",\"sha256:9663906b1c3bf891618ebcac857961531357525b25493ef717bca0f86f581ad6\",\"sha256:a090d7c93c8e9ab88946367500756c5f50cd660e09deb4c57494989c1f23fa5a\",\"sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748\",\"sha256:ea73ecf48cd45e250f65eb731dd35808175ae37d70cca5d41f9ef57210737f04\"],\"tagsDeleted\":[\"latest\"]}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93309792-da85-4e20-932d-3f75ed7034bf"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "640",
+      "StatusCode" : "202",
+      "Body" : "{\"manifestsDeleted\":[\"sha256:5de788243acadd50526e70868b86d12ad79f3793619719ae22e0d09e8c873a66\",\"sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f\",\"sha256:827525365ff718681b0688621e09912af49a17611701ee4d421ba50d57c13f7e\",\"sha256:8f18fae117ec6e5777cc62ba78cbb3be10a8a38639ccfb949521abd95c8301a4\",\"sha256:9663906b1c3bf891618ebcac857961531357525b25493ef717bca0f86f581ad6\",\"sha256:a090d7c93c8e9ab88946367500756c5f50cd660e09deb4c57494989c1f23fa5a\",\"sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748\",\"sha256:ea73ecf48cd45e250f65eb731dd35808175ae37d70cca5d41f9ef57210737f04\"],\"tagsDeleted\":[\"latest\"]}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ab159ecc-62e3-4620-b4d2-69a65a8d1b45"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "640",
+      "StatusCode" : "202",
+      "Body" : "{\"manifestsDeleted\":[\"sha256:5de788243acadd50526e70868b86d12ad79f3793619719ae22e0d09e8c873a66\",\"sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f\",\"sha256:827525365ff718681b0688621e09912af49a17611701ee4d421ba50d57c13f7e\",\"sha256:8f18fae117ec6e5777cc62ba78cbb3be10a8a38639ccfb949521abd95c8301a4\",\"sha256:9663906b1c3bf891618ebcac857961531357525b25493ef717bca0f86f581ad6\",\"sha256:a090d7c93c8e9ab88946367500756c5f50cd660e09deb4c57494989c1f23fa5a\",\"sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748\",\"sha256:ea73ecf48cd45e250f65eb731dd35808175ae37d70cca5d41f9ef57210737f04\"],\"tagsDeleted\":[\"latest\"]}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "10615d67-881f-4a20-89e8-140747996026"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "640",
+      "StatusCode" : "202",
+      "Body" : "{\"manifestsDeleted\":[\"sha256:5de788243acadd50526e70868b86d12ad79f3793619719ae22e0d09e8c873a66\",\"sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f\",\"sha256:827525365ff718681b0688621e09912af49a17611701ee4d421ba50d57c13f7e\",\"sha256:8f18fae117ec6e5777cc62ba78cbb3be10a8a38639ccfb949521abd95c8301a4\",\"sha256:9663906b1c3bf891618ebcac857961531357525b25493ef717bca0f86f581ad6\",\"sha256:a090d7c93c8e9ab88946367500756c5f50cd660e09deb4c57494989c1f23fa5a\",\"sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748\",\"sha256:ea73ecf48cd45e250f65eb731dd35808175ae37d70cca5d41f9ef57210737f04\"],\"tagsDeleted\":[\"latest\"]}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "50fc554e-6aa7-4871-a0e0-0f412c08c6be"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "640",
+      "StatusCode" : "202",
+      "Body" : "{\"manifestsDeleted\":[\"sha256:5de788243acadd50526e70868b86d12ad79f3793619719ae22e0d09e8c873a66\",\"sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f\",\"sha256:827525365ff718681b0688621e09912af49a17611701ee4d421ba50d57c13f7e\",\"sha256:8f18fae117ec6e5777cc62ba78cbb3be10a8a38639ccfb949521abd95c8301a4\",\"sha256:9663906b1c3bf891618ebcac857961531357525b25493ef717bca0f86f581ad6\",\"sha256:a090d7c93c8e9ab88946367500756c5f50cd660e09deb4c57494989c1f23fa5a\",\"sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748\",\"sha256:ea73ecf48cd45e250f65eb731dd35808175ae37d70cca5d41f9ef57210737f04\"],\"tagsDeleted\":[\"latest\"]}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "70c7168d-86db-4e2e-9e79-f10e1ea80c39"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "640",
+      "StatusCode" : "202",
+      "Body" : "{\"manifestsDeleted\":[\"sha256:5de788243acadd50526e70868b86d12ad79f3793619719ae22e0d09e8c873a66\",\"sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f\",\"sha256:827525365ff718681b0688621e09912af49a17611701ee4d421ba50d57c13f7e\",\"sha256:8f18fae117ec6e5777cc62ba78cbb3be10a8a38639ccfb949521abd95c8301a4\",\"sha256:9663906b1c3bf891618ebcac857961531357525b25493ef717bca0f86f581ad6\",\"sha256:a090d7c93c8e9ab88946367500756c5f50cd660e09deb4c57494989c1f23fa5a\",\"sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748\",\"sha256:ea73ecf48cd45e250f65eb731dd35808175ae37d70cca5d41f9ef57210737f04\"],\"tagsDeleted\":[\"latest\"]}\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -4,6 +4,8 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,13 +22,13 @@ public final class ManifestAttributesManifestReferences {
      * CPU architecture
      */
     @JsonProperty(value = "architecture", required = true)
-    private String cpuArchitecture;
+    private ArtifactArchitecture cpuArchitecture;
 
     /*
      * Operating system
      */
     @JsonProperty(value = "os", required = true)
-    private String operatingSystem;
+    private ArtifactOperatingSystem operatingSystem;
 
     /**
      * Get the digest property: Manifest digest.
@@ -53,7 +55,7 @@ public final class ManifestAttributesManifestReferences {
      *
      * @return the cpuArchitecture value.
      */
-    public String getCpuArchitecture() {
+    public ArtifactArchitecture getArchitecture() {
         return this.cpuArchitecture;
     }
 
@@ -63,7 +65,7 @@ public final class ManifestAttributesManifestReferences {
      * @param cpuArchitecture the cpuArchitecture value to set.
      * @return the ManifestAttributesManifestReferences object itself.
      */
-    public ManifestAttributesManifestReferences setCpuArchitecture(String cpuArchitecture) {
+    public ManifestAttributesManifestReferences setCpuArchitecture(ArtifactArchitecture cpuArchitecture) {
         this.cpuArchitecture = cpuArchitecture;
         return this;
     }
@@ -73,7 +75,7 @@ public final class ManifestAttributesManifestReferences {
      *
      * @return the operatingSystem value.
      */
-    public String getOperatingSystem() {
+    public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
     }
 
@@ -83,7 +85,7 @@ public final class ManifestAttributesManifestReferences {
      * @param operatingSystem the operatingSystem value to set.
      * @return the ManifestAttributesManifestReferences object itself.
      */
-    public ManifestAttributesManifestReferences setOperatingSystem(String operatingSystem) {
+    public ManifestAttributesManifestReferences setOperatingSystem(ArtifactOperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
         return this;
     }
