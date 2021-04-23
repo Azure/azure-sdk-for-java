@@ -1,5 +1,8 @@
 # Release History
 
+## 3.5.0-beta.1 (Unreleased)
+
+
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
 - Fix bug of Keyvault refresh Timer task blocking application termination. ([#20014](https://github.com/Azure/azure-sdk-for-java/pull/20014))

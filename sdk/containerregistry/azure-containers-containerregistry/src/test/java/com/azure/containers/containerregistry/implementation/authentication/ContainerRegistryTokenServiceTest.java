@@ -28,7 +28,7 @@ public class ContainerRegistryTokenServiceTest {
     private TokenServiceImpl tokenServiceImpl;
     private AccessTokenCacheImpl refreshTokenCache;
     private ContainerRegistryTokenRequestContext requestContext;
-    private ContainerRegistryTokenCredential refreshTokenCredential;
+    private ContainerRegistryRefreshTokenCredential refreshTokenCredential;
 
     private static final String SCOPE = "scope";
     private static final String SERVICENAME = "serviceName";
@@ -54,7 +54,7 @@ public class ContainerRegistryTokenServiceTest {
         when(tokenRequestContext.getScope()).thenReturn(SCOPE);
         when(tokenRequestContext.getServiceName()).thenReturn(SERVICENAME);
 
-        ContainerRegistryTokenCredential spyRefreshTokenCredential = spy(mock(ContainerRegistryTokenCredential.class));
+        ContainerRegistryRefreshTokenCredential spyRefreshTokenCredential = spy(mock(ContainerRegistryRefreshTokenCredential.class));
         doReturn(Mono.just(refreshToken)).when(spyRefreshTokenCredential).getToken(any(ContainerRegistryTokenRequestContext.class));
 
 

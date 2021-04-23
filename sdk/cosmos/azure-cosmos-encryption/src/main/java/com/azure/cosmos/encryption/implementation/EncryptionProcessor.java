@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.encryption.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
@@ -55,7 +56,7 @@ public class EncryptionProcessor {
     private EncryptionSettings encryptionSettings;
     private AtomicBoolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
-    private final static int STRING_SIZE_ENCRYPTION_LIMIT = 1024;
+    private final static int STRING_SIZE_ENCRYPTION_LIMIT = 8000;
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
                                CosmosEncryptionAsyncClient encryptionCosmosClient) {
@@ -377,7 +378,7 @@ public class EncryptionProcessor {
         if (propertyValueHolder.isObject()) {
             for (Iterator<Map.Entry<String, JsonNode>> it = propertyValueHolder.fields(); it.hasNext(); ) {
                 Map.Entry<String, JsonNode> child = it.next();
-                if (child.getValue().isObject()) {
+                if (child.getValue().isObject() || child.getValue().isArray()) {
                     decryptAndSerializeProperty(encryptionSettings, (ObjectNode) propertyValueHolder,
                         child.getValue(), propertyName);
                 } else if (!child.getValue().isNull()) {
@@ -467,9 +468,10 @@ public class EncryptionProcessor {
                         SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0, StandardCharsets.UTF_8.toString()).serialize(jsonNode.asText()));
             }
         } catch (MicrosoftDataEncryptionException ex) {
-            throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
+            throw BridgeInternal.createCosmosException("Unable to convert JSON to byte[]", ex, null, 0, null);
         }
-        throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + jsonNode.getNodeType());
+        throw BridgeInternal.createCosmosException(0,
+            "Invalid or Unsupported Data Type Passed " + jsonNode.getNodeType());
     }
 
     public static JsonNode toJsonNode(byte[] serializedBytes, TypeMarker typeMarker) {
@@ -487,9 +489,9 @@ public class EncryptionProcessor {
                         STRING_SIZE_ENCRYPTION_LIMIT, 0, 0, StandardCharsets.UTF_8.toString()).deserialize(serializedBytes));
             }
         } catch (MicrosoftDataEncryptionException ex) {
-            throw new IllegalStateException("Unable to convert byte[] to JSON", ex);
+            throw BridgeInternal.createCosmosException("Unable to convert byte[] to JSON", ex, null, 0, null);
         }
-        throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + typeMarker);
+        throw BridgeInternal.createCosmosException(0, "Invalid or Unsupported Data Type Passed " + typeMarker);
     }
 
     public enum TypeMarker {
