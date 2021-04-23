@@ -259,14 +259,14 @@ public class ContainerRepositoryClientTest extends ContainerRegistryClientsTestB
 //    public void setTagPropertiesThrows() {
 //        ContainerRepositoryClient client = getContainerRepositoryClient(httpClient);
 //
-//        assertThrows(NullPointerException.class, () -> client.setTagProperties(null, writeableProperties));
+//        assertThrows(NullPointerException.class, () -> client.updateTagProperties(null, writeableProperties));
 //
-//        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(null, writeableProperties, Context.NONE));
+//        assertThrows(NullPointerException.class, () -> client.updateTagPropertiesWithResponse(null, writeableProperties, Context.NONE));
 //
-//        assertThrows(NullPointerException.class, () -> client.setTagProperties(LATEST_TAG_NAME,  null));
-//        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(LATEST_TAG_NAME,  null, Context.NONE));
+//        assertThrows(NullPointerException.class, () -> client.updateTagProperties(LATEST_TAG_NAME,  null));
+//        assertThrows(NullPointerException.class, () -> client.updateTagPropertiesWithResponse(LATEST_TAG_NAME,  null, Context.NONE));
 //
-//        assertThrows(ResourceNotFoundException.class, () -> client.setTagProperties("unknown", writeableProperties));
-//        assertThrows(ResourceNotFoundException.class, () -> client.setTagPropertiesWithResponse("unknown", writeableProperties, Context.NONE));
+//        assertThrows(ResourceNotFoundException.class, () -> client.updateTagProperties("unknown", writeableProperties));
+//        assertThrows(ResourceNotFoundException.class, () -> client.updateTagPropertiesWithResponse("unknown", writeableProperties, Context.NONE));
 //    }
 }

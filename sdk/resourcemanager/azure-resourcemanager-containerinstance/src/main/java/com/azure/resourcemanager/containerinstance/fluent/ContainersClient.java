@@ -8,6 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerAttachResponseInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerExecResponseInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
@@ -23,6 +24,8 @@ public interface ContainersClient {
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
      *     available logs are shown up to 4mb.
+     * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
+     *     defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -30,7 +33,7 @@ public interface ContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LogsInner>> listLogsWithResponseAsync(
-        String resourceGroupName, String containerGroupName, String containerName, Integer tail);
+        String resourceGroupName, String containerGroupName, String containerName, Integer tail, Boolean timestamps);
 
     /**
      * Get the logs for a specified container instance in a specified resource group and container group.
@@ -40,6 +43,8 @@ public interface ContainersClient {
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
      *     available logs are shown up to 4mb.
+     * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
+     *     defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -47,7 +52,7 @@ public interface ContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogsInner> listLogsAsync(
-        String resourceGroupName, String containerGroupName, String containerName, Integer tail);
+        String resourceGroupName, String containerGroupName, String containerName, Integer tail, Boolean timestamps);
 
     /**
      * Get the logs for a specified container instance in a specified resource group and container group.
@@ -85,6 +90,8 @@ public interface ContainersClient {
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
      *     available logs are shown up to 4mb.
+     * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
+     *     defaults to false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,7 +100,12 @@ public interface ContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LogsInner> listLogsWithResponse(
-        String resourceGroupName, String containerGroupName, String containerName, Integer tail, Context context);
+        String resourceGroupName,
+        String containerGroupName,
+        String containerName,
+        Integer tail,
+        Boolean timestamps,
+        Context context);
 
     /**
      * Executes a command for a specific container instance in a specified resource group and container group.
@@ -101,7 +113,7 @@ public interface ContainersClient {
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
-     * @param containerExecRequest The container exec request.
+     * @param containerExecRequest The request for the exec command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -120,7 +132,7 @@ public interface ContainersClient {
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
-     * @param containerExecRequest The container exec request.
+     * @param containerExecRequest The request for the exec command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -139,7 +151,7 @@ public interface ContainersClient {
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
-     * @param containerExecRequest The container exec request.
+     * @param containerExecRequest The request for the exec command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,7 +170,7 @@ public interface ContainersClient {
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
-     * @param containerExecRequest The container exec request.
+     * @param containerExecRequest The request for the exec command.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,4 +184,64 @@ public interface ContainersClient {
         String containerName,
         ContainerExecRequest containerExecRequest,
         Context context);
+
+    /**
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerName The name of the container instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the information for the output stream from container attach.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(
+        String resourceGroupName, String containerGroupName, String containerName);
+
+    /**
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerName The name of the container instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the information for the output stream from container attach.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ContainerAttachResponseInner> attachAsync(
+        String resourceGroupName, String containerGroupName, String containerName);
+
+    /**
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerName The name of the container instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the information for the output stream from container attach.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerAttachResponseInner attach(String resourceGroupName, String containerGroupName, String containerName);
+
+    /**
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param containerName The name of the container instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the information for the output stream from container attach.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ContainerAttachResponseInner> attachWithResponse(
+        String resourceGroupName, String containerGroupName, String containerName, Context context);
 }

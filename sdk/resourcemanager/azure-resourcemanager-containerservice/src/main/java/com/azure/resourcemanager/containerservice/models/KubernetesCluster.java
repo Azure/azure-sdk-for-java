@@ -8,6 +8,8 @@ import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterIn
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -21,8 +23,10 @@ import java.util.Map;
 @Fluent
 public interface KubernetesCluster
     extends GroupableResource<ContainerServiceManager, ManagedClusterInner>,
-        Refreshable<KubernetesCluster>,
-        Updatable<KubernetesCluster.Update> {
+    Refreshable<KubernetesCluster>,
+    Updatable<KubernetesCluster.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection {
 
     /** @return the provisioning state of the Kubernetes cluster */
     String provisioningState();
@@ -346,6 +350,16 @@ public interface KubernetesCluster
             WithCreate withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
         }
 
+        /** The stage of the Kubernetes cluster definition allowing to specify the cluster's access profiles. */
+        interface WithAccessProfiles {
+            /**
+             * Enables private cluster.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enablePrivateCluster();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -356,6 +370,7 @@ public interface KubernetesCluster
                 WithNetworkProfile,
                 WithDnsPrefix,
                 WithAddOnProfiles,
+                WithAccessProfiles,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }

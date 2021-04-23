@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -43,6 +44,7 @@ final class BuilderHelper {
         CoreUtils.getProperties("azure-data-tables.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
 
     static HttpPipeline buildPipeline(
         TablesSharedKeyCredential tablesSharedKeyCredential,
@@ -58,6 +60,11 @@ final class BuilderHelper {
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
+            policies.add(new CosmosPatchTransformPolicy());
+        }
+
         policies.add(new UserAgentPolicy(
             CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());

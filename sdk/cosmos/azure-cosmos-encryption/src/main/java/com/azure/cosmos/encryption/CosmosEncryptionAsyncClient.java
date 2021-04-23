@@ -3,20 +3,28 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 /**
  * CosmosClient with Encryption support.
  */
 public class CosmosEncryptionAsyncClient {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, ClientEncryptionPolicy> clientEncryptionPolicyCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
@@ -95,9 +103,26 @@ public class CosmosEncryptionAsyncClient {
 
         return clientEncryptionKey.read().map(cosmosClientEncryptionKeyResponse ->
             cosmosClientEncryptionKeyResponse.getProperties()
-        ).onErrorResume(throwable -> Mono.error(new IllegalStateException("Encryption Based Container without Data " +
-            "Encryption Keys. " +
-            "Please make sure you have created the Client Encryption Keys", throwable)));
+        ).onErrorResume(throwable -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+            if (!(unwrappedException instanceof Exception)) {
+                // fatal error
+                LOGGER.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                return Mono.error(unwrappedException);
+            }
+            Exception exception = (Exception) unwrappedException;
+            CosmosException dce = Utils.as(exception, CosmosException.class);
+            if (dce != null) {
+                if (dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                    String message = "Encryption Based Container without Data Encryption Keys. " +
+                        "Please make sure you have created the Client Encryption Keys";
+                    return Mono.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.NOTFOUND, message));
+                }
+                return Mono.error(dce);
+            }
+
+            return Mono.error(exception);
+        });
     }
 
     /**
