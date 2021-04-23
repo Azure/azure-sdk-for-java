@@ -811,10 +811,6 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RetryContext getRetryContext(CosmosDiagnostics cosmosDiagnostics) {
-        if(cosmosDiagnostics != null && cosmosDiagnostics.clientSideRequestStatistics() != null) {
-            return cosmosDiagnostics.clientSideRequestStatistics().getRetryContext();
-        } else {
-            return null;
-        }
+        return cosmosDiagnostics.clientSideRequestStatistics().getRetryContext();
     }
 }

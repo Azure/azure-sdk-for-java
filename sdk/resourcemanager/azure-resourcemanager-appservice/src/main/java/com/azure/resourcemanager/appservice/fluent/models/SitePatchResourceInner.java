@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
@@ -167,6 +168,17 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
     private Boolean clientCertEnabled;
 
     /*
+     * This composes with ClientCertEnabled setting.
+     * - ClientCertEnabled: false means ClientCert is ignored.
+     * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert
+     * is required.
+     * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert
+     * is optional or accepted.
+     */
+    @JsonProperty(value = "properties.clientCertMode")
+    private ClientCertMode clientCertMode;
+
+    /*
      * client certificate authentication comma-separated exclusion paths
      */
     @JsonProperty(value = "properties.clientCertExclusionPaths")
@@ -180,6 +192,13 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.hostNamesDisabled")
     private Boolean hostNamesDisabled;
+
+    /*
+     * Unique identifier that verifies the custom domains assigned to the app.
+     * Customer will add this id to a txt record for verification.
+     */
+    @JsonProperty(value = "properties.customDomainVerificationId")
+    private String customDomainVerificationId;
 
     /*
      * List of IP addresses that the app uses for outbound connections (e.g.
@@ -255,6 +274,12 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
     private SlotSwapStatus slotSwapStatus;
 
     /*
+     * Identity to use for Key Vault Reference authentication.
+     */
+    @JsonProperty(value = "properties.keyVaultReferenceIdentity")
+    private String keyVaultReferenceIdentity;
+
+    /*
      * HttpsOnly: configures a web site to accept only https requests. Issues
      * redirect for
      * http requests
@@ -273,6 +298,12 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.inProgressOperationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID inProgressOperationId;
+
+    /*
+     * Checks if Customer provided storage account is required
+     */
+    @JsonProperty(value = "properties.storageAccountRequired")
+    private Boolean storageAccountRequired;
 
     /**
      * Get the identity property: Managed service identity.
@@ -613,6 +644,30 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
+     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
+     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+     *
+     * @return the clientCertMode value.
+     */
+    public ClientCertMode clientCertMode() {
+        return this.clientCertMode;
+    }
+
+    /**
+     * Set the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
+     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
+     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+     *
+     * @param clientCertMode the clientCertMode value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withClientCertMode(ClientCertMode clientCertMode) {
+        this.clientCertMode = clientCertMode;
+        return this;
+    }
+
+    /**
      * Get the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
      *
      * @return the clientCertExclusionPaths value.
@@ -653,6 +708,28 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
      */
     public SitePatchResourceInner withHostNamesDisabled(Boolean hostNamesDisabled) {
         this.hostNamesDisabled = hostNamesDisabled;
+        return this;
+    }
+
+    /**
+     * Get the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
+     * app. Customer will add this id to a txt record for verification.
+     *
+     * @return the customDomainVerificationId value.
+     */
+    public String customDomainVerificationId() {
+        return this.customDomainVerificationId;
+    }
+
+    /**
+     * Set the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
+     * app. Customer will add this id to a txt record for verification.
+     *
+     * @param customDomainVerificationId the customDomainVerificationId value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withCustomDomainVerificationId(String customDomainVerificationId) {
+        this.customDomainVerificationId = customDomainVerificationId;
         return this;
     }
 
@@ -792,6 +869,26 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
+     *
+     * @return the keyVaultReferenceIdentity value.
+     */
+    public String keyVaultReferenceIdentity() {
+        return this.keyVaultReferenceIdentity;
+    }
+
+    /**
+     * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
+     *
+     * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
+        this.keyVaultReferenceIdentity = keyVaultReferenceIdentity;
+        return this;
+    }
+
+    /**
      * Get the httpsOnly property: HttpsOnly: configures a web site to accept only https requests. Issues redirect for
      * http requests.
      *
@@ -840,6 +937,33 @@ public class SitePatchResourceInner extends ProxyOnlyResource {
      */
     public UUID inProgressOperationId() {
         return this.inProgressOperationId;
+    }
+
+    /**
+     * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @return the storageAccountRequired value.
+     */
+    public Boolean storageAccountRequired() {
+        return this.storageAccountRequired;
+    }
+
+    /**
+     * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @param storageAccountRequired the storageAccountRequired value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withStorageAccountRequired(Boolean storageAccountRequired) {
+        this.storageAccountRequired = storageAccountRequired;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SitePatchResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
     }
 
     /**

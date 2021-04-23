@@ -19,8 +19,8 @@ const specs = {
 const groupUrl = 'https://repo1.maven.org/maven2/com/azure/resourcemanager/';
 const artiRegEx = />(azure-resourcemanager-.+)\/</g;
 const verRegEx = /<version>(.+)<\/version>/g;
-const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/g;
-const pkgRegEx2 = /Package\s+tag\s+(.+)\.</g;
+const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/;
+const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;
 var startCnt = 0;
 var endCnt = 0;
 var data = {};
@@ -67,13 +67,13 @@ function readMetadata(artifact) {
 // method to read pom for each package version and get API version tag from description
 function readPom(artifact, version) {
   sendRequest(groupUrl + artifact + '/' + version + '/' + artifact + '-' + version + '.pom', function(response) {
-    var match = pkgRegEx.exec(response);
-    if (match === null) {
-      match = pkgRegEx2.exec(response);
+    var match = pkgRegEx2.exec(response);
+    if (!match) {
+      match = pkgRegEx.exec(response);
     }
     ++endCnt;
-    if (match === null) {
-      // console.log('[WARN] no package tag found in ' + artifact + '_' + version);
+    if (!match) {
+      console.log('[WARN] no package tag found in ' + artifact + '_' + version);
     } else {
       var tag = match[1];
       var service = artifact.split('-').pop();
@@ -84,6 +84,7 @@ function readPom(artifact, version) {
         data[service][tag] = [];
       }
       data[service][tag].push(version);
+      console.log('[INFO] find tag %s and version %s for service %s.', tag, version, service);
     }
     pkgRegEx.lastIndex = 0;
     if (startCnt == endCnt) {

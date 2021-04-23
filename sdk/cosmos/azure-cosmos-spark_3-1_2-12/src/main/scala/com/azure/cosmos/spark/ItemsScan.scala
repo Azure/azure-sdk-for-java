@@ -4,12 +4,15 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.CosmosParameterizedQuery
+import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.types.StructType
+
+import java.util.UUID
 
 private case class ItemsScan(session: SparkSession,
                              schema: StructType,
@@ -65,7 +68,12 @@ private case class ItemsScan(session: SparkSession,
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    ItemsScanPartitionReaderFactory(config, schema, cosmosQuery, cosmosClientStateHandle)
+    ItemsScanPartitionReaderFactory(config,
+      schema,
+      cosmosQuery,
+      DiagnosticsContext(UUID.randomUUID().toString, cosmosQuery.queryTest),
+      cosmosClientStateHandle,
+      DiagnosticsConfig.parseDiagnosticsConfig(config))
   }
 
   override def toBatch: Batch = {
