@@ -4,12 +4,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
 /**
  * The name of sub resource for private link.
+ *
+ * It can be converted from {@link PrivateLinkResource#groupId()} via {@link #fromString(String)}.
  */
 public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLinkSubResourceName> {
 

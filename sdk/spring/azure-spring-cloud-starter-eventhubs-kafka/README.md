@@ -14,7 +14,7 @@ This starter for Apache Kafka with Azure Event Hubs helps developers to finish t
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-eventhubs-kafka</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

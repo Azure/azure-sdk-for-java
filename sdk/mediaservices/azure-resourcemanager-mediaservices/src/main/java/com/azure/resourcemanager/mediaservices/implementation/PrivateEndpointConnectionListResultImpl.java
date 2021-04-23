@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionListResultInner;
 import com.azure.resourcemanager.mediaservices.models.PrivateEndpointConnection;
@@ -16,10 +15,11 @@ import java.util.stream.Collectors;
 public final class PrivateEndpointConnectionListResultImpl implements PrivateEndpointConnectionListResult {
     private PrivateEndpointConnectionListResultInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     PrivateEndpointConnectionListResultImpl(
-        PrivateEndpointConnectionListResultInner innerObject, MediaservicesManager serviceManager) {
+        PrivateEndpointConnectionListResultInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +42,7 @@ public final class PrivateEndpointConnectionListResultImpl implements PrivateEnd
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

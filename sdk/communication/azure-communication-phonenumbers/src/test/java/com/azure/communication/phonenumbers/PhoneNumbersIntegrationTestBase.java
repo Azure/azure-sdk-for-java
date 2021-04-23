@@ -41,6 +41,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     protected static final String PHONE_NUMBER =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
 
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
         new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("id")
@@ -141,5 +144,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         }
 
         return content;
+    }
+
+    protected boolean shouldEnablePhoneNumbersTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|phonenumbers)");
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.OutputCaptureRule;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = EventHubBinderApplication.class)
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:application-test.properties")
+@ActiveProfiles("manual")
 public class EventHubBinderApplicationIT {
 
     @Rule
@@ -34,11 +34,10 @@ public class EventHubBinderApplicationIT {
 
     @Test
     public void testSendAndReceiveMessage() throws Exception {
+        Thread.sleep(10000);
         String message = UUID.randomUUID().toString();
-
         mvc.perform(post("/messages?message=" + message)).andExpect(status().isOk())
             .andExpect(content().string(message));
-
         String messageReceivedLog = String.format("New message received: '%s'", message);
         String messageCheckpointedLog = String.format("Message '%s' successfully checkpointed", message);
         boolean messageReceived = false;

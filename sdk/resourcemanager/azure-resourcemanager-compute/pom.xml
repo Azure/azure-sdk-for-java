@@ -95,7 +95,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -120,12 +120,6 @@
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
       <version>0.1.55</version> <!-- {x-version-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.cverges.expect4j</groupId>
-      <artifactId>expect4j</artifactId>
-      <version>1.6</version> <!-- {x-version-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

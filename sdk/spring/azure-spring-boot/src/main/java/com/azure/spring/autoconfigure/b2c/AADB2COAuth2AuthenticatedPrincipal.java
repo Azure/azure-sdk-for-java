@@ -33,16 +33,26 @@ public class AADB2COAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPr
 
     private JWTClaimsSet jwtClaimsSet;
 
+    private final String name;
+
     public AADB2COAuth2AuthenticatedPrincipal(Map<String, Object> headers,
                                               Map<String, Object> attributes,
                                               Collection<GrantedAuthority> authorities,
                                               String tokenValue) {
+        this(headers, attributes, authorities, tokenValue, null);
+    }
+
+    public AADB2COAuth2AuthenticatedPrincipal(Map<String, Object> headers,
+                                              Map<String, Object> attributes,
+                                              Collection<GrantedAuthority> authorities,
+                                              String tokenValue, String name) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;
         this.tokenValue = tokenValue;
         this.attributes = Collections.unmodifiableMap(attributes);
         this.authorities = authorities == null ? NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
+        this.name = (name != null) ? name : (String) this.attributes.get("sub");
         toJwtClaimsSet(attributes);
     }
 
@@ -66,7 +76,7 @@ public class AADB2COAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPr
 
     @Override
     public String getName() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("name");
+        return this.name;
     }
 
     public String getTokenValue() {

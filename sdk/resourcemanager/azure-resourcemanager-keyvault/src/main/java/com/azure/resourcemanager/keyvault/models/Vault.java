@@ -8,6 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.models.VaultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -19,7 +21,10 @@ import java.util.List;
 /** An immutable client-side representation of an Azure Key Vault. */
 @Fluent
 public interface Vault
-    extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>, Updatable<Vault.Update> {
+    extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>, Updatable<Vault.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsUpdatingPrivateEndpointConnection {
+
     /** @return an authenticated Key Vault secret client */
     SecretAsyncClient secretClient();
 

@@ -5,7 +5,6 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
-import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
@@ -149,8 +148,7 @@ public class NettyAsyncHttpClientBuilder {
                         channel.pipeline()
                             .addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
                                 AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
-                                handler, proxyChallengeHolder))
-                            .addLast("azure.proxy.exceptionHandler", new HttpProxyExceptionHandler());
+                                handler, proxyChallengeHolder));
                     }
                 });
 

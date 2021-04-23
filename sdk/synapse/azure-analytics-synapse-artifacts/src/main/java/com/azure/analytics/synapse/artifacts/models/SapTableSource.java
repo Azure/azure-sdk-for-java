@@ -58,6 +58,14 @@ public final class SapTableSource extends TabularSource {
     private Object customRfcReadTableFunctionModule;
 
     /*
+     * The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "sapDataColumnDelimiter")
+    private Object sapDataColumnDelimiter;
+
+    /*
      * The partition mechanism that will be used for SAP table read in
      * parallel.
      */
@@ -199,6 +207,28 @@ public final class SapTableSource extends TabularSource {
      */
     public SapTableSource setCustomRfcReadTableFunctionModule(Object customRfcReadTableFunctionModule) {
         this.customRfcReadTableFunctionModule = customRfcReadTableFunctionModule;
+        return this;
+    }
+
+    /**
+     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     *
+     * @return the sapDataColumnDelimiter value.
+     */
+    public Object getSapDataColumnDelimiter() {
+        return this.sapDataColumnDelimiter;
+    }
+
+    /**
+     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     *
+     * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
+     * @return the SapTableSource object itself.
+     */
+    public SapTableSource setSapDataColumnDelimiter(Object sapDataColumnDelimiter) {
+        this.sapDataColumnDelimiter = sapDataColumnDelimiter;
         return this;
     }
 

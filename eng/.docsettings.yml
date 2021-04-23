@@ -178,6 +178,7 @@ known_content_issues:
   - ['sdk/synapse/azure-analytics-synapse-monitoring/swagger/README.md', '#3113']
   - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
+  - ['sdk/webpubsub/azure-messaging-webpubsub/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

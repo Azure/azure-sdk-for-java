@@ -1,7 +1,13 @@
 # Release History
 
-## 4.0.0-beta.6 (Unreleased)
+## 4.0.0-beta.7 (Unreleased)
 
+
+## 4.0.0-beta.6 (2021-04-09)
+
+### New features
+- Added support for service version `7.2`.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
 
 ## 4.0.0-beta.5 (2021-03-12)
 

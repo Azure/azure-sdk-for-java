@@ -19,7 +19,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     /*
      * Account key
      */
-    @JsonProperty(value = "accountKey", required = true)
+    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*

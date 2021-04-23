@@ -63,7 +63,7 @@ private class ChangeFeedTable(val session: SparkSession,
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot] =
     initializeAndBroadcastCosmosClientStateForContainer()
-  private val effectiveUserConfig = CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap)
+  private val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userConfig.asScala.toMap)
   private val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
   private val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(effectiveUserConfig)
@@ -83,10 +83,14 @@ private class ChangeFeedTable(val session: SparkSession,
   ).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
+    val effectiveOptions = Option.apply(options) match {
+      case Some(optionsProvided) => effectiveUserConfig ++ optionsProvided.asScala
+      case None => effectiveUserConfig
+    }
+
     ChangeFeedScanBuilder(
       session,
-      new CaseInsensitiveStringMap(
-        CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
+      new CaseInsensitiveStringMap(effectiveOptions.asJava),
       schema(),
       containerStateHandle)
   }
