@@ -32,6 +32,7 @@ import com.azure.resourcemanager.network.models.PrivateDnsZoneGroup;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PrivateLinkSubResourceName;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
+import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
@@ -451,6 +452,23 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         Assertions.assertEquals(1, connections.size());
         PrivateEndpointConnection connection = connections.iterator().next();
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, connection.privateLinkServiceConnectionState().status());
+    }
+
+    @Test
+    @Disabled("invalid response of list private endpoint connections")
+    public void testPrivateEndpointRedis() {
+        String redisName = generateRandomResourceName("redis", 10);
+        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.REDIS_CACHE;
+
+        RedisCache redisCache = azureResourceManager.redisCaches().define(redisName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .create();
+
+        validatePrivateLinkResource(redisCache, subResourceName.toString());
+
+        validateListAndApprovePrivatePrivateEndpointConnection(redisCache, subResourceName);
     }
 
     @Test
