@@ -5,6 +5,9 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -16,7 +19,10 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Function App. */
 @Fluent
-public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<FunctionApp.Update> {
+public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<FunctionApp.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
 
     /** @return the entry point to deployment slot management API under the function app */
     FunctionDeploymentSlots deploymentSlots();

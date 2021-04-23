@@ -4,16 +4,20 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
+import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import com.azure.resourcemanager.kusto.models.AzureSku;
 import com.azure.resourcemanager.kusto.models.Cluster;
 import com.azure.resourcemanager.kusto.models.ClusterUpdate;
+import com.azure.resourcemanager.kusto.models.DiagnoseVirtualNetworkResult;
 import com.azure.resourcemanager.kusto.models.EngineType;
+import com.azure.resourcemanager.kusto.models.FollowerDatabaseDefinition;
 import com.azure.resourcemanager.kusto.models.Identity;
 import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
+import com.azure.resourcemanager.kusto.models.LanguageExtension;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
@@ -27,7 +31,7 @@ import java.util.Map;
 public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.Update {
     private ClusterInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -69,6 +73,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public Identity identity() {
         return this.innerModel().identity();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public State state() {
@@ -148,13 +156,19 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 
     private String resourceGroupName;
 
     private String clusterName;
+
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
 
     private ClusterUpdate updateParameters;
 
@@ -168,7 +182,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             serviceManager
                 .serviceClient()
                 .getClusters()
-                .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
+                .createOrUpdate(
+                    resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
         return this;
     }
 
@@ -177,17 +192,21 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             serviceManager
                 .serviceClient()
                 .getClusters()
-                .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), context);
+                .createOrUpdate(
+                    resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
         return this;
     }
 
-    ClusterImpl(String name, KustoManager serviceManager) {
+    ClusterImpl(String name, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public ClusterImpl update() {
+        this.updateIfMatch = null;
         this.updateParameters = new ClusterUpdate();
         return this;
     }
@@ -197,7 +216,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             serviceManager
                 .serviceClient()
                 .getClusters()
-                .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
+                .update(resourceGroupName, clusterName, updateParameters, updateIfMatch, Context.NONE);
         return this;
     }
 
@@ -206,11 +225,11 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             serviceManager
                 .serviceClient()
                 .getClusters()
-                .update(resourceGroupName, clusterName, updateParameters, context);
+                .update(resourceGroupName, clusterName, updateParameters, updateIfMatch, context);
         return this;
     }
 
-    ClusterImpl(ClusterInner innerObject, KustoManager serviceManager) {
+    ClusterImpl(ClusterInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -235,6 +254,76 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
                 .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
                 .getValue();
         return this;
+    }
+
+    public void stop() {
+        serviceManager.clusters().stop(resourceGroupName, clusterName);
+    }
+
+    public void stop(Context context) {
+        serviceManager.clusters().stop(resourceGroupName, clusterName, context);
+    }
+
+    public void start() {
+        serviceManager.clusters().start(resourceGroupName, clusterName);
+    }
+
+    public void start(Context context) {
+        serviceManager.clusters().start(resourceGroupName, clusterName, context);
+    }
+
+    public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases() {
+        return serviceManager.clusters().listFollowerDatabases(resourceGroupName, clusterName);
+    }
+
+    public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(Context context) {
+        return serviceManager.clusters().listFollowerDatabases(resourceGroupName, clusterName, context);
+    }
+
+    public void detachFollowerDatabases(FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
+        serviceManager.clusters().detachFollowerDatabases(resourceGroupName, clusterName, followerDatabaseToRemove);
+    }
+
+    public void detachFollowerDatabases(FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context) {
+        serviceManager
+            .clusters()
+            .detachFollowerDatabases(resourceGroupName, clusterName, followerDatabaseToRemove, context);
+    }
+
+    public DiagnoseVirtualNetworkResult diagnoseVirtualNetwork() {
+        return serviceManager.clusters().diagnoseVirtualNetwork(resourceGroupName, clusterName);
+    }
+
+    public DiagnoseVirtualNetworkResult diagnoseVirtualNetwork(Context context) {
+        return serviceManager.clusters().diagnoseVirtualNetwork(resourceGroupName, clusterName, context);
+    }
+
+    public PagedIterable<LanguageExtension> listLanguageExtensions() {
+        return serviceManager.clusters().listLanguageExtensions(resourceGroupName, clusterName);
+    }
+
+    public PagedIterable<LanguageExtension> listLanguageExtensions(Context context) {
+        return serviceManager.clusters().listLanguageExtensions(resourceGroupName, clusterName, context);
+    }
+
+    public void addLanguageExtensions(LanguageExtensionsList languageExtensionsToAdd) {
+        serviceManager.clusters().addLanguageExtensions(resourceGroupName, clusterName, languageExtensionsToAdd);
+    }
+
+    public void addLanguageExtensions(LanguageExtensionsList languageExtensionsToAdd, Context context) {
+        serviceManager
+            .clusters()
+            .addLanguageExtensions(resourceGroupName, clusterName, languageExtensionsToAdd, context);
+    }
+
+    public void removeLanguageExtensions(LanguageExtensionsList languageExtensionsToRemove) {
+        serviceManager.clusters().removeLanguageExtensions(resourceGroupName, clusterName, languageExtensionsToRemove);
+    }
+
+    public void removeLanguageExtensions(LanguageExtensionsList languageExtensionsToRemove, Context context) {
+        serviceManager
+            .clusters()
+            .removeLanguageExtensions(resourceGroupName, clusterName, languageExtensionsToRemove, context);
     }
 
     public ClusterImpl withRegion(Region location) {
@@ -370,6 +459,21 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateParameters.withEngineType(engineType);
             return this;
         }
+    }
+
+    public ClusterImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public ClusterImpl withIfNoneMatch(String ifNoneMatch) {
+        this.createIfNoneMatch = ifNoneMatch;
+        return this;
     }
 
     private boolean isInCreateMode() {

@@ -39,14 +39,16 @@ private object CosmosTableSchemaInferrer
   private[spark] def inferSchema(
                                   inferredItems: Seq[ObjectNode],
                                   includeSystemProperties: Boolean,
-                                  includeTimestamp: Boolean): StructType = {
+                                  includeTimestamp: Boolean,
+                                  allowNullForInferredProperties: Boolean): StructType = {
     if (inferredItems.isEmpty) {
       // No documents to infer from
       StructType(Seq())
     } else {
       // Create a unique map of all distinct properties from documents
       val uniqueStructFields = inferredItems.foldLeft(Map.empty[String, StructField])({
-        case (map, item) => inferDataTypeFromObjectNode(item, includeSystemProperties, includeTimestamp) match {
+        case (map, item) => inferDataTypeFromObjectNode(
+          item, includeSystemProperties, includeTimestamp, allowNullForInferredProperties) match {
           case Some(mappedList) =>
             map ++ mappedList.map(mappedItem => {
               if (map.contains(mappedItem._1) && map(mappedItem._1).dataType != mappedItem._2.dataType) {
@@ -91,22 +93,31 @@ private object CosmosTableSchemaInferrer
 
       inferSchema(feedResponseList.asScala,
         cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeSystemProperties,
-        cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeTimestamp)
+        cosmosReadConfig.inferSchemaQuery.isDefined || cosmosReadConfig.includeTimestamp,
+        cosmosReadConfig.allowNullForInferredProperties)
     } else {
       defaultSchema
     }
   }
 
-  private def inferDataTypeFromObjectNode(node: ObjectNode,
-                                          includeSystemProperties: Boolean,
-                                          includeTimestamp: Boolean): Option[Seq[(String, StructField)]] = {
+  private def inferDataTypeFromObjectNode
+  (
+    node: ObjectNode,
+    includeSystemProperties: Boolean,
+    includeTimestamp: Boolean,
+    allowNullForInferredProperties: Boolean
+  ): Option[Seq[(String, StructField)]] = {
+
     Option(node).map(n =>
       n.fields.asScala
         .filter(field => isAllowedPropertyToMap(field.getKey, includeSystemProperties, includeTimestamp))
         .map(field =>
-            inferDataTypeFromJsonNode(field.getValue) match {
+            inferDataTypeFromJsonNode(field.getValue, allowNullForInferredProperties) match {
               case nullType: NullType => field.getKey -> StructField(field.getKey, nullType, nullable=true)
-              case anyType: DataType => field.getKey -> StructField(field.getKey, anyType, nullable=false)
+              case anyType: DataType => field.getKey -> StructField(
+                field.getKey,
+                anyType,
+                nullable= !systemProperties.contains(field.getKey) && allowNullForInferredProperties)
             })
         .toSeq)
   }
@@ -124,7 +135,7 @@ private object CosmosTableSchemaInferrer
   }
 
   // scalastyle:off
-  private def inferDataTypeFromJsonNode(jsonNode: JsonNode): DataType = {
+  private def inferDataTypeFromJsonNode(jsonNode: JsonNode, allowNullForInferredProperties: Boolean): DataType = {
     jsonNode match {
       case _: NullNode => NullType
       case _: BinaryNode => BinaryType
@@ -142,12 +153,13 @@ private object CosmosTableSchemaInferrer
       case decimalNode: DecimalNode if decimalNode.isFloat => FloatType
       case decimalNode: DecimalNode if decimalNode.isDouble => DoubleType
       case decimalNode: DecimalNode if decimalNode.isInt => IntegerType
-      case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
+      case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode, allowNullForInferredProperties) match {
         case Some(valueType) => ArrayType(valueType)
         case None => NullType
       }
       case objectNode: ObjectNode =>
-        inferDataTypeFromObjectNode(objectNode,includeSystemProperties = true, includeTimestamp = true) match {
+        inferDataTypeFromObjectNode(
+          objectNode,includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties) match {
         case Some(mappedList) =>
           val nestedFields = mappedList.map(f => f._2)
           StructType(nestedFields)
@@ -160,8 +172,7 @@ private object CosmosTableSchemaInferrer
   }
 
   // scalastyle:on
-
-  private def inferDataTypeFromArrayNode(node: ArrayNode): Option[DataType] = {
-    Option(node.get(0)).map(firstElement => inferDataTypeFromJsonNode(firstElement))
+  private def inferDataTypeFromArrayNode(node: ArrayNode, allowNullForInferredProperties: Boolean): Option[DataType] = {
+    Option(node.get(0)).map(firstElement => inferDataTypeFromJsonNode(firstElement, allowNullForInferredProperties))
   }
 }

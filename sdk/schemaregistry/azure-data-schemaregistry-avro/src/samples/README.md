@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-data-schemaregistry-avro
+  - azure-event-hubs
 urlFragment: schemaregistry-avro-samples
 ---
 

@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem;
 import com.azure.resourcemanager.appservice.models.CertificateDetails;
+import com.azure.resourcemanager.appservice.models.CertificateOrderContact;
 import com.azure.resourcemanager.appservice.models.CertificateOrderStatus;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
@@ -44,7 +45,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     private String domainVerificationToken;
 
     /*
-     * Duration in years (must be between 1 and 3).
+     * Duration in years (must be 1).
      */
     @JsonProperty(value = "properties.validityInYears")
     private Integer validityInYears;
@@ -146,6 +147,12 @@ public class AppServiceCertificateOrderInner extends Resource {
     private OffsetDateTime nextAutoRenewalTimestamp;
 
     /*
+     * Contact info
+     */
+    @JsonProperty(value = "properties.contact", access = JsonProperty.Access.WRITE_ONLY)
+    private CertificateOrderContact contact;
+
+    /*
      * Kind of resource.
      */
     @JsonProperty(value = "kind")
@@ -201,7 +208,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the validityInYears property: Duration in years (must be between 1 and 3).
+     * Get the validityInYears property: Duration in years (must be 1).
      *
      * @return the validityInYears value.
      */
@@ -210,7 +217,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the validityInYears property: Duration in years (must be between 1 and 3).
+     * Set the validityInYears property: Duration in years (must be 1).
      *
      * @param validityInYears the validityInYears value to set.
      * @return the AppServiceCertificateOrderInner object itself.
@@ -405,6 +412,15 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
+     * Get the contact property: Contact info.
+     *
+     * @return the contact value.
+     */
+    public CertificateOrderContact contact() {
+        return this.contact;
+    }
+
+    /**
      * Get the kind property: Kind of resource.
      *
      * @return the kind value.
@@ -421,6 +437,20 @@ public class AppServiceCertificateOrderInner extends Resource {
      */
     public AppServiceCertificateOrderInner withKind(String kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppServiceCertificateOrderInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppServiceCertificateOrderInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
@@ -448,6 +478,9 @@ public class AppServiceCertificateOrderInner extends Resource {
         }
         if (root() != null) {
             root().validate();
+        }
+        if (contact() != null) {
+            contact().validate();
         }
     }
 }
