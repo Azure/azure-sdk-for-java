@@ -30,7 +30,7 @@ public class ResourceServerController {
     @GetMapping("/webapiA/sample")
     public String callWebApiASample() {
         LOGGER.info("WebApiA callSample() returned.");
-        return "Response from Client Credential from WebApiB success.";
+        return "Response from Client Credential from WebApiA success.";
     }
 
     /**
