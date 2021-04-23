@@ -23,7 +23,11 @@ public class ResetSessionTokenRetryPolicyFactory implements IRetryPolicyFactory 
 
     @Override
     public RetryContext getRetryContext() {
-        return retryPolicy.getRetryContext();
+        if (this.retryPolicy != null) {
+            return this.retryPolicy.getRetryContext();
+        } else {
+            return null;
+        }
     }
 
 }
