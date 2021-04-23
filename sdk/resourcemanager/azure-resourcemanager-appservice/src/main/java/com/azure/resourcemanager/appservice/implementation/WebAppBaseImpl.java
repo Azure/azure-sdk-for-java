@@ -645,7 +645,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         final Disposable subscription =
             observable
                 // Do not block current thread
-                .subscribeOn(Schedulers.elastic())
+                .subscribeOn(Schedulers.boundedElastic())
                 .subscribe(
                     s -> {
                         try {
