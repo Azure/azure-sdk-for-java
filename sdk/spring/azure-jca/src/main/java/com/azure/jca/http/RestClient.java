@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
 import java.util.Map;
 
 /**
  * The REST client API.
  */
-interface RestClient {
+public interface RestClient {
 
     /**
      * Issue a GET request.
@@ -24,6 +24,7 @@ interface RestClient {
      *
      * @param url the URL.
      * @param body the request body.
+     * @param contentType the content type.
      * @return the response body as a string.
      */
     String post(String url, String body, String contentType);

@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
-import com.azure.jca.model.CertificateBundle;
+import com.azure.jca.http.model.CertificateBundle;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,10 +30,9 @@ public class JacksonJsonConverterTest {
     /**
      * Test toJson method.
      *
-     * @throws Exception when a serious error occurs.
      */
     @Test
-    public void testToJson() throws Exception {
+    public void testToJson() {
         JacksonJsonConverter converter = new JacksonJsonConverter();
         CertificateBundle bundle = new CertificateBundle();
         bundle.setCer("value");

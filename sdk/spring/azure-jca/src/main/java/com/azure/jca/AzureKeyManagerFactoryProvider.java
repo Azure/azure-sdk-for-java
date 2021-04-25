@@ -27,7 +27,7 @@ public class AzureKeyManagerFactoryProvider extends Provider {
     /**
      * Stores the information.
      */
-    private static final String INFO = "Azure Key Vault JCA Provider";
+    private static final String INFO = "Azure JCA Provider";
 
     /**
      * Stores the version.

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
 /**
  * Constants used for Key Vault related URLs.
@@ -18,7 +18,15 @@ public class UriUtil {
     public static final String AAD_LOGIN_URI_US = "https://login.microsoftonline.us/";
     public static final String AAD_LOGIN_URI_DE = "https://login.microsoftonline.de/";
 
-    static String getAADLoginURIByKeyVaultBaseUri(String keyVaultBaseUri) {
+
+    /**
+     * Get the get AAD login URI by keyVaultBaseUri.
+     *
+     * @param keyVaultBaseUri the key vault base uri.
+     * @return the AAD login URI.
+     * @throws IllegalArgumentException if keyVaultBaseUri is invalid.
+     */
+    public static String getAADLoginURIByKeyVaultBaseUri(String keyVaultBaseUri) {
         String aadAuthenticationUrl;
         switch (keyVaultBaseUri) {
             case KEY_VAULT_BASE_URI_GLOBAL :

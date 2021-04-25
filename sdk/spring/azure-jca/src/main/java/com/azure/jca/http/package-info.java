@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * The Azure Key Vault JCA Provider models package.
+ * The Azure JCA Provider http package.
  */
-package com.azure.jca.model;
+package com.azure.jca.http;

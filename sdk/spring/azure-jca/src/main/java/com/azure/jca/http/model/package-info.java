@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * The Azure JCA Provider package.
+ * The Azure JCA Provider models package.
  */
-package com.azure.jca;
+package com.azure.jca.http.model;

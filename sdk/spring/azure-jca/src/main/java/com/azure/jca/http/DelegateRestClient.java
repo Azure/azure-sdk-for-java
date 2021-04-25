@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
 import java.util.Map;
 
 /**
  * A RestClient that delegates to another RestClient.
  */
-class DelegateRestClient implements RestClient {
+public class DelegateRestClient implements RestClient {
 
     /**
      * Stores the delegate.
@@ -17,8 +17,9 @@ class DelegateRestClient implements RestClient {
 
     /**
      * Constructor.
+     * @param delegate the delegate client.
      */
-    DelegateRestClient(RestClient delegate) {
+    public DelegateRestClient(RestClient delegate) {
         this.delegate = delegate;
     }
 

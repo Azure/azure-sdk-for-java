@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.jca;
 
+import com.azure.jca.http.KeyVaultClient;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -337,7 +339,7 @@ public final class AzureKeyStore extends KeyStoreSpi {
                 for (String filename : filenames) {
                     try (InputStream inputStream = getClass().getResourceAsStream("/keyvault/" + filename)) {
                         String alias = filename;
-                        if (alias != null) {
+                        if (alias != null && inputStream != null) {
                             if (alias.lastIndexOf('.') != -1) {
                                 alias = alias.substring(0, alias.lastIndexOf('.'));
                             }

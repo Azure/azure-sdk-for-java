@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca;
+package com.azure.jca.http;
 
-import com.azure.jca.model.OAuthToken;
+import com.azure.jca.http.model.OAuthToken;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -13,7 +13,7 @@ import static java.util.logging.Level.INFO;
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
  */
-class AuthClient extends DelegateRestClient {
+public class AuthClient extends DelegateRestClient {
 
     /**
      * Stores the Client ID fragment.
@@ -63,7 +63,7 @@ class AuthClient extends DelegateRestClient {
      * The constructor creates a default RestClient.
      * </p>
      */
-    AuthClient() {
+    public AuthClient() {
         super(RestClientFactory.createClient());
     }
 
@@ -90,6 +90,7 @@ class AuthClient extends DelegateRestClient {
      * Get an access token.
      *
      * @param resource the resource.
+     * @param aadAuthenticationUrl the aad authentication url.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.

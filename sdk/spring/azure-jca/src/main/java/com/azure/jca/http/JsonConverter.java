@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
 /**
  * The JSON converter API.
  */
-interface JsonConverter {
+public interface JsonConverter {
 
     /**
      * To JSON.

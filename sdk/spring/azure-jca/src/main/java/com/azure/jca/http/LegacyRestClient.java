@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca;
+package com.azure.jca.http;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * The RestClient that uses the Apache HttpClient class.
  */
-class LegacyRestClient implements RestClient {
+public class LegacyRestClient implements RestClient {
 
     /**
      * Constructor.
@@ -33,11 +33,7 @@ class LegacyRestClient implements RestClient {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(url);
             if (headers != null) {
-                headers.entrySet().forEach(entry -> {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    httpGet.addHeader(key, value);
-                });
+                headers.forEach(httpGet::addHeader);
             }
             result = client.execute(httpGet, createResponseHandler());
         } catch (IOException ioe) {

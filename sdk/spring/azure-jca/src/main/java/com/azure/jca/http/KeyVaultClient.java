@@ -1,19 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca;
+package com.azure.jca.http;
 
-import com.azure.jca.model.CertificateBundle;
-import com.azure.jca.model.CertificateItem;
-import com.azure.jca.model.CertificateListResult;
-import com.azure.jca.model.CertificatePolicy;
-import com.azure.jca.model.KeyProperties;
-import com.azure.jca.model.SecretBundle;
+import com.azure.jca.http.model.CertificateBundle;
+import com.azure.jca.http.model.CertificateItem;
+import com.azure.jca.http.model.CertificateListResult;
+import com.azure.jca.http.model.CertificatePolicy;
+import com.azure.jca.http.model.KeyProperties;
+import com.azure.jca.http.model.SecretBundle;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyStore;
@@ -34,14 +35,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static com.azure.jca.UriUtil.getAADLoginURIByKeyVaultBaseUri;
+import static com.azure.jca.http.UriUtil.getAADLoginURIByKeyVaultBaseUri;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 /**
  * The REST client specific to Azure Key Vault.
  */
-class KeyVaultClient extends DelegateRestClient {
+public class KeyVaultClient extends DelegateRestClient {
 
     /**
      * Stores the logger.
@@ -96,7 +97,7 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @param keyVaultUri the Azure Key Vault URI.
      */
-    KeyVaultClient(String keyVaultUri) {
+    public KeyVaultClient(String keyVaultUri) {
         this(keyVaultUri, null, null, null, null);
     }
 
@@ -106,7 +107,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param keyVaultUri the Azure Key Vault URI.
      * @param managedIdentity the user-assigned managed identity object ID.
      */
-    KeyVaultClient(String keyVaultUri, String managedIdentity) {
+    public KeyVaultClient(String keyVaultUri, String managedIdentity) {
         this(keyVaultUri, null, null, null, managedIdentity);
     }
 
@@ -118,7 +119,8 @@ class KeyVaultClient extends DelegateRestClient {
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+    public KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId,
+                          final String clientSecret) {
         this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
@@ -164,9 +166,9 @@ class KeyVaultClient extends DelegateRestClient {
         try {
             AuthClient authClient = new AuthClient();
 
-            String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
+            String resource = URLEncoder.encode(keyVaultBaseUri, StandardCharsets.UTF_8);
             if (managedIdentity != null) {
-                managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
+                managedIdentity = URLEncoder.encode(managedIdentity, StandardCharsets.UTF_8);
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
@@ -186,7 +188,7 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @return the list of aliases.
      */
-    List<String> getAliases() {
+    public List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
@@ -232,7 +234,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param alias the alias.
      * @return the certificate, or null if not found.
      */
-    Certificate getCertificate(String alias) {
+    public Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
@@ -261,7 +263,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param password the password.
      * @return the key.
      */
-    Key getKey(String alias, char[] password) {
+    public Key getKey(String alias, char[] password) {
         LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
@@ -348,11 +350,21 @@ class KeyVaultClient extends DelegateRestClient {
         return factory.generatePrivate(spec);
     }
 
-    String getKeyVaultBaseUri() {
+    /**
+     * Get the key vault base uri.
+     *
+     * @return the response body as a string.
+     */
+    public String getKeyVaultBaseUri() {
         return keyVaultBaseUri;
     }
 
-    String getAadAuthenticationUrl() {
+    /**
+     * Get aad authentication url.
+     *
+     * @return the aad authentication url.
+     */
+    public String getAadAuthenticationUrl() {
         return aadAuthenticationUrl;
     }
 }

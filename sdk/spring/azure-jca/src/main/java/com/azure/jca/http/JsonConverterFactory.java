@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
 /**
  * The JsonConverterFactory.
  */
-final class JsonConverterFactory {
+public final class JsonConverterFactory {
 
     /**
      * Constructor.
@@ -19,7 +19,7 @@ final class JsonConverterFactory {
      *
      * @return the JsonConverter.
      */
-    static JsonConverter createJsonConverter() {
+    public static JsonConverter createJsonConverter() {
         return new JacksonJsonConverter();
     }
 }

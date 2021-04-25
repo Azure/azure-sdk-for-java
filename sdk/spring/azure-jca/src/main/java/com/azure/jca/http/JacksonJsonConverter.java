@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -14,7 +14,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Jackson JsonConverter.
  */
-class JacksonJsonConverter implements JsonConverter {
+public class JacksonJsonConverter implements JsonConverter {
 
     /**
      * Stores the logger.

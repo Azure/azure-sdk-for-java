@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca;
+package com.azure.jca.http;
 
 /**
  * The RestClientFactory.
  */
-final class RestClientFactory {
+public final class RestClientFactory {
 
     /**
      * Constructor.
@@ -19,7 +19,7 @@ final class RestClientFactory {
      *
      * @return the RestClient.
      */
-    static RestClient createClient() {
+    public static RestClient createClient() {
         return new LegacyRestClient();
     }
 }
