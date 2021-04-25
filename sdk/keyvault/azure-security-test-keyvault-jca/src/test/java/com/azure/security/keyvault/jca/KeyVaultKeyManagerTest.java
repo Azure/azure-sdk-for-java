@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class KeyVaultKeyManagerTest {
 
     private KeyVaultKeyManager manager;
-    private String AZURE_KEYVAULT_CERTIFICATE_NAME;
+    private String certificateName;
 
     @BeforeEach
     public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
@@ -32,17 +32,17 @@ public class KeyVaultKeyManagerTest {
             System.getenv("SPRING_CLIENT_SECRET"));
         keyStore.load(parameter);
         manager = new KeyVaultKeyManager(keyStore, null);
-        AZURE_KEYVAULT_CERTIFICATE_NAME = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
     public void testPrivateKey() {
-        assertNotNull(manager.getPrivateKey(AZURE_KEYVAULT_CERTIFICATE_NAME));
+        assertNotNull(manager.getPrivateKey(certificateName));
     }
 
 
     @Test
     public void testGetCertificateChain() {
-        assertNotNull(manager.getCertificateChain(AZURE_KEYVAULT_CERTIFICATE_NAME));
+        assertNotNull(manager.getCertificateChain(certificateName));
     }
 }

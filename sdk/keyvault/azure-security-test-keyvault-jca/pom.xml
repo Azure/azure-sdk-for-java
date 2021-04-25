@@ -18,7 +18,7 @@
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault Test</description>
 
   <properties>
-    <skipSpringITs>true</skipSpringITs>
+    <skipTests>true</skipTests>
   </properties>
   <dependencies>
     <dependency>
@@ -99,7 +99,7 @@
               <goal>integration-test</goal>
             </goals>
             <configuration>
-              <skipTests>${skipSpringITs}</skipTests>
+              <skipITs>${skipTests}</skipITs>
             </configuration>
           </execution>
         </executions>

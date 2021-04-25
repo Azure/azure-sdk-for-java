@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class KeyVaultClientTest {
     private KeyVaultClient keyVaultClient;
-    private String AZURE_KEYVAULT_CERTIFICATE_NAME;
+    private String certificateName;
 
     @BeforeEach
     public void setEnvironmentProperty() {
@@ -21,7 +21,7 @@ public class KeyVaultClientTest {
             System.getenv("SPRING_TENANT_ID"),
             System.getenv("SPRING_CLIENT_ID"),
             System.getenv("SPRING_CLIENT_SECRET"));
-        AZURE_KEYVAULT_CERTIFICATE_NAME = System.getenv("AZURE_CERTIFICATE_NAME");
+        certificateName = System.getenv("AZURE_CERTIFICATE_NAME");
     }
 
     @Test
@@ -31,11 +31,11 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetCertificate() {
-        assertNotNull(keyVaultClient.getCertificate(AZURE_KEYVAULT_CERTIFICATE_NAME));
+        assertNotNull(keyVaultClient.getCertificate(certificateName));
     }
 
     @Test
     public void testGetKey() {
-        assertNull(keyVaultClient.getKey(AZURE_KEYVAULT_CERTIFICATE_NAME, null));
+        assertNull(keyVaultClient.getKey(certificateName, null));
     }
 }

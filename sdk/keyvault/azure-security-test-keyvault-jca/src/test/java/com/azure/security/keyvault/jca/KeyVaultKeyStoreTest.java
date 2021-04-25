@@ -49,7 +49,7 @@ public class KeyVaultKeyStoreTest {
 
     private KeyVaultKeyStore keystore;
 
-    private String AZURE_KEYVAULT_CERTIFICATE_NAME;
+    private String certificateName;
 
     @BeforeEach
     public void setEnvironmentProperty() {
@@ -60,12 +60,12 @@ public class KeyVaultKeyStoreTest {
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
         keystore.engineLoad(parameter);
-        AZURE_KEYVAULT_CERTIFICATE_NAME = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
     public void testEngineGetCertificate() {
-        assertNull(keystore.engineGetCertificate(AZURE_KEYVAULT_CERTIFICATE_NAME));
+        assertNull(keystore.engineGetCertificate(certificateName));
     }
 
     @Test
@@ -75,12 +75,12 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineGetCertificateChain() {
-        assertNull(keystore.engineGetCertificateChain(AZURE_KEYVAULT_CERTIFICATE_NAME));
+        assertNull(keystore.engineGetCertificateChain(certificateName));
     }
 
     @Test
     public void testEngineIsCertificateEntry() {
-        assertFalse(keystore.engineIsCertificateEntry(AZURE_KEYVAULT_CERTIFICATE_NAME));
+        assertFalse(keystore.engineIsCertificateEntry(certificateName));
     }
 
     @Test
