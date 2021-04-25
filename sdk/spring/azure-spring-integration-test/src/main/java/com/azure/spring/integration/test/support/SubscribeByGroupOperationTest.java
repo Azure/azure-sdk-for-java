@@ -85,4 +85,12 @@ public abstract class SubscribeByGroupOperationTest<O extends SubscribeByGroupOp
     protected abstract void verifySubscriberRegistered(int times);
 
     protected abstract void verifySubscriberUnregistered(int times);
+
+    public O getSubscribeByGroupOperation() {
+        return subscribeByGroupOperation;
+    }
+
+    public void setSubscribeByGroupOperation(O subscribeByGroupOperation) {
+        this.subscribeByGroupOperation = subscribeByGroupOperation;
+    }
 }

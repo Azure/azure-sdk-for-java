@@ -35,11 +35,11 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     }
 
     @Override
-    public ServiceBusProcessorClient getOrCreateProcessor(String topic,
-                                                          String subscription,
-                                                          ServiceBusClientConfig clientConfig,
-                                                          ServiceBusMessageProcessor<ServiceBusReceivedMessageContext
-                                                                                        , ServiceBusErrorContext> messageProcessor) {
+    public ServiceBusProcessorClient getOrCreateProcessor(
+        String topic,
+        String subscription,
+        ServiceBusClientConfig clientConfig,
+        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
         return this.topicProcessorMap.computeIfAbsent(Tuple.of(topic, subscription),
                                                       t -> createProcessor(t.getFirst(),
                                                                            t.getSecond(),

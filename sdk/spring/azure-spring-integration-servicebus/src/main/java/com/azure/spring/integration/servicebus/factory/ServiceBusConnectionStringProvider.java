@@ -36,7 +36,7 @@ public class ServiceBusConnectionStringProvider {
                                   .findFirst()
                                   .map(AuthorizationRule::getKeys)
                                   .map(AuthorizationKeys::primaryConnectionString)
-//                                  .map(s -> new ConnectionStringBuilder(s, serviceBusNamespace.name()).toString())  //TODO may need to find an equivalent of ConnectionStringBuilder
+//                                  .map(s -> new ConnectionStringBuilder(s, serviceBusNamespace.name()).toString())  //TODO (xiada) may need to find an equivalent of ConnectionStringBuilder
                                   .orElseThrow(
                                       () -> new RuntimeException(
                                           String.format("Service bus namespace '%s' key is empty",

@@ -124,4 +124,20 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
         checkpointer.failure();
         verifyCheckpointFailureCalled(1);
     }
+
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+    }
+
+    public T getSendSubscribeOperation() {
+        return sendSubscribeOperation;
+    }
+
+    public void setSendSubscribeOperation(T sendSubscribeOperation) {
+        this.sendSubscribeOperation = sendSubscribeOperation;
+    }
 }

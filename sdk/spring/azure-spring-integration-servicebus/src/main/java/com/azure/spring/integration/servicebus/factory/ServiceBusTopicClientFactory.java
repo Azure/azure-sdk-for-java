@@ -20,8 +20,10 @@ public interface ServiceBusTopicClientFactory extends ServiceBusSenderFactory {
      * Return a function which accepts service bus topic and subscription name, then returns {@link
      * ServiceBusProcessorClient}
      *
-     * @param topic topic
-     * @param subscription subscription
+     * @param topic The topic.
+     * @param subscription The subscription.
+     * @param clientConfig The topic client config.
+     * @param messageProcessor The callback processor to be registered on service bus processor client.
      * @return subscription client
      */
     ServiceBusProcessorClient getOrCreateProcessor(String topic,

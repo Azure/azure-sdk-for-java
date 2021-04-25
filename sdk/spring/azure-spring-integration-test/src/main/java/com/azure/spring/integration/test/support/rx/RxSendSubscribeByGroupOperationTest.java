@@ -23,4 +23,13 @@ public abstract class RxSendSubscribeByGroupOperationTest<T extends RxSendOperat
     protected void setCheckpointConfig(CheckpointConfig checkpointConfig) {
         sendSubscribeOperation.setCheckpointConfig(checkpointConfig);
     }
+
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    public void setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+    }
+
 }

@@ -23,6 +23,7 @@ public class EventHubInboundAdapterTest extends InboundChannelAdapterTest<EventH
     @Override
     public void setUp() {
         this.adapter = new EventHubInboundChannelAdapter(destination, new EventHubTestOperation(null,
-            () -> partitionContext), consumerGroup);
+                                                                                                () -> partitionContext),
+                                                         consumerGroup);
     }
 }

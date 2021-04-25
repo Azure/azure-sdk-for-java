@@ -63,4 +63,35 @@ public abstract class SendOperationTest<O extends SendOperation> {
 
     protected abstract void whenSendWithException();
 
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    public void setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+    }
+
+    public Mono<Void> getMono() {
+        return mono;
+    }
+
+    public void setMono(Mono<Void> mono) {
+        this.mono = mono;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
+
+    public O getSendOperation() {
+        return sendOperation;
+    }
+
+    public void setSendOperation(O sendOperation) {
+        this.sendOperation = sendOperation;
+    }
 }

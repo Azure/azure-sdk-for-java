@@ -27,7 +27,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
 
-    // TODO whether will this reuse the underlying connection?
+    // TODO (xiada) whether will this reuse the underlying connection?
     private final ServiceBusClientBuilder serviceBusClientBuilder;
 
     public DefaultServiceBusQueueClientFactory(String connectionString) {
@@ -37,10 +37,10 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     }
 
     @Override
-    public ServiceBusProcessorClient getOrCreateProcessor(String name,
-                                                          ServiceBusClientConfig clientConfig,
-                                                          ServiceBusMessageProcessor<ServiceBusReceivedMessageContext
-                                                                                        , ServiceBusErrorContext> messageProcessor) {
+    public ServiceBusProcessorClient getOrCreateProcessor(
+        String name,
+        ServiceBusClientConfig clientConfig,
+        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
         return this.processorClientMap.computeIfAbsent(name,
                                                        n -> createProcessorClient(n, clientConfig, messageProcessor));
     }
@@ -50,9 +50,10 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         return this.senderClientMap.computeIfAbsent(name, this::createQueueSender);
     }
 
-    private ServiceBusProcessorClient createProcessorClient(String name,
-                                                            ServiceBusClientConfig clientConfig,
-                                                            ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+    private ServiceBusProcessorClient createProcessorClient(
+        String name,
+        ServiceBusClientConfig clientConfig,
+        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
         if (clientConfig.isSessionsEnabled()) {
             return serviceBusClientBuilder.sessionProcessor()
                                           .queueName(name)

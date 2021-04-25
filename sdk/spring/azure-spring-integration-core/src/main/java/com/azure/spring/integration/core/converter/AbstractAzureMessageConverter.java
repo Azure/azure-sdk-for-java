@@ -99,7 +99,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
     }
 
 
-    private  Map<String, Object> emptyHeaders(){
+    private  Map<String, Object> emptyHeaders() {
         return new HashMap<>();
     }
 

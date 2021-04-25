@@ -39,9 +39,8 @@ public class ServiceBusQueueMessageChannelBinder extends
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
-        // TODO the instance of service bus operation is shared among consumer endpoints, if each of them
-        // TODO doesn't share the same configuration, the last will win
-        // TODO is it possible that's this is a bug here
+        // TODO (xiada) the instance of service bus operation is shared among consumer endpoints, if each of them
+        //  doesn't share the same configuration, the last will win is it possible that's this is a bug here
         this.serviceBusQueueOperation.setCheckpointConfig(buildCheckpointConfig(properties));
         this.serviceBusQueueOperation.setClientConfig(buildClientConfig(properties));
         ServiceBusQueueInboundChannelAdapter inboundAdapter =

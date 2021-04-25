@@ -98,4 +98,20 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
     protected abstract void verifyCheckpointBatchSuccessCalled(int times);
 
     protected abstract void verifyCheckpointSuccessCalled(int times);
+
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+    }
+
+    public T getSendSubscribeOperation() {
+        return sendSubscribeOperation;
+    }
+
+    public void setSendSubscribeOperation(T sendSubscribeOperation) {
+        this.sendSubscribeOperation = sendSubscribeOperation;
+    }
 }

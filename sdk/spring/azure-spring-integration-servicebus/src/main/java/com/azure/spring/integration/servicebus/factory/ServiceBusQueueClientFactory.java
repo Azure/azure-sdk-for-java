@@ -20,9 +20,9 @@ public interface ServiceBusQueueClientFactory extends ServiceBusSenderFactory {
     /**
      * Return a function which accepts service bus queue name, then returns {@link ServiceBusProcessorClient}
      *
-     * @param name queue name
-     * @param clientConfig
-     * @param messageProcessor
+     * @param name The queue name.
+     * @param clientConfig The queue client config.
+     * @param messageProcessor Callback processor to be registered on service bus processor client.
      * @return ServiceBusProcessorClient queue processor client
      */
     ServiceBusProcessorClient getOrCreateProcessor(String name,

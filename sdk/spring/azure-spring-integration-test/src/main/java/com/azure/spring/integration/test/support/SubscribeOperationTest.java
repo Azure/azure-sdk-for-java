@@ -66,4 +66,13 @@ public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
     protected abstract void verifySubscriberRegistered(int times);
 
     protected abstract void verifySubscriberUnregistered(int times);
+
+    public O getSubscribeOperation() {
+        return subscribeOperation;
+    }
+
+    public void setSubscribeOperation(O subscribeOperation) {
+        this.subscribeOperation = subscribeOperation;
+    }
+
 }

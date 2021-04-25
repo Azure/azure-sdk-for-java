@@ -58,4 +58,28 @@ public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannel
 
     @Before
     public abstract void setUp();
+
+    public A getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(A adapter) {
+        this.adapter = adapter;
+    }
+
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    public void setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 }

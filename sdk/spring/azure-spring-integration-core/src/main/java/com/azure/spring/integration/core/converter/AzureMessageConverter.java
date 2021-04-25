@@ -14,8 +14,8 @@ import java.util.Map;
  * A converter to turn the payload of a {@link Message} from serialized form to a typed
  * Object and vice versa.
  *
- * @param <T> Azure message type
- * @author Warren Zhu
+ * @param <I> The Azure message type when sending to the broker using Azure SDK.
+ * @param <O> The Azure message type when receiving from the broker using Azure SDK.
  */
 public interface AzureMessageConverter<I, O> {
 

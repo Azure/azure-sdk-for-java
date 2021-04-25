@@ -96,4 +96,29 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
 
         this.handler.handleMessage(this.message);
     }
+
+    public Mono<Void> getMono() {
+        return mono;
+    }
+
+    public void setMono(Mono<Void> mono) {
+        this.mono = mono;
+    }
+
+    public DefaultMessageHandler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(DefaultMessageHandler handler) {
+        this.handler = handler;
+    }
+
+    public O getSendOperation() {
+        return sendOperation;
+    }
+
+    public void setSendOperation(O sendOperation) {
+        this.sendOperation = sendOperation;
+    }
+
 }
