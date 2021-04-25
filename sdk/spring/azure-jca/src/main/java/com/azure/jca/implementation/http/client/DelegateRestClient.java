@@ -5,20 +5,10 @@ package com.azure.jca.implementation.http.client;
 
 import java.util.Map;
 
-/**
- * A RestClient that delegates to another RestClient.
- */
 public class DelegateRestClient implements RestClient {
 
-    /**
-     * Stores the delegate.
-     */
     private RestClient delegate;
 
-    /**
-     * Constructor.
-     * @param delegate the delegate client.
-     */
     public DelegateRestClient(RestClient delegate) {
         this.delegate = delegate;
     }
@@ -28,11 +18,6 @@ public class DelegateRestClient implements RestClient {
         return delegate.get(url, headers);
     }
 
-    /**
-     * Get the delegate.
-     *
-     * @return the delegate.
-     */
     public RestClient getDelegate() {
         return delegate;
     }
@@ -42,11 +27,6 @@ public class DelegateRestClient implements RestClient {
         return delegate.post(url, body, contentType);
     }
 
-    /**
-     * Set the delegate.
-     *
-     * @param delegate the delegate.
-     */
     public void setDelegate(RestClient delegate) {
         this.delegate = delegate;
     }

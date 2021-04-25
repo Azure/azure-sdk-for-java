@@ -5,58 +5,24 @@ package com.azure.jca.implementation.http.model;
 
 import java.io.Serializable;
 
-/**
- * The SecretBundle REST model.
- */
 public class SecretBundle implements Serializable {
-    
-    /**
-     * Stores the serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * Stores the content type.
-     */
-    private String contentType;
 
-    /**
-     * Stores the value.
-     */
+    private static final long serialVersionUID = 1L;
+    private String contentType;
     private String value;
 
-    /**
-     * Get the content type.
-     * 
-     * @return the content type.
-     */
     public String getContentType() {
         return contentType;
     }
 
-    /**
-     * Get the value.
-     *
-     * @return the value.
-     */
     public String getValue() {
         return value;
     }
     
-    /**
-     * Set the content type.
-     * 
-     * @param contentType the content type.
-     */
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
-    /**
-     * Set the value.
-     *
-     * @param value the value.
-     */
     public void setValue(String value) {
         this.value = value;
     }

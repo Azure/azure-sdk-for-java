@@ -11,23 +11,10 @@ import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
 
-/**
- * The Json Converter Util.
- */
 public class JsonConverterUtil {
 
-    /**
-     * Stores the logger.
-     */
     private static final Logger LOGGER = Logger.getLogger(JsonConverterUtil.class.getName());
 
-    /**
-     * From JSON.
-     *
-     * @param string the string.
-     * @param resultClass the result class.
-     * @return the object, or null if the conversion failed.
-     */
     public static Object fromJson(String string, Class<?> resultClass) {
         LOGGER.entering("JacksonJsonConverter", "fromJson", new Object[] { string, resultClass });
         Object result = null;
@@ -42,12 +29,6 @@ public class JsonConverterUtil {
         return result;
     }
 
-    /**
-     * To JSON.
-     *
-     * @param object the object.
-     * @return the JSON string.
-     */
     public static String toJson(Object object) {
         LOGGER.entering("JacksonJsonConverter", "toJson", object);
         String result = null;

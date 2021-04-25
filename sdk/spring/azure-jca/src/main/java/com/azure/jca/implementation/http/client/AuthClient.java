@@ -10,70 +10,23 @@ import java.util.logging.Logger;
 import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.INFO;
 
-/**
- * The REST client specific to getting an access token for Azure REST APIs.
- */
 public class AuthClient extends DelegateRestClient {
 
-    /**
-     * Stores the Client ID fragment.
-     */
     private static final String CLIENT_ID_FRAGMENT = "&client_id=";
-
-    /**
-     * Stores the Client Secret fragment.
-     */
     private static final String CLIENT_SECRET_FRAGMENT = "&client_secret=";
-
-    /**
-     * Stores the Grant Type fragment.
-     */
     private static final String GRANT_TYPE_FRAGMENT = "grant_type=client_credentials";
-
-    /**
-     * Stores the Resource fragment.
-     */
     private static final String RESOURCE_FRAGMENT = "&resource=";
-
-    /**
-     * Stores the OAuth2 token base URL.
-     */
     private static final String OAUTH2_TOKEN_BASE_URL = "https://login.microsoftonline.com/";
-
-    /**
-     * Stores the OAuth2 token postfix.
-     */
     private static final String OAUTH2_TOKEN_POSTFIX = "/oauth2/token";
-
-    /**
-     * Stores the OAuth2 managed identity URL.
-     */
     private static final String OAUTH2_MANAGED_IDENTITY_TOKEN_URL
             = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01";
 
-    /**
-     * Stores our logger.
-     */
     private static final Logger LOGGER = Logger.getLogger(AuthClient.class.getName());
 
-    /**
-     * Constructor.
-     *
-     * <p>
-     * The constructor creates a default RestClient.
-     * </p>
-     */
     public AuthClient() {
         super(RestClientFactory.createClient());
     }
 
-    /**
-     * Get an access token for a managed identity.
-     *
-     * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned)
-     * @return the authorization token.
-     */
     public String getAccessToken(String resource, String identity) {
         String result;
 
@@ -114,13 +67,6 @@ public class AuthClient extends DelegateRestClient {
         return result;
     }
 
-    /**
-     * Get the access token on Azure App Service.
-     *
-     * @param resource the resource.
-     * @param clientId the user-assigned managed identity (null if system-assigned).
-     * @return the authorization token.
-     */
     private String getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
@@ -148,13 +94,6 @@ public class AuthClient extends DelegateRestClient {
         return result;
     }
 
-    /**
-     * Get the authorization token on everything else but Azure App Service.
-     *
-     * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned).
-     * @return the authorization token.
-     */
     private String getAccessTokenOnOthers(String resource, String identity) {
         LOGGER.entering("AuthClient", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");

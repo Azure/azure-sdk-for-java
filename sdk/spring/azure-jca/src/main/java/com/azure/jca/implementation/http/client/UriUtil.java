@@ -3,9 +3,6 @@
 
 package com.azure.jca.implementation.http.client;
 
-/**
- * Constants used for Key Vault related URLs.
- */
 public class UriUtil {
 
     public static final String KEY_VAULT_BASE_URI_GLOBAL = "https://vault.azure.net";
@@ -19,13 +16,6 @@ public class UriUtil {
     public static final String AAD_LOGIN_URI_DE = "https://login.microsoftonline.de/";
 
 
-    /**
-     * Get the get AAD login URI by keyVaultBaseUri.
-     *
-     * @param keyVaultBaseUri the key vault base uri.
-     * @return the AAD login URI.
-     * @throws IllegalArgumentException if keyVaultBaseUri is invalid.
-     */
     public static String getAADLoginURIByKeyVaultBaseUri(String keyVaultBaseUri) {
         String aadAuthenticationUrl;
         switch (keyVaultBaseUri) {

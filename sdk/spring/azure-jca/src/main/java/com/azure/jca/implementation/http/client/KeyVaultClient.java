@@ -39,101 +39,36 @@ import static com.azure.jca.implementation.http.client.UriUtil.getAADLoginURIByK
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
-/**
- * The REST client specific to Azure Key Vault.
- */
 public class KeyVaultClient extends DelegateRestClient {
 
-    /**
-     * Stores the logger.
-     */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultClient.class.getName());
     private static final String HTTPS_PREFIX = "https://";
 
-    /**
-     * Stores the API version postfix.
-     */
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
 
-    /**
-     * Stores the Key Vault cloud URI.
-     */
     private String keyVaultBaseUri;
 
-    /**
-     * Stores the Azure Key Vault URL.
-     */
     private final String keyVaultUrl;
 
-    /**
-     * Stores the AAD authentication URL (or null to default to Azure Public
-     * Cloud).
-     */
     private String aadAuthenticationUrl;
-
-    /**
-     * Stores the tenant ID.
-     */
     private String tenantId;
-
-    /**
-     * Stores the client ID.
-     */
     private String clientId;
-
-    /**
-     * Stores the client secret.
-     */
     private String clientSecret;
-
-    /**
-     * Stores the managed identity (either the user-assigned managed identity
-     * object ID or null if system-assigned)
-     */
     private String managedIdentity;
 
-    /**
-     * Constructor for authentication with system-assigned managed identity.
-     *
-     * @param keyVaultUri the Azure Key Vault URI.
-     */
     public KeyVaultClient(String keyVaultUri) {
         this(keyVaultUri, null, null, null, null);
     }
 
-    /**
-     * Constructor for authentication with user-assigned managed identity.
-     *
-     * @param keyVaultUri the Azure Key Vault URI.
-     * @param managedIdentity the user-assigned managed identity object ID.
-     */
     public KeyVaultClient(String keyVaultUri, String managedIdentity) {
         this(keyVaultUri, null, null, null, managedIdentity);
     }
 
-    /**
-     * Constructor for authentication with service principal.
-     *
-     * @param keyVaultUri the Azure Key Vault URI.
-     * @param tenantId the tenant ID.
-     * @param clientId the client ID.
-     * @param clientSecret the client secret.
-     */
     public KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId,
                           final String clientSecret) {
         this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
-
-    /**
-     * Constructor.
-     *
-     * @param keyVaultUri the Azure Key Vault URI.
-     * @param tenantId the tenant ID.
-     * @param clientId the client ID.
-     * @param clientSecret the client secret.
-     * @param managedIdentity the user-assigned managed identity object ID.
-     */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
         super(RestClientFactory.createClient());
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
@@ -155,11 +90,6 @@ public class KeyVaultClient extends DelegateRestClient {
         this.managedIdentity = managedIdentity;
     }
 
-    /**
-     * Get the access token.
-     *
-     * @return the access token.
-     */
     private String getAccessToken() {
         LOGGER.entering("KeyVaultClient", "getAccessToken");
         String accessToken = null;
@@ -183,11 +113,6 @@ public class KeyVaultClient extends DelegateRestClient {
         return accessToken;
     }
 
-    /**
-     * Get the list of aliases.
-     *
-     * @return the list of aliases.
-     */
     public List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
@@ -209,12 +134,6 @@ public class KeyVaultClient extends DelegateRestClient {
         return result;
     }
 
-    /**
-     * Get the certificate bundle.
-     *
-     * @param alias the alias.
-     * @return the certificate bundle.
-     */
     private CertificateBundle getCertificateBundle(String alias) {
         CertificateBundle result = null;
         HashMap<String, String> headers = new HashMap<>();
@@ -227,12 +146,6 @@ public class KeyVaultClient extends DelegateRestClient {
         return result;
     }
 
-    /**
-     * Get the certificate.
-     *
-     * @param alias the alias.
-     * @return the certificate, or null if not found.
-     */
     public Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
@@ -255,13 +168,6 @@ public class KeyVaultClient extends DelegateRestClient {
         return certificate;
     }
 
-    /**
-     * Get the key.
-     *
-     * @param alias the alias.
-     * @param password the password.
-     * @return the key.
-     */
     public Key getKey(String alias, char[] password) {
         LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
@@ -316,16 +222,7 @@ public class KeyVaultClient extends DelegateRestClient {
         return key;
     }
 
-    /**
-     * Get the private key from the PEM string.
-     *
-     * @param pemString the PEM file in string format.
-     * @return the private key
-     * @throws IOException when an I/O error occurs.
-     * @throws NoSuchAlgorithmException when algorithm is unavailable.
-     * @throws InvalidKeySpecException when the private key cannot be generated.
-     * */
-    private PrivateKey createPrivateKeyFromPem(String pemString) 
+    private PrivateKey createPrivateKeyFromPem(String pemString)
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
@@ -348,20 +245,10 @@ public class KeyVaultClient extends DelegateRestClient {
         return factory.generatePrivate(spec);
     }
 
-    /**
-     * Get the key vault base uri.
-     *
-     * @return the response body as a string.
-     */
     public String getKeyVaultBaseUri() {
         return keyVaultBaseUri;
     }
 
-    /**
-     * Get aad authentication url.
-     *
-     * @return the aad authentication url.
-     */
     public String getAadAuthenticationUrl() {
         return aadAuthenticationUrl;
     }

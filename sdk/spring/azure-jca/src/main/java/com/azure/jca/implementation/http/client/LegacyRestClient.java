@@ -16,14 +16,8 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * The RestClient that uses the Apache HttpClient class.
- */
 public class LegacyRestClient implements RestClient {
 
-    /**
-     * Constructor.
-     */
     LegacyRestClient() {
     }
 
