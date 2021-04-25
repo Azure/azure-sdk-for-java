@@ -55,7 +55,7 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-message')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
@@ -137,12 +137,26 @@
       }
     },
     {
-      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub/$Default')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-health')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 1,
+        "status": "Active"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-message/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub-message')]",
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {}
@@ -187,6 +201,17 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub-sync')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/test-eventhub-health/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'test-eventhub-health')]",
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {}
@@ -265,7 +290,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub')]",
+      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-message')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
@@ -314,6 +339,18 @@
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-sync')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-health')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
