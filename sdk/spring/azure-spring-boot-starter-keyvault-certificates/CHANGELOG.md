@@ -1,6 +1,10 @@
 # Release History
 
 ## 3.0.0-beta.7 (Unreleased)
+### New Features
+- Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
+
 
 
 ## 3.0.0-beta.6 (2021-04-19)
