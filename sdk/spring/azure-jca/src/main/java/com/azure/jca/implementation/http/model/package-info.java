@@ -4,4 +4,4 @@
 /**
  * The Azure JCA Provider models package.
  */
-package com.azure.jca.http.model;
+package com.azure.jca.implementation.http.model;

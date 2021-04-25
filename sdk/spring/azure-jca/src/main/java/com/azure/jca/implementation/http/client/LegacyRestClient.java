@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca.http.client;
+package com.azure.jca.implementation.http.client;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

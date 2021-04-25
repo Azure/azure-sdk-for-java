@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca.http.client;
+package com.azure.jca.implementation.http.client;
 
-import com.azure.jca.http.model.CertificateBundle;
-import com.azure.jca.http.model.CertificateItem;
-import com.azure.jca.http.model.CertificateListResult;
-import com.azure.jca.http.model.CertificatePolicy;
-import com.azure.jca.http.model.KeyProperties;
-import com.azure.jca.http.model.SecretBundle;
+import com.azure.jca.implementation.http.model.CertificateBundle;
+import com.azure.jca.implementation.http.model.CertificateItem;
+import com.azure.jca.implementation.http.model.CertificateListResult;
+import com.azure.jca.implementation.http.model.CertificatePolicy;
+import com.azure.jca.implementation.http.model.KeyProperties;
+import com.azure.jca.implementation.http.model.SecretBundle;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static com.azure.jca.http.client.UriUtil.getAADLoginURIByKeyVaultBaseUri;
+import static com.azure.jca.implementation.http.client.UriUtil.getAADLoginURIByKeyVaultBaseUri;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 

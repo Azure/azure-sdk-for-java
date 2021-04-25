@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca.http.client;
+package com.azure.jca.implementation.http.client;
 
-import com.azure.jca.http.model.CertificateBundle;
+import com.azure.jca.implementation.http.model.CertificateBundle;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

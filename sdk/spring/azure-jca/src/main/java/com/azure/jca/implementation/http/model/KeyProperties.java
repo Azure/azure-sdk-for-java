@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca.http.model;
+package com.azure.jca.implementation.http.model;
 
 import java.io.Serializable;
 

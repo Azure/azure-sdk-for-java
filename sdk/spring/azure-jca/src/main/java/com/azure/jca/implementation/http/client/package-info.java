@@ -4,4 +4,4 @@
 /**
  * The Azure JCA Provider http client package.
  */
-package com.azure.jca.http.client;
+package com.azure.jca.implementation.http.client;

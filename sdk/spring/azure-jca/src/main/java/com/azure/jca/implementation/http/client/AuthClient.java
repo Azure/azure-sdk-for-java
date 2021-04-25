@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca.http.client;
+package com.azure.jca.implementation.http.client;
 
-import com.azure.jca.http.model.OAuthToken;
+import com.azure.jca.implementation.http.model.OAuthToken;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
