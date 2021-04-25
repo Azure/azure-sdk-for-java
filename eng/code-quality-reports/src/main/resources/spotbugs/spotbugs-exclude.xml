@@ -2421,12 +2421,12 @@
 
   <!-- False positives -->
   <Match>
-    <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
+    <Class name="com.azure.jca.KeyVaultKeyStore"/>
     <Method name="getFilenames"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
-    <Class name="com.azure.security.keyvault.jca.LegacyRestClient"/>
+    <Class name="com.azure.jca.LegacyRestClient"/>
     <Method name="~(get|post)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>

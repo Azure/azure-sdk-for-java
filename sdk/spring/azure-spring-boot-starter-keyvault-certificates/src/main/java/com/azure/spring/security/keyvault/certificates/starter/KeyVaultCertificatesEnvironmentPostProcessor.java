@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.security.keyvault.certificates.starter;
 
-import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.security.keyvault.jca.KeyVaultKeyStore;
-import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
+import com.azure.jca.KeyVaultJcaProvider;
+import com.azure.jca.KeyVaultKeyStore;
+import com.azure.jca.KeyVaultTrustManagerFactoryProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.annotation.Order;
