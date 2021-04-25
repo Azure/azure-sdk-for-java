@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca.http;
+package com.azure.jca.http.client;
 
+import com.azure.jca.http.client.AuthClient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

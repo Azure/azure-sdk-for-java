@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.jca;
 
-import com.azure.jca.http.KeyVaultClient;
+import com.azure.jca.http.client.KeyVaultClient;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

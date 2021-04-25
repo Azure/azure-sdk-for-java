@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca.http;
+package com.azure.jca.http.client;
 
 import com.azure.jca.http.model.OAuthToken;
 
@@ -117,8 +117,7 @@ public class AuthClient extends DelegateRestClient {
 
         String body = post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
         if (body != null) {
-            JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
+            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
             result = token.getAccessToken();
         }
         LOGGER.log(FINER, "Access token: {0}", result);
@@ -152,8 +151,7 @@ public class AuthClient extends DelegateRestClient {
         String body = get(url.toString(), headers);
 
         if (body != null) {
-            JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
+            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
             result = token.getAccessToken();
         }
         LOGGER.exiting("AuthClient", "getAccessTokenOnAppService", result);
@@ -187,8 +185,7 @@ public class AuthClient extends DelegateRestClient {
         String body = get(url.toString(), headers);
 
         if (body != null) {
-            JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
+            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
             result = token.getAccessToken();
         }
         LOGGER.exiting("AuthClient", "getAccessTokenOnOthers", result);

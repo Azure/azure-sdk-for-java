@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca.http;
+package com.azure.jca.http.client;
 
 import com.azure.jca.http.model.CertificateBundle;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * The JUnit tests for the JsonbJsonConverter class.
  */
-public class JacksonJsonConverterTest {
+public class JsonConverterUtilTest {
 
     /**
      * Test fromJson method.
@@ -21,8 +21,7 @@ public class JacksonJsonConverterTest {
     @Test
     public void testFromJson() {
         String string = "{ \"cer\": \"cer\" }";
-        JacksonJsonConverter converter = new JacksonJsonConverter();
-        CertificateBundle bundle = (CertificateBundle) converter.fromJson(string, CertificateBundle.class);
+        CertificateBundle bundle = (CertificateBundle) JsonConverterUtil.fromJson(string, CertificateBundle.class);
         assertNotNull(bundle);
         assertEquals("cer", bundle.getCer());
     }
@@ -33,10 +32,9 @@ public class JacksonJsonConverterTest {
      */
     @Test
     public void testToJson() {
-        JacksonJsonConverter converter = new JacksonJsonConverter();
         CertificateBundle bundle = new CertificateBundle();
         bundle.setCer("value");
-        String string = converter.toJson(bundle);
+        String string = JsonConverterUtil.toJson(bundle);
         assertTrue(string.contains("cer"));
         assertTrue(string.contains("\"value\""));
     }

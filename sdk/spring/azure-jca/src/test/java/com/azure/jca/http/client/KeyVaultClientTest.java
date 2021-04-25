@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca.http;
+package com.azure.jca.http.client;
 
+import com.azure.jca.http.client.KeyVaultClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -10,14 +11,14 @@ import org.junit.jupiter.api.Test;
 import java.security.cert.Certificate;
 import java.util.List;
 
-import static com.azure.jca.http.UriUtil.AAD_LOGIN_URI_CN;
-import static com.azure.jca.http.UriUtil.AAD_LOGIN_URI_DE;
-import static com.azure.jca.http.UriUtil.AAD_LOGIN_URI_GLOBAL;
-import static com.azure.jca.http.UriUtil.AAD_LOGIN_URI_US;
-import static com.azure.jca.http.UriUtil.KEY_VAULT_BASE_URI_CN;
-import static com.azure.jca.http.UriUtil.KEY_VAULT_BASE_URI_DE;
-import static com.azure.jca.http.UriUtil.KEY_VAULT_BASE_URI_GLOBAL;
-import static com.azure.jca.http.UriUtil.KEY_VAULT_BASE_URI_US;
+import static com.azure.jca.http.client.UriUtil.AAD_LOGIN_URI_CN;
+import static com.azure.jca.http.client.UriUtil.AAD_LOGIN_URI_DE;
+import static com.azure.jca.http.client.UriUtil.AAD_LOGIN_URI_GLOBAL;
+import static com.azure.jca.http.client.UriUtil.AAD_LOGIN_URI_US;
+import static com.azure.jca.http.client.UriUtil.KEY_VAULT_BASE_URI_CN;
+import static com.azure.jca.http.client.UriUtil.KEY_VAULT_BASE_URI_DE;
+import static com.azure.jca.http.client.UriUtil.KEY_VAULT_BASE_URI_GLOBAL;
+import static com.azure.jca.http.client.UriUtil.KEY_VAULT_BASE_URI_US;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 

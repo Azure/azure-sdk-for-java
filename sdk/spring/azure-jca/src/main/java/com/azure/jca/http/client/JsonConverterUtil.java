@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.jca.http;
+package com.azure.jca.http.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -12,14 +12,14 @@ import java.util.logging.Logger;
 import static java.util.logging.Level.WARNING;
 
 /**
- * The Jackson JsonConverter.
+ * The Json Converter Util.
  */
-public class JacksonJsonConverter implements JsonConverter {
+public class JsonConverterUtil {
 
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(JacksonJsonConverter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(JsonConverterUtil.class.getName());
 
     /**
      * From JSON.
@@ -28,8 +28,7 @@ public class JacksonJsonConverter implements JsonConverter {
      * @param resultClass the result class.
      * @return the object, or null if the conversion failed.
      */
-    @Override
-    public Object fromJson(String string, Class<?> resultClass) {
+    public static Object fromJson(String string, Class<?> resultClass) {
         LOGGER.entering("JacksonJsonConverter", "fromJson", new Object[] { string, resultClass });
         Object result = null;
         try {
@@ -49,8 +48,7 @@ public class JacksonJsonConverter implements JsonConverter {
      * @param object the object.
      * @return the JSON string.
      */
-    @Override
-    public String toJson(Object object) {
+    public static String toJson(Object object) {
         LOGGER.entering("JacksonJsonConverter", "toJson", object);
         String result = null;
         try {

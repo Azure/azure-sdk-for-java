@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.jca.http;
+package com.azure.jca.http.client;
 
 import com.azure.jca.http.model.CertificateBundle;
 import com.azure.jca.http.model.CertificateItem;
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static com.azure.jca.http.UriUtil.getAADLoginURIByKeyVaultBaseUri;
+import static com.azure.jca.http.client.UriUtil.getAADLoginURIByKeyVaultBaseUri;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -134,7 +134,7 @@ public class KeyVaultClient extends DelegateRestClient {
      * @param clientSecret the client secret.
      * @param managedIdentity the user-assigned managed identity object ID.
      */
-    KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
+    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
         super(RestClientFactory.createClient());
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
@@ -196,8 +196,8 @@ public class KeyVaultClient extends DelegateRestClient {
         String response = get(url, headers);
         CertificateListResult certificateListResult = null;
         if (response != null) {
-            JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
+            certificateListResult =
+                (CertificateListResult) JsonConverterUtil.fromJson(response, CertificateListResult.class);
         }
         if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
             for (CertificateItem certificateItem : certificateListResult.getValue()) {
@@ -222,8 +222,7 @@ public class KeyVaultClient extends DelegateRestClient {
         String url = String.format("%scertificates/%s%s", keyVaultUrl, alias, API_VERSION_POSTFIX);
         String response = get(url, headers);
         if (response != null) {
-            JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            result = (CertificateBundle) converter.fromJson(response, CertificateBundle.class);
+            result = (CertificateBundle) JsonConverterUtil.fromJson(response, CertificateBundle.class);
         }
         return result;
     }
@@ -284,8 +283,7 @@ public class KeyVaultClient extends DelegateRestClient {
             headers.put("Authorization", "Bearer " + getAccessToken());
             String body = get(certificateSecretUri + API_VERSION_POSTFIX, headers);
             if (body != null) {
-                JsonConverter converter = JsonConverterFactory.createJsonConverter();
-                SecretBundle secretBundle = (SecretBundle) converter.fromJson(body, SecretBundle.class);
+                SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(body, SecretBundle.class);
                 if (secretBundle.getContentType().equals("application/x-pkcs12")) {
                     try {
                         KeyStore keyStore = KeyStore.getInstance("PKCS12");
