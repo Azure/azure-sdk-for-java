@@ -133,7 +133,6 @@ com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.4.0;3.5.0-beta.1
 com.azure.spring:azure-spring-boot-starter-storage;3.4.0;3.5.0-beta.1
 com.azure.spring:azure-spring-boot-starter;3.4.0;3.5.0-beta.1
 com.azure.spring:azure-spring-boot;3.4.0;3.5.0-beta.1
-com.azure.spring:azure-spring-cloud-dependencies;2.4.0-beta.1;2.4.0-beta.1
 com.azure.spring:azure-spring-cloud-autoconfigure;2.4.0;2.5.0-beta.1
 com.azure.spring:azure-spring-cloud-context;2.4.0;2.5.0-beta.1
 com.azure.spring:azure-spring-cloud-messaging;2.4.0;2.5.0-beta.1
