@@ -68,8 +68,6 @@
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
-# PRLabel: %azure-spring
-/sdk/keyvault/azure-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
