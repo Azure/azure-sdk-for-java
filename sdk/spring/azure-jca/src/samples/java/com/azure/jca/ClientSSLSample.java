@@ -25,11 +25,11 @@ import java.security.Security;
 public class ClientSSLSample {
 
     public static void main(String[] args) throws Exception {
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
         Security.addProvider(provider);
 
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),

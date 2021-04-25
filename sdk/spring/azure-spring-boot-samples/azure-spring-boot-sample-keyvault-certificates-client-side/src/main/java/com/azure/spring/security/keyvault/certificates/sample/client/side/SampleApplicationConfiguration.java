@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.security.keyvault.certificates.sample.client.side;
 
-import com.azure.jca.KeyVaultLoadStoreParameter;
+import com.azure.jca.AzureLoadStoreParameter;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -25,7 +25,7 @@ public class SampleApplicationConfiguration {
     @Bean
     public RestTemplate restTemplateWithTLS() throws Exception {
         KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -47,7 +47,7 @@ public class SampleApplicationConfiguration {
     @Bean
     public RestTemplate restTemplateWithMTLS() throws Exception {
         KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),

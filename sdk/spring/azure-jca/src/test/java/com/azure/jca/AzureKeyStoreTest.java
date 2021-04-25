@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * The JUnit tests for the KeyVaultKeyStore class.
  */
 @Disabled
-public class KeyVaultKeyStoreTest {
+public class AzureKeyStoreTest {
 
     /**
      * Stores the CER test certificate (which is valid til 2120).
@@ -50,8 +50,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineGetCertificate() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -62,8 +62,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineGetCertificateAlias() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -74,8 +74,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineGetCertificateChain() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -86,8 +86,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineIsCertificateEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -98,8 +98,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineSetCertificateEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -122,8 +122,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineGetKey() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -134,8 +134,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineIsKeyEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -146,20 +146,20 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineSetKeyEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        AzureKeyStore keystore = new AzureKeyStore();
         keystore.engineSetKeyEntry("myalias", null, null);
     }
 
     @Test
     public void testEngineSetKeyEntry2() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        AzureKeyStore keystore = new AzureKeyStore();
         keystore.engineSetKeyEntry("myalias", null, null, null);
     }
 
     @Test
     public void testEngineAliases() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -170,8 +170,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineContainsAlias() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureKeyStore keystore = new AzureKeyStore();
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -182,25 +182,25 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineGetCreationDate() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        AzureKeyStore keystore = new AzureKeyStore();
         assertNotNull(keystore.engineGetCreationDate("myalias"));
     }
 
     @Test
     public void testEngineDeleteEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        AzureKeyStore keystore = new AzureKeyStore();
         keystore.engineDeleteEntry("myalias");
     }
 
     @Test
     public void testEngineSize() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        AzureKeyStore keystore = new AzureKeyStore();
         assertTrue(keystore.engineSize() >= 0);
     }
 
     @Test
     public void testEngineStore() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        AzureKeyStore keystore = new AzureKeyStore();
         keystore.engineStore(null, null);
     }
 }

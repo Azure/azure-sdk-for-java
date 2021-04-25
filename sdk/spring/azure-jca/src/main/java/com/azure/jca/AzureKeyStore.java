@@ -34,7 +34,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Azure Key Vault implementation of the KeyStoreSpi.
  */
-public final class KeyVaultKeyStore extends KeyStoreSpi {
+public final class AzureKeyStore extends KeyStoreSpi {
 
     /**
      * Stores the key-store name.
@@ -49,7 +49,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AzureKeyStore.class.getName());
 
     /**
      * Stores the list of aliases.
@@ -90,7 +90,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * Key Vault client.
      * </p>
      */
-    public KeyVaultKeyStore() {
+    public AzureKeyStore() {
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
@@ -220,8 +220,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineLoad(KeyStore.LoadStoreParameter param) {
-        if (param instanceof KeyVaultLoadStoreParameter) {
-            KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
+        if (param instanceof AzureLoadStoreParameter) {
+            AzureLoadStoreParameter parameter = (AzureLoadStoreParameter) param;
             if (parameter.getClientId() != null) {
                 keyVaultClient = new KeyVaultClient(
                         parameter.getUri(),

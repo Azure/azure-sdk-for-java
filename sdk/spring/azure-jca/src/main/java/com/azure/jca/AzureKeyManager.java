@@ -24,12 +24,12 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Azure Key Vault variant of the X509ExtendedKeyManager.
  */
-public class KeyVaultKeyManager extends X509ExtendedKeyManager {
+public class AzureKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyManager.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AzureKeyManager.class.getName());
 
     /**
      * Stores the keystore.
@@ -47,7 +47,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
      * @param keystore the keystore.
      * @param password the password.
      */
-    public KeyVaultKeyManager(KeyStore keystore, char[] password) {
+    public AzureKeyManager(KeyStore keystore, char[] password) {
         LOGGER.entering("KeyVaultKeyManager", "<init>", new Object[] { keystore, password });
         this.keystore = keystore;
         if (password != null) {
@@ -71,7 +71,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * If we only have one alias and the keystore type is not 
              * 'AzureKeyVault' return that alias as a match.
              */
-            if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.PROVIDER_NAME)
+            if (!keystore.getProvider().getName().equals(AzureKeyManagerFactoryProvider.PROVIDER_NAME)
                 && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }
@@ -95,7 +95,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * If we only have one alias and the keystore type is not 
              * 'AzureKeyVault' return that alias as a match.
              */
-            if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.PROVIDER_NAME)
+            if (!keystore.getProvider().getName().equals(AzureKeyManagerFactoryProvider.PROVIDER_NAME)
                 && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }

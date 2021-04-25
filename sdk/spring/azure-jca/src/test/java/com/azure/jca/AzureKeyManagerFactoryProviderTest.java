@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * The JUnit tests for the KeyVaultProvider class.
  */
 @Disabled
-public class KeyVaultJcaProviderTest {
+public class AzureKeyManagerFactoryProviderTest {
 
     /**
      * Test the constructor.
      */
     @Test
     public void testConstructor() {
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
         assertNotNull(provider);
     }
 
@@ -34,9 +34,9 @@ public class KeyVaultJcaProviderTest {
      */
     @Test
     public void testGetCertificate() throws Exception {
-        Security.addProvider(new KeyVaultJcaProvider());
+        Security.addProvider(new AzureKeyManagerFactoryProvider());
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),

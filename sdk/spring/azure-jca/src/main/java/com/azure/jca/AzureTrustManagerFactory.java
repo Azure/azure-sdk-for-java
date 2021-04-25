@@ -14,12 +14,12 @@ import java.util.logging.Logger;
 /**
  * The Azure Key Vault variant of the TrustManagerFactory.
  */
-public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
+public class AzureTrustManagerFactory extends TrustManagerFactorySpi {
 
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultTrustManagerFactory.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AzureTrustManagerFactory.class.getName());
 
     /**
      * Stores the key managers.
@@ -29,7 +29,7 @@ public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
     @Override
     protected void engineInit(KeyStore keystore) {
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", keystore);
-        trustManagers.add(new KeyVaultTrustManager(keystore));
+        trustManagers.add(new AzureTrustManager(keystore));
     }
 
     @Override

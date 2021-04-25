@@ -8,7 +8,7 @@ import java.security.KeyStore;
 /**
  * The Azure Key Vault LoadStoreParameter of the KeyStoreSpi.
  */
-public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
+public class AzureLoadStoreParameter implements KeyStore.LoadStoreParameter {
 
     /**
      * Stores the URI.
@@ -40,7 +40,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      *
      * @param uri the Azure Key Vault URI.
      */
-    public KeyVaultLoadStoreParameter(String uri) {
+    public AzureLoadStoreParameter(String uri) {
         this(uri, null);
     }
 
@@ -50,7 +50,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param uri the Azure Key Vault URI.
      * @param managedIdentity the managed identity.
      */
-    public KeyVaultLoadStoreParameter(String uri, String managedIdentity) {
+    public AzureLoadStoreParameter(String uri, String managedIdentity) {
         this.uri = uri;
         this.tenantId = null;
         this.clientId = null;
@@ -66,7 +66,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
+    public AzureLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
         this.uri = uri;
         this.tenantId = tenantId;
         this.clientId = clientId;

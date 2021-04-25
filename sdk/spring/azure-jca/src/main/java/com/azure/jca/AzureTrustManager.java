@@ -19,7 +19,7 @@ import javax.net.ssl.X509ExtendedTrustManager;
 /**
  * The Azure Key Vault variant of the X509TrustManager.
  */
-public class KeyVaultTrustManager extends X509ExtendedTrustManager {
+public class AzureTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Stores the default trust manager.
@@ -36,11 +36,11 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
      *
      * @param keyStore the keystore.
      */
-    public KeyVaultTrustManager(KeyStore keyStore) {
+    public AzureTrustManager(KeyStore keyStore) {
         this.keyStore = keyStore;
         if (this.keyStore == null) {
             try {
-                this.keyStore = KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE);
+                this.keyStore = KeyStore.getInstance(AzureKeyStore.KEY_STORE_TYPE);
                 this.keyStore.load(null, null);
             } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
                 ex.printStackTrace();

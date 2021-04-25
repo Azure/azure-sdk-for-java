@@ -10,7 +10,7 @@ import java.security.Provider;
 /**
  * The Azure Key Vault TrustManagerFactory provider.
  */
-public class KeyVaultTrustManagerFactoryProvider extends Provider {
+public class AzureTrustManagerFactoryProvider extends Provider {
 
     /**
      * Stores the serial version UID.
@@ -35,7 +35,7 @@ public class KeyVaultTrustManagerFactoryProvider extends Provider {
     /**
      * Constructor.
      */
-    public KeyVaultTrustManagerFactoryProvider() {
+    public AzureTrustManagerFactoryProvider() {
         super(NAME, VERSION, INFO);
         initialize();
     }
@@ -50,7 +50,7 @@ public class KeyVaultTrustManagerFactoryProvider extends Provider {
                     this,
                     "TrustManagerFactory",
                     "PKIX",
-                    KeyVaultTrustManagerFactory.class.getName(),
+                    AzureTrustManagerFactory.class.getName(),
                     null,
                     null
                 )

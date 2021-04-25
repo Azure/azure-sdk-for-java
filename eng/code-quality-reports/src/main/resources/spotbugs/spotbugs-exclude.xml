@@ -2421,7 +2421,7 @@
 
   <!-- False positives -->
   <Match>
-    <Class name="com.azure.jca.KeyVaultKeyStore"/>
+    <Class name="com.azure.jca.AzureKeyStore"/>
     <Method name="getFilenames"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>

@@ -17,22 +17,22 @@ import java.security.cert.CertificateException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Disabled
-public class KeyVaultKeyManagerTest {
+public class AzureKeyManagerTest {
 
-    private KeyVaultKeyManager manager;
+    private AzureKeyManager manager;
 
     @BeforeEach
     public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        Security.insertProviderAt(new AzureKeyManagerFactoryProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
         keyStore.load(parameter);
-        manager = new KeyVaultKeyManager(keyStore, null);
+        manager = new AzureKeyManager(keyStore, null);
     }
 
     @Test

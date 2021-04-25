@@ -48,7 +48,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.jca.KeyVaultClient"/>
 
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.jca.KeyVaultTrustManager"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.jca.AzureTrustManager"/>
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
@@ -179,7 +179,7 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.jca.KeyVaultClient.java"/>
 
   <!-- This class overrides a method that throws, so it cannot be avoided. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.jca.KeyVaultTrustManager"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.jca.AzureTrustManager"/>
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
@@ -299,13 +299,13 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.jca.KeyVaultClient"/>
 
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.jca.KeyVaultTrustManager"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.jca.AzureTrustManager"/>
 
   <!-- The KeyVault JCA library has to be as lightweight as possible and thus, does not use Azure Core or its loggers. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.jca.*"/>
 
   <!-- This class overrides a method that throws, so it cannot be avoided. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.jca.KeyVaultTrustManager"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.jca.AzureTrustManager"/>
 
   <!-- Empty while loop waiting for Reactor stream completion -->
   <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>

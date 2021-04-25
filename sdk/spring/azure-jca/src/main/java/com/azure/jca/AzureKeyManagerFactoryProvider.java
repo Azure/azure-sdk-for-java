@@ -12,12 +12,12 @@ import java.util.Collections;
 /**
  * The Azure Key Vault security provider.
  */
-public class KeyVaultJcaProvider extends Provider {
+public class AzureKeyManagerFactoryProvider extends Provider {
 
     /**
      * Stores the name.
      */
-    public static final String PROVIDER_NAME = KeyVaultKeyStore.KEY_STORE_TYPE;
+    public static final String PROVIDER_NAME = AzureKeyStore.KEY_STORE_TYPE;
 
     /**
      * Stores the serial version UID.
@@ -37,7 +37,7 @@ public class KeyVaultJcaProvider extends Provider {
     /**
      * Constructor.
      */
-    public KeyVaultJcaProvider() {
+    public AzureKeyManagerFactoryProvider() {
         super(PROVIDER_NAME, VERSION, INFO);
         initialize();
     }
@@ -52,7 +52,7 @@ public class KeyVaultJcaProvider extends Provider {
                     this,
                     "KeyManagerFactory",
                     "SunX509",
-                    KeyVaultKeyManagerFactory.class.getName(),
+                    AzureKeyManagerFactory.class.getName(),
                     Arrays.asList("SunX509", "IbmX509"),
                     null
                 )
@@ -71,7 +71,7 @@ public class KeyVaultJcaProvider extends Provider {
                     this,
                     "KeyStore",
                     "DKS",
-                    KeyVaultKeyStore.class.getName(),
+                    AzureKeyStore.class.getName(),
                     Collections.singletonList("DKS"),
                     null
                 )
@@ -80,9 +80,9 @@ public class KeyVaultJcaProvider extends Provider {
                 new Provider.Service(
                     this,
                     "KeyStore",
-                    KeyVaultKeyStore.ALGORITHM_NAME,
-                    KeyVaultKeyStore.class.getName(),
-                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
+                    AzureKeyStore.ALGORITHM_NAME,
+                    AzureKeyStore.class.getName(),
+                    Collections.singletonList(AzureKeyStore.ALGORITHM_NAME),
                     null
                 )
             );

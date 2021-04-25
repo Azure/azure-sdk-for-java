@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.security.keyvault.certificates.starter;
 
-import com.azure.jca.KeyVaultJcaProvider;
-import com.azure.jca.KeyVaultKeyStore;
-import com.azure.jca.KeyVaultTrustManagerFactoryProvider;
+import com.azure.jca.AzureKeyStore;
+import com.azure.jca.AzureKeyManagerFactoryProvider;
+import com.azure.jca.AzureTrustManagerFactoryProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.annotation.Order;
@@ -39,7 +39,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.managed-identity");
 
         MutablePropertySources propertySources = environment.getPropertySources();
-        if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
+        if (AzureKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
             if (hasEmbedTomcat()) {
@@ -47,7 +47,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             }
             propertySources.addFirst(new PropertiesPropertySource("KeyStorePropertySource", properties));
         }
-        if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.trust-store-type"))) {
+        if (AzureKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.trust-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
             if (hasEmbedTomcat()) {
@@ -56,9 +56,9 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
 
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        Security.insertProviderAt(new AzureKeyManagerFactoryProvider(), 1);
         if (overrideTrustManagerFactory(environment)) {
-            Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
+            Security.insertProviderAt(new AzureTrustManagerFactoryProvider(), 1);
         }
 
         if (disableHostnameVerification(environment)) {

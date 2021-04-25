@@ -48,7 +48,7 @@ public class ServerSocketTest {
         /*
          * Add JCA provider.
          */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
         Security.addProvider(provider);
 
         /*
@@ -60,7 +60,7 @@ public class ServerSocketTest {
          *  - Create the SSLServerSocket using th SSL context.
          */
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
@@ -150,7 +150,7 @@ public class ServerSocketTest {
         /*
          * Add JCA provider.
          */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
         Security.addProvider(provider);
 
         /*
@@ -162,7 +162,7 @@ public class ServerSocketTest {
          *  - Create the SSLServerSocket using th SSL context.
          */
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+        AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
