@@ -99,7 +99,7 @@
               <goal>integration-test</goal>
             </goals>
             <configuration>
-              <skipITs>${skipSpringITs}</skipITs>
+              <skipTests>${skipSpringITs}</skipTests>
             </configuration>
           </execution>
         </executions>
