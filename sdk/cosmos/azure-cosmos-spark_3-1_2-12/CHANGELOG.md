@@ -1,5 +1,7 @@
 ## Release History
 
+## 4.0.0-beta.3 (Unreleased)
+
 ## 4.0.0-beta.2 (2021-04-19)
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.2` Release.
 

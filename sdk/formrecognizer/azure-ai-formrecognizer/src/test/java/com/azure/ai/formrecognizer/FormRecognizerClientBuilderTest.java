@@ -11,11 +11,18 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Header;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -33,6 +40,7 @@ import static com.azure.ai.formrecognizer.TestUtils.setSyncPollerPollInterval;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for Form Recognizer client builder
@@ -120,6 +128,61 @@ public class FormRecognizerClientBuilderTest extends TestBase {
                     .beginRecognizeContentFromUrl(input).getFinalResult());
             assertEquals(HTTPS_EXCEPTION_MESSAGE, exception.getMessage());
         });
+    }
+
+    @Test
+    @DoNotRecord
+    public void applicationIdFallsBackToLogOptions() {
+        FormRecognizerClient formRecognizerClient =
+            new FormRecognizerClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .httpClient(httpRequest -> {
+                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class,
+            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + FORM_JPG));
+    }
+
+    @Test
+    @DoNotRecord
+    public void clientOptionsIsPreferredOverLogOptions() {
+        FormRecognizerClient formRecognizerClient =
+            new FormRecognizerClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+                .httpClient(httpRequest -> {
+                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class,
+            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + FORM_JPG));
+    }
+
+    @Test
+    @DoNotRecord
+    public void clientOptionHeadersAreAddedLast() {
+        FormRecognizerClient formRecognizerClient =
+            new FormRecognizerClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .clientOptions(new ClientOptions()
+                                   .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .httpClient(httpRequest -> {
+                    assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class,
+            () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + FORM_JPG));
     }
 
     // Client builder runner

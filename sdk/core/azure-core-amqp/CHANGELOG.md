@@ -1,6 +1,13 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.2.0-beta.2 (Unreleased)
+
+## 2.2.0-beta.1 (2021-04-14)
+### New Features
+- Adding support for AMQP data types SEQUENCE and VALUE.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`.
 
 ## 2.0.4 (2021-04-12)
 
