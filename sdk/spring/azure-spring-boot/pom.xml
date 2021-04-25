@@ -308,7 +308,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-jca</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-jca;dependency} -->
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-jca;current} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
