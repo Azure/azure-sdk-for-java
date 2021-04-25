@@ -86,16 +86,6 @@ public class AuthClient extends DelegateRestClient {
         return result;
     }
 
-    /**
-     * Get an access token.
-     *
-     * @param resource the resource.
-     * @param aadAuthenticationUrl the aad authentication url.
-     * @param tenantId the tenant ID.
-     * @param clientId the client ID.
-     * @param clientSecret the client secret.
-     * @return the authorization token.
-     */
     public String getAccessToken(String resource, String aadAuthenticationUrl,
             String tenantId, String clientId, String clientSecret) {
         

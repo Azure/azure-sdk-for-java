@@ -3,8 +3,6 @@
 
 package com.azure.jca.http.client;
 
-import com.azure.jca.http.client.DelegateRestClient;
-import com.azure.jca.http.client.RestClientFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

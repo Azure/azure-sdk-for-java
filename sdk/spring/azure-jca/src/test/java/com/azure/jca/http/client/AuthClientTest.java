@@ -3,10 +3,10 @@
 
 package com.azure.jca.http.client;
 
-import com.azure.jca.http.client.AuthClient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class AuthClientTest {
 
     @Test
-    public void testGetAuthorizationToken() {
+    public void testGetAuthorizationToken() throws UnsupportedEncodingException {
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
@@ -29,7 +29,7 @@ public class AuthClientTest {
             System.getProperty("azure.keyvault.aad-authentication-url"),
             tenantId,
             clientId,
-            URLEncoder.encode(clientSecret, StandardCharsets.UTF_8)
+            URLEncoder.encode(clientSecret, StandardCharsets.UTF_8.name())
         );
         assertNotNull(result);
     }

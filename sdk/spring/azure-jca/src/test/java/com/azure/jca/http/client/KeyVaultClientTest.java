@@ -3,7 +3,6 @@
 
 package com.azure.jca.http.client;
 
-import com.azure.jca.http.client.KeyVaultClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

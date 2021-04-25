@@ -166,9 +166,9 @@ public class KeyVaultClient extends DelegateRestClient {
         try {
             AuthClient authClient = new AuthClient();
 
-            String resource = URLEncoder.encode(keyVaultBaseUri, StandardCharsets.UTF_8);
+            String resource = URLEncoder.encode(keyVaultBaseUri, StandardCharsets.UTF_8.name());
             if (managedIdentity != null) {
-                managedIdentity = URLEncoder.encode(managedIdentity, StandardCharsets.UTF_8);
+                managedIdentity = URLEncoder.encode(managedIdentity, StandardCharsets.UTF_8.name());
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
