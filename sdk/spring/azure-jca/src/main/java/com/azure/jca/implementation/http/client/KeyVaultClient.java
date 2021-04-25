@@ -46,14 +46,12 @@ public class KeyVaultClient extends DelegateRestClient {
 
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
 
-    private String keyVaultBaseUri;
-
+    private final String keyVaultBaseUri;
     private final String keyVaultUrl;
-
-    private String aadAuthenticationUrl;
-    private String tenantId;
-    private String clientId;
-    private String clientSecret;
+    private final String aadAuthenticationUrl;
+    private final String tenantId;
+    private final String clientId;
+    private final String clientSecret;
     private String managedIdentity;
 
     public KeyVaultClient(String keyVaultUri) {
