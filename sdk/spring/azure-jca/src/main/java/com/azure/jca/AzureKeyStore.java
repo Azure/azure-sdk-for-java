@@ -339,7 +339,7 @@ public final class AzureKeyStore extends KeyStoreSpi {
                 for (String filename : filenames) {
                     try (InputStream inputStream = getClass().getResourceAsStream("/keyvault/" + filename)) {
                         String alias = filename;
-                        if (alias != null && inputStream != null) {
+                        if (alias != null) {
                             if (alias.lastIndexOf('.') != -1) {
                                 alias = alias.substring(0, alias.lastIndexOf('.'));
                             }
