@@ -37,6 +37,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <azure.spring.boot.version>${project.version}</azure.spring.boot.version>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
     <azure.core.version>1.15.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     <azure.identity.version>1.2.5</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
@@ -60,42 +61,42 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-storage</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
+        <version>${azure.spring.boot.version}</version>
       </dependency>
 
       <dependency>

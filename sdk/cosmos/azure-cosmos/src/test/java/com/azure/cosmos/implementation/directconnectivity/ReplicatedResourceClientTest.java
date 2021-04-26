@@ -52,6 +52,7 @@ public class ReplicatedResourceClientTest {
                 transportClient, serviceConfigReader, authorizationTokenProvider, enableReadRequestsFallback, false);
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class).build();
         RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document));
+        request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
 
         Mockito.when(addressResolver.resolveAsync(ArgumentMatchers.any(), ArgumentMatchers.anyBoolean()))
                 .thenReturn(Mono.error(new GoneException()));

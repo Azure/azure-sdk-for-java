@@ -3,18 +3,18 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.0.1 (15.0.1; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "0",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "276ms",
-      "MS-CV" : "02V0pMyhYEqt9Ppq6IsUzg.0",
+      "X-Processing-Time" : "420ms",
+      "MS-CV" : "MF1HkLIYBEeDxppDAHatnQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0FX5CYAAAAAD59GhqbPjwSYIPbDxPd0ORWVZSMzBFREdFMDQwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Content-Length" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 05 Mar 2021 18:53:10 GMT",
+      "X-Azure-Ref" : "0jiKDYAAAAACgf/mlrIJUQrgSthlobIR6TEFYRURHRTEyMDkAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "401",
+      "Date" : "Fri, 23 Apr 2021 19:39:58 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null
