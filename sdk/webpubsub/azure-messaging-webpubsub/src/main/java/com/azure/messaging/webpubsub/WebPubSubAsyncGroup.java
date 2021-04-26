@@ -61,14 +61,9 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String}
      *
-     * <p>To send a message to all users within the same group, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.String.2}
-     *
-     * @param message The message to send.
+     *  @param message The message to send.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
      */
@@ -85,14 +80,9 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String-WebPubSubContentType}
      *
-     * <p>To send a message to all users within the same group, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.String.2}
-     *
-     * @param message The message to send.
+     *  @param message The message to send.
      * @param contentType The content type of the message.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
      *      representing the response from the service.
@@ -110,12 +100,12 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse}
      *
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to a List and pass that in as the second argument:</p>
+     * excluded connection IDs to a List and pass that in as the third argument:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll.String.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse.withexclusions}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -158,12 +148,7 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllBytes.byte.String}
-     *
-     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-     * add the excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllBytes.byte.String.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte}
      *
      * @param message The binary message to send.
      * @return An empty {@link Mono}.
@@ -181,12 +166,7 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllBytes.byte.String}
-     *
-     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-     * add the excluded connection IDs to the end of the method call as var-args:</p>
-     *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllBytes.byte.String.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#byte-WebPubSubContentType}
      *
      * @param message The binary message to send.
      * @param contentType The content type of the message.
@@ -205,12 +185,12 @@ public final class WebPubSubAsyncGroup {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllBytes.byte.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse.byte}
      *
      * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
-     * add the excluded connection IDs to the end of the method call as var-args:</p>
+     * add the excluded connection IDs to a list and as third parameter to this method.</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllBytes.byte.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAllWithResponse.byte.withexclusion}
      *
      * @param message The binary message to send.
      * @param contentType The content type of the message.
@@ -307,38 +287,6 @@ public final class WebPubSubAsyncGroup {
            .doOnSubscribe(ignoredValue -> logger.verbose("Removing user '{}'", userId))
            .doOnSuccess(response -> logger.verbose("Removed user '{}', response: {}", userId, response.getValue()))
            .doOnError(error -> logger.warning("Failed to remove user '{}', response: {}", userId, error));
-    }
-
-    /**
-     * Check if a user is in this group.
-     *
-     * @param userId The user name to check for.
-     * @return A {@link Mono} containing a Boolean value representing whether the user exists in this group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkUserExists(final String userId) {
-        return checkUserExistsWithResponse(userId).map(Response::getValue);
-    }
-
-    /**
-     * Check if a user is in this group.
-     *
-     * @param userId The user name to check for.
-     * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the user exists in
-     *     this group, as well as status code and response headers representing the response from the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkUserExistsWithResponse(final String userId) {
-        return withContext(context -> checkUserExistsWithResponse(userId, context));
-    }
-
-    // package-private
-    Mono<Response<Boolean>> checkUserExistsWithResponse(final String userId, final Context context) {
-        return webPubSubApis.checkUserExistenceInGroupWithResponseAsync(hub, group, userId, configureTracing(context))
-           .doOnSubscribe(ignoredValue -> logger.verbose("Checking if user '{}' exists", userId))
-           .doOnSuccess(response -> logger.verbose("Checked if user '{}' exists, response: {}",
-               userId, response.getValue()))
-           .doOnError(error -> logger.warning("Failed to check if user '{}' exists, response: {}", userId, error));
     }
 
     /**

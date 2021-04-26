@@ -6,10 +6,13 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TransactionalBatchOperationResult;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
+import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
-import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
+import com.azure.cosmos.implementation.RetryContext;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -20,7 +23,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * A container to keep retry policies and functions for bulk.
  */
-final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
+final class BulkOperationRetryPolicy implements IRetryPolicy {
 
     private static final int MAX_RETRIES = 1;
 
@@ -67,6 +70,11 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
         }
 
         return this.resourceThrottleRetryPolicy.shouldRetry(exception);
+    }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
     boolean shouldRetryForGone(int statusCode, int subStatusCode) {

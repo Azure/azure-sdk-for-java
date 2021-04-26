@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** Information about the webhook destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
@@ -60,12 +59,6 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      */
     @JsonProperty(value = "properties.azureActiveDirectoryApplicationIdOrUri")
     private String azureActiveDirectoryApplicationIdOrUri;
-
-    /*
-     * Delivery attribute details.
-     */
-    @JsonProperty(value = "properties.deliveryAttributeMappings")
-    private List<DeliveryAttributeMapping> deliveryAttributeMappings;
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
@@ -184,27 +177,6 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
     }
 
     /**
-     * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
-     * @return the deliveryAttributeMappings value.
-     */
-    public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
-        return this.deliveryAttributeMappings;
-    }
-
-    /**
-     * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
-     * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
-     * @return the WebhookEventSubscriptionDestination object itself.
-     */
-    public WebhookEventSubscriptionDestination withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
-        this.deliveryAttributeMappings = deliveryAttributeMappings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -212,8 +184,5 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
     @Override
     public void validate() {
         super.validate();
-        if (deliveryAttributeMappings() != null) {
-            deliveryAttributeMappings().forEach(e -> e.validate());
-        }
     }
 }

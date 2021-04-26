@@ -508,26 +508,19 @@ public class TablesAsyncClientTest extends TestBase {
         createdEntity.addProperty(newPropertyKey, "valueB");
 
         // Act & Assert
-        if (mode == UpdateMode.MERGE && tableClient.getTableUrl().contains("cosmos.azure.com")) {
-            // This scenario is currently broken when using the CosmosDB Table API
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .expectError(TableServiceErrorException.class)
-                .verify();
-        } else {
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
-                .expectComplete()
-                .verify();
+        StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
 
-            // Assert and verify that the new properties are in there.
-            StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
-                .assertNext(entity -> {
-                    final Map<String, Object> properties = entity.getProperties();
-                    assertTrue(properties.containsKey(newPropertyKey));
-                    assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
-                })
-                .verifyComplete();
-        }
+        // Assert and verify that the new properties are in there.
+        StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
+            .assertNext(entity -> {
+                final Map<String, Object> properties = entity.getProperties();
+                assertTrue(properties.containsKey(newPropertyKey));
+                assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
+            })
+            .verifyComplete();
     }
 
     @Test

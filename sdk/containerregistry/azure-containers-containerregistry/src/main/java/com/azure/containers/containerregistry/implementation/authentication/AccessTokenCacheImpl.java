@@ -29,7 +29,7 @@ public class AccessTokenCacheImpl {
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final AtomicReference<Sinks.One<AccessToken>> wip;
-    private final ContainerRegistryTokenCredential tokenCredential;
+    private final ContainerRegistryRefreshTokenCredential tokenCredential;
     private ContainerRegistryTokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
     private final ClientLogger logger = new ClientLogger(AccessTokenCacheImpl.class);
@@ -39,7 +39,7 @@ public class AccessTokenCacheImpl {
      *
      * @param tokenCredential the credential to be used to acquire token from.
      */
-    public AccessTokenCacheImpl(ContainerRegistryTokenCredential tokenCredential) {
+    public AccessTokenCacheImpl(ContainerRegistryRefreshTokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;

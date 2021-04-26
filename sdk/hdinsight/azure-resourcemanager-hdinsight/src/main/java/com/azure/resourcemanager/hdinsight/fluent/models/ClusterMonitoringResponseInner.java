@@ -9,28 +9,25 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Operations Management Suite (OMS) status response. */
+/** The cluster monitoring status response. */
 @Fluent
 public final class ClusterMonitoringResponseInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterMonitoringResponseInner.class);
 
     /*
-     * The status of the Operations Management Suite (OMS) on the HDInsight
-     * cluster.
+     * The status of the monitor on the HDInsight cluster.
      */
     @JsonProperty(value = "clusterMonitoringEnabled")
     private Boolean clusterMonitoringEnabled;
 
     /*
-     * The workspace ID of the Operations Management Suite (OMS) on the
-     * HDInsight cluster.
+     * The workspace ID of the monitor on the HDInsight cluster.
      */
     @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
     /**
-     * Get the clusterMonitoringEnabled property: The status of the Operations Management Suite (OMS) on the HDInsight
-     * cluster.
+     * Get the clusterMonitoringEnabled property: The status of the monitor on the HDInsight cluster.
      *
      * @return the clusterMonitoringEnabled value.
      */
@@ -39,8 +36,7 @@ public final class ClusterMonitoringResponseInner {
     }
 
     /**
-     * Set the clusterMonitoringEnabled property: The status of the Operations Management Suite (OMS) on the HDInsight
-     * cluster.
+     * Set the clusterMonitoringEnabled property: The status of the monitor on the HDInsight cluster.
      *
      * @param clusterMonitoringEnabled the clusterMonitoringEnabled value to set.
      * @return the ClusterMonitoringResponseInner object itself.
@@ -51,7 +47,7 @@ public final class ClusterMonitoringResponseInner {
     }
 
     /**
-     * Get the workspaceId property: The workspace ID of the Operations Management Suite (OMS) on the HDInsight cluster.
+     * Get the workspaceId property: The workspace ID of the monitor on the HDInsight cluster.
      *
      * @return the workspaceId value.
      */
@@ -60,7 +56,7 @@ public final class ClusterMonitoringResponseInner {
     }
 
     /**
-     * Set the workspaceId property: The workspace ID of the Operations Management Suite (OMS) on the HDInsight cluster.
+     * Set the workspaceId property: The workspace ID of the monitor on the HDInsight cluster.
      *
      * @param workspaceId the workspaceId value to set.
      * @return the ClusterMonitoringResponseInner object itself.

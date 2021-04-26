@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.messaging.webpubsub.models;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Options class for configuring the
@@ -17,8 +17,8 @@ import com.azure.messaging.webpubsub.WebPubSubServiceClient;
  */
 public final class GetAuthenticationTokenOptions {
     private Duration expiresAfter;
-    private Map<String, Object> claims;
     private String userId;
+    private List<String> roles;
 
     /**
      * Specifies when the duration after which the requested authentication token will expire.
@@ -40,38 +40,36 @@ public final class GetAuthenticationTokenOptions {
     }
 
     /**
-     * Adds a new claim to any existing claims set on this instance. Previously set claims will not be removed, however,
-     * if a claim exists with the given key, it will be replaced by the provided value.
-     * @param key The claim key.
-     * @param value The claim value for the given key.
-     * @return The same instance of this type, modified based on the value provided in this set method.
-     */
-    public GetAuthenticationTokenOptions addClaim(String key, Object value) {
-        if (claims == null) {
-            this.claims = new HashMap<>();
-        }
-        this.claims.put(key, value);
-        return this;
-    }
-
-    /**
-     * Specifies the complete set of claims to be included when creating the authentication token, overwriting any other
-     * claims previously set on this instance.
+     * Adds a role to the requested authentication token.
      *
-     * @param claims The complete set of claims to be included when creating the authentication token.
+     * @param role The role to be added to the requested authentication token.
+     * @return The same instance of this type, modified based on the value provided in this add method.
+     */
+    public GetAuthenticationTokenOptions addRole(String role) {
+        if (roles == null) {
+            roles = new ArrayList<>();
+        }
+        roles.add(role);
+        return this;
+    }
+    /**
+     * Specifies the complete set of roles to be included when creating the authentication token, overwriting any other
+     * roles previously set on this instance.
+     *
+     * @param roles The complete set of roles to be included when creating the authentication token.
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public GetAuthenticationTokenOptions setClaims(final Map<String, Object> claims) {
-        this.claims = claims;
+    public GetAuthenticationTokenOptions setRoles(List<String> roles) {
+        this.roles = roles;
         return this;
     }
 
     /**
-     * Returns the complete set of claims to be included when creating the authentication token.
-     * @return The complete set of claims to be included when creating the authentication token
+     * Returns the complete set of roles to be included when creating the authentication token.
+     * @return The complete set of roles to be included when creating the authentication token
      */
-    public Map<String, Object> getClaims() {
-        return claims == null ? Collections.emptyMap() : claims;
+    public List<String> getRoles() {
+        return roles == null ? Collections.emptyList() : roles;
     }
 
     /**

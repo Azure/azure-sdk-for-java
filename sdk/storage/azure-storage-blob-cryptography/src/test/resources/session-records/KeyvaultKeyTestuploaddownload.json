@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/create?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -49,7 +49,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/e15d3bc4bd46444992615d89684c38f0?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/e15d3bc4bd46444992615d89684c38f0?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -76,7 +76,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/e15d3bc4bd46444992615d89684c38f0/wrapkey?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/e15d3bc4bd46444992615d89684c38f0/wrapkey?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -159,7 +159,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/e15d3bc4bd46444992615d89684c38f0/unwrapkey?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2/e15d3bc4bd46444992615d89684c38f0/unwrapkey?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -186,7 +186,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2?api-version=7.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/keyiduploaddownload0keyvaultkeytestuploaddownload780164330f2?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"

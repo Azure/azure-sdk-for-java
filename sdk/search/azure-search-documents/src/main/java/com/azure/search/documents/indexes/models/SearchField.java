@@ -536,6 +536,18 @@ public final class SearchField {
     }
 
     /**
+     * Set the fields property: A list of sub-fields if this is a field of type Edm.ComplexType or
+     * Collection(Edm.ComplexType). Must be null or empty for simple fields.
+     *
+     * @param fields the fields value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setFields(SearchField... fields) {
+        this.fields = (fields == null) ? null : java.util.Arrays.asList(fields);
+        return this;
+    }
+
+    /**
      * Set the synonymMapNames property: A list of the names of synonym maps to associate with this field. This option
      * can be used only with searchable fields. Currently only one synonym map per field is supported. Assigning a
      * synonym map to a field ensures that query terms targeting that field are expanded at query-time using the rules
@@ -547,18 +559,6 @@ public final class SearchField {
      */
     public SearchField setSynonymMapNames(String... synonymMapNames) {
         this.synonymMapNames = (synonymMapNames == null) ? null : java.util.Arrays.asList(synonymMapNames);
-        return this;
-    }
-
-    /**
-     * Set the fields property: A list of sub-fields if this is a field of type Edm.ComplexType or
-     * Collection(Edm.ComplexType). Must be null or empty for simple fields.
-     *
-     * @param fields the fields value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setFields(SearchField... fields) {
-        this.fields = (fields == null) ? null : java.util.Arrays.asList(fields);
         return this;
     }
 }

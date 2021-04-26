@@ -230,6 +230,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
@@ -240,6 +241,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 cosmosContainer.createItem(internalObjectNode);
                 fail("expected 409");
             } catch (CosmosException e) {
+                diagnostics = e.getDiagnostics().toString();
+                assertThat(diagnostics).contains("\"backendLatencyInMs\"");
                 validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
             }
         } finally {
@@ -498,6 +501,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
+            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             isValidJSON(diagnostics);
             // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
             // uncomment below if above issue is fixed

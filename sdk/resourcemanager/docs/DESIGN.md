@@ -28,8 +28,6 @@ Artifact ID for Azure services are:
 
 In addition to artifacts for Azure services, an artifact `azure-resourcemanager` is provided for the convenience of including all supported services.
 
-A parent POM `azure-resourcemanager-parent` is provided for common configurations and dependencies.
-
 ## Fluent interface
 
 Azure Management Libraries for Java is object-oriented API for managing Azure resources.

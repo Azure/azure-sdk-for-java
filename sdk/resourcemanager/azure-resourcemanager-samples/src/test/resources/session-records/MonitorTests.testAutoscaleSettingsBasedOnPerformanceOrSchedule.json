@@ -25,7 +25,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/serverfarms/2f66a32ca3364447b32dplan722471?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/serverfarms/2f66a32ca3364447b32dplan722471?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.appservice/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -52,7 +52,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.appservice/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -80,7 +80,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/hostNameBindings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/hostNameBindings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.appservice/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -108,7 +108,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.appservice/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -135,7 +135,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.appservice/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -162,7 +162,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/slotConfigNames?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/slotConfigNames?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.appservice/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -189,7 +189,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/connectionstrings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup89028/providers/Microsoft.Web/sites/2f66a32ca3364447b32d/config/connectionstrings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.appservice/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
