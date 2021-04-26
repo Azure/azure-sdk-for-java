@@ -39,13 +39,13 @@ public final class AzureBlobStorageImplBuilder {
     }
 
     /*
-     * The URL of the service account, container, or blob that is the targe of
+     * The URL of the service account, container, or blob that is the target of
      * the desired operation.
      */
     private String url;
 
     /**
-     * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
+     * Sets The URL of the service account, container, or blob that is the target of the desired operation.
      *
      * @param url the url value.
      * @return the AzureBlobStorageImplBuilder.

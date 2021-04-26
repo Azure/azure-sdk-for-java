@@ -31,7 +31,7 @@ Alternatively you may want to use the [starters](https://github.com/Azure/azure-
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-    <version>3.4.0</version>
+    <version>3.5.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
