@@ -406,7 +406,7 @@ public class NettyAsyncHttpClientTests {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             AtomicInteger responseHandleCount = new AtomicInteger();
 
-            RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(5)));
+            RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(10)));
             ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
                 .setCredentials("1", "1");
 
@@ -417,19 +417,19 @@ public class NettyAsyncHttpClientTests {
                 .httpClient(new NettyAsyncHttpClientBuilder().proxy(proxyOptions).build())
                 .build();
 
-            // Run a reactive request verifier where it is expected to complete in 2 seconds.
-            // This will strongly validate that we are not bubbling any ProxyConnect exceptions back to the retry
-            // policy as that has a retry delay of 5 seconds.
+            // Run a reactive request verifier where it is expected to complete successfully and captures the time
+            // taken. The time taken will then be used to strongly validate that we are not bubbling any ProxyConnect
+            // exceptions to the retry policy as that has a much longer retry delay.
             Duration timeToHandleProxyConnectException = StepVerifier.create(
                 httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
                     new Context("azure-eagerly-read-response", true)))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
                 .expectComplete()
-                .verify(Duration.ofSeconds(4));
+                .verify();
 
             assertEquals(1, responseHandleCount.get());
-            assertFalse(Duration.ofSeconds(4).minus(timeToHandleProxyConnectException).isNegative(),
-                () -> String.format("Took longer than four seconds to retry a ProxyConnectException. Took %s.",
+            assertFalse(Duration.ofSeconds(10).minus(timeToHandleProxyConnectException).isNegative(),
+                () -> String.format("Took longer than ten seconds to retry a ProxyConnectException. Took %s.",
                     timeToHandleProxyConnectException));
         }
     }
