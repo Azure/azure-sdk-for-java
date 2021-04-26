@@ -3,12 +3,9 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * This type is to support the implementation of buffered upload only. It is mandatory that the caller has broken the
@@ -33,19 +30,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  * RESERVED FOR INTERNAL USE ONLY
  */
 public final class UploadBufferPool {
-    private final ClientLogger logger = new ClientLogger(UploadBufferPool.class);
-
-    /*
-    Note that a blocking on a synchronized object is not the same as blocking on a reactive operation; blocking on this
-    queue will not compromise the async nature of this workflow. Fluxes themselves are internally synchronized to ensure
-    only one call to onNext happens at a time.
-     */
-    private final BlockingQueue<BufferAggregator> buffers;
-
-    private final int maxBuffs;
-
-    // The number of buffs we have allocated. We can query the queue for how many are available.
-    private int numBuffs;
 
     private final long buffSize;
 
@@ -56,25 +40,20 @@ public final class UploadBufferPool {
      * @param numBuffs The number of buffers in the buffer pool.
      * @param buffSize The size of the buffers
      */
+    @Deprecated
     public UploadBufferPool(final int numBuffs, final long buffSize, long maxBuffSize) {
-        /*
-        We require at least two buffers because it is possible that a given write will spill over into a second buffer.
-        We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
-        the pool.
-         */
-        StorageImplUtils.assertInBounds("numBuffs", numBuffs, 2, Integer.MAX_VALUE);
-        this.maxBuffs = numBuffs;
-        buffers = new LinkedBlockingQueue<>(numBuffs);
+        this(buffSize, maxBuffSize);
+    }
 
-
+    /**
+     * Creates a new instance of UploadBufferPool
+     * @param buffSize The size of the buffers
+     * @param maxBuffSize The max size of the buffers
+     */
+    public UploadBufferPool(final long buffSize, long maxBuffSize) {
         // These buffers will be used in calls to stageBlock, so they must be no greater than block size.
         StorageImplUtils.assertInBounds("buffSize", buffSize, 1, maxBuffSize);
         this.buffSize = buffSize;
-
-        // We prep the queue with two buffers in case there is overflow.
-        buffers.add(new BufferAggregator(this.buffSize));
-        buffers.add(new BufferAggregator(this.buffSize));
-        this.numBuffs = 2;
     }
 
     /*
@@ -88,6 +67,7 @@ public final class UploadBufferPool {
      * @return The {@code Flux<BufferAggregator>}
      */
     public Flux<BufferAggregator> write(ByteBuffer buf) {
+
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
             this.currentBuf = this.getBuffer();
@@ -129,6 +109,7 @@ public final class UploadBufferPool {
             this.currentBuf = this.getBuffer();
             this.currentBuf.append(buf);
         }
+
         return result;
     }
 
@@ -137,27 +118,7 @@ public final class UploadBufferPool {
     and calling write. Hence there is only one worker calling getBuffer at any time.
      */
     private BufferAggregator getBuffer() {
-        BufferAggregator result;
-        /*
-         There are no buffers in the queue and we have space to allocate one. We do not add the new buffer to the queue
-         because we want to make immediate use of it. This is effectively equivalent to a buffers.add(newBuffer) and
-         then result = buffers.pop()--because we only get here when the queue is empty, the buffer returned is the one
-         we just created. The new buffer will be added to buffers when it is returned to the pool.
-         */
-        if (this.buffers.isEmpty() && this.numBuffs < this.maxBuffs) {
-            result = new BufferAggregator(this.buffSize);
-            this.numBuffs++;
-        } else {
-            try {
-                // If empty, this will wait for an upload to finish and return a buffer.
-                result = this.buffers.take();
-
-            } catch (InterruptedException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("BufferedUpload thread interrupted. Thread:"
-                    + Thread.currentThread().getId()));
-            }
-        }
-        return result;
+        return new BufferAggregator(this.buffSize);
     }
 
     /**
@@ -165,6 +126,7 @@ public final class UploadBufferPool {
      * @return the flushed buffer
      */
     public Flux<BufferAggregator> flush() {
+        System.out.println(Thread.currentThread().getName() + " calling flush");
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
@@ -176,20 +138,5 @@ public final class UploadBufferPool {
             return Flux.just(last);
         }
         return Flux.empty();
-    }
-
-    /**
-     * Returns the ByteBuffer
-     * @param b The ByteBuffer to reset and return
-     */
-    public void returnBuffer(BufferAggregator b) {
-        // Reset the buffer aggregator.
-        b.reset();
-
-        try {
-            this.buffers.put(new BufferAggregator(this.buffSize));
-        } catch (InterruptedException e) {
-            throw logger.logExceptionAsError(new IllegalStateException("UploadFromStream thread interrupted."));
-        }
     }
 }

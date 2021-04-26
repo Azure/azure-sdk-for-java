@@ -35,13 +35,13 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
-import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
-import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -353,16 +353,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
         others are being sent.
          */
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
-            parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
+        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
         /*
          Write to the pool and upload the output.
          */
-        return chunkedSource.concatMap(pool::write)
-            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
+        return chunkedSource.flatMapSequential(pool::write, 1)
             .concatWith(Flux.defer(pool::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
@@ -389,10 +387,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
                     progressLock, totalProgress);
+                final long offset = currentBufferLength + currentOffset;
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
-                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
-                    .map(resp -> currentBufferLength + currentOffset) /* End of file after append to pass to flush. */
+                    .map(resp -> offset) /* End of file after append to pass to flush. */
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency())
             .last()

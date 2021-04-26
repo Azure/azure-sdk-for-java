@@ -577,8 +577,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
         others are being sent.
          */
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
-            parallelTransferOptions.getBlockSizeLong(), BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
+        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getBlockSizeLong(),
+            BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data,
             ModelHelper.wrapBlobOptions(parallelTransferOptions));
@@ -586,8 +586,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         /*
          Write to the pool and upload the output.
          */
-        return chunkedSource.concatMap(pool::write)
-            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
+        return chunkedSource.flatMapSequential(pool::write, 1)
             .concatWith(Flux.defer(pool::flush))
             .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.
@@ -605,7 +604,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
                     .map(x -> blockId)
-                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency())
             .collect(Collectors.toList())
