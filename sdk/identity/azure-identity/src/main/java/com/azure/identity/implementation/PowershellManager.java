@@ -116,17 +116,24 @@ public class PowershellManager {
 
     private Mono<Boolean> canRead(BufferedReader reader) {
         return Mono.fromFuture(CompletableFuture.supplyAsync(() -> {
+            int counter = 0;
             while (true) {
                 try {
                     if (!reader.ready()) {
+                        if (counter > 3) {
+                            return false;
+                        }
+                        counter++;
                         Thread.sleep((long) this.waitPause);
-                        return false;
+                    } else {
+                        break;
                     }
+
                 } catch (IOException | InterruptedException e) {
                     throw LOGGER.logExceptionAsError(new RuntimeException("Powershell reader not ready for reading"));
                 }
-                return true;
             }
+            return true;
         }));
     }
 
