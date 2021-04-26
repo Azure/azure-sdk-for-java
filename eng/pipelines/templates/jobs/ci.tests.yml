@@ -62,7 +62,7 @@ jobs:
           Paths:
             - '${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
-            - '**/*.md'
+          CheckoutRecordings: true
 
       - template: ../steps/cache-maven-repository.yml
 
