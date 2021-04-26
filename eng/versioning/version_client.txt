@@ -133,7 +133,6 @@ com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.4.0;3.5.0-beta.1
 com.azure.spring:azure-spring-boot-starter-storage;3.4.0;3.5.0-beta.1
 com.azure.spring:azure-spring-boot-starter;3.4.0;3.5.0-beta.1
 com.azure.spring:azure-spring-boot;3.4.0;3.5.0-beta.1
-com.azure.spring:azure-spring-cloud-dependencies;2.4.0-beta.1;2.4.0-beta.1
 com.azure.spring:azure-spring-cloud-autoconfigure;2.4.0;2.5.0-beta.1
 com.azure.spring:azure-spring-cloud-context;2.4.0;2.5.0-beta.1
 com.azure.spring:azure-spring-cloud-messaging;2.4.0;2.5.0-beta.1
@@ -277,6 +276,7 @@ com.azure.resourcemanager:azure-resourcemanager-datalakestore;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-iotcentral;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-labservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-vmwarecloudsimple;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-managedapplications;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

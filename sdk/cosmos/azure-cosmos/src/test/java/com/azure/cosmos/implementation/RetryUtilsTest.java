@@ -40,6 +40,7 @@ public class RetryUtilsTest {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void before_RetryUtilsTest() throws Exception {
         retryPolicy = Mockito.mock(IRetryPolicy.class);
+        Mockito.doReturn(new RetryContext()).when(retryPolicy).getRetryContext();
         request =  mockDocumentServiceRequest(clientContext);
         callbackMethod = Mockito.mock(Function.class);
         inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
