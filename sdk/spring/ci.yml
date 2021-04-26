@@ -32,7 +32,7 @@ extends:
       - name: azure-identity-spring
         groupId: com.azure.spring
         safeName: azureidentityspring
-      - name: azure-jca
+      - name: azure-security-jca
         groupId: com.azure
         safeName: azuresecuritykeyvaultjca
       - name: azure-spring-data-gremlin

@@ -14,7 +14,7 @@
       <id>coverage</id>
       <modules>
         <module>azure-identity-spring</module>
-        <module>azure-jca</module>
+        <module>azure-security-jca</module>
         <module>azure-spring-boot</module>
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-context</module>
@@ -137,7 +137,7 @@
       </activation>
       <modules>
         <module>azure-identity-spring</module>
-        <module>azure-jca</module>
+        <module>azure-security-jca</module>
         <module>azure-spring-boot-samples/azure-cloud-foundry-service-sample</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless</module>

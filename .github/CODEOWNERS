@@ -99,7 +99,7 @@
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu
-/sdk/spring/azure-jca                               @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu @conniey
+/sdk/spring/azure-security-jca                               @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu @conniey
 /sdk/spring/azure-spring-boot-starter-keyvault-certificates     @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @stliu @conniey
 
 # end to end tests

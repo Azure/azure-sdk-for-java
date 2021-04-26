@@ -67,10 +67,10 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
     }
 
     /**
-     * The method is use to make the properties in "application.properties" readable in azure-jca.
+     * The method is use to make the properties in "application.properties" readable in azure-security-jca.
      *
-     * "application.properties" is analyzed by Spring, and azure-jca does not depends on Spring.
-     * Put the properties into System.getProperties() can make them readable in azure-jca.
+     * "application.properties" is analyzed by Spring, and azure-security-jca does not depends on Spring.
+     * Put the properties into System.getProperties() can make them readable in azure-security-jca.
      */
     private void putEnvironmentPropertyToSystemProperty(ConfigurableEnvironment environment, String key) {
         Optional.of(key)

@@ -13,11 +13,11 @@ Azure Key Vault. It is built on four principles:
 ### Adding the package to your project
 Maven dependency for the Azure Key Vault JCA client library. Add it to your project's POM file.
 
-[//]: # ({x-version-update-start;com.azure:azure-jca;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-jca;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-jca</artifactId>
+    <artifactId>azure-security-jca</artifactId>
     <version>1.0.0-beta.6</version>
 </dependency>
 ```
@@ -146,10 +146,10 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-jca/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-security-jca/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[jca_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-jca/src/samples/java/com/azure/jca
+[jca_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-security-jca/src/samples/java/com/azure/jca
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
@@ -158,4 +158,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fspring%2Fazure-jca%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fspring%2Fazure-security-jca%2FREADME.png)

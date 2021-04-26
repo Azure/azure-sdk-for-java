@@ -37,8 +37,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-jca</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-jca;current} -->
+      <artifactId>azure-security-jca</artifactId>
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-jca;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
