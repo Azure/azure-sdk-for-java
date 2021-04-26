@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -203,6 +204,15 @@ public final class FormRecognizerClientBuilder {
     public FormRecognizerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
+    }
+
+    /**
+     * Gets the default Azure Form Recognizer headers and query parameters allow list.
+     *
+     * @return The default {@link HttpLogOptions} allow list.
+     */
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     }
 
     /**
