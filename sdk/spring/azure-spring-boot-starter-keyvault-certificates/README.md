@@ -175,7 +175,7 @@ Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
     KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+    AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
@@ -213,7 +213,7 @@ Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 @Bean
 public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
     KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+    AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.managed-identity"));
     trustStore.load(parameter);
@@ -250,7 +250,7 @@ Step 2. On the client side, update `RestTemplate`. Example:
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
     KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
-    KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+    AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
