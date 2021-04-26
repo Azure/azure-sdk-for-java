@@ -542,7 +542,7 @@ In [Resource server visiting other resource server] scenario(For better descript
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
     @GetMapping("webapiA/webapiB")
     public String callCustom(
-    @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiBClient) {
+        @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiBClient) {
         return callWebApiBEndpoint(webapiBClient);
     }
     ```
