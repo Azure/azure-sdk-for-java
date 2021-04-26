@@ -173,7 +173,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
    
    Let `Webapp` run on port *8080*.
    
-    1. After your application is built and started by Maven, open <http://localhost:8080/> in a web browser; 
+    1. After your application is built and started by Maven, open `http://localhost:8080/` in a web browser; 
     you should be redirected to login page.
 
     1. Click link with the login user flow, you should be redirected Azure AD B2C to start the authentication process.
@@ -283,7 +283,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 1. Build and test your app
    
    Let `Webapp` and `WebApiA` run on port *8080* and *8081* respectively.
-   Start `Webapp` and `WebApiA` application, return to the home page after logging successfully, you can access <http://localhost:8080/webapp/webApiA> to get **WebApiA** resource response.
+   Start `Webapp` and `WebApiA` application, return to the home page after logging successfully, you can access `http://localhost:8080/webapp/webApiA` to get **WebApiA** resource response.
 
 ### Accessing a resource server
 
@@ -362,7 +362,7 @@ This scenario not support login. Just protect the server by validating the acces
 1. Build and test your app
 
    Let `WebApiA` run on port *8081*.
-   Get the access token for `webApiA' resource and access <http://localhost:8081/webApiA/sample> 
+   Get the access token for `webApiA` resource and access `http://localhost:8081/webApiA/sample` 
    as the Bearer authorization header.
 
 ### Resource server accessing other resource servers
@@ -461,7 +461,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
 1. Build and test your app
 
    Let `WebApiA` and `WebApiB` run on port *8081* and *8082* respectively.
-   Start `WebApiA` and `WebApiB` application, get the access token for `webApiA' resource and access <http://localhost:8081/webApiA/webApiB/sample>
+   Start `WebApiA` and `WebApiB` application, get the access token for `webApiA` resource and access `http://localhost:8081/webApiA/webApiB/sample`
    as the Bearer authorization header.
 
 ## Examples
