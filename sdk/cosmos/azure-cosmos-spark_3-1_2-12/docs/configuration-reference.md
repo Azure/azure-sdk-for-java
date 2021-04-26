@@ -20,10 +20,9 @@ Configuration Reference:
 | `spark.cosmos.useGatewayMode`      | `false`    | Use gateway mode for the client operations  |
 | `spark.cosmos.read.forceEventualConsistency`  | `true`    | Makes the client use Eventual consistency for read operations instead of using the default account level consistency |
 | `spark.cosmos.applicationName`      | None    | Application name  |
-
+| `spark.cosmos.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[eastus,westus]`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet) |
 
 ### Write Config
-
 
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 

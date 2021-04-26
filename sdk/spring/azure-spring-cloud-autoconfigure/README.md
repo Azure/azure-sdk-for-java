@@ -6,8 +6,6 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 ## Getting started
 
 ### Prerequisites
-
-### Prerequisites
 - [Environment checklist][environment_checklist]
 
 ### Include the Package
@@ -22,7 +20,7 @@ dependency to your project and the Spring Cloud auto-configuration will kick-in:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-    <version>2.3.0</version>
+    <version>2.5.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

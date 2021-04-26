@@ -1,0 +1,34 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle/_manifests/unknown:digest",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "10ddfd11-9364-4cb4-b086-1a26c6f74ea8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle/_manifests/unknown:digest",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "05d8bd5b-cd6a-49e0-9a3d-bcff72d755c4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -89,7 +89,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       require(objectNode.has(CosmosConstants.Properties.Id) &&
         objectNode.get(CosmosConstants.Properties.Id).isTextual,
         s"${CosmosConstants.Properties.Id} is a mandatory field. " +
-          s"But it is missing or it is not a string")
+          s"But it is missing or it is not a string. Json: ${SparkUtils.objectNodeToJson(objectNode)}")
 
       val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
       writer.scheduleWrite(partitionKeyValue, objectNode)

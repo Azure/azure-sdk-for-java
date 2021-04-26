@@ -105,6 +105,8 @@ public final class ClustersClientImpl implements ClustersClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ClusterInner parameters,
@@ -121,6 +123,7 @@ public final class ClustersClientImpl implements ClustersClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
+            @HeaderParam("If-Match") String ifMatch,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ClusterUpdate parameters,
@@ -373,7 +376,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -483,6 +486,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,7 +497,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters) {
+        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -524,12 +531,14 @@ public final class ClustersClientImpl implements ClustersClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             clusterName,
+                            ifMatch,
+                            ifNoneMatch,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -538,6 +547,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -546,7 +559,12 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context) {
+        String resourceGroupName,
+        String clusterName,
+        ClusterInner parameters,
+        String ifMatch,
+        String ifNoneMatch,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -578,6 +596,8 @@ public final class ClustersClientImpl implements ClustersClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 clusterName,
+                ifMatch,
+                ifNoneMatch,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 parameters,
@@ -591,6 +611,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -598,9 +622,9 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters) {
+        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch);
         return this
             .client
             .<ClusterInner, ClusterInner>getLroResult(
@@ -613,6 +637,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -621,10 +649,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context) {
+        String resourceGroupName,
+        String clusterName,
+        ClusterInner parameters,
+        String ifMatch,
+        String ifNoneMatch,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context);
         return this
             .client
             .<ClusterInner, ClusterInner>getLroResult(
@@ -637,6 +670,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -644,8 +681,9 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
+            .getSyncPoller();
     }
 
     /**
@@ -654,6 +692,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -662,8 +704,37 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        String resourceGroupName,
+        String clusterName,
+        ClusterInner parameters,
+        String ifMatch,
+        String ifNoneMatch,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterInner> createOrUpdateAsync(
+        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -680,7 +751,9 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> createOrUpdateAsync(
         String resourceGroupName, String clusterName, ClusterInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters)
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -691,6 +764,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -699,10 +776,36 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> createOrUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, context)
+        String resourceGroupName,
+        String clusterName,
+        ClusterInner parameters,
+        String ifMatch,
+        String ifNoneMatch,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterInner createOrUpdate(
+        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
+        return createOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch).block();
     }
 
     /**
@@ -718,7 +821,9 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, clusterName, parameters).block();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return createOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch).block();
     }
 
     /**
@@ -727,6 +832,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
+     *     Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -735,8 +844,13 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, clusterName, parameters, context).block();
+        String resourceGroupName,
+        String clusterName,
+        ClusterInner parameters,
+        String ifMatch,
+        String ifNoneMatch,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context).block();
     }
 
     /**
@@ -745,6 +859,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -752,7 +868,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters) {
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -786,12 +902,13 @@ public final class ClustersClientImpl implements ClustersClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             clusterName,
+                            ifMatch,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -800,6 +917,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -808,7 +927,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, Context context) {
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -840,6 +959,7 @@ public final class ClustersClientImpl implements ClustersClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 clusterName,
+                ifMatch,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 parameters,
@@ -853,6 +973,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,8 +982,9 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, parameters);
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch);
         return this
             .client
             .<ClusterInner, ClusterInner>getLroResult(
@@ -874,6 +997,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -882,10 +1007,10 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, Context context) {
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, parameters, context);
+            updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, context);
         return this
             .client
             .<ClusterInner, ClusterInner>getLroResult(
@@ -898,6 +1023,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -905,8 +1032,8 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch).getSyncPoller();
     }
 
     /**
@@ -915,6 +1042,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -923,8 +1052,29 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context).getSyncPoller();
+    }
+
+    /**
+     * Update a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterInner> updateAsync(
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -940,7 +1090,8 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> updateAsync(String resourceGroupName, String clusterName, ClusterUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters)
+        final String ifMatch = null;
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -951,6 +1102,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -959,10 +1112,28 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> updateAsync(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters, context)
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
+        return updateAsync(resourceGroupName, clusterName, parameters, ifMatch).block();
     }
 
     /**
@@ -978,7 +1149,8 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdate parameters) {
-        return updateAsync(resourceGroupName, clusterName, parameters).block();
+        final String ifMatch = null;
+        return updateAsync(resourceGroupName, clusterName, parameters, ifMatch).block();
     }
 
     /**
@@ -987,6 +1159,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
+     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -995,8 +1169,8 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, Context context) {
-        return updateAsync(resourceGroupName, clusterName, parameters, context).block();
+        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
+        return updateAsync(resourceGroupName, clusterName, parameters, ifMatch, context).block();
     }
 
     /**
@@ -1043,7 +1217,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1269,7 +1443,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1494,7 +1668,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1725,7 +1899,7 @@ public final class ClustersClientImpl implements ClustersClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1898,7 +2072,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             followerDatabaseToRemove,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2169,7 +2343,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2414,7 +2588,7 @@ public final class ClustersClientImpl implements ClustersClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2556,7 +2730,7 @@ public final class ClustersClientImpl implements ClustersClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2685,7 +2859,7 @@ public final class ClustersClientImpl implements ClustersClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2781,7 +2955,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Checks that the cluster name is valid and is not already in use.
      *
-     * @param location Azure location.
+     * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2824,13 +2998,13 @@ public final class ClustersClientImpl implements ClustersClient {
                             clusterName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the cluster name is valid and is not already in use.
      *
-     * @param location Azure location.
+     * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2877,7 +3051,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Checks that the cluster name is valid and is not already in use.
      *
-     * @param location Azure location.
+     * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2901,7 +3075,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Checks that the cluster name is valid and is not already in use.
      *
-     * @param location Azure location.
+     * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2916,7 +3090,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Checks that the cluster name is valid and is not already in use.
      *
-     * @param location Azure location.
+     * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2979,7 +3153,7 @@ public final class ClustersClientImpl implements ClustersClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3145,7 +3319,7 @@ public final class ClustersClientImpl implements ClustersClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3317,7 +3491,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             languageExtensionsToAdd,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3582,7 +3756,7 @@ public final class ClustersClientImpl implements ClustersClient {
                             languageExtensionsToRemove,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

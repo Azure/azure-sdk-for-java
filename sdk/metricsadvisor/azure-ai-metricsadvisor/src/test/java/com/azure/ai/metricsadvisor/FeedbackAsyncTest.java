@@ -12,8 +12,10 @@ import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.Context;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -71,8 +73,17 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                     .block())
                     .collect(Collectors.toList());
 
+            final MetricFeedback firstFeedback = expectedMetricFeedbackList.get(0);
+            final OffsetDateTime firstFeedbackCreatedTime = firstFeedback.getCreatedTime();
+
             // Act
-            StepVerifier.create(client.listFeedback(METRIC_ID))
+            StepVerifier.create(client.listFeedback(METRIC_ID,
+                new ListMetricFeedbackOptions()
+                    .setFilter(new ListMetricFeedbackFilter()
+                        .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
+                        .setStartTime(firstFeedbackCreatedTime.minusDays(1))
+                        .setEndTime(firstFeedbackCreatedTime.plusDays(1))),
+                Context.NONE))
                 .thenConsumeWhile(actualMetricFeedbackList::add)
                 .verifyComplete();
 
@@ -150,11 +161,15 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
-            client.addFeeddback(METRIC_ID, inputMetricFeedback).block();
+            final MetricFeedback feedbackAdded = client.addFeeddback(METRIC_ID, inputMetricFeedback).block();
+            final OffsetDateTime firstFeedbackCreatedTime = feedbackAdded.getCreatedTime();
 
             // Act & Assert
             StepVerifier.create(client.listFeedback(METRIC_ID,
                 new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
+                    .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
+                    .setStartTime(firstFeedbackCreatedTime.minusDays(1))
+                    .setEndTime(firstFeedbackCreatedTime.plusDays(1))
                     .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10)))
                 .thenConsumeWhile(metricFeedback ->
                     metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
@@ -172,13 +187,23 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     void testListMetricFeedbackFilterByFeedbackType(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        int[] count = new int[1];
 
         // Act & Assert
         StepVerifier.create(client.listFeedback(METRIC_ID,
             new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
-                .setFeedbackType(ANOMALY))))
-            .thenConsumeWhile(metricFeedback  -> ANOMALY.equals(metricFeedback.getFeedbackType()))
+                .setFeedbackType(ANOMALY)))
+            .take(LISTING_FILTER_BY_FEEDBACK_TYPE_LIMIT))
+            .thenConsumeWhile(metricFeedback  -> {
+                boolean matched = ANOMALY.equals(metricFeedback.getFeedbackType());
+                if (matched) {
+                    count[0]++;
+                }
+                return matched;
+            })
             .verifyComplete();
+
+        Assertions.assertTrue(count[0] > 0);
     }
 
     /**

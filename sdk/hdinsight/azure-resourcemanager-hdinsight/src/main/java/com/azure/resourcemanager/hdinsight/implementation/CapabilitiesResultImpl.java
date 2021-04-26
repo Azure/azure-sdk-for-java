@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hdinsight.implementation;
 
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.models.CapabilitiesResultInner;
 import com.azure.resourcemanager.hdinsight.models.CapabilitiesResult;
 import com.azure.resourcemanager.hdinsight.models.QuotaCapability;
@@ -19,9 +18,10 @@ import java.util.Map;
 public final class CapabilitiesResultImpl implements CapabilitiesResult {
     private CapabilitiesResultInner innerObject;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    CapabilitiesResultImpl(CapabilitiesResultInner innerObject, HDInsightManager serviceManager) {
+    CapabilitiesResultImpl(
+        CapabilitiesResultInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -44,8 +44,8 @@ public final class CapabilitiesResultImpl implements CapabilitiesResult {
         }
     }
 
-    public Map<String, VmSizesCapability> vmSizes() {
-        Map<String, VmSizesCapability> inner = this.innerModel().vmSizes();
+    public Map<String, VmSizesCapability> vmsizes() {
+        Map<String, VmSizesCapability> inner = this.innerModel().vmsizes();
         if (inner != null) {
             return Collections.unmodifiableMap(inner);
         } else {
@@ -53,8 +53,8 @@ public final class CapabilitiesResultImpl implements CapabilitiesResult {
         }
     }
 
-    public List<VmSizeCompatibilityFilter> vmSizeFilters() {
-        List<VmSizeCompatibilityFilter> inner = this.innerModel().vmSizeFilters();
+    public List<VmSizeCompatibilityFilter> vmsizeFilters() {
+        List<VmSizeCompatibilityFilter> inner = this.innerModel().vmsizeFilters();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -79,7 +79,7 @@ public final class CapabilitiesResultImpl implements CapabilitiesResult {
         return this.innerObject;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 }

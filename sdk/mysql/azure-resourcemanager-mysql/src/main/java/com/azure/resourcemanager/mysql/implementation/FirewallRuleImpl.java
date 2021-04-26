@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.mysql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.mysql.models.FirewallRule;
 
 public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Definition, FirewallRule.Update {
     private FirewallRuleInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -38,7 +37,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 
@@ -72,7 +71,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this;
     }
 
-    FirewallRuleImpl(String name, MySqlManager serviceManager) {
+    FirewallRuleImpl(String name, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = new FirewallRuleInner();
         this.serviceManager = serviceManager;
         this.firewallRuleName = name;
@@ -100,7 +99,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this;
     }
 
-    FirewallRuleImpl(FirewallRuleInner innerObject, MySqlManager serviceManager) {
+    FirewallRuleImpl(FirewallRuleInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

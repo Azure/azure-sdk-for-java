@@ -17,7 +17,7 @@ public final class ElasticsearchDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter", required = true)
+    @JsonProperty(value = "dataSourceParameter")
     private ElasticsearchParameter dataSourceParameter;
 
     /**

@@ -41,10 +41,13 @@ public class SmsTestBase extends TestBase {
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
     protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
+        .get("COMMUNICATION_PHONE_NUMBER", "+15551234567");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
+        .get("COMMUNICATION_PHONE_NUMBER", "+15551234567");
+
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
 
     protected static final String MESSAGE = "Hello";
 
@@ -149,5 +152,9 @@ public class SmsTestBase extends TestBase {
             }
         }
         return content;
+    }
+
+    protected boolean shouldEnableSmsTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|sms)");
     }
 }
