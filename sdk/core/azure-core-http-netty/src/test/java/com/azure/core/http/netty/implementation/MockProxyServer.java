@@ -6,7 +6,6 @@ package com.azure.core.http.netty.implementation;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpHeaders;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.DisposableServer;

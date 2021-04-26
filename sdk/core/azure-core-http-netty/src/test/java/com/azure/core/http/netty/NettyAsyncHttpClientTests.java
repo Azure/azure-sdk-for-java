@@ -3,7 +3,6 @@
 
 package com.azure.core.http.netty;
 
-import brave.http.HttpClientRequest;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -17,7 +16,6 @@ import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -31,11 +29,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.netty.NettyOutbound;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
@@ -52,7 +48,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -64,12 +59,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 public class NettyAsyncHttpClientTests {
     private static final String SHORT_BODY_PATH = "/short";
@@ -436,11 +425,11 @@ public class NettyAsyncHttpClientTests {
                     new Context("azure-eagerly-read-response", true)))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
                 .expectComplete()
-                .verify(Duration.ofSeconds(2));
+                .verify(Duration.ofSeconds(4));
 
             assertEquals(1, responseHandleCount.get());
-            assertFalse(Duration.ofSeconds(1).minus(timeToHandleProxyConnectException).isNegative(),
-                () -> String.format("Took longer than one second to retry a ProxyConnectException. Took %s.",
+            assertFalse(Duration.ofSeconds(4).minus(timeToHandleProxyConnectException).isNegative(),
+                () -> String.format("Took longer than four seconds to retry a ProxyConnectException. Took %s.",
                     timeToHandleProxyConnectException));
         }
     }
