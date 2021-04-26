@@ -50,7 +50,6 @@ jobs:
           Paths:
             - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
-            - '**/*.md'
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml

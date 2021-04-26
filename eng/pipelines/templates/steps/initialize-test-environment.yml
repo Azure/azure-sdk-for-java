@@ -8,9 +8,9 @@ parameters:
   - name: AdditionalModules
     type: object
     default: []
-  - name: TestMode
-    type: string
-    default: ''
+  - name: CheckoutRecordings
+    type: boolean
+    default: false
 
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -37,6 +37,13 @@ steps:
       arguments: '--build-type client --pst'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
+  - task: PythonScript@0
+    displayName: 'Update versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--update-type library --build-type client --sr'
+    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+
   - template: generate-project-list.yml
     parameters:
       Artifacts: ${{ parameters.Artifacts }}
@@ -51,12 +58,17 @@ steps:
 
   - pwsh: |
       $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
-      Write-Host "git sparse-checkout set eng $paths"
-      git sparse-checkout set eng $paths
+      Invoke-Expression -Command "git sparse-checkout set eng '**/*.xml' '**/*.md' $paths"
+      Write-Host "Set sparse checkout paths to:"
+      Get-Content .git/info/sparse-checkout
+    displayName: Sparse checkout module paths
 
-  - task: PythonScript@0
-    displayName: 'Update versions for source build'
-    inputs:
-      scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type library --build-type client --sr'
-    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+  - pwsh: |
+      $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
+      $jsonPaths = $paths | ForEach-Object { $_ + '/**/*.json' }
+      Write-Host "Add sparse checkout paths $jsonPaths"
+      Invoke-Expression -Command "git sparse-checkout add $jsonPaths"
+      Write-Host "Sparse checkout paths:"
+      Get-Content .git/info/sparse-checkout
+    displayName: Checkout recordings
+    condition: eq(${{ parameters.CheckoutRecordings }}, true)
