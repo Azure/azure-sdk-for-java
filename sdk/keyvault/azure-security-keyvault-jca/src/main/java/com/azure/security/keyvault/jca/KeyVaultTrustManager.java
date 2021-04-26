@@ -16,12 +16,21 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.logging.Logger;
+
+import static java.util.logging.Level.WARNING;
+import static java.util.logging.Level.INFO;
 
 /**
  * The Azure Key Vault variant of the X509TrustManager.
  */
 public class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
+
+    /**
+     * Stores the logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultTrustManager.class.getName());
     /**
      * Trust manager that employs local JRE keystore.
      */
@@ -74,7 +83,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             this.keyStore = KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE);
             this.keyStore.load(null, null);
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
-            ex.printStackTrace();
+            LOGGER.log(WARNING, "Unable to get the keyvault keystore.", ex);
         }
     }
 
@@ -84,7 +93,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             factory.init(keyStore);
             trustManager = (X509TrustManager) factory.getTrustManagers()[0];
         } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
-            ex.printStackTrace();
+            LOGGER.log(WARNING, "Unable to get the trust manager factory.", ex);
         }
 
     }
@@ -95,7 +104,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             factory.init((KeyStore) null);
             defaultTrustManager = (X509TrustManager) factory.getTrustManagers()[0];
         } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
-            ex.printStackTrace();
+            LOGGER.log(WARNING, "Unable to get the default trust manager factory.", ex);
         }
 
         if (defaultTrustManager == null) {
@@ -104,7 +113,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
                 factory.init((KeyStore) null);
                 defaultTrustManager = (X509TrustManager) factory.getTrustManagers()[0];
             } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
-                ex.printStackTrace();
+                LOGGER.log(WARNING, "Unable to get the default trust manager factory.", ex);
             }
         }
 
@@ -137,7 +146,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             try {
                 alias = keyStore.getCertificateAlias(chain[0]);
             } catch (KeyStoreException kse) {
-                kse.printStackTrace();
+                LOGGER.log(INFO, "Unable to get the certificate in keyvault keystore.", kse);
             }
             if (alias == null) {
                 throw new CertificateException("Unable to verify in keystore");
@@ -171,7 +180,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             try {
                 alias = keyStore.getCertificateAlias(chain[0]);
             } catch (KeyStoreException kse) {
-                kse.printStackTrace();
+                LOGGER.log(INFO, "Unable to get the certificate in keyvault keystore.", kse);
             }
             if (alias == null) {
                 throw new CertificateException("Unable to verify in keystore");
