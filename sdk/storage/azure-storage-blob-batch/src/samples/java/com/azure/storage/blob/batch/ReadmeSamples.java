@@ -23,10 +23,7 @@ import java.util.List;
  * Code samples for the README.md
  */
 public class ReadmeSamples {
-    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-                                                    .endpoint("<YOUR_END_POINT>")
-                                                    .sasToken("<YOUR_SAS_TOKEN>")
-                                                    .buildClient();
+    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().endpoint("<YOUR_END_POINT>").sasToken("<YOUR_SAS_TOKEN>").buildClient();
     private BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
     private String blobUrl = String.format("https://%s.blob.core.windows.net/containerName/blobName", "<YOUR_STORAGE_ACCOUNT>");
     private String blobUrl2 = String.format("https://%s.blob.core.windows.net/containerName/blobName2", "<YOUR_STORAGE_ACCOUNT>");
