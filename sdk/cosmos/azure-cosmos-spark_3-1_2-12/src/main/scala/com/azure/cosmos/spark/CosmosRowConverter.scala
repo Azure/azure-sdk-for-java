@@ -206,9 +206,9 @@ private object CosmosRowConverter
     }
 
     private def writeSparkArrayDataToArrayNode(arrayNode: ArrayNode,
-                                             elementType: DataType,
-                                             containsNull: Boolean,
-                                             value: Any): Unit = {
+                                               elementType: DataType,
+                                               containsNull: Boolean,
+                                               value: Any): Unit = {
       if (containsNull && value == null) {
         arrayNode.add(objectMapper.nullNode())
       }
