@@ -398,16 +398,16 @@ Here are some examples about how to use these properties:
 * Step 2: Write Java code:
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L134-L146 -->
     ```java
-    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ClientCredentialExampleScope')")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
     @GetMapping("webapiA/webapiC")
     public String callClientCredential() {
         String body = webClient
-                    .get()
-                    .uri(CUSTOM_LOCAL_READ_ENDPOINT)
-                    .attributes(clientRegistrationId("webapiC"))
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+            .get()
+            .uri(CUSTOM_LOCAL_READ_ENDPOINT)
+            .attributes(clientRegistrationId("webapiC"))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
         LOGGER.info("Response from Client Credential: {}", body);
         return "client Credential response " + (null != body ? "success." : "failed.");
     }
@@ -532,26 +532,28 @@ In [Resource server visiting other resource server] scenario(For better descript
     ```java
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
-    public String callWebapiAServer(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiA) {
-        return callWebapiAEndpoint(webapiA);
+    public String callWebApi(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiAClient) {
+        return callWebApiAEndpoint(webapiAClient);
     }
     ```
     - webapiA:
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L76-L81 -->    
     ```java
-    @GetMapping("/webapiA/webapiB")
-    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
-    public String callWebapiBServer(@RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiB) {
-        return callWebapiBEndpoint(webapiB);
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
+    @GetMapping("webapiA/webapiB")
+    public String callCustom(
+    @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiBClient) {
+        return callWebApiBEndpoint(webapiBClient);
     }
     ```
     - webapiB:
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->      
     ```java
     @GetMapping("/webapiB")
-    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('SCOPE_WebApiB.ExampleScope')")
     public String file() {
-        return "Response from webapiB.";
+        return "Response from WebApiB.";
     }
     ```  
 ## Examples
