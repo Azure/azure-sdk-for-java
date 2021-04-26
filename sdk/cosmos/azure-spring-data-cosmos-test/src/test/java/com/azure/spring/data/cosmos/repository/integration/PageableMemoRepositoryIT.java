@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -127,6 +129,16 @@ public class PageableMemoRepositoryIT {
         verifyItemsWithOffsetAndLimit(skipCount, takeCount, TOTAL_CONTENT_SIZE - skipCount);
     }
 
+    @Test
+    public void testFindByImportanceUsingSlice() {
+        final Set<PageableMemo> memos = findByWithSlice(20);
+        Set<PageableMemo> normalMemos = memoSet.stream()
+            .filter(m -> m.getImportance().equals(Importance.NORMAL))
+            .collect(Collectors.toSet());
+        boolean equal = memos.equals(normalMemos);
+        assertThat(equal).isTrue();
+    }
+
     private Flux<FeedResponse<PageableMemo>> getItemsWithOffsetAndLimit(int skipCount, int takeCount) {
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
@@ -161,6 +173,18 @@ public class PageableMemoRepositoryIT {
             final Pageable pageable = page.nextPageable();
             page = repository.findAll(pageable);
             outputSet.addAll((page.getContent()));
+        }
+        return outputSet;
+    }
+
+    private Set<PageableMemo> findByWithSlice(int pageSize) {
+        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
+        Slice<PageableMemo> slice = repository.findByImportance(Importance.NORMAL, pageRequest);
+        final Set<PageableMemo> outputSet = new HashSet<>(slice.getContent());
+        while (slice.hasNext()) {
+            final Pageable pageable = slice.nextPageable();
+            slice = repository.findByImportance(Importance.NORMAL, pageable);
+            outputSet.addAll((slice.getContent()));
         }
         return outputSet;
     }
