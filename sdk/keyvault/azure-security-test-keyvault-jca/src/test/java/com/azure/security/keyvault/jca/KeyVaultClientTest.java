@@ -5,10 +5,12 @@ package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultClientTest {
     private KeyVaultClient keyVaultClient;
     private String certificateName;
@@ -17,7 +19,6 @@ public class KeyVaultClientTest {
     public void setEnvironmentProperty() {
         keyVaultClient = new KeyVaultClient(
             System.getenv("AZURE_KEYVAULT_ENDPOINT"),
-            System.getenv("azure.keyvault.aad-authentication-url"),
             System.getenv("SPRING_TENANT_ID"),
             System.getenv("SPRING_CLIENT_ID"),
             System.getenv("SPRING_CLIENT_SECRET"));

@@ -5,6 +5,7 @@ package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -15,6 +16,7 @@ import java.security.cert.CertificateException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultKeyManagerTest {
 
     private KeyVaultKeyManager manager;

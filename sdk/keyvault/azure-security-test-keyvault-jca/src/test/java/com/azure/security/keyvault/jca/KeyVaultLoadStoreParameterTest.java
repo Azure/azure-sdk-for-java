@@ -4,12 +4,14 @@
 package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultLoadStoreParameterTest {
 
     /**

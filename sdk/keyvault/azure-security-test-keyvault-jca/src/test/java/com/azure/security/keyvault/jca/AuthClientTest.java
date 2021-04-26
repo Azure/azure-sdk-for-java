@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.net.URLEncoder;
 
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * The JUnit test for the AuthClient.
  */
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class AuthClientTest {
 
     /**

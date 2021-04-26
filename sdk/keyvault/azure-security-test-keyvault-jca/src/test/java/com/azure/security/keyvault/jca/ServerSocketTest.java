@@ -15,6 +15,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * The unit test validating the ServerSocket is created using a certificate 
  * from Azure Key Vault.
  */
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class ServerSocketTest {
 
     /**
@@ -59,10 +61,10 @@ public class ServerSocketTest {
          */
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
+            System.getenv("SPRING_TENANT_ID"),
+            System.getenv("SPRING_CLIENT_ID"),
+            System.getenv("SPRING_CLIENT_SECRET"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -161,10 +163,10 @@ public class ServerSocketTest {
          */
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
+            System.getenv("SPRING_TENANT_ID"),
+            System.getenv("SPRING_CLIENT_ID"),
+            System.getenv("SPRING_CLIENT_SECRET"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());

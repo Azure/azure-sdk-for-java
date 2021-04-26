@@ -17,20 +17,11 @@
   <name>JCA Provider for Azure Key Vault Test</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault Test</description>
 
-  <properties>
-    <skipTests>true</skipTests>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-jca</artifactId>
       <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
     </dependency>
 
     <!-- Apache HttpClient -->
@@ -85,25 +76,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-            <configuration>
-              <skipITs>${skipTests}</skipITs>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
