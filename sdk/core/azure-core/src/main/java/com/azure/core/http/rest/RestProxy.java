@@ -67,13 +67,13 @@ public final class RestProxy implements InvocationHandler {
     private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
 
+    private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
+
     private final ClientLogger logger = new ClientLogger(RestProxy.class);
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpResponseDecoder decoder;
-
-    private final ResponseConstructorsCache responseConstructorsCache;
 
     /**
      * Create a RestProxy.
@@ -88,7 +88,6 @@ public final class RestProxy implements InvocationHandler {
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
-        this.responseConstructorsCache = new ResponseConstructorsCache();
     }
 
     /**
@@ -182,13 +181,13 @@ public final class RestProxy implements InvocationHandler {
     /**
      * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
      * additional context information.
+     *
      * @param method Service method being called.
      * @param context Context information about the current service call.
-     *
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        boolean disableTracing =  (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
+        boolean disableTracing = (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
         if (!TracerProxy.isTracingEnabled() || disableTracing) {
             return context;
         }
@@ -437,9 +436,9 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        Constructor<? extends Response<?>> ctr = this.responseConstructorsCache.get(cls);
+        Constructor<? extends Response<?>> ctr = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
         if (ctr != null) {
-            return this.responseConstructorsCache.invoke(ctr, response, bodyAsObject);
+            return RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject);
         } else {
             return Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
