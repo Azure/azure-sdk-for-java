@@ -188,7 +188,7 @@ private object CosmosRowConverter
         objectNode
     }
 
-    private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: Seq[_]): ArrayNode = {
+    private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: Seq[Any]): ArrayNode = {
       val arrayNode = objectMapper.createArrayNode()
 
       data.foreach(value => writeSparkArrayDataToArrayNode(arrayNode, elementType, containsNull, value))
