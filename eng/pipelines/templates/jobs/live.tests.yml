@@ -48,7 +48,7 @@ jobs:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           Paths:
-            - '${{ parameters.ServiceDirectory }}'
+            - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
             - '**/*.md'
 

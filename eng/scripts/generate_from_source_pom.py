@@ -106,7 +106,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: bool = Fals
         fromSourcePom.write(pom_file_end)
 
     if set_pipeline_variable:
-        print('##vso[task.setvariable variable=FromSourceDirectories;]{}'.format(json.dumps(modules)))
+        print('##vso[task.setvariable variable=CheckoutDirectories;]{}'.format(json.dumps(modules)))
 
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
 def load_client_artifact_identifiers():
