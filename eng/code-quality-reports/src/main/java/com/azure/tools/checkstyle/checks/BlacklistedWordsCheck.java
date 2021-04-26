@@ -8,6 +8,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
+import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,12 +61,22 @@ public class BlacklistedWordsCheck extends AbstractCheck {
             case TokenTypes.CLASS_DEF:
             case TokenTypes.METHOD_DEF:
             case TokenTypes.VARIABLE_DEF:
-                if (isPublicApi(token)) {
-                    String tokenName = token.findFirstToken(TokenTypes.IDENT).getText();
-                    if (hasBlacklistedWords(tokenName)) {
-                        log(token, String.format(ERROR_MESSAGE, tokenName, this.blacklistedWords.stream().collect(Collectors.joining(", ", "", ""))));
-                    }
+                if (!isPublicApi(token)) {
+                    break;
                 }
+
+                final String tokenName = token.findFirstToken(TokenTypes.IDENT).getText();
+                if (!hasBlacklistedWords(tokenName)) {
+                    break;
+                }
+
+                // In an interface all the fields (variables) are by default public, static and final.
+                if (token.getType() == TokenTypes.VARIABLE_DEF && ScopeUtil.isInInterfaceBlock(token)) {
+                    break;
+                }
+
+                log(token, String.format(ERROR_MESSAGE, tokenName, String.join(", ", this.blacklistedWords)));
+
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
