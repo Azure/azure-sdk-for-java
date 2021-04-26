@@ -4,9 +4,9 @@ spring:
   cloud:
     azure:
       eventhub:
-        connection-string: ${EVENTHUB_CONNECTION_STRING}
-        checkpoint-storage-account: ${STORAGE_ACCOUNT}
-        checkpoint-access-key: ${STORAGE_ACCOUNT_KEY}
+        connection-string: ${EVENTHUB_CONNECTION_STRING_SAMPLE_EVENTHUBS_BINDER}
+        checkpoint-storage-account: ${STORAGE_ACCOUNT_SAMPLE_EVENTHUBS_BINDER}
+        checkpoint-access-key: ${STORAGE_ACCOUNT_KEY_SAMPLE_EVENTHUBS_BINDER}
         checkpoint-container: sample-eventhubs-binder
     stream:
       function:

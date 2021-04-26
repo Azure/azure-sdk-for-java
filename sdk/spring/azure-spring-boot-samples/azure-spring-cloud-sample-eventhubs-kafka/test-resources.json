@@ -18,7 +18,7 @@
   },
   "functions": [],
   "variables": {
-    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-eventhub')]",
+    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-sample-eventhubs-kafka')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
     "location": "[resourceGroup().location]"
   },
@@ -81,7 +81,7 @@
     }
   ],
   "outputs": {
-    "EVENTHUB_NAMESPACE_NAME": {
+    "EVENTHUB_NAMESPACE_NAME_SAMPLE_EVENTHUBS_KAFKA": {
       "type": "string",
       "value": "[variables('eventHubsNamespaceName')]"
     },

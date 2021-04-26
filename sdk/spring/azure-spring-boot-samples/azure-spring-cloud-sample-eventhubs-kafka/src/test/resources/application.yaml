@@ -9,7 +9,7 @@ spring:
       resource-group: ${SPRING_RESOURCE_GROUP}
       subscription-id: ${SPRING_SUBSCRIPTION_ID}
       eventhub:
-        namespace: ${EVENTHUB_NAMESPACE_NAME}
+        namespace: ${EVENTHUB_NAMESPACE_NAME_SAMPLE_EVENTHUBS_KAFKA}
     stream:
       function:
         definition: consume;supply
