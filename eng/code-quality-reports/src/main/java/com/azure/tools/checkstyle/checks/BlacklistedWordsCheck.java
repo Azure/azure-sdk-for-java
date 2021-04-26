@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
  * blacklisted words.
  */
 public class BlacklistedWordsCheck extends AbstractCheck {
-    private final Set<String> blacklistedWords = new HashSet<>(Arrays.asList());
-    private final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow " +
-        "Camelcase standards for the following words: %s.";
+    private final Set<String> blacklistedWords = new HashSet<>();
+    private static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
+        + "Camelcase standards for the following words: %s.";
 
     /**
      * Adds words that Classes, Methods and Variables that should follow Camelcasing standards
@@ -80,9 +80,8 @@ public class BlacklistedWordsCheck extends AbstractCheck {
      * @return true if we should check such member.
      */
     private boolean isPublicApi(DetailAST token) {
-        final DetailAST modifiersAST =
-            token.findFirstToken(TokenTypes.MODIFIERS);
-        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersAST);
+        final DetailAST modifiersAST = token.findFirstToken(TokenTypes.MODIFIERS);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(token);
         final boolean isStatic = modifiersAST.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
         return (accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED)) && !isStatic;
     }
