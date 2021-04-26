@@ -23,7 +23,7 @@ public class WebappAccessResourceController {
 
     /**
      * Access to protected data through client credential flow. The access token is obtained by webclient, or
-     * <p>@RegisteredOAuth2AuthorizedClient("webapiA")</p>. In the end, these two approaches will be executed to
+     * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
      * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
      *
      * @return Respond to protected data.
@@ -33,7 +33,7 @@ public class WebappAccessResourceController {
         String body = webClient
             .get()
             .uri(LOCAL_WEB_API_A_SAMPLE_ENDPOINT)
-            .attributes(clientRegistrationId("webapiA"))
+            .attributes(clientRegistrationId("webApiA"))
             .retrieve()
             .bodyToMono(String.class)
             .block();
@@ -43,7 +43,7 @@ public class WebappAccessResourceController {
 
     /**
      * Access to protected data through client credential flow. The access token is obtained by webclient, or
-     * <p>@RegisteredOAuth2AuthorizedClient("webapiA")</p>. In the end, these two approaches will be executed to
+     * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
      * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
      *
      * @return Respond to protected data.
@@ -53,7 +53,7 @@ public class WebappAccessResourceController {
         String body = webClient
             .get()
             .uri(LOCAL_WEB_API_A_SAMPLE_ENDPOINT)
-            .attributes(clientRegistrationId("webapiA"))
+            .attributes(clientRegistrationId("webApiA"))
             .retrieve()
             .bodyToMono(String.class)
             .block();

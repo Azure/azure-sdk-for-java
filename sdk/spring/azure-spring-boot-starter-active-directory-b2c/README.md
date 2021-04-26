@@ -246,7 +246,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
     ```java
     /**
      * Access to protected data through client credential flow. The access token is obtained by webclient, or
-     * <p>@RegisteredOAuth2AuthorizedClient("webapiA")</p>. In the end, these two approaches will be executed to
+     * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
      * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
      *
      * @return Respond to protected data.
@@ -256,7 +256,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
         String body = webClient
             .get()
             .uri(LOCAL_WEB_API_A_SAMPLE_ENDPOINT)
-            .attributes(clientRegistrationId("webapiA"))
+            .attributes(clientRegistrationId("webApiA"))
             .retrieve()
             .bodyToMono(String.class)
             .block();
@@ -336,7 +336,7 @@ This scenario not support login. Just protect the server by validating the acces
      * @return test content
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiA.SampleScope')")
-    @GetMapping("/webapiA/sample")
+    @GetMapping("/webApiA/sample")
     public String callWebApiASample() {
         LOGGER.info("WebApiA callSample() returned.");
         return "Response from Client Credential from WebApiA success.";
@@ -362,7 +362,7 @@ This scenario not support login. Just protect the server by validating the acces
 1. Build and test your app
 
    Let `WebApiA` run on port *8081*.
-   Get the access token for `webApiA' resource and access <http://localhost:8081/webapiA/sample> 
+   Get the access token for `webApiA' resource and access <http://localhost:8081/webApiA/sample> 
    as the Bearer authorization header.
 
 ### Resource server accessing other resource servers
@@ -432,7 +432,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
         String body = webClient
             .get()
             .uri(LOCAL_WEB_API_B_SAMPLE_ENDPOINT)
-            .attributes(clientRegistrationId("webapiB"))
+            .attributes(clientRegistrationId("webApiB"))
             .retrieve()
             .bodyToMono(String.class)
             .block();
@@ -449,7 +449,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
      * @return test content
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiB.SampleScope')")
-    @GetMapping("/webapiB/sample")
+    @GetMapping("/webApiB/sample")
     public String callSample() {
         LOGGER.info("WebApiB callSample() returned.");
         return "Response from Client Credential from WebApiB success.";

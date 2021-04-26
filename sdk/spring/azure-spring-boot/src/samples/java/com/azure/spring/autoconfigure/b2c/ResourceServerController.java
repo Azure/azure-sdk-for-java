@@ -27,7 +27,7 @@ public class ResourceServerController {
      * @return test content
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiA.SampleScope')")
-    @GetMapping("/webapiA/sample")
+    @GetMapping("/webApiA/sample")
     public String callWebApiASample() {
         LOGGER.info("WebApiA callSample() returned.");
         return "Response from Client Credential from WebApiA success.";
@@ -38,7 +38,7 @@ public class ResourceServerController {
      * @return test content
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiB.SampleScope')")
-    @GetMapping("/webapiB/sample")
+    @GetMapping("/webApiB/sample")
     public String callSample() {
         LOGGER.info("WebApiB callSample() returned.");
         return "Response from Client Credential from WebApiB success.";
@@ -54,7 +54,7 @@ public class ResourceServerController {
         String body = webClient
             .get()
             .uri(LOCAL_WEB_API_B_SAMPLE_ENDPOINT)
-            .attributes(clientRegistrationId("webapiB"))
+            .attributes(clientRegistrationId("webApiB"))
             .retrieve()
             .bodyToMono(String.class)
             .block();
