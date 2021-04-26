@@ -44,6 +44,8 @@ import java.util.UUID;
 public final class BlobLeaseClientBuilder {
     private HttpPipeline pipeline;
     private String url;
+    private String containerName;
+    private String blobName;
     private String leaseId;
     private boolean isBlob;
     private String accountName;
@@ -65,7 +67,7 @@ public final class BlobLeaseClientBuilder {
      */
     public BlobLeaseAsyncClient buildAsyncClient() {
         BlobServiceVersion version = (serviceVersion == null) ? BlobServiceVersion.getLatest() : serviceVersion;
-        return new BlobLeaseAsyncClient(pipeline, url, getLeaseId(), isBlob, accountName, version.getVersion());
+        return new BlobLeaseAsyncClient(pipeline, url, containerName, blobName, getLeaseId(), isBlob, accountName, version.getVersion());
     }
 
     /**
@@ -79,7 +81,9 @@ public final class BlobLeaseClientBuilder {
     public BlobLeaseClientBuilder blobClient(BlobClientBase blobClient) {
         Objects.requireNonNull(blobClient);
         this.pipeline = blobClient.getHttpPipeline();
-        this.url = blobClient.getBlobUrl();
+        this.url = blobClient.getAccountUrl();
+        this.containerName = blobClient.getContainerName();
+        this.blobName = blobClient.getBlobName();
         this.isBlob = true;
         this.accountName = blobClient.getAccountName();
         this.serviceVersion = blobClient.getServiceVersion();
@@ -97,7 +101,9 @@ public final class BlobLeaseClientBuilder {
     public BlobLeaseClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         Objects.requireNonNull(blobAsyncClient);
         this.pipeline = blobAsyncClient.getHttpPipeline();
-        this.url = blobAsyncClient.getBlobUrl();
+        this.url = blobAsyncClient.getAccountUrl();
+        this.containerName = blobAsyncClient.getContainerName();
+        this.blobName = blobAsyncClient.getBlobName();
         this.isBlob = true;
         this.accountName = blobAsyncClient.getAccountName();
         this.serviceVersion = blobAsyncClient.getServiceVersion();
@@ -115,7 +121,8 @@ public final class BlobLeaseClientBuilder {
     public BlobLeaseClientBuilder containerClient(BlobContainerClient blobContainerClient) {
         Objects.requireNonNull(blobContainerClient);
         this.pipeline = blobContainerClient.getHttpPipeline();
-        this.url = blobContainerClient.getBlobContainerUrl();
+        this.url = blobContainerClient.getAccountUrl();
+        this.containerName = blobContainerClient.getBlobContainerName();
         this.isBlob = false;
         this.accountName = blobContainerClient.getAccountName();
         this.serviceVersion = blobContainerClient.getServiceVersion();
@@ -133,7 +140,8 @@ public final class BlobLeaseClientBuilder {
     public BlobLeaseClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient) {
         Objects.requireNonNull(blobContainerAsyncClient);
         this.pipeline = blobContainerAsyncClient.getHttpPipeline();
-        this.url = blobContainerAsyncClient.getBlobContainerUrl();
+        this.url = blobContainerAsyncClient.getAccountUrl();
+        this.containerName = blobContainerAsyncClient.getBlobContainerName();
         this.isBlob = false;
         this.accountName = blobContainerAsyncClient.getAccountName();
         this.serviceVersion = blobContainerAsyncClient.getServiceVersion();

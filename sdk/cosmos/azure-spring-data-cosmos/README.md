@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.3.0</version>
+    <version>3.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -395,8 +395,16 @@ public class SampleApplication implements CommandLineRunner {
  
  }
  ```
-- Custom container Name.
-  By default, container name will be class name of user domain class. To customize it, add the `@Container(containerName="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
+- SpEL Expression and Custom Container Name.
+  - By default, container name will be class name of user domain class. To customize it, add the `@Container(containerName="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
+  - In order for SpEL expressions to work properly, you need to add `@DependsOn("expressionResolver")` on top of Spring Application class.
+```java
+@SpringBootApplication
+@DependsOn("expressionResolver")
+public class SampleApplication {
+    
+}
+```
 - Custom IndexingPolicy
   By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/CosmosIndexingPolicyCodeSnippet.java#L15-L26 -->
@@ -493,6 +501,7 @@ public class AuditableUser {
 ### Multi-database configuration
 - Azure-spring-data-cosmos supports multi-database configuration, including "multiple database accounts" and "single account, with multiple databases".
 
+#### Multi-database accounts
 The example uses the `application.properties` file
 ```properties
 # primary account cosmos config
@@ -515,13 +524,14 @@ azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 - The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 - If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/PrimaryDatasourceConfiguration.java#L23-L62 -->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/PrimaryDatasourceConfiguration.java#L17-L48 -->
 ```java
 @Configuration
-public class PrimaryDatasourceConfiguration {
+@EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.multiple.account.repository",
+    reactiveCosmosTemplateRef = "primaryDatabaseTemplate")
+public class PrimaryDatasourceConfiguration extends AbstractCosmosConfiguration{
 
-    private static final String DATABASE1 = "primary_database1";
-    private static final String DATABASE2 = "primary_database2";
+    private static final String PRIMARY_DATABASE = "primary_database";
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.primary")
@@ -536,37 +546,28 @@ public class PrimaryDatasourceConfiguration {
             .endpoint(primaryProperties.getUri());
     }
 
-    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.primary.database1")
-    public class DataBase1Configuration extends AbstractCosmosConfiguration {
-
-        @Override
-        protected String getDatabaseName() {
-            return DATABASE1;
-        }
+    @Bean
+    public ReactiveCosmosTemplate primaryDatabaseTemplate(CosmosAsyncClient cosmosAsyncClient,
+                                                          CosmosConfig cosmosConfig,
+                                                          MappingCosmosConverter mappingCosmosConverter) {
+        return new ReactiveCosmosTemplate(cosmosAsyncClient, PRIMARY_DATABASE, cosmosConfig, mappingCosmosConverter);
     }
 
-    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.primary.database2",
-                                      reactiveCosmosTemplateRef = "primaryDatabase2Template")
-    public class Database2Configuration {
-
-        @Bean
-        public ReactiveCosmosTemplate primaryDatabase2Template(CosmosAsyncClient cosmosAsyncClient,
-                                                               CosmosConfig cosmosConfig,
-                                                               MappingCosmosConverter mappingCosmosConverter) {
-            return new ReactiveCosmosTemplate(cosmosAsyncClient, DATABASE2, cosmosConfig, mappingCosmosConverter);
-        }
+    @Override
+    protected String getDatabaseName() {
+        return PRIMARY_DATABASE;
     }
 }
 ```
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatasourceConfiguration.java#L28-L84 -->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/SecondaryDatasourceConfiguration.java#L22-L64 -->
 ```java
 @Configuration
+@EnableCosmosRepositories(cosmosTemplateRef  = "secondaryDatabaseTemplate")
 public class SecondaryDatasourceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecondaryDatasourceConfiguration.class);
-    public static final String DATABASE3 = "secondary_database3";
-    public static final String DATABASE4 = "secondary_database4";
+    public static final String SECONDARY_DATABASE = "secondary_database";
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.secondary")
@@ -589,25 +590,11 @@ public class SecondaryDatasourceConfiguration {
             .build();
     }
 
-    @EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database3",
-                              cosmosTemplateRef  = "secondaryDatabase3Template")
-    public class Database3Configuration {
-        @Bean
-        public CosmosTemplate secondaryDatabase3Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
-                                                         @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
-                                                         MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE3, cosmosConfig, mappingCosmosConverter);
-        }
-    }
-    @EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database4",
-                              cosmosTemplateRef  = "secondaryDatabase4Template")
-    public class Database4Configuration {
-        @Bean
-        public CosmosTemplate secondaryDatabase4Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
-                                                         @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
-                                                         MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE4, cosmosConfig, mappingCosmosConverter);
-        }
+    @Bean
+    public CosmosTemplate secondaryDatabaseTemplate(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
+                                                    @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
+                                                    MappingCosmosConverter mappingCosmosConverter) {
+        return new CosmosTemplate(client, SECONDARY_DATABASE, cosmosConfig, mappingCosmosConverter);
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {
@@ -620,9 +607,9 @@ public class SecondaryDatasourceConfiguration {
 }
 ```
 
-- In the above example, we have two cosmos account, each account has two databases. For each account, we can use the same Cosmos Client. You can create the `CosmosAsyncClient` like this:
+- In the above example, we have two cosmos account. You can create the `CosmosAsyncClient` like this:
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatasourceConfiguration.java#L41-L56 -->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/SecondaryDatasourceConfiguration.java#L35-L48 -->
 ```java
 @Bean("secondaryCosmosClient")
 public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
@@ -638,13 +625,11 @@ public CosmosConfig getCosmosConfig() {
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
-
-@EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database3",
 ```
 
 - Besides, if you want to define `queryMetricsEnabled` or `ResponseDiagnosticsProcessor` , you can create the `CosmosConfig` for your cosmos template.
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatasourceConfiguration.java#L48-L54-->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/SecondaryDatasourceConfiguration.java#L42-L48 -->
 ```java
 @Bean("secondaryCosmosConfig")
 public CosmosConfig getCosmosConfig() {
@@ -657,42 +642,180 @@ public CosmosConfig getCosmosConfig() {
 
 - Create an Application class
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/MultiDatasourceApplication.java#L23-L58 -->
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/multiple/account/MultiDatabaseApplication.java#L22-L74 -->
 ```java
 @SpringBootApplication
-public class MultiDatasourceApplication implements CommandLineRunner {
+public class MultiDatabaseApplication implements CommandLineRunner {
 
     @Autowired
-    private UserRepository userRepository;
+    private CosmosUserRepository cosmosUserRepository;
 
     @Autowired
-    private BookRepository bookRepository;
+    private MysqlUserRepository mysqlUserRepository;
 
-    private final User user = new User("1024", "1024@geek.com", "1k", "Mars");
-    private final Book book = new Book("9780792745488", "Zen and the Art of Motorcycle Maintenance", "Robert M. Pirsig");
+    @Autowired
+    @Qualifier("secondaryDatabaseTemplate")
+    private CosmosTemplate secondaryDatabaseTemplate;
+
+    @Autowired
+    @Qualifier("primaryDatabaseTemplate")
+    private ReactiveCosmosTemplate primaryDatabaseTemplate;
+
+    private final CosmosUser cosmosUser = new CosmosUser("1024", "1024@geek.com", "1k", "Mars");
+    private static CosmosEntityInformation<CosmosUser, String> userInfo = new CosmosEntityInformation<>(CosmosUser.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(MultiDatasourceApplication.class, args);
+        SpringApplication.run(MultiDatabaseApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) {
-        final List<User> users = this.userRepository.findByEmailOrName(this.user.getEmail(), this.user.getName()).collectList().block();
-        users.forEach(System.out::println);
-        final Book book = this.bookRepository.findById("9780792745488").block();
-        System.out.println(book);
+    public void run(String... var1) throws Exception {
+
+        CosmosUser cosmosUserGet = primaryDatabaseTemplate.findById(cosmosUser.getId(), cosmosUser.getClass()).block();
+        // Same to this.cosmosUserRepository.findById(cosmosUser.getId()).block();
+        MysqlUser mysqlUser = new MysqlUser(cosmosUserGet.getId(), cosmosUserGet.getEmail(), cosmosUserGet.getName(), cosmosUserGet.getAddress());
+        mysqlUserRepository.save(mysqlUser);
+        mysqlUserRepository.findAll().forEach(System.out::println);
+        CosmosUser secondaryCosmosUserGet = secondaryDatabaseTemplate.findById(CosmosUser.class.getSimpleName(), cosmosUser.getId(), CosmosUser.class);
+        System.out.println(secondaryCosmosUserGet);
+    }
+
+
+    @PostConstruct
+    public void setup() {
+        primaryDatabaseTemplate.createContainerIfNotExists(userInfo).block();
+        primaryDatabaseTemplate.insert(CosmosUser.class.getSimpleName(), cosmosUser, new PartitionKey(cosmosUser.getName())).block();
+        // Same to this.cosmosUserRepository.save(user).block();
+        secondaryDatabaseTemplate.createContainerIfNotExists(userInfo);
+        secondaryDatabaseTemplate.insert(CosmosUser.class.getSimpleName(), cosmosUser, new PartitionKey(cosmosUser.getName()));
+   }
+
+    @PreDestroy
+    public void cleanup() {
+        primaryDatabaseTemplate.deleteAll(CosmosUser.class.getSimpleName(), CosmosUser.class).block();
+        // Same to this.cosmosUserRepository.deleteAll().block();
+        secondaryDatabaseTemplate.deleteAll(CosmosUser.class.getSimpleName() , CosmosUser.class);
+        mysqlUserRepository.deleteAll();
+    }
+}
+```
+
+#### Single account with Multi-database
+The example uses the `application.properties` file
+```properties
+azure.cosmos.uri=your-cosmosDb-uri
+azure.cosmos.key=your-cosmosDb-key
+azure.cosmos.secondary-key=your-cosmosDb-secondary-key
+azure.cosmos.database=your-cosmosDb-dbName
+azure.cosmos.populate-query-metrics=if-populate-query-metrics
+```
+
+- The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above. You can put different database entities into different packages.
+- You can use `EnableReactiveCosmosRepositories` with different `reactiveCosmosTemplateRef` to define multiple databases in single cosmos account.
+
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-single-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/DatasourceConfiguration.java#L15-L62 -->
+```java
+@Configuration
+public class DatasourceConfiguration {
+
+    private static final String DATABASE1 = "database1";
+    private static final String DATABASE2 = "database2";
+
+    @Bean
+    public CosmosProperties cosmosProperties() {
+        return new CosmosProperties();
+    }
+
+    @Bean
+    public CosmosClientBuilder primaryClientBuilder(CosmosProperties cosmosProperties) {
+        return new CosmosClientBuilder()
+            .key(cosmosProperties.getKey())
+            .endpoint(cosmosProperties.getUri());
+    }
+
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.repository1",
+        reactiveCosmosTemplateRef = "database1Template")
+    public class Database1Configuration extends AbstractCosmosConfiguration {
+
+        @Bean
+        public ReactiveCosmosTemplate database1Template(CosmosAsyncClient cosmosAsyncClient,
+                                                              CosmosConfig cosmosConfig,
+                                                              MappingCosmosConverter mappingCosmosConverter) {
+            return new ReactiveCosmosTemplate(cosmosAsyncClient, DATABASE1, cosmosConfig, mappingCosmosConverter);
+        }
+
+        @Override
+        protected String getDatabaseName() {
+            return DATABASE1;
+        }
+    }
+
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.repository2",
+        reactiveCosmosTemplateRef = "database2Template")
+    public class Database2Configuration {
+
+        @Bean
+        public ReactiveCosmosTemplate database2Template(CosmosAsyncClient cosmosAsyncClient,
+                                                              CosmosConfig cosmosConfig,
+                                                              MappingCosmosConverter mappingCosmosConverter) {
+            return new ReactiveCosmosTemplate(cosmosAsyncClient, DATABASE2, cosmosConfig, mappingCosmosConverter);
+        }
+
+    }
+}
+```
+
+- Create an Application class
+
+<!-- embedme ../../spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-single-account/src/main/java/com/azure/spring/sample/cosmos/multi/database/MultiDatabaseApplication.java#L20-L69 -->
+```java
+@SpringBootApplication
+public class MultiDatabaseApplication implements CommandLineRunner {
+
+    @Autowired
+    private User1Repository user1Repository;
+
+    @Autowired
+    @Qualifier("database1Template")
+    private ReactiveCosmosTemplate database1Template;
+
+    @Autowired
+    @Qualifier("database2Template")
+    private ReactiveCosmosTemplate database2Template;
+
+    private final User1 user1 = new User1("1024", "1024@geek.com", "1k", "Mars");
+    private static CosmosEntityInformation<User1, String> user1Info = new CosmosEntityInformation<>(User1.class);
+
+    private final User2 user2 = new User2("2048", "2048@geek.com", "2k", "Mars");
+    private static CosmosEntityInformation<User2, String> user2Info = new CosmosEntityInformation<>(User2.class);
+
+
+    public static void main(String[] args) {
+        SpringApplication.run(MultiDatabaseApplication.class, args);
+    }
+
+    public void run(String... var1) throws Exception {
+
+        User1 database1UserGet = database1Template.findById(User1.class.getSimpleName(), user1.getId(), User1.class).block();
+        // Same to userRepository1.findById(user.getId()).block()
+        System.out.println(database1UserGet);
+        User2 database2UserGet = database2Template.findById(User2.class.getSimpleName(), user2.getId(), User2.class).block();
+        System.out.println(database2UserGet);
     }
 
     @PostConstruct
     public void setup() {
-        this.userRepository.save(user).block();
-        this.bookRepository.save(book).block();
+        database1Template.createContainerIfNotExists(user1Info).block();
+        database1Template.insert(User1.class.getSimpleName(), user1, new PartitionKey(user1.getName())).block();
+        // Same to this.userRepository1.save(user).block();
+        database2Template.createContainerIfNotExists(user2Info).block();
+        database2Template.insert(User2.class.getSimpleName(), user2, new PartitionKey(user2.getName())).block();
     }
 
     @PreDestroy
     public void cleanup() {
-        this.userRepository.deleteAll().block();
-        this.bookRepository.deleteAll().block();
+        database1Template.deleteAll(User1.class.getSimpleName(), User1.class).block();
+        // Same to this.userRepository1.deleteAll().block();
+        database2Template.deleteAll(User2.class.getSimpleName(), User2.class).block();
     }
 }
 ```
@@ -734,6 +857,12 @@ For example, if you want to use spring logback as logging framework, add the fol
 ## Examples
 - Please refer to [sample project here][samples].
 
+### Multi-database accounts
+- Please refer to [Multi-database sample project][sample-for-multi-database].
+
+### Single account with Multi-database
+- Please refer to [Single account with Multi-database sample project][sample-for-multi-database-single-account].
+
 ## Next steps
 - Read more about azure spring data cosmos [here][azure_spring_data_cosmos_docs].
 - [Read more about Azure CosmosDB Service][cosmos_docs]
@@ -763,6 +892,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
+[sample-for-multi-database]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account
+[sample-for-multi-database-single-account]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-single-account
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates

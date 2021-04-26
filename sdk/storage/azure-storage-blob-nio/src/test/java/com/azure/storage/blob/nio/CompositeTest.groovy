@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.nio
 
 import java.nio.file.Files
@@ -27,6 +30,17 @@ class CompositeTest extends APISpec {
         Files.isDirectory(fs.getPath('mydir1'))
         Files.isDirectory(fs.getPath('mydir1/mydir2'))
         Files.isDirectory(fs.getPath('mydir1/mydir2/mydir3'))
+    }
+
+    def "Files create"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        def path = Files.createFile(fs.getPath(generateBlobName()))
+
+        then:
+        fs.provider().checkAccess(path)
     }
 
     def "Files copy"() {
@@ -61,5 +75,22 @@ class CompositeTest extends APISpec {
 
         then:
         resultArr == defaultData.array()
+    }
+
+    // Bug: https://github.com/Azure/azure-sdk-for-java/issues/20325
+    def "Files readAllBytes"() {
+        setup:
+        def fs = createFS(config)
+        def pathName = generateBlobName()
+        def path1 = fs.getPath("/foo/bar/" + pathName)
+        def path2 = fs.getPath("/foo/bar/" + pathName + ".backup")
+        Files.createFile(path1)
+        Files.createFile(path2)
+
+        when:
+        Files.readAllBytes(path1)
+
+        then:
+        notThrown(IOException)
     }
 }

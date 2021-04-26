@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyVaultSecretNewVersionCreatedEventData model. */
+/** Schema of the Data property of an EventGridEvent for an SecretNewVersionCreated event. */
 @Fluent
 public final class KeyVaultSecretNewVersionCreatedEventData {
     /*

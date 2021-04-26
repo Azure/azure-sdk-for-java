@@ -9,4 +9,7 @@ public class Constant {
     public static String toFullNameScope(String clientId, String scope) {
         return "api://" + clientId + "/" + scope;
     }
+
+    public static final String AZURE_CLOUD_TYPE_CHINA = "China";
+    public static final String AZURE_CLOUD_TYPE_GLOBAL = "Global";
 }

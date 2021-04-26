@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
 import com.azure.resourcemanager.mediaservices.models.LiveOutput;
@@ -21,23 +20,24 @@ public final class LiveOutputsImpl implements LiveOutputs {
 
     private final LiveOutputsClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public LiveOutputsImpl(LiveOutputsClient innerClient, MediaservicesManager serviceManager) {
+    public LiveOutputsImpl(
+        LiveOutputsClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LiveOutput> list(String resourceGroupName, String accountName, String liveEventName) {
         PagedIterable<LiveOutputInner> inner = this.serviceClient().list(resourceGroupName, accountName, liveEventName);
-        return inner.mapPage(inner1 -> new LiveOutputImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveOutputImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LiveOutput> list(
         String resourceGroupName, String accountName, String liveEventName, Context context) {
         PagedIterable<LiveOutputInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, liveEventName, context);
-        return inner.mapPage(inner1 -> new LiveOutputImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new LiveOutputImpl(inner1, this.manager()));
     }
 
     public LiveOutput get(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
@@ -213,7 +213,7 @@ public final class LiveOutputsImpl implements LiveOutputs {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

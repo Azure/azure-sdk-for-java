@@ -4,9 +4,12 @@
 package com.azure.communication.identity;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +32,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
-        
+
     protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
     protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
@@ -37,22 +40,24 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
-    
+
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("id")
         .add("token");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(ACCESSKEY)
+            .credential(new AzureKeyCredential(ACCESSKEY))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-       
+
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
@@ -62,12 +67,12 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder createClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .endpoint(ENDPOINT)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-        
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
@@ -83,7 +88,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder createClientBuilderUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)
@@ -114,9 +119,25 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
     }
-    
+
     protected CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
-        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        return builder.addPolicy((context, next) -> logHeaders(testName, next));
+    }
+
+    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+        return next.process()
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
+
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
+    }
+
+    protected boolean shouldEnableIdentityTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|identity)");
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -125,7 +146,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
         }
     }
-    
+
     private String redact(String content, Matcher matcher, String replacement) {
         while (matcher.find()) {
             String captureGroup = matcher.group(1);

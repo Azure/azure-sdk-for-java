@@ -56,6 +56,24 @@ import java.util.regex.Pattern;
 /**
  * The builder to create Service Bus clients:
  *
+ * <p><strong>Instantiate a synchronous sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.sender.sync.client.instantiation}
+ *
+ * <p><strong>Instantiate an asynchronous receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.receiver.async.client.instantiation}
+ *
+ * <p><strong>Instantiate an asynchronous session receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.session.receiver.async.client.instantiation}
+ *
+ * <p><strong>Instantiate the processor</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.processor.client.instantiation}
+
+ * <p><strong>Sharing a connection between clients</strong></p>
+ * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
+ * should share connection between clients which can be achieved by sharing the top level builder as shown below.
+ *
+ * {@codesnippet com.azure.messaging.servicebus.connection.sharing}
+ *
  * <p><strong>Clients for sending messages</strong></p>
  * <ul>
  * <li>{@link ServiceBusSenderAsyncClient}</li>
@@ -363,22 +381,17 @@ public final class ServiceBusClientBuilder {
         synchronized (connectionLock) {
             if (sharedConnection == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
-                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-                final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-
-                final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
-                final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-                final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
+                    final ReactorProvider provider = new ReactorProvider();
+                    final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                    final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                        connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                        ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
-                        clientVersion);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -416,14 +429,18 @@ public final class ServiceBusClientBuilder {
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
-        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
         final SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode);
+            proxyOptions, scheduler, options, verificationMode, product, clientVersion);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

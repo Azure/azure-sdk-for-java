@@ -97,7 +97,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net/fileasyncapitestslistrangesdiff027689f25c969f76c/fileasyncapitestslistrangesdiff0855387618dad0f0e?prevsharesnapshot=2020-10-23T19%3A25%3A24.0000000Z&comp=rangelist",
+    "Uri" : "https://REDACTED.file.core.windows.net/fileasyncapitestslistrangesdiff027689f25c969f76c/fileasyncapitestslistrangesdiff0855387618dad0f0e?comp=rangelist&prevsharesnapshot=2020-10-23T19%3A25%3A24.0000000Z",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.6; Windows 10; 10.0)",

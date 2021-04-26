@@ -37,7 +37,6 @@ public class RecognizeEntitiesBatchStringDocuments {
             "Elon Musk is the CEO of SpaceX and Tesla."
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing entities for each document in a batch of documents

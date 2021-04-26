@@ -37,7 +37,7 @@ To quickly create the needed Service Bus resources in Azure and to receive a con
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.1</version>
+    <version>7.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -86,7 +86,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -147,6 +147,7 @@ receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topi
  - [Settle messages](#settle-messages)
  - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics)
  - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
+ - [Sharing a connection between clients](#sharing-of-connection-between-clients)
 ### Send messages
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or a synchronous
@@ -273,6 +274,24 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .buildClient();
 ```
 
+### Sharing of connection between clients
+The creation of physical connection to Service Bus requires resources. An application should share the connection  
+between clients which can be achieved by sharing the top level builder as shown below.
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L247-L258 -->
+```java
+    ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
+        .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>");
+    // Create receiver and sender which will share the connection.
+    ServiceBusReceiverClient receiver = sharedConnectionBuilder
+        .receiver()
+        .queueName("<< QUEUE NAME >>")
+        .buildClient();
+    ServiceBusSenderClient sender = sharedConnectionBuilder
+        .sender()
+        .queueName("<< QUEUE NAME >>")
+        .buildClient();
+}
+```
 ## Troubleshooting
 
 ### Enable client logging

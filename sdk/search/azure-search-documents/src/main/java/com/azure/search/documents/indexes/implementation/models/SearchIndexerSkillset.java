@@ -7,6 +7,9 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.CognitiveServicesAccount;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 

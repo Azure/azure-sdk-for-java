@@ -36,7 +36,6 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 
 import java.io.InputStreamReader;
@@ -53,6 +52,7 @@ import java.util.Objects;
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
+import static com.azure.search.documents.indexes.DataSourceSyncTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 
 /**
  * Abstract base class for all Search API tests
@@ -65,20 +65,20 @@ public abstract class SearchTestBase extends TestBase {
     protected static final String API_KEY = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_API_KEY", "apiKey");
 
-    protected static final TestMode TEST_MODE = initializeTestMode();
+    private static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
+    private static final String BLOB_CONTAINER_NAME = Configuration.getGlobalConfiguration()
+        .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
 
-    // The connection string we use here, as well as table name and target index schema, use the USGS database
-    // that we set up to support our code samples.
-    //
-    // ASSUMPTION: Change tracking has already been enabled on the database with ALTER DATABASE ... SET CHANGE_TRACKING = ON
-    // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
-    private static final String AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND =
-        "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline")]
+    protected static final TestMode TEST_MODE = initializeTestMode();
 
     private static final String FAKE_DESCRIPTION = "Some data source";
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
+
+    static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
+        new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30)));
 
     protected String createHotelIndex() {
         try {
@@ -92,7 +92,7 @@ public abstract class SearchTestBase extends TestBase {
         Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
             .getResourceAsStream(jsonFile)));
         try {
-            return setupIndex(new ObjectMapper().readValue(indexData, SearchIndex.class));
+            return setupIndex(TestHelpers.MAPPER.readValue(indexData, SearchIndex.class));
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
@@ -124,7 +124,7 @@ public abstract class SearchTestBase extends TestBase {
 
         //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
 
-        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -145,7 +145,7 @@ public abstract class SearchTestBase extends TestBase {
         }
         addPolicies(builder, policies);
         //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -185,7 +185,7 @@ public abstract class SearchTestBase extends TestBase {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
         //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -371,19 +371,15 @@ public abstract class SearchTestBase extends TestBase {
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         return SearchIndexerDataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
-            AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
+            FAKE_AZURE_SQL_CONNECTION_STRING, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
             dataDeletionDetectionPolicy);
     }
 
     protected SearchIndexerDataSourceConnection createBlobDataSource() {
-        String storageConnectionString = Configuration.getGlobalConfiguration()
-            .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
-        String blobContainerName = Configuration.getGlobalConfiguration()
-            .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
-
         // create the new data source object for this storage account and container
-        return SearchIndexerDataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32),
-            storageConnectionString, blobContainerName, "/", "real live blob",
+        return SearchIndexerDataSources.createFromAzureBlobStorage(
+            testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32), STORAGE_CONNECTION_STRING, BLOB_CONTAINER_NAME, "/",
+            "real live blob",
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("fieldName")
                 .setSoftDeleteMarkerValue("someValue"));

@@ -3,10 +3,12 @@
 
 package com.azure.test.aad.filter.stateless;
 
-import com.azure.spring.test.aad.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
-import org.junit.Before;
-import org.junit.Test;
+import com.azure.spring.test.aad.AADWebApiITHelper;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,17 +27,20 @@ import java.util.Map;
 
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
-import static org.junit.Assert.assertEquals;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAppRoleStatelessAuthenticationFilterIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
-    @Before
-    public void init() {
+    @BeforeAll
+    public void beforeAll() {
         String clientId = AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
         String clientSecret = AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
         Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         properties.put("azure.activedirectory.client-id", clientId);
         properties.put("azure.activedirectory.client-secret", clientSecret);
         properties.put("azure.activedirectory.session-stateless", "true");
@@ -53,9 +58,10 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
         assertEquals("userRole", aadWebApiITHelper.httpGetStringByIdToken("userRole"));
     }
 
-    @Test(expected = HttpClientErrorException.class)
+    @Test
     public void testNotAllowedEndpoints() {
-        aadWebApiITHelper.httpGetStringByIdToken("adminRole");
+        Assertions.assertThrows(HttpClientErrorException.class,
+            () -> aadWebApiITHelper.httpGetStringByIdToken("adminRole"));
     }
 
     @EnableGlobalMethodSecurity(prePostEnabled = true)

@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.TablesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.TableInner;
 import com.azure.resourcemanager.loganalytics.models.Table;
@@ -21,22 +20,23 @@ public final class TablesImpl implements Tables {
 
     private final TablesClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public TablesImpl(TablesClient innerClient, LogAnalyticsManager serviceManager) {
+    public TablesImpl(
+        TablesClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Table> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<TableInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return inner.mapPage(inner1 -> new TableImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new TableImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Table> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<TableInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return inner.mapPage(inner1 -> new TableImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new TableImpl(inner1, this.manager()));
     }
 
     public Table update(String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
@@ -91,7 +91,7 @@ public final class TablesImpl implements Tables {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

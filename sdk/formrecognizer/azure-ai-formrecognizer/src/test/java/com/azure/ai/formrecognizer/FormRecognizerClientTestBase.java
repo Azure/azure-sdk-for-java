@@ -60,6 +60,7 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
@@ -83,19 +84,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
-    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond,"
-        + " WA";
-    private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
+    private static final String EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE = "123 Main Street Redmond, WA 98052";
+    private static final String EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
+    // TODO (Service pending) Disabled, service to provide a different png file.
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
+    static final String MULTIPAGE_RECEIPT_PDF = "contoso_allInOne_multipage_receipt.pdf";
     static final String BUSINESS_CARD_JPG = "businessCard.jpg";
     static final String BUSINESS_CARD_PNG = "businessCard.png";
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
     static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
+    static final String LICENSE_CARD_JPG = "license.jpg";
 
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
@@ -103,7 +106,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String INVALID_MODEL_ID_ERROR_CODE = "1001";
     static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
     static final String URL_BADLY_FORMATTED_ERROR_CODE = "2001";
-    static final String UNABLE_TO_READ_FILE_ERROR_CODE = "2005";
 
     // Error Message
     static final String HTTPS_EXCEPTION_MESSAGE =
@@ -127,8 +129,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> INVOICE_FIELDS = Arrays.asList("CustomerAddressRecipient", "InvoiceId", "VendorName",
         "VendorAddress", "CustomerAddress", "CustomerName", "InvoiceTotal", "DueDate", "InvoiceDate");
 
+    // ID Document fields
+    static final List<String> ID_DOCUMENT_FIELDS = Arrays.asList("Country", "DateOfBirth", "DateOfExpiration",
+        "DocumentNumber", "FirstName", "LastName", "Nationality", "Sex", "MachineReadableZone", "DocumentType",
+        "Address", "Region");
+
     enum PrebuiltType {
-        RECEIPT, BUSINESS_CARD, INVOICE
+        RECEIPT, BUSINESS_CARD, INVOICE, ID
     }
 
     Duration durationTestMode;
@@ -292,10 +299,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
-        // TODO (Service Bug) To be fixed in preview 3
-        // assertNotNull(actualFieldBoundingBox);
-        // assertNotNull(actualFieldBoundingBox.getPoints());
+    private static void validateBoundingBoxData(List<Float> expectedBoundingBox,
+        FieldBoundingBox actualFieldBoundingBox) {
+        assertNotNull(actualFieldBoundingBox);
+        assertNotNull(actualFieldBoundingBox.getPoints());
         if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
             int i = 0;
             for (Point point : actualFieldBoundingBox.getPoints()) {
@@ -324,37 +331,53 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     }
                     break;
                 case DATE:
-                    assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());
+                    if (expectedFieldValue.getValueDate() != null) {
+                        assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());
+                    }
                     break;
                 case TIME:
-                    assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
-                        DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
+                    if (expectedFieldValue.getValueTime() != null) {
+                        assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
+                            DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
+                    }
                     break;
                 case STRING:
-                    if (actualFormField.getName() != "ReceiptType") {
-                        assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                    if (expectedFieldValue.getValueString() != null) {
+                        if (!"ReceiptType".equals(actualFormField.getName())) {
+                            assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                        }
                     }
                     break;
                 case INTEGER:
-                    assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
+                    if (expectedFieldValue.getValueInteger() != null) {
+                        assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
+                    }
                     break;
                 case PHONE_NUMBER:
-                    assertEquals(expectedFieldValue.getValuePhoneNumber(), actualFormField.getValue().asPhoneNumber());
+                    if (expectedFieldValue.getValuePhoneNumber() != null) {
+                        assertEquals(expectedFieldValue.getValuePhoneNumber(),
+                            actualFormField.getValue().asPhoneNumber());
+                    }
                     break;
                 case OBJECT:
-                    expectedFieldValue.getValueObject().forEach((key, formField) -> {
-                        FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
-                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
-                            includeFieldElements);
-                    });
+                    if (expectedFieldValue.getValueObject() != null) {
+                        expectedFieldValue.getValueObject().forEach((key, formField) -> {
+                            FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
+                            validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
+                                includeFieldElements);
+                        });
+                    }
                     break;
                 case ARRAY:
-                    assertEquals(expectedFieldValue.getValueArray().size(), actualFormField.getValue().asList().size());
-                    for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
-                        FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
-                        FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
-                        validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
-                            includeFieldElements);
+                    if (expectedFieldValue.getValueArray() != null) {
+                        assertEquals(expectedFieldValue.getValueArray().size(),
+                            actualFormField.getValue().asList().size());
+                        for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
+                            FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
+                            FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
+                            validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
+                                includeFieldElements);
+                        }
                     }
                     break;
                 default:
@@ -705,6 +728,17 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         rawReadResults,
                         includeFieldElements);
                 });
+            } else if (ID.equals(prebuiltType)) {
+                assertTrue(actualForm.getFormType().startsWith("prebuilt:idDocument"));
+                ID_DOCUMENT_FIELDS.forEach(idDocumentField -> {
+                    final Map<String, FormField> actualRecognizedDocumentFields = actualForm.getFields();
+                    Map<String, FieldValue> expectedIDDocumentFields = rawDocumentResult.getFields();
+
+                    validateFieldValueTransforms(expectedIDDocumentFields.get(idDocumentField),
+                        actualRecognizedDocumentFields.get(idDocumentField),
+                        rawReadResults,
+                        includeFieldElements);
+                });
             } else {
                 throw new RuntimeException("prebuilt type not supported");
             }
@@ -812,10 +846,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         });
     }
 
-    static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList) {
+    static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList, String modelId) {
         actualRecognizedFormsList.forEach(recognizedForm -> {
-            // TODO (#14889): assertEquals("custom:modelId", recognizedForm.getFormType());
-            // assertEquals("custom:form", recognizedForm.getFormType());
+            assertEquals("custom:" + modelId, recognizedForm.getFormType());
             assertEquals(1, recognizedForm.getPageRange().getFirstPageNumber());
             assertEquals(3, recognizedForm.getPageRange().getLastPageNumber());
             assertEquals(3, recognizedForm.getPages().size());
@@ -865,7 +898,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         Map<String, FormField> businessCard2Fields = businessCard2.getFields();
         List<FormField> email2List = businessCard2Fields.get("Emails").getValue().asList();
         assertEquals("avery.smith@contoso.com", email2List.get(0).getValue().asString());
-        List<FormField> phoneNumber2List = businessCard2Fields.get("OtherPhones").getValue().asList();
+        List<FormField> phoneNumber2List = businessCard2Fields.get("WorkPhones").getValue().asList();
         assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getValueData().getText());
         assertNotNull(businessCard2.getPages());
 
@@ -876,40 +909,37 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     static void validateMultipageReceiptData(List<RecognizedForm> recognizedReceipts) {
-        assertEquals(3, recognizedReceipts.size());
+        assertEquals(2, recognizedReceipts.size());
         RecognizedForm receiptPage1 = recognizedReceipts.get(0);
         RecognizedForm receiptPage2 = recognizedReceipts.get(1);
-        RecognizedForm receiptPage3 = recognizedReceipts.get(2);
 
         assertEquals(1, receiptPage1.getPageRange().getFirstPageNumber());
         assertEquals(1, receiptPage1.getPageRange().getLastPageNumber());
         Map<String, FormField> receiptPage1Fields = receiptPage1.getFields();
-        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage1Fields.get("MerchantAddress")
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE, receiptPage1Fields.get("MerchantAddress")
             .getValue().asString());
-        assertEquals("Bilbo Baggins", receiptPage1Fields.get("MerchantName")
+        assertEquals("Contoso", receiptPage1Fields.get("MerchantName")
             .getValue().asString());
-        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
             .getValue().asPhoneNumber());
-        // assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
+        assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
         assertNotNull(receiptPage1.getPages());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue().asString());
 
-        // Assert no fields and lines on second page
-        assertEquals(0, receiptPage2.getFields().size());
+        assertNotNull(receiptPage2.getFields());
         List<FormPage> receipt2Pages = receiptPage2.getPages();
         assertEquals(1, receipt2Pages.size());
-        assertEquals(0, receipt2Pages.stream().findFirst().get().getLines().size());
         assertEquals(2, receiptPage2.getPageRange().getFirstPageNumber());
         assertEquals(2, receiptPage2.getPageRange().getLastPageNumber());
 
-        assertEquals(3, receiptPage3.getPageRange().getFirstPageNumber());
-        assertEquals(3, receiptPage3.getPageRange().getLastPageNumber());
-        Map<String, FormField> receiptPage3Fields = receiptPage3.getFields();
-        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress").getValue().asString());
-        assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
-        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
-        // assertNotNull(receiptPage3Fields.get("Total").getValue().asFloat());
-        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
+        Map<String, FormField> receiptPage2Fields = receiptPage2.getFields();
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_ADDRESS_VALUE,
+            receiptPage2Fields.get("MerchantAddress").getValue().asString());
+        assertEquals("Contoso", receiptPage2Fields.get("MerchantName").getValue().asString());
+        assertEquals(EXPECTED_MULTIPAGE_RECEIPT_PHONE_NUMBER_VALUE,
+            receiptPage2Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
+        assertEquals(14.52f, receiptPage2Fields.get("Total").getValue().asFloat());
+        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage2Fields.get("ReceiptType").getValue().asString());
     }
 
     static void validateMultipageInvoiceData(List<RecognizedForm> recognizedInvoices) {

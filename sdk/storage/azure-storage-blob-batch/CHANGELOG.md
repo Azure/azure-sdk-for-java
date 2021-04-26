@@ -1,6 +1,15 @@
 # Release History
 
-## 12.9.0-beta.1 (Unreleased)
+## 12.9.0-beta.4 (Unreleased)
+
+
+## 12.9.0-beta.3 (2021-04-16)
+- Update `azure-storage-blob` to version `12.11.0-beta.3`
+
+## 12.9.0-beta.2 (2021-03-29)
+- Update `azure-storage-blob` to version `12.11.0-beta.2`
+
+## 12.9.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
 - Added support to create a BlobBatchClient from a BlobContainerClient to perform container level operations.
 

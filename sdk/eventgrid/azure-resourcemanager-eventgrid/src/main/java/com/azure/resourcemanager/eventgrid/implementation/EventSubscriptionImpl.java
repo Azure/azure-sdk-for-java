@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
 import com.azure.resourcemanager.eventgrid.models.EventDeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFullUrl;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.RetryPolicy;
@@ -23,7 +25,7 @@ public final class EventSubscriptionImpl
     implements EventSubscription, EventSubscription.Definition, EventSubscription.Update {
     private EventSubscriptionInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -35,6 +37,10 @@ public final class EventSubscriptionImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String topic() {
@@ -82,7 +88,7 @@ public final class EventSubscriptionImpl
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -115,7 +121,7 @@ public final class EventSubscriptionImpl
         return this;
     }
 
-    EventSubscriptionImpl(String name, EventGridManager serviceManager) {
+    EventSubscriptionImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new EventSubscriptionInner();
         this.serviceManager = serviceManager;
         this.eventSubscriptionName = name;
@@ -144,7 +150,8 @@ public final class EventSubscriptionImpl
         return this;
     }
 
-    EventSubscriptionImpl(EventSubscriptionInner innerObject, EventGridManager serviceManager) {
+    EventSubscriptionImpl(
+        EventSubscriptionInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.scope =
@@ -179,6 +186,14 @@ public final class EventSubscriptionImpl
                 .getWithResponse(scope, eventSubscriptionName, context)
                 .getValue();
         return this;
+    }
+
+    public EventSubscriptionFullUrl getFullUrl() {
+        return serviceManager.eventSubscriptions().getFullUrl(scope, eventSubscriptionName);
+    }
+
+    public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
+        return serviceManager.eventSubscriptions().getFullUrlWithResponse(scope, eventSubscriptionName, context);
     }
 
     public EventSubscriptionImpl withDestination(EventSubscriptionDestination destination) {

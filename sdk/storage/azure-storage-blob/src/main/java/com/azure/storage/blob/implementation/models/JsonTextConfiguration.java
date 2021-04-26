@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * json text configuration.
- */
+/** json text configuration. */
 @JacksonXmlRootElement(localName = "JsonTextConfiguration")
 @Fluent
 public final class JsonTextConfiguration {

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for Registries. */
 public class CosmosDBAccountsImpl
@@ -41,20 +43,24 @@ public class CosmosDBAccountsImpl
 
     @Override
     public PagedFlux<CosmosDBAccount> listAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .inner()
-            .listAsync()
-            .mapPage(inner -> new CosmosDBAccountImpl(inner.name(), inner, this.manager()));
+            .listAsync(),
+            inner -> new CosmosDBAccountImpl(inner.name(), inner, this.manager()));
     }
 
     @Override
     public PagedFlux<CosmosDBAccount> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
     public PagedIterable<CosmosDBAccount> listByResourceGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override

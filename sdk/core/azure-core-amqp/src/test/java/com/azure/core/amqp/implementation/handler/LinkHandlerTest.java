@@ -31,7 +31,7 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class LinkHandlerTest {
@@ -51,10 +51,11 @@ class LinkHandlerTest {
     private final Symbol symbol = Symbol.getSymbol(linkStolen.getErrorCondition());
     private final String description = "test-description";
     private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, logger);
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -64,16 +65,20 @@ class LinkHandlerTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(event.getLink()).thenReturn(link);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
 
         handler.close();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
@@ -110,7 +115,7 @@ class LinkHandlerTest {
         handler.onLinkLocalClose(event);
 
         // Assert
-        verifyZeroInteractions(session);
+        verifyNoInteractions(session);
     }
 
     /**
@@ -150,7 +155,6 @@ class LinkHandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onLinkRemoteClose(event))
-            .expectNext(EndpointState.CLOSED)
             .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
@@ -184,7 +188,6 @@ class LinkHandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onLinkRemoteDetach(event))
-            .expectNext(EndpointState.CLOSED)
             .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
@@ -217,7 +220,6 @@ class LinkHandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onLinkRemoteClose(event))
-            .expectNext(EndpointState.CLOSED)
             .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
@@ -250,9 +252,11 @@ class LinkHandlerTest {
         // Act & Assert
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onLinkRemoteClose(event))
+            .then(() -> {
+                handler.onLinkRemoteClose(event);
+                handler.onLinkFinal(finalEvent);
+            })
             .expectNext(EndpointState.CLOSED)
-            .then(() -> handler.onLinkFinal(finalEvent))
             .expectComplete()
             .verify();
 

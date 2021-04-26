@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 import com.azure.resourcemanager.resources.fluent.ProvidersClient;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * The implementation for {@link Providers}.
@@ -61,7 +62,7 @@ public final class ProvidersImpl
 
     @Override
     public PagedFlux<Provider> listAsync() {
-        return this.client.listAsync().mapPage(inner -> wrapModel(inner));
+        return PagedConverter.mapPage(this.client.listAsync(), inner -> wrapModel(inner));
     }
 
     @Override

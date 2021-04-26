@@ -56,6 +56,7 @@ public final class MonitoringsImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") String xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/monitoring/workloadTypes/sql/querystring")
@@ -68,6 +69,7 @@ public final class MonitoringsImpl {
                 @QueryParam("filter") String filter,
                 @QueryParam("$orderby") String orderby,
                 @QueryParam("skip") String skip,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -83,10 +85,15 @@ public final class MonitoringsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobListViewResponse>> getSparkJobListWithResponseAsync(String xMsClientRequestId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkJobList(
-                                this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                xMsClientRequestId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -103,8 +110,9 @@ public final class MonitoringsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobListViewResponse>> getSparkJobListWithResponseAsync(
             String xMsClientRequestId, Context context) {
+        final String accept = "application/json";
         return service.getSparkJobList(
-                this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -235,6 +243,7 @@ public final class MonitoringsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryStringWithResponseAsync(
             String xMsClientRequestId, String filter, String orderby, String skip) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSqlJobQueryString(
@@ -244,6 +253,7 @@ public final class MonitoringsImpl {
                                 filter,
                                 orderby,
                                 skip,
+                                accept,
                                 context));
     }
 
@@ -264,6 +274,7 @@ public final class MonitoringsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryStringWithResponseAsync(
             String xMsClientRequestId, String filter, String orderby, String skip, Context context) {
+        final String accept = "application/json";
         return service.getSqlJobQueryString(
                 this.client.getEndpoint(),
                 xMsClientRequestId,
@@ -271,6 +282,7 @@ public final class MonitoringsImpl {
                 filter,
                 orderby,
                 skip,
+                accept,
                 context);
     }
 

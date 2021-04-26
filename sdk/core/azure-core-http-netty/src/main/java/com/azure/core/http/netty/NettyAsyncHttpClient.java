@@ -8,12 +8,16 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.proxy.ProxyConnectException;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,11 +25,15 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.util.retry.Retry;
 
+import javax.net.ssl.SSLException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
+
+import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
@@ -41,13 +49,6 @@ class NettyAsyncHttpClient implements HttpClient {
     private final boolean disableBufferCopy;
 
     final reactor.netty.http.client.HttpClient nettyClient;
-
-    /**
-     * Creates default NettyAsyncHttpClient.
-     */
-    NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create(), false);
-    }
 
     /**
      * Creates NettyAsyncHttpClient with provided http client.
@@ -81,7 +82,20 @@ class NettyAsyncHttpClient implements HttpClient {
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse))
-            .single();
+            .single()
+            .onErrorMap(throwable -> {
+                // The exception was an SSLException that was caused by a failure to connect to a proxy.
+                // Extract the inner ProxyConnectException and propagate that instead.
+                if (throwable instanceof SSLException) {
+                    if (throwable.getCause() instanceof ProxyConnectException) {
+                        return throwable.getCause();
+                    }
+                }
+
+                return throwable;
+            })
+            .retryWhen(Retry.max(1).filter(throwable -> throwable instanceof ProxyConnectException)
+                .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
     }
 
     /**
@@ -147,26 +161,14 @@ class NettyAsyncHttpClient implements HttpClient {
                 Flux<ByteBuffer> body = reactorNettyConnection.inbound().receive().asByteBuffer()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection));
 
-                return FluxUtil.collectBytesInByteBufferStream(body)
-                    .map(bytes -> new BufferedReactorNettyHttpResponse(reactorNettyResponse, restRequest, bytes));
+                return FluxUtil.collectBytesFromNetworkResponse(body,
+                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
 
             } else {
-                return Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
+                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
                     disableBufferCopy));
             }
         };
-    }
-
-    static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
-        ByteBuffer buffer = ByteBuffer.allocate(byteBuf.readableBytes());
-        byteBuf.readBytes(buffer);
-        buffer.rewind();
-        return buffer;
-    }
-
-    static void closeConnection(Connection reactorNettyConnection) {
-        if (!reactorNettyConnection.isDisposed()) {
-            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-        }
     }
 }

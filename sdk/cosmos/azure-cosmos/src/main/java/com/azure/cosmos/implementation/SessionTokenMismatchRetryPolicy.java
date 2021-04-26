@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics {
+public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SessionTokenMismatchRetryPolicy.class);
 
@@ -23,8 +23,9 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
     private final AtomicInteger retryCount;
 
     private Duration currentBackoff;
+    private RetryContext retryContext;
 
-    public SessionTokenMismatchRetryPolicy(int waitTimeInMilliSeconds)
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds)
     {
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(waitTimeInMilliSeconds));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
@@ -32,17 +33,18 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
+        this.retryContext = retryContext;
     }
 
-    public SessionTokenMismatchRetryPolicy() {
-        this(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext) {
+        this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
     }
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
 
         if (!(e instanceof CosmosException)) {
-            return Mono.just(ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
         }
 
         CosmosException cosmosException = (CosmosException)e;
@@ -53,7 +55,7 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
             LOGGER.debug(
                 "SessionTokenMismatchRetryPolicy not retrying because StatusCode or SubStatusCode not found.");
 
-            return Mono.just(ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
         }
 
         if (this.waitTimeTimeoutHelper.isElapsed()) {
@@ -89,6 +91,11 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
             effectiveBackoff.toMillis());
 
         return Mono.just(ShouldRetryResult.retryAfter(effectiveBackoff));
+    }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return this.retryContext;
     }
 
     private static Duration getEffectiveBackoff(Duration backoff, Duration remainingTime) {

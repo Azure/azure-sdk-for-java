@@ -410,6 +410,35 @@ class DirectoryAPITests extends APISpec {
         "noOp"                                         | 3          | 0
     }
 
+    def "List max results by page"() {
+        given:
+        primaryDirectoryClient.create()
+        def nameList = new LinkedList()
+        def dirPrefix = testResourceName.randomName(methodName, 60)
+        for (int i = 0; i < 2; i++) {
+            def subDirClient = primaryDirectoryClient.getSubdirectoryClient(dirPrefix + i)
+            subDirClient.create()
+            for (int j = 0; j < 2; j++) {
+                def num = i * 2 + j + 3
+                subDirClient.createFile(dirPrefix + num, 1024)
+            }
+        }
+        primaryDirectoryClient.createFile(dirPrefix + 2, 1024)
+        for (int i = 0; i < 3; i++) {
+            nameList.add(dirPrefix + i)
+        }
+
+        when:
+        def fileRefIter = primaryDirectoryClient
+            .listFilesAndDirectories("directoryapitestslistmaxresultsbypage", null, null, null)
+            .iterableByPage(1).iterator()
+
+        then:
+        for (def page : fileRefIter) {
+            assert page.value.size() == 1
+        }
+    }
+
     @Unroll
     def "List handles"() {
         given:
@@ -675,5 +704,24 @@ class DirectoryAPITests extends APISpec {
         then:
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    @Unroll
+    def "Root directory support"() {
+        given:
+        // share:/dir1/dir2
+        def dir1Name = "dir1"
+        def dir2Name = "dir2"
+        shareClient.createDirectory(dir1Name).createSubdirectory(dir2Name)
+        ShareDirectoryClient rootDirectory = shareClient.getDirectoryClient(rootDirPath)
+
+        expect:
+        rootDirectory.exists() // can operate on root directory
+        rootDirectory.getSubdirectoryClient(dir1Name).exists() // can operate on a subdirectory
+
+        where:
+        _ | rootDirPath
+        _ | ""
+        _ | "/"
     }
 }

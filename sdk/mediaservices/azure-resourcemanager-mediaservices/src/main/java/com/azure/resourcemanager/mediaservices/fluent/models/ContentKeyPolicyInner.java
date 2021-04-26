@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,6 +21,12 @@ import java.util.UUID;
 @Fluent
 public class ContentKeyPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The legacy Policy ID.
@@ -50,6 +57,15 @@ public class ContentKeyPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.options")
     private List<ContentKeyPolicyOption> options;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the policyId property: The legacy Policy ID.

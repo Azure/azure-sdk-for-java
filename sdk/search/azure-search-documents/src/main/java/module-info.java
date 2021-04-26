@@ -3,6 +3,7 @@
 
 module com.azure.search.documents {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
     requires jakarta.activation;
 
     opens com.azure.search.documents to com.fasterxml.jackson.databind;
@@ -19,5 +20,6 @@ module com.azure.search.documents {
     exports com.azure.search.documents.indexes;
     exports com.azure.search.documents.indexes.models;
     exports com.azure.search.documents.models;
+    exports com.azure.search.documents.options;
     exports com.azure.search.documents.util;
 }

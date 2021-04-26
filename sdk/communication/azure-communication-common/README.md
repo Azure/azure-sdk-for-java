@@ -19,7 +19,7 @@ It is intended to provide cross cutting concerns, e.g. authentication.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-common</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -34,7 +34,7 @@ a CommunicationIdentityClient to manage users and tokens.
 
 ### CommunicationTokenCredential
 
-It is up to you the developer to first create valid user tokens with the Communication Administration SDK. Then you use these tokens with the `CommunicationTokenCredential`.
+It is up to you the developer to first create valid user tokens with the Communication Identity SDK. Then you use these tokens with the `CommunicationTokenCredential`.
 
 `CommunicationTokenCredential` authenticates a user with Communication Services, such as Chat or Calling. It optionally provides an auto-refresh mechanism to ensure a continuously stable authentication state during communications.
 

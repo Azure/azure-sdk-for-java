@@ -68,6 +68,10 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             return Paths.MEDIA_PATH_SEGMENT;
         case DatabaseAccount:
             return "";
+        case ClientTelemetry:
+            return "";
+        case ClientEncryptionKey:
+            return Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT;
         default:
             return null;
         }

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import java.util.List;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public final class OrderByContinuationToken extends JsonSerializable {
+public final class OrderByContinuationToken extends JsonSerializable implements IPartitionedToken {
     private static final String CompositeContinuationTokenPropertyName = "compositeToken";
     private static final String OrderByItemsPropetryName = "orderByItems";
     private static final String RidPropertyName = "rid";
@@ -63,6 +64,9 @@ public final class OrderByContinuationToken extends JsonSerializable {
                     .getCompositeContinuationToken();
             if (compositeContinuationToken == null) {
                 throw new IllegalArgumentException("compositeContinuationToken must not be null.");
+            }
+            if (compositeContinuationToken.getRange() == null) {
+                throw new IllegalArgumentException("compositeContinuationToken range must not be null.");
             }
 
             orderByContinuationToken.getOrderByItems();
@@ -134,5 +138,11 @@ public final class OrderByContinuationToken extends JsonSerializable {
     @Override
     public String toJson() {
         return super.toJson();
+    }
+
+    @Override
+    public Range<String> getRange() {
+        // This would never be null, we validate this while parsing the token
+        return this.getCompositeContinuationToken().getRange();
     }
 }

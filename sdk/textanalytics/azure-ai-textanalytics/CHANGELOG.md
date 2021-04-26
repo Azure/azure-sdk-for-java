@@ -1,5 +1,120 @@
 # Release History
-## 5.1.0-beta.4 (Unreleased)
+## 5.1.0-beta.7 (Unreleased)
+
+
+## 5.1.0-beta.6 (2021-04-06)
+### Breaking changes
+- Removed the input parameter `Context` from non-max-overload healthcare synchronous API, `beginAnalyzeHealthcareEntities()`.
+
+## 5.0.5 (2021-04-06)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.15.0 and `azure-core-http-netty` to 1.9.1.
+
+## 5.1.0-beta.5 (2021-03-10)
+- We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
+
+### New features
+- Added a new property `categoriesFilter` to `RecognizePiiEntitiesOptions`. The PII entity recognition endpoint will return 
+  the result with categories only match the given `categoriesFilter` list. 
+- Added `normalizedText` property to `HealthcareEntity`.
+- `AnalyzeHealthcareEntitiesResult` now exposes the property `entityRelations`, which is a list of `HealthcareEntityRelation`.
+- Added `HealthcareEntityRelation` class which will determine all the different relations between the entities as `Roles`.
+- Added `HealthcareEntityRelationRole`, which exposes `name` and `entity` of type `String` and `HealthcareEntity` respectively.
+- `beginAnalyzeBatchActions` can now process recognize linked entities actions.
+- `recognizePiiEntities` takes a new option, `categoriesFilter`, that specifies a list of PII categories to return.
+- Added new classes, `RecognizeLinkedEntitiesActionResult`, `PiiEntityCategory`.
+
+### Breaking changes
+- Removed `PiiEntity` constructor and `PiiEntity`'s `category` property is no longer a type of `EntityCategory` but use a new introduced type `PiiEntityCategory`.
+- Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainity` and `EntityConditionality`.
+- Renamed classes,
+  `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
+- Renamed
+  `SentenceSentiment`'s method, `getMinedOpinions()` to `getOpinions()`.
+  `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`.
+- Removed property, `relatedEntities` from `HealthcareEntity`.
+- Removed constructors, 
+  `SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores, IterableStream<MinedOpinion> minedOpinions, int offset)`,
+  `AspectSentiment(String text, TextSentiment sentiment, int offset, SentimentConfidenceScores confidenceScores)`,
+  `OpinionSentiment(String text, TextSentiment sentiment, int offset, boolean isNegated, SentimentConfidenceScores confidenceScores)`
+
+### Known Issues
+- `beginAnalyzeHealthcareEntities` is currently in gated preview and can not be used with AAD credentials. 
+  For more information, see [the Text Analytics for Health documentation](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview).
+
+## 5.0.4 (2021-03-09)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.14.0 and `azure-core-http-netty` to 1.9.0.
+  
+## 5.1.0-beta.4 (2021-02-10)
+### New features
+- Added new classes, `StringIndexType`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`.
+- A new options to control how the offset and length are calculated by the service. Added `StringIndexType` to all
+  `AnalyzeSentimentOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`, `RecognizePiiEntitiesOptions`
+  and the default is `UTF16CODE_UNIT` if null value is assigned. For more information, 
+  see [the Text Analytics documentation](https://docs.microsoft.com/azure/cognitive-services/text-analytics/concepts/text-offsets#offsets-in-api-version-31-preview).
+- Added property `length` to `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`, 
+  `OpinionSentiment`, and `PiiEntity`.
+- Added new API,
+  `Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options)`,
+  `Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context)`,
+  `Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options)`,
+  `Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
+  Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context)`
+  
+### Breaking changes
+#### Analysis healthcare entities 
+- The healthcare entities returned by `beginAnalyzeHealthcareEntities` are now organized as a directed graph where the 
+  edges represent a certain type of healthcare relationship between the source and target entities. Edges are stored
+  in the `relatedEntities` property.
+- The `links` property of `HealthcareEntity` is renamed to `dataSources`, a list of objects representing medical 
+  databases, where each object has `name` and `entityId` properties.
+- Replace API 
+  `PollerFlux<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> beginAnalyzeHealthcare(Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options)` to
+  `PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options)`,
+  `SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> beginAnalyzeHealthcare(Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options, Context context)` to
+  `SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options, Context context)`
+- New overload APIs,
+  `PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<String> documents, String language, AnalyzeHealthcareEntitiesOptions options)`,
+  `SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> beginAnalyzeHealthcareEntities(Iterable<String> documents, String language, AnalyzeHealthcareEntitiesOptions options, Context context)`
+- Added `AnalyzeHealthcareEntitiesResultCollection`, `AnalyzeHealthcareEntitiesResult`, `HealthcareEntityRelationType`
+- Removed `HealthcareTaskResult`, `HealthcareEntityRelation`, `HealthcareEntityCollection`, `JobMetadata`, `JobState`
+- Renamed
+  `HealthcareEntityLink` to `EntityDataSource`,
+  `RecognizeHealthcareEntityOptions` to `AnalyzeHealthcareEntitiesOptions`,
+  `RecognizeHealthcareEntitiesResult` to `AnalyzeHealthcareEntitiesResult`,
+  `RecognizeHealthcareEntitiesResultCollection` to `AnalyzeHealthcareEntitiesResultCollection`
+  `TextAnalyticsOperationResult` to `AnalyzeHealthcareEntitiesOperationDetail`
+  
+#### Analyze multiple actions
+- The word "action" are used consistently in our names and documentation instead of "task".
+- Replace API 
+  `PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options)`to 
+  `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeBatchActionsOptions options)`,
+  `SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasks(Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context)`to
+  `SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeBatchActionsOptions options, Context context)`
+- Added new overload APIs, 
+  `PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeBatchActionsOptions options)`,
+  `SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeBatchActionsOptions options)`
+- Added `ExtractKeyPhrasesActionResult`, `RecognizeEntitiesActionResult`, `RecognizePiiEntitiesActionResult`,
+  `TextAnalyticsActions`, `TextAnalyticsActionResult`
+- Removed `EntitiesTask`, `KeyPhrasesTask`, `PiiTask`, `TextAnalyticsErrorInformation`
+- Renamed
+  `AnalyzeTasksOptions` to `AnalyzeBatchActionsOptions`,
+  `AnalyzeTasksResult` to `AnalyzeBatchActionsResult`,
+  `EntitiesTaskParameters` to `RecognizeEntitiesOptions`
+  `KeyPhrasesTaskParameters` to `ExtractKeyPhrasesOptions`,
+  `PiiTaskParameters` to `RecognizePiiEntityOptions`,
+  `PiiEntityDomainType` to `PiiEntitiesDomainType`,
+  `RecognizePiiEntityOptions` to `RecognizePiiEntitiesOptions`,
+  `TextAnalyticsOperationResult` to `AnalyzeBatchActionsOperationDetail`
+
+## 5.0.3 (2021-02-10)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.13.0 and `azure-core-http-netty` to 1.8.0.
 
 ## 5.0.2 (2021-01-14)
 ### Dependency updates

@@ -74,21 +74,6 @@ public final class SearchClient {
     }
 
     /**
-     * Creates a {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
-     *
-     * @param options Configuration options used during construction of the {@link SearchIndexingBufferedSender}.
-     * @param <T> The type of the documents that will be added to the buffered sender.
-     * @return A {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
-     * @throws NullPointerException If {@code options} or {@code options.getDocumentKeyRetriever()} is null.
-     */
-    public <T> SearchIndexingBufferedSender<T> getSearchIndexingBufferedSender(
-        SearchIndexingBufferedSenderOptions<T> options) {
-        return new SearchIndexingBufferedSender<>(asyncClient.getSearchIndexingBufferedAsyncSender(options));
-    }
-
-    /**
      * Uploads a collection of documents to the target index.
      *
      * <p><strong>Code Sample</strong></p>

@@ -60,11 +60,9 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions, String eventHubName,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
-        String clientVersion) {
-
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
@@ -135,8 +133,6 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             return;
         }
 
-        logger.info("connectionId[{}]: Disposing of connection.", connectionId);
-
         if (managementChannel != null) {
             managementChannel.close();
         }
@@ -146,8 +142,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions, messageSerializer);
+        return new EventHubReactorSession(this, session, handler, sessionName, reactorProvider,
+            handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions, messageSerializer);
     }
 
     private synchronized ManagementChannel getOrCreateManagementChannel() {

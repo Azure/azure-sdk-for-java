@@ -37,7 +37,9 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -144,6 +146,7 @@ public class EventHubClientBuilder {
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
+    private URL customEndpointAddress;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -264,6 +267,34 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
+     * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     * <p>
+     * If no port is specified, the default port for the {@link #transportType(AmqpTransportType) transport type} is
+     * used.
+     *
+     * @param customEndpointAddress The custom endpoint address.
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
+     */
+    public EventHubClientBuilder customEndpointAddress(String customEndpointAddress) {
+        if (customEndpointAddress == null) {
+            this.customEndpointAddress = null;
+            return this;
+        }
+
+        try {
+            this.customEndpointAddress = new URL(customEndpointAddress);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(customEndpointAddress + " : is not a valid URL.", e));
+        }
+
         return this;
     }
 
@@ -486,7 +517,6 @@ public class EventHubClientBuilder {
      * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
      * <li>If no timeout is specified, a {@link ClientConstants#OPERATION_TIMEOUT timeout of one minute} is used.</li>
-     * <li>If no scheduler is specified, an {@link Schedulers#elastic() elastic scheduler} is used.</li>
      * </ul>
      *
      * @return A new {@link EventHubAsyncClient} instance with all the configured options.
@@ -500,7 +530,7 @@ public class EventHubClientBuilder {
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.elastic();
+            scheduler = Schedulers.boundedElastic();
         }
 
         if (prefetchCount == null) {
@@ -590,16 +620,6 @@ public class EventHubClientBuilder {
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
-        final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-            connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-
-        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
-        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
-
         final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
             sink.onRequest(request -> {
 
@@ -614,9 +634,16 @@ public class EventHubClientBuilder {
                 final String connectionId = StringUtil.getRandomString("MF");
                 logger.info("connectionId[{}]: Emitting a single connection.", connectionId);
 
+                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                    ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+                final ReactorProvider provider = new ReactorProvider();
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider, messageSerializer,
-                    product, clientVersion);
+                    connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider,
+                    messageSerializer);
+
                 sink.next(connection);
             });
         });
@@ -657,13 +684,23 @@ public class EventHubClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
         final SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode);
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
+        if (customEndpointAddress == null) {
+            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
+                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion);
+        } else {
+            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
+                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion,
+                customEndpointAddress.getHost(), customEndpointAddress.getPort());
+        }
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

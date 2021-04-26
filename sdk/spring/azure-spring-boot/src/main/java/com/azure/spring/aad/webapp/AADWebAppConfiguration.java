@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,8 @@ public class AADWebAppConfiguration {
     }
 
     private AzureClientRegistration createDefaultClient() {
-        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
+        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID,
+            AADAuthorizationGrantType.AUTHORIZATION_CODE);
         Set<String> authorizationCodeScopes = authorizationCodeScopes();
         builder.scope(authorizationCodeScopes);
         ClientRegistration client = builder.build();
@@ -97,11 +99,17 @@ public class AADWebAppConfiguration {
     private Set<String> authorizationCodeScopes() {
         Set<String> result = accessTokenScopes();
         for (AuthorizationClientProperties authProperties : properties.getAuthorizationClients().values()) {
-            if (!authProperties.isOnDemand()) {
+            if (!authProperties.isOnDemand()
+                && isDefaultAuthorizationGrantType(authProperties)) {
                 result.addAll(authProperties.getScopes());
             }
         }
         return result;
+    }
+
+    private boolean isDefaultAuthorizationGrantType(AuthorizationClientProperties authProperties) {
+        return authProperties.getAuthorizationGrantType() == null
+            || AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(authProperties.getAuthorizationGrantType());
     }
 
     private Set<String> accessTokenScopes() {
@@ -116,10 +124,11 @@ public class AADWebAppConfiguration {
         if (properties.allowedGroupsConfigured()) {
             // The 2 scopes are need to get group name from graph.
             result.add(properties.getGraphBaseUri() + "User.Read");
-            result.add(properties.getGraphBaseUri() + "Directory.AccessAsUser.All");
+            result.add(properties.getGraphBaseUri() + "Directory.Read.All");
         }
         return result;
     }
+
 
     private Set<String> openidScopes() {
         Set<String> result = new HashSet<>();
@@ -146,8 +155,12 @@ public class AADWebAppConfiguration {
     }
 
     private ClientRegistration createClientBuilder(String id, AuthorizationClientProperties authz) {
-        ClientRegistration.Builder result = createClientBuilder(id);
+        ClientRegistration.Builder result = createClientBuilder(id, authz.getAuthorizationGrantType());
         List<String> scopes = authz.getScopes();
+        if (AADAuthorizationGrantType.ON_BEHALF_OF.equals(authz.getAuthorizationGrantType())) {
+            throw new IllegalStateException("Web Application do not support on-behalf-of grant type. id = "
+                + id + ".");
+        }
         if (authz.isOnDemand()) {
             if (!scopes.contains("openid")) {
                 scopes.add("openid");
@@ -160,10 +173,17 @@ public class AADWebAppConfiguration {
         return result.build();
     }
 
-    private ClientRegistration.Builder createClientBuilder(String id) {
+    private ClientRegistration.Builder createClientBuilder(String id, AADAuthorizationGrantType aadAuthorizationGrantType) {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
-        result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-        result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
+
+        AuthorizationGrantType authorizationGrantType = Optional.ofNullable(aadAuthorizationGrantType)
+            .map(AADAuthorizationGrantType::getValue)
+            .map(AuthorizationGrantType::new)
+            .orElse(AuthorizationGrantType.AUTHORIZATION_CODE);
+        result.authorizationGrantType(authorizationGrantType);
+
+        result.redirectUri("{baseUrl}/login/oauth2/code/");
+        result.userNameAttributeName(properties.getUserNameAttribute());
 
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
@@ -193,7 +213,9 @@ public class AADWebAppConfiguration {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+            http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated();
         }
     }
-
 }

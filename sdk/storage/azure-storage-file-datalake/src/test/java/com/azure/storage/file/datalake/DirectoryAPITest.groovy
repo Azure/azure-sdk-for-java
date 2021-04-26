@@ -2990,6 +2990,19 @@ class DirectoryAPITest extends APISpec {
         response.getValue().size() == 2
     }
 
+    def "List paths max results by page"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        expect:
+        for (def page : dir.listPaths(false, false, null, null).iterableByPage(2)) {
+            assert page.getValue().size() <= 2
+        }
+    }
+
     def "List paths error"() {
         def dirName = generatePathName()
         def dir = fsc.getDirectoryClient(dirName)
@@ -3028,5 +3041,37 @@ class DirectoryAPITest extends APISpec {
         Utility.urlEncode("%")  | ""                        || _ // Resource has special character
         ""                      | Utility.urlEncode("%")    || _ // Sub resource has special character
         Utility.urlEncode("%")  | Utility.urlEncode("%")    || _
+    }
+
+    def "File in root directory rename"() {
+        setup:
+        def oldName = generatePathName()
+        def renamedName = generatePathName()
+        dc = fsc.getRootDirectoryClient()
+        // Create file in root directory
+        def file = dc.createFile(oldName)
+
+        when:
+        def renamedFile = file.rename(null, renamedName)
+
+        then:
+        renamedFile.getObjectPath() == renamedName
+        renamedFile.getProperties().getETag() == renamedFile.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
+    }
+
+    def "Directory in root directory rename"() {
+        setup:
+        def oldName = generatePathName()
+        def renamedName = generatePathName()
+        dc = fsc.getRootDirectoryClient()
+        // Create dir in root directory
+        def dir = dc.createSubdirectory(oldName)
+
+        when:
+        def renamedDir = dir.rename(null, renamedName)
+
+        then:
+        renamedDir.getObjectPath() == renamedName
+        renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
     }
 }
