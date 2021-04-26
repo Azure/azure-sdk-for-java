@@ -25,8 +25,9 @@ steps:
         git clone --no-checkout --filter=tree:0 git://github.com/${{ repo.Name }} .
         git sparse-checkout init
         $paths = ('${{ convertToJson(parameters.Paths) }}' | ConvertFrom-Json) -Join ' '
-        Write-Host "git sparse-checkout set eng $paths"
-        git sparse-checkout set eng $paths
+        Invoke-Expression -Command "git sparse-checkout set eng $paths"
+        Write-Host "Set sparse checkout paths to:"
+        Get-Content .git/info/sparse-checkout
       displayName: Init sparse checkout ${{ repo.Name }}
       workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
 
