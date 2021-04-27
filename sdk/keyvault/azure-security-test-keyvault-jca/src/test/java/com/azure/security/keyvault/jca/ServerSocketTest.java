@@ -33,17 +33,17 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * The unit test validating the ServerSocket is created using a certificate 
- * from Azure Key Vault.
+ * The unit test validating the ServerSocket is created using a certificate from Azure Key Vault.
  */
-@EnabledIfEnvironmentVariable(named = "azure.keyvault.certificate-name", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class ServerSocketTest {
 
     public static void putEnvironmentPropertyToSystemProperty(String key) {
         Optional.of(key)
                 .map(System::getenv)
                 .filter(StringUtils::hasText)
-                .ifPresent(value -> System.getProperties().put(key, value));
+                .ifPresent(value -> System.getProperties().put(
+                    key.toLowerCase().replaceAll("_", "."), value));
     }
 
     /**
@@ -68,17 +68,17 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.uri");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.tenant-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-secret");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("azure.keyvault.uri"),
-            System.getenv("azure.keyvault.tenant-id"),
-            System.getenv("azure.keyvault.client-id"),
-            System.getenv("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -175,17 +175,17 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.uri");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.tenant-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-secret");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("azure.keyvault.uri"),
-            System.getenv("azure.keyvault.tenant-id"),
-            System.getenv("azure.keyvault.client-id"),
-            System.getenv("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
-@EnabledIfEnvironmentVariable(named = "azure.keyvault.certificate-name", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultLoadStoreParameterTest {
 
     /**
@@ -20,10 +20,10 @@ public class KeyVaultLoadStoreParameterTest {
     @Test
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("azure.keyvault.uri"),
-            System.getenv("azure.keyvault.tenant-id"),
-            System.getenv("azure.keyvault.client-id"),
-            System.getenv("azure.keyvault.client-secret")
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET")
         );
         assertNull(parameter.getProtectionParameter());
     }

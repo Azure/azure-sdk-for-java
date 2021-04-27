@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * The JUnit test for the AuthClient.
  */
-@EnabledIfEnvironmentVariable(named = "azure.keyvault.certificate-name", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class AuthClientTest {
 
     /**
@@ -23,9 +23,9 @@ public class AuthClientTest {
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        String tenantId = System.getenv("azure.keyvault.tenant-id");
-        String clientId = System.getenv("azure.keyvault.client-id");
-        String clientSecret = System.getenv("azure.keyvault.client-secret");
+        String tenantId = System.getenv("AZURE_KEYVAULT_TENANT-ID");
+        String clientId = System.getenv("AZURE_KEYVAULT_CLIENT-ID");
+        String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT-SECRET");
         AuthClient authClient = new AuthClient();
         String result = authClient.getAccessToken(
             "https://management.azure.com/",

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
-@EnabledIfEnvironmentVariable(named = "azure.keyvault.certificate-name", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultKeyStoreTest {
 
     /**
@@ -57,22 +57,23 @@ public class KeyVaultKeyStoreTest {
         Optional.of(key)
                 .map(System::getenv)
                 .filter(StringUtils::hasText)
-                .ifPresent(value -> System.getProperties().put(key, value));
+                .ifPresent(value -> System.getProperties().put(
+                    key.toLowerCase().replaceAll("_", "."), value));
     }
 
     @BeforeEach
     public void setEnvironmentProperty() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("azure.keyvault.uri"),
-            System.getenv("azure.keyvault.tenant-id"),
-            System.getenv("azure.keyvault.client-id"),
-            System.getenv("azure.keyvault.client-secret"));
-        certificateName = System.getenv("azure.keyvault.certificate-name");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.uri");
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
+        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.tenant-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-secret");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
         keystore = new KeyVaultKeyStore();
         keystore.engineLoad(parameter);
     }

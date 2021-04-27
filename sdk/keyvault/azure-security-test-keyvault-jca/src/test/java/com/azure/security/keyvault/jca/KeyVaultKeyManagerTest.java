@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnabledIfEnvironmentVariable(named = "azure.keyvault.certificate-name", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultKeyManagerTest {
 
     private KeyVaultKeyManager manager;
@@ -28,27 +28,28 @@ public class KeyVaultKeyManagerTest {
         Optional.of(key)
                 .map(System::getenv)
                 .filter(StringUtils::hasText)
-                .ifPresent(value -> System.getProperties().put(key, value));
+                .ifPresent(value -> System.getProperties().put(
+                    key.toLowerCase().replaceAll("_", "."), value));
     }
 
     @BeforeEach
     public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.uri");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.tenant-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-id");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-secret");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("azure.keyvault.uri"),
-            System.getenv("azure.keyvault.tenant-id"),
-            System.getenv("azure.keyvault.client-id"),
-            System.getenv("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
         keyStore.load(parameter);
         manager = new KeyVaultKeyManager(keyStore, null);
-        certificateName = System.getenv("azure.keyvault.certificate-name");
+        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
