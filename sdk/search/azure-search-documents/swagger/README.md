@@ -75,7 +75,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e6fa7db931a3e5182e5685630971b64987719938/specification/search/data-plane/Azure.Search/preview/2020-06-30-Preview/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,ConditionalSkill,CorsOptions,CustomEntity,CustomEntityAlias,CustomEntityLookupSkill,CustomEntityLookupSkillLanguage,CustomNormalizer,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,DocumentExtractionSkill,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkill,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkill,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkill,KeyPhraseExtractionSkillLanguage,LanguageDetectionSkill,LexicalAnalyzerName,LexicalNormalizer,LexicalNormalizerName,LexicalTokenizerName,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MergeSkill,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkill,OcrSkillLanguage,OutputFieldMappingEntry,PatternReplaceCharFilter,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchField,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerSkill,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SentimentSkill,SentimentSkillLanguage,ShaperSkill,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkill,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopwordsList,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkill,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature,WebApiSkill
+custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,ConditionalSkill,CorsOptions,CustomAnalyzer,CustomEntity,CustomEntityAlias,CustomEntityLookupSkill,CustomEntityLookupSkillLanguage,CustomNormalizer,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,DocumentExtractionSkill,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkill,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkill,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkill,KeyPhraseExtractionSkillLanguage,LanguageDetectionSkill,LexicalAnalyzer,LexicalAnalyzerName,LexicalNormalizer,LexicalNormalizerName,LexicalTokenizerName,LuceneStandardAnalyzer,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MergeSkill,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkill,OcrSkillLanguage,OutputFieldMappingEntry,PatternAnalyzer,PatternReplaceCharFilter,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchField,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerLimits,SearchIndexerSkill,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchResourceEncryptionKey,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SearchSuggester,SentimentSkill,SentimentSkillLanguage,ShaperSkill,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkill,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopAnalyzer,StopwordsList,SynonymMap,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkill,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature,WebApiSkill
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -90,6 +90,9 @@ directive:
     - rename-model:
         from: GetIndexStatisticsResult
         to: SearchIndexStatistics
+    - rename-model:
+        from: Suggester
+        to: SearchSuggester
 ```
 
 ---
@@ -292,4 +295,31 @@ directive:
       param.type = "string";
       param.description = $.Answers.description;
       delete param["$ref"];
+```
+
+### Remove applicationId from being required in AzureActiveDirectoryApplicationCredentials
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.AzureActiveDirectoryApplicationCredentials
+    transform: >
+      delete $.required;
+```
+
+### Client side rename of SearchResourceEncryptionKey's vaultUri to vaultUrl
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchResourceEncryptionKey
+    transform: >
+      $.properties.keyVaultUri["x-ms-client-name"] = "vaultUrl";
+```
+
+### Remove Suggester's SearchMode from being required
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchSuggester
+    transform: >
+      $.required = [ "name", "sourceFields" ];
 ```
