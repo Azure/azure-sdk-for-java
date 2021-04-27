@@ -1007,9 +1007,9 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.uploadWithResponse(Utility
+        return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.parallelUploadWithResponse(Utility
                 .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE, true),
-            length, offset, requestConditions, context), timeout);
+            offset, null, requestConditions, context), timeout);
     }
 
     /**

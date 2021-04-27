@@ -269,6 +269,25 @@ class FileAPITests extends APISpec {
         downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
     }
 
+    @Unroll
+    def "Upload range greater than max put range"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length));
+
+        when:
+        primaryFileClient.upload(data, length)
+
+        then:
+        notThrown(Exception)
+
+        where:
+        _ || length
+        _ || 4 * Constants.MB // max put range
+        _ || 5 * Constants.MB
+
+    }
+
     def "Upload data error"() {
         when:
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)

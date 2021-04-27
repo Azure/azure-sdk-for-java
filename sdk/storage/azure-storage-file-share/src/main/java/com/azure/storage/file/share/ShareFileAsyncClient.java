@@ -21,11 +21,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.ProgressReporter;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.UploadBufferPool;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
@@ -69,6 +74,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuples;
 import reactor.util.retry.Retry;
 
 import java.io.File;
@@ -89,7 +95,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -120,6 +130,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public class ShareFileAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareFileAsyncClient.class);
     static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
+    static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
     private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
 
     private final AzureFileStorageImpl azureFileStorageClient;
@@ -1310,18 +1321,45 @@ public class ShareFileAsyncClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.SINGLE) //TODO communicate no longer using length
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, offset, requestConditions,
+            return withContext(context -> parallelUploadWithResponse(data, offset, null, requestConditions,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
+    Mono<Response<ShareFileUploadInfo>> parallelUploadWithResponse(Flux<ByteBuffer> data, Long offset,
+        ParallelTransferOptions transferOptions, ShareRequestConditions requestConditions, Context context) {
+        try {
+            StorageImplUtils.assertNotNull("data", data);
+            ShareRequestConditions validatedRequestConditions = requestConditions == null
+                ? new ShareRequestConditions()
+                : requestConditions;
+            final ParallelTransferOptions validatedParallelTransferOptions =
+                ModelHelper.populateAndApplyDefaults(transferOptions);
+
+            Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks = (stream) ->
+                uploadInChunks(stream, offset, validatedParallelTransferOptions, validatedRequestConditions, context);
+
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) ->
+                uploadRange(ProgressReporter.addProgressReporting(
+                        stream, validatedParallelTransferOptions.getProgressReceiver()),
+                    length, offset, validatedRequestConditions, context);
+
+            return UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, uploadInChunks, uploadFull);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * One-shot upload range.
+     */
+    Mono<Response<ShareFileUploadInfo>> uploadRange(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         long rangeOffset = (offset == null) ? 0L : offset;
@@ -1332,6 +1370,56 @@ public class ShareFileAsyncClient {
                 length, data, null, null, requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::uploadResponse);
+    }
+
+    Mono<Response<ShareFileUploadInfo>> uploadInChunks(Flux<ByteBuffer> data, Long offset,
+        ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        AtomicLong totalProgress = new AtomicLong();
+        Lock progressLock = new ReentrantLock();
+
+        // Validation done in the constructor.
+        /*
+        We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
+        others are being sent.
+         */
+        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
+            parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
+
+        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
+
+        return chunkedSource.concatMap(pool::write)
+            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
+            .concatWith(Flux.defer(pool::flush))
+            .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
+            /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
+            /* As an example, data consists of ByteBuffers of length 10-10-5.
+               In the map above we transform the initial ByteBuffer to a tuple3 of buff, 10, 0.
+               Scan will emit that as is, then accumulate the tuple for the next emission.
+               On the second iteration, the middle ByteBuffer gets transformed to buff, 10, 10+0
+               (from previous emission). Scan emits that, and on the last iteration, the last ByteBuffer gets
+               transformed to buff, 5, 10+10 (from previous emission). */
+            .scan((result, source) -> {
+                BufferAggregator bufferAggregator = source.getT1();
+                long currentBufferLength = bufferAggregator.length();
+                long lastBytesWritten = result.getT2();
+                long lastOffset = result.getT3();
+
+                return Tuples.of(bufferAggregator, currentBufferLength, lastBytesWritten + lastOffset);
+            })
+            .flatMapSequential(tuple3 -> {
+                BufferAggregator bufferAggregator = tuple3.getT1();
+                long currentBufferLength = bufferAggregator.length();
+                long currentOffset = tuple3.getT3() + offset;
+                // Report progress as necessary.
+                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
+                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
+                    progressLock, totalProgress);
+                return uploadRange(progressData, currentBufferLength, currentOffset, requestConditions, context)
+                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
+                    .flux();
+            }, parallelTransferOptions.getMaxConcurrency())
+            .last();
     }
 
     /**
