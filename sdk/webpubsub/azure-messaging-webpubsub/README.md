@@ -1,4 +1,4 @@
-# Azure Web PubSub client library for Java
+# Azure Web PubSub Service client library for Java
 
 Azure Web PubSub client library for Java allows sending messages to Web PubSub. Azure Web PubSub service enables you to
 build real-time messaging web applications using WebSockets and the publish-subscribe pattern. Any platform  
