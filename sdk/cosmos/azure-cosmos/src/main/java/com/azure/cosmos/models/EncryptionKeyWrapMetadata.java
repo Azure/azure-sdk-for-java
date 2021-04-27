@@ -31,7 +31,7 @@ public final class EncryptionKeyWrapMetadata {
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(EncryptionKeyWrapMetadata source) {
         this.type = source.type;
-        this.algorithm = source.algorithm;
+        this.name = source.name;
         this.value = source.value;
     }
 
@@ -43,25 +43,20 @@ public final class EncryptionKeyWrapMetadata {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(String name, String value) {
-        this("custom", name, value, null);
+        this("custom", name, value);
     }
 
-    private EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
+    private EncryptionKeyWrapMetadata(String type, String name, String value) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
         this.type = type;
         this.name = name;
         this.value = value;
-        this.algorithm = algorithm;
     }
 
     @JsonProperty("type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String type;
-
-    @JsonProperty("algorithm")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String algorithm;
 
     @JsonProperty("value")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -107,13 +102,13 @@ public final class EncryptionKeyWrapMetadata {
         if (obj == null || getClass() != obj.getClass()) return false;
         EncryptionKeyWrapMetadata that = (EncryptionKeyWrapMetadata) obj;
         return Objects.equals(type, that.type) &&
-            Objects.equals(algorithm, that.algorithm) &&
+            Objects.equals(name, that.name) &&
             Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, algorithm, value);
+        return Objects.hash(type, name, value);
     }
 
 }

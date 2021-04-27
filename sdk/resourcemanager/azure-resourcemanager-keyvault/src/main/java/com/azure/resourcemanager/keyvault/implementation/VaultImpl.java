@@ -33,9 +33,6 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -546,66 +543,6 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         @Override
         public List<String> requiredDnsZoneNames() {
             return Collections.unmodifiableList(innerModel.requiredZoneNames());
-        }
-    }
-
-    private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
-        private final PrivateEndpointConnectionInner innerModel;
-
-        private final PrivateEndpoint privateEndpoint;
-        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
-            privateLinkServiceConnectionState;
-        private final PrivateEndpointConnectionProvisioningState provisioningState;
-
-        private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
-            this.innerModel = innerModel;
-
-            this.privateEndpoint = innerModel.privateEndpoint() == null
-                ? null
-                : new PrivateEndpoint(innerModel.privateEndpoint().id());
-            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
-                ? null
-                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
-                innerModel.privateLinkServiceConnectionState().status() == null
-                    ? null
-                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
-                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
-                innerModel.privateLinkServiceConnectionState().description(),
-                innerModel.privateLinkServiceConnectionState().actionRequired());
-            this.provisioningState = innerModel.provisioningState() == null
-                ? null
-                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
-        }
-
-        @Override
-        public String id() {
-            return innerModel.id();
-        }
-
-        @Override
-        public String name() {
-            return innerModel.name();
-        }
-
-        @Override
-        public String type() {
-            return innerModel.type();
-        }
-
-        @Override
-        public PrivateEndpoint privateEndpoint() {
-            return privateEndpoint;
-        }
-
-        @Override
-        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
-            privateLinkServiceConnectionState() {
-            return privateLinkServiceConnectionState;
-        }
-
-        @Override
-        public PrivateEndpointConnectionProvisioningState provisioningState() {
-            return provisioningState;
         }
     }
 }

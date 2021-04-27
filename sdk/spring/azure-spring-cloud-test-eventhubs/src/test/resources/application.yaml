@@ -2,9 +2,9 @@ spring:
   cloud:
     azure:
       eventhub:
-        connection-string: ${EVENTHUB_CONNECTION_STRING_TEST_EVENTHUBS}
-        checkpoint-storage-account: ${STORAGE_ACCOUNT_TEST_EVENTHUBS}
-        checkpoint-access-key: ${STORAGE_ACCOUNT_KEY_TEST_EVENTHUBS}
+        connection-string: ${EVENTHUB_CONNECTION_STRING_TEST_EVENTHUB}
+        checkpoint-storage-account: ${STORAGE_ACCOUNT_TEST_EVENTHUB}
+        checkpoint-access-key: ${STORAGE_ACCOUNT_KEY_TEST_EVENTHUB}
     stream:
       function:
         definition: consume;supply

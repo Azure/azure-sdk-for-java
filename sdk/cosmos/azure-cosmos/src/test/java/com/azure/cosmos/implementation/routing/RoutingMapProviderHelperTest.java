@@ -4,12 +4,11 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.IRoutingMapProvider;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import org.apache.commons.lang3.StringUtils;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -166,13 +165,13 @@ public class RoutingMapProviderHelperTest {
 
         Mockito.doAnswer(invocationOnMock -> {
             @SuppressWarnings("rawtypes")
-            Range range = invocationOnMock.getArgumentAt(2, Range.class);
+            Range range = invocationOnMock.getArgument(2, Range.class);
             return Mono.just(new Utils.ValueHolder<>(resultMap.get(range)));
-        }).when(routingMapProviderMock).tryGetOverlappingRangesAsync(Matchers.any(MetadataDiagnosticsContext.class),
-                                                                     Matchers.anyString(),
-                                                                     Matchers.any(),
-                                                                     Matchers.anyBoolean(),
-                                                                     Matchers.anyMapOf(String.class, Object.class));
+        }).when(routingMapProviderMock).tryGetOverlappingRangesAsync(ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.anyBoolean(),
+            ArgumentMatchers.any());
 
         Mono<List<PartitionKeyRange>> overlappingRanges;
         overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
