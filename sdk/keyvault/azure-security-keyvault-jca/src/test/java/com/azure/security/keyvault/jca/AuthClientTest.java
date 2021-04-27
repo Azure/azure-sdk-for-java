@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.URLEncoder;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * The JUnit test for the AuthClient.
  */
+@Disabled
 public class AuthClientTest {
 
     /**

@@ -4,21 +4,20 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 import com.azure.resourcemanager.mediaservices.models.AccountFilter;
 import com.azure.resourcemanager.mediaservices.models.FilterTrackSelection;
 import com.azure.resourcemanager.mediaservices.models.FirstQuality;
 import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
-import com.azure.resourcemanager.mediaservices.models.SystemData;
 import java.util.Collections;
 import java.util.List;
 
 public final class AccountFilterImpl implements AccountFilter, AccountFilter.Definition, AccountFilter.Update {
     private AccountFilterInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -57,7 +56,7 @@ public final class AccountFilterImpl implements AccountFilter, AccountFilter.Def
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -93,7 +92,7 @@ public final class AccountFilterImpl implements AccountFilter, AccountFilter.Def
         return this;
     }
 
-    AccountFilterImpl(String name, MediaservicesManager serviceManager) {
+    AccountFilterImpl(String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new AccountFilterInner();
         this.serviceManager = serviceManager;
         this.filterName = name;
@@ -123,7 +122,8 @@ public final class AccountFilterImpl implements AccountFilter, AccountFilter.Def
         return this;
     }
 
-    AccountFilterImpl(AccountFilterInner innerObject, MediaservicesManager serviceManager) {
+    AccountFilterImpl(
+        AccountFilterInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 

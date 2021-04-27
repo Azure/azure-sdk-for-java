@@ -58,7 +58,7 @@ public final class QueriesClientImpl implements QueriesClient {
     private interface QueriesService {
         @Headers({"Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.CostManagement/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QueryResultInner>> usage(
             @HostParam("$host") String endpoint,
@@ -129,7 +129,7 @@ public final class QueriesClientImpl implements QueriesClient {
                     service
                         .usage(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -330,7 +330,7 @@ public final class QueriesClientImpl implements QueriesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

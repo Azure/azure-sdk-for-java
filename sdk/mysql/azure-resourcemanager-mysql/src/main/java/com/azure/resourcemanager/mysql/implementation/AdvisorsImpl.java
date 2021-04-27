@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.AdvisorsClient;
 import com.azure.resourcemanager.mysql.fluent.models.AdvisorInner;
 import com.azure.resourcemanager.mysql.models.Advisor;
@@ -21,9 +20,9 @@ public final class AdvisorsImpl implements Advisors {
 
     private final AdvisorsClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public AdvisorsImpl(AdvisorsClient innerClient, MySqlManager serviceManager) {
+    public AdvisorsImpl(AdvisorsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -54,19 +53,19 @@ public final class AdvisorsImpl implements Advisors {
 
     public PagedIterable<Advisor> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<AdvisorInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new AdvisorImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Advisor> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<AdvisorInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new AdvisorImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
     }
 
     private AdvisorsClient serviceClient() {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

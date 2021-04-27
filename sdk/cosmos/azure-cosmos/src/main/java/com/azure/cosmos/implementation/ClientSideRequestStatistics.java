@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -64,6 +63,7 @@ public class ClientSideRequestStatistics {
         this.connectionMode = ConnectionMode.DIRECT;
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
+        this.retryContext = new RetryContext();
     }
 
     public Duration getDuration() {
@@ -83,7 +83,6 @@ public class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
-            this.retryContext = new RetryContext(request.requestContext.retryContext);
             if (request.requestContext.locationEndpointToRoute != null) {
                 locationEndPoint = request.requestContext.locationEndpointToRoute;
             }
@@ -122,11 +121,8 @@ public class ClientSideRequestStatistics {
             URI locationEndPoint = null;
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
-                if (rxDocumentServiceRequest.requestContext.retryContext != null) {
-                    rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = Instant.now();
-                    this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
-                }
             }
+            this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
                 this.regionsContacted.add(locationEndPoint);
@@ -225,11 +221,12 @@ public class ClientSideRequestStatistics {
         return this.serializationDiagnosticsContext;
     }
 
-    public void recordRetryContext(RxDocumentServiceRequest request) {
-        if(request.requestContext.retryContext != null) {
-            request.requestContext.retryContext.retryEndTime =  Instant.now();
-            this.retryContext = new RetryContext(request.requestContext.retryContext);
-        }
+    public void recordRetryContextEndTime() {
+        this.retryContext.updateEndTime();
+    }
+
+    public RetryContext getRetryContext() {
+        return retryContext;
     }
 
     public static class StoreResponseStatistics {

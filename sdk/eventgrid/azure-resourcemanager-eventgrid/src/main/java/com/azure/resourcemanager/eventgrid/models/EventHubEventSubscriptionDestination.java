@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** Information about the event hub destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
@@ -27,12 +26,6 @@ public class EventHubEventSubscriptionDestination extends EventSubscriptionDesti
      */
     @JsonProperty(value = "properties.resourceId")
     private String resourceId;
-
-    /*
-     * Delivery attribute details.
-     */
-    @JsonProperty(value = "properties.deliveryAttributeMappings")
-    private List<DeliveryAttributeMapping> deliveryAttributeMappings;
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of an
@@ -57,27 +50,6 @@ public class EventHubEventSubscriptionDestination extends EventSubscriptionDesti
     }
 
     /**
-     * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
-     * @return the deliveryAttributeMappings value.
-     */
-    public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
-        return this.deliveryAttributeMappings;
-    }
-
-    /**
-     * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
-     * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
-     * @return the EventHubEventSubscriptionDestination object itself.
-     */
-    public EventHubEventSubscriptionDestination withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
-        this.deliveryAttributeMappings = deliveryAttributeMappings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -85,8 +57,5 @@ public class EventHubEventSubscriptionDestination extends EventSubscriptionDesti
     @Override
     public void validate() {
         super.validate();
-        if (deliveryAttributeMappings() != null) {
-            deliveryAttributeMappings().forEach(e -> e.validate());
-        }
     }
 }

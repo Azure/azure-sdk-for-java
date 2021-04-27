@@ -6,25 +6,42 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
 public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
+
+    @Configuration
+    public static class WebOAuth2ClientConfiguration {
+
+        @Bean
+        OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
+            return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+        }
+
+        @Bean
+        public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
+            OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+            return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(oAuth2AuthorizedClientService);
+        }
+    }
 
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
     private static final String CLIENT_CREDENTIAL_ACCESS_TOKEN =
@@ -49,10 +66,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
     private Authentication mockPrincipal;
     private OAuth2AuthorizedClient oAuth2AuthorizedClient;
     private InMemoryClientRegistrationRepository clientRegistrationsRepo;
-    private AADResourceServerOAuth2AuthorizedClientRepository authorizedRepo;
     private InMemoryOAuth2AuthorizedClientService inMemoryOAuth2AuthorizedClientService;
-    private HttpServletRequest mockRequest = mock(MockHttpServletRequest.class);
-    private HttpServletResponse mockResponse = mock(MockHttpServletResponse.class);
 
     @BeforeEach
     public void setup() {
@@ -66,7 +80,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
                 + ".com/xxxx-xxxxx-xxxx/.default",
             AAD_PROPERTY_PREFIX + "authorization-clients.fake.authorization-grant-type = client_credentials"
         );
-        context.register(AADResourceServerClientConfiguration.class);
+        context.register(WebOAuth2ClientConfiguration.class, AADResourceServerClientConfiguration.class);
         context.refresh();
         clientRegistrationsRepo = context.getBean(InMemoryClientRegistrationRepository.class);
         fakeClientRegistration = ClientRegistration
@@ -81,9 +95,7 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
         mockPrincipal = mock(JwtAuthenticationToken.class);
         when(mockPrincipal.getName()).thenReturn("fake-name");
         inMemoryOAuth2AuthorizedClientService = new InMemoryOAuth2AuthorizedClientService(clientRegistrationsRepo);
-        authorizedRepo = new AADResourceServerOAuth2AuthorizedClientRepository(inMemoryOAuth2AuthorizedClientService,
-            clientRegistrationsRepo);
-        authorizedRepo.saveAuthorizedClient(oAuth2AuthorizedClient, mockPrincipal, mockRequest, mockResponse);
+        inMemoryOAuth2AuthorizedClientService.saveAuthorizedClient(oAuth2AuthorizedClient, mockPrincipal);
     }
 
     @Test
@@ -96,16 +108,16 @@ public class AADOAuth2AuthorizedClientCredentialRepositoryTest {
 
     @Test
     public void testLoadAuthorizedClient() {
-        OAuth2AuthorizedClient authorizedClient = authorizedRepo.loadAuthorizedClient(
-            "fake", mockPrincipal, mockRequest);
+        OAuth2AuthorizedClient authorizedClient = inMemoryOAuth2AuthorizedClientService.loadAuthorizedClient(
+            "fake", mockPrincipal.getName());
         Assertions.assertNotNull(authorizedClient);
         Assertions.assertEquals(CLIENT_CREDENTIAL_ACCESS_TOKEN, authorizedClient.getAccessToken().getTokenValue());
     }
 
     @Test
     public void testLoadNotExistAuthorizedClient() {
-        OAuth2AuthorizedClient authorizedClient = authorizedRepo.loadAuthorizedClient(
-            "fake-2", mockPrincipal, mockRequest);
+        OAuth2AuthorizedClient authorizedClient = inMemoryOAuth2AuthorizedClientService.loadAuthorizedClient(
+            "fake-2", mockPrincipal.getName());
         Assertions.assertNull(authorizedClient);
     }
 

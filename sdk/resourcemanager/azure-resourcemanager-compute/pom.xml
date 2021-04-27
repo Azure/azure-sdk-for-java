@@ -123,12 +123,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.cverges.expect4j</groupId>
-      <artifactId>expect4j</artifactId>
-      <version>1.6</version> <!-- {x-version-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.5</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
@@ -218,6 +212,8 @@
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
+          <skip>true</skip>
+
           <analysisConfiguration>
             <revapi.ignore>
               <item>

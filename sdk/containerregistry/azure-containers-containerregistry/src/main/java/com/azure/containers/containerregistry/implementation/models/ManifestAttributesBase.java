@@ -4,73 +4,68 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.containers.containerregistry.models.ContentProperties;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Manifest details. */
-@Fluent
+@Immutable
 public final class ManifestAttributesBase {
     /*
      * Manifest
      */
-    @JsonProperty(value = "digest", required = true)
+    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * Image size
      */
-    @JsonProperty(value = "imageSize")
+    @JsonProperty(value = "imageSize", access = JsonProperty.Access.WRITE_ONLY)
     private Long size;
 
     /*
      * Created time
      */
-    @JsonProperty(value = "createdTime")
+    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Last update time
      */
-    @JsonProperty(value = "lastUpdateTime")
+    @JsonProperty(value = "lastUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture", required = true)
+    @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
     private String cpuArchitecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os", required = true)
+    @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
     private String operatingSystem;
 
     /*
-     * Media type
+     * List of manifest attributes details
      */
-    @JsonProperty(value = "mediaType")
-    private String manifestMediaType;
-
-    /*
-     * Config blob media type
-     */
-    @JsonProperty(value = "configMediaType")
-    private String configMediaType;
+    @JsonProperty(value = "references", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManifestAttributesManifestReferences> references;
 
     /*
      * List of tags
      */
-    @JsonProperty(value = "tags", required = true)
+    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tags;
 
     /*
-     * Changeable attributes
+     * Writeable properties of the resource
      */
-    @JsonProperty(value = "changeableAttributes")
-    private ContentProperties manifestProperties;
+    @JsonProperty(value = "changeableAttributes", access = JsonProperty.Access.WRITE_ONLY)
+    private ContentProperties writeableProperties;
 
     /**
      * Get the digest property: Manifest.
@@ -79,17 +74,6 @@ public final class ManifestAttributesBase {
      */
     public String getDigest() {
         return this.digest;
-    }
-
-    /**
-     * Set the digest property: Manifest.
-     *
-     * @param digest the digest value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setDigest(String digest) {
-        this.digest = digest;
-        return this;
     }
 
     /**
@@ -102,34 +86,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the size property: Image size.
-     *
-     * @param size the size value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setSize(Long size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
      * Get the createdOn property: Created time.
      *
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
-    }
-
-    /**
-     * Set the createdOn property: Created time.
-     *
-     * @param createdOn the createdOn value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
     }
 
     /**
@@ -142,34 +104,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the lastUpdatedOn property: Last update time.
-     *
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-        return this;
-    }
-
-    /**
      * Get the cpuArchitecture property: CPU architecture.
      *
      * @return the cpuArchitecture value.
      */
     public String getCpuArchitecture() {
         return this.cpuArchitecture;
-    }
-
-    /**
-     * Set the cpuArchitecture property: CPU architecture.
-     *
-     * @param cpuArchitecture the cpuArchitecture value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setCpuArchitecture(String cpuArchitecture) {
-        this.cpuArchitecture = cpuArchitecture;
-        return this;
     }
 
     /**
@@ -182,54 +122,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the operatingSystem property: Operating system.
+     * Get the references property: List of manifest attributes details.
      *
-     * @param operatingSystem the operatingSystem value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the references value.
      */
-    public ManifestAttributesBase setOperatingSystem(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
-    }
-
-    /**
-     * Get the manifestMediaType property: Media type.
-     *
-     * @return the manifestMediaType value.
-     */
-    public String getManifestMediaType() {
-        return this.manifestMediaType;
-    }
-
-    /**
-     * Set the manifestMediaType property: Media type.
-     *
-     * @param manifestMediaType the manifestMediaType value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setManifestMediaType(String manifestMediaType) {
-        this.manifestMediaType = manifestMediaType;
-        return this;
-    }
-
-    /**
-     * Get the configMediaType property: Config blob media type.
-     *
-     * @return the configMediaType value.
-     */
-    public String getConfigMediaType() {
-        return this.configMediaType;
-    }
-
-    /**
-     * Set the configMediaType property: Config blob media type.
-     *
-     * @param configMediaType the configMediaType value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setConfigMediaType(String configMediaType) {
-        this.configMediaType = configMediaType;
-        return this;
+    public List<ManifestAttributesManifestReferences> getReferences() {
+        return this.references;
     }
 
     /**
@@ -242,33 +140,11 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the tags property: List of tags.
+     * Get the writeableProperties property: Writeable properties of the resource.
      *
-     * @param tags the tags value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the writeableProperties value.
      */
-    public ManifestAttributesBase setTags(List<String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the manifestProperties property: Changeable attributes.
-     *
-     * @return the manifestProperties value.
-     */
-    public ContentProperties getManifestProperties() {
-        return this.manifestProperties;
-    }
-
-    /**
-     * Set the manifestProperties property: Changeable attributes.
-     *
-     * @param manifestProperties the manifestProperties value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setManifestProperties(ContentProperties manifestProperties) {
-        this.manifestProperties = manifestProperties;
-        return this;
+    public ContentProperties getWriteableProperties() {
+        return this.writeableProperties;
     }
 }

@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionListResultInner;
@@ -22,10 +21,11 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     private final PrivateEndpointConnectionsClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     public PrivateEndpointConnectionsImpl(
-        PrivateEndpointConnectionsClient innerClient, MediaservicesManager serviceManager) {
+        PrivateEndpointConnectionsClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -207,7 +207,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

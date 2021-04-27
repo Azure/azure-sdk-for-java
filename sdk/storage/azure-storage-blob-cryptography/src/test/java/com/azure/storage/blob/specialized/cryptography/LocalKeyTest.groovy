@@ -1,7 +1,7 @@
 package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
-import com.azure.security.keyvault.keys.cryptography.LocalKeyEncryptionKeyClientBuilder
+import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder
 import com.azure.security.keyvault.keys.models.JsonWebKey
 import com.azure.security.keyvault.keys.models.KeyOperation
 import com.azure.storage.blob.BlobContainerClient
@@ -22,7 +22,7 @@ class LocalKeyTest extends APISpec {
         JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(byteKey, "AES"),
             Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
             .setId("local")
-        AsyncKeyEncryptionKey akek = new LocalKeyEncryptionKeyClientBuilder()
+        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
             .buildAsyncKeyEncryptionKey(localKey)
             .block();
 
