@@ -65,6 +65,7 @@ import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -1325,30 +1326,47 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> parallelUploadWithResponse(data, offset, null, requestConditions,
+            return withContext(context -> parallelUploadWithResponse(
+                new ShareFileUploadOptions(data)
+                    .setOffset(offset)
+                    .setRequestConditions(requestConditions),
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareFileUploadInfo>> parallelUploadWithResponse(Flux<ByteBuffer> data, Long offset,
-        ParallelTransferOptions transferOptions, ShareRequestConditions requestConditions, Context context) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options) {
         try {
-            StorageImplUtils.assertNotNull("data", data);
-            ShareRequestConditions validatedRequestConditions = requestConditions == null
+            return withContext(context -> parallelUploadWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareFileUploadInfo>> parallelUploadWithResponse(ShareFileUploadOptions options, Context context) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
                 ? new ShareRequestConditions()
-                : requestConditions;
+                : options.getRequestConditions();
             final ParallelTransferOptions validatedParallelTransferOptions =
-                ModelHelper.populateAndApplyDefaults(transferOptions);
+                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
 
             Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks = (stream) ->
-                uploadInChunks(stream, offset, validatedParallelTransferOptions, validatedRequestConditions, context);
+                uploadInChunks(stream, options.getOffset(), validatedParallelTransferOptions, validatedRequestConditions, context);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) ->
                 uploadRange(ProgressReporter.addProgressReporting(
                         stream, validatedParallelTransferOptions.getProgressReceiver()),
-                    length, offset, validatedRequestConditions, context);
+                    length, options.getOffset(), validatedRequestConditions, context);
+
+            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(),
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()), false)
+                : options.getDataFlux();
 
             return UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, uploadInChunks, uploadFull);
         } catch (RuntimeException ex) {

@@ -28,6 +28,7 @@ import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -1007,9 +1008,16 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.parallelUploadWithResponse(Utility
-                .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE, true),
-            offset, null, requestConditions, context), timeout);
+        return uploadWithResponse(
+                new ShareFileUploadOptions(data, length).setOffset(offset).setRequestConditions(requestConditions),
+                timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options, Duration timeout,
+        Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(
+            shareFileAsyncClient.parallelUploadWithResponse(options, context), timeout);
     }
 
     /**
