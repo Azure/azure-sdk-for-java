@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 
@@ -58,18 +59,29 @@ class CosmosRowConverterSpec extends UnitSpec with CosmosLoggingTrait {
   "array in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
+    val colName3 = "testCol3"
     val colVal1 = "strVal"
 
     val row = new GenericRowWithSchema(
-      Array(Seq("arrayElement1", "arrayElement2"), colVal1),
-      StructType(Seq(StructField(colName1, ArrayType(StringType, containsNull = true)), StructField(colName2, StringType))))
+      Array(
+        Seq("arrayElement1", "arrayElement2"),
+        ArrayData.toArrayData(Array(1, 2)),
+        colVal1),
+      StructType(Seq(
+        StructField(colName1, ArrayType(StringType, containsNull = false)),
+        StructField(colName2, ArrayType(IntegerType, containsNull = false)),
+        StructField(colName3, StringType))))
 
     val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isArray shouldBe true
     objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
-    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText() shouldEqual "arrayElement1"
-    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText() shouldEqual "arrayElement2"
-    objectNode.get(colName2).asText() shouldEqual colVal1
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+    objectNode.get(colName2).isArray shouldBe true
+    objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+    objectNode.get(colName3).asText shouldEqual colVal1
   }
 
   "binary in spark row" should "translate to ObjectNode" in {
