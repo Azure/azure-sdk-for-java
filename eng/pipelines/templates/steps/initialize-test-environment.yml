@@ -8,15 +8,6 @@ parameters:
   - name: AdditionalModules
     type: object
     default: []
-  - name: SDKType
-    type: string
-    default: 'client'
-  - name: UpdateVersions
-    type: string
-    default: $(ShouldRunSourceTests)
-  - name: SetVersions
-    type: string
-    default: $(TestFromSource)
   - name: CheckoutRecordings
     type: boolean
     default: false
@@ -43,15 +34,15 @@ steps:
     displayName: 'Set versions for source build'
     inputs:
       scriptPath: 'eng/versioning/set_versions.py'
-      arguments: ${{ parameters.SetVersionArguments }}
-    condition: and(succeeded(), eq(${{ parameters.SetVersions }}, 'true'))
+      arguments: '--build-type client --pst'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: PythonScript@0
-    displayName: 'Apply version settings for source tests or dev build'
+    displayName: 'Update versions for source build'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type library --build-type ${{ parameters.SDKType }} --sr'
-    condition: and(succeeded(), eq(${{ parameters.UpdateVersions }}, 'true'))
+      arguments: '--update-type library --build-type client --sr'
+    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
   - template: generate-project-list.yml
     parameters:
