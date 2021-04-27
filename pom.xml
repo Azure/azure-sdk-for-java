@@ -761,6 +761,7 @@
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>
+        <module>sdk/testbase</module>
         <module>sdk/textanalytics</module>
         <module>sdk/timeseriesinsights</module>
         <module>sdk/vmwarecloudsimple</module>
