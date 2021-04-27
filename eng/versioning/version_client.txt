@@ -90,7 +90,7 @@ com.azure:azure-messaging-servicebus;7.2.0;7.3.0-beta.2
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-mixedreality-authentication;1.0.0-beta.1;1.0.0
+com.azure:azure-mixedreality-authentication;1.0.0;1.1.0-beta.1
 com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
@@ -229,7 +229,7 @@ com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0-beta.1;1.0.
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.1;1.0.0-beta.2
