@@ -264,9 +264,11 @@ public class IdentityClient {
                 publicClientApplicationBuilder.executorService(options.getExecutorService());
             }
 
-            Set<String> set = new HashSet<>(1);
-            set.add("CP1");
-            publicClientApplicationBuilder.clientCapabilities(set);
+            if (!options.isCp1disabled()) {
+                Set<String> set = new HashSet<>(1);
+                set.add("CP1");
+                publicClientApplicationBuilder.clientCapabilities(set);
+            }
             return Mono.just(publicClientApplicationBuilder);
         }).flatMap(builder -> {
             TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
