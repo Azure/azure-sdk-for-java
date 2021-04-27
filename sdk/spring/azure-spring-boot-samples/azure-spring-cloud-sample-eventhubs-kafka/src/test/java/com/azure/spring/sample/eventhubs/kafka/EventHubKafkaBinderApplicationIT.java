@@ -3,14 +3,14 @@
 
 package com.azure.spring.sample.eventhubs.kafka;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.OutputCaptureRule;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -20,18 +20,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = EventHubKafkaBinderApplication.class)
 @AutoConfigureMockMvc
+@ExtendWith({ OutputCaptureExtension.class, MockitoExtension.class})
 public class EventHubKafkaBinderApplicationIT {
 
-    @Rule
-    public OutputCaptureRule capture = new OutputCaptureRule();
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void testSendAndReceiveMessage() throws Exception {
+    public void testSendAndReceiveMessage(CapturedOutput capturedOutput) throws Exception {
         Thread.sleep(10000);
         String message = UUID.randomUUID().toString();
         mvc.perform(post("/messages?message=" + message)).andExpect(status().isOk())
@@ -40,7 +38,7 @@ public class EventHubKafkaBinderApplicationIT {
 
         boolean messageReceived = false;
         for (int i = 0; i < 100; i++) {
-            String output = capture.toString();
+            String output = capturedOutput.toString();
             if (output.contains(messageReceivedLog)) {
                 messageReceived = true;
                 break;
