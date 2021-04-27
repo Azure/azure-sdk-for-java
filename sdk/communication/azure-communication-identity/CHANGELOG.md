@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta1 (Unreleased)
+## 1.1.0 (Unreleased)
 
 ### Added
 - New exception `IdentityErrorResponseException` was added for more descriptive server error messages.
