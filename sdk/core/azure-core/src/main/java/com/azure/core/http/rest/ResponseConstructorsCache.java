@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * A concurrent cache of {@link Response} constructors.
  */
@@ -97,16 +99,13 @@ final class ResponseConstructorsCache {
                 return constructResponse(constructor, FIVE_PARAM_ERROR, logger, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
-                throw logger.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
+                return monoError(logger, new IllegalStateException(INVALID_PARAM_COUNT));
         }
     }
 
     private static Mono<Response<?>> constructResponse(Constructor<? extends Response<?>> constructor,
         String exceptionMessage, ClientLogger logger, Object... params) {
-        try {
-            return Mono.just(constructor.newInstance(params));
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(exceptionMessage, ex));
-        }
+        return Mono.<Response<?>>fromCallable(() -> constructor.newInstance(params))
+            .onErrorMap(ex -> logger.logExceptionAsError(new RuntimeException(exceptionMessage, ex)));
     }
 }
