@@ -403,18 +403,24 @@ public class NettyAsyncHttpClientTests {
      */
     @Test
     public void proxyAuthenticationErrorEagerlyRetries() {
+        // Create a Netty HttpClient to share backing resources that are warmed up before making a time based call.
+        reactor.netty.http.client.HttpClient warmedUpClient = reactor.netty.http.client.HttpClient.create();
+        StepVerifier.create(new NettyAsyncHttpClientBuilder(warmedUpClient).build()
+            .send(new HttpRequest(HttpMethod.GET, url(server, SHORT_BODY_PATH))))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             AtomicInteger responseHandleCount = new AtomicInteger();
-
             RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(10)));
             ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
                 .setCredentials("1", "1");
 
-            // Create an HttpPipeline where any exception has a retry delay of 5 seconds.
+            // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(retryPolicy, (context, next) -> next.process()
                     .doOnNext(ignored -> responseHandleCount.incrementAndGet()))
-                .httpClient(new NettyAsyncHttpClientBuilder().proxy(proxyOptions).build())
+                .httpClient(new NettyAsyncHttpClientBuilder(warmedUpClient).proxy(proxyOptions).build())
                 .build();
 
             // Run a reactive request verifier where it is expected to complete successfully and captures the time
