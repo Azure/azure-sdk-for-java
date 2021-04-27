@@ -35,6 +35,7 @@ stages:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
+      TestMode: 'LIVE'
       TimeoutInMinutes: 240
       Location: canadacentral
       Clouds: 'Preview'

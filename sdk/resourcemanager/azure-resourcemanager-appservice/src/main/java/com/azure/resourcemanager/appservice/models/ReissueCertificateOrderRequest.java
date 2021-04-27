@@ -126,6 +126,13 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ReissueCertificateOrderRequest withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

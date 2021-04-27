@@ -17,6 +17,7 @@ import java.util.List;
  */
 public final class SqlQuerySpec {
 
+    static final String LINE_SEPARATOR = System.getProperty("line.separator");
     private List<SqlParameter> parameters;
 
     private JsonSerializable jsonSerializable;
@@ -121,6 +122,19 @@ public final class SqlQuerySpec {
     public SqlQuerySpec setParameters(List<SqlParameter> parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    public String toPrettyString() {
+        StringBuilder sb = new StringBuilder(1000);
+        sb.append(this.getQueryText());
+        this.getParameters().forEach(p -> sb.append(LINE_SEPARATOR)
+            .append(" > param: ")
+            .append(p.getName())
+            .append(" = ")
+            .append(p.getValue(Object.class))
+        );
+
+        return sb.toString();
     }
 
     void populatePropertyBag() {

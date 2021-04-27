@@ -1876,7 +1876,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getT2().value(),
                         res.getT2().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2098,7 +2098,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             bslRequest,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2393,7 +2393,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2618,7 +2618,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getT2().value(),
                         res.getT2().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2816,7 +2816,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3018,7 +3018,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             this.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3161,7 +3161,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3317,7 +3317,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             vpnClientParams,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3606,7 +3606,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3687,7 +3687,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3761,7 +3761,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3833,7 +3833,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**

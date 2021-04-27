@@ -10,7 +10,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  * Extended options that may be passed when restoring a file system.
  */
 @Fluent
-public class FileSystemUndeleteOptions {
+public final class FileSystemUndeleteOptions {
     private final String deletedFileSystemName;
     private final String deletedFileSystemVersion;
     private String destinationFileSystemName;

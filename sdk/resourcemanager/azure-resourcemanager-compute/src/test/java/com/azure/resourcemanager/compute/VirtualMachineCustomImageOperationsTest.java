@@ -375,7 +375,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .create();
         //
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
-        deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIPAddress().fqdn(), 22, uname, password);
+        deprovisionAgentInLinuxVM(virtualMachine);
         virtualMachine.deallocate();
         virtualMachine.generalize();
         return virtualMachine;

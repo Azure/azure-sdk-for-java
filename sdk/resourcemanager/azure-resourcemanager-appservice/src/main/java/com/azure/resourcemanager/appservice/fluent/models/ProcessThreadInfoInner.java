@@ -319,6 +319,13 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ProcessThreadInfoInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

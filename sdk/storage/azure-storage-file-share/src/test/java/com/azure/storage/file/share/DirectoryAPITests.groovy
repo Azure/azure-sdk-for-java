@@ -705,4 +705,23 @@ class DirectoryAPITests extends APISpec {
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
+    @Unroll
+    def "Root directory support"() {
+        given:
+        // share:/dir1/dir2
+        def dir1Name = "dir1"
+        def dir2Name = "dir2"
+        shareClient.createDirectory(dir1Name).createSubdirectory(dir2Name)
+        ShareDirectoryClient rootDirectory = shareClient.getDirectoryClient(rootDirPath)
+
+        expect:
+        rootDirectory.exists() // can operate on root directory
+        rootDirectory.getSubdirectoryClient(dir1Name).exists() // can operate on a subdirectory
+
+        where:
+        _ | rootDirPath
+        _ | ""
+        _ | "/"
+    }
 }

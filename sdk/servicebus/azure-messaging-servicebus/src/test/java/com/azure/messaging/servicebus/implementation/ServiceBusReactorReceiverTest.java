@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -70,6 +71,8 @@ class ServiceBusReactorReceiverTest {
     private AmqpRetryPolicy retryPolicy;
     @Mock
     private ReceiveLinkHandler receiveLinkHandler;
+    @Mock
+    private AmqpConnection connection;
 
     private ServiceBusReactorReceiver reactorReceiver;
 
@@ -107,8 +110,10 @@ class ServiceBusReactorReceiverTest {
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
 
-        reactorReceiver = new ServiceBusReactorReceiver(ENTITY_PATH, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider, Duration.ofSeconds(20), retryPolicy);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+
+        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, receiveLinkHandler,
+            tokenManager, reactorProvider, Duration.ofSeconds(20), retryPolicy);
     }
 
     @AfterEach
