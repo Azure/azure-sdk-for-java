@@ -11,18 +11,22 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Supplier;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A concurrent cache of {@link Response} constructors.
  */
 final class ResponseConstructorsCache {
+    private static final String THREE_PARAM_ERROR = "Failed to deserialize 3-parameter response.";
+    private static final String FOUR_PARAM_ERROR = "Failed to deserialize 4-parameter response.";
+    private static final String FIVE_PARAM_ERROR = "Failed to deserialize 5-parameter response.";
+    private static final String INVALID_PARAM_COUNT = "Response constructor with expected parameters not found.";
+
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
     private final Map<Class<?>, Constructor<? extends Response<?>>> cache = new ConcurrentHashMap<>();
 
@@ -39,14 +43,11 @@ final class ResponseConstructorsCache {
     /**
      * Identify the most specific constructor for the given response class.
      *
-     * The most specific constructor is looked up following order:
-     * 1. (httpRequest, statusCode, headers, body, decodedHeaders)
-     * 2. (httpRequest, statusCode, headers, body)
-     * 3. (httpRequest, statusCode, headers)
+     * The most specific constructor is looked up following order: 1. (httpRequest, statusCode, headers, body,
+     * decodedHeaders) 2. (httpRequest, statusCode, headers, body) 3. (httpRequest, statusCode, headers)
      *
-     * Developer Note: This method logic can be easily replaced with Java.Stream
-     * and associated operators but we're using basic sort and loop constructs
-     * here as this method is in hot path and Stream route is consuming a fair
+     * Developer Note: This method logic can be easily replaced with Java.Stream and associated operators but we're
+     * using basic sort and loop constructs here as this method is in hot path and Stream route is consuming a fair
      * amount of resources.
      *
      * @param responseClass the response class
@@ -79,8 +80,7 @@ final class ResponseConstructorsCache {
      * @return an instance of a {@link Response} implementation
      */
     Mono<Response<?>> invoke(final Constructor<? extends Response<?>> constructor,
-        final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-        final Object bodyAsObject) {
+        final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
@@ -89,53 +89,22 @@ final class ResponseConstructorsCache {
         final int paramCount = constructor.getParameterCount();
         switch (paramCount) {
             case 3:
-                try {
-                    return Mono.just(constructor.newInstance(httpRequest,
-                        responseStatusCode,
-                        responseHeaders));
-                } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                    throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 3-parameter"
-                        + " response. ", e));
-                }
+                return constructResponse(constructor, THREE_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                    responseHeaders);
             case 4:
-                try {
-                    return Mono.just(constructor.newInstance(httpRequest,
-                        responseStatusCode,
-                        responseHeaders,
-                        bodyAsObject));
-                } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                    throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 4-parameter"
-                        + " response. ", e));
-                }
+                return constructResponse(constructor, FOUR_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                    responseHeaders, bodyAsObject);
             case 5:
-                return decodedResponse.getDecodedHeaders()
-                    .map((Function<Object, Response<?>>) decodedHeaders -> {
-                        try {
-                            return constructor.newInstance(httpRequest,
-                                responseStatusCode,
-                                responseHeaders,
-                                bodyAsObject,
-                                decodedHeaders);
-                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 5-parameter"
-                                + " response with decoded headers. ", e));
-                        }
-                    })
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
-                        try {
-                            return Mono.just(constructor.newInstance(httpRequest,
-                                responseStatusCode,
-                                responseHeaders,
-                                bodyAsObject,
-                                null));
-                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw logger.logExceptionAsError(new RuntimeException(
-                                "Failed to deserialize 5-parameter response without decoded headers.", e));
-                        }
-                    }));
+                return constructResponse(constructor, FIVE_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                    responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
-                throw logger.logExceptionAsError(
-                    new IllegalStateException("Response constructor with expected parameters not found."));
+                return monoError(logger, new IllegalStateException(INVALID_PARAM_COUNT));
         }
+    }
+
+    private static Mono<Response<?>> constructResponse(Constructor<? extends Response<?>> constructor,
+        String exceptionMessage, ClientLogger logger, Object... params) {
+        return Mono.<Response<?>>fromCallable(() -> constructor.newInstance(params))
+            .onErrorMap(ex -> logger.logExceptionAsError(new RuntimeException(exceptionMessage, ex)));
     }
 }
