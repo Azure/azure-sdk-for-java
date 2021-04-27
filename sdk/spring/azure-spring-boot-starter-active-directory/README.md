@@ -16,6 +16,18 @@ The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provi
 - [Environment checklist][environment_checklist]
 - [Register an application in Azure Portal][register_an_application_in_portal]
 
+### Include the package
+Please refer to [Adding the azure-spring-boot-bom BOM] to add dependency management item.
+
+After adding the azure spring boot BOM, Azure spring boot libraries included in the BOM are now available to be 
+added as a dependency without listing the artifact's version.
+```xml
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+</dependency>
+```
+
 ## Key concepts
 
 A `web application` is any web based application that allows user to login, whereas a `resource server` will either accept or deny access after validating access_token. We will cover 4 scenarios in this guide:
@@ -42,19 +54,16 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 
 * Step 2: Add the following dependencies in you pom.xml.
 
-    [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
     ```xml
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
     ```
-    [//]: # "{x-version-update-end}"
    
 * Step 3: Add properties in application.yml. These values should be got in [prerequisite].
     ```yaml
@@ -102,19 +111,16 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 
 * Step 2: Add the following dependencies in you pom.xml.
 
-    [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
     ```xml
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
     ```
-    [//]: # "{x-version-update-end}"
 
 * Step 3: Add properties in application.yml:
     ```yaml
@@ -156,19 +162,16 @@ To use **aad-starter** in this scenario, we need these steps:
 
 * Step 1: Add the following dependencies in you pom.xml.
 
-    [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
     ```xml
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
     ```
-    [//]: # "{x-version-update-end}"
 
 * Step 2: Add properties in application.yml:
     ```yaml
@@ -218,12 +221,10 @@ To use **aad-starter** in this scenario, we need these steps:
 
 * Step 1: Add the following dependencies in you pom.xml.
 
-    [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
     ```xml
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -234,7 +235,6 @@ To use **aad-starter** in this scenario, we need these steps:
         <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
     ```
-    [//]: # "{x-version-update-end}"
 
 * Step 2: Add properties in application.yml:
     ```yaml
@@ -585,6 +585,7 @@ Please follow [instructions here] to build from source or contribute.
 [prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
 [Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Adding the azure-spring-boot-bom BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom
 [Conditional Access]: https://docs.microsoft.com/azure/active-directory/conditional-access
 [Grant Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/concept-conditional-access-grant
 [Block Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-block-access
