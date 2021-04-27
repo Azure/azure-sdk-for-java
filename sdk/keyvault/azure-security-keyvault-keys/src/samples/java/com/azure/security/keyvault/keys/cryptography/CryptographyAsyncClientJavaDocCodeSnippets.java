@@ -220,14 +220,16 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
                     signResult.getSignature().length, signResult.getAlgorithm()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte
 
+        byte[] signature = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte
         byte[] myData = new byte[100];
         new Random(0x1234567L).nextBytes(myData);
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
         messageDigest.update(myData);
         byte[] myDigest = messageDigest.digest();
-        byte[] signature = new byte[100];
 
+        // A signature can be obtained from the SignResult returned by the CryptographyAsyncClient.sign() operation.
         cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, myDigest, signature)
             .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(verifyResult ->
@@ -287,11 +289,13 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
                     signResult.getSignature().length, signResult.getAlgorithm()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
 
+        byte[] signature = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
         byte[] myData = new byte[100];
         new Random(0x1234567L).nextBytes(myData);
-        byte[] signature = new byte[100];
 
+        // A signature can be obtained from the SignResult returned by the CryptographyAsyncClient.sign() operation.
         cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, myData, signature)
             .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(verifyResult ->
