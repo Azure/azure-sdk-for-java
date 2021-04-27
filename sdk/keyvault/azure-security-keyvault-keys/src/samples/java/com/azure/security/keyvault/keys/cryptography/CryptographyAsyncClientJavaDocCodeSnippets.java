@@ -25,10 +25,10 @@ import java.util.Random;
  * This class contains code samples for generating javadocs through doclets for {@link KeyAsyncClient}.
  */
 public final class CryptographyAsyncClientJavaDocCodeSnippets {
-    private String key1 = "key1";
-    private String key2 = "key2";
-    private String value1 = "val1";
-    private String value2 = "val2";
+    private final String key1 = "key1";
+    private final String key2 = "key2";
+    private final String value1 = "val1";
+    private final String value2 = "val2";
 
     /**
      * Generates code sample for creating a {@link KeyAsyncClient}.
@@ -107,6 +107,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKey
         cryptographyAsyncClient.getKey()
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(key -> System.out.printf("Key returned with name: %s, and id: %s.\n", key.getName(),
                 key.getId()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKey
@@ -120,6 +121,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKeyWithResponse
         cryptographyAsyncClient.getKeyWithResponse()
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(keyResponse -> System.out.printf("Key returned with name: %s, and id: %s.\n",
                 keyResponse.getValue().getName(), keyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKeyWithResponse
@@ -137,6 +139,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(plaintext);
 
         cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
@@ -153,6 +156,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters(plaintextBytes, iv);
 
         cryptographyAsyncClient.encrypt(encryptParameters)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
@@ -171,6 +175,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(ciphertext);
 
         cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, ciphertext)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length: %d\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
@@ -186,6 +191,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         DecryptParameters decryptParameters = DecryptParameters.createA128CbcParameters(ciphertextBytes, iv);
 
         cryptographyAsyncClient.decrypt(decryptParameters)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length: %d.\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
@@ -208,6 +214,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         byte[] digest = md.digest();
 
         cryptographyAsyncClient.sign(SignatureAlgorithm.ES256, digest)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(signResult ->
                 System.out.printf("Received signature of length: %d, with algorithm: %s.\n",
                     signResult.getSignature().length, signResult.getAlgorithm()));
@@ -222,6 +229,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         byte[] signature = new byte[100];
 
         cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, myDigest, signature)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(verifyResult ->
                 System.out.printf("Verification status: %s.\n", verifyResult.isValid()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte
@@ -240,6 +248,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(key);
 
         cryptographyAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, key)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(wrapResult ->
                 System.out.printf("Received encrypted key of length: %d, with algorithm: %s.\n",
                     wrapResult.getEncryptedKey().length, wrapResult.getAlgorithm().toString()));
@@ -250,6 +259,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(key);
 
         cryptographyAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToWrap)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(wrapResult ->
                 cryptographyAsyncClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, wrapResult.getEncryptedKey())
                     .subscribe(keyUnwrapResult ->
@@ -271,6 +281,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         new Random(0x1234567L).nextBytes(data);
 
         cryptographyAsyncClient.sign(SignatureAlgorithm.ES256, data)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(signResult ->
                 System.out.printf("Received signature of length: %d, with algorithm: %s.\n",
                     signResult.getSignature().length, signResult.getAlgorithm()));
@@ -282,6 +293,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         byte[] signature = new byte[100];
 
         cryptographyAsyncClient.verify(SignatureAlgorithm.ES256, myData, signature)
+            .contextWrite(context -> context.put(key1, value1).put(key2, value2))
             .subscribe(verifyResult ->
                 System.out.printf("Verification status: %s.\n", verifyResult.isValid()));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
