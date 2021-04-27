@@ -169,34 +169,35 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(transaction.get());
 
         // Assert & Act
-        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().next().block(TIMEOUT);
-        assertNotNull(receivedMessage);
-
-        final Mono<Void> operation;
-        switch (dispositionStatus) {
-            case COMPLETED:
-                operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get()));
-                messagesPending.decrementAndGet();
-                break;
-            case ABANDONED:
-                operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(transaction.get()));
-                break;
-            case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setTransactionContext(transaction.get())
-                    .setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage, deadLetterOptions);
-                messagesPending.decrementAndGet();
-                break;
-            case DEFERRED:
-                operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Disposition status not recognized for this test case: " + dispositionStatus));
-        }
-
-        StepVerifier.create(operation)
-            .verifyComplete();
+        final ServiceBusReceivedMessage message = receiver.receiveMessages()
+            .flatMap( receivedMessage-> {
+                final Mono<Void> operation;
+                switch (dispositionStatus) {
+                    case COMPLETED:
+                        operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get()));
+                        messagesPending.decrementAndGet();
+                        break;
+                    case ABANDONED:
+                        operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(transaction.get()));
+                        break;
+                    case SUSPENDED:
+                        DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setTransactionContext(transaction.get())
+                            .setDeadLetterReason(deadLetterReason);
+                        operation = receiver.deadLetter(receivedMessage, deadLetterOptions);
+                        messagesPending.decrementAndGet();
+                        break;
+                    case DEFERRED:
+                        operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
+                        break;
+                    default:
+                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                            "Disposition status not recognized for this test case: " + dispositionStatus));
+                }
+                return operation
+                    .thenReturn(receivedMessage);
+            })
+            .next().block(TIMEOUT);
+        assertNotNull(message);
 
         StepVerifier.create(receiver.commitTransaction(transaction.get()))
             .verifyComplete();
@@ -860,38 +861,38 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = getMessage(messageId, false);
         sendMessage(message).block(TIMEOUT);
 
-        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().next().block(TIMEOUT);
+        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages()
+            .flatMap(m -> receiver.defer(m).thenReturn(m))
+            .next().block(TIMEOUT);
+
         assertNotNull(receivedMessage);
 
-        receiver.defer(receivedMessage).block(TIMEOUT);
-
+        // Assert & Act
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
+            .flatMap(m -> {
+                final Mono<Void> operation;
+                switch (dispositionStatus) {
+                    case ABANDONED:
+                        operation = receiver.abandon(m);
+                        break;
+                    case SUSPENDED:
+                        operation = receiver.deadLetter(m);
+                        break;
+                    case COMPLETED:
+                        operation = receiver.complete(m);
+                        break;
+                    default:
+                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                            "Disposition status not recognized for this test case: " + dispositionStatus));
+                }
+                return operation.thenReturn(m);
+
+            })
             .block(TIMEOUT);
 
         assertNotNull(receivedDeferredMessage);
         assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
-
-        final Mono<Void> operation;
-        switch (dispositionStatus) {
-            case ABANDONED:
-                operation = receiver.abandon(receivedDeferredMessage);
-                break;
-            case SUSPENDED:
-                operation = receiver.deadLetter(receivedDeferredMessage);
-                break;
-            case COMPLETED:
-                operation = receiver.complete(receivedDeferredMessage);
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Disposition status not recognized for this test case: " + dispositionStatus));
-        }
-
-        // Assert & Act
-        StepVerifier.create(operation)
-            .expectComplete()
-            .verify();
 
         if (dispositionStatus != DispositionStatus.COMPLETED) {
             messagesPending.decrementAndGet();
