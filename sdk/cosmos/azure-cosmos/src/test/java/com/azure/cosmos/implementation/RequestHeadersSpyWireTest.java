@@ -141,6 +141,23 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryWithMaxIntegratedCacheStalenessInNegative() {
+        DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
+        dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofSeconds(-10));
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setDedicatedGatewayRequestOptions(dedicatedOptions);
+        String query = "Select * from r";
+
+        String collectionLink = getDocumentCollectionLink();
+
+        client.clearCapturedRequests();
+
+        assertThatThrownBy(() -> client.queryDocuments(collectionLink, query, cosmosQueryRequestOptions).blockLast())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
+    }
+
     @Test(dataProvider = "maxIntegratedCacheStalenessDurationProviderItemOptions", groups = { "simple" }, timeOut =
         TIMEOUT)
     public void readItemWithMaxIntegratedCacheStaleness(CosmosItemRequestOptions cosmosItemRequestOptions) {
@@ -177,6 +194,23 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readItemWithMaxIntegratedCacheStalenessInNegative() {
+        DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
+        dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(-500));
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        cosmosItemRequestOptions.setDedicatedGatewayRequestOptions(dedicatedOptions);
+
+        String documentLink = getDocumentLink();
+
+        client.clearCapturedRequests();
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+
+        assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
+    }
 
     private void validateRequestHasDedicatedGatewayHeaders(HttpRequest httpRequest,
                                                            DedicatedGatewayRequestOptions options) {

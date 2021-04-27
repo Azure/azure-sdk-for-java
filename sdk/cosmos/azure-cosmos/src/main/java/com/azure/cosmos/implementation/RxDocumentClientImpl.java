@@ -1218,13 +1218,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options.getDedicatedGatewayRequestOptions() != null &&
             options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
-            Duration maxIntegratedCacheStaleness =
-                options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness();
-            if (maxIntegratedCacheStaleness.toNanos() > 0 && maxIntegratedCacheStaleness.toMillis() <= 0) {
-                throw new IllegalArgumentException("MaxIntegratedCacheStaleness granularity is milliseconds");
-            }
             headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
-                String.valueOf(maxIntegratedCacheStaleness.toMillis()));
+                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(options.getDedicatedGatewayRequestOptions())));
         }
 
         return headers;

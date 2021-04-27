@@ -44,6 +44,7 @@ public final class DedicatedGatewayRequestOptions {
      *
      * <p>Cache Staleness is supported in milliseconds granularity. Anything smaller than milliseconds will be ignored.</p>
      *
+     * @param maxIntegratedCacheStaleness Max Integrated Cache Staleness duration
      * @return this DedicatedGatewayRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
