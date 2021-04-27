@@ -35,6 +35,7 @@ stages:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
+      TestMode: 'LIVE'
       TimeoutInMinutes: 240
       Location: canadacentral
       Clouds: 'Preview'
@@ -49,5 +50,4 @@ stages:
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
         VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
-        TestMode: 'LIVE'
 
