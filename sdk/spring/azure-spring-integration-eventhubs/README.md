@@ -11,15 +11,16 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-integration-eventhubs;current})
+Please refer to [Adding the azure-spring-cloud-dependencies BOM] to add dependency management item.
+
+After adding the azure spring cloud dependencies BOM, Azure spring cloud libraries included in the BOM are now available to be
+added as a dependency without listing the artifact's version.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-integration-eventhubs</artifactId>
-    <version>2.5.0-beta.1</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-integration-eventhubs</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 Spring Integration enables lightweight messaging within Spring-based applications and supports integration with external systems via declarative adapters. Those adapters provide a higher-level of abstraction over Spring’s support for remoting, messaging, and scheduling.
@@ -66,3 +67,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Adding the azure-spring-cloud-dependencies BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-cloud-dependencies-bom

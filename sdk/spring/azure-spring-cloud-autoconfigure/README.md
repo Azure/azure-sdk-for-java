@@ -9,23 +9,10 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 - [Environment checklist][environment_checklist]
 
 ### Include the Package
-To start a new project using Azure, go on [start.spring.io][spring_io] and select "Azure
-Support": this will configure the project to make sure you can integrate easily with Azure service.
+Please refer to [Adding the azure-spring-cloud-dependencies BOM] to add dependency management item.
 
-For instance, let's assume that you want to use Event Hubs starter, you can add the usual `spring-cloud-starter-azure-eventhubs`
-dependency to your project and the Spring Cloud auto-configuration will kick-in: 
-
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
-```xml
-<dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-    <version>2.5.0-beta.1</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-Note that there is no need to add a `version` as those are managed already by the project.
+After adding the azure spring cloud dependencies BOM, Azure spring cloud libraries included in the BOM are now available to be
+added as a dependency without listing the artifact's version.
 
 ## Key concepts
 This project provides auto-configuration for the following Azure services:
@@ -110,3 +97,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [service_bus_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [storage_queue_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Adding the azure-spring-cloud-dependencies BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-cloud-dependencies-bom

@@ -9,32 +9,10 @@ This repo is for Spring Boot Starters of Azure services. It helps Spring Boot de
 - [Environment checklist][environment_checklist]
 
 ### Include the Package
-To start a new project using Azure, go on [start.spring.io](https://start.spring.io) and select "Azure
-Support": this will configure the project to make sure you can integrate easily with Azure service.
+Please refer to [Adding the azure-spring-boot-bom BOM] to add dependency management item.
 
-For instance, let's assume that you want to use Key Vault secrets, you can add the usual `azure-security-keyvault-secrets`
-dependency to your project and the Spring Boot auto-configuration will kick-in: 
-
-```xml
-<dependency>
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-security-keyvault-secrets</artifactId>
-</dependency>
-```
-
-Note that there is no need to add a `version` as those are managed already by the project.
-
-Alternatively you may want to use the [starters](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter)
-
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current})
-```xml
-<dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-    <version>3.5.0-beta.1</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+After adding the azure spring boot BOM, Azure spring boot libraries included in the BOM are now available to be
+added as a dependency without listing the artifact's version.
 
 ## Key concepts
 This project provides auto-configuration for the following Azure services:
@@ -118,3 +96,4 @@ You can participate community driven [![Gitter](https://badges.gitter.im/Microso
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Adding the azure-spring-boot-bom BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom

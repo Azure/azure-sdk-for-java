@@ -12,16 +12,16 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-integration-servicebus;current})
+Please refer to [Adding the azure-spring-cloud-dependencies BOM] to add dependency management item.
+
+After adding the azure spring cloud dependencies BOM, Azure spring cloud libraries included in the BOM are now available to be
+added as a dependency without listing the artifact's version.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-integration-servicebus</artifactId>
-    <version>2.5.0-beta.1</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-integration-servicebus</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
-
 
 ## Key concepts
 [Spring Integration][spring_integration] enables lightweight messaging within Spring-based applications and supports integration with external systems via declarative adapters.
@@ -71,3 +71,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_integration_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-servicebus
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Adding the azure-spring-cloud-dependencies BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-cloud-dependencies-bom
