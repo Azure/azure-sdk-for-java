@@ -334,10 +334,12 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
       }
     }
   }
-  # remove package from package.json
+  # remove ignored package from package.json
   $finalResults = @()
   for ($i=0; $i -lt $jsonRepresentation.Length; $i++) {
     $packages = $jsonRepresentation[$i].packages
+    $finalResults += $jsonRepresentation[$i].language
+    $finalResults += $jsonRepresentation[$i].output_path
     for ($j=0; $j -lt $packages.Length; $j++) {
       if ($ignorePackages -contains "$($packages[$j].packageGroupId):$($packages[$j].packageArtifactId)") {
         Write-Host "The package $($packages[$j].packageGroupId):$($packages[$j].packageArtifactId) exists in ignore list."
