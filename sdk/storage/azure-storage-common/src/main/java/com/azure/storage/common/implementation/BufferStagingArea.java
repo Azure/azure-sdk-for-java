@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
  *
  * RESERVED FOR INTERNAL USE ONLY
  */
-public final class UploadBufferPool {
+public final class BufferStagingArea {
 
     private final long buffSize;
 
@@ -40,7 +40,7 @@ public final class UploadBufferPool {
      * @param buffSize The size of the buffers
      * @param maxBuffSize The max size of the buffers
      */
-    public UploadBufferPool(final long buffSize, long maxBuffSize) {
+    public BufferStagingArea(final long buffSize, long maxBuffSize) {
         // These buffers will be used in calls to stageBlock, so they must be no greater than block size.
         StorageImplUtils.assertInBounds("buffSize", buffSize, 1, maxBuffSize);
         this.buffSize = buffSize;
@@ -60,7 +60,7 @@ public final class UploadBufferPool {
 
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
-            this.currentBuf = this.getBuffer();
+            this.currentBuf = new BufferAggregator(this.buffSize);
         }
 
         Flux<BufferAggregator> result;
@@ -96,19 +96,11 @@ public final class UploadBufferPool {
             means we'll only have to over flow once, and the buffer we overflow into will not be filled. This is the
             buffer we will write to on the next call to write().
              */
-            this.currentBuf = this.getBuffer();
+            this.currentBuf = new BufferAggregator(this.buffSize);
             this.currentBuf.append(buf);
         }
 
         return result;
-    }
-
-    /*
-    Note that the upload method will be calling write sequentially as there is only one worker reading from the source
-    and calling write. Hence there is only one worker calling getBuffer at any time.
-     */
-    private BufferAggregator getBuffer() {
-        return new BufferAggregator(this.buffSize);
     }
 
     /**
