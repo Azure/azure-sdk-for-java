@@ -58,36 +58,50 @@ public class AADAccessTokenGroupRolesExtractionTest {
     private AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClientTest);
 
     private void setup() {
-        Set<String> allowedGroupsId = new HashSet<>();
-        allowedGroupsId.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        List<String> allowedGroupsName = new ArrayList<>();
-        allowedGroupsId.add("group1");
         when(properties.allowedGroupsConfigured()).thenReturn(true);
         when(properties.getUserGroup()).thenReturn(userGroup);
-        when(properties.getUserGroup().isEnableGroupId()).thenReturn(true);
         when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
-        when(userGroup.getAllowedGroupsId()).thenReturn(allowedGroupsId);
-        when(userGroup.getAllowedGroups()).thenReturn(allowedGroupsName);
         when(accessToken.getTokenValue()).thenReturn("fake-access-token");
     }
 
     @Test
     public void testGroupsName() {
         setup();
-        when(properties.getUserGroup().isEnableGroupId()).thenReturn(false);
+        List<String> filterByName = new ArrayList<>();
+        filterByName.add("group1");
+        when(userGroup.getFilterByNames()).thenReturn(filterByName);
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
+
         assertThat(groupsName).contains("ROLE_group1");
         assertThat(groupsName).hasSize(1);
-
     }
 
     @Test
     public void testGroupsId() {
         setup();
-        when(properties.getUserGroup().isEnableGroupId()).thenReturn(true);
+        Set<String> filterByIds = new HashSet<>();
+        filterByIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        when(userGroup.getFilterByIds()).thenReturn(filterByIds);
+
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupsName).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
         assertThat(groupsName).hasSize(1);
+    }
+
+    @Test
+    public void testGroupsNameAndGroupsId() {
+        setup();
+        Set<String> filterByIds = new HashSet<>();
+        filterByIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        when(userGroup.getFilterByIds()).thenReturn(filterByIds);
+        List<String> filterByName = new ArrayList<>();
+        filterByName.add("group1");
+        when(userGroup.getFilterByNames()).thenReturn(filterByName);
+
+        Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupsName).contains("ROLE_group1");
+        assertThat(groupsName).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        assertThat(groupsName).hasSize(2);
     }
 
     class GraphClientTest extends GraphClient {
@@ -111,8 +125,12 @@ public class AADAccessTokenGroupRolesExtractionTest {
                 memberships.getValue()
                            .stream()
                            .filter(this::isGroupObject)
-                           .map(properties.getUserGroup().isEnableGroupId() ? Membership::getObjectID
-                               : Membership::getDisplayName)
+                           .map(Membership::getDisplayName)
+                           .forEach(groups::add);
+                memberships.getValue()
+                           .stream()
+                           .filter(this::isGroupObject)
+                           .map(Membership::getObjectID)
                            .forEach(groups::add);
                 aadMembershipRestUri = Optional.of(memberships)
                                                .map(Memberships::getOdataNextLink)
