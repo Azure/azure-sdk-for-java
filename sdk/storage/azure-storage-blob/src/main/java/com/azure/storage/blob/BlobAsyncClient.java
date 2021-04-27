@@ -573,10 +573,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        /*
-        We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
-        others are being sent.
-         */
         UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getBlockSizeLong(),
             BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
 
@@ -585,6 +581,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
         /*
          Write to the pool and upload the output.
+         maxConcurrency = 1 when writing means only 1 BufferAggregator will be accumulating at a time.
+         parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
+         only concurrency + 1 chunks at a time.
          */
         return chunkedSource.flatMapSequential(pool::write, 1)
             .concatWith(Flux.defer(pool::flush))
