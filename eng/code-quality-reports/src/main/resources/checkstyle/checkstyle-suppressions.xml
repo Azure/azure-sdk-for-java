@@ -170,10 +170,10 @@ the main ServiceBusClientBuilder. -->
 
   <!-- suppress the runtime exception in the KeyVaultClient class-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.azure.security.jca.implementation.http.client.KeyVaultClient.java"/>
+            files="com.azuresecurity.jca.implementation.http.client.KeyVaultClient.java"/>
 
   <!-- This class overrides a method that throws, so it cannot be avoided. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.azure.security.jca.AzureTrustManager"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azuresecurity.jca.AzureTrustManager"/>
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
@@ -289,10 +289,10 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java"/>
 
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.azure.security.jca.AzureTrustManager"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azuresecurity.jca.AzureTrustManager"/>
 
   <!-- The JCA library has to be as lightweight as possible and thus, does not use Azure Core or its loggers. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.azure.security.jca.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azuresecurity.jca.*"/>
 
   <!-- Empty while loop waiting for Reactor stream completion -->
   <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>

@@ -38,7 +38,7 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
-<!-- embedme ./src/samples/java/com/azure/azure/security/jca/ServerSSLSample.java#L18-L36 -->
+<!-- embedme ./src/samples/java/com/azure/security/jca/ServerSSLSample.java#L18-L36 -->
 ```java
 AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
 Security.addProvider(provider);
@@ -66,7 +66,7 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
-<!-- embedme ./src/samples/java/com/azure/azure/security/jca/ClientSSLSample.java#L28-L67 -->
+<!-- embedme ./src/samples/java/com/azure/security/jca/ClientSSLSample.java#L28-L67 -->
 ```java
 AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
 Security.addProvider(provider);
@@ -149,7 +149,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-security-jca/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[jca_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-security-jca/src/samples/java/com/azure/azure/security/jca
+[jca_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-security-jca/src/samples/java/com/azure/security/jca
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
