@@ -29,6 +29,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,6 +217,18 @@ implements IDocumentQueryExecutionContext<T> {
 
         if(cosmosQueryRequestOptions.isQueryMetricsEnabled()){
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
+        }
+
+        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null &&
+            cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            Duration maxIntegratedCacheStaleness = cosmosQueryRequestOptions
+                .getDedicatedGatewayRequestOptions()
+                .getMaxIntegratedCacheStaleness();
+            if (maxIntegratedCacheStaleness.toNanos() > 0 && maxIntegratedCacheStaleness.toMillis() <= 0) {
+                throw new IllegalArgumentException("MaxIntegratedCacheStaleness granularity is milliseconds");
+            }
+            requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(maxIntegratedCacheStaleness.toMillis()));
         }
 
         return requestHeaders;

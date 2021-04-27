@@ -76,6 +76,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1213,6 +1214,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options.isScriptLoggingEnabled()) {
             headers.put(HttpConstants.HttpHeaders.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
+        }
+
+        if (options.getDedicatedGatewayRequestOptions() != null &&
+            options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            Duration maxIntegratedCacheStaleness =
+                options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness();
+            if (maxIntegratedCacheStaleness.toNanos() > 0 && maxIntegratedCacheStaleness.toMillis() <= 0) {
+                throw new IllegalArgumentException("MaxIntegratedCacheStaleness granularity is milliseconds");
+            }
+            headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(maxIntegratedCacheStaleness.toMillis()));
         }
 
         return headers;
