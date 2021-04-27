@@ -22,11 +22,6 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
             this,
             Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
             ChangeFeedStartFromTypes.NOW);
-
-        // TODO @fabianm Remove as soon as root caused - https://github.com/Azure/azure-sdk-for-java/issues/20635
-        // Just used to trigger the additional detection for invalid json (duplicate Type property
-        // "StartFrom":{"Type":"NOW","Type":"NOW"}
-        this.toJson();
     }
 
     @Override
