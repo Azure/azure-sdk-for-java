@@ -291,7 +291,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.azure.security.jca.AzureTrustManager"/>
 
-  <!-- The KeyVault JCA library has to be as lightweight as possible and thus, does not use Azure Core or its loggers. -->
+  <!-- The JCA library has to be as lightweight as possible and thus, does not use Azure Core or its loggers. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.azure.security.jca.*"/>
 
   <!-- Empty while loop waiting for Reactor stream completion -->

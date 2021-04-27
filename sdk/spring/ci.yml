@@ -34,7 +34,7 @@ extends:
         safeName: azureidentityspring
       - name: azure-security-jca
         groupId: com.azure
-        safeName: azuresecuritykeyvaultjca
+        safeName: azuresecurityjca
       - name: azure-spring-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringdatagremlin
