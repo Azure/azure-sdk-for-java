@@ -473,17 +473,18 @@ public class IdentityClient {
                 .flatMap(output -> {
                     if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not"
                         + " loaded because no valid module file was found in any module directory")) {
-                        return Mono.error(new RuntimeException("Az.Account module >= 2.2.0 is not installed."));
+                        return Mono.error(new CredentialUnavailableException(
+                            "Az.Account module >= 2.2.0 is not installed."));
                     }
-                    String accessTokenCommand = "Get-AzAccessToken -ResourceUrl " + ScopeUtil
-                        .scopesToResource(request.getScopes()) + " | ConvertTo-Json";
-                    return manager.executeCommand(accessTokenCommand)
+                    StringBuilder accessTokenCommand = new StringBuilder("Get-AzAccessToken -ResourceUrl ");
+                    accessTokenCommand.append(ScopeUtil.scopesToResource(request.getScopes()));
+                    accessTokenCommand.append(" | ConvertTo-Json");
+                    return manager.executeCommand(accessTokenCommand.toString())
                         .flatMap(out -> {
                             if (out.contains("Get-AzAccessToken: Run Connect-AzAccount to login.")) {
-                                return Mono.error(new RuntimeException("Run Connect-AzAccount to login to Azure account"
-                                    + " in PowerShell"));
+                                return Mono.error(new CredentialUnavailableException(
+                                    "Run Connect-AzAccount to login to Azure account in PowerShell."));
                             }
-                            JacksonAdapter jacksonAdapter = new JacksonAdapter();
                             try {
                                 Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
                                     SerializerEncoding.JSON);
@@ -498,7 +499,7 @@ public class IdentityClient {
                                         + "token response from Azure Power Shell.", e)));
                             }
                         });
-                }));
+                })).doFinally(ignored -> powershellManager.close());
     }
 
     /**

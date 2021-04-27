@@ -18,10 +18,12 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class PowershellManager {
 
     private static final ClientLogger LOGGER = new ClientLogger(PowershellManager.class);
+    public static final Pattern PS_RESPONSE_PATTERN = Pattern.compile("\\s+$");
     private Process process;
     private PrintWriter commandWriter;
     private boolean closed = false;
@@ -29,7 +31,7 @@ public class PowershellManager {
     private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "poweshell.exe";
     private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
     private static final String LEGACY_LINUX_PS_EXECUTABLE = "powershell";
-    private int waitPause = 3000;
+    private int waitPause = 500;
     private long maxWait = 10000L;
     private final boolean legacyPowershell;
 
@@ -83,9 +85,8 @@ public class PowershellManager {
                 .flatMap(b -> {
                     if (b) {
                         return readData(reader, powerShellOutput)
-                                .flatMap(ignored -> {
-                                    return Mono.just(powerShellOutput.toString());
-                                });
+                                .flatMap(ignored -> Mono.just(PS_RESPONSE_PATTERN.matcher(powerShellOutput.toString())
+                                        .replaceAll("")));
                     } else {
                         return Mono.error(new RuntimeException("Error reading data from reader"));
                     }
