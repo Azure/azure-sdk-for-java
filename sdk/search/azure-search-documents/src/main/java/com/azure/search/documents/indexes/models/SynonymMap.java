@@ -159,4 +159,17 @@ public final class SynonymMap {
         this.eTag = eTag;
         return this;
     }
+
+    /**
+     * Creates a new instance of SynonymMap with synonyms read from the passed file.
+     *
+     * @param name The name of the synonym map.
+     * @param filePath The path to the file where the formatted synonyms are read.
+     * @return A SynonymMap.
+     * @throws java.io.UncheckedIOException If reading {@code file} fails.
+     */
+    public static SynonymMap createFromFile(String name, java.nio.file.Path filePath) {
+        String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);
+        return new SynonymMap(name, synonyms);
+    }
 }
