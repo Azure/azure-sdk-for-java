@@ -338,7 +338,7 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
   $finalResults = @()
   for ($i=0; $i -lt $jsonRepresentation.Length; $i++) {
     $packages = $jsonRepresentation[$i].packages
-    $results = {}
+    $results = @{}
     $results["language"] = $jsonRepresentation[$i].language
     $results["output_path"] = $jsonRepresentation[$i].output_path
     $results["packages"] = @()
@@ -349,8 +349,8 @@ function Update-java-CIConfig($ciRepo, $locationInDocRepo)
       else {
         $results["packages"] += $packages[$j]
       }
-      $finalResults += $results
     }
+    $finalResults += $results
   }
   $finalResults | ConvertTo-Json -depth 100 | Out-File $pkgJsonLoc
 }
