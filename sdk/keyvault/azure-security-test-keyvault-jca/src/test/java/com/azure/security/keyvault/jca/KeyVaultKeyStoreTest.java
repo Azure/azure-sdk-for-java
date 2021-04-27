@@ -6,6 +6,7 @@ package com.azure.security.keyvault.jca;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.security.ProviderException;
@@ -13,16 +14,15 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "azure.keyvault.certificate-name", matches = ".*")
 public class KeyVaultKeyStoreTest {
 
     /**
@@ -53,36 +53,58 @@ public class KeyVaultKeyStoreTest {
 
     private String certificateName;
 
+    public static void putEnvironmentPropertyToSystemProperty(String key) {
+        Optional.of(key)
+                .map(System::getenv)
+                .filter(StringUtils::hasText)
+                .ifPresent(value -> System.getProperties().put(key, value));
+    }
+
     @BeforeEach
     public void setEnvironmentProperty() {
-        keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
+            System.getenv("azure.keyvault.uri"),
+            System.getenv("azure.keyvault.tenant-id"),
+            System.getenv("azure.keyvault.client-id"),
+            System.getenv("azure.keyvault.client-secret"));
+        certificateName = System.getenv("azure.keyvault.certificate-name");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.uri");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.tenant-id");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-id");
+        putEnvironmentPropertyToSystemProperty("azure.keyvault.client-secret");
+        keystore = new KeyVaultKeyStore();
         keystore.engineLoad(parameter);
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
     public void testEngineGetCertificate() {
-        assertNull(keystore.engineGetCertificate(certificateName));
+        assertNotNull(keystore.engineGetCertificate(certificateName));
     }
 
     @Test
     public void testEngineGetCertificateAlias() {
-        assertNull(keystore.engineGetCertificateAlias(null));
+        X509Certificate certificate;
+
+        try {
+            byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
+        } catch (CertificateException e) {
+            throw new ProviderException(e);
+        }
+        keystore.engineSetCertificateEntry("setcert", certificate);
+        assertNotNull(keystore.engineGetCertificateAlias(certificate));
     }
 
     @Test
     public void testEngineGetCertificateChain() {
-        assertNull(keystore.engineGetCertificateChain(certificateName));
+        assertNotNull(keystore.engineGetCertificateChain(certificateName));
     }
 
     @Test
     public void testEngineIsCertificateEntry() {
-        assertFalse(keystore.engineIsCertificateEntry(certificateName));
+        assertTrue(keystore.engineIsCertificateEntry(certificateName));
     }
 
     @Test
@@ -104,24 +126,24 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineGetKey() {
-        assertNull(keystore.engineGetKey("myalias", null));
+        assertNotNull(keystore.engineGetKey(certificateName, null));
     }
 
     @Test
     public void testEngineIsKeyEntry() {
-        assertFalse(keystore.engineIsKeyEntry("myalias"));
+        assertTrue(keystore.engineIsKeyEntry(certificateName));
     }
 
     @Test
     public void testEngineSetKeyEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        keystore.engineSetKeyEntry("myalias", null, null);
+        keystore.engineSetKeyEntry(certificateName, null, null);
     }
 
     @Test
     public void testEngineSetKeyEntry2() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        keystore.engineSetKeyEntry("myalias", null, null, null);
+        keystore.engineSetKeyEntry(certificateName, null, null, null);
     }
 
     @Test
@@ -131,19 +153,19 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineContainsAlias() {
-        assertFalse(keystore.engineContainsAlias("myalias"));
+        assertTrue(keystore.engineContainsAlias(certificateName));
     }
 
     @Test
     public void testEngineGetCreationDate() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        assertNotNull(keystore.engineGetCreationDate("myalias"));
+        assertNotNull(keystore.engineGetCreationDate(certificateName));
     }
 
     @Test
     public void testEngineDeleteEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        keystore.engineDeleteEntry("myalias");
+        keystore.engineDeleteEntry(certificateName);
     }
 
     @Test

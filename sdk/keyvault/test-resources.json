@@ -305,19 +305,23 @@
       "type": "string",
       "value": "[variables('azureKeyVaultUrl')]"
     },
-    "SPRING_TENANT_ID": {
+    "azure.keyvault.uri": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultUrl')]"
+    },
+    "azure.keyvault.tenant-id": {
       "type": "string",
       "value": "[parameters('tenantId')]"
     },
-    "SPRING_CLIENT_ID": {
+    "azure.keyvault.client-id": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
-    "SPRING_CLIENT_SECRET": {
+    "azure.keyvault.client-secret": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "AZURE_KEYVAULT_CERTIFICATE_NAME": {
+    "azure.keyvault.certificate-name": {
       "type": "string",
       "value": "[parameters('certificateName')]"
     }
