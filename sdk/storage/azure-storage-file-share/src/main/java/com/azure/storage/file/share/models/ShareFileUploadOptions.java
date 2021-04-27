@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.share.models;
 
 import com.azure.storage.common.ParallelTransferOptions;
@@ -6,7 +9,6 @@ import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.Map;
 
 public class ShareFileUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
