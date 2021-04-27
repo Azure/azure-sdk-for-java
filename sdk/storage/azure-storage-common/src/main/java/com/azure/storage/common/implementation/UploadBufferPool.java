@@ -37,17 +37,6 @@ public final class UploadBufferPool {
 
     /**
      * Creates a new instance of UploadBufferPool
-     * @param numBuffs The number of buffers in the buffer pool.
-     * @param buffSize The size of the buffers
-     * @deprecated Use {@link UploadBufferPool#UploadBufferPool(long, long)}
-     */
-    @Deprecated
-    public UploadBufferPool(final int numBuffs, final long buffSize, long maxBuffSize) {
-        this(buffSize, maxBuffSize);
-    }
-
-    /**
-     * Creates a new instance of UploadBufferPool
      * @param buffSize The size of the buffers
      * @param maxBuffSize The max size of the buffers
      */
