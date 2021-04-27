@@ -39,6 +39,7 @@ public final class UploadBufferPool {
      * Creates a new instance of UploadBufferPool
      * @param numBuffs The number of buffers in the buffer pool.
      * @param buffSize The size of the buffers
+     * @deprecated Use {@link UploadBufferPool#UploadBufferPool(long, long)}
      */
     @Deprecated
     public UploadBufferPool(final int numBuffs, final long buffSize, long maxBuffSize) {
@@ -126,7 +127,6 @@ public final class UploadBufferPool {
      * @return the flushed buffer
      */
     public Flux<BufferAggregator> flush() {
-        System.out.println(Thread.currentThread().getName() + " calling flush");
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
