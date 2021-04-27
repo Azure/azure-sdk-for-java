@@ -47,7 +47,6 @@ jobs:
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
-          SetVersionArguments: '--build-type client --pst'
           Paths:
             - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
