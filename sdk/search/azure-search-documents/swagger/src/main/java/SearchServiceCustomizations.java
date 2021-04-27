@@ -201,7 +201,7 @@ public class SearchServiceCustomizations extends Customization {
             " * @param name The name of the synonym map.",
             " * @param filePath The path to the file where the formatted synonyms are read.",
             " * @return A SynonymMap.",
-            " * @throws java.io.UncheckedIOException If reading {@code file} fails.",
+            " * @throws java.io.UncheckedIOException If reading {@code filePath} fails.",
             " */",
             "public static SynonymMap createFromFile(String name, java.nio.file.Path filePath) {",
             "    String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);",
