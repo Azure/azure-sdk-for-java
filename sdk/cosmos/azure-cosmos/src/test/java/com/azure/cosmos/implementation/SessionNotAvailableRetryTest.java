@@ -137,7 +137,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             List<String> uris = new ArrayList<>();
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-                Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+                Uri uri = invocationOnMock.getArgument(0, Uri.class);
                 uris.add(uri.getURI().getHost());
                 CosmosException cosmosException = BridgeInternal.createCosmosException(404);
                 @SuppressWarnings("unchecked")
@@ -233,7 +233,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             PartitionKey partitionKey = new PartitionKey("Test");
             List<String> uris = new ArrayList<>();
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-                Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+                Uri uri = invocationOnMock.getArgument(0, Uri.class);
                 uris.add(uri.getURI().getHost());
                 CosmosException cosmosException = BridgeInternal.createCosmosException(404);
                 @SuppressWarnings("unchecked")
@@ -347,7 +347,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             List<String> uris = new ArrayList<>();
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-                Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+                Uri uri = invocationOnMock.getArgument(0, Uri.class);
                 uris.add(uri.getURI().getHost());
                 CosmosException cosmosException = BridgeInternal.createCosmosException(404);
                 @SuppressWarnings("unchecked")

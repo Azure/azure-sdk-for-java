@@ -115,17 +115,6 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the details property: A string indicating which domain-specific details to return.
-     *
-     * @param details the details value to set.
-     * @return the ImageAnalysisSkill object itself.
-     */
-    public ImageAnalysisSkill setDetails(ImageDetail... details) {
-        this.details = (details == null) ? null : java.util.Arrays.asList(details);
-        return this;
-    }
-
-    /**
      * Set the visualFeatures property: A list of visual features.
      *
      * @param visualFeatures the visualFeatures value to set.
@@ -133,6 +122,17 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      */
     public ImageAnalysisSkill setVisualFeatures(VisualFeature... visualFeatures) {
         this.visualFeatures = (visualFeatures == null) ? null : java.util.Arrays.asList(visualFeatures);
+        return this;
+    }
+
+    /**
+     * Set the details property: A string indicating which domain-specific details to return.
+     *
+     * @param details the details value to set.
+     * @return the ImageAnalysisSkill object itself.
+     */
+    public ImageAnalysisSkill setDetails(ImageDetail... details) {
+        this.details = (details == null) ? null : java.util.Arrays.asList(details);
         return this;
     }
 }

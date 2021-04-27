@@ -11,130 +11,76 @@ import org.slf4j.Logger;
 import java.lang.reflect.Modifier;
 import java.util.Locale;
 
+/**
+ * Contains customizations for Azure Search's service swagger code generation.
+ */
 public class SearchServiceCustomizations extends Customization {
     // Common modifier combinations
     private static final int PUBLIC_ABSTRACT = Modifier.PUBLIC | Modifier.ABSTRACT;
     private static final int PUBLIC_FINAL = Modifier.PUBLIC | Modifier.FINAL;
 
-    private static final String VARARG_METHOD_TEMPLATE =
-        "public %s %s(%s... %s) {"
-            + "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);\n"
-            + "    return this;\n"
-            + "}";
+    private static final String VARARG_METHOD_TEMPLATE = joinWithNewline(
+        "public %s %s(%s... %s) {",
+        "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);",
+        "    return this;",
+        "}");
 
     // Packages
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.indexes.implementation.models";
     private static final String MODELS = "com.azure.search.documents.indexes.models";
 
-    // Classes
-    private static final String MAGNITUDE_SCORING_PARAMETERS = "MagnitudeScoringParameters";
-    private static final String SCORING_FUNCTION = "ScoringFunction";
-    private static final String SEARCH_FIELD_DATA_TYPE = "SearchFieldDataType";
-
-    private static final String SIMILARITY_ALGORITHM = "SimilarityAlgorithm";
-    private static final String BM_25_SIMILARITY_ALGORITHM = "BM25SimilarityAlgorithm";
-    private static final String CLASSIC_SIMILARITY_ALGORITHM = "ClassicSimilarityAlgorithm";
-
-    private static final String DATA_CHANGE_DETECTION_POLICY = "DataChangeDetectionPolicy";
-    private static final String HIGH_WATER_MARK_CHANGE_DETECTION_POLICY = "HighWaterMarkChangeDetectionPolicy";
-    private static final String SQL_INTEGRATED_CHANGE_TRACKING_POLICY = "SqlIntegratedChangeTrackingPolicy";
-
-    private static final String DATA_DELETION_DETECTION_POLICY = "DataDeletionDetectionPolicy";
-    private static final String SOFT_DELETE_COLUMN_DELETION_DETECTION_POLICY = "SoftDeleteColumnDeletionDetectionPolicy";
-
-    private static final String CHAR_FILTER = "CharFilter";
-    private static final String MAPPING_CHAR_FILTER = "MappingCharFilter";
-    private static final String PATTERN_REPLACE_CHAR_FILTER = "PatternReplaceCharFilter";
-
-    private static final String COGNITIVE_SERVICES_ACCOUNT = "CognitiveServicesAccount";
-    private static final String DEFAULT_COGNITIVE_SERVICES_ACCOUNT = "DefaultCognitiveServicesAccount";
-    private static final String COGNITIVE_SERVICES_ACCOUNT_KEY = "CognitiveServicesAccountKey";
-
-    private static final String INPUT_FIELD_MAPPING_ENTRY = "InputFieldMappingEntry";
-
-    private static final String SCORING_PROFILE = "ScoringProfile";
-
-    private static final String SEARCH_INDEXER_SKILL = "SearchIndexerSkill";
-    private static final String CONDITIONAL_SKILL = "ConditionalSkill";
-    private static final String KEY_PHRASE_EXTRACTION_SKILL = "KeyPhraseExtractionSkill";
-    private static final String OCR_SKILL = "OcrSkill";
-    private static final String IMAGE_ANALYSIS_SKILL = "ImageAnalysisSkill";
-    private static final String LANGUAGE_DETECTION_SKILL = "LanguageDetectionSkill";
-    private static final String SHAPER_SKILL = "ShaperSkill";
-    private static final String MERGE_SKILL = "MergeSkill";
-    private static final String ENTITY_RECOGNITION_SKILL = "EntityRecognitionSkill";
-    private static final String SENTIMENT_SKILL = "SentimentSkill";
-    private static final String SPLIT_SKILL = "SplitSkill";
-    private static final String CUSTOM_ENTITY_LOOKUP_SKILL = "CustomEntityLookupSkill";
-    private static final String TEXT_TRANSLATION_SKILL = "TextTranslationSkill";
-    private static final String DOCUMENT_EXTRACTION_SKILL = "DocumentExtractionSkill";
-    private static final String WEB_API_SKILL = "WebApiSkill";
-
-    private static final String CUSTOM_NORMALIZER = "CustomNormalizer";
-
-    private static final String SEARCH_FIELD = "SearchField";
-
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        customizeModelsPackage(libraryCustomization.getPackage(MODELS));
-        customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
-    }
+        PackageCustomization implCustomization = libraryCustomization.getPackage(IMPLEMENTATION_MODELS);
+        PackageCustomization publicCustomization = libraryCustomization.getPackage(MODELS);
 
-    private void customizeModelsPackage(PackageCustomization packageCustomization) {
+        // Customize implementation models.
+
+        // Customize models.
         // Change class modifiers to 'public abstract'.
-        bulkChangeClassModifiers(packageCustomization, PUBLIC_ABSTRACT, SCORING_FUNCTION, DATA_CHANGE_DETECTION_POLICY,
-            DATA_DELETION_DETECTION_POLICY, CHAR_FILTER, COGNITIVE_SERVICES_ACCOUNT);
+        bulkChangeClassModifiers(publicCustomization, PUBLIC_ABSTRACT, "ScoringFunction", "DataChangeDetectionPolicy",
+            "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount", "SearchIndexerSkill",
+            "LexicalAnalyzer");
 
         // Change class modifiers to 'public final'.
-        bulkChangeClassModifiers(packageCustomization, PUBLIC_FINAL, BM_25_SIMILARITY_ALGORITHM,
-            CLASSIC_SIMILARITY_ALGORITHM, HIGH_WATER_MARK_CHANGE_DETECTION_POLICY,
-            SQL_INTEGRATED_CHANGE_TRACKING_POLICY, SOFT_DELETE_COLUMN_DELETION_DETECTION_POLICY, MAPPING_CHAR_FILTER,
-            PATTERN_REPLACE_CHAR_FILTER, DEFAULT_COGNITIVE_SERVICES_ACCOUNT);
+        bulkChangeClassModifiers(publicCustomization, PUBLIC_FINAL, "BM25SimilarityAlgorithm",
+            "ClassicSimilarityAlgorithm", "HighWaterMarkChangeDetectionPolicy", "SqlIntegratedChangeTrackingPolicy",
+            "SoftDeleteColumnDeletionDetectionPolicy", "MappingCharFilter", "PatternReplaceCharFilter",
+            "DefaultCognitiveServicesAccount", "ConditionalSkill", "ConditionalSkill", "KeyPhraseExtractionSkill",
+            "LanguageDetectionSkill", "ShaperSkill", "MergeSkill", "SentimentSkill", "SplitSkill",
+            "TextTranslationSkill", "DocumentExtractionSkill", "WebApiSkill");
+
 
         // Add vararg overloads to list setters.
-        addVarArgsOverload(packageCustomization.getClass(INPUT_FIELD_MAPPING_ENTRY), "inputs",
-            "InputFieldMappingEntry");
-        addVarArgsOverload(packageCustomization.getClass(SCORING_PROFILE), "functions", "ScoringFunction");
+        addVarArgsOverload(publicCustomization.getClass("InputFieldMappingEntry"), "inputs", "InputFieldMappingEntry");
+        addVarArgsOverload(publicCustomization.getClass("ScoringProfile"), "functions", "ScoringFunction");
 
-        // Customize MagnitudeScoringParameters.
-        customizeMagnitudeScoringParameters(packageCustomization.getClass(MAGNITUDE_SCORING_PARAMETERS));
-
-        // Customize SearchFieldDataTypes.
-        customizeSearchFieldDataType(packageCustomization.getClass(SEARCH_FIELD_DATA_TYPE));
-
-        // Customize SimilarityAlgorithm.
-        customizeSimilarityAlgorithm(packageCustomization.getClass(SIMILARITY_ALGORITHM));
-
-        // Customize CognitiveServicesAccountKey.
-        customizeCognitiveServicesAccountKey(packageCustomization.getClass(COGNITIVE_SERVICES_ACCOUNT_KEY));
-
-        // Customize SearchIndexerSkills.
-        changeClassModifier(packageCustomization.getClass(SEARCH_INDEXER_SKILL), PUBLIC_ABSTRACT);
-        changeClassModifier(packageCustomization.getClass(CONDITIONAL_SKILL), PUBLIC_FINAL);
-        changeClassModifier(packageCustomization.getClass(KEY_PHRASE_EXTRACTION_SKILL), PUBLIC_FINAL);
-        customizeOcrSkill(packageCustomization.getClass(OCR_SKILL));
-        customizeImageAnalysisSkill(packageCustomization.getClass(IMAGE_ANALYSIS_SKILL));
-        changeClassModifier(packageCustomization.getClass(LANGUAGE_DETECTION_SKILL), PUBLIC_FINAL);
-        changeClassModifier(packageCustomization.getClass(SHAPER_SKILL), PUBLIC_FINAL);
-        changeClassModifier(packageCustomization.getClass(MERGE_SKILL), PUBLIC_FINAL);
-        customizeEntityRecognitionSkill(packageCustomization.getClass(ENTITY_RECOGNITION_SKILL));
-        changeClassModifier(packageCustomization.getClass(SENTIMENT_SKILL), PUBLIC_FINAL);
-        changeClassModifier(packageCustomization.getClass(SPLIT_SKILL), PUBLIC_FINAL);
-        customizeCustomEntityLookupSkill(packageCustomization.getClass(CUSTOM_ENTITY_LOOKUP_SKILL));
-        changeClassModifier(packageCustomization.getClass(TEXT_TRANSLATION_SKILL), PUBLIC_FINAL);
-        changeClassModifier(packageCustomization.getClass(DOCUMENT_EXTRACTION_SKILL), PUBLIC_FINAL);
-        changeClassModifier(packageCustomization.getClass(WEB_API_SKILL), PUBLIC_FINAL);
-
-        customizeCustomNormalizer(packageCustomization.getClass(CUSTOM_NORMALIZER));
-
-        customizeSearchField(packageCustomization.getClass(SEARCH_FIELD));
+        // More complex customizations.
+        customizeMagnitudeScoringParameters(publicCustomization.getClass("MagnitudeScoringParameters"));
+        customizeSearchFieldDataType(publicCustomization.getClass("SearchFieldDataType"));
+        customizeSimilarityAlgorithm(publicCustomization.getClass("SimilarityAlgorithm"));
+        customizeCognitiveServicesAccountKey(publicCustomization.getClass("CognitiveServicesAccountKey"));
+        customizeOcrSkill(publicCustomization.getClass("OcrSkill"));
+        customizeImageAnalysisSkill(publicCustomization.getClass("ImageAnalysisSkill"));
+        customizeEntityRecognitionSkill(publicCustomization.getClass("EntityRecognitionSkill"));
+        customizeCustomEntityLookupSkill(publicCustomization.getClass("CustomEntityLookupSkill"));
+        customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
+        customizeSearchField(publicCustomization.getClass("SearchField"));
+        customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
+        customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
+            implCustomization.getClass("AzureActiveDirectoryApplicationCredentials"));
+        customizeSearchSuggester(publicCustomization.getClass("SearchSuggester"));
+        customizeCustomAnalyzer(publicCustomization.getClass("CustomAnalyzer"));
+        customizePatternAnalyzer(publicCustomization.getClass("PatternAnalyzer"));
+        customizeLuceneStandardAnalyzer(publicCustomization.getClass("LuceneStandardAnalyzer"));
+        customizeStopAnalyzer(publicCustomization.getClass("StopAnalyzer"));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
-        classCustomization.addMethod(
-            "public static SearchFieldDataType collection(SearchFieldDataType dataType) {\n"
-                + "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n"
-                + "}")
+        classCustomization.addMethod(joinWithNewline(
+            "public static SearchFieldDataType collection(SearchFieldDataType dataType) {",
+            "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));",
+            "}"))
             .addAnnotation("@JsonCreator")
             .getJavadoc()
             .setDescription("Returns a collection of a specific SearchFieldDataType")
@@ -155,18 +101,18 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
-        classCustomization.addMethod(
-            "/**\n"
-                + " * Set the key property: The key used to provision the cognitive service\n"
-                + " * resource attached to a skillset.\n"
-                + " *\n"
-                + " * @param key the key value to set.\n"
-                + " * @return the CognitiveServicesAccountKey object itself.\n"
-                + " */\n"
-                + "public CognitiveServicesAccountKey setKey(String key) {\n"
-                + "    this.key = key;\n"
-                + "    return this;\n"
-                + "}");
+        classCustomization.addMethod(joinWithNewline(
+            "/**",
+            " * Set the key property: The key used to provision the cognitive service",
+            " * resource attached to a skillset.",
+            " *",
+            " * @param key the key value to set.",
+            " * @return the CognitiveServicesAccountKey object itself.",
+            " */",
+            "public CognitiveServicesAccountKey setKey(String key) {",
+            "    this.key = key;",
+            "    return this;",
+            "}"));
     }
 
     private void customizeOcrSkill(ClassCustomization classCustomization) {
@@ -175,10 +121,10 @@ public class SearchServiceCustomizations extends Customization {
         JavadocCustomization javadocToCopy = classCustomization.getMethod("isShouldDetectOrientation")
             .getJavadoc();
 
-        JavadocCustomization newJavadoc = classCustomization.addMethod(
-            "public Boolean setShouldDetectOrientation() {\n"
-                + "    return this.shouldDetectOrientation;\n"
-                + "}")
+        JavadocCustomization newJavadoc = classCustomization.addMethod(joinWithNewline(
+            "public Boolean setShouldDetectOrientation() {",
+            "    return this.shouldDetectOrientation;",
+            "}"))
             .addAnnotation("@Deprecated")
             .getJavadoc();
 
@@ -211,11 +157,10 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSearchField(ClassCustomization classCustomization) {
-        classCustomization.getMethod("setHidden")
-            .replaceBody(
-                "this.hidden = (hidden == null) ? null : !hidden;\n"
-                    + "return this;"
-            );
+        classCustomization.getMethod("setHidden").replaceBody(joinWithNewline(
+            "this.hidden = (hidden == null) ? null : !hidden;",
+            "return this;"
+        ));
 
         classCustomization.getMethod("isHidden")
             .replaceBody("return (this.hidden == null) ? null : !this.hidden;");
@@ -224,7 +169,138 @@ public class SearchServiceCustomizations extends Customization {
         addVarArgsOverload(classCustomization, "synonymMapNames", "String");
     }
 
-    private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
+    private void customizeSynonymMap(ClassCustomization classCustomization) {
+        classCustomization.removeMethod("getFormat");
+        classCustomization.removeMethod("setFormat");
+        classCustomization.removeMethod("setName");
+
+        classCustomization.addConstructor(joinWithNewline(
+            "public SynonymMap(String name) {",
+            "    this(name, null);",
+            "}"))
+            .getJavadoc()
+            .setDescription("Constructor of {@link SynonymMap}.")
+            .setParam("name", "The name of the synonym map.");
+
+        classCustomization.addConstructor(joinWithNewline(
+            "public SynonymMap(@JsonProperty(value = \"name\") String name, @JsonProperty(value = \"synonyms\") String synonyms) {",
+            "    this.format = \"solr\";",
+            "    this.name = name;",
+            "    this.synonyms = synonyms;",
+            "}"))
+            .addAnnotation("@JsonCreator")
+            .getJavadoc()
+            .setDescription("Constructor of {@link SynonymMap}.")
+            .setParam("name", "The name of the synonym map.")
+            .setParam("synonyms", "A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.");
+    }
+
+    private void customizeSearchResourceEncryptionKey(ClassCustomization keyCustomization,
+        ClassCustomization credentialCustomization) {
+        keyCustomization.removeMethod("getAccessCredentials");
+
+        String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").getJavadoc().getReturn();
+        keyCustomization.removeMethod("setAccessCredentials");
+
+        JavadocCustomization javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public String getApplicationId() {",
+            "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();",
+            "}"))
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("getApplicationId").getJavadoc(), javadoc);
+
+        javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public SearchResourceEncryptionKey setApplicationId(String applicationId) {",
+            "    if (this.accessCredentials == null) {",
+            "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
+            "    }",
+            "",
+            "    this.accessCredentials.setApplicationId(applicationId);",
+            "    return this;",
+            "}"))
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("setApplicationId").getJavadoc(), javadoc)
+            .setReturn(setterReturnJavadoc);
+
+        javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public String getApplicationSecret() {",
+            "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();",
+            "}"))
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("getApplicationSecret").getJavadoc(), javadoc);
+
+        javadoc = keyCustomization.addMethod(joinWithNewline(
+            "public SearchResourceEncryptionKey setApplicationSecret(String applicationSecret) {",
+            "    if (this.accessCredentials == null) {",
+            "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
+            "    }",
+            "",
+            "    this.accessCredentials.setApplicationSecret(applicationSecret);",
+            "    return this;",
+            "}"))
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("setApplicationSecret").getJavadoc(), javadoc)
+            .setReturn(setterReturnJavadoc);
+    }
+
+    private void customizeSearchSuggester(ClassCustomization classCustomization) {
+        classCustomization.getConstructor("SearchSuggester").replaceBody(joinWithNewline(
+            "this.searchMode = \"analyzingInfixMatching\";",
+            "this.name = name;",
+            "this.sourceFields = sourceFields;"));
+
+        classCustomization.removeMethod("setSearchMode");
+    }
+
+    private void customizeCustomAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
+        addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
+    }
+
+    private void customizePatternAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        classCustomization.getMethod("isLowerCaseTerms").rename("areLowerCaseTerms");
+        addVarArgsOverload(classCustomization, "stopwords", "String");
+
+        classCustomization.getMethod("getFlags").setReturnType("List<RegexFlags>", "%s")
+            .replaceBody(joinWithNewline(
+                "if (this.flags == null) {",
+                "    return null;",
+                "} else {",
+                "    String[] flagStrings = this.flags.toString().split(\"\\\\|\");",
+                "    return java.util.Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());",
+                "}"));
+
+        classCustomization.getMethod("setFlags").replaceParameters("List<RegexFlags> flags")
+            .replaceBody(joinWithNewline(
+                "if (flags == null) {",
+                "    this.flags = null;",
+                "} else {",
+                "    String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));",
+                "    this.flags = RegexFlags.fromString(flagString);",
+                "}",
+                "",
+                "return this;"));
+        addVarArgsOverload(classCustomization, "flags", "RegexFlags");
+        classCustomization.getMethod("setFlags(RegexFlags... flags)")
+            .replaceBody(joinWithNewline(
+                "if (flags == null) {",
+                "    this.flags = null;",
+                "    return this;",
+                "} else {",
+                "    return setFlags(java.util.Arrays.asList(flags));",
+                "}"));
+    }
+
+    private void customizeLuceneStandardAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "stopwords", "String");
+    }
+
+    private void customizeStopAnalyzer(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        addVarArgsOverload(classCustomization, "stopwords", "String");
     }
 
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,
@@ -275,5 +351,9 @@ public class SearchServiceCustomizations extends Customization {
         from.getSees().forEach(to::addSee);
 
         return to;
+    }
+
+    private static String joinWithNewline(String... lines) {
+        return String.join("\n", lines);
     }
 }

@@ -131,7 +131,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
                             request,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 ## 2.4.0-beta.1 (Unreleased)
 
+- Refreshed `api-version` `2020-08-01`
 - Supported configure `ApplicationSecurityGroup` for `NetworkInterface`
 
 ## 2.3.0 (2021-03-30)

@@ -45,7 +45,7 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
         recordFileName = PARENT_FILENAME + "setRepositoryPropertiesWithResponse[1].json";
         ContainerRepositoryClient client = getContainerRepositoryClient();
 
-        client.setProperties(writeableProperties);
+        client.updateProperties(writeableProperties);
         testDelay();
         validateContentProperties(client.getProperties().getWriteableProperties());
     }
@@ -55,7 +55,7 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
         recordFileName = PARENT_FILENAME + "setRepositoryPropertiesWithResponse[1].json";
         ContainerRepositoryClient client = getContainerRepositoryClient();
 
-        client.setPropertiesWithResponse(writeableProperties, Context.NONE);
+        client.updatePropertiesWithResponse(writeableProperties, Context.NONE);
         validateContentProperties(client.getProperties().getWriteableProperties());
     }
 
@@ -64,9 +64,9 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
         recordFileName = PARENT_FILENAME + "setRepositoryPropertiesThrowsWithResponse[1].json";
         client = getUnknownContainerRepositoryClient();
 
-        assertThrows(NullPointerException.class, () -> client.setProperties(null));
-        assertThrows(NullPointerException.class, () -> client.setPropertiesWithResponse(null, Context.NONE));
-        assertThrows(ResourceNotFoundException.class, () -> client.setPropertiesWithResponse(defaultProperties, Context.NONE));
+        assertThrows(NullPointerException.class, () -> client.updateProperties(null));
+        assertThrows(NullPointerException.class, () -> client.updatePropertiesWithResponse(null, Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.updatePropertiesWithResponse(defaultProperties, Context.NONE));
     }
 
 
@@ -77,7 +77,7 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
 
         List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
         String digest = getChildArtifactDigest(repositories);
-        client.setManifestProperties(digest, writeableProperties);
+        client.updateManifestProperties(digest, writeableProperties);
         RegistryArtifactProperties acProps = client.getRegistryArtifactProperties(digest);
         assertNotNull(acProps);
         validateContentProperties(acProps.getWriteableProperties());
@@ -90,7 +90,7 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
 
         List<RegistryArtifactProperties> repositories = client.listRegistryArtifacts().stream().collect(Collectors.toList());
         String digest = getChildArtifactDigest(repositories);
-        client.setManifestPropertiesWithResponse(digest, writeableProperties, Context.NONE);
+        client.updateManifestPropertiesWithResponse(digest, writeableProperties, Context.NONE);
         RegistryArtifactProperties acProps = client.getRegistryArtifactProperties(digest);
         assertNotNull(acProps);
         validateContentProperties(acProps.getWriteableProperties());
@@ -101,13 +101,13 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
         recordFileName = PARENT_FILENAME + "setManifestPropertiesThrowsWithResponse[1].json";
         client = getContainerRepositoryClient();
 
-        assertThrows(NullPointerException.class, () -> client.setManifestProperties(null, writeableProperties));
-        assertThrows(NullPointerException.class, () -> client.setManifestProperties(DIGEST_UNKNOWN, null));
-        assertThrows(NullPointerException.class, () -> client.setManifestPropertiesWithResponse(null, writeableProperties, Context.NONE));
-        assertThrows(NullPointerException.class, () -> client.setManifestPropertiesWithResponse(DIGEST_UNKNOWN, null, Context.NONE));
+        assertThrows(NullPointerException.class, () -> client.updateManifestProperties(null, writeableProperties));
+        assertThrows(NullPointerException.class, () -> client.updateManifestProperties(DIGEST_UNKNOWN, null));
+        assertThrows(NullPointerException.class, () -> client.updateManifestPropertiesWithResponse(null, writeableProperties, Context.NONE));
+        assertThrows(NullPointerException.class, () -> client.updateManifestPropertiesWithResponse(DIGEST_UNKNOWN, null, Context.NONE));
 
-        assertThrows(ResourceNotFoundException.class, () -> client.setManifestProperties(DIGEST_UNKNOWN, writeableProperties));
-        assertThrows(ResourceNotFoundException.class, () -> client.setManifestPropertiesWithResponse(DIGEST_UNKNOWN, writeableProperties, Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.updateManifestProperties(DIGEST_UNKNOWN, writeableProperties));
+        assertThrows(ResourceNotFoundException.class, () -> client.updateManifestPropertiesWithResponse(DIGEST_UNKNOWN, writeableProperties, Context.NONE));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
         recordFileName = PARENT_FILENAME + "setTagPropertiesWithResponse[1].json";
         client = getContainerRepositoryClient();
 
-        client.setTagProperties(TAG_TO_UPDATE, writeableProperties);
+        client.updateTagProperties(TAG_TO_UPDATE, writeableProperties);
         validateContentProperties(client.getTagProperties(TAG_TO_UPDATE).getWriteableProperties());
     }
 
@@ -159,7 +159,7 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
         recordFileName = PARENT_FILENAME + "setTagPropertiesWithResponse[1].json";
         client = getContainerRepositoryClient();
 
-        client.setTagPropertiesWithResponse(TAG_TO_UPDATE, writeableProperties, Context.NONE);
+        client.updateTagPropertiesWithResponse(TAG_TO_UPDATE, writeableProperties, Context.NONE);
         validateContentProperties(client.getTagProperties(TAG_TO_UPDATE).getWriteableProperties());
     }
 
@@ -168,10 +168,10 @@ public class ContainerRepositoryUpdateTests extends ContainerRegistryClientsTest
         recordFileName = PARENT_FILENAME + "setTagPropertiesThrowsWithResponse[1].json";
         client = getContainerRepositoryClient();
 
-        assertThrows(NullPointerException.class, () -> client.setTagProperties(null, defaultProperties));
-        assertThrows(NullPointerException.class, () -> client.setTagPropertiesWithResponse(null, defaultProperties, Context.NONE));
-        assertThrows(ResourceNotFoundException.class, () -> client.setTagProperties(TAG_UNKNOWN, defaultProperties));
-        assertThrows(ResourceNotFoundException.class, () -> client.setTagPropertiesWithResponse(TAG_UNKNOWN, defaultProperties, Context.NONE));
+        assertThrows(NullPointerException.class, () -> client.updateTagProperties(null, defaultProperties));
+        assertThrows(NullPointerException.class, () -> client.updateTagPropertiesWithResponse(null, defaultProperties, Context.NONE));
+        assertThrows(ResourceNotFoundException.class, () -> client.updateTagProperties(TAG_UNKNOWN, defaultProperties));
+        assertThrows(ResourceNotFoundException.class, () -> client.updateTagPropertiesWithResponse(TAG_UNKNOWN, defaultProperties, Context.NONE));
     }
 
     @Test
