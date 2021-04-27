@@ -35,7 +35,7 @@ public class AzureKeyManagerFactoryProviderTest {
     @Test
     public void testGetCertificate() throws Exception {
         Security.addProvider(new AzureKeyManagerFactoryProvider());
-        KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
+        KeyStore keystore = KeyStore.getInstance("Azure");
         AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),

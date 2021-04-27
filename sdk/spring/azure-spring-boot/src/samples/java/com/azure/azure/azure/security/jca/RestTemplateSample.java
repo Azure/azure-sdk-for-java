@@ -17,7 +17,7 @@ import java.security.KeyStore;
 public class RestTemplateSample {
     @Bean
     public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
-        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+        KeyStore trustStore = KeyStore.getInstance("Azure");
         AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.managed-identity"));

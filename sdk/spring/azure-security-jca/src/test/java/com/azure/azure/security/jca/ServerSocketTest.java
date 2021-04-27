@@ -59,7 +59,7 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+        KeyStore ks = KeyStore.getInstance("Azure");
         AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
@@ -161,7 +161,7 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+        KeyStore ks = KeyStore.getInstance("Azure");
         AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),

@@ -18,7 +18,7 @@ public class ServerSSLSample {
         AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
         Security.addProvider(provider);
 
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
+        KeyStore keyStore = KeyStore.getInstance("Azure");
         AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),

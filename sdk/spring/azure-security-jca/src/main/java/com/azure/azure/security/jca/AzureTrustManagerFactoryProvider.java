@@ -20,12 +20,12 @@ public class AzureTrustManagerFactoryProvider extends Provider {
     /**
      * Stores the information.
      */
-    private static final String INFO = "Azure Key Vault TrustManagerFactory Provider";
+    private static final String INFO = "Azure TrustManagerFactory Provider";
 
     /**
      * Stores the name.
      */
-    private static final String NAME = "AzureKeyVaultTrustManagerFactory";
+    private static final String NAME = "AzureTrustManagerFactory";
 
     /**
      * Stores the version.

@@ -43,7 +43,7 @@ If you are looking to integrate the JCA provider to create an SSLServerSocket se
 AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
+KeyStore keyStore = KeyStore.getInstance("Azure");
 AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
     System.getProperty("azure.keyvault.uri"),
     System.getProperty("azure.keyvault.tenant-id"),
@@ -71,7 +71,7 @@ If you are looking to integrate the JCA provider for client side socket connecti
 AzureKeyManagerFactoryProvider provider = new AzureKeyManagerFactoryProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
+KeyStore keyStore = KeyStore.getInstance("Azure");
 AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
     System.getProperty("azure.keyvault.uri"),
     System.getProperty("azure.keyvault.tenant-id"),

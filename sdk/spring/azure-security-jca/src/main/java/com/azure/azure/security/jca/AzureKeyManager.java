@@ -69,7 +69,7 @@ public class AzureKeyManager extends X509ExtendedKeyManager {
         try {
             /*
              * If we only have one alias and the keystore type is not 
-             * 'AzureKeyVault' return that alias as a match.
+             * 'Azure' return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals(AzureKeyManagerFactoryProvider.PROVIDER_NAME)
                 && keystore.size() == 1) {
@@ -93,7 +93,7 @@ public class AzureKeyManager extends X509ExtendedKeyManager {
         try {
             /*
              * If we only have one alias and the keystore type is not 
-             * 'AzureKeyVault' return that alias as a match.
+             * 'Azure' return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals(AzureKeyManagerFactoryProvider.PROVIDER_NAME)
                 && keystore.size() == 1) {

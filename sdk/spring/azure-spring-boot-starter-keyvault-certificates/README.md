@@ -112,7 +112,7 @@ server:
   port: 8443
   ssl:
     key-alias:           # The alias corresponding to the certificate in Azure Key Vault.
-    key-store-type: AzureKeyVault  # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
+    key-store-type: Azure  # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
 ```
 
 Make sure the client-id can access target Key Vault. Here are steps to configure access policy:
@@ -149,7 +149,7 @@ azure:
 server:
   ssl:
     key-alias: <the name of the certificate in Azure Key Vault to use>
-    key-store-type: AzureKeyVault
+    key-store-type: Azure
 ```
 Make sure the managed identity can access target Key Vault.
 
@@ -168,13 +168,13 @@ azure:
 ```
 Make sure the client-id can access target Key Vault. 
 
-Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
+Configure a `RestTemplate` bean which set the `Azure` as trust store:
 
 <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L45 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
-    KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+    KeyStore trustStore = KeyStore.getInstance("Azure");
     AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.tenant-id"),
@@ -206,13 +206,13 @@ azure:
 ```
 Make sure the managed identity can access target Key Vault.
 
-Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
+Configure a `RestTemplate` bean which set the `Azure` as trust store:
 
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/azure/security/jca/RestTemplateSample.java#L18-L36 -->
 ```java
 @Bean
 public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
-    KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+    KeyStore trustStore = KeyStore.getInstance("Azure");
     AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.managed-identity"));
@@ -240,7 +240,7 @@ Step 1. On the server side, add these items in your `application.yml`:
 server:
   ssl:
     client-auth: need
-    trust-store-type: AzureKeyVault
+    trust-store-type: Azure
 ```
 
 Step 2. On the client side, update `RestTemplate`. Example:
@@ -249,7 +249,7 @@ Step 2. On the client side, update `RestTemplate`. Example:
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
-    KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+    KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("Azure");
     AzureLoadStoreParameter parameter = new AzureLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.tenant-id"),

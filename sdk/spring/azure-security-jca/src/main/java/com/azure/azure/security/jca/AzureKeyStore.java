@@ -41,7 +41,7 @@ public final class AzureKeyStore extends KeyStoreSpi {
     /**
      * Stores the key-store name.
      */
-    public static final String KEY_STORE_TYPE = "AzureKeyVault";
+    public static final String KEY_STORE_TYPE = "Azure"; // TODO (rujche) Update changelog
 
     /**
      * Stores the algorithm name.
