@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.keyvault;
+package com.azure.azure.azure.security.jca;
 
 import com.azure.azure.security.jca.AzureLoadStoreParameter;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.net.ssl.SSLContext;
 import java.security.KeyStore;
 
-public class KeyVaultJcaManagedIdentitySample {
+public class RestTemplateSample {
     @Bean
     public RestTemplate restTemplateCreatedByManagedIdentity() throws Exception {
         KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
