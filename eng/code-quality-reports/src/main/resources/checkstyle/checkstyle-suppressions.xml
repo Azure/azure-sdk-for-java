@@ -441,6 +441,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy.java"/>
 
   <!-- Checkstyle suppression for Event Hubs client APIs that use Flux instead of PagedFlux for methods that return a collection -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubConsumerClient.java"/>
