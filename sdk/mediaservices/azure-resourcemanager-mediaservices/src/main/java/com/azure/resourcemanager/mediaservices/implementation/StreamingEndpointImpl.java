@@ -12,7 +12,6 @@ import com.azure.resourcemanager.mediaservices.models.CrossSiteAccessPolicies;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpoint;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointAccessControl;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointResourceState;
-import com.azure.resourcemanager.mediaservices.models.StreamingEntityScaleUnit;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -234,32 +233,6 @@ public final class StreamingEndpointImpl
                 .getWithResponse(resourceGroupName, accountName, streamingEndpointName, context)
                 .getValue();
         return this;
-    }
-
-    public void start() {
-        serviceManager.streamingEndpoints().start(resourceGroupName, accountName, streamingEndpointName);
-    }
-
-    public void start(Context context) {
-        serviceManager.streamingEndpoints().start(resourceGroupName, accountName, streamingEndpointName, context);
-    }
-
-    public void stop() {
-        serviceManager.streamingEndpoints().stop(resourceGroupName, accountName, streamingEndpointName);
-    }
-
-    public void stop(Context context) {
-        serviceManager.streamingEndpoints().stop(resourceGroupName, accountName, streamingEndpointName, context);
-    }
-
-    public void scale(StreamingEntityScaleUnit parameters) {
-        serviceManager.streamingEndpoints().scale(resourceGroupName, accountName, streamingEndpointName, parameters);
-    }
-
-    public void scale(StreamingEntityScaleUnit parameters, Context context) {
-        serviceManager
-            .streamingEndpoints()
-            .scale(resourceGroupName, accountName, streamingEndpointName, parameters, context);
     }
 
     public StreamingEndpointImpl withRegion(Region location) {

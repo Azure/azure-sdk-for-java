@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -93,6 +92,13 @@ public interface MediaService {
     AccountEncryption encryption();
 
     /**
+     * Gets the keyDelivery property: The Key Delivery properties for Media Services account.
+     *
+     * @return the keyDelivery value.
+     */
+    KeyDelivery keyDelivery();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -162,7 +168,8 @@ public interface MediaService {
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithStorageAccounts,
                 DefinitionStages.WithStorageAuthentication,
-                DefinitionStages.WithEncryption {
+                DefinitionStages.WithEncryption,
+                DefinitionStages.WithKeyDelivery {
             /**
              * Executes the create request.
              *
@@ -228,6 +235,16 @@ public interface MediaService {
              */
             WithCreate withEncryption(AccountEncryption encryption);
         }
+        /** The stage of the MediaService definition allowing to specify keyDelivery. */
+        interface WithKeyDelivery {
+            /**
+             * Specifies the keyDelivery property: The Key Delivery properties for Media Services account..
+             *
+             * @param keyDelivery The Key Delivery properties for Media Services account.
+             * @return the next definition stage.
+             */
+            WithCreate withKeyDelivery(KeyDelivery keyDelivery);
+        }
     }
     /**
      * Begins update for the MediaService resource.
@@ -242,7 +259,8 @@ public interface MediaService {
             UpdateStages.WithIdentity,
             UpdateStages.WithStorageAccounts,
             UpdateStages.WithStorageAuthentication,
-            UpdateStages.WithEncryption {
+            UpdateStages.WithEncryption,
+            UpdateStages.WithKeyDelivery {
         /**
          * Executes the update request.
          *
@@ -310,6 +328,16 @@ public interface MediaService {
              */
             Update withEncryption(AccountEncryption encryption);
         }
+        /** The stage of the MediaService update allowing to specify keyDelivery. */
+        interface WithKeyDelivery {
+            /**
+             * Specifies the keyDelivery property: The Key Delivery properties for Media Services account..
+             *
+             * @param keyDelivery The Key Delivery properties for Media Services account.
+             * @return the next definition stage.
+             */
+            Update withKeyDelivery(KeyDelivery keyDelivery);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -325,49 +353,4 @@ public interface MediaService {
      * @return the refreshed resource.
      */
     MediaService refresh(Context context);
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void syncStorageKeys(SyncStorageKeysInput parameters);
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
-     * @param parameters The request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context);
-
-    /**
-     * List the media edge policies associated with the Media Services account.
-     *
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters);
-
-    /**
-     * List the media edge policies associated with the Media Services account.
-     *
-     * @param parameters The request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<EdgePolicies> listEdgePoliciesWithResponse(ListEdgePoliciesInput parameters, Context context);
 }

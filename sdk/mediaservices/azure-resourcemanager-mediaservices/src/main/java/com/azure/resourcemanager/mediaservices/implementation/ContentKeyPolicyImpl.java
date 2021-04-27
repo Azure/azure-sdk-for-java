@@ -4,13 +4,11 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyInner;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicy;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
-import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyProperties;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -164,18 +162,6 @@ public final class ContentKeyPolicyImpl
                 .getWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context)
                 .getValue();
         return this;
-    }
-
-    public ContentKeyPolicyProperties getPolicyPropertiesWithSecrets() {
-        return serviceManager
-            .contentKeyPolicies()
-            .getPolicyPropertiesWithSecrets(resourceGroupName, accountName, contentKeyPolicyName);
-    }
-
-    public Response<ContentKeyPolicyProperties> getPolicyPropertiesWithSecretsWithResponse(Context context) {
-        return serviceManager
-            .contentKeyPolicies()
-            .getPolicyPropertiesWithSecretsWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context);
     }
 
     public ContentKeyPolicyImpl withDescription(String description) {
