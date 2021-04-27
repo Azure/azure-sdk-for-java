@@ -17,7 +17,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class PowershellManager {
@@ -34,10 +36,16 @@ public class PowershellManager {
     private int waitPause = 500;
     private long maxWait = 10000L;
     private final boolean legacyPowershell;
+    private ExecutorService executorService;
 
 
     public PowershellManager(boolean legacyPowershell) {
         this.legacyPowershell = legacyPowershell;
+    }
+
+    public PowershellManager(boolean legacyPowershell, ExecutorService executorService) {
+        this.legacyPowershell = legacyPowershell;
+        this.executorService = executorService;
     }
 
     public Mono<PowershellManager> initSession() {
@@ -57,7 +65,7 @@ public class PowershellManager {
         pb.redirectErrorStream(true);
 
 
-        return Mono.fromFuture(CompletableFuture.supplyAsync(() -> {
+        Supplier<PowershellManager> supplier = () -> {
             try {
                 this.process = pb.start();
                 this.commandWriter = new PrintWriter(
@@ -72,7 +80,9 @@ public class PowershellManager {
                     + "Please make sure that it is installed in your system", e));
             }
             return this;
-        }));
+        };
+        return executorService != null ? Mono.fromFuture(CompletableFuture.supplyAsync(supplier, executorService))
+            : Mono.fromFuture(CompletableFuture.supplyAsync(supplier));
     }
 
 
@@ -116,7 +126,7 @@ public class PowershellManager {
     }
 
     private Mono<Boolean> canRead(BufferedReader reader) {
-        return Mono.fromFuture(CompletableFuture.supplyAsync(() -> {
+        Supplier<Boolean> supplier = () -> {
             int counter = 0;
             while (true) {
                 try {
@@ -135,18 +145,20 @@ public class PowershellManager {
                 }
             }
             return true;
-        }));
+        };
+        return executorService != null ? Mono.fromFuture(CompletableFuture.supplyAsync(supplier, executorService))
+            : Mono.fromFuture(CompletableFuture.supplyAsync(supplier));
     }
 
     public Mono<Boolean> close() {
         if (!this.closed) {
-            return Mono.fromFuture(CompletableFuture.supplyAsync(() -> {
+            Supplier<Boolean> supplier = () -> {
                 this.commandWriter.println("exit");
                 try {
                     this.process.waitFor(maxWait, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
                     LOGGER.logExceptionAsError(new RuntimeException("PowerShell process encountered unexpcted"
-                            + " error when closing.", e));
+                        + " error when closing.", e));
                 } finally {
                     this.commandWriter.close();
 
@@ -156,12 +168,14 @@ public class PowershellManager {
                         }
                     } catch (IOException ex) {
                         LOGGER.logExceptionAsError(new RuntimeException("PowerShell stream encountered unexpcted"
-                                + " error when closing.", ex));
+                            + " error when closing.", ex));
                     }
                     this.closed = true;
                 }
                 return this.closed;
-            }));
+            };
+            return executorService != null ? Mono.fromFuture(CompletableFuture.supplyAsync(supplier, executorService))
+                : Mono.fromFuture(CompletableFuture.supplyAsync(supplier));
         } else {
             return Mono.just(true);
         }
