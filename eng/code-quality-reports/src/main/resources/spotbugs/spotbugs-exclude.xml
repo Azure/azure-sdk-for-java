@@ -2325,7 +2325,7 @@
 
   <!-- The field is designed to be unread and for serialization purpose. -->
   <Match>
-    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
+    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter|SynonymMap)"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2333,10 +2333,6 @@
   <Match>
     <Class name="com.azure.search.documents.SearchAsyncClient"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-  <Match>
-    <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)"/>
-    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
   <Match>
