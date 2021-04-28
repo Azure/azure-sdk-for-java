@@ -1,8 +1,12 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
+
+
+## 2.4.0 (2021-04-28)
 
 - Added shared interfaces and classes for Private Link.
+- Updated parameter of `SupportsBatchCreation.create` from `List<Creatable<ResourceT>>` to `List<? extends Creatable<ResourceT>>`
 
 ## 2.3.0 (2021-03-30)
 
