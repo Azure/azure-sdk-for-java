@@ -30,7 +30,7 @@ public class ResourceServerController {
     @GetMapping("/webApiA/sample")
     public String callWebApiASample() {
         LOGGER.info("WebApiA callSample() returned.");
-        return "Response from Client Credential from WebApiA success.";
+        return "Request '/webApiA/sample'(WebApi A) returns success.";
     }
 
     /**
@@ -41,14 +41,17 @@ public class ResourceServerController {
     @GetMapping("/webApiB/sample")
     public String callSample() {
         LOGGER.info("WebApiB callSample() returned.");
-        return "Response from Client Credential from WebApiB success.";
+        return "Request '/webApiB/sample'(WebApi B) returns success.";
     }
 
     /**
-     * webApiA and webApiB resources api for web app
-     * @return test content from web api b
+     * Access to protected data from WebApiA to WebApiB through client credential flow. The access token is obtained by webclient, or
+     * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
+     * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
+     *
+     * @return Respond to protected data from WebApi B.
      */
-    @GetMapping("webApiA/webApiB/sample")
+    @GetMapping("/webApiA/webApiB/sample")
     @PreAuthorize("hasAuthority('APPROLE_WebApiA.SampleScope')")
     public String callWebApiB() {
         String body = webClient
@@ -59,6 +62,6 @@ public class ResourceServerController {
             .bodyToMono(String.class)
             .block();
         LOGGER.info("WebApiA callWebApiB() returned: {}", body);
-        return "Response from WebApi B to WebApiA(Client Credential flow): " + (null != body ? "success." : "failed.");
+        return "Request 'webApiA/webApiB/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
     }
 }

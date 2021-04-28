@@ -16,17 +16,18 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 public class WebappAccessResourceController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebappAccessResourceController.class);
-    private static final String LOCAL_WEB_API_A_SAMPLE_ENDPOINT = "http://localhost:8081/webApiA/webApiB/sample";
+    private static final String LOCAL_WEB_API_A_SAMPLE_ENDPOINT = "http://localhost:8081/webApiA/sample";
+    private static final String LOCAL_WEB_API_A_WEB_API_B_SAMPLE_ENDPOINT = "http://localhost:8081/webApiA/webApiB/sample";
 
     @Autowired
     private WebClient webClient;
 
     /**
-     * Access to protected data through client credential flow. The access token is obtained by webclient, or
+     * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
      * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
      *
-     * @return Respond to protected data.
+     * @return Respond to protected data from WebApi A.
      */
     @GetMapping("/webapp/webApiA")
     public String callWebApiA() {
@@ -38,26 +39,26 @@ public class WebappAccessResourceController {
             .bodyToMono(String.class)
             .block();
         LOGGER.info("Webapp callWebApiA() returned: {}", body);
-        return "Response from WebApi A: " + (null != body ? "success." : "failed.");
+        return "Request '/webApiA/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
     }
 
     /**
-     * Access to protected data through client credential flow. The access token is obtained by webclient, or
+     * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
      * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
      *
-     * @return Respond to protected data.
+     * @return Respond to protected data from WebApi A and WebApi B.
      */
     @GetMapping("/webapp/webApiA/webApiB")
     public String callWebApiAThenCallWebApiB() {
         String body = webClient
             .get()
-            .uri(LOCAL_WEB_API_A_SAMPLE_ENDPOINT)
+            .uri(LOCAL_WEB_API_A_WEB_API_B_SAMPLE_ENDPOINT)
             .attributes(clientRegistrationId("webApiA"))
             .retrieve()
             .bodyToMono(String.class)
             .block();
         LOGGER.info("Webapp callWebApiAThenCallWebApiB() returned: {}", body);
-        return "Response from WebApi A(WebApi A response from WebApi B): " + (null != body ? "success." : "failed.");
+        return "Request '/webApiA/webApiB/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
     }
 }

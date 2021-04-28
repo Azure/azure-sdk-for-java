@@ -11,30 +11,45 @@ while protecting the identities of your customers at the same time.
 ### Prerequisites
 - [Environment checklist][environment_checklist]
 - [Tutorial create Active Directory B2C tenant][tutorial_create_tenant]
-  
+
+### Include the package
+[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
+```xml
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
+    <version>3.5.0-beta.1</version>
+</dependency>
+```
+[//]: # "{x-version-update-end}"
+
+### Configurable properties
+This starter provides following properties to be customized:
+
+| Parameter | Description |
+   |---|---|
+| `azure.activedirectory.b2c.base-uri` | Base uri for authorization server, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect. |
+| `azure.activedirectory.b2c.client-id` | The registered application ID in Azure AD B2C. |
+| `azure.activedirectory.b2c.client-secret` | The client secret of a registered application. |
+| `azure.activedirectory.b2c.authorization-clients` | A map to list all authorization clients created on Azure Portal.  |
+| `azure.activedirectory.b2c.login-flow` | The key name of sign in user flow. |
+| `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
+| `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
+| `azure.activedirectory.b2c.tenant-id` | The Azure AD B2C's tenant id. |
+| `azure.activedirectory.b2c.user-flows` | A map to list all user flows defined on Azure Portal.  |
+| `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|
+
 ## Key concepts
 
-A `web application` is any web based application that allows user to login, whereas a `resource server` will either accept or deny access after validating access_token. We will cover 4 scenarios in this guide:
+A `web application` is any web based application that allows user to login Azure AD, whereas a `resource server` will either 
+accept or deny access after validating access_token obtained from Azure AD. We will cover 4 scenarios in this guide:
 
 1. Accessing a web application.
 1. Web application accessing resource servers.
 1. Accessing a resource server.
 1. Resource server accessing other resource servers.
 
-This starter provides following properties to be customized:
-
- | Parameter | Description |
-   |---|---|
-   | `azure.activedirectory.b2c.base-uri` | Base uri for authorization server, if both `tenant` and `baseUri` are configured at the same time, only `baseUri` takes effect. |
-   | `azure.activedirectory.b2c.client-id` | The registered application ID in Azure AD B2C. |
-   | `azure.activedirectory.b2c.client-secret` | The client secret of a registered application. |
-   | `azure.activedirectory.b2c.authorization-clients` | A map to list all authorization clients created on Azure Portal.  |
-   | `azure.activedirectory.b2c.login-flow` | The key name of sign in user flow. |
-   | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |   
-   | `azure.activedirectory.b2c.tenant(Deprecated)` | The Azure AD B2C's tenant name, this is only suitable for Global cloud. |
-   | `azure.activedirectory.b2c.tenant-id` | The Azure AD B2C's tenant id. |
-   | `azure.activedirectory.b2c.user-flows` | A map to list all user flows defined on Azure Portal.  |
-   | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|
+![B2C Web application & Web Api Overall](resource/b2c-webapp-webapi-overall.png)
 
 ### Accessing a web application
 
@@ -242,14 +257,14 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 1. Write your `Webapp` Java code.
 
    Controller code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceController.java#L24-L42 -->
+    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceController.java#L25-L43 -->
     ```java
     /**
-     * Access to protected data through client credential flow. The access token is obtained by webclient, or
+     * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
      * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
      *
-     * @return Respond to protected data.
+     * @return Respond to protected data from WebApi A.
      */
     @GetMapping("/webapp/webApiA")
     public String callWebApiA() {
@@ -261,7 +276,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
             .bodyToMono(String.class)
             .block();
         LOGGER.info("Webapp callWebApiA() returned: {}", body);
-        return "Response from WebApi A: " + (null != body ? "success." : "failed.");
+        return "Request '/webApiA/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
     }
     ```
 
@@ -339,13 +354,14 @@ This scenario not support login. Just protect the server by validating the acces
     @GetMapping("/webApiA/sample")
     public String callWebApiASample() {
         LOGGER.info("WebApiA callSample() returned.");
-        return "Response from Client Credential from WebApiA success.";
+        return "Request '/webApiA/sample'(WebApi A) returns success.";
     }
     ```
 
    Security configuration code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerConfiguration.java#L10-L20 -->
+    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerConfiguration.java#L11-L22 -->
     ```java
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
     @EnableWebSecurity
     public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
     
@@ -420,13 +436,16 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
 1. Write your Java code.
 
    WebApiA controller code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L47-L63 -->
+    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L47-L66 -->
     ```java
     /**
-     * webApiA and webApiB resources api for web app
-     * @return test content from web api b
+     * Access to protected data from WebApiA to WebApiB through client credential flow. The access token is obtained by webclient, or
+     * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
+     * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
+     *
+     * @return Respond to protected data from WebApi B.
      */
-    @GetMapping("webApiA/webApiB/sample")
+    @GetMapping("/webApiA/webApiB/sample")
     @PreAuthorize("hasAuthority('APPROLE_WebApiA.SampleScope')")
     public String callWebApiB() {
         String body = webClient
@@ -437,7 +456,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
             .bodyToMono(String.class)
             .block();
         LOGGER.info("WebApiA callWebApiB() returned: {}", body);
-        return "Response from WebApi B to WebApiA(Client Credential flow): " + (null != body ? "success." : "failed.");
+        return "Request 'webApiA/webApiB/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
     }
     ```
    
@@ -452,7 +471,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
     @GetMapping("/webApiB/sample")
     public String callSample() {
         LOGGER.info("WebApiB callSample() returned.");
-        return "Response from Client Credential from WebApiB success.";
+        return "Request '/webApiB/sample'(WebApi B) returns success.";
     }
     ```
 
