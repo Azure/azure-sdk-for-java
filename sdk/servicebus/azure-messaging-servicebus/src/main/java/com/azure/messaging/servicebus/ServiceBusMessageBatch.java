@@ -31,7 +31,7 @@ public final class ServiceBusMessageBatch {
     private final MessageSerializer serializer;
     private final List<ServiceBusMessage> serviceBusMessageList;
     private final byte[] eventBytes;
-    private AtomicInteger sizeInBytes;
+    private final AtomicInteger sizeInBytes;
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
