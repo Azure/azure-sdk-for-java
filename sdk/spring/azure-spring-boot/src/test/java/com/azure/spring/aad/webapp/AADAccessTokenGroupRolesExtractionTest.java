@@ -67,9 +67,9 @@ public class AADAccessTokenGroupRolesExtractionTest {
     @Test
     public void testGroupsName() {
         setup();
-        List<String> filterByName = new ArrayList<>();
-        filterByName.add("group1");
-        when(userGroup.getAllowedGroupNames()).thenReturn(filterByName);
+        List<String> allowedGroupNames = new ArrayList<>();
+        allowedGroupNames.add("group1");
+        when(userGroup.getAllowedGroupNames()).thenReturn(allowedGroupNames);
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
 
         assertThat(groupsName).contains("ROLE_group1");
@@ -79,9 +79,9 @@ public class AADAccessTokenGroupRolesExtractionTest {
     @Test
     public void testGroupsId() {
         setup();
-        Set<String> filterByIds = new HashSet<>();
-        filterByIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        when(userGroup.getAllowedGroupIds()).thenReturn(filterByIds);
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        when(userGroup.getAllowedGroupIds()).thenReturn(allowedGroupIds);
 
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupsName).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
@@ -91,12 +91,12 @@ public class AADAccessTokenGroupRolesExtractionTest {
     @Test
     public void testGroupsNameAndGroupsId() {
         setup();
-        Set<String> filterByIds = new HashSet<>();
-        filterByIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        when(userGroup.getAllowedGroupIds()).thenReturn(filterByIds);
-        List<String> filterByName = new ArrayList<>();
-        filterByName.add("group1");
-        when(userGroup.getAllowedGroupNames()).thenReturn(filterByName);
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        when(userGroup.getAllowedGroupIds()).thenReturn(allowedGroupIds);
+        List<String> allowedGroupNames = new ArrayList<>();
+        allowedGroupNames.add("group1");
+        when(userGroup.getAllowedGroupNames()).thenReturn(allowedGroupNames);
 
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupsName).contains("ROLE_group1");
