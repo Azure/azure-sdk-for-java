@@ -15,10 +15,6 @@ parameters:
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
     parameters:
-      Repositories:
-        - Name: Azure/azure-sdk-for-java
-          Commitish: $(Build.SourceVersion)
-          WorkingDirectory: $(System.DefaultWorkingDirectory)
       Paths: ${{ parameters.Paths }}
 
   - task: UsePythonVersion@0
@@ -49,26 +45,7 @@ steps:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
 
-  - task: PythonScript@0
-    displayName: 'Generate directories variable for sparse checkout'
-    inputs:
-      scriptPath: 'eng/scripts/generate_from_source_pom.py'
-      arguments: '--set-pipeline-variable --project-list $(ProjectList)'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-  - pwsh: |
-      $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
-      Invoke-Expression -Command "git sparse-checkout set eng '**/*.xml' '**/*.md' $paths"
-      Write-Host "Set sparse checkout paths to:"
-      Get-Content .git/info/sparse-checkout
-    displayName: Sparse checkout module paths
-
-  - pwsh: |
-      $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
-      $jsonPaths = $paths | ForEach-Object { $_ + '/**/*.json' }
-      Write-Host "Add sparse checkout paths $jsonPaths"
-      Invoke-Expression -Command "git sparse-checkout add $jsonPaths"
-      Write-Host "Sparse checkout paths:"
-      Get-Content .git/info/sparse-checkout
-    displayName: Checkout recordings
-    condition: eq(${{ parameters.CheckoutRecordings }}, true)
+  - template: checkout-source-dependencies.yml
+    parameters:
+      ProjectList: $(ProjectList)
+      CheckoutRecordings: ${{ parameters.CheckoutRecordings }}
