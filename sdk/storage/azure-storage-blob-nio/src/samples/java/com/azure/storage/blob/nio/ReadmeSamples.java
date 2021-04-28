@@ -29,7 +29,10 @@ import java.util.Map;
 public class ReadmeSamples {
 
     private FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_account_name"),
-        Collections.emptyMap());
+                new HashMap<String, Object>(){{
+                    put(AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY, "<your_storage_account_key>");
+                    put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "<your_storage_file_stores>");
+                }});
     private Path dirPath = myFs.getPath("dir");
     private Path filePath = myFs.getPath("file");
 
