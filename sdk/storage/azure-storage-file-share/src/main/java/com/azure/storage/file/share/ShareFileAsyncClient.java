@@ -1344,7 +1344,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long-ShareRequestConditions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>

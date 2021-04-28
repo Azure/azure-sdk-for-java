@@ -18,6 +18,7 @@ import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -308,6 +309,22 @@ public class ShareFileJavaDocCodeSamples {
         System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
         System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
         // END: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#InputStream-long-Long-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link ShareFileClient#uploadWithResponse(ShareFileUploadOptions, Duration, Context)}.
+     */
+    public void uploadOptionsBag() {
+        ShareFileClient fileClient = createClientWithCredential();
+        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#ShareFileUploadOptions-Duration-Context
+        InputStream uploadData = new ByteArrayInputStream(data);
+        Response<ShareFileUploadInfo> response = fileClient.uploadWithResponse(
+            new ShareFileUploadOptions(uploadData, data.length), Duration.ofSeconds(30), null);
+        System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
+        System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
+        // END: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#ShareFileUploadOptions-Duration-Context
     }
 
     /**
