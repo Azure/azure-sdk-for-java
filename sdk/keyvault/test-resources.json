@@ -54,7 +54,8 @@
       ]
     },
     "identityName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "identityForKeyVault"
     },
     "certificateName": {
       "type": "string",
