@@ -1,0 +1,32 @@
+parameters:
+  - name: ProjectList
+    type: string
+  - name: CheckoutRecordings
+    type: boolean
+    default: false
+
+steps:
+  - task: PythonScript@0
+    displayName: 'Generate directories variable for sparse checkout'
+    inputs:
+      scriptPath: 'eng/scripts/generate_from_source_pom.py'
+      arguments: '--set-pipeline-variable --project-list ${{ parameters.ProjectList }}'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - pwsh: |
+      $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
+      $javaPaths = $paths | ForEach-Object { $_ + '/**/*.java' }
+      Invoke-Expression -Command "git sparse-checkout set eng '**/*.xml' '**/*.md' $javaPaths"
+      Write-Host "Set sparse checkout paths to:"
+      Get-Content .git/info/sparse-checkout
+    displayName: Sparse checkout module paths
+
+  - pwsh: |
+      $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
+      $jsonPaths = $paths | ForEach-Object { $_ + '/**/*.json' }
+      Write-Host "Add sparse checkout paths $jsonPaths"
+      Invoke-Expression -Command "git sparse-checkout add $jsonPaths"
+      Write-Host "Sparse checkout paths:"
+      Get-Content .git/info/sparse-checkout
+    displayName: Checkout recordings
+    condition: eq(${{ parameters.CheckoutRecordings }}, true)

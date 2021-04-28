@@ -47,7 +47,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
-            - '${{ parameters.ServiceDirectory }}'
+            - 'sdk/${{ parameters.ServiceDirectory }}/**/*.java'
             - '**/*.xml'
             - '**/*.md'
 
@@ -66,6 +66,11 @@ jobs:
           PackageName: "azure-sdk-template"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
         parameters:
@@ -90,16 +95,15 @@ jobs:
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository
 
+      - template: /eng/pipelines/templates/steps/checkout-source-dependencies.yml
+        parameters:
+          ProjectList: $(ProjectList)
+
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - template: ../steps/cache-maven-repository.yml
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
@@ -146,21 +150,30 @@ jobs:
       vmImage: MMSUbuntu18.04
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths:
-            - ${{ parameters.ServiceDirectory }}
-            - '**/*.xml'
-            - '**/*.md'
-
-      - pwsh: |
-          $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
-        displayName: "Verify versions in POM files"
-
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}/**/*.java'
+            - '**/*.xml'
+            - '**/*.md'
+
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+
+      - template: /eng/pipelines/templates/steps/checkout-source-dependencies.yml
+        parameters:
+          ProjectList: $(ProjectList)
+
+      - pwsh: |
+          $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
+        displayName: "Verify versions in POM files"
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
@@ -207,11 +220,6 @@ jobs:
         parameters:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
