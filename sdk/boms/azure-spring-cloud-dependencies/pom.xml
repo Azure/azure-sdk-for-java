@@ -127,6 +127,16 @@
         <version>${azure.spring.appconfigure.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>spring-cloud-azure-feature-management-web</artifactId>
+        <version>${azure.spring.appconfigure.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>spring-cloud-azure-feature-management</artifactId>
+        <version>${azure.spring.appconfigure.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-cloud-messaging</artifactId>
         <version>${azure.spring.cloud.version}</version>
