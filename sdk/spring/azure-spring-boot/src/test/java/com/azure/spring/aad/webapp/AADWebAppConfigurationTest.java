@@ -380,7 +380,7 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=",
-                "azure.activedirectory.user-group.filter-by-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
@@ -394,7 +394,7 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=common",
-                "azure.activedirectory.user-group.filter-by-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
@@ -408,7 +408,7 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=organizations",
-                "azure.activedirectory.user-group.filter-by-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
@@ -422,7 +422,7 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=consumers",
-                "azure.activedirectory.user-group.filter-by-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
@@ -464,7 +464,7 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.user-group.filter-by-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718, "
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718, "
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo =

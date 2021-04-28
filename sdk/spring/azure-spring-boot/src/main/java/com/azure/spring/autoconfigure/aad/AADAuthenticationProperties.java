@@ -141,34 +141,34 @@ public class AADAuthenticationProperties implements InitializingBean {
          * Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph
          * API Call.
          */
-        private List<String> filterByNames = new ArrayList<>();
+        private List<String> allowedGroupNames = new ArrayList<>();
 
-        private Set<String> filterByIds = new HashSet<>();
+        private Set<String> allowedGroupIds = new HashSet<>();
 
-        public Set<String> getFilterByIds() {
-            return filterByIds;
+        public Set<String> getAllowedGroupIds() {
+            return allowedGroupIds;
         }
 
-        public void setFilterByIds(Set<String> filterByIds) {
-            this.filterByIds = filterByIds;
+        public void setAllowedGroupIds(Set<String> allowedGroupIds) {
+            this.allowedGroupIds = allowedGroupIds;
         }
 
-        public List<String> getFilterByNames() {
-            return filterByNames;
+        public List<String> getAllowedGroupNames() {
+            return allowedGroupNames;
         }
 
-        public void setFilterByNames(List<String> filterByNames) {
-            this.filterByNames = filterByNames;
+        public void setAllowedGroupNames(List<String> allowedGroupNames) {
+            this.allowedGroupNames = allowedGroupNames;
         }
 
         @Deprecated
         public List<String> getAllowedGroups() {
-            return filterByNames;
+            return allowedGroupNames;
         }
 
         @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
-            this.filterByNames = allowedGroups;
+            this.allowedGroupNames = allowedGroups;
         }
 
     }
@@ -176,12 +176,12 @@ public class AADAuthenticationProperties implements InitializingBean {
     public boolean allowedGroupsConfigured() {
         return Optional.of(this)
                        .map(AADAuthenticationProperties::getUserGroup)
-                       .map(AADAuthenticationProperties.UserGroupProperties::getFilterByNames)
+                       .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
                        .map(filterByNames -> !filterByNames.isEmpty())
                        .orElse(false)
             || Optional.of(this)
                        .map(AADAuthenticationProperties::getUserGroup)
-                       .map(AADAuthenticationProperties.UserGroupProperties::getFilterByIds)
+                       .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
                        .map(filterByIds -> !filterByIds.isEmpty())
                        .orElse(false);
     }
@@ -347,11 +347,11 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public boolean isAllowedGroup(String group) {
         return Optional.ofNullable(getUserGroup())
-                       .map(UserGroupProperties::getFilterByNames)
+                       .map(UserGroupProperties::getAllowedGroupNames)
                        .orElseGet(Collections::emptyList)
                        .contains(group)
             || Optional.ofNullable(getUserGroup())
-                               .map(UserGroupProperties::getFilterByIds)
+                               .map(UserGroupProperties::getAllowedGroupIds)
                                .orElseGet(Collections::emptySet)
                                .contains(group);
     }
@@ -392,11 +392,11 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
         }
 
-        if (isMultiTenantsApplication(tenantId) && !userGroup.getFilterByIds().isEmpty()) {
+        if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupIds().isEmpty()) {
             throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
                 + "azure.activedirectory.user-group.allowed-groups-id should be empty. "
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-groups-id=" + userGroup.getFilterByIds());
+                + ", and azure.activedirectory.user-group.allowed-groups-id=" + userGroup.getAllowedGroupIds());
         }
 
         authorizationClients.values()
