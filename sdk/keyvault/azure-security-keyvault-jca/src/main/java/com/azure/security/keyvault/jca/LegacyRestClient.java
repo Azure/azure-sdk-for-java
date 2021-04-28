@@ -60,6 +60,7 @@ class LegacyRestClient implements RestClient {
         String result = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
             httpPost.setEntity(
                 new StringEntity(body, ContentType.create(contentType)));
             result = client.execute(httpPost, createResponseHandler());
