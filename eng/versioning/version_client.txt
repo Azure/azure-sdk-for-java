@@ -193,7 +193,7 @@ com.azure.resourcemanager:azure-resourcemanager-resources;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redis;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-search;2.4.0;2.5.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-servicebus;2.3.0;2.4.0
+com.azure.resourcemanager:azure-resourcemanager-servicebus;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sql;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-storage;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.4.0;2.5.0-beta.1
