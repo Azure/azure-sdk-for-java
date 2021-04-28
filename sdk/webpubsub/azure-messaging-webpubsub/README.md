@@ -1,10 +1,10 @@
-# Azure Web PubSub client library for Java
+# Azure Web PubSub service client library for Java
 
-Azure Web PubSub client library for Java allows sending messages to Web PubSub. Azure Web PubSub service enables you to
-build real-time messaging web applications using WebSockets and the publish-subscribe pattern. Any platform  
-supporting WebSocket APIs can connect to the service easily, e.g. web pages, mobile applications, edge devices, etc. The
-service manages the WebSocket connections for you and allows up to 100K concurrent connections. It provides powerful
-APIs for you to manage these clients and deliver real-time messages.
+Azure Web PubSub service client library for Java allows sending messages to Web PubSub. Azure Web PubSub service 
+enables you to build real-time messaging web applications using WebSockets and the publish-subscribe pattern. Any 
+platform supporting WebSocket APIs can connect to the service easily, e.g. web pages, mobile applications, edge devices,
+etc. The service manages the WebSocket connections for you and allows up to 100K concurrent connections. It provides 
+powerful APIs for you to manage these clients and deliver real-time messages.
 
 Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients, can use
 Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP
@@ -27,7 +27,7 @@ requests, can also use Azure Web PubSub service.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
@@ -174,7 +174,6 @@ comments.
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
 [coc_contact]: mailto:opencode@microsoft.com
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub%2FREADME.png)

@@ -85,7 +85,9 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
             if (options != null) {
                 expiresAfter = options.getExpiresAfter() == null ? expiresAfter : options.getExpiresAfter();
                 String userId = options.getUserId();
-                options.getRoles().forEach(role -> claimsBuilder.claim("role", role));
+                if (!CoreUtils.isNullOrEmpty(options.getRoles())) {
+                    claimsBuilder.claim("role", options.getRoles());
+                }
                 if (!CoreUtils.isNullOrEmpty(userId)) {
                     claimsBuilder.subject(userId);
                 }

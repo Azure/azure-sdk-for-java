@@ -1,5 +1,7 @@
 ## Release History
 
+### 4.15.0-beta.3 (Unreleased)
+
 ### 4.15.0-beta.2 (2021-04-26)
 #### Key Bug Fixes
 * No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
