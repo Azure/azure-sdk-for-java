@@ -318,7 +318,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
-[samples]:  https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-nio/src/samples/java/com/azure/storage/blob/nio
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-nio/src/samples/java/com/azure/storage/blob/nio
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
