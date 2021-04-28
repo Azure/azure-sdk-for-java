@@ -432,7 +432,7 @@ service
 <details>
 <summary> managedapplications </summary>
 
-* [package-managedapplications-2018-06](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/managedapplications/resource-manager#tag-package-managedapplications-2018-06)
+* [package-managedapplications-2018-06](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/resources/resource-manager#tag-package-managedapplications-2018-06)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-managedapplications/1.0.0-beta.1/jar)
 </details>
 
