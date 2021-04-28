@@ -65,4 +65,73 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>storage-stress-scenarios</id>
+      <activation>
+        <property>
+          <name>storage-stress-scenarios</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>uploadoutputstream</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <arguments>
+                    <argument>-Xms700m</argument>
+                    <argument>-Xmx700m</argument>
+                    <argument>-jar</argument>
+                    <argument>${project.basedir}/target/${project.artifactId}-${project.version}-jar-with-dependencies.jar</argument>
+                    <argument>uploadoutputstream</argument>
+                    <argument>--warmup</argument>
+                    <argument>0</argument>
+                    <argument>--duration</argument>
+                    <argument>120</argument>
+                    <argument>--size</argument>
+                    <argument>1048576000</argument>
+                    <argument>--sync</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>uploadblob</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <arguments>
+                    <argument>-Xms50m</argument>
+                    <argument>-Xmx50m</argument>
+                    <argument>-jar</argument>
+                    <argument>${project.basedir}/target/${project.artifactId}-${project.version}-jar-with-dependencies.jar</argument>
+                    <argument>uploadblob</argument>
+                    <argument>--warmup</argument>
+                    <argument>0</argument>
+                    <argument>--duration</argument>
+                    <argument>120</argument>
+                    <argument>--size</argument>
+                    <argument>1048576000</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
