@@ -36,7 +36,7 @@ class SparkE2EWriteITest extends IntegrationSpec with Spark with CosmosClient wi
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
         "spark.cosmos.write.strategy" -> itemWriteStrategy.toString,
-        "spark.cosmos.write.bulkEnabled" -> bulkEnabled.toString
+        "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString
       )
 
       val newSpark = getSpark()

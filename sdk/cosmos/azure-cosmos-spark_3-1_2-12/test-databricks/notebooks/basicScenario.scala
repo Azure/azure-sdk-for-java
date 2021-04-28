@@ -17,7 +17,7 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
   "spark.cosmos.container" -> cosmosContainerName,
-  "spark.cosmos.read.inferSchemaEnabled" -> "true"                          
+  "spark.cosmos.read.inferSchema.enabled" -> "true"                          
 )
 
 // COMMAND ----------
