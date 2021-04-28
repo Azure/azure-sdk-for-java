@@ -58,9 +58,6 @@ String messageText = body.toString();
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version.
 
-## 12.6.0-beta.1 (2019-07-07)
-- Added support for the 2019-12-12 service version.
-
 ## 12.5.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
 
@@ -99,21 +96,6 @@ and
 - Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
 - Upgraded to version 1.1.0 of Azure Core.
 
-## 12.0.0 (2019-10-31)
-- Removed QueueMessage from public API
-- Removed BaseQueueClientBuilder
-- Removed QueueClientBuilder and QueueServiceClientBuilder inheritance of BaseQueueClientBuilder
-- Renamed QueueSegmentOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
-- Removes StorageError and StorageErrorException from public API
-- Renamed StorageErrorCode to QueueErrorCode, SignedIdentifier to QueueSignedIdentifier, StorageServiceProperties to QueueServiceProperties, StorageServiceStats to QueueServiceStatistics, CorRules to QueueCorRules, AccessPolicy to QueueAccessPolicy, Logging to QueueAnalyticsLogging, Metrics to QueueMetrics, and RetentionPolicy to QueueRetentionPolicy
-- Renamed StorageException to QueueStorageException
-- Added QueueServiceVersion and the ability to set it on client builders
-- Renamed enqueueMessage to sendMessage and changed the response type from EnqueueMessage to SendMessageResult
-- Renamed dequeueMessages to receiveMessages and changed the response type from DequeuedMessage to QueueMessageItem
-- Renamed PeekedMessage to PeekedMessageItem and UpdatedMessage to UpdatedMessageResult
-- Added support for emulator endpoints
-- Renamed QueueSasPermission getters to use has prefix
-
 ## 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
@@ -130,6 +112,21 @@ and
 - `getQueueServiceUrl`, `getQueueUrl` API now returns URL with scheme, host, resource name and snapshot if any.
 - Removed SAS token generation APIs from clients, use QueueServiceSasSignatureValues to generate SAS tokens.
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
+
+## 12.0.0 (2019-10-31)
+- Removed QueueMessage from public API
+- Removed BaseQueueClientBuilder
+- Removed QueueClientBuilder and QueueServiceClientBuilder inheritance of BaseQueueClientBuilder
+- Renamed QueueSegmentOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Removes StorageError and StorageErrorException from public API
+- Renamed StorageErrorCode to QueueErrorCode, SignedIdentifier to QueueSignedIdentifier, StorageServiceProperties to QueueServiceProperties, StorageServiceStats to QueueServiceStatistics, CorRules to QueueCorRules, AccessPolicy to QueueAccessPolicy, Logging to QueueAnalyticsLogging, Metrics to QueueMetrics, and RetentionPolicy to QueueRetentionPolicy
+- Renamed StorageException to QueueStorageException
+- Added QueueServiceVersion and the ability to set it on client builders
+- Renamed enqueueMessage to sendMessage and changed the response type from EnqueueMessage to SendMessageResult
+- Renamed dequeueMessages to receiveMessages and changed the response type from DequeuedMessage to QueueMessageItem
+- Renamed PeekedMessage to PeekedMessageItem and UpdatedMessage to UpdatedMessageResult
+- Added support for emulator endpoints
+- Renamed QueueSasPermission getters to use has prefix
 
 ## 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
@@ -171,3 +168,6 @@ demonstrate the new API.
     - `azure-storage-queue` contains a `QueueServiceClient`, `QueueServiceAsyncClient`, `QueueClient` and `QueueAsyncClient` for storage queue operations.
 - Client instances are scoped to storage queue service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
+## 12.6.0-beta.1 (2019-07-07)
+- Added support for the 2019-12-12 service version.
+

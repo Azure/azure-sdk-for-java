@@ -13,11 +13,6 @@
 ### Dependency Updates
 - Update `azure-messaging-eventhubs` dependency to `5.5.1`.
 
-## 1.5.0 (2020-02-15)
-### Dependency Updates
-- Update `azure-messaging-eventhubs` dependency to `5.5.0`.
-- Update `azure-storage-blob` dependency to `12.10.0`.
-
 ## 1.4.0 (2021-01-14)
 ### Dependency Updates
 - Update `azure-messaging-eventhubs` dependency to `5.4.0`.
@@ -54,6 +49,11 @@
 
 ## 1.0.3 (2020-04-08)
 - Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.
+
+## 1.5.0 (2020-02-15)
+### Dependency Updates
+- Update `azure-messaging-eventhubs` dependency to `5.5.0`.
+- Update `azure-storage-blob` dependency to `12.10.0`.
 
 ## 1.0.2 (2020-02-12)
 - Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.

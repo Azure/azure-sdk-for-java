@@ -14,16 +14,16 @@
 - Added upload and download methods on BlobClient and BlobAsyncClient that work with BinaryData.
 - Fixed a bug that ignored the page size when calling PagedIterable.byPage(pageSize)
 
-## 12.11.0-beta.1 (2021-02-10)
-- Added support for the 2020-06-12 service version. 
-- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
-- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
-- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
-
 ## 12.10.2 (2021-03-26)
 - Fixed a bug where BlobInputStream would not use request conditions when doing the initial getProperties call in openInputStream.
 
 ## 12.10.1 (2021-03-19)
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.11.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
 - Removed a deep copy in the general upload path to reduce memory consumption and increase perf
 - Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
 
@@ -165,33 +165,6 @@ and
 - Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
 - Upgraded to version 1.1.0 of Azure Core.
 
-## 12.0.0 (2019-10-31)
-
-- Removed BaseBlobClientBuilder
-- Removed BlobClientBuilder, BlobContainerClientBuilder, BlobServiceClientBuilder, and SpecializedBlobClientBuilder inheritance of BaseBlobClientBuilder
-- Renamed ListBlobContainerOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
-- Renamed ListBlobsOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
-- Renamed BlobProperties to BlobItemProperties and BlobContainerProperties to BlobContainerItemProperties
-- Removes StorageError and StorageErrorException from public API
-- Renamed StorageErrorCode to BlobErrorCode, SignedIdentifier to BlobSignedIdentifier, StorageServiceProperties to BlobServiceProperties, StorageServiceStats to BlobServiceStatistics, CorRules to BlobCorRules, AccessPolicy to BlobAccessPolicy, Logging to BlobAnalyticsLogging, Metrics to BlobMetrics, and RetentionPolicy to BlobRetentionPolicy
-- Renamed BlobHTTPHeaders to BlobHttpHeaders and removed Blob from getter names
-- Renamed StorageException to BlobStorageException
-- Added BlobServiceVersion and the ability to set it on client builders
-- Replaced URL parameters with String on appendBlockFromUrl, beginCopy, copyFromUrl, stageBlockFromUrl, uploadPagesFromUrl, and copyIncremental
-- Added support for emulator endpoints
-- Added support for additional connection string configurations and support for use development connection
-- Changed constructors for AppendBlobItem, BlockBlobItem, PageBlobItem,
-- Renamed listBlobsFlat to listBlobs and listBlobHierarchy to listBlobsByHierarchy
-- Replaced startCopyFromUrl with beginCopy and return poller
-- Renamed BlobContainerSasPermission and BlobSasPermission getters to use has prefix
-- Replaced BlobAccessConditions, AppendBlobAccessConditions, and PageBlobAccessConditions with BlobRequestConditions, AppendBlobRequestConditions, and PageBlobRequestConditions.
-- Removed ModifiedAccessConditions and SourceModifiedAccessConditions in favor of RequestConditions, removed BlobContainerAccessConditions in favor of BlobRequestConditions.
-- Removed AppendPositionAccessConditions, LeaseAccessConditions, and SequenceNumberAccessConditions
-- Renamed LeaseClient, LeaseAsyncClient, and LeaseClientBuilder to BlobLeaseClient, BlobLeaseAsyncClient, and BlobLeaseClientBuilder
-- Added upload overloads which allow passing a flag to indicate if an existing blob should be overwritten
-- Added support for blob names with special characters
-- Changed return type for BlobClient.downloadWithProperties from Response<Void> to BlobDownloadResponse and BlobAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<BlobDownloadAsyncResponse>
-
 ## 12.0.0-preview.4 (2019-10-8)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
@@ -219,6 +192,33 @@ and
 - Removed `Metadata` class and uses Map<String, String> for `matadata` field of `BlobProperties` and `ContainerProperties`.
 - Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens.
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
+
+## 12.0.0 (2019-10-31)
+
+- Removed BaseBlobClientBuilder
+- Removed BlobClientBuilder, BlobContainerClientBuilder, BlobServiceClientBuilder, and SpecializedBlobClientBuilder inheritance of BaseBlobClientBuilder
+- Renamed ListBlobContainerOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Renamed ListBlobsOptions getMaxResults and setMaxResults to getMaxResultsPerPage and setMaxResultsPerPage
+- Renamed BlobProperties to BlobItemProperties and BlobContainerProperties to BlobContainerItemProperties
+- Removes StorageError and StorageErrorException from public API
+- Renamed StorageErrorCode to BlobErrorCode, SignedIdentifier to BlobSignedIdentifier, StorageServiceProperties to BlobServiceProperties, StorageServiceStats to BlobServiceStatistics, CorRules to BlobCorRules, AccessPolicy to BlobAccessPolicy, Logging to BlobAnalyticsLogging, Metrics to BlobMetrics, and RetentionPolicy to BlobRetentionPolicy
+- Renamed BlobHTTPHeaders to BlobHttpHeaders and removed Blob from getter names
+- Renamed StorageException to BlobStorageException
+- Added BlobServiceVersion and the ability to set it on client builders
+- Replaced URL parameters with String on appendBlockFromUrl, beginCopy, copyFromUrl, stageBlockFromUrl, uploadPagesFromUrl, and copyIncremental
+- Added support for emulator endpoints
+- Added support for additional connection string configurations and support for use development connection
+- Changed constructors for AppendBlobItem, BlockBlobItem, PageBlobItem,
+- Renamed listBlobsFlat to listBlobs and listBlobHierarchy to listBlobsByHierarchy
+- Replaced startCopyFromUrl with beginCopy and return poller
+- Renamed BlobContainerSasPermission and BlobSasPermission getters to use has prefix
+- Replaced BlobAccessConditions, AppendBlobAccessConditions, and PageBlobAccessConditions with BlobRequestConditions, AppendBlobRequestConditions, and PageBlobRequestConditions.
+- Removed ModifiedAccessConditions and SourceModifiedAccessConditions in favor of RequestConditions, removed BlobContainerAccessConditions in favor of BlobRequestConditions.
+- Removed AppendPositionAccessConditions, LeaseAccessConditions, and SequenceNumberAccessConditions
+- Renamed LeaseClient, LeaseAsyncClient, and LeaseClientBuilder to BlobLeaseClient, BlobLeaseAsyncClient, and BlobLeaseClientBuilder
+- Added upload overloads which allow passing a flag to indicate if an existing blob should be overwritten
+- Added support for blob names with special characters
+- Changed return type for BlobClient.downloadWithProperties from Response<Void> to BlobDownloadResponse and BlobAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<BlobDownloadAsyncResponse>
 
 ## 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
