@@ -177,7 +177,7 @@ com.azure.resourcemanager:azure-resourcemanager-appservice;2.3.0;2.4.0
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.3.0;2.4.0
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.3.0;2.4.0
 com.azure.resourcemanager:azure-resourcemanager-compute;2.3.0;2.4.0
-com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.3.0;2.4.0
+com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.4.0;2.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.3.0;2.4.0
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.3.0;2.4.0
