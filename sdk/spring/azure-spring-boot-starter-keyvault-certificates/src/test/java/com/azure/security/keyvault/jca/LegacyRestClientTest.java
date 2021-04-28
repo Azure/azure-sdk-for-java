@@ -13,7 +13,7 @@ public class LegacyRestClientTest {
 
     @Test
     public void getUserAgentPrefixTest() {
-        assertEquals(DEFAULT_USER_AGENT_VALUE_PREFIX, LegacyRestClient.getUserAgentPrefix());
-        assertEquals(DEFAULT_USER_AGENT_VALUE_PREFIX + DEFAULT_VERSION, LegacyRestClient.USER_AGENT_VALUE);
+        assertEquals("az-sp-kv-ct/", LegacyRestClient.getUserAgentPrefix());
+        assertEquals("az-sp-kv-ct/" + DEFAULT_VERSION, LegacyRestClient.USER_AGENT_VALUE);
     }
 }
