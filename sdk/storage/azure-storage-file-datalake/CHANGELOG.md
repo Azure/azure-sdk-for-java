@@ -48,6 +48,12 @@
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
 
+## 12.2.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Added support to query a file. 
+- Added support to increase the maximum size of data that can be sent via an append.
+- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data.
+
 ## 12.1.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
 
@@ -126,9 +132,4 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
-## 12.2.0-beta.1 (2019-07-07)
-- Added support for the 2019-12-12 service version.
-- Added support to query a file. 
-- Added support to increase the maximum size of data that can be sent via an append.
-- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data. 
 

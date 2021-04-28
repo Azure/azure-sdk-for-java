@@ -49,6 +49,10 @@
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version
 
+## 12.6.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Added support for restoring file share.
+
 ## 12.5.0 (2020-06-12)
 - Fixed bug in ShareFileClient.uploadRangeFromUrl and ShareFileClient.beginCopy where sourceUrl was not getting encoded.
 - Updated azure-storage-common and azure-core dependencies. 
@@ -97,24 +101,6 @@ and
 - Changed return type for forceCloseAllHandles from int to CloseHandlesInfo.
 - Upgraded to version 1.1.0 of Azure Core.
 
-## 12.0.0-preview.4 (2019-10-8)
-For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
-
-This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/README.md)
-and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/src/samples/java/com/azure/storage/file)
-
-- Getters and setters were updated to use Java Bean notation.
-- Added `getShareName`, `getDirectoryPath` and `getFilePath` for fetching the resource names.
-- Updated to be fully compliant with the Java 9 Platform Module System.
-- Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
-- Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
-- Updated the return type of `downloadToFile` API to `FileProperties` on sync API and `Mono<FileProperties>` on async API.
-- `getFileServiceUrl`, `getShareUrl`, `getDirectoryUrl`, `getFileUrl` API now returns URL with scheme, host, resource name and snapshot if any.
-- Removed SAS token generation APIs from clients, use FileServiceSasSignatureValues to generate SAS tokens.
-- Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
-
 ## 12.0.0-preview.5 (2019-10-31)
 - Renamed FileReference to StorageFileItem
 - Changed response of ShareClient.listFilesAndDirectories FileReference to StorageFileItem
@@ -141,6 +127,24 @@ and
 - Replaced startCopy with beginCopy and return poller
 - Renamed FileSasPermission getters to use has prefix
 - Changed return type for FileClient.downloadWithProperties from Response<Void> to FileDownloadResponse and FileAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<FileDownloadAsyncResponse>
+
+## 12.0.0-preview.4 (2019-10-08)
+For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/src/samples/java/com/azure/storage/file)
+
+- Getters and setters were updated to use Java Bean notation.
+- Added `getShareName`, `getDirectoryPath` and `getFilePath` for fetching the resource names.
+- Updated to be fully compliant with the Java 9 Platform Module System.
+- Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
+- Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
+- Updated the return type of `downloadToFile` API to `FileProperties` on sync API and `Mono<FileProperties>` on async API.
+- `getFileServiceUrl`, `getShareUrl`, `getDirectoryUrl`, `getFileUrl` API now returns URL with scheme, host, resource name and snapshot if any.
+- Removed SAS token generation APIs from clients, use FileServiceSasSignatureValues to generate SAS tokens.
+- Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
 ## 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
@@ -188,7 +192,3 @@ demonstrate the new API.
     - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations.
 - Client instances are scoped to storage file service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-## 12.6.0-beta.1 (2019-07-07)
-- Added support for the 2019-12-12 service version.
-- Added support for restoring file share.
-

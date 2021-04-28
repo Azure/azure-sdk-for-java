@@ -17,6 +17,14 @@
 - Upgraded `msal4j` dependency to 1.9.1
 - Upgraded `msal4j-persistence-extension` to 1.1.0
 
+## 1.3.0-beta.1 (2021-02-10)
+
+### New Features
+- Added the support to consume claims from `TokenRequestContext` send it as part of authentication request.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.13.0
+- Upgraded `msal4j` dependency to 1.8.1
 
 ## 1.2.3 (2021-02-09)
 
@@ -167,15 +175,6 @@
 ## 1.1.0-beta.1 (2020-02-12)
 - All credential builders support setting a pipeline via `httpPipeline` method.
 - SharedTokenCacheCredentialBuilder supports setting the tenant id via `tenantId` method.
-
-## 1.3.0-beta.1 (2020-02-10)
-
-### New Features
-- Added the support to consume claims from `TokenRequestContext` send it as part of authentication request.
-
-### Dependency Updates
-- Upgraded `azure-core` dependency to 1.13.0
-- Upgraded `msal4j` dependency to 1.8.1
 
 ## 1.0.3 (2020-01-13)
 - Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.

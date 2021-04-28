@@ -29,6 +29,22 @@
 * Fixed issue when using automatic id generation with the auditable framework.
 * Fixed query deserialization issue with `@query` annotated queries.
 
+## 3.4.0 (2021-02-09)
+#### New Features
+* Updated `azure-cosmos` version to 4.12.0.
+
+#### Key Bug Fixes
+* Fixed `@EnableAuditing` for Java 11 modules.
+
+## 3.3.0 (2021-01-15)
+#### New Features
+* Support for composite indexes in `CosmosIndexPolicy` annotation.
+* Support for changes in `CosmosIndexPolicy` annotation.
+* Updated azure-cosmos version to 4.11.0.
+
+#### Key Bug Fixes
+* Fixed query generation with sort and limit.
+
 ## 3.2.0 (2020-12-11)
 #### New Features
 * Updated Spring Data Commons version to 2.3.5.RELEASE.
@@ -90,19 +106,3 @@
 * Fixed issue by allowing `boolean`, `long`, `int`, `double` as data types for `@PartitionKey` annotation.
 * Fixed `IgnoreCase` & `AllIgnoreCase` keywords for ignore case queries.
 * Removed default request unit value of 4000 when creating containers automatically.
-## 3.4.0 (2020-02-09)
-#### New Features
-* Updated `azure-cosmos` version to 4.12.0.
-
-#### Key Bug Fixes
-* Fixed `@EnableAuditing` for Java 11 modules.
-
-## 3.3.0 (2020-01-15)
-#### New Features
-* Support for composite indexes in `CosmosIndexPolicy` annotation.
-* Support for changes in `CosmosIndexPolicy` annotation.
-* Updated azure-cosmos version to 4.11.0.
-
-#### Key Bug Fixes
-* Fixed query generation with sort and limit.
-
