@@ -1299,8 +1299,8 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Uploads a range of bytes to specific of a file in storage file service. Upload operations performs an in-place
-     * write on the specified file.
+     * Uploads a range of bytes to specific offset of a file in storage file service. Upload operations performs an
+     * in-place write on the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1322,7 +1322,7 @@ public class ShareFileAsyncClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
-    @ServiceMethod(returns = ReturnType.SINGLE) //TODO communicate no longer using length
+    @ServiceMethod(returns = ReturnType.SINGLE) //TODO (jaschrep) communicate no longer using length
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
         try {
@@ -1336,6 +1336,25 @@ public class ShareFileAsyncClient {
         }
     }
 
+    /**
+     * Uploads a range of bytes to specific offset of a file in storage file service. Upload operations performs an
+     * in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long-ShareRequestConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileUploadOptions} that contain the arguments for this method.
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
+     * status code.
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options) {
         try {
