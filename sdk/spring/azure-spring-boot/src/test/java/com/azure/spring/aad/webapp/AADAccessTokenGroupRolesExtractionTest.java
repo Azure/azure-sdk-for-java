@@ -58,7 +58,8 @@ public class AADAccessTokenGroupRolesExtractionTest {
     private AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClientTest);
 
     private void setup() {
-        when(properties.allowedGroupsConfigured()).thenReturn(true);
+        when(properties.allowedGroupNamesConfigured()).thenReturn(true);
+        when(properties.allowedGroupIdsConfigured()).thenReturn(true);
         when(properties.getUserGroup()).thenReturn(userGroup);
         when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
         when(accessToken.getTokenValue()).thenReturn("fake-access-token");
