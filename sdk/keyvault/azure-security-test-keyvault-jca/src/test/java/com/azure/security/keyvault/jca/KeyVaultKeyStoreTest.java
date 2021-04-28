@@ -132,9 +132,7 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineIsKeyEntry() {
-        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
-        System.out.println(System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
-        assertTrue(keystore.engineIsKeyEntry(certificateName));
+        assertTrue(keystore.engineIsKeyEntry("myalias"));
     }
 
     @Test

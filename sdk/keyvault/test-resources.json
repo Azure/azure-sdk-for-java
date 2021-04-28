@@ -6,7 +6,8 @@
       "type": "String"
     },
     "tenantId": {
-      "type": "String"
+      "type": "String",
+      "defaultValue": "[subscription().tenantId]"
     },
     "testApplicationOid": {
       "type": "String"
@@ -71,8 +72,7 @@
     }
   },
   "variables": {
-    "keyVaultName": "[parameters('baseName')]",
-    "location": "[resourceGroup().location]",
+    "keyVaultName": "jcaKeyVault02",
     "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
     "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
     "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"

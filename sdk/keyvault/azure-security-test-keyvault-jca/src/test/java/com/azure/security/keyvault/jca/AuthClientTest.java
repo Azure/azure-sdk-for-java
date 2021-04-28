@@ -27,8 +27,6 @@ public class AuthClientTest {
         String clientId = System.getenv("AZURE_KEYVAULT_CLIENT-ID");
         String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT-SECRET");
         AuthClient authClient = new AuthClient();
-        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
-        System.out.println(System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
         String result = authClient.getAccessToken(
             "https://management.azure.com/",
             System.getProperty("azure.keyvault.aad-authentication-url"),

@@ -63,6 +63,6 @@ public class KeyVaultJcaProviderTest {
             System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
         keystore.load(parameter);
-        assertNotNull(keystore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
+        assertNotNull(keystore.getCertificate("myalias"));
     }
 }
