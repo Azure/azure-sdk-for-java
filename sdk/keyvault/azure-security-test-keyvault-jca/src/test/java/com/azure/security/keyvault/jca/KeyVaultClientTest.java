@@ -31,11 +31,15 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetCertificate() {
+        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
+        System.out.println(System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
         assertNotNull(keyVaultClient.getCertificate(certificateName));
     }
 
     @Test
     public void testGetKey() {
+        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
+        System.out.println(System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
         assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
 }

@@ -54,12 +54,16 @@ public class KeyVaultKeyManagerTest {
 
     @Test
     public void testPrivateKey() {
+        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
+        System.out.println(System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
         assertNotNull(manager.getPrivateKey(certificateName));
     }
 
 
     @Test
     public void testGetCertificateChain() {
+        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
+        System.out.println(System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
         assertNotNull(manager.getCertificateChain(certificateName));
     }
 }

@@ -8,7 +8,7 @@
     "tenantId": {
       "type": "String"
     },
-    "objectId": {
+    "testApplicationOid": {
       "type": "String"
     },
     "endpointSuffix": {
@@ -111,7 +111,7 @@
         "accessPolicies": [
           {
             "tenantId": "[parameters('tenantId')]",
-            "objectId": "[parameters('objectId')]",
+            "objectId": "[parameters('testApplicationOid')]",
             "permissions": {
               "keys": [
                 "backup",

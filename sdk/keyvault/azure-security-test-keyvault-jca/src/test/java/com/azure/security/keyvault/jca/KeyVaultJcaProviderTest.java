@@ -53,6 +53,8 @@ public class KeyVaultJcaProviderTest {
      */
     @Test
     public void testGetCertificate() throws Exception {
+        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
+        System.out.println(System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
         Security.addProvider(new KeyVaultJcaProvider());
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
