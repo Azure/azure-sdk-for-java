@@ -60,6 +60,7 @@ public class PageableMemoRepositoryIT {
     private CosmosFactory cosmosFactory;
 
     private static Set<PageableMemo> memoSet;
+    private static Set<PageableMemo> normalMemos;
 
     private static boolean isSetupDone;
 
@@ -83,6 +84,12 @@ public class PageableMemoRepositoryIT {
             repository.save(memo);
             memoSet.add(memo);
         }
+
+        // Set of memos with NORMAL importance
+        normalMemos = memoSet.stream()
+            .filter(m -> m.getImportance().equals(Importance.NORMAL))
+            .collect(Collectors.toSet());
+
         isSetupDone = true;
     }
 
@@ -130,11 +137,22 @@ public class PageableMemoRepositoryIT {
     }
 
     @Test
-    public void testFindByImportanceUsingSlice() {
+    public void testFindByImportanceUsingSliceWithPageSizeLessThanReturned() {
         final Set<PageableMemo> memos = findByWithSlice(20);
-        Set<PageableMemo> normalMemos = memoSet.stream()
-            .filter(m -> m.getImportance().equals(Importance.NORMAL))
-            .collect(Collectors.toSet());
+        boolean equal = memos.equals(normalMemos);
+        assertThat(equal).isTrue();
+    }
+
+    @Test
+    public void testFindByImportanceUsingSliceWithPageSizeLessThanTotal() {
+        final Set<PageableMemo> memos = findByWithSlice(200);
+        boolean equal = memos.equals(normalMemos);
+        assertThat(equal).isTrue();
+    }
+
+    @Test
+    public void testFindByImportanceUsingSliceWithPageSizeGreaterThanTotal() {
+        final Set<PageableMemo> memos = findByWithSlice(10000);
         boolean equal = memos.equals(normalMemos);
         assertThat(equal).isTrue();
     }
