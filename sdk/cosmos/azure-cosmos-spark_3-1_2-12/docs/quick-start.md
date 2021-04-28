@@ -102,7 +102,7 @@ see [Write Configuration](https://github.com/Azure/azure-sdk-for-java/blob/maste
 from pyspark.sql.functions import col
 
 df = spark.read.format("cosmos.items").options(**cfg)\
- .option("spark.cosmos.read.inferSchemaEnabled", "true")\
+ .option("spark.cosmos.read.inferSchema.enabled", "true")\
  .load()
 
 df.filter(col("isAlive") == True)\
@@ -112,7 +112,7 @@ df.filter(col("isAlive") == True)\
 see [Query Configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#query-config) for more detail.
 
 Note when running queries unless if are interested to get back the raw json payload
-we recommend setting `spark.cosmos.read.inferSchemaEnabled` to be `true`.
+we recommend setting `spark.cosmos.read.inferSchema.enabled` to be `true`.
 
 see [Schema Inference Configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#schema-inference-config) for more detail.
 
@@ -122,7 +122,7 @@ see [Schema Inference Configuration](https://github.com/Azure/azure-sdk-for-java
 ```python
 # Show the inferred schema from Cosmos DB
 df = spark.read.format("cosmos.items").options(**cfg)\
- .option("spark.cosmos.read.inferSchemaEnabled", "true")\
+ .option("spark.cosmos.read.inferSchema.enabled", "true")\
  .load()
  
 df.printSchema()

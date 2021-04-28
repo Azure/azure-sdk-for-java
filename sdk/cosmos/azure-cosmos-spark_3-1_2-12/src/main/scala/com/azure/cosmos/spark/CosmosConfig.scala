@@ -208,8 +208,9 @@ private object CosmosReadConfig {
     mandatory = false,
     defaultValue = Some(DefaultSchemaConversionMode),
     parseFromStringFunction = value => CosmosConfigEntry.parseEnumeration(value, SchemaConversionModes),
-    helpMessage = "Defines whether to throw on inconsistencies between schema definition and json attribute " +
-      "types (Strict) or to return null values (Relaxed).")
+    helpMessage = "The schema conversion behavior (`Relaxed`, `Strict`)." +
+      " When reading json documents, if a document contains an attribute that does not map to the schema type," +
+      " the user can decide whether to use a `null` value (Relaxed) or an exception (Strict).")
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
@@ -290,18 +291,25 @@ private object ItemWriteStrategy extends Enumeration {
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxRetryCount: Int,
                                      bulkEnabled: Boolean,
-                                     maxConcurrencyOpt: Option[Int])
+                                     bulkMaxPendingOperations: Option[Int] = Option.empty,
+                                     pointMaxConcurrency: Option[Int] = Option.empty)
 
 private object CosmosWriteConfig {
-  private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulkEnabled",
+  private val bulkEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.write.bulk.enabled",
     defaultValue = Option.apply(true),
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
 
-  private val MaxRetryCount = 3
+  private val DefaultMaxRetryCount = 10
 
-  private val writeConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxConcurrency",
+  private val bulkMaxPendingOperations = CosmosConfigEntry[Int](key = "spark.cosmos.write.bulk.maxPendingOperations",
+    mandatory = false,
+    parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
+    helpMessage = s"Cosmos DB Item Write Max Pending Operations." +
+      s" If not specified it will be determined based on the Spark executor VM Size")
+
+  private val pointWriteConcurrency = CosmosConfigEntry[Int](key = "spark.cosmos.write.point.maxConcurrency",
     mandatory = false,
     parseFromStringFunction = bulkMaxConcurrencyAsString => bulkMaxConcurrencyAsString.toInt,
     helpMessage = s"Cosmos DB Item Write Max concurrency." +
@@ -312,11 +320,11 @@ private object CosmosWriteConfig {
     mandatory = false,
     parseFromStringFunction = itemWriteStrategyAsString =>
       CosmosConfigEntry.parseEnumeration(itemWriteStrategyAsString, ItemWriteStrategy),
-    helpMessage = "Cosmos DB Item write Strategy: ItemOverwrite (using upsert), ItemAppend (using create, ignore 409)")
+    helpMessage = "Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert), `ItemAppend` (using create, ignore pre-existing items i.e., Conflicts)")
 
   private val maxRetryCount = CosmosConfigEntry[Int](key = "spark.cosmos.write.maxRetryCount",
     mandatory = false,
-    defaultValue = Option.apply(MaxRetryCount),
+    defaultValue = Option.apply(DefaultMaxRetryCount),
     parseFromStringFunction = maxRetryAttempt => {
       val cnt = maxRetryAttempt.toInt
       if (cnt < 0) {
@@ -331,7 +339,6 @@ private object CosmosWriteConfig {
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
     assert(bulkEnabledOpt.isDefined)
-    val maxConcurrencyOpt = CosmosConfigEntry.parse(cfg, writeConcurrency)
 
     // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined)
@@ -341,8 +348,9 @@ private object CosmosWriteConfig {
     CosmosWriteConfig(
       itemWriteStrategyOpt.get,
       maxRetryCountOpt.get,
-      bulkEnabledOpt.get,
-      maxConcurrencyOpt)
+      bulkEnabled = bulkEnabledOpt.get,
+      bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
+      pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency))
   }
 }
 
@@ -391,37 +399,37 @@ private case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int,
 private object CosmosSchemaInferenceConfig {
   private val DefaultSampleSize: Int = 1000
 
-  private val inferSchemaSamplingSize = CosmosConfigEntry[Int](key = "spark.cosmos.read.inferSchemaSamplingSize",
+  private val inferSchemaSamplingSize = CosmosConfigEntry[Int](key = "spark.cosmos.read.inferSchema.samplingSize",
     mandatory = false,
     defaultValue = Some(DefaultSampleSize),
     parseFromStringFunction = size => size.toInt,
     helpMessage = "Sampling size to use when inferring schema")
 
-  private val inferSchemaEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaEnabled",
+  private val inferSchemaEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchema.enabled",
     mandatory = false,
     defaultValue = Some(true),
     parseFromStringFunction = enabled => enabled.toBoolean,
     helpMessage = "Whether schema inference is enabled or should return raw json")
 
-  private val inferSchemaIncludeSystemProperties = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaIncludeSystemProperties",
+  private val inferSchemaIncludeSystemProperties = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchema.includeSystemProperties",
     mandatory = false,
     defaultValue = Some(false),
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should include the system properties in the schema")
 
-  private val inferSchemaForceNullableProperties = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaForceNullableProperties",
+  private val inferSchemaForceNullableProperties = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchema.forceNullableProperties",
     mandatory = false,
     defaultValue = Some(false),
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should enforce inferred properties to be nullable - even when no null-values are contained in the sample set")
 
-  private val inferSchemaIncludeTimestamp = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaIncludeTimestamp",
+  private val inferSchemaIncludeTimestamp = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchema.includeTimestamp",
     mandatory = false,
     defaultValue = Some(false),
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should include the timestamp (_ts) property")
 
-  private val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchemaQuery",
+  private val inferSchemaQuery = CosmosConfigEntry[String](key = "spark.cosmos.read.inferSchema.query",
     mandatory = false,
     parseFromStringFunction = query => query,
     helpMessage = "When schema inference is enabled, used as custom query to infer it")
@@ -575,7 +583,7 @@ private object CosmosChangeFeedConfig {
     helpMessage = "ChangeFeed mode (Incremental or FullFidelity)")
 
   private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
-    key = "spark.cosmos.changeFeed.maxItemCountPerTriggerHint",
+    key = "spark.cosmos.changeFeed.itemCountPerTriggerHint",
     mandatory = false,
     parseFromStringFunction = maxItemCount => maxItemCount.toInt,
     helpMessage = "Approximate maximum number of items read from change feed for each trigger")
@@ -621,7 +629,7 @@ private case class CosmosThroughputControlConfig(groupName: String,
 
 private object CosmosThroughputControlConfig {
     private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
-        key = "spark.cosmos.throughputControlEnabled",
+        key = "spark.cosmos.throughputControl.enabled",
         mandatory = false,
         defaultValue = Some(false),
         parseFromStringFunction = enableThroughputControl => enableThroughputControl.toBoolean,
