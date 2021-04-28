@@ -26,10 +26,10 @@ import com.azure.storage.common.ProgressReporter;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferAggregator;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
@@ -1420,8 +1420,7 @@ public class ShareFileAsyncClient {
         We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
         others are being sent.
          */
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
-            parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
+        BufferStagingArea pool = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
@@ -1453,7 +1452,6 @@ public class ShareFileAsyncClient {
                     bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
                     progressLock, totalProgress);
                 return uploadRange(progressData, currentBufferLength, currentOffset, requestConditions, context)
-                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency())
             .last();
