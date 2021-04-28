@@ -26,6 +26,7 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetAliases() {
+        keyVaultClient.getAliases().forEach(System.out::println);
         assertNotNull(keyVaultClient.getAliases());
     }
 
