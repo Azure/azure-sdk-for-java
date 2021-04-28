@@ -187,36 +187,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code samples for using {@link KeyAsyncClient#exportKey(String, String)},
-     * {@link KeyAsyncClient#exportKey(String, String, String)} and
-     * {@link KeyAsyncClient#exportKeyWithResponse(String, String, String)}
-     */
-    public void exportKeySnippets() {
-        KeyAsyncClient keyAsyncClient = createAsyncClient();
-
-        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String
-        keyAsyncClient.exportKey("keyName", "environment").subscribe(exportedKey ->
-            System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(),
-                exportedKey.getId()));
-        // END: com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String
-
-        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String-String
-        keyAsyncClient.exportKey("keyName", "version", "environment").subscribe(exportedKey ->
-            System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(),
-                exportedKey.getId()));
-        // END: com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String-String
-
-        // BEGIN: com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#String-String-String
-        keyAsyncClient.exportKeyWithResponse("keyName", "version", "environment")
-            .subscribe(exportKeyResponse -> {
-                KeyVaultKey exportedKey = exportKeyResponse.getValue();
-                System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(),
-                    exportedKey.getId());
-            });
-        // END: com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#String-String-String
-    }
-
-    /**
      * Generates a code sample for using {@link KeyAsyncClient#getDeletedKey(String)}
      */
     public void getDeletedKeySnippets() {
