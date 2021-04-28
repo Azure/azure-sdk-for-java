@@ -7,12 +7,17 @@
 Assume that the user has been authenticated on an application using the OAuth 2.0 authorization code grant flow or another login flow. At this point, the application has an access token for API A (token A) with the user's claims and consent to access the middle-tier web API (API A). Now, API A needs to make an authenticated request to the downstream web API (API B).
 The steps that follow constitute the OBO flow and are explained with the help of the following diagram.
 
-![OBO flow](docs/image-aad-obo-flow.png)
+![OBO flow and client credential flow](docs/image-aad-obo-flow-and-client-credential-flow.png)
 1. The client application makes a request to API A with token A (with an aud claim of API A).
 2. API A authenticates to the Microsoft identity platform token issuance endpoint and requests a token to access API B.
 4. The Microsoft identity platform token issuance endpoint validates API A's credentials along with token A and issues the access token for API B (token B) to API A.
 4. Token B is set by API A in the authorization header of the request to API B.
 5. Data from the secured resource is returned by API B to API A, and from there to the client.
+6. The client application makes a request to API A with token A (with an aud claim of API A).
+7. API A authenticates to the Microsoft identity platform token issuance endpoint and requests a token to access API C.
+8. The Microsoft identity platform token issuance endpoint validates API A's credentials and issues the access token for API C (token C) to API A.
+9. Token C is set by API A in the authorization header of the request to API C.
+10. Data from the secured resource is returned by API C to API A, and from there to the client.
 
 ## Getting started
 We will prepare two applications to demonstrate the dependent calls of resources.
