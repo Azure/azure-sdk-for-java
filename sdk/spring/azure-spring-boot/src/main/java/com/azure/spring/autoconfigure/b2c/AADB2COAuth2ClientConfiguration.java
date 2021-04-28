@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
  */
 @Configuration
+@Conditional(AADB2COAuth2ClientConfiguration.AADB2CCondition.class)
 @EnableConfigurationProperties(AADB2CProperties.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AADB2COAuth2ClientConfiguration {
@@ -49,8 +50,13 @@ public class AADB2COAuth2ClientConfiguration {
     }
 
     @Bean
+    public ClientRegistrationCondition clientRegistrationCondition() {
+        return new ClientRegistrationCondition();
+    }
+
+    @Bean
     @ConditionalOnMissingBean
-    @Conditional(AADB2CCondition.class)
+    @Conditional(ClientRegistrationCondition.class)
     public ClientRegistrationRepository clientRegistrationRepository() {
         final List<ClientRegistration> clientRegistrations = new ArrayList<>();
         clientRegistrations.addAll(properties.getUserFlows()
@@ -115,7 +121,7 @@ public class AADB2COAuth2ClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @Conditional(AADB2CCondition.class)
+    @Conditional(ClientRegistrationCondition.class)
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
                                                          OAuth2AuthorizedClientRepository authorizedClients) {
         DefaultOAuth2AuthorizedClientManager manager =
