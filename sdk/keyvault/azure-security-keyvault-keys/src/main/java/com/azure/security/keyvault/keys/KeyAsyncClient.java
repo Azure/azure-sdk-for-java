@@ -223,7 +223,9 @@ public final class KeyAsyncClient {
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions))
+            .setTags(createKeyOptions.getTags());
+
         return service.createKey(vaultUrl, createKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating key - {}", createKeyOptions.getName()))
@@ -304,7 +306,9 @@ public final class KeyAsyncClient {
             .setKeySize(createRsaKeyOptions.getKeySize())
             .setKeyOps(createRsaKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions))
-            .setPublicExponent(createRsaKeyOptions.getPublicExponent());
+            .setPublicExponent(createRsaKeyOptions.getPublicExponent())
+            .setTags(createRsaKeyOptions.getTags());
+
         return service.createKey(vaultUrl, createRsaKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating Rsa key - {}", createRsaKeyOptions.getName()))
@@ -390,7 +394,9 @@ public final class KeyAsyncClient {
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurveName())
             .setKeyOps(createEcKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions))
+            .setTags(createEcKeyOptions.getTags());
+
         return service.createKey(vaultUrl, createEcKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating Ec key - {}", createEcKeyOptions.getName()))
@@ -503,7 +509,9 @@ public final class KeyAsyncClient {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
-            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions))
+            .setTags(importKeyOptions.getTags());
+
         return service.importKey(vaultUrl, importKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Importing key - {}", importKeyOptions.getName()))
