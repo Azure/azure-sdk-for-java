@@ -8,7 +8,7 @@
     "tenantId": {
       "type": "String"
     },
-    "testApplicationOid": {
+    "objectId": {
       "type": "String"
     },
     "endpointSuffix": {
@@ -54,8 +54,7 @@
       ]
     },
     "identityName": {
-      "type": "string",
-      "defaultValue" : "administrator"
+      "type": "string"
     },
     "certificateName": {
       "type": "string",
@@ -112,7 +111,7 @@
         "accessPolicies": [
           {
             "tenantId": "[parameters('tenantId')]",
-            "objectId": "[parameters('testApplicationOid')]",
+            "objectId": "[parameters('objectId')]",
             "permissions": {
               "keys": [
                 "backup",
