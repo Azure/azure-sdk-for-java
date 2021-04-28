@@ -11,7 +11,7 @@
 
   <artifactId>spring-cloud-azure-appconfiguration-convert-sample-complete</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-convert-sample-complete;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-convert-sample-complete;current} -->
   <name>Azure App Configuration Conversion Sample</name>
   <description>Sample project to show conversion to Azure App Configuration</description>
 
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
