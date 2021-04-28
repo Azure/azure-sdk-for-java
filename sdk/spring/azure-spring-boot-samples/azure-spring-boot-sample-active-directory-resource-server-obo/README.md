@@ -4,8 +4,8 @@
 [Resource server access other resources usage] is an extension scenario of the *azure-spring-boot-sample-active-directory-resource-server* sample. Similarly, this sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts, and the restricted resource will access other restricted resource, such as Graph API and Custom API.
 
 ### Protocol diagram
-Assume that the user has been authenticated on an application using the OAuth 2.0 authorization code grant flow or another login flow. At this point, the application has an access token for API A (token A) with the user's claims and consent to access the middle-tier web API (API A). Now, API A needs to make an authenticated request to the downstream web API (API B).
-The steps that follow constitute the OBO flow and are explained with the help of the following diagram.
+Assume that the user has been authenticated on an application using the OAuth 2.0 authorization code grant flow or another login flow. At this point, the application has an access token for API A (token A) with the user's claims and consent to access the middle-tier web API (API A). Now, API A needs to make an authenticated request to the downstream web API B(API B) and web API C(API C).
+The following steps constitute the OBO process and the client credential process, as shown in the following figure.
 
 ![OBO flow and client credential flow](docs/image-aad-obo-flow-and-client-credential-flow.png)
 1. The client application makes a request to API A with token A (with an aud claim of API A).
