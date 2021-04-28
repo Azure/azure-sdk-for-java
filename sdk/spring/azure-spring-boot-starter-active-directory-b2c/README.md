@@ -99,11 +99,6 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-oauth2-client</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.thymeleaf.extras</groupId>
       <artifactId>thymeleaf-extras-springsecurity5</artifactId>
     </dependency>
@@ -410,10 +405,6 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
 1. On the basis of **Accessing a resource server**, add a dependency in your *pom.xml*.
    
    ```xml
-   <dependency>
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-starter-oauth2-client</artifactId>
-   </dependency>
    <dependency>
      <groupId>org.springframework.boot</groupId>
      <artifactId>spring-boot-starter-webflux</artifactId>
