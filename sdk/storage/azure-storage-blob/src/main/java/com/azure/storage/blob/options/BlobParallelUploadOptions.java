@@ -61,7 +61,7 @@ public class BlobParallelUploadOptions {
      * data provided in the {@link InputStream}.
      */
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
-        StorageImplUtils.assertNotNull("dataStream", length);
+        StorageImplUtils.assertNotNull("dataStream", dataStream);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
         this.length = length;

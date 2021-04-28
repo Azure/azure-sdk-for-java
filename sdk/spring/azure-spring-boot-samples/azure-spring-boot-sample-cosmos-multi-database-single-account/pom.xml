@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -14,6 +14,16 @@
   <name>azure-spring-boot-sample-cosmos-multi-database-single-account</name>
   <description>Azure Spring Boot Sample Cosmos Multi Database Single Account</description>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -22,7 +32,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
   </dependencies>
 </project>

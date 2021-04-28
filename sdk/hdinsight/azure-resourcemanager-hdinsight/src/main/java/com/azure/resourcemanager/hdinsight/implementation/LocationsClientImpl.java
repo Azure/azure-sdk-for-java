@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hdinsight.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -11,6 +12,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,9 +25,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.LocationsClient;
+import com.azure.resourcemanager.hdinsight.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.BillingResponseListResultInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.CapabilitiesResultInner;
+import com.azure.resourcemanager.hdinsight.fluent.models.ClusterCreateValidationResultInner;
+import com.azure.resourcemanager.hdinsight.fluent.models.NameAvailabilityCheckResultInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.UsagesListResultInner;
+import com.azure.resourcemanager.hdinsight.models.ClusterCreateRequestValidationParameters;
+import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckRequestParameters;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LocationsClient. */
@@ -91,6 +98,49 @@ public final class LocationsClientImpl implements LocationsClient {
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/azureasyncoperations"
+                + "/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AsyncOperationResultInner>> getAzureAsyncOperationStatus(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NameAvailabilityCheckResultInner>> checkNameAvailability(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NameAvailabilityCheckRequestParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/validateCreateRequest")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ClusterCreateValidationResultInner>> validateClusterCreateRequest(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ClusterCreateRequestValidationParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -131,7 +181,7 @@ public final class LocationsClientImpl implements LocationsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -262,7 +312,7 @@ public final class LocationsClientImpl implements LocationsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -393,7 +443,7 @@ public final class LocationsClientImpl implements LocationsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -485,5 +535,458 @@ public final class LocationsClientImpl implements LocationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingResponseListResultInner> listBillingSpecsWithResponse(String location, Context context) {
         return listBillingSpecsWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Get the async operation status.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param operationId The long running operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> getAzureAsyncOperationStatusWithResponseAsync(
+        String location, String operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAzureAsyncOperationStatus(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            location,
+                            this.client.getApiVersion(),
+                            operationId,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the async operation status.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param operationId The long running operation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> getAzureAsyncOperationStatusWithResponseAsync(
+        String location, String operationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getAzureAsyncOperationStatus(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                location,
+                this.client.getApiVersion(),
+                operationId,
+                accept,
+                context);
+    }
+
+    /**
+     * Get the async operation status.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param operationId The long running operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationResultInner> getAzureAsyncOperationStatusAsync(String location, String operationId) {
+        return getAzureAsyncOperationStatusWithResponseAsync(location, operationId)
+            .flatMap(
+                (Response<AsyncOperationResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get the async operation status.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param operationId The long running operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationResultInner getAzureAsyncOperationStatus(String location, String operationId) {
+        return getAzureAsyncOperationStatusAsync(location, operationId).block();
+    }
+
+    /**
+     * Get the async operation status.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param operationId The long running operation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(
+        String location, String operationId, Context context) {
+        return getAzureAsyncOperationStatusWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * Check the cluster name is available or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The request spec of checking name availability.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response spec of checking name availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NameAvailabilityCheckResultInner>> checkNameAvailabilityWithResponseAsync(
+        String location, NameAvailabilityCheckRequestParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .checkNameAvailability(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            location,
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Check the cluster name is available or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The request spec of checking name availability.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response spec of checking name availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NameAvailabilityCheckResultInner>> checkNameAvailabilityWithResponseAsync(
+        String location, NameAvailabilityCheckRequestParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .checkNameAvailability(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                location,
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Check the cluster name is available or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The request spec of checking name availability.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response spec of checking name availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NameAvailabilityCheckResultInner> checkNameAvailabilityAsync(
+        String location, NameAvailabilityCheckRequestParameters parameters) {
+        return checkNameAvailabilityWithResponseAsync(location, parameters)
+            .flatMap(
+                (Response<NameAvailabilityCheckResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Check the cluster name is available or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The request spec of checking name availability.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response spec of checking name availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NameAvailabilityCheckResultInner checkNameAvailability(
+        String location, NameAvailabilityCheckRequestParameters parameters) {
+        return checkNameAvailabilityAsync(location, parameters).block();
+    }
+
+    /**
+     * Check the cluster name is available or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The request spec of checking name availability.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response spec of checking name availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NameAvailabilityCheckResultInner> checkNameAvailabilityWithResponse(
+        String location, NameAvailabilityCheckRequestParameters parameters, Context context) {
+        return checkNameAvailabilityWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Validate the cluster create request spec is valid or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The cluster create request specification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of cluster create request validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ClusterCreateValidationResultInner>> validateClusterCreateRequestWithResponseAsync(
+        String location, ClusterCreateRequestValidationParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .validateClusterCreateRequest(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            location,
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Validate the cluster create request spec is valid or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The cluster create request specification.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of cluster create request validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ClusterCreateValidationResultInner>> validateClusterCreateRequestWithResponseAsync(
+        String location, ClusterCreateRequestValidationParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .validateClusterCreateRequest(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                location,
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Validate the cluster create request spec is valid or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The cluster create request specification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of cluster create request validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterCreateValidationResultInner> validateClusterCreateRequestAsync(
+        String location, ClusterCreateRequestValidationParameters parameters) {
+        return validateClusterCreateRequestWithResponseAsync(location, parameters)
+            .flatMap(
+                (Response<ClusterCreateValidationResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Validate the cluster create request spec is valid or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The cluster create request specification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of cluster create request validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterCreateValidationResultInner validateClusterCreateRequest(
+        String location, ClusterCreateRequestValidationParameters parameters) {
+        return validateClusterCreateRequestAsync(location, parameters).block();
+    }
+
+    /**
+     * Validate the cluster create request spec is valid or not.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param parameters The cluster create request specification.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of cluster create request validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ClusterCreateValidationResultInner> validateClusterCreateRequestWithResponse(
+        String location, ClusterCreateRequestValidationParameters parameters, Context context) {
+        return validateClusterCreateRequestWithResponseAsync(location, parameters, context).block();
     }
 }

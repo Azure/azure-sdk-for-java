@@ -7,7 +7,7 @@ Azure Key Vault. It is built on four principles:
 3. Must not introduce any class loader hierarchy conflicts with Java app code dependencies.
 4. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][certificates_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][jca_samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,7 +38,7 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L37 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L36 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
@@ -46,7 +46,6 @@ Security.addProvider(provider);
 KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
     System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.aad-authentication-url"),
     System.getProperty("azure.keyvault.tenant-id"),
     System.getProperty("azure.keyvault.client-id"),
     System.getProperty("azure.keyvault.client-secret"));
@@ -67,7 +66,7 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L71 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L67 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
@@ -75,7 +74,6 @@ Security.addProvider(provider);
 KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
     System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.aad-authentication-url"),
     System.getProperty("azure.keyvault.tenant-id"),
     System.getProperty("azure.keyvault.client-id"),
     System.getProperty("azure.keyvault.client-secret"));
@@ -86,23 +84,20 @@ SSLContext sslContext = SSLContexts
     .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
     .build();
 
-SSLConnectionSocketFactory factory = SSLConnectionSocketFactoryBuilder
-    .create()
-    .setSslContext(sslContext)
-    .setHostnameVerifier((hostname, session) -> true)
-    .build();
+SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+    sslContext, (hostname, session) -> true);
 
-PoolingHttpClientConnectionManager manager = PoolingHttpClientConnectionManagerBuilder
-    .create()
-    .setSSLSocketFactory(factory)
-    .build();
+PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
+    RegistryBuilder.<ConnectionSocketFactory>create()
+        .register("https", sslConnectionSocketFactory)
+        .build());
 
 String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8766");
-    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-        int status = response.getCode();
+    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+        int status = response.getStatusLine().getStatusCode();
         String result1 = "Not success";
         if (status == 204) {
             result1 = "Success";

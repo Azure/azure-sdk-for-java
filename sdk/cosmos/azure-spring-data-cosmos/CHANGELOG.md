@@ -1,7 +1,14 @@
 ## Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
+### New Features
+- Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).
+- Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/).
 
+
+### 3.6.0 (2021-04-06)
+#### New Features
+* Updated `azure-cosmos` to version 4.14.0.
 
 ### 3.5.1 (2021-03-24)
 #### Key Bug Fixes
