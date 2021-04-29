@@ -183,10 +183,12 @@ additional questions or comments.
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [package]: TODO://link-to-published-package
-[source]: https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/videoanalyzer/
+[source]: TODO://link-to-source-repo
 [doc_direct_methods]: https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/direct-methods
 [doc_product]: https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/
 [iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [iot_device_connection_string]: https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/get-started-detect-motion-emit-events-quickstart
-[github-page-issues]: https://github.com/Azure/azure-sdk-for-python/issues
+[github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
+[maven]: TODO://link-to-published-package
+[jdk8]: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
