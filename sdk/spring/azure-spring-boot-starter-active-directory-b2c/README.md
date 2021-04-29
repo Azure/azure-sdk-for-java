@@ -271,7 +271,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
             .bodyToMono(String.class)
             .block();
         LOGGER.info("Webapp callWebApiA() returned: {}", body);
-        return "Request '/webApiA/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
+        return "Request '/webApiA/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
     ```
 
@@ -348,16 +348,16 @@ This scenario not support login. Just protect the server by validating the acces
     @PreAuthorize("hasAuthority('APPROLE_WebApiA.SampleScope')")
     @GetMapping("/webApiA/sample")
     public String callWebApiASample() {
-        LOGGER.info("WebApiA callSample() returned.");
-        return "Request '/webApiA/sample'(WebApi A) returns success.";
+        LOGGER.info("WebApiA callWebApiASample() returned.");
+        return "Request '/webApiA/sample'(WebApi A) returned successfully.";
     }
     ```
 
    Security configuration code can refer to the following:
     <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerConfiguration.java#L11-L22 -->
     ```java
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
     @EnableWebSecurity
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
     
         @Override
@@ -447,7 +447,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
             .bodyToMono(String.class)
             .block();
         LOGGER.info("WebApiA callWebApiB() returned: {}", body);
-        return "Request 'webApiA/webApiB/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
+        return "Request 'webApiA/webApiB/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
     ```
    
@@ -460,9 +460,9 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiB.SampleScope')")
     @GetMapping("/webApiB/sample")
-    public String callSample() {
-        LOGGER.info("WebApiB callSample() returned.");
-        return "Request '/webApiB/sample'(WebApi B) returns success.";
+    public String callWebApiBSample() {
+        LOGGER.info("WebApiB callWebApiBSample() returned.");
+        return "Request '/webApiB/sample'(WebApi B) returned successfully.";
     }
     ```
 

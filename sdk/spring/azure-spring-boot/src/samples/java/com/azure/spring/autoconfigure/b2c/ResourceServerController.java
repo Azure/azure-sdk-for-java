@@ -29,8 +29,8 @@ public class ResourceServerController {
     @PreAuthorize("hasAuthority('APPROLE_WebApiA.SampleScope')")
     @GetMapping("/webApiA/sample")
     public String callWebApiASample() {
-        LOGGER.info("WebApiA callSample() returned.");
-        return "Request '/webApiA/sample'(WebApi A) returns success.";
+        LOGGER.info("WebApiA callWebApiASample() returned.");
+        return "Request '/webApiA/sample'(WebApi A) returned successfully.";
     }
 
     /**
@@ -39,9 +39,9 @@ public class ResourceServerController {
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiB.SampleScope')")
     @GetMapping("/webApiB/sample")
-    public String callSample() {
-        LOGGER.info("WebApiB callSample() returned.");
-        return "Request '/webApiB/sample'(WebApi B) returns success.";
+    public String callWebApiBSample() {
+        LOGGER.info("WebApiB callWebApiBSample() returned.");
+        return "Request '/webApiB/sample'(WebApi B) returned successfully.";
     }
 
     /**
@@ -62,6 +62,6 @@ public class ResourceServerController {
             .bodyToMono(String.class)
             .block();
         LOGGER.info("WebApiA callWebApiB() returned: {}", body);
-        return "Request 'webApiA/webApiB/sample'(WebApi A) returns: " + (null != body ? "success." : "failed.");
+        return "Request 'webApiA/webApiB/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
 }
