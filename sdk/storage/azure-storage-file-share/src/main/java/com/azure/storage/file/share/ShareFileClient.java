@@ -14,6 +14,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
@@ -942,6 +943,7 @@ public class ShareFileClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileUploadInfo upload(InputStream data, long length) {
         return uploadWithResponse(data, length, 0L, null, Context.NONE).getValue();
@@ -972,6 +974,7 @@ public class ShareFileClient {
      * status code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
         Duration timeout, Context context) {
@@ -1004,12 +1007,13 @@ public class ShareFileClient {
      * status code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        return uploadWithResponse(
-                new ShareFileUploadOptions(data, length).setOffset(offset).setRequestConditions(requestConditions),
-                timeout, context);
+        return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.uploadRange(Utility
+                .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE, true),
+            length, offset, requestConditions, context), timeout);
     }
 
     /**
@@ -1035,7 +1039,7 @@ public class ShareFileClient {
      * status code 413 (Request Entity Too Large)
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options, Duration timeout,
+    public Response<ShareFileUploadInfo> SOME_NEW_METHOD_NAME(ShareFileUploadOptions options, Duration timeout,
         Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(
             shareFileAsyncClient.parallelUploadWithResponse(options, context), timeout);

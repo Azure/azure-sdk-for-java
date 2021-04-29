@@ -1261,6 +1261,7 @@ public class ShareFileAsyncClient {
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileUploadInfo> upload(Flux<ByteBuffer> data, long length) {
         try {
@@ -1293,6 +1294,7 @@ public class ShareFileAsyncClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset) {
         return this.uploadWithResponse(data, length, offset, null);
@@ -1322,15 +1324,12 @@ public class ShareFileAsyncClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
-    @ServiceMethod(returns = ReturnType.SINGLE) //TODO (jaschrep) communicate no longer using length
+    @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> parallelUploadWithResponse(
-                new ShareFileUploadOptions(data)
-                    .setOffset(offset)
-                    .setRequestConditions(requestConditions),
-                context));
+            return withContext(context -> uploadRange(data, length, offset, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1356,7 +1355,7 @@ public class ShareFileAsyncClient {
      * status code 413 (Request Entity Too Large)
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options) {
+    public Mono<Response<ShareFileUploadInfo>> SOME_NEW_METHOD_NAME(ShareFileUploadOptions options) {
         try {
             return withContext(context -> parallelUploadWithResponse(options, context));
         } catch (RuntimeException ex) {

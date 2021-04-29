@@ -297,20 +297,20 @@ public class ShareFileAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long
     }
 
-    /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)}
-     */
-    public void uploadDataOptionsBag() {
-        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        shareFileAsyncClient.uploadWithResponse(new ShareFileUploadOptions(Flux.just(defaultData))).subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete deleting the file!")
-        );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long
-    }
+//    /**
+//     * Generates a code sample for using {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)}
+//     */
+//    public void uploadDataOptionsBag() {
+//        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+//        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions
+//        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+//        shareFileAsyncClient.uploadWithResponse(new ShareFileUploadOptions(Flux.just(defaultData))).subscribe(
+//            response -> { },
+//            error -> System.err.print(error.toString()),
+//            () -> System.out.println("Complete deleting the file!")
+//        );
+//        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#flux-long-long
+//    }
 
     /**
      * Generates a code sample for using {@link ShareFileAsyncClient#uploadWithResponse(Flux, long, Long, ShareRequestConditions)}
