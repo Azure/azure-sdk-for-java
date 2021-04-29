@@ -200,6 +200,9 @@ stages:
                   deploy:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        paths:
+                          - CODEOWNERS
+                          - .github/CODEOWNERS
                       - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
                         parameters:
                           TargetVariable: "OwningGHUser"
