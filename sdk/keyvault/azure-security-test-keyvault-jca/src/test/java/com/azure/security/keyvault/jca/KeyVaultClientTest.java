@@ -14,7 +14,7 @@ public class KeyVaultClientTest {
     private KeyVaultClient keyVaultClient;
     private String certificateName;
 
-    String getEnvValue(String key){
+    String getEnvValue(String key) {
         String value = System.getenv(key);
         System.out.println("*****************************logStart");
         System.out.println("Original: " + key + " = " + value);

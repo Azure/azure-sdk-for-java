@@ -23,7 +23,7 @@ public class KeyVaultJcaProviderTest {
 
     private static final Logger LOGGER = Logger.getLogger(KeyVaultJcaProviderTest.class.getName());
 
-    String getEnvValue(String key){
+    String getEnvValue(String key) {
         String value = System.getenv(key);
         System.out.println("*****************************logStart");
         System.out.println("Original: " + key + " = " + value);
