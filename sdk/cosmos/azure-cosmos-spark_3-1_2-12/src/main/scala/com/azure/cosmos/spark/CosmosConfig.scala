@@ -27,6 +27,7 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // scalastyle:off multiple.string.literals
+// scalastyle:off file.size.limit
 
 private object CosmosConfigNames {
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
@@ -861,3 +862,4 @@ private object CosmosConfigEntry {
   }
 }
 // scalastyle:on multiple.string.literals
+// scalastyle:on file.size.limit
