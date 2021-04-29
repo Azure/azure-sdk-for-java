@@ -50,11 +50,6 @@ public class AADB2COAuth2ClientConfiguration {
     }
 
     @Bean
-    public ClientRegistrationCondition clientRegistrationCondition() {
-        return new ClientRegistrationCondition();
-    }
-
-    @Bean
     @ConditionalOnMissingBean
     @Conditional(ClientRegistrationCondition.class)
     public ClientRegistrationRepository clientRegistrationRepository() {
