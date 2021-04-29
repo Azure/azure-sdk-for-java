@@ -32,9 +32,6 @@ class QueueSasClientTests extends APISpec {
         return new QueueServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
             .setStartTime(getUTCNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
     }
 
     def "QueueSAS enqueue with perm"() {
