@@ -83,7 +83,7 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
     val options = Map(
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true"
+      "spark.cosmos.read.inferSchema.enabled" -> "true"
     )
     val df = spark.read.format("cosmos.items").options(options).load()
 

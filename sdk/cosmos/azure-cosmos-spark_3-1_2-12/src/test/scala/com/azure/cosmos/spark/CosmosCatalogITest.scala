@@ -302,8 +302,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with CosmosLo
         s"OPTIONS (" +
         s"spark.cosmos.database = '$databaseName', " +
         s"spark.cosmos.container = '$containerName', " +
-        "spark.cosmos.read.inferSchemaEnabled = 'True', " +
-        "spark.cosmos.read.inferSchemaIncludeSystemProperties = 'True', " +
+        "spark.cosmos.read.inferSchema.enabled = 'True', " +
+        "spark.cosmos.read.inferSchema.includeSystemProperties = 'True', " +
         "spark.cosmos.partitioning.strategy = 'Restrictive');")
     val tables = spark.sql(s"SHOW TABLES in testCatalog.$databaseName;")
 
@@ -379,7 +379,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with CosmosLo
         s"OPTIONS (" +
         s"spark.cosmos.database = '$databaseName', " +
         s"spark.cosmos.container = '$containerName', " +
-        "spark.cosmos.read.inferSchemaEnabled = 'False', " +
+        "spark.cosmos.read.inferSchema.enabled = 'False', " +
         "spark.cosmos.partitioning.strategy = 'Restrictive');")
 
     var tables = spark.sql(s"SHOW TABLES in testCatalog.$databaseName;")
@@ -391,8 +391,8 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with CosmosLo
         s"OPTIONS (" +
         s"spark.cosmos.database = '$databaseName', " +
         s"spark.cosmos.container = '$containerName', " +
-        "spark.cosmos.read.inferSchemaEnabled = 'True', " +
-        "spark.cosmos.read.inferSchemaIncludeSystemProperties = 'False', " +
+        "spark.cosmos.read.inferSchema.enabled = 'True', " +
+        "spark.cosmos.read.inferSchema.includeSystemProperties = 'False', " +
         "spark.cosmos.partitioning.strategy = 'Restrictive');")
 
     tables = spark.sql(s"SHOW TABLES in testCatalog.$databaseName;")
@@ -488,7 +488,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with CosmosLo
           s"OPTIONS (" +
           s"spark.cosmos.database = '$databaseName', " +
           s"spark.cosmos.container = '$containerName', " +
-          "spark.cosmos.read.inferSchemaEnabled = 'False', " +
+          "spark.cosmos.read.inferSchema.enabled = 'False', " +
           "spark.cosmos.partitioning.strategy = 'Restrictive');")
 
       fail("Expected IllegalArgumentException not thrown")
@@ -539,7 +539,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with CosmosLo
           s"OPTIONS (" +
           s"spark.cosmos.database = '$databaseName', " +
           s"spark.cosmos.container = '$containerName', " +
-          "spark.cosmos.read.inferSchemaEnabled = 'False', " +
+          "spark.cosmos.read.inferSchema.enabled = 'False', " +
           "spark.cosmos.partitioning.strategy = 'Restrictive');")
 
       fail("Expected IllegalArgumentException not thrown")
