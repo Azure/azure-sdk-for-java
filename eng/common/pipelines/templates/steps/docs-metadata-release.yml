@@ -31,10 +31,20 @@ steps:
     }
   displayName: Enable Long Paths if Necessary
 
-- pwsh: |
-    git clone --depth 1 https://github.com/${{ parameters.TargetDocRepoOwner }}/${{ parameters.TargetDocRepoName }} ${{ parameters.WorkingDirectory }}/repo
-  displayName: Clone Documentation Repository
-  ignoreLASTEXITCODE: false
+- template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+  parameters:
+    SkipDefaultCheckout: true
+    Repositories:
+      - Name: ${{ parameters.TargetDocRepoOwner }}/${{ parameters.TargetDocRepoName }}
+        Commitish: master
+        WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
+    Paths:
+      - docs-ref-services  # java, python, js
+      - package.json  # java
+      - ci-configs  # python, js
+      - api  # net
+      - bundlepackages  # net
+
 - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
   parameters:
     WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
