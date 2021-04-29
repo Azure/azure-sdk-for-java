@@ -42,7 +42,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.StreamSupport;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
@@ -575,9 +574,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return createMessageBatch().flatMap(messageBatch -> {
-            StreamSupport.stream(messages.spliterator(), true).flatMap(message -> {
+            messages.forEach(message -> {
                 messageBatch.tryAddMessage(message);
-                return null;
             });
             return sendInternal(messageBatch, transaction);
         });
