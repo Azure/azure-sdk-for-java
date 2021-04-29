@@ -281,7 +281,7 @@ private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
 
 ### Enable local JRE key store
 
-The local JRE key store can also work with Key Vault key store. To enable this, add the following configuration:
+If you use key vault key store but don't override the trust manager factory, by default, the JRE trust manager will be used and will employ only the key vault key store. In this case the local JRE key store will not work. To let it also work with Key Vault key store, you need use the key vault trust manager which employs both the key vault key store and the local JRE keystore. To do this, add the following configuration:
 
 ```yaml
 azure:

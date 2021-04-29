@@ -3,7 +3,7 @@
 ## 1.0.0-beta.7 (Unreleased)
 
 ### New Features
- - Support the local JRE key store
+ - Support the local JRE key store. Please refer to [Support JRE Key Store][PR_Support_JRE_KeyStore]
 
 
 ## 1.0.0-beta.6 (2021-04-19)
@@ -33,3 +33,8 @@
 
 ## 1.0.0-beta.1 (2020-10-21)
  - First release.
+
+
+
+<!-- LINKS -->
+[PR_Support_JRE_KeyStore]: https://github.com/Azure/azure-sdk-for-java/pull/20548

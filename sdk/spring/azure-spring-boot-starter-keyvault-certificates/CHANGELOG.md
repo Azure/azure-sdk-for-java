@@ -4,6 +4,7 @@
 ### New Features
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
 - Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
+- Support the local JRE key store. Please refer to [Support JRE Key Store][PR_Support_JRE_KeyStore]
 
 
 
@@ -25,3 +26,7 @@
 
 ## 3.0.0-beta.1 (2020-10-21)
  - First release.
+
+
+<!-- LINKS -->
+[PR_Support_JRE_KeyStore]: https://github.com/Azure/azure-sdk-for-java/pull/20548 
