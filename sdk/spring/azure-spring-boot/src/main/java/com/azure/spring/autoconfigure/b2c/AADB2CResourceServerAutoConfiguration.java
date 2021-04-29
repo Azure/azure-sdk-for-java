@@ -69,6 +69,7 @@ public class AADB2CResourceServerAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
@@ -82,7 +83,6 @@ public class AADB2CResourceServerAutoConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return decoder;

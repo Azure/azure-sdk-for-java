@@ -57,8 +57,8 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     }
 
     private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
-        Map<String, Object> configurationForOidcIssuerLocation =
-            AADJwtDecoderProviderConfiguration.getConfigurationForOidcIssuerLocation(issuer);
+        Map<String, Object> configurationForOidcIssuerLocation = AADJwtDecoderProviderConfiguration
+            .getConfigurationForOidcIssuerLocation(trustedIssuers.getWellKnownBaseUri(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
         DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
             sizeLimit);
