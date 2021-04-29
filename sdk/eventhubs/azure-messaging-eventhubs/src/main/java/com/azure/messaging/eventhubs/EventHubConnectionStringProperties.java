@@ -9,22 +9,22 @@ import com.azure.core.credential.TokenCredential;
 import java.net.URI;
 
 /**
- * A utility class that parses a connection string into sections. A Service Bus connection string is a set of key value
+ * A utility class that parses a connection string into sections. A Event Hub connection string is a set of key value
  * pairs separated by semi-colon. A typical example is
- * {@code "Endpoint=sb://foo.servicebus.windows.net/;SharedAccessKeyName=someKeyName;SharedAccessKey=someKeyValue"}.
+ * {@code "Endpoint=sb://foo.EventHub.windows.net/;SharedAccessKeyName=someKeyName;SharedAccessKey=someKeyValue"}.
  *
  * <p>
  * A connection may have the following sections:
  * <ul>
  *     <li>Endpoint, which is mandatory. The hostname part of it is the "Fully qualified namespace".</li>
- *     <li>SharedAccessKeyName and SharedAccessKey, optional, used to authenticate the access to the ServiceBus.</li>
- *     <li>SharedAccessSignature, optional, an alternative way to authenticate the access to the ServiceBus.</li>
+ *     <li>SharedAccessKeyName and SharedAccessKey, optional, used to authenticate the access to the EventHub.</li>
+ *     <li>SharedAccessSignature, optional, an alternative way to authenticate the access to the EventHub.</li>
  *     <li>EntityPath, optional, the queue name or the topic name under the service namespace</li>
  * </ul>
  *
  * <p>
- * When you have a ServiceBus connection string, you can use {@link EventHubClientBuilder#connectionString(String)}
- * to build a client. If you'd like to use a {@link TokenCredential} to access a Service Bus, you can use this utility
+ * When you have a EventHub connection string, you can use {@link EventHubClientBuilder#connectionString(String)}
+ * to build a client. If you'd like to use a {@link TokenCredential} to access a Event Hub, you can use this utility
  * class to take the fully qualified namespace and optionally the entity path (queue/topic name) from the connection
  * string and then use {@link EventHubClientBuilder#credential(String, String, TokenCredential)}.
  * </p>
@@ -46,7 +46,7 @@ public final class EventHubConnectionStringProperties {
         this.sharedAccessSignature = properties.getSharedAccessSignature();
     }
     /**
-     * Parse a Service Bus connection string into an instance of this class.
+     * Parse a Event Hub connection string into an instance of this class.
      *
      * @param connectionString The connection string to be parsed.
      *
