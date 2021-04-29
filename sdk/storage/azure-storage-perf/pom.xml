@@ -90,8 +90,8 @@
                 <configuration>
                   <executable>java</executable>
                   <arguments>
-                    <argument>-Xms700m</argument>
-                    <argument>-Xmx700m</argument>
+                    <argument>-Xms100m</argument>
+                    <argument>-Xmx100m</argument>
                     <argument>-jar</argument>
                     <argument>${project.basedir}/target/${project.artifactId}-${project.version}-jar-with-dependencies.jar</argument>
                     <argument>uploadoutputstream</argument>

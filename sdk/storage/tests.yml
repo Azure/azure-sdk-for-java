@@ -55,7 +55,7 @@ stages:
           displayName: 'Run Stress Scenarios'
           inputs:
               mavenPomFile: sdk/storage/azure-storage-perf/pom.xml
-              options: -Dstorage-stress-scenarios
+              options: '$(DefaultOptions) -Dstorage-stress-scenarios'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: $(JavaTestVersion)
