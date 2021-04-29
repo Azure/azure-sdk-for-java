@@ -1,7 +1,7 @@
 # Release History
 
-## 12.11.0-beta.4 (Unreleased)
-
+## 12.11.0 (2021-04-29)
+- Fixed a bug where large files would hang when the upload method was called. 
 
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.

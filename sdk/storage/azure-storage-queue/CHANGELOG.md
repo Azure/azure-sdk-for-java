@@ -1,7 +1,7 @@
 # Release History
 
-## 12.9.0-beta.4 (Unreleased)
-
+## 12.9.0 (2021-04-29)
+- GA release
 
 ## 12.9.0-beta.3 (2021-04-16)
 - Updated azure-storage-common dependencies.
