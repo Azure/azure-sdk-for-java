@@ -1,6 +1,7 @@
 # Release History
 
-## 12.5.0-beta.4 (Unreleased)
+## 12.5.0 (2021-04-29)
+- Fixed a bug where large files would hang when the upload method was called. 
 - DataLakeLeaseClient now remembers the Lease ID after a lease change.
 
 ## 12.5.0-beta.3 (2021-04-16)
