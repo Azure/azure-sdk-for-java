@@ -7,6 +7,7 @@ import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.util.function.Consumer
@@ -86,6 +87,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5, exceptions = [IOException])
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -131,6 +133,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5, exceptions = [IOException])
     def "Query csv serialization separator"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()

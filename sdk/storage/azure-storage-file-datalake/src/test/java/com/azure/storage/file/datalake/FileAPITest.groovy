@@ -41,6 +41,7 @@ import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -2948,6 +2949,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5, exceptions = [IOException])
     def "Query min"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2993,6 +2995,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5, exceptions = [IOException])
     def "Query csv serialization separator"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
