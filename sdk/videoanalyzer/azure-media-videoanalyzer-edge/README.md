@@ -13,11 +13,11 @@ Use the client library for Azure Video Analytics to:
 
 ### Install the package
 
-Install the Live Video Analytics client library for Java with [Maven](maven_source):
+Install the Live Video Analytics client library for Java with Maven
 
 ### Prerequisites
 
-- A [Java Development Kit](jdk8), verison 8 or later.
+- A Java Development Kit, version 8 or later.
 - You need an active [Azure subscription][azure_sub], and a [IoT device connection string][iot_device_connection_string] to use this package.
 - To interact with Azure IoT Hub you will need to add their dependency to your `pom.xml`
  ```xml
@@ -190,5 +190,3 @@ additional questions or comments.
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [iot_device_connection_string]: https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/get-started-detect-motion-emit-events-quickstart
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
-[maven]: TODO://link-to-published-package
-[jdk8]: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
