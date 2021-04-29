@@ -30,6 +30,10 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusQueueTemplate.class);
 
+    private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s in queue '%s'";
+
+    private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in queue '%s' in %s mode";
+
     private final Set<String> subscribedQueues = Sets.newConcurrentHashSet();
 
     public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory) {
@@ -50,10 +54,21 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
      * @param payloadType The type of the message payload.
      * @throws ServiceBusRuntimeException If fail to register the queue message handler.
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void internalSubscribe(String name, Consumer<Message<?>> consumer, Class<?> payloadType) {
         final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
-            this.checkpointConfig, payloadType, consumer, this.messageConverter);
+            this.checkpointConfig, payloadType, consumer, this.messageConverter) {
+
+            @Override
+            protected String buildCheckpointFailMessage(Message<?> message) {
+                return String.format(MSG_FAIL_CHECKPOINT, message, name);
+            }
+
+            @Override
+            protected String buildCheckpointSuccessMessage(Message<?> message) {
+                return String.format(MSG_SUCCESS_CHECKPOINT, message, name, getCheckpointConfig().getCheckpointMode());
+            }
+        };
+
         ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
                                                                                             messageProcessor);
         processorClient.start();

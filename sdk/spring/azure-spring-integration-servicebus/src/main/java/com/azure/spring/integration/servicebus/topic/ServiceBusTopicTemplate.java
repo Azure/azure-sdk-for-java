@@ -27,10 +27,14 @@ import java.util.function.Consumer;
  * @author Warren Zhu
  * @author Eduardo Sciullo
  */
-public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicClientFactory> implements
-                                                                                              ServiceBusTopicOperation {
+public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicClientFactory>
+    implements ServiceBusTopicOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTopicTemplate.class);
+
+    private static final String MSG_FAIL_CHECKPOINT = "Consumer group '%s' of topic '%s' failed to checkpoint %s";
+
+    private static final String MSG_SUCCESS_CHECKPOINT = "Consumer group '%s' of topic '%s' checkpointed %s in %s mode";
 
     private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
 
@@ -90,10 +94,22 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                                      Consumer<Message<?>> consumer,
                                      Class<?> payloadType) {
 
-        final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(this.checkpointConfig,
-                                                                                                         payloadType, consumer, this.messageConverter);
+        final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
+            this.checkpointConfig, payloadType, consumer, this.messageConverter) {
+            @Override
+            protected String buildCheckpointFailMessage(Message<?> message) {
+                return String.format(MSG_FAIL_CHECKPOINT, consumer, name, message);
+            }
+
+            @Override
+            protected String buildCheckpointSuccessMessage(Message<?> message) {
+                return String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
+                                     getCheckpointConfig().getCheckpointMode());
+            }
+        };
         ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
-            this.clientConfig, messageProcessor);
+                                                                                            this.clientConfig,
+                                                                                            messageProcessor);
         processorClient.start();
     }
 
