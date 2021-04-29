@@ -391,9 +391,9 @@ SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActions
         new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
         Context.NONE);
 syncPoller.waitForCompletion();
-syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
     System.out.println("Key phrases extraction action results:");
-    analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
+    analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {
             for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
@@ -405,7 +405,7 @@ syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
         }
     });
     System.out.println("PII entities recognition action results:");
-    analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
+    analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {
             for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {

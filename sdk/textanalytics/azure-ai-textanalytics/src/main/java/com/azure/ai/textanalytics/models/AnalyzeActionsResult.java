@@ -3,13 +3,13 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AnalyzeBatchActionsResult} model.
+ * The {@link AnalyzeActionsResult} model.
  */
-public final class AnalyzeBatchActionsResult {
+public final class AnalyzeActionsResult {
     private TextDocumentBatchStatistics statistics;
     private IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults;
     private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults;
@@ -17,37 +17,37 @@ public final class AnalyzeBatchActionsResult {
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults;
 
     static {
-        AnalyzeBatchActionsResultPropertiesHelper.setAccessor(
-            new AnalyzeBatchActionsResultPropertiesHelper.AnalyzeBatchActionsResultAccessor() {
+        AnalyzeActionsResultPropertiesHelper.setAccessor(
+            new AnalyzeActionsResultPropertiesHelper.AnalyzeActionsResultAccessor() {
                 @Override
-                public void setStatistics(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+                public void setStatistics(AnalyzeActionsResult analyzeActionsResult,
                     TextDocumentBatchStatistics operationStatistics) {
-                    analyzeBatchActionsResult.setStatistics(operationStatistics);
+                    analyzeActionsResult.setStatistics(operationStatistics);
                 }
 
                 @Override
-                public void setRecognizeEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+                public void setRecognizeEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults) {
-                    analyzeBatchActionsResult.setRecognizeEntitiesActionResults(recognizeEntitiesActionResults);
+                    analyzeActionsResult.setRecognizeEntitiesActionResults(recognizeEntitiesActionResults);
                 }
 
                 @Override
-                public void setRecognizeLinkedEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+                public void setRecognizeLinkedEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
-                    analyzeBatchActionsResult.setRecognizeLinkedEntitiesActionResults(
+                    analyzeActionsResult.setRecognizeLinkedEntitiesActionResults(
                         recognizeLinkedEntitiesActionResults);
                 }
 
                 @Override
-                public void setRecognizePiiEntitiesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+                public void setRecognizePiiEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults) {
-                    analyzeBatchActionsResult.setRecognizePiiEntitiesActionResults(recognizePiiEntitiesActionResults);
+                    analyzeActionsResult.setRecognizePiiEntitiesActionResults(recognizePiiEntitiesActionResults);
                 }
 
                 @Override
-                public void setExtractKeyPhrasesActionResults(AnalyzeBatchActionsResult analyzeBatchActionsResult,
+                public void setExtractKeyPhrasesActionResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
-                    analyzeBatchActionsResult.setExtractKeyPhrasesActionResults(extractKeyPhrasesActionResults);
+                    analyzeActionsResult.setExtractKeyPhrasesActionResults(extractKeyPhrasesActionResults);
                 }
             });
     }

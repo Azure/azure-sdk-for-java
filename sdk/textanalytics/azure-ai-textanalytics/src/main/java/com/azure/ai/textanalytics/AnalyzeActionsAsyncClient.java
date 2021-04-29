@@ -3,8 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsOperationDetailPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
@@ -36,9 +36,9 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRec
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
@@ -88,7 +88,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEn
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class AnalyzeBatchActionsAsyncClient {
+class AnalyzeActionsAsyncClient {
     private static final String ENTITY_RECOGNITION_TASKS = "entityRecognitionTasks";
     private static final String ENTITY_RECOGNITION_PII_TASKS = "entityRecognitionPiiTasks";
     private static final String KEY_PHRASE_EXTRACTION_TASKS = "keyPhraseExtractionTasks";
@@ -97,19 +97,19 @@ class AnalyzeBatchActionsAsyncClient {
     private static final String REGEX_ACTION_ERROR_TARGET =
         "#/tasks/(keyPhraseExtractionTasks|entityRecognitionPiiTasks|entityRecognitionTasks)/(\\d+)";
 
-    private final ClientLogger logger = new ClientLogger(AnalyzeBatchActionsAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
-    AnalyzeBatchActionsAsyncClient(TextAnalyticsClientImpl service) {
+    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
-    PollerFlux<AnalyzeBatchActionsOperationDetail, PagedFlux<AnalyzeBatchActionsResult>> beginAnalyzeBatchActions(
-        Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeBatchActionsOptions options,
+    PollerFlux<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> beginAnalyzeActions(
+        Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
             inputDocumentsValidation(documents);
-            options = getNotNullAnalyzeBatchActionsOptions(options);
+            options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final AnalyzeBatchInput analyzeBatchInput =
@@ -119,15 +119,13 @@ class AnalyzeBatchActionsAsyncClient {
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: Be able to set the poll interval manually by user.
-                //  https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
                         .map(analyzeResponse -> {
-                            final AnalyzeBatchActionsOperationDetail textAnalyticsOperationResult =
-                                new AnalyzeBatchActionsOperationDetail();
-                            AnalyzeBatchActionsOperationDetailPropertiesHelper
+                            final AnalyzeActionsOperationDetail textAnalyticsOperationResult =
+                                new AnalyzeActionsOperationDetail();
+                            AnalyzeActionsOperationDetailPropertiesHelper
                                 .setOperationId(textAnalyticsOperationResult,
                                     parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
@@ -144,12 +142,12 @@ class AnalyzeBatchActionsAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
-        beginAnalyzeBatchActionsIterable(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
-            AnalyzeBatchActionsOptions options, Context context) {
+    PollerFlux<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> beginAnalyzeActionsIterable(
+        Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
+        Context context) {
         try {
             inputDocumentsValidation(documents);
-            options = getNotNullAnalyzeBatchActionsOptions(options);
+            options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final AnalyzeBatchInput analyzeBatchInput =
@@ -159,15 +157,13 @@ class AnalyzeBatchActionsAsyncClient {
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: Be able to set the poll interval manually by user.
-                //  https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
                         .map(analyzeResponse -> {
-                            final AnalyzeBatchActionsOperationDetail operationDetail =
-                                new AnalyzeBatchActionsOperationDetail();
-                            AnalyzeBatchActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                            final AnalyzeActionsOperationDetail operationDetail =
+                                new AnalyzeActionsOperationDetail();
+                            AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
                                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return operationDetail;
                         })),
@@ -256,8 +252,8 @@ class AnalyzeBatchActionsAsyncClient {
                     }).collect(Collectors.toList()));
     }
 
-    private Function<PollingContext<AnalyzeBatchActionsOperationDetail>, Mono<AnalyzeBatchActionsOperationDetail>>
-        activationOperation(Mono<AnalyzeBatchActionsOperationDetail> operationResult) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsOperationDetail>>
+        activationOperation(Mono<AnalyzeActionsOperationDetail> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -267,11 +263,11 @@ class AnalyzeBatchActionsAsyncClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeBatchActionsOperationDetail>, Mono<PollResponse<AnalyzeBatchActionsOperationDetail>>>
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PollResponse<AnalyzeActionsOperationDetail>>>
         pollingOperation(Function<String, Mono<Response<AnalyzeJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<AnalyzeBatchActionsOperationDetail> operationResultPollResponse =
+                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 // TODO: [Service-Bug] change back to UUID after service support it.
                 //  https://github.com/Azure/azure-sdk-for-java/issues/17629
@@ -286,8 +282,8 @@ class AnalyzeBatchActionsAsyncClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeBatchActionsOperationDetail>, Mono<PagedFlux<AnalyzeBatchActionsResult>>>
-        fetchingOperation(Function<String, Mono<PagedFlux<AnalyzeBatchActionsResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PagedFlux<AnalyzeActionsResult>>>
+        fetchingOperation(Function<String, Mono<PagedFlux<AnalyzeActionsResult>>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
@@ -301,8 +297,8 @@ class AnalyzeBatchActionsAsyncClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeBatchActionsOperationDetail>, Mono<PagedIterable<AnalyzeBatchActionsResult>>>
-        fetchingOperationIterable(Function<String, Mono<PagedIterable<AnalyzeBatchActionsResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PagedIterable<AnalyzeActionsResult>>>
+        fetchingOperationIterable(Function<String, Mono<PagedIterable<AnalyzeActionsResult>>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
@@ -316,14 +312,14 @@ class AnalyzeBatchActionsAsyncClient {
         };
     }
 
-    PagedFlux<AnalyzeBatchActionsResult> getAnalyzeOperationFluxPage(String operationId, Integer top, Integer skip,
+    PagedFlux<AnalyzeActionsResult> getAnalyzeOperationFluxPage(String operationId, Integer top, Integer skip,
         boolean showStats, Context context) {
         return new PagedFlux<>(
             () -> getPage(null, operationId, top, skip, showStats, context),
             continuationToken -> getPage(continuationToken, operationId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<AnalyzeBatchActionsResult>> getPage(String continuationToken, String operationId, Integer top,
+    Mono<PagedResponse<AnalyzeActionsResult>> getPage(String continuationToken, String operationId, Integer top,
         Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
@@ -339,9 +335,9 @@ class AnalyzeBatchActionsAsyncClient {
         }
     }
 
-    private PagedResponse<AnalyzeBatchActionsResult> toAnalyzeTasksPagedResponse(Response<AnalyzeJobState> response) {
+    private PagedResponse<AnalyzeActionsResult> toAnalyzeTasksPagedResponse(Response<AnalyzeJobState> response) {
         final AnalyzeJobState analyzeJobState = response.getValue();
-        return new PagedResponseBase<Void, AnalyzeBatchActionsResult>(
+        return new PagedResponseBase<Void, AnalyzeActionsResult>(
             response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
@@ -350,7 +346,7 @@ class AnalyzeBatchActionsAsyncClient {
             null);
     }
 
-    private AnalyzeBatchActionsResult toAnalyzeTasks(AnalyzeJobState analyzeJobState) {
+    private AnalyzeActionsResult toAnalyzeTasks(AnalyzeJobState analyzeJobState) {
         TasksStateTasks tasksStateTasks = analyzeJobState.getTasks();
         final List<TasksStateTasksEntityRecognitionPiiTasksItem> piiTasksItems =
             tasksStateTasks.getEntityRecognitionPiiTasks();
@@ -452,7 +448,7 @@ class AnalyzeBatchActionsAsyncClient {
             }
         }
 
-        final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
+        final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
         TextDocumentBatchStatistics batchStatistics = null;
         if (requestStatistics != null) {
@@ -462,21 +458,21 @@ class AnalyzeBatchActionsAsyncClient {
             );
         }
 
-        AnalyzeBatchActionsResultPropertiesHelper.setStatistics(analyzeBatchActionsResult, batchStatistics);
-        AnalyzeBatchActionsResultPropertiesHelper.setRecognizeEntitiesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setStatistics(analyzeActionsResult, batchStatistics);
+        AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesActionResults(analyzeActionsResult,
             IterableStream.of(recognizeEntitiesActionResults));
-        AnalyzeBatchActionsResultPropertiesHelper.setRecognizePiiEntitiesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesActionResults(analyzeActionsResult,
             IterableStream.of(recognizePiiEntitiesActionResults));
-        AnalyzeBatchActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeActionsResult,
             IterableStream.of(extractKeyPhrasesActionResults));
-        AnalyzeBatchActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeActionsResult,
             IterableStream.of(recognizeLinkedEntitiesActionResults));
-        return analyzeBatchActionsResult;
+        return analyzeActionsResult;
     }
 
-    private Mono<PollResponse<AnalyzeBatchActionsOperationDetail>> processAnalyzedModelResponse(
+    private Mono<PollResponse<AnalyzeActionsOperationDetail>> processAnalyzedModelResponse(
         Response<AnalyzeJobState> analyzeJobStateResponse,
-        PollResponse<AnalyzeBatchActionsOperationDetail> operationResultPollResponse) {
+        PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse) {
 
         LongRunningOperationStatus status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
         if (analyzeJobStateResponse.getValue() != null && analyzeJobStateResponse.getValue().getStatus() != null) {
@@ -497,22 +493,22 @@ class AnalyzeBatchActionsAsyncClient {
                     break;
             }
         }
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+        AnalyzeActionsOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
             analyzeJobStateResponse.getValue().getDisplayName());
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
+        AnalyzeActionsOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeJobStateResponse.getValue().getCreatedDateTime());
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
+        AnalyzeActionsOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeJobStateResponse.getValue().getExpirationDateTime());
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
+        AnalyzeActionsOperationDetailPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
             analyzeJobStateResponse.getValue().getLastUpdateDateTime());
         final TasksStateTasks tasksResult = analyzeJobStateResponse.getValue().getTasks();
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setActionsFailed(operationResultPollResponse.getValue(),
+        AnalyzeActionsOperationDetailPropertiesHelper.setActionsFailed(operationResultPollResponse.getValue(),
             tasksResult.getFailed());
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setActionsInProgress(operationResultPollResponse.getValue(),
+        AnalyzeActionsOperationDetailPropertiesHelper.setActionsInProgress(operationResultPollResponse.getValue(),
             tasksResult.getInProgress());
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setActionsSucceeded(
+        AnalyzeActionsOperationDetailPropertiesHelper.setActionsSucceeded(
             operationResultPollResponse.getValue(), tasksResult.getCompleted());
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setActionsInTotal(operationResultPollResponse.getValue(),
+        AnalyzeActionsOperationDetailPropertiesHelper.setActionsInTotal(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
@@ -521,8 +517,8 @@ class AnalyzeBatchActionsAsyncClient {
         return context == null ? Context.NONE : context;
     }
 
-    private AnalyzeBatchActionsOptions getNotNullAnalyzeBatchActionsOptions(AnalyzeBatchActionsOptions options) {
-        return options == null ? new AnalyzeBatchActionsOptions() : options;
+    private AnalyzeActionsOptions getNotNullAnalyzeActionsOptions(AnalyzeActionsOptions options) {
+        return options == null ? new AnalyzeActionsOptions() : options;
     }
 
     private String getNotNullModelVersion(String modelVersion) {

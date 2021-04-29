@@ -4,9 +4,9 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -2217,12 +2217,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeBatchActionsRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-                client.beginAnalyzeBatchActions(documents, tasks,
-                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false), Context.NONE);
+            SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+                client.beginAnalyzeActions(documents, tasks,
+                    new AnalyzeActionsOptions().setIncludeStatistics(false), Context.NONE);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+            PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(false,
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2242,13 +2242,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeBatchActionsPaginationRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
-                syncPoller = client.beginAnalyzeBatchActions(
-                    documents, tasks, new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
+            SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>>
+                syncPoller = client.beginAnalyzeActions(
+                    documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+            PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
             validateAnalyzeBatchActionsResultList(false,
                 getExpectedAnalyzeTaskResultListForMultiplePages(0, 20, 2),
                 result.stream().collect(Collectors.toList()));
@@ -2261,7 +2261,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> client.beginAnalyzeBatchActions(documents,
+                () -> client.beginAnalyzeActions(documents,
                     new TextAnalyticsActions().setRecognizeEntitiesOptions(new RecognizeEntitiesOptions()),
                     null, Context.NONE)
                     .getFinalResult());
@@ -2275,12 +2275,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeBatchActionsPartialCompletedRunner(
             (documents, tasks) -> {
-                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-                    client.beginAnalyzeBatchActions(documents, tasks,
-                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false), Context.NONE);
+                SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+                    client.beginAnalyzeActions(documents, tasks,
+                        new AnalyzeActionsOptions().setIncludeStatistics(false), Context.NONE);
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+                PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
                 validateAnalyzeBatchActionsResultList(false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
@@ -2304,12 +2304,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeBatchActionsAllFailedRunner(
             (documents, tasks) -> {
-                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-                    client.beginAnalyzeBatchActions(documents, tasks,
-                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false), Context.NONE);
+                SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+                    client.beginAnalyzeActions(documents, tasks,
+                        new AnalyzeActionsOptions().setIncludeStatistics(false), Context.NONE);
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+                PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
 
                 validateAnalyzeBatchActionsResultList(false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2337,12 +2337,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
             (documents, tasks) -> {
-                SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-                    client.beginAnalyzeBatchActions(documents, tasks,
-                        new AnalyzeBatchActionsOptions().setIncludeStatistics(false), Context.NONE);
+                SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+                    client.beginAnalyzeActions(documents, tasks,
+                        new AnalyzeActionsOptions().setIncludeStatistics(false), Context.NONE);
                 syncPoller = setPollInterval(syncPoller);
                 syncPoller.waitForCompletion();
-                PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+                PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
 
                 validateAnalyzeBatchActionsResultList(false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
@@ -2365,12 +2365,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeLinkedEntityTasks(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeLinkedEntityRecognitionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-                client.beginAnalyzeBatchActions(documents, tasks, "en",
-                    new AnalyzeBatchActionsOptions().setIncludeStatistics(false));
+            SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en",
+                    new AnalyzeActionsOptions().setIncludeStatistics(false));
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeBatchActionsResult> result = syncPoller.getFinalResult();
+            PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
 
             validateAnalyzeBatchActionsResultList(
                 false,

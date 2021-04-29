@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -1545,16 +1545,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Analyze tasks
-    static void validateAnalyzeBatchActionsResultList(boolean showStatistics, List<AnalyzeBatchActionsResult> expected,
-        List<AnalyzeBatchActionsResult> actual) {
+    static void validateAnalyzeBatchActionsResultList(boolean showStatistics, List<AnalyzeActionsResult> expected,
+        List<AnalyzeActionsResult> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             validateAnalyzeTasksResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
-    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeBatchActionsResult expected,
-        AnalyzeBatchActionsResult actual) {
+    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeActionsResult expected,
+        AnalyzeActionsResult actual) {
         // TODO: batch actions has return non statistics.
         // Issue: https://github.com/Azure/azure-sdk-for-java/issues/19672
 //        final TextDocumentBatchStatistics expectedOperationStatistics = expected.getStatistics();

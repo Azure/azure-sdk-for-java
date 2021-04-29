@@ -3,14 +3,14 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsOperationDetailPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
 
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AnalyzeBatchActionsOperationDetail} model.
+ * The {@link AnalyzeActionsOperationDetail} model.
  */
-public final class AnalyzeBatchActionsOperationDetail {
+public final class AnalyzeActionsOperationDetail {
     private String operationId;
     private String displayName;
     private int actionsFailed;
@@ -22,55 +22,55 @@ public final class AnalyzeBatchActionsOperationDetail {
     private OffsetDateTime lastModifiedAt;
 
     static {
-        AnalyzeBatchActionsOperationDetailPropertiesHelper.setAccessor(
-            new AnalyzeBatchActionsOperationDetailPropertiesHelper.AnalyzeBatchActionsOperationDetailAccessor() {
+        AnalyzeActionsOperationDetailPropertiesHelper.setAccessor(
+            new AnalyzeActionsOperationDetailPropertiesHelper.AnalyzeActionsOperationDetailAccessor() {
                 @Override
-                public void setOperationId(AnalyzeBatchActionsOperationDetail operationDetail, String operationId) {
+                public void setOperationId(AnalyzeActionsOperationDetail operationDetail, String operationId) {
                     operationDetail.setOperationId(operationId);
                 }
 
                 @Override
-                public void setDisplayName(AnalyzeBatchActionsOperationDetail operationDetail, String name) {
+                public void setDisplayName(AnalyzeActionsOperationDetail operationDetail, String name) {
                     operationDetail.setDisplayName(name);
                 }
 
                 @Override
-                public void setActionsFailed(AnalyzeBatchActionsOperationDetail operationDetail,
+                public void setActionsFailed(AnalyzeActionsOperationDetail operationDetail,
                     int actionsFailed) {
                     operationDetail.setActionsFailed(actionsFailed);
                 }
 
                 @Override
-                public void setActionsInProgress(AnalyzeBatchActionsOperationDetail operationDetail,
+                public void setActionsInProgress(AnalyzeActionsOperationDetail operationDetail,
                     int actionsInProgress) {
                     operationDetail.setActionsInProgress(actionsInProgress);
                 }
 
                 @Override
-                public void setActionsSucceeded(AnalyzeBatchActionsOperationDetail operationDetail,
+                public void setActionsSucceeded(AnalyzeActionsOperationDetail operationDetail,
                     int actionsSucceeded) {
                     operationDetail.setActionsSucceeded(actionsSucceeded);
                 }
 
                 @Override
-                public void setActionsInTotal(AnalyzeBatchActionsOperationDetail operationDetail, int actionsInTotal) {
+                public void setActionsInTotal(AnalyzeActionsOperationDetail operationDetail, int actionsInTotal) {
                     operationDetail.setActionsInTotal(actionsInTotal);
                 }
 
                 @Override
-                public void setExpiresAt(AnalyzeBatchActionsOperationDetail operationDetail,
+                public void setExpiresAt(AnalyzeActionsOperationDetail operationDetail,
                     OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AnalyzeBatchActionsOperationDetail operationDetail,
+                public void setCreatedAt(AnalyzeActionsOperationDetail operationDetail,
                     OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
                 @Override
-                public void setLastModifiedAt(AnalyzeBatchActionsOperationDetail operationDetail,
+                public void setLastModifiedAt(AnalyzeActionsOperationDetail operationDetail,
                     OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
@@ -78,18 +78,18 @@ public final class AnalyzeBatchActionsOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link AnalyzeBatchActionsOperationDetail}.
+     * Gets the operationId property of the {@link AnalyzeActionsOperationDetail}.
      *
-     * @return the operationId property of the {@link AnalyzeBatchActionsOperationDetail}.
+     * @return the operationId property of the {@link AnalyzeActionsOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link AnalyzeBatchActionsOperationDetail}.
+     * Gets the displayName property of the {@link AnalyzeActionsOperationDetail}.
      *
-     * @return the displayName property of the {@link AnalyzeBatchActionsOperationDetail}.
+     * @return the displayName property of the {@link AnalyzeActionsOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;
