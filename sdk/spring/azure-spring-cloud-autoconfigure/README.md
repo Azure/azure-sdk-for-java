@@ -9,7 +9,8 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 - [Environment checklist][environment_checklist]
 
 ### Include the Package
-1. [Add azure-spring-cloud-dependencies].1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
   <groupId>com.azure.spring</groupId>
