@@ -12,10 +12,8 @@ while protecting the identities of your customers at the same time.
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-Please refer to [Adding the azure-spring-boot-bom BOM] to add dependency management item.
-
-After adding the azure spring boot BOM, Azure spring boot libraries included in the BOM are now available to be
-added as a dependency without listing the artifact's version.
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
   <groupId>com.azure.spring</groupId>
@@ -232,4 +230,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[Adding the azure-spring-boot-bom BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/master/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom

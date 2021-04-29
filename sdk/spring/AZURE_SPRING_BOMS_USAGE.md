@@ -1,9 +1,9 @@
-# How to use azure spring BOMs
+# How to use Azure Spring BOMs
 
-### Adding the azure-spring-boot-bom BOM
+To add Azure Spring BOMs, please add the following fragment in your pom.xml.
+You can refer to the [maven doc] about more details about dependency management.
 
-To consume the azure spring boot BOM include it in the `dependencyManagement` section of your project's POM. 
-Note that this **does not** result in all dependencies being included in your project.
+## Add azure-spring-boot-bom
 
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-bom;dependency})
 ```xml
@@ -21,10 +21,7 @@ Note that this **does not** result in all dependencies being included in your pr
 ```
 [//]: # ({x-version-update-end})
 
-### Adding the azure-spring-cloud-dependencies BOM
-
-To consume the azure spring cloud dependencies BOM include it in the `dependencyManagement` section of your project's POM.
-Note that this **does not** result in all dependencies being included in your project.
+## Add azure-spring-cloud-dependencies
 
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-dependencies;dependency})
 ```xml
@@ -41,3 +38,5 @@ Note that this **does not** result in all dependencies being included in your pr
 </dependencyManagement>
 ```
 [//]: # ({x-version-update-end})
+
+[maven doc]: https://maven.apache.org/

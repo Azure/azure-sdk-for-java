@@ -17,10 +17,8 @@ The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provi
 - [Register an application in Azure Portal][register_an_application_in_portal]
 
 ### Include the package
-Please refer to [Adding the azure-spring-boot-bom BOM] to add dependency management item.
-
-After adding the azure spring boot BOM, Azure spring boot libraries included in the BOM are now available to be 
-added as a dependency without listing the artifact's version.
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
   <groupId>com.azure.spring</groupId>
@@ -585,7 +583,7 @@ Please follow [instructions here] to build from source or contribute.
 [prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
 [Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[Adding the azure-spring-boot-bom BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/master/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom
 [Conditional Access]: https://docs.microsoft.com/azure/active-directory/conditional-access
 [Grant Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/concept-conditional-access-grant
 [Block Access]: https://docs.microsoft.com/azure/active-directory/conditional-access/howto-conditional-access-policy-block-access

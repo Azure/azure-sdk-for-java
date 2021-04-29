@@ -9,10 +9,13 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 - [Environment checklist][environment_checklist]
 
 ### Include the Package
-Please refer to [Adding the azure-spring-cloud-dependencies BOM] to add dependency management item.
-
-After adding the azure spring cloud dependencies BOM, Azure spring cloud libraries included in the BOM are now available to be
-added as a dependency without listing the artifact's version.
+1. [Add azure-spring-cloud-dependencies].1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
+```xml
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-autoconfigure</artifactId>
+</dependency>
+```
 
 ## Key concepts
 This project provides auto-configuration for the following Azure services:
@@ -97,4 +100,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [service_bus_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [storage_queue_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[Adding the azure-spring-cloud-dependencies BOM]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-cloud-dependencies-bom
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/master/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-cloud-dependencies-bom
