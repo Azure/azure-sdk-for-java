@@ -612,6 +612,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
+            <argLine>-Djava.net.preferIPv4Stack=true</argLine>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
