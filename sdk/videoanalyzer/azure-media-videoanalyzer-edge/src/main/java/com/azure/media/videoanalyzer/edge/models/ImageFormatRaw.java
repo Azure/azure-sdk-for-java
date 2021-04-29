@@ -10,13 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Encoding settings for raw images. */
+/** Raw image formatting. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.ImageFormatRaw")
 @Fluent
 public final class ImageFormatRaw extends ImageFormatProperties {
     /*
-     * The pixel format that will be used to encode images.
+     * Pixel format to be applied to the raw image.
      */
     @JsonProperty(value = "pixelFormat", required = true)
     private ImageFormatRawPixelFormat pixelFormat;
@@ -32,7 +32,7 @@ public final class ImageFormatRaw extends ImageFormatProperties {
     }
 
     /**
-     * Get the pixelFormat property: The pixel format that will be used to encode images.
+     * Get the pixelFormat property: Pixel format to be applied to the raw image.
      *
      * @return the pixelFormat value.
      */

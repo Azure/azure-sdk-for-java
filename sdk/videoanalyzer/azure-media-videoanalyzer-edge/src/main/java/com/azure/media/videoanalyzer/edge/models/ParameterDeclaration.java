@@ -9,20 +9,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The declaration of a parameter in the pipeline topology. A topology can be authored with parameters. Then, during
- * live pipeline creation, the value for those parameters can be specified. This allows the same pipeline topology to be
- * used as a blueprint for multiple live pipelines with different values for the parameters.
+ * Single topology parameter declaration. Declared parameters can and must be referenced throughout the topology and can
+ * optionally have default values to be used when they are not defined in the pipeline instances.
  */
 @Fluent
 public final class ParameterDeclaration {
     /*
-     * The name of the parameter.
+     * Name of the parameter.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The type of the parameter.
+     * Type of the parameter.
      */
     @JsonProperty(value = "type", required = true)
     private ParameterType type;
@@ -55,7 +54,7 @@ public final class ParameterDeclaration {
     }
 
     /**
-     * Get the name property: The name of the parameter.
+     * Get the name property: Name of the parameter.
      *
      * @return the name value.
      */
@@ -64,7 +63,7 @@ public final class ParameterDeclaration {
     }
 
     /**
-     * Get the type property: The type of the parameter.
+     * Get the type property: Type of the parameter.
      *
      * @return the type value.
      */

@@ -13,7 +13,8 @@ import java.util.List;
 
 /**
  * A signal gate determines when to block (gate) incoming media, and when to allow it through. It gathers input events
- * over the activationEvaluationWindow, and determines whether to open or close the gate.
+ * over the activationEvaluationWindow, and determines whether to open or close the gate. See
+ * https://aka.ms/ava-signalgate for more information.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.SignalGateProcessor")
@@ -27,24 +28,30 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
     private String activationEvaluationWindow;
 
     /*
-     * Signal offset once the gate is activated (can be negative). It is an
-     * offset between the time the event is received, and the timestamp of the
-     * first media sample (eg. video frame) that is allowed through by the
-     * gate.
+     * Signal offset once the gate is activated (can be negative). It
+     * determines the how much farther behind of after the signal will be let
+     * through based on the activation time. A negative offset indicates that
+     * data prior the activation time must be included on the signal that is
+     * let through, once the gate is activated. When used upstream of a file or
+     * video sink, this allows for scenarios such as recording buffered media
+     * prior an event, such as: record video 5 seconds prior motions is
+     * detected.
      */
     @JsonProperty(value = "activationSignalOffset")
     private String activationSignalOffset;
 
     /*
      * The minimum period for which the gate remains open in the absence of
-     * subsequent triggers (events).
+     * subsequent triggers (events). When used upstream of a file or video
+     * sink, it determines the minimum length of the recorded video clip.
      */
     @JsonProperty(value = "minimumActivationTime")
     private String minimumActivationTime;
 
     /*
      * The maximum period for which the gate remains open in the presence of
-     * subsequent events.
+     * subsequent triggers (events). When used upstream of a file or video
+     * sink, it determines the maximum length of the recorded video clip.
      */
     @JsonProperty(value = "maximumActivationTime")
     private String maximumActivationTime;
@@ -85,9 +92,11 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Get the activationSignalOffset property: Signal offset once the gate is activated (can be negative). It is an
-     * offset between the time the event is received, and the timestamp of the first media sample (eg. video frame) that
-     * is allowed through by the gate.
+     * Get the activationSignalOffset property: Signal offset once the gate is activated (can be negative). It
+     * determines the how much farther behind of after the signal will be let through based on the activation time. A
+     * negative offset indicates that data prior the activation time must be included on the signal that is let through,
+     * once the gate is activated. When used upstream of a file or video sink, this allows for scenarios such as
+     * recording buffered media prior an event, such as: record video 5 seconds prior motions is detected.
      *
      * @return the activationSignalOffset value.
      */
@@ -96,9 +105,11 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Set the activationSignalOffset property: Signal offset once the gate is activated (can be negative). It is an
-     * offset between the time the event is received, and the timestamp of the first media sample (eg. video frame) that
-     * is allowed through by the gate.
+     * Set the activationSignalOffset property: Signal offset once the gate is activated (can be negative). It
+     * determines the how much farther behind of after the signal will be let through based on the activation time. A
+     * negative offset indicates that data prior the activation time must be included on the signal that is let through,
+     * once the gate is activated. When used upstream of a file or video sink, this allows for scenarios such as
+     * recording buffered media prior an event, such as: record video 5 seconds prior motions is detected.
      *
      * @param activationSignalOffset the activationSignalOffset value to set.
      * @return the SignalGateProcessor object itself.
@@ -110,7 +121,8 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
 
     /**
      * Get the minimumActivationTime property: The minimum period for which the gate remains open in the absence of
-     * subsequent triggers (events).
+     * subsequent triggers (events). When used upstream of a file or video sink, it determines the minimum length of the
+     * recorded video clip.
      *
      * @return the minimumActivationTime value.
      */
@@ -120,7 +132,8 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
 
     /**
      * Set the minimumActivationTime property: The minimum period for which the gate remains open in the absence of
-     * subsequent triggers (events).
+     * subsequent triggers (events). When used upstream of a file or video sink, it determines the minimum length of the
+     * recorded video clip.
      *
      * @param minimumActivationTime the minimumActivationTime value to set.
      * @return the SignalGateProcessor object itself.
@@ -132,7 +145,8 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
 
     /**
      * Get the maximumActivationTime property: The maximum period for which the gate remains open in the presence of
-     * subsequent events.
+     * subsequent triggers (events). When used upstream of a file or video sink, it determines the maximum length of the
+     * recorded video clip.
      *
      * @return the maximumActivationTime value.
      */
@@ -142,7 +156,8 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
 
     /**
      * Set the maximumActivationTime property: The maximum period for which the gate remains open in the presence of
-     * subsequent events.
+     * subsequent triggers (events). When used upstream of a file or video sink, it determines the maximum length of the
+     * recorded video clip.
      *
      * @param maximumActivationTime the maximumActivationTime value to set.
      * @return the SignalGateProcessor object itself.

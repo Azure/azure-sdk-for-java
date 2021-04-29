@@ -8,44 +8,49 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A description of the properties of a pipeline topology. */
+/** Pipeline topology properties. */
 @Fluent
 public final class PipelineTopologyProperties {
     /*
-     * A description of a pipeline topology. It is recommended to use this to
-     * describe the expected use of the pipeline topology.
+     * An optional description of the pipeline topology. It is recommended that
+     * the expected use of the topology to be described here.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The list of parameters defined in the pipeline topology. The value for
-     * these parameters are supplied by streams of this pipeline topology.
+     * List of the topology parameter declarations. Parameters declared here
+     * can be referenced throughout the topology nodes through the use of
+     * "${PARAMETER_NAME}" string pattern. Parameters can have optional default
+     * values and can later be defined in individual instances of the pipeline.
      */
     @JsonProperty(value = "parameters")
     private List<ParameterDeclaration> parameters;
 
     /*
-     * The list of source nodes in this pipeline topology.
+     * List of the topology source nodes. Source nodes enable external data to
+     * be ingested by the pipeline.
      */
     @JsonProperty(value = "sources")
     private List<SourceNodeBase> sources;
 
     /*
-     * The list of processor nodes in this pipeline topology.
+     * List of the topology processor nodes. Processor nodes enable pipeline
+     * data to be analyzed, processed or transformed.
      */
     @JsonProperty(value = "processors")
     private List<ProcessorNodeBase> processors;
 
     /*
-     * The list of sink nodes in this pipeline topology.
+     * List of the topology sink nodes. Sink nodes allow pipeline data to be
+     * stored or exported.
      */
     @JsonProperty(value = "sinks")
     private List<SinkNodeBase> sinks;
 
     /**
-     * Get the description property: A description of a pipeline topology. It is recommended to use this to describe the
-     * expected use of the pipeline topology.
+     * Get the description property: An optional description of the pipeline topology. It is recommended that the
+     * expected use of the topology to be described here.
      *
      * @return the description value.
      */
@@ -54,8 +59,8 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Set the description property: A description of a pipeline topology. It is recommended to use this to describe the
-     * expected use of the pipeline topology.
+     * Set the description property: An optional description of the pipeline topology. It is recommended that the
+     * expected use of the topology to be described here.
      *
      * @param description the description value to set.
      * @return the PipelineTopologyProperties object itself.
@@ -66,8 +71,9 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Get the parameters property: The list of parameters defined in the pipeline topology. The value for these
-     * parameters are supplied by streams of this pipeline topology.
+     * Get the parameters property: List of the topology parameter declarations. Parameters declared here can be
+     * referenced throughout the topology nodes through the use of "${PARAMETER_NAME}" string pattern. Parameters can
+     * have optional default values and can later be defined in individual instances of the pipeline.
      *
      * @return the parameters value.
      */
@@ -76,8 +82,9 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Set the parameters property: The list of parameters defined in the pipeline topology. The value for these
-     * parameters are supplied by streams of this pipeline topology.
+     * Set the parameters property: List of the topology parameter declarations. Parameters declared here can be
+     * referenced throughout the topology nodes through the use of "${PARAMETER_NAME}" string pattern. Parameters can
+     * have optional default values and can later be defined in individual instances of the pipeline.
      *
      * @param parameters the parameters value to set.
      * @return the PipelineTopologyProperties object itself.
@@ -88,7 +95,8 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Get the sources property: The list of source nodes in this pipeline topology.
+     * Get the sources property: List of the topology source nodes. Source nodes enable external data to be ingested by
+     * the pipeline.
      *
      * @return the sources value.
      */
@@ -97,7 +105,8 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Set the sources property: The list of source nodes in this pipeline topology.
+     * Set the sources property: List of the topology source nodes. Source nodes enable external data to be ingested by
+     * the pipeline.
      *
      * @param sources the sources value to set.
      * @return the PipelineTopologyProperties object itself.
@@ -108,7 +117,8 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Get the processors property: The list of processor nodes in this pipeline topology.
+     * Get the processors property: List of the topology processor nodes. Processor nodes enable pipeline data to be
+     * analyzed, processed or transformed.
      *
      * @return the processors value.
      */
@@ -117,7 +127,8 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Set the processors property: The list of processor nodes in this pipeline topology.
+     * Set the processors property: List of the topology processor nodes. Processor nodes enable pipeline data to be
+     * analyzed, processed or transformed.
      *
      * @param processors the processors value to set.
      * @return the PipelineTopologyProperties object itself.
@@ -128,7 +139,7 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Get the sinks property: The list of sink nodes in this pipeline topology.
+     * Get the sinks property: List of the topology sink nodes. Sink nodes allow pipeline data to be stored or exported.
      *
      * @return the sinks value.
      */
@@ -137,7 +148,7 @@ public final class PipelineTopologyProperties {
     }
 
     /**
-     * Set the sinks property: The list of sink nodes in this pipeline topology.
+     * Set the sinks property: List of the topology sink nodes. Sink nodes allow pipeline data to be stored or exported.
      *
      * @param sinks the sinks value to set.
      * @return the PipelineTopologyProperties object itself.

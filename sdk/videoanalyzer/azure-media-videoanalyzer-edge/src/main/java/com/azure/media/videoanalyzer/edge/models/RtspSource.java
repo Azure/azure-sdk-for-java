@@ -10,20 +10,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Enables a pipeline topology to capture media from a RTSP server. */
+/** RTSP source allows for media from an RTSP camera or generic RTSP server to be ingested into a live pipeline. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.RtspSource")
 @Fluent
 public final class RtspSource extends SourceNodeBase {
     /*
-     * Underlying RTSP transport. This is used to enable or disable HTTP
-     * tunneling.
+     * Network transport utilized by the RTSP and RTP exchange: TCP or HTTP.
+     * When using TCP, the RTP packets are interleaved on the TCP RTSP
+     * connection. When using HTTP, the RTSP messages are exchanged through
+     * long lived HTTP connections, and the RTP packages are interleaved in the
+     * HTTP connections alongside the RTSP messages.
      */
     @JsonProperty(value = "transport")
     private RtspTransport transport;
 
     /*
-     * RTSP endpoint of the stream that is being connected to.
+     * RTSP endpoint information for Video Analyzer to connect to. This
+     * contains the required information for Video Analyzer to connect to RTSP
+     * cameras and/or generic RTSP servers.
      */
     @JsonProperty(value = "endpoint", required = true)
     private EndpointBase endpoint;
@@ -43,7 +48,10 @@ public final class RtspSource extends SourceNodeBase {
     }
 
     /**
-     * Get the transport property: Underlying RTSP transport. This is used to enable or disable HTTP tunneling.
+     * Get the transport property: Network transport utilized by the RTSP and RTP exchange: TCP or HTTP. When using TCP,
+     * the RTP packets are interleaved on the TCP RTSP connection. When using HTTP, the RTSP messages are exchanged
+     * through long lived HTTP connections, and the RTP packages are interleaved in the HTTP connections alongside the
+     * RTSP messages.
      *
      * @return the transport value.
      */
@@ -52,7 +60,10 @@ public final class RtspSource extends SourceNodeBase {
     }
 
     /**
-     * Set the transport property: Underlying RTSP transport. This is used to enable or disable HTTP tunneling.
+     * Set the transport property: Network transport utilized by the RTSP and RTP exchange: TCP or HTTP. When using TCP,
+     * the RTP packets are interleaved on the TCP RTSP connection. When using HTTP, the RTSP messages are exchanged
+     * through long lived HTTP connections, and the RTP packages are interleaved in the HTTP connections alongside the
+     * RTSP messages.
      *
      * @param transport the transport value to set.
      * @return the RtspSource object itself.
@@ -63,7 +74,8 @@ public final class RtspSource extends SourceNodeBase {
     }
 
     /**
-     * Get the endpoint property: RTSP endpoint of the stream that is being connected to.
+     * Get the endpoint property: RTSP endpoint information for Video Analyzer to connect to. This contains the required
+     * information for Video Analyzer to connect to RTSP cameras and/or generic RTSP servers.
      *
      * @return the endpoint value.
      */

@@ -10,14 +10,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A TLS endpoint for pipeline topology external connections. */
+/**
+ * TLS endpoint describes an endpoint that the pipeline can connect to over TLS transport (data is encrypted in
+ * transit).
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.TlsEndpoint")
 @Fluent
 public final class TlsEndpoint extends EndpointBase {
     /*
-     * Trusted certificates when authenticating a TLS connection. Null
-     * designates that Azure Media Service's source of trust should be used.
+     * List of trusted certificate authorities when authenticating a TLS
+     * connection. A null list designates that Azure Video Analyzer's list of
+     * trusted authorities should be used.
      */
     @JsonProperty(value = "trustedCertificates")
     private CertificateSource trustedCertificates;
@@ -40,8 +44,8 @@ public final class TlsEndpoint extends EndpointBase {
     }
 
     /**
-     * Get the trustedCertificates property: Trusted certificates when authenticating a TLS connection. Null designates
-     * that Azure Media Service's source of trust should be used.
+     * Get the trustedCertificates property: List of trusted certificate authorities when authenticating a TLS
+     * connection. A null list designates that Azure Video Analyzer's list of trusted authorities should be used.
      *
      * @return the trustedCertificates value.
      */
@@ -50,8 +54,8 @@ public final class TlsEndpoint extends EndpointBase {
     }
 
     /**
-     * Set the trustedCertificates property: Trusted certificates when authenticating a TLS connection. Null designates
-     * that Azure Media Service's source of trust should be used.
+     * Set the trustedCertificates property: List of trusted certificate authorities when authenticating a TLS
+     * connection. A null list designates that Azure Video Analyzer's list of trusted authorities should be used.
      *
      * @param trustedCertificates the trustedCertificates value to set.
      * @return the TlsEndpoint object itself.

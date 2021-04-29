@@ -8,11 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the livePipelineSet request. */
+/** Creates a new live pipeline or updates an existing one. */
 @Fluent
 public final class LivePipelineSetRequest extends MethodRequest {
     /*
-     * Represents a unique live pipeline.
+     * Live Pipeline represents an unique instance of a pipeline topology which
+     * is used for real-time content ingestion and analysis.
      */
     @JsonProperty(value = "livePipeline", required = true)
     private LivePipeline livePipeline;
@@ -35,7 +36,8 @@ public final class LivePipelineSetRequest extends MethodRequest {
     }
 
     /**
-     * Get the livePipeline property: Represents a unique live pipeline.
+     * Get the livePipeline property: Live Pipeline represents an unique instance of a pipeline topology which is used
+     * for real-time content ingestion and analysis.
      *
      * @return the livePipeline value.
      */

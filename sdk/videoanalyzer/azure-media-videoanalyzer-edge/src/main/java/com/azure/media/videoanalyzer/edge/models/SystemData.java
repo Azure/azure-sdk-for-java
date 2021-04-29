@@ -8,23 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The system data for a resource. This is used by both pipeline topologies and live pipelines. */
+/** Read-only system metadata associated with a resource. */
 @Fluent
 public final class SystemData {
     /*
-     * The timestamp of resource creation (UTC).
+     * Date and time when this resource was first created. Value is represented
+     * in UTC according to the ISO8601 date format.
      */
     @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
-     * The timestamp of resource last modification (UTC).
+     * Date and time when this resource was last modified. Value is represented
+     * in UTC according to the ISO8601 date format.
      */
     @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
 
     /**
-     * Get the createdAt property: The timestamp of resource creation (UTC).
+     * Get the createdAt property: Date and time when this resource was first created. Value is represented in UTC
+     * according to the ISO8601 date format.
      *
      * @return the createdAt value.
      */
@@ -33,7 +36,8 @@ public final class SystemData {
     }
 
     /**
-     * Set the createdAt property: The timestamp of resource creation (UTC).
+     * Set the createdAt property: Date and time when this resource was first created. Value is represented in UTC
+     * according to the ISO8601 date format.
      *
      * @param createdAt the createdAt value to set.
      * @return the SystemData object itself.
@@ -44,7 +48,8 @@ public final class SystemData {
     }
 
     /**
-     * Get the lastModifiedAt property: The timestamp of resource last modification (UTC).
+     * Get the lastModifiedAt property: Date and time when this resource was last modified. Value is represented in UTC
+     * according to the ISO8601 date format.
      *
      * @return the lastModifiedAt value.
      */
@@ -53,7 +58,8 @@ public final class SystemData {
     }
 
     /**
-     * Set the lastModifiedAt property: The timestamp of resource last modification (UTC).
+     * Set the lastModifiedAt property: Date and time when this resource was last modified. Value is represented in UTC
+     * according to the ISO8601 date format.
      *
      * @param lastModifiedAt the lastModifiedAt value to set.
      * @return the SystemData object itself.

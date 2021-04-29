@@ -7,7 +7,7 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines a Spatial Analysis operation eventing configuration. */
+/** Defines the Azure Cognitive Services Spatial Analysis operation eventing configuration. */
 @Fluent
 public class SpatialAnalysisOperationEventBase {
     /*

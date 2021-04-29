@@ -11,13 +11,21 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A node that accepts raw video as input, and detects objects. */
+/**
+ * Object tracker processor allows for continuous tracking of one of more objects over a finite sequence of video
+ * frames. It must be used downstream of an object detector extension node, thus allowing for the extension to be
+ * configured to to perform inferences on sparse frames through the use of the 'maximumSamplesPerSecond' sampling
+ * property. The object tracker node will then track the detected objects over the frames in which the detector is not
+ * invoked resulting on a smother tracking of detected objects across the continuum of video frames. The tracker will
+ * stop tracking objects which are not subsequently detected by the upstream detector on the subsequent detections.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.ObjectTrackingProcessor")
 @Fluent
 public final class ObjectTrackingProcessor extends ProcessorNodeBase {
     /*
-     * Enumeration that controls the accuracy of the tracker.
+     * Object tracker accuracy: low, medium, high. Higher accuracy leads to
+     * higher CPU consumption in average.
      */
     @JsonProperty(value = "accuracy")
     private ObjectTrackingAccuracy accuracy;
@@ -36,7 +44,8 @@ public final class ObjectTrackingProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Get the accuracy property: Enumeration that controls the accuracy of the tracker.
+     * Get the accuracy property: Object tracker accuracy: low, medium, high. Higher accuracy leads to higher CPU
+     * consumption in average.
      *
      * @return the accuracy value.
      */
@@ -45,7 +54,8 @@ public final class ObjectTrackingProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Set the accuracy property: Enumeration that controls the accuracy of the tracker.
+     * Set the accuracy property: Object tracker accuracy: low, medium, high. Higher accuracy leads to higher CPU
+     * consumption in average.
      *
      * @param accuracy the accuracy value to set.
      * @return the ObjectTrackingProcessor object itself.

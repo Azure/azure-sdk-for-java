@@ -11,11 +11,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.ByteArrayOutputStream;
 
-/** Base Class for Method Requests. */
+/** Base class for direct method calls. */
 @Fluent
 public class MethodRequest {
     /*
-     * api version
+     * Video Analyzer API version.
      */
     @JsonProperty(value = "@apiVersion", required = true)
     private String apiVersion;
@@ -26,7 +26,7 @@ public class MethodRequest {
     }
 
     /**
-     * Get the apiVersion property: api version.
+     * Get the apiVersion property: Video Analyzer API version.
      *
      * @return the apiVersion value.
      */

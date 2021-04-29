@@ -7,7 +7,7 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines a Spatial Analysis Person Distance operation eventing configuration. */
+/** Defines a Spatial Analysis person distance operation eventing configuration. */
 @Fluent
 public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOperationEventBase {
     /*

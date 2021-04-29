@@ -12,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A processor that allows the pipeline topology to send video frames to an external inference container over a gRPC
- * connection. This can be done using shared memory (for high frame rates), or over the network. Inference results are
- * relayed to downstream nodes.
+ * GRPC extension processor allows pipeline extension plugins to be connected to the pipeline through over a gRPC
+ * channel. Extension plugins must act as an gRPC server. Please see https://aka.ms/ava-extension-grpc for details.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.GrpcExtension")
 @Fluent
 public final class GrpcExtension extends ExtensionProcessorBase {
     /*
-     * How media should be transferred to the inference engine.
+     * Specifies how media is transferred to the extension plugin.
      */
     @JsonProperty(value = "dataTransfer", required = true)
     private GrpcExtensionDataTransfer dataTransfer;
 
     /*
-     * Optional configuration to pass to the gRPC extension.
+     * An optional configuration string that is sent to the extension plugin.
+     * The configuration string is specific to each custom extension and it not
+     * understood neither validated by Video Analyzer. Please see
+     * https://aka.ms/ava-extension-grpc for details.
      */
     @JsonProperty(value = "extensionConfiguration")
     private String extensionConfiguration;
@@ -53,7 +55,7 @@ public final class GrpcExtension extends ExtensionProcessorBase {
     }
 
     /**
-     * Get the dataTransfer property: How media should be transferred to the inference engine.
+     * Get the dataTransfer property: Specifies how media is transferred to the extension plugin.
      *
      * @return the dataTransfer value.
      */
@@ -62,7 +64,9 @@ public final class GrpcExtension extends ExtensionProcessorBase {
     }
 
     /**
-     * Get the extensionConfiguration property: Optional configuration to pass to the gRPC extension.
+     * Get the extensionConfiguration property: An optional configuration string that is sent to the extension plugin.
+     * The configuration string is specific to each custom extension and it not understood neither validated by Video
+     * Analyzer. Please see https://aka.ms/ava-extension-grpc for details.
      *
      * @return the extensionConfiguration value.
      */
@@ -71,7 +75,9 @@ public final class GrpcExtension extends ExtensionProcessorBase {
     }
 
     /**
-     * Set the extensionConfiguration property: Optional configuration to pass to the gRPC extension.
+     * Set the extensionConfiguration property: An optional configuration string that is sent to the extension plugin.
+     * The configuration string is specific to each custom extension and it not understood neither validated by Video
+     * Analyzer. Please see https://aka.ms/ava-extension-grpc for details.
      *
      * @param extensionConfiguration the extensionConfiguration value to set.
      * @return the GrpcExtension object itself.

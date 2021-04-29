@@ -12,18 +12,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Enables a pipeline topology to publish messages that can be delivered via routes declared in the IoT Edge deployment
- * manifest.
+ * IoT Hub Message sink allows for pipeline messages to published into the IoT Edge Hub. Published messages can then be
+ * delivered to the cloud and other modules via routes declared in the IoT Edge deployment manifest.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.IotHubMessageSink")
 @Fluent
 public final class IotHubMessageSink extends SinkNodeBase {
     /*
-     * Name of the output path to which the pipeline topology will publish
-     * message. These messages can then be delivered to desired destinations by
-     * declaring routes referencing the output path in the IoT Edge deployment
-     * manifest.
+     * Name of the Iot Edge Hub output to which the messages will be published.
      */
     @JsonProperty(value = "hubOutputName", required = true)
     private String hubOutputName;
@@ -45,9 +42,7 @@ public final class IotHubMessageSink extends SinkNodeBase {
     }
 
     /**
-     * Get the hubOutputName property: Name of the output path to which the pipeline topology will publish message.
-     * These messages can then be delivered to desired destinations by declaring routes referencing the output path in
-     * the IoT Edge deployment manifest.
+     * Get the hubOutputName property: Name of the Iot Edge Hub output to which the messages will be published.
      *
      * @return the hubOutputName value.
      */

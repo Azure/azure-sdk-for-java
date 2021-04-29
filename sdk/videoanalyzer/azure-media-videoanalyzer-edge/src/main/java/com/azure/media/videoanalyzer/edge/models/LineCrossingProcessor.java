@@ -11,7 +11,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A node that accepts raw video as input, and detects when an object crosses a line. */
+/**
+ * Line crossing processor allows for the detection of tracked objects moving across one or more predefined lines. It
+ * must be downstream of an object tracker of downstream on an AI extension node that generates sequenceId for objects
+ * which are tracked across different frames of the video. Inference events are generated every time objects crosses
+ * from one side of the line to another.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.LineCrossingProcessor")
 @Fluent

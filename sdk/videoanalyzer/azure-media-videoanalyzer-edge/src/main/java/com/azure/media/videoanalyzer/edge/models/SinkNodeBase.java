@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Enables a pipeline topology to write media data to a destination outside of the Azure Video Analyzer IoT Edge module.
- */
+/** Base class for topology sink nodes. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -24,20 +22,19 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.IotHubMessageSink", value = IotHubMessageSink.class),
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.FileSink", value = FileSink.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.AssetSink", value = AssetSink.class),
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.VideoSink", value = VideoSink.class)
 })
 @Fluent
 public class SinkNodeBase {
     /*
-     * The name to be used for the topology sink.
+     * Node name. Must be unique within the topology.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * An array of the names of the other nodes in the pipeline topology, the
-     * outputs of which are used as input for this sink node.
+     * An array of upstream node references within the topology to be used as
+     * inputs for this node.
      */
     @JsonProperty(value = "inputs", required = true)
     private List<NodeInput> inputs;
@@ -57,7 +54,7 @@ public class SinkNodeBase {
     }
 
     /**
-     * Get the name property: The name to be used for the topology sink.
+     * Get the name property: Node name. Must be unique within the topology.
      *
      * @return the name value.
      */
@@ -66,8 +63,8 @@ public class SinkNodeBase {
     }
 
     /**
-     * Get the inputs property: An array of the names of the other nodes in the pipeline topology, the outputs of which
-     * are used as input for this sink node.
+     * Get the inputs property: An array of upstream node references within the topology to be used as inputs for this
+     * node.
      *
      * @return the inputs value.
      */

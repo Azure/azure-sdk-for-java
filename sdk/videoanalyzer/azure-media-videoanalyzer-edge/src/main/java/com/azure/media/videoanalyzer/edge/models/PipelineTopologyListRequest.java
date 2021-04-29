@@ -7,7 +7,7 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the pipelineTopologyList request. */
+/** List all existing pipeline topologies. */
 @Immutable
 public final class PipelineTopologyListRequest extends MethodRequest {
     /*

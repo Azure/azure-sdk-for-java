@@ -7,25 +7,31 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a sample. */
+/** Defines how often media is submitted to the extension plugin. */
 @Fluent
 public final class SamplingOptions {
     /*
-     * If true, limits the samples submitted to the extension to only samples
-     * which have associated inference(s)
+     * When set to 'true', prevents frames without upstream inference data to
+     * be sent to the extension plugin. This is useful to limit the frames sent
+     * to the extension to pre-analyzed frames only. For example, when used
+     * downstream from a motion detector, this can enable for only frames in
+     * which motion has been detected to be further analyzed.
      */
     @JsonProperty(value = "skipSamplesWithoutAnnotation")
     private String skipSamplesWithoutAnnotation;
 
     /*
-     * Maximum rate of samples submitted to the extension
+     * Maximum rate of samples submitted to the extension. This prevents an
+     * extension plugin to be overloaded with data.
      */
     @JsonProperty(value = "maximumSamplesPerSecond")
     private String maximumSamplesPerSecond;
 
     /**
-     * Get the skipSamplesWithoutAnnotation property: If true, limits the samples submitted to the extension to only
-     * samples which have associated inference(s).
+     * Get the skipSamplesWithoutAnnotation property: When set to 'true', prevents frames without upstream inference
+     * data to be sent to the extension plugin. This is useful to limit the frames sent to the extension to pre-analyzed
+     * frames only. For example, when used downstream from a motion detector, this can enable for only frames in which
+     * motion has been detected to be further analyzed.
      *
      * @return the skipSamplesWithoutAnnotation value.
      */
@@ -34,8 +40,10 @@ public final class SamplingOptions {
     }
 
     /**
-     * Set the skipSamplesWithoutAnnotation property: If true, limits the samples submitted to the extension to only
-     * samples which have associated inference(s).
+     * Set the skipSamplesWithoutAnnotation property: When set to 'true', prevents frames without upstream inference
+     * data to be sent to the extension plugin. This is useful to limit the frames sent to the extension to pre-analyzed
+     * frames only. For example, when used downstream from a motion detector, this can enable for only frames in which
+     * motion has been detected to be further analyzed.
      *
      * @param skipSamplesWithoutAnnotation the skipSamplesWithoutAnnotation value to set.
      * @return the SamplingOptions object itself.
@@ -46,7 +54,8 @@ public final class SamplingOptions {
     }
 
     /**
-     * Get the maximumSamplesPerSecond property: Maximum rate of samples submitted to the extension.
+     * Get the maximumSamplesPerSecond property: Maximum rate of samples submitted to the extension. This prevents an
+     * extension plugin to be overloaded with data.
      *
      * @return the maximumSamplesPerSecond value.
      */
@@ -55,7 +64,8 @@ public final class SamplingOptions {
     }
 
     /**
-     * Set the maximumSamplesPerSecond property: Maximum rate of samples submitted to the extension.
+     * Set the maximumSamplesPerSecond property: Maximum rate of samples submitted to the extension. This prevents an
+     * extension plugin to be overloaded with data.
      *
      * @param maximumSamplesPerSecond the maximumSamplesPerSecond value to set.
      * @return the SamplingOptions object itself.

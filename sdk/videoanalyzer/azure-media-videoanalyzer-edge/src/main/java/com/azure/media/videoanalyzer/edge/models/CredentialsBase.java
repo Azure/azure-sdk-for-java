@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Credentials to present during authentication. */
+/** Base class for credential objects. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(
             name = "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
             value = UsernamePasswordCredentials.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.HttpHeaderCredentials", value = HttpHeaderCredentials.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.SymmetricKeyCredentials", value = SymmetricKeyCredentials.class)
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.HttpHeaderCredentials", value = HttpHeaderCredentials.class)
 })
 @Immutable
 public class CredentialsBase {}

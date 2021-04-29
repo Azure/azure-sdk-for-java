@@ -10,20 +10,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Username/password credential pair. */
+/** Username and password credentials. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.UsernamePasswordCredentials")
 @Fluent
 public final class UsernamePasswordCredentials extends CredentialsBase {
     /*
-     * Username for a username/password pair.
+     * Username to be presented as part of the credentials.
      */
     @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
-     * Password for a username/password pair. Please use a parameter so that
-     * the actual value is not returned on PUT or GET requests.
+     * Password to be presented as part of the credentials. It is recommended
+     * that this value is parameterized as a secret string in order to prevent
+     * this value to be returned as part of the resource on API requests.
      */
     @JsonProperty(value = "password", required = true)
     private String password;
@@ -43,7 +44,7 @@ public final class UsernamePasswordCredentials extends CredentialsBase {
     }
 
     /**
-     * Get the username property: Username for a username/password pair.
+     * Get the username property: Username to be presented as part of the credentials.
      *
      * @return the username value.
      */
@@ -52,8 +53,9 @@ public final class UsernamePasswordCredentials extends CredentialsBase {
     }
 
     /**
-     * Get the password property: Password for a username/password pair. Please use a parameter so that the actual value
-     * is not returned on PUT or GET requests.
+     * Get the password property: Password to be presented as part of the credentials. It is recommended that this value
+     * is parameterized as a secret string in order to prevent this value to be returned as part of the resource on API
+     * requests.
      *
      * @return the password value.
      */

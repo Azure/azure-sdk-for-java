@@ -11,7 +11,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Defines a Spatial Analysis Person Distance operation to be used in the Cognitive Services Vision processor. */
+/**
+ * Defines a Spatial Analysis person distance operation. This requires the Azure Cognitive Services Spatial analysis
+ * module to be deployed alongside the Video Analyzer module, please see https://aka.ms/ava-spatial-analysis for more
+ * information.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.SpatialAnalysisPersonDistanceOperation")
 @Fluent

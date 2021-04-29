@@ -45,7 +45,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-media-video-analyzer-edge</module>
+        <module>azure-media-videoanalyzer-edge</module>
       </modules>
     </profile>
   </profiles>

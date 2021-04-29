@@ -8,9 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the pipelineTopologyGet request. */
+/** Retrieves an existing pipeline topology. */
 @Immutable
-public final class PipelineTopologyGetRequest extends ItemNonSetRequestBase {
+public final class PipelineTopologyGetRequest extends MethodRequestEmptyBodyBase {
     /*
      * method name
      */

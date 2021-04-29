@@ -8,37 +8,42 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a live pipeline. */
+/** Live pipeline properties. */
 @Fluent
 public final class LivePipelineProperties {
     /*
-     * An optional description for the live pipeline.
+     * An optional description of the live pipeline.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The name of the pipeline topology that this live pipeline will run. A
-     * pipeline topology with this name should already have been set in the
-     * Edge module.
+     * The reference to an existing pipeline topology defined for real-time
+     * content processing. When activated, this live pipeline will process
+     * content according to the pipeline topology definition.
      */
     @JsonProperty(value = "topologyName")
     private String topologyName;
 
     /*
-     * List of one or more live pipeline parameters.
+     * List of the instance level parameter values for the user-defined
+     * topology parameters. A pipeline can only define or override parameters
+     * values for parameters which have been declared in the referenced
+     * topology. Topology parameters without a default value must be defined.
+     * Topology parameters with a default value can be optionally be
+     * overridden.
      */
     @JsonProperty(value = "parameters")
     private List<ParameterDefinition> parameters;
 
     /*
-     * Allowed states for a live pipeline.
+     * Current pipeline state (read-only).
      */
     @JsonProperty(value = "state")
     private LivePipelineState state;
 
     /**
-     * Get the description property: An optional description for the live pipeline.
+     * Get the description property: An optional description of the live pipeline.
      *
      * @return the description value.
      */
@@ -47,7 +52,7 @@ public final class LivePipelineProperties {
     }
 
     /**
-     * Set the description property: An optional description for the live pipeline.
+     * Set the description property: An optional description of the live pipeline.
      *
      * @param description the description value to set.
      * @return the LivePipelineProperties object itself.
@@ -58,8 +63,9 @@ public final class LivePipelineProperties {
     }
 
     /**
-     * Get the topologyName property: The name of the pipeline topology that this live pipeline will run. A pipeline
-     * topology with this name should already have been set in the Edge module.
+     * Get the topologyName property: The reference to an existing pipeline topology defined for real-time content
+     * processing. When activated, this live pipeline will process content according to the pipeline topology
+     * definition.
      *
      * @return the topologyName value.
      */
@@ -68,8 +74,9 @@ public final class LivePipelineProperties {
     }
 
     /**
-     * Set the topologyName property: The name of the pipeline topology that this live pipeline will run. A pipeline
-     * topology with this name should already have been set in the Edge module.
+     * Set the topologyName property: The reference to an existing pipeline topology defined for real-time content
+     * processing. When activated, this live pipeline will process content according to the pipeline topology
+     * definition.
      *
      * @param topologyName the topologyName value to set.
      * @return the LivePipelineProperties object itself.
@@ -80,7 +87,10 @@ public final class LivePipelineProperties {
     }
 
     /**
-     * Get the parameters property: List of one or more live pipeline parameters.
+     * Get the parameters property: List of the instance level parameter values for the user-defined topology
+     * parameters. A pipeline can only define or override parameters values for parameters which have been declared in
+     * the referenced topology. Topology parameters without a default value must be defined. Topology parameters with a
+     * default value can be optionally be overridden.
      *
      * @return the parameters value.
      */
@@ -89,7 +99,10 @@ public final class LivePipelineProperties {
     }
 
     /**
-     * Set the parameters property: List of one or more live pipeline parameters.
+     * Set the parameters property: List of the instance level parameter values for the user-defined topology
+     * parameters. A pipeline can only define or override parameters values for parameters which have been declared in
+     * the referenced topology. Topology parameters without a default value must be defined. Topology parameters with a
+     * default value can be optionally be overridden.
      *
      * @param parameters the parameters value to set.
      * @return the LivePipelineProperties object itself.
@@ -100,7 +113,7 @@ public final class LivePipelineProperties {
     }
 
     /**
-     * Get the state property: Allowed states for a live pipeline.
+     * Get the state property: Current pipeline state (read-only).
      *
      * @return the state value.
      */
@@ -109,7 +122,7 @@ public final class LivePipelineProperties {
     }
 
     /**
-     * Set the state property: Allowed states for a live pipeline.
+     * Set the state property: Current pipeline state (read-only).
      *
      * @param state the state value to set.
      * @return the LivePipelineProperties object itself.

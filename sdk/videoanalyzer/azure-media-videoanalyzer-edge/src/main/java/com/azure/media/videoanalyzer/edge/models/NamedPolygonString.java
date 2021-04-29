@@ -10,13 +10,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a closed polygon in the frame. */
+/** Describes a closed polygon configuration. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.NamedPolygonString")
 @Fluent
 public final class NamedPolygonString extends NamedPolygonBase {
     /*
-     * Sets the properties of the polygon.
+     * Point coordinates for the polygon. Example: '[[0.3, 0.2],[0.9,
+     * 0.8],[0.7, 0.6]]'. Each point is expressed as [LEFT, TOP] coordinate
+     * ratios ranging from 0.0 to 1.0, where [0,0] is the upper-left frame
+     * corner and [1, 1] is the bottom-right frame corner.
      */
     @JsonProperty(value = "polygon", required = true)
     private String polygon;
@@ -36,7 +39,9 @@ public final class NamedPolygonString extends NamedPolygonBase {
     }
 
     /**
-     * Get the polygon property: Sets the properties of the polygon.
+     * Get the polygon property: Point coordinates for the polygon. Example: '[[0.3, 0.2],[0.9, 0.8],[0.7, 0.6]]'. Each
+     * point is expressed as [LEFT, TOP] coordinate ratios ranging from 0.0 to 1.0, where [0,0] is the upper-left frame
+     * corner and [1, 1] is the bottom-right frame corner.
      *
      * @return the polygon value.
      */

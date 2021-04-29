@@ -7,24 +7,26 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Options for controlling the authentication of TLS endpoints. */
+/** Options for controlling the validation of TLS endpoints. */
 @Fluent
 public final class TlsValidationOptions {
     /*
-     * Boolean value ignoring the host name (common name) during validation.
+     * When set to 'true' causes the certificate subject name validation to be
+     * skipped. Default is 'false'.
      */
     @JsonProperty(value = "ignoreHostname")
     private String ignoreHostname;
 
     /*
-     * Boolean value ignoring the integrity of the certificate chain at the
-     * current time.
+     * When set to 'true' causes the certificate chain trust validation to be
+     * skipped. Default is 'false'.
      */
     @JsonProperty(value = "ignoreSignature")
     private String ignoreSignature;
 
     /**
-     * Get the ignoreHostname property: Boolean value ignoring the host name (common name) during validation.
+     * Get the ignoreHostname property: When set to 'true' causes the certificate subject name validation to be skipped.
+     * Default is 'false'.
      *
      * @return the ignoreHostname value.
      */
@@ -33,7 +35,8 @@ public final class TlsValidationOptions {
     }
 
     /**
-     * Set the ignoreHostname property: Boolean value ignoring the host name (common name) during validation.
+     * Set the ignoreHostname property: When set to 'true' causes the certificate subject name validation to be skipped.
+     * Default is 'false'.
      *
      * @param ignoreHostname the ignoreHostname value to set.
      * @return the TlsValidationOptions object itself.
@@ -44,8 +47,8 @@ public final class TlsValidationOptions {
     }
 
     /**
-     * Get the ignoreSignature property: Boolean value ignoring the integrity of the certificate chain at the current
-     * time.
+     * Get the ignoreSignature property: When set to 'true' causes the certificate chain trust validation to be skipped.
+     * Default is 'false'.
      *
      * @return the ignoreSignature value.
      */
@@ -54,8 +57,8 @@ public final class TlsValidationOptions {
     }
 
     /**
-     * Set the ignoreSignature property: Boolean value ignoring the integrity of the certificate chain at the current
-     * time.
+     * Set the ignoreSignature property: When set to 'true' causes the certificate chain trust validation to be skipped.
+     * Default is 'false'.
      *
      * @param ignoreSignature the ignoreSignature value to set.
      * @return the TlsValidationOptions object itself.

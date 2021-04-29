@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** An endpoint that the pipeline topology can connect to, with no encryption in transit. */
+/**
+ * Unsecured endpoint describes an endpoint that the pipeline can connect to over clear transport (no encryption in
+ * transit).
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.UnsecuredEndpoint")
 @Immutable

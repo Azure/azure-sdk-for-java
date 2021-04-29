@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes the named line. */
+/** Base class for named lines. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class NamedLineBase {
     /*
-     * The name of the line.
+     * Line name. Must be unique within the node.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -38,7 +38,7 @@ public class NamedLineBase {
     }
 
     /**
-     * Get the name property: The name of the line.
+     * Get the name property: Line name. Must be unique within the node.
      *
      * @return the name value.
      */

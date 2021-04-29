@@ -9,19 +9,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Encoding settings for Jpeg images. */
+/** JPEG image encoding. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.ImageFormatJpeg")
 @Fluent
 public final class ImageFormatJpeg extends ImageFormatProperties {
     /*
-     * The image quality. Value must be between 0 to 100 (best quality).
+     * Image quality value between 0 to 100 (best quality).
      */
     @JsonProperty(value = "quality")
     private String quality;
 
     /**
-     * Get the quality property: The image quality. Value must be between 0 to 100 (best quality).
+     * Get the quality property: Image quality value between 0 to 100 (best quality).
      *
      * @return the quality value.
      */
@@ -30,7 +30,7 @@ public final class ImageFormatJpeg extends ImageFormatProperties {
     }
 
     /**
-     * Set the quality property: The image quality. Value must be between 0 to 100 (best quality).
+     * Set the quality property: Image quality value between 0 to 100 (best quality).
      *
      * @param quality the quality value to set.
      * @return the ImageFormatJpeg object itself.

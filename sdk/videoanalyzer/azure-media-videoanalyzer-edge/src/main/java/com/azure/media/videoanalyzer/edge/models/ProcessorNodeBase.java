@@ -12,10 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * A node that represents the desired processing of media in a topology. Takes media and/or events as inputs, and emits
- * media and/or event as output.
- */
+/** Base class for topology processor nodes. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -39,14 +36,14 @@ import java.util.List;
 @Fluent
 public class ProcessorNodeBase {
     /*
-     * The name for this processor node.
+     * Node name. Must be unique within the topology.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * An array of the names of the other nodes in the topology, the outputs of
-     * which are used as input for this processor node.
+     * An array of upstream node references within the topology to be used as
+     * inputs for this node.
      */
     @JsonProperty(value = "inputs", required = true)
     private List<NodeInput> inputs;
@@ -66,7 +63,7 @@ public class ProcessorNodeBase {
     }
 
     /**
-     * Get the name property: The name for this processor node.
+     * Get the name property: Node name. Must be unique within the topology.
      *
      * @return the name value.
      */
@@ -75,8 +72,8 @@ public class ProcessorNodeBase {
     }
 
     /**
-     * Get the inputs property: An array of the names of the other nodes in the topology, the outputs of which are used
-     * as input for this processor node.
+     * Get the inputs property: An array of upstream node references within the topology to be used as inputs for this
+     * node.
      *
      * @return the inputs value.
      */

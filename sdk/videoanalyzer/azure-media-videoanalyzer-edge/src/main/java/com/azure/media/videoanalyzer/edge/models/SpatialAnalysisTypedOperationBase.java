@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines a typed Spatial Analysis operation to be used in the Cognitive Services Vision processor. */
+/** Base class for Azure Cognitive Services Spatial Analysis typed operations. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -34,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationBase {
     /*
-     * Enables debugging for the Spatial Analysis operation.
+     * If set to 'true', enables debugging mode for this operation.
      */
     @JsonProperty(value = "debug")
     private String debug;
@@ -52,13 +52,13 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
     private String detectorNodeConfiguration;
 
     /*
-     * Enables face mask detection.
+     * If set to 'true', enables face mask detection for this operation.
      */
     @JsonProperty(value = "enableFaceMaskClassifier")
     private String enableFaceMaskClassifier;
 
     /**
-     * Get the debug property: Enables debugging for the Spatial Analysis operation.
+     * Get the debug property: If set to 'true', enables debugging mode for this operation.
      *
      * @return the debug value.
      */
@@ -67,7 +67,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
     }
 
     /**
-     * Set the debug property: Enables debugging for the Spatial Analysis operation.
+     * Set the debug property: If set to 'true', enables debugging mode for this operation.
      *
      * @param debug the debug value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
@@ -118,7 +118,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
     }
 
     /**
-     * Get the enableFaceMaskClassifier property: Enables face mask detection.
+     * Get the enableFaceMaskClassifier property: If set to 'true', enables face mask detection for this operation.
      *
      * @return the enableFaceMaskClassifier value.
      */
@@ -127,7 +127,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
     }
 
     /**
-     * Set the enableFaceMaskClassifier property: Enables face mask detection.
+     * Set the enableFaceMaskClassifier property: If set to 'true', enables face mask detection for this operation.
      *
      * @param enableFaceMaskClassifier the enableFaceMaskClassifier value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.

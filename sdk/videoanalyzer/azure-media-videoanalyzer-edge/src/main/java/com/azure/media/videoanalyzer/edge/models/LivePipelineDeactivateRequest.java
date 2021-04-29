@@ -8,9 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the livePipelineDeactivate request. */
+/** Deactivates an existing live pipeline. */
 @Immutable
-public final class LivePipelineDeactivateRequest extends ItemNonSetRequestBase {
+public final class LivePipelineDeactivateRequest extends MethodRequestEmptyBodyBase {
     /*
      * method name
      */

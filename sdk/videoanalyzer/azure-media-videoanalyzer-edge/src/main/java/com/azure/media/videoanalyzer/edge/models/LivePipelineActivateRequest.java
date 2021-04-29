@@ -8,9 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the livePipelineActivate request. */
+/** Activates an existing live pipeline. */
 @Immutable
-public final class LivePipelineActivateRequest extends ItemNonSetRequestBase {
+public final class LivePipelineActivateRequest extends MethodRequestEmptyBodyBase {
     /*
      * method name
      */

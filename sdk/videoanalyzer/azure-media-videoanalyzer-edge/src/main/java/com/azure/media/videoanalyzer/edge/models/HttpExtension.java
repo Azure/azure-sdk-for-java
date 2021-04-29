@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A processor that allows the pipeline topology to send video frames (mostly at low frame rates e.g. &lt;5 fps) to an
- * external inference container over an HTTP-based RESTful API. Inference results are relayed to downstream nodes.
+ * HTTP extension processor allows pipeline extension plugins to be connected to the pipeline through over the HTTP
+ * protocol. Extension plugins must act as an HTTP server. Please see https://aka.ms/ava-extension-http for details.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.HttpExtension")

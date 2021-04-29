@@ -12,21 +12,21 @@ import java.util.List;
 @Fluent
 public final class PipelineTopologyCollection {
     /*
-     * A collection of pipeline topologies.
+     * List of pipeline topologies.
      */
     @JsonProperty(value = "value")
     private List<PipelineTopology> value;
 
     /*
-     * A continuation token to use in subsequent calls to enumerate through the
-     * pipeline topology collection. This is used when the collection contains
-     * too many results to return in one response.
+     * A continuation token to be used in subsequent calls when enumerating
+     * through the collection. This is returned when the collection results
+     * won't fit in a single response.
      */
     @JsonProperty(value = "@continuationToken")
     private String continuationToken;
 
     /**
-     * Get the value property: A collection of pipeline topologies.
+     * Get the value property: List of pipeline topologies.
      *
      * @return the value value.
      */
@@ -35,7 +35,7 @@ public final class PipelineTopologyCollection {
     }
 
     /**
-     * Set the value property: A collection of pipeline topologies.
+     * Set the value property: List of pipeline topologies.
      *
      * @param value the value value to set.
      * @return the PipelineTopologyCollection object itself.
@@ -46,9 +46,8 @@ public final class PipelineTopologyCollection {
     }
 
     /**
-     * Get the continuationToken property: A continuation token to use in subsequent calls to enumerate through the
-     * pipeline topology collection. This is used when the collection contains too many results to return in one
-     * response.
+     * Get the continuationToken property: A continuation token to be used in subsequent calls when enumerating through
+     * the collection. This is returned when the collection results won't fit in a single response.
      *
      * @return the continuationToken value.
      */
@@ -57,9 +56,8 @@ public final class PipelineTopologyCollection {
     }
 
     /**
-     * Set the continuationToken property: A continuation token to use in subsequent calls to enumerate through the
-     * pipeline topology collection. This is used when the collection contains too many results to return in one
-     * response.
+     * Set the continuationToken property: A continuation token to be used in subsequent calls when enumerating through
+     * the collection. This is returned when the collection results won't fit in a single response.
      *
      * @param continuationToken the continuationToken value to set.
      * @return the PipelineTopologyCollection object itself.

@@ -8,25 +8,25 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of streams. */
+/** A collection of live pipelines. */
 @Fluent
 public final class LivePipelineCollection {
     /*
-     * A collection of live pipelines.
+     * List of live pipelines.
      */
     @JsonProperty(value = "value")
     private List<LivePipeline> value;
 
     /*
-     * A continuation token to use in subsequent calls to enumerate through the
-     * live pipeline collection. This is used when the collection contains too
-     * many results to return in one response.
+     * A continuation token to be used in subsequent calls when enumerating
+     * through the collection. This is returned when the collection results
+     * won't fit in a single response.
      */
     @JsonProperty(value = "@continuationToken")
     private String continuationToken;
 
     /**
-     * Get the value property: A collection of live pipelines.
+     * Get the value property: List of live pipelines.
      *
      * @return the value value.
      */
@@ -35,7 +35,7 @@ public final class LivePipelineCollection {
     }
 
     /**
-     * Set the value property: A collection of live pipelines.
+     * Set the value property: List of live pipelines.
      *
      * @param value the value value to set.
      * @return the LivePipelineCollection object itself.
@@ -46,8 +46,8 @@ public final class LivePipelineCollection {
     }
 
     /**
-     * Get the continuationToken property: A continuation token to use in subsequent calls to enumerate through the live
-     * pipeline collection. This is used when the collection contains too many results to return in one response.
+     * Get the continuationToken property: A continuation token to be used in subsequent calls when enumerating through
+     * the collection. This is returned when the collection results won't fit in a single response.
      *
      * @return the continuationToken value.
      */
@@ -56,8 +56,8 @@ public final class LivePipelineCollection {
     }
 
     /**
-     * Set the continuationToken property: A continuation token to use in subsequent calls to enumerate through the live
-     * pipeline collection. This is used when the collection contains too many results to return in one response.
+     * Set the continuationToken property: A continuation token to be used in subsequent calls when enumerating through
+     * the collection. This is returned when the collection results won't fit in a single response.
      *
      * @param continuationToken the continuationToken value to set.
      * @return the LivePipelineCollection object itself.

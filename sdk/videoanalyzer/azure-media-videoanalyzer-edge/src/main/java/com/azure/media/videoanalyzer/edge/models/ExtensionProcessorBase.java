@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Processor that allows for extensions outside of the Azure Video Analyzer Edge module to be integrated into the
- * pipeline topology. It is the base class for various different kinds of extension processor types.
+ * Base class for pipeline extension processors. Pipeline extensions allow for custom media analysis and processing to
+ * be plugged into the Video Analyzer pipeline.
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -29,21 +29,21 @@ import java.util.List;
 @Fluent
 public class ExtensionProcessorBase extends ProcessorNodeBase {
     /*
-     * Endpoint to which this processor should connect.
+     * Endpoint details of the pipeline extension plugin.
      */
     @JsonProperty(value = "endpoint", required = true)
     private EndpointBase endpoint;
 
     /*
-     * Describes the parameters of the image that is sent as input to the
-     * endpoint.
+     * Image transformations and formatting options to be applied to the video
+     * frame(s) prior submission to the pipeline extension plugin.
      */
     @JsonProperty(value = "image", required = true)
     private ImageProperties image;
 
     /*
-     * Describes the sampling options to be applied when forwarding samples to
-     * the extension.
+     * Media sampling parameters that define how often media is submitted to
+     * the extension plugin.
      */
     @JsonProperty(value = "samplingOptions")
     private SamplingOptions samplingOptions;
@@ -68,7 +68,7 @@ public class ExtensionProcessorBase extends ProcessorNodeBase {
     }
 
     /**
-     * Get the endpoint property: Endpoint to which this processor should connect.
+     * Get the endpoint property: Endpoint details of the pipeline extension plugin.
      *
      * @return the endpoint value.
      */
@@ -77,7 +77,8 @@ public class ExtensionProcessorBase extends ProcessorNodeBase {
     }
 
     /**
-     * Get the image property: Describes the parameters of the image that is sent as input to the endpoint.
+     * Get the image property: Image transformations and formatting options to be applied to the video frame(s) prior
+     * submission to the pipeline extension plugin.
      *
      * @return the image value.
      */
@@ -86,8 +87,8 @@ public class ExtensionProcessorBase extends ProcessorNodeBase {
     }
 
     /**
-     * Get the samplingOptions property: Describes the sampling options to be applied when forwarding samples to the
-     * extension.
+     * Get the samplingOptions property: Media sampling parameters that define how often media is submitted to the
+     * extension plugin.
      *
      * @return the samplingOptions value.
      */
@@ -96,8 +97,8 @@ public class ExtensionProcessorBase extends ProcessorNodeBase {
     }
 
     /**
-     * Set the samplingOptions property: Describes the sampling options to be applied when forwarding samples to the
-     * extension.
+     * Set the samplingOptions property: Media sampling parameters that define how often media is submitted to the
+     * extension plugin.
      *
      * @param samplingOptions the samplingOptions value to set.
      * @return the ExtensionProcessorBase object itself.

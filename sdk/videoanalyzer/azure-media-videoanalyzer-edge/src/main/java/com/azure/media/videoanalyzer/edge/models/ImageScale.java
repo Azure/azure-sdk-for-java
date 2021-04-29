@@ -7,31 +7,29 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The scaling mode for the image. */
+/** Image scaling mode. */
 @Fluent
 public final class ImageScale {
     /*
-     * Describes the modes for scaling an input video frame into an image,
-     * before it is sent to an inference engine.
+     * Describes the image scaling mode to be applied. Default mode is 'pad'.
      */
     @JsonProperty(value = "mode")
     private ImageScaleMode mode;
 
     /*
-     * The desired output width of the image.
+     * The desired output image width.
      */
     @JsonProperty(value = "width")
     private String width;
 
     /*
-     * The desired output height of the image.
+     * The desired output image height.
      */
     @JsonProperty(value = "height")
     private String height;
 
     /**
-     * Get the mode property: Describes the modes for scaling an input video frame into an image, before it is sent to
-     * an inference engine.
+     * Get the mode property: Describes the image scaling mode to be applied. Default mode is 'pad'.
      *
      * @return the mode value.
      */
@@ -40,8 +38,7 @@ public final class ImageScale {
     }
 
     /**
-     * Set the mode property: Describes the modes for scaling an input video frame into an image, before it is sent to
-     * an inference engine.
+     * Set the mode property: Describes the image scaling mode to be applied. Default mode is 'pad'.
      *
      * @param mode the mode value to set.
      * @return the ImageScale object itself.
@@ -52,7 +49,7 @@ public final class ImageScale {
     }
 
     /**
-     * Get the width property: The desired output width of the image.
+     * Get the width property: The desired output image width.
      *
      * @return the width value.
      */
@@ -61,7 +58,7 @@ public final class ImageScale {
     }
 
     /**
-     * Set the width property: The desired output width of the image.
+     * Set the width property: The desired output image width.
      *
      * @param width the width value to set.
      * @return the ImageScale object itself.
@@ -72,7 +69,7 @@ public final class ImageScale {
     }
 
     /**
-     * Get the height property: The desired output height of the image.
+     * Get the height property: The desired output image height.
      *
      * @return the height value.
      */
@@ -81,7 +78,7 @@ public final class ImageScale {
     }
 
     /**
-     * Set the height property: The desired output height of the image.
+     * Set the height property: The desired output image height.
      *
      * @param height the height value to set.
      * @return the ImageScale object itself.

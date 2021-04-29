@@ -8,23 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a unique live pipeline. */
+/**
+ * Live Pipeline represents an unique instance of a pipeline topology which is used for real-time content ingestion and
+ * analysis.
+ */
 @Fluent
 public class LivePipeline {
     /*
-     * The identifier for the live pipeline.
+     * Live pipeline unique identifier.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The system data for a resource.
+     * Read-only system metadata associated with this object.
      */
     @JsonProperty(value = "systemData")
     private SystemData systemData;
 
     /*
-     * The properties of the live pipeline.
+     * Live pipeline properties.
      */
     @JsonProperty(value = "properties")
     private LivePipelineProperties properties;
@@ -40,7 +43,7 @@ public class LivePipeline {
     }
 
     /**
-     * Get the name property: The identifier for the live pipeline.
+     * Get the name property: Live pipeline unique identifier.
      *
      * @return the name value.
      */
@@ -49,7 +52,7 @@ public class LivePipeline {
     }
 
     /**
-     * Get the systemData property: The system data for a resource.
+     * Get the systemData property: Read-only system metadata associated with this object.
      *
      * @return the systemData value.
      */
@@ -58,7 +61,7 @@ public class LivePipeline {
     }
 
     /**
-     * Set the systemData property: The system data for a resource.
+     * Set the systemData property: Read-only system metadata associated with this object.
      *
      * @param systemData the systemData value to set.
      * @return the LivePipeline object itself.
@@ -69,7 +72,7 @@ public class LivePipeline {
     }
 
     /**
-     * Get the properties property: The properties of the live pipeline.
+     * Get the properties property: Live pipeline properties.
      *
      * @return the properties value.
      */
@@ -78,7 +81,7 @@ public class LivePipeline {
     }
 
     /**
-     * Set the properties property: The properties of the live pipeline.
+     * Set the properties property: Live pipeline properties.
      *
      * @param properties the properties value to set.
      * @return the LivePipeline object itself.

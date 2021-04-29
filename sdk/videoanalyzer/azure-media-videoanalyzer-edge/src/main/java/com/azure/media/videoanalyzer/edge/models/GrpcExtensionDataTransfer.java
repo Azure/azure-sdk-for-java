@@ -8,18 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes how media should be transferred to the inference engine. */
+/** Describes how media is transferred to the extension plugin. */
 @Fluent
 public final class GrpcExtensionDataTransfer {
     /*
-     * The size of the buffer for all in-flight frames in mebibytes if mode is
-     * SharedMemory. Should not be specified otherwise.
+     * The share memory buffer for sample transfers, in mebibytes. It can only
+     * be used with the 'SharedMemory' transfer mode.
      */
     @JsonProperty(value = "sharedMemorySizeMiB")
     private String sharedMemorySizeMiB;
 
     /*
-     * How frame data should be transmitted to the inference engine.
+     * Data transfer mode: embedded or sharedMemory.
      */
     @JsonProperty(value = "mode", required = true)
     private GrpcExtensionDataTransferMode mode;
@@ -36,8 +36,8 @@ public final class GrpcExtensionDataTransfer {
     }
 
     /**
-     * Get the sharedMemorySizeMiB property: The size of the buffer for all in-flight frames in mebibytes if mode is
-     * SharedMemory. Should not be specified otherwise.
+     * Get the sharedMemorySizeMiB property: The share memory buffer for sample transfers, in mebibytes. It can only be
+     * used with the 'SharedMemory' transfer mode.
      *
      * @return the sharedMemorySizeMiB value.
      */
@@ -46,8 +46,8 @@ public final class GrpcExtensionDataTransfer {
     }
 
     /**
-     * Set the sharedMemorySizeMiB property: The size of the buffer for all in-flight frames in mebibytes if mode is
-     * SharedMemory. Should not be specified otherwise.
+     * Set the sharedMemorySizeMiB property: The share memory buffer for sample transfers, in mebibytes. It can only be
+     * used with the 'SharedMemory' transfer mode.
      *
      * @param sharedMemorySizeMiB the sharedMemorySizeMiB value to set.
      * @return the GrpcExtensionDataTransfer object itself.
@@ -58,7 +58,7 @@ public final class GrpcExtensionDataTransfer {
     }
 
     /**
-     * Get the mode property: How frame data should be transmitted to the inference engine.
+     * Get the mode property: Data transfer mode: embedded or sharedMemory.
      *
      * @return the mode value.
      */

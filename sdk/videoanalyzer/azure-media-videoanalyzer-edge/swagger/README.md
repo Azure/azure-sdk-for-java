@@ -13,9 +13,7 @@ license-header: MICROSOFT_MIT_SMALL
 output-folder: ../
 source-code-folder-path: ./src/generated
 java: true
-input-file:
-    - C:\Azure-Media-LiveVideoAnalytics\src\Edge\Client\AzureVideoAnalyzer.Edge\preview\1.0\AzureVideoAnalyzer.json
-    - C:\Azure-Media-LiveVideoAnalytics\src\Edge\Client\AzureVideoAnalyzer.Edge\preview\1.0\AzureVideoAnalyzerSdkDefinitions.json
+require: https://github.com/Azure/azure-rest-api-specs/blob/55b3e2d075398ec62f9322829494ff6a4323e299/specification/videoanalyzer/data-plane/readme.md
 add-credentials: false
 namespace: com.azure.media.videoanalyzer.edge
 sync-methods: none

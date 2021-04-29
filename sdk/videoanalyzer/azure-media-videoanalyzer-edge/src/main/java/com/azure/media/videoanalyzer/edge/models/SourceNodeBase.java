@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A source node in a pipeline topology. */
+/** Base class for topology source nodes. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SourceNodeBase {
     /*
-     * The name to be used for this source node.
+     * Node name. Must be unique within the topology.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -41,7 +41,7 @@ public class SourceNodeBase {
     }
 
     /**
-     * Get the name property: The name to be used for this source node.
+     * Get the name property: Node name. Must be unique within the topology.
      *
      * @return the name value.
      */

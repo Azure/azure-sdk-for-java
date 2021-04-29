@@ -7,7 +7,7 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the livePipelineList request. */
+/** List all existing live pipelines. */
 @Immutable
 public final class LivePipelineListRequest extends MethodRequest {
     /*

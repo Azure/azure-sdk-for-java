@@ -25,13 +25,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class EndpointBase {
     /*
-     * Polymorphic credentials to be presented to the endpoint.
+     * Credentials to be presented to the endpoint.
      */
     @JsonProperty(value = "credentials")
     private CredentialsBase credentials;
 
     /*
-     * Url for the endpoint.
+     * The endpoint URL for Video Analyzer to connect to.
      */
     @JsonProperty(value = "url", required = true)
     private String url;
@@ -47,7 +47,7 @@ public class EndpointBase {
     }
 
     /**
-     * Get the credentials property: Polymorphic credentials to be presented to the endpoint.
+     * Get the credentials property: Credentials to be presented to the endpoint.
      *
      * @return the credentials value.
      */
@@ -56,7 +56,7 @@ public class EndpointBase {
     }
 
     /**
-     * Set the credentials property: Polymorphic credentials to be presented to the endpoint.
+     * Set the credentials property: Credentials to be presented to the endpoint.
      *
      * @param credentials the credentials value to set.
      * @return the EndpointBase object itself.
@@ -67,7 +67,7 @@ public class EndpointBase {
     }
 
     /**
-     * Get the url property: Url for the endpoint.
+     * Get the url property: The endpoint URL for Video Analyzer to connect to.
      *
      * @return the url value.
      */

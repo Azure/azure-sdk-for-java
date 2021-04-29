@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OutputSelector {
     /*
-     * The stream property to compare with.
+     * The property of the data stream to be used as the selection criteria.
      */
     @JsonProperty(value = "property")
     private OutputSelectorProperty property;
 
     /*
-     * The operator to compare streams by.
+     * The operator to compare properties by.
      */
     @JsonProperty(value = "operator")
     private OutputSelectorOperator operator;
@@ -29,7 +29,7 @@ public final class OutputSelector {
     private String value;
 
     /**
-     * Get the property property: The stream property to compare with.
+     * Get the property property: The property of the data stream to be used as the selection criteria.
      *
      * @return the property value.
      */
@@ -38,7 +38,7 @@ public final class OutputSelector {
     }
 
     /**
-     * Set the property property: The stream property to compare with.
+     * Set the property property: The property of the data stream to be used as the selection criteria.
      *
      * @param property the property value to set.
      * @return the OutputSelector object itself.
@@ -49,7 +49,7 @@ public final class OutputSelector {
     }
 
     /**
-     * Get the operator property: The operator to compare streams by.
+     * Get the operator property: The operator to compare properties by.
      *
      * @return the operator value.
      */
@@ -58,7 +58,7 @@ public final class OutputSelector {
     }
 
     /**
-     * Set the operator property: The operator to compare streams by.
+     * Set the operator property: The operator to compare properties by.
      *
      * @param operator the operator value to set.
      * @return the OutputSelector object itself.

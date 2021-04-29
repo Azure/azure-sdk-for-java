@@ -10,13 +10,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes the start point and end point of a line in the frame. */
+/** Describes a line configuration. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.NamedLineString")
 @Fluent
 public final class NamedLineString extends NamedLineBase {
     /*
-     * Sets the properties of the line.
+     * Point coordinates for the line start and end, respectively. Example:
+     * '[[0.3, 0.2],[0.9, 0.8]]'. Each point is expressed as [LEFT, TOP]
+     * coordinate ratios ranging from 0.0 to 1.0, where [0,0] is the upper-left
+     * frame corner and [1, 1] is the bottom-right frame corner.
      */
     @JsonProperty(value = "line", required = true)
     private String line;
@@ -36,7 +39,9 @@ public final class NamedLineString extends NamedLineBase {
     }
 
     /**
-     * Get the line property: Sets the properties of the line.
+     * Get the line property: Point coordinates for the line start and end, respectively. Example: '[[0.3, 0.2],[0.9,
+     * 0.8]]'. Each point is expressed as [LEFT, TOP] coordinate ratios ranging from 0.0 to 1.0, where [0,0] is the
+     * upper-left frame corner and [1, 1] is the bottom-right frame corner.
      *
      * @return the line value.
      */

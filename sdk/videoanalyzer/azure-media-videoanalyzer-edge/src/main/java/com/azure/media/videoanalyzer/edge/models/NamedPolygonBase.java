@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class NamedPolygonBase {
     /*
-     * The name of the polygon.
+     * Polygon name. Must be unique within the node.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -40,7 +40,7 @@ public class NamedPolygonBase {
     }
 
     /**
-     * Get the name property: The name of the polygon.
+     * Get the name property: Polygon name. Must be unique within the node.
      *
      * @return the name value.
      */

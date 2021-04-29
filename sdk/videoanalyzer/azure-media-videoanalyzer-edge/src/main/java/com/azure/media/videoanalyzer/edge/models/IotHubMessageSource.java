@@ -10,14 +10,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Enables a pipeline topology to receive messages via routes declared in the IoT Edge deployment manifest. */
+/**
+ * IoT Hub Message source allows for the pipeline to consume messages from the IoT Edge Hub. Messages can be routed from
+ * other IoT modules via routes declared in the IoT Edge deployment manifest.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.IotHubMessageSource")
 @Fluent
 public final class IotHubMessageSource extends SourceNodeBase {
     /*
-     * Name of the input path where messages can be routed to (via routes
-     * declared in the IoT Edge deployment manifest).
+     * Name of the IoT Edge Hub input from which messages will be consumed.
      */
     @JsonProperty(value = "hubInputName")
     private String hubInputName;
@@ -33,8 +35,7 @@ public final class IotHubMessageSource extends SourceNodeBase {
     }
 
     /**
-     * Get the hubInputName property: Name of the input path where messages can be routed to (via routes declared in the
-     * IoT Edge deployment manifest).
+     * Get the hubInputName property: Name of the IoT Edge Hub input from which messages will be consumed.
      *
      * @return the hubInputName value.
      */
@@ -43,8 +44,7 @@ public final class IotHubMessageSource extends SourceNodeBase {
     }
 
     /**
-     * Set the hubInputName property: Name of the input path where messages can be routed to (via routes declared in the
-     * IoT Edge deployment manifest).
+     * Set the hubInputName property: Name of the IoT Edge Hub input from which messages will be consumed.
      *
      * @param hubInputName the hubInputName value to set.
      * @return the IotHubMessageSource object itself.

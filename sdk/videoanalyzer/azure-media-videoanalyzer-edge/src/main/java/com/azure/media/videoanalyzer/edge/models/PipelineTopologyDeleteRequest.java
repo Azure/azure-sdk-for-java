@@ -8,9 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the pipelineTopologyDelete request. */
+/** Deletes an existing pipeline topology. */
 @Immutable
-public final class PipelineTopologyDeleteRequest extends ItemNonSetRequestBase {
+public final class PipelineTopologyDeleteRequest extends MethodRequestEmptyBodyBase {
     /*
      * method name
      */

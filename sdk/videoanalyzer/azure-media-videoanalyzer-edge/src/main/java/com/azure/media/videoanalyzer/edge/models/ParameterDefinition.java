@@ -9,21 +9,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A key-value pair. A pipeline topology allows certain values to be parameterized. When a live pipeline is created, the
- * parameters are supplied with arguments specific to that instance. This allows the same pipeline topology to be used
- * as a blueprint for multiple streams with different values for the parameters.
+ * Defines the parameter value of an specific pipeline topology parameter. See pipeline topology parameters for more
+ * information.
  */
 @Fluent
 public final class ParameterDefinition {
     /*
-     * The name of the parameter defined in the pipeline topology.
+     * Name of the parameter declared in the pipeline topology.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The value to supply for the named parameter defined in the pipeline
-     * topology.
+     * Parameter value to be applied on this specific live pipeline.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -39,7 +37,7 @@ public final class ParameterDefinition {
     }
 
     /**
-     * Get the name property: The name of the parameter defined in the pipeline topology.
+     * Get the name property: Name of the parameter declared in the pipeline topology.
      *
      * @return the name value.
      */
@@ -48,7 +46,7 @@ public final class ParameterDefinition {
     }
 
     /**
-     * Get the value property: The value to supply for the named parameter defined in the pipeline topology.
+     * Get the value property: Parameter value to be applied on this specific live pipeline.
      *
      * @return the value value.
      */
@@ -57,7 +55,7 @@ public final class ParameterDefinition {
     }
 
     /**
-     * Set the value property: The value to supply for the named parameter defined in the pipeline topology.
+     * Set the value property: Parameter value to be applied on this specific live pipeline.
      *
      * @param value the value value to set.
      * @return the ParameterDefinition object itself.

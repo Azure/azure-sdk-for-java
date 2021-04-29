@@ -17,7 +17,7 @@ import java.util.List;
 @Fluent
 public final class PemCertificateList extends CertificateSource {
     /*
-     * PEM formatted public certificates one per entry.
+     * PEM formatted public certificates. One certificate per entry.
      */
     @JsonProperty(value = "certificates", required = true)
     private List<String> certificates;
@@ -33,7 +33,7 @@ public final class PemCertificateList extends CertificateSource {
     }
 
     /**
-     * Get the certificates property: PEM formatted public certificates one per entry.
+     * Get the certificates property: PEM formatted public certificates. One certificate per entry.
      *
      * @return the certificates value.
      */

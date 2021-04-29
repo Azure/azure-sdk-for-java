@@ -9,18 +9,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents the input to any node in a topology. */
+/** Describes an input signal to be used on a pipeline node. */
 @Fluent
 public final class NodeInput {
     /*
-     * The name of another node in the pipeline topology, the output of which
-     * is used as input to this node.
+     * The name of the upstream node in the pipeline which output is used as
+     * input of the current node.
      */
     @JsonProperty(value = "nodeName", required = true)
     private String nodeName;
 
     /*
-     * Allows for the selection of particular streams from another node.
+     * Allows for the selection of specific data streams (eg. video only) from
+     * another node.
      */
     @JsonProperty(value = "outputSelectors")
     private List<OutputSelector> outputSelectors;
@@ -36,8 +37,8 @@ public final class NodeInput {
     }
 
     /**
-     * Get the nodeName property: The name of another node in the pipeline topology, the output of which is used as
-     * input to this node.
+     * Get the nodeName property: The name of the upstream node in the pipeline which output is used as input of the
+     * current node.
      *
      * @return the nodeName value.
      */
@@ -46,7 +47,8 @@ public final class NodeInput {
     }
 
     /**
-     * Get the outputSelectors property: Allows for the selection of particular streams from another node.
+     * Get the outputSelectors property: Allows for the selection of specific data streams (eg. video only) from another
+     * node.
      *
      * @return the outputSelectors value.
      */
@@ -55,7 +57,8 @@ public final class NodeInput {
     }
 
     /**
-     * Set the outputSelectors property: Allows for the selection of particular streams from another node.
+     * Set the outputSelectors property: Allows for the selection of specific data streams (eg. video only) from another
+     * node.
      *
      * @param outputSelectors the outputSelectors value to set.
      * @return the NodeInput object itself.

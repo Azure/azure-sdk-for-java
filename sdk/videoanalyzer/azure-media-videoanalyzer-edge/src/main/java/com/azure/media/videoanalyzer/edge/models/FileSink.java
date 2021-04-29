@@ -11,28 +11,28 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Enables a topology to write/store media (video and audio) to a file on the Edge device. */
+/** File sink allows for video and audio content to be recorded on the file system on the edge device. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.FileSink")
 @Fluent
 public final class FileSink extends SinkNodeBase {
     /*
-     * Absolute directory for all outputs to the Edge device from this sink.
+     * Absolute directory path where media files will be stored.
      */
     @JsonProperty(value = "baseDirectoryPath", required = true)
     private String baseDirectoryPath;
 
     /*
-     * File name pattern for creating new files on the Edge device. The pattern
-     * must include at least one system variable. See the documentation for
-     * available variables and additional examples.
+     * File name pattern for creating new files when performing event based
+     * recording. The pattern must include at least one system variable.
      */
     @JsonProperty(value = "fileNamePattern", required = true)
     private String fileNamePattern;
 
     /*
      * Maximum amount of disk space that can be used for storing files from
-     * this sink.
+     * this sink. Once this limit is reached, the oldest files from this sink
+     * will be automatically deleted.
      */
     @JsonProperty(value = "maximumSizeMiB", required = true)
     private String maximumSizeMiB;
@@ -60,7 +60,7 @@ public final class FileSink extends SinkNodeBase {
     }
 
     /**
-     * Get the baseDirectoryPath property: Absolute directory for all outputs to the Edge device from this sink.
+     * Get the baseDirectoryPath property: Absolute directory path where media files will be stored.
      *
      * @return the baseDirectoryPath value.
      */
@@ -69,8 +69,8 @@ public final class FileSink extends SinkNodeBase {
     }
 
     /**
-     * Get the fileNamePattern property: File name pattern for creating new files on the Edge device. The pattern must
-     * include at least one system variable. See the documentation for available variables and additional examples.
+     * Get the fileNamePattern property: File name pattern for creating new files when performing event based recording.
+     * The pattern must include at least one system variable.
      *
      * @return the fileNamePattern value.
      */
@@ -80,6 +80,7 @@ public final class FileSink extends SinkNodeBase {
 
     /**
      * Get the maximumSizeMiB property: Maximum amount of disk space that can be used for storing files from this sink.
+     * Once this limit is reached, the oldest files from this sink will be automatically deleted.
      *
      * @return the maximumSizeMiB value.
      */

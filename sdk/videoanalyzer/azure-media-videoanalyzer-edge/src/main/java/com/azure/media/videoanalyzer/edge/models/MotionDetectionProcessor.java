@@ -12,29 +12,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A node that accepts raw video as input, and detects if there are moving objects present. If so, then it emits an
- * event, and allows frames where motion was detected to pass through. Other frames are blocked/dropped.
+ * Motion detection processor allows for motion detection on the video stream. It generates motion events whenever
+ * motion is present on the video.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.MotionDetectionProcessor")
 @Fluent
 public final class MotionDetectionProcessor extends ProcessorNodeBase {
     /*
-     * Enumeration that specifies the sensitivity of the motion detection
-     * processor.
+     * Motion detection sensitivity: low, medium, high.
      */
     @JsonProperty(value = "sensitivity")
     private MotionDetectionSensitivity sensitivity;
 
     /*
-     * Indicates whether the processor should detect and output the regions,
-     * within the video frame, where motion was detected. Default is true.
+     * Indicates whether the processor should detect and output the regions
+     * within the video frame where motion was detected. Default is true.
      */
     @JsonProperty(value = "outputMotionRegion")
     private Boolean outputMotionRegion;
 
     /*
-     * Event aggregation window duration, or 0 for no aggregation.
+     * Time window duration on which events are aggregated before being
+     * emitted. Value must be specified in ISO8601 duration format (i.e. "PT2S"
+     * equals 2 seconds). Use 0 seconds for no aggregation. Default is 1
+     * second.
      */
     @JsonProperty(value = "eventAggregationWindow")
     private String eventAggregationWindow;
@@ -53,7 +55,7 @@ public final class MotionDetectionProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Get the sensitivity property: Enumeration that specifies the sensitivity of the motion detection processor.
+     * Get the sensitivity property: Motion detection sensitivity: low, medium, high.
      *
      * @return the sensitivity value.
      */
@@ -62,7 +64,7 @@ public final class MotionDetectionProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Set the sensitivity property: Enumeration that specifies the sensitivity of the motion detection processor.
+     * Set the sensitivity property: Motion detection sensitivity: low, medium, high.
      *
      * @param sensitivity the sensitivity value to set.
      * @return the MotionDetectionProcessor object itself.
@@ -73,8 +75,8 @@ public final class MotionDetectionProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Get the outputMotionRegion property: Indicates whether the processor should detect and output the regions, within
-     * the video frame, where motion was detected. Default is true.
+     * Get the outputMotionRegion property: Indicates whether the processor should detect and output the regions within
+     * the video frame where motion was detected. Default is true.
      *
      * @return the outputMotionRegion value.
      */
@@ -83,8 +85,8 @@ public final class MotionDetectionProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Set the outputMotionRegion property: Indicates whether the processor should detect and output the regions, within
-     * the video frame, where motion was detected. Default is true.
+     * Set the outputMotionRegion property: Indicates whether the processor should detect and output the regions within
+     * the video frame where motion was detected. Default is true.
      *
      * @param outputMotionRegion the outputMotionRegion value to set.
      * @return the MotionDetectionProcessor object itself.
@@ -95,7 +97,9 @@ public final class MotionDetectionProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Get the eventAggregationWindow property: Event aggregation window duration, or 0 for no aggregation.
+     * Get the eventAggregationWindow property: Time window duration on which events are aggregated before being
+     * emitted. Value must be specified in ISO8601 duration format (i.e. "PT2S" equals 2 seconds). Use 0 seconds for no
+     * aggregation. Default is 1 second.
      *
      * @return the eventAggregationWindow value.
      */
@@ -104,7 +108,9 @@ public final class MotionDetectionProcessor extends ProcessorNodeBase {
     }
 
     /**
-     * Set the eventAggregationWindow property: Event aggregation window duration, or 0 for no aggregation.
+     * Set the eventAggregationWindow property: Time window duration on which events are aggregated before being
+     * emitted. Value must be specified in ISO8601 duration format (i.e. "PT2S" equals 2 seconds). Use 0 seconds for no
+     * aggregation. Default is 1 second.
      *
      * @param eventAggregationWindow the eventAggregationWindow value to set.
      * @return the MotionDetectionProcessor object itself.

@@ -7,23 +7,23 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of an image frame. */
+/** Image transformations and formatting options to be applied to the video frame(s). */
 @Fluent
 public final class ImageProperties {
     /*
-     * The scaling mode for the image.
+     * Image scaling mode.
      */
     @JsonProperty(value = "scale")
     private ImageScale scale;
 
     /*
-     * Encoding settings for an image.
+     * Base class for image formatting properties.
      */
     @JsonProperty(value = "format")
     private ImageFormatProperties format;
 
     /**
-     * Get the scale property: The scaling mode for the image.
+     * Get the scale property: Image scaling mode.
      *
      * @return the scale value.
      */
@@ -32,7 +32,7 @@ public final class ImageProperties {
     }
 
     /**
-     * Set the scale property: The scaling mode for the image.
+     * Set the scale property: Image scaling mode.
      *
      * @param scale the scale value to set.
      * @return the ImageProperties object itself.
@@ -43,7 +43,7 @@ public final class ImageProperties {
     }
 
     /**
-     * Get the format property: Encoding settings for an image.
+     * Get the format property: Base class for image formatting properties.
      *
      * @return the format value.
      */
@@ -52,7 +52,7 @@ public final class ImageProperties {
     }
 
     /**
-     * Set the format property: Encoding settings for an image.
+     * Set the format property: Base class for image formatting properties.
      *
      * @param format the format value to set.
      * @return the ImageProperties object itself.

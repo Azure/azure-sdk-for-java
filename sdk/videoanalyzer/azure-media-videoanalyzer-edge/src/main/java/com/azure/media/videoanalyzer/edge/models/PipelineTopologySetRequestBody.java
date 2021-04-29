@@ -8,23 +8,23 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the pipelineTopologySet request body. */
+/** Pipeline topology resource representation. */
 @Fluent
 public final class PipelineTopologySetRequestBody extends MethodRequest {
     /*
-     * The identifier for the pipeline topology.
+     * Pipeline topology unique identifier.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The system data for a resource.
+     * Read-only system metadata associated with this object.
      */
     @JsonProperty(value = "systemData")
     private SystemData systemData;
 
     /*
-     * The properties of the pipeline topology.
+     * Pipeline topology properties.
      */
     @JsonProperty(value = "properties")
     private PipelineTopologyProperties properties;
@@ -40,7 +40,7 @@ public final class PipelineTopologySetRequestBody extends MethodRequest {
     }
 
     /**
-     * Get the name property: The identifier for the pipeline topology.
+     * Get the name property: Pipeline topology unique identifier.
      *
      * @return the name value.
      */
@@ -49,7 +49,7 @@ public final class PipelineTopologySetRequestBody extends MethodRequest {
     }
 
     /**
-     * Get the systemData property: The system data for a resource.
+     * Get the systemData property: Read-only system metadata associated with this object.
      *
      * @return the systemData value.
      */
@@ -58,7 +58,7 @@ public final class PipelineTopologySetRequestBody extends MethodRequest {
     }
 
     /**
-     * Set the systemData property: The system data for a resource.
+     * Set the systemData property: Read-only system metadata associated with this object.
      *
      * @param systemData the systemData value to set.
      * @return the PipelineTopologySetRequestBody object itself.
@@ -69,7 +69,7 @@ public final class PipelineTopologySetRequestBody extends MethodRequest {
     }
 
     /**
-     * Get the properties property: The properties of the pipeline topology.
+     * Get the properties property: Pipeline topology properties.
      *
      * @return the properties value.
      */
@@ -78,7 +78,7 @@ public final class PipelineTopologySetRequestBody extends MethodRequest {
     }
 
     /**
-     * Set the properties property: The properties of the pipeline topology.
+     * Set the properties property: Pipeline topology properties.
      *
      * @param properties the properties value to set.
      * @return the PipelineTopologySetRequestBody object itself.

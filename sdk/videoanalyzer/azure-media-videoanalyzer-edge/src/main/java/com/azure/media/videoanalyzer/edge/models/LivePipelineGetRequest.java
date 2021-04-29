@@ -8,9 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the livePipelineGet request. */
+/** Retrieves an existing live pipeline. */
 @Immutable
-public final class LivePipelineGetRequest extends ItemNonSetRequestBase {
+public final class LivePipelineGetRequest extends MethodRequestEmptyBodyBase {
     /*
      * method name
      */

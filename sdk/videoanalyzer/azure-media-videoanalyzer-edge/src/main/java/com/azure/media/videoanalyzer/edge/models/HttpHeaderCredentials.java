@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Http header service credentials. */
+/** HTTP header credentials. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonTypeName("#Microsoft.VideoAnalyzer.HttpHeaderCredentials")
 @Fluent
@@ -22,8 +22,9 @@ public final class HttpHeaderCredentials extends CredentialsBase {
     private String headerName;
 
     /*
-     * HTTP header value. Please use a parameter so that the actual value is
-     * not returned on PUT or GET requests.
+     * HTTP header value. It is recommended that this value is parameterized as
+     * a secret string in order to prevent this value to be returned as part of
+     * the resource on API requests.
      */
     @JsonProperty(value = "headerValue", required = true)
     private String headerValue;
@@ -52,8 +53,8 @@ public final class HttpHeaderCredentials extends CredentialsBase {
     }
 
     /**
-     * Get the headerValue property: HTTP header value. Please use a parameter so that the actual value is not returned
-     * on PUT or GET requests.
+     * Get the headerValue property: HTTP header value. It is recommended that this value is parameterized as a secret
+     * string in order to prevent this value to be returned as part of the resource on API requests.
      *
      * @return the headerValue value.
      */
