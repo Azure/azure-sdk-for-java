@@ -112,8 +112,8 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
 
     Set<String> extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken) {
         Set<String> roles = Optional.of(accessToken)
-                                    .filter(notUsed -> properties.allowedGroupIdsConfigured() ||
-                                        properties.allowedGroupNamesConfigured())
+                                    .filter(notUsed -> properties.allowedGroupIdsConfigured()
+                                        || properties.allowedGroupNamesConfigured())
                                     .map(AbstractOAuth2Token::getTokenValue)
                                     .map(graphClient::getGroupsFromGraph)
                                     .orElseGet(Collections::emptySet)
