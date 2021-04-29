@@ -69,7 +69,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure.spring:azure-spring-cloud-feature-management:[1.2.8-beta.1]</include> <!-- {x-include-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
+                <include>com.azure.spring:azure-spring-cloud-feature-management:[2.0.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
                 <include>org.springframework:spring-web:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-webmvc:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
