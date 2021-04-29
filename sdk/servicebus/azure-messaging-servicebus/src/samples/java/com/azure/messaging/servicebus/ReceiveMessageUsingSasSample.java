@@ -80,8 +80,9 @@ public class ReceiveMessageUsingSasSample {
         try {
             String stringToSign = URLEncoder.encode(resourceUri, StandardCharsets.UTF_8.toString()) + "\n" + expiry;
             String signature = getHMAC256(key, stringToSign);
-            sasToken = "SharedAccessSignature sr=" + URLEncoder.encode(resourceUri, StandardCharsets.UTF_8) + "&sig="
-                + URLEncoder.encode(signature, StandardCharsets.UTF_8.toString()) + "&se=" + expiry + "&skn=" + keyName;
+            sasToken = "SharedAccessSignature sr=" + URLEncoder.encode(resourceUri, StandardCharsets.UTF_8.toString())
+                + "&sig=" + URLEncoder.encode(signature, StandardCharsets.UTF_8.toString()) + "&se=" + expiry + "&skn="
+                + keyName;
         } catch (Exception e) {
             System.err.println(" Could not url encode " + e.getMessage());
         }
