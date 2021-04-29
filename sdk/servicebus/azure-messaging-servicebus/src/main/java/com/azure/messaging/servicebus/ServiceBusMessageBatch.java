@@ -11,7 +11,11 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.BufferOverflowException;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
