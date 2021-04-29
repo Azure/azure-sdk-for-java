@@ -84,7 +84,7 @@ and
 - Added BlobBatchStorageException
 - Changed exception throwing to throw StorageBlobException on invalid request and BlobBatchStorageException when batch operations fail
 
-## 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's
