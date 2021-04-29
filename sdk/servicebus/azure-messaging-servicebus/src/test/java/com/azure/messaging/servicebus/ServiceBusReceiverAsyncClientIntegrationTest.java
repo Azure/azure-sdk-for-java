@@ -87,14 +87,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    @Override
-    @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        logger.info("========= TEARDOWNLOCAL [{}] =========", testInfo.getDisplayName());
-        StepVerifier.resetDefaultTimeout();
-        afterTest();
-    }
-
     /**
      * Verifies that we can create multiple transaction using sender and receiver.
      */

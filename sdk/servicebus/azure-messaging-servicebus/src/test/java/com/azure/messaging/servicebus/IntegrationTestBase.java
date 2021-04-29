@@ -26,7 +26,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -100,10 +99,6 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
         StepVerifier.resetDefaultTimeout();
         afterTest();
-
-        // Tear down any inline mocks to avoid memory leaks.
-        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMocks();
     }
 
     /**
