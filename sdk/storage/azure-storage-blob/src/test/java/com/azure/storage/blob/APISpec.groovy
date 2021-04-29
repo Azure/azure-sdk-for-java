@@ -181,6 +181,7 @@ class APISpec extends Specification {
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+        System.out.println("junit.jupiter.execution.parallel.enabled = " + System.getProperty("junit.jupiter.execution.parallel.enabled", "not set"))
 
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
