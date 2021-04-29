@@ -14,14 +14,29 @@ public class KeyVaultClientTest {
     private KeyVaultClient keyVaultClient;
     private String certificateName;
 
+    String getEnvValue(String key){
+        String value = System.getenv(key);
+        System.out.println("*****************************logStart");
+        System.out.println("Original: " + key + " = " + value);
+        String lowerCaseValue = value.toLowerCase();
+        System.out.println("lowerCaseValue" + key + " = " + lowerCaseValue);
+        String upperCaseValue = value.toLowerCase();
+        System.out.println("upperCaseValue" + key + " = " + upperCaseValue);
+        String halfValue = value.toLowerCase().substring(value.length() - 1);
+        System.out.println("halfValue" + key + " = " + halfValue);
+        System.out.println("*****************************logEnd");
+        return value;
+    }
+
     @BeforeEach
     public void setEnvironmentProperty() {
         keyVaultClient = new KeyVaultClient(
-            System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+            getEnvValue("AZURE_KEYVAULT_URI"),
+            getEnvValue("AZURE_KEYVAULT_TENANT-ID"),
+            getEnvValue("AZURE_KEYVAULT_CLIENT-ID"),
+            getEnvValue("AZURE_KEYVAULT_CLIENT-SECRET"));
+        certificateName = getEnvValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        getEnvValue("");
     }
 
     @Test

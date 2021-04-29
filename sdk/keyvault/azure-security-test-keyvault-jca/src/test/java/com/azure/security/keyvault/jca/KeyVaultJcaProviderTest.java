@@ -13,7 +13,6 @@ import java.security.Security;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static java.util.logging.Level.INFO;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -24,51 +23,38 @@ public class KeyVaultJcaProviderTest {
 
     private static final Logger LOGGER = Logger.getLogger(KeyVaultJcaProviderTest.class.getName());
 
+    String getEnvValue(String key){
+        String value = System.getenv(key);
+        System.out.println("*****************************logStart");
+        System.out.println("Original: " + key + " = " + value);
+        String lowerCaseValue = value.toLowerCase();
+        System.out.println("lowerCaseValue" + key + " = " + lowerCaseValue);
+        String upperCaseValue = value.toLowerCase();
+        System.out.println("upperCaseValue" + key + " = " + upperCaseValue);
+        String halfValue = value.toLowerCase().substring(value.length() - 1);
+        System.out.println("halfValue" + key + " = " + halfValue);
+        System.out.println("*****************************logEnd");
+        return value;
+    }
+
+
     public static void putEnvironmentPropertyToSystemProperty(String key) {
         Optional.of(key)
                 .map(System::getenv)
                 .filter(StringUtils::hasText)
                 .ifPresent(value -> {
                     System.out.println("*****************************logStart**************************");
-                    LOGGER.log(INFO, "LOGGER: the first name of sub = ",
-                        System.getenv("KEYVAULT_SUBSCRIPTION_ID").toLowerCase().charAt(0));
-
-
-                    System.out.println("the first name of certificate name = " +
-                        System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME").toLowerCase().charAt(0));
-                    System.out.println("the first name of sub = " +
-                        System.getenv("KEYVAULT_SUBSCRIPTION_ID").toLowerCase().charAt(0));
-
-                    LOGGER.log(INFO, "LOGGER: the first name of certificate name = ",
-                        System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME").toLowerCase().charAt(0));
-
-                    System.out.println("azure certificate length = " +
-                        System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME").length());
-
-
-                    System.out.println("azure certificate length / 2 = " +
-                        System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME").substring(0, System.getenv(
-                            "AZURE_KEYVAULT_CERTIFICATE_NAME").length() / 2));
-
-                    LOGGER.log(INFO, "LOGGER: azure certificate length / 2 = ",
-                        System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME").substring(0, System.getenv(
-                            "AZURE_KEYVAULT_CERTIFICATE_NAME").length() / 2));
-
-                    System.out.println("AZURE_KEYVAULT_URI" + System.getenv("AZURE_KEYVAULT_URI"));
-                    System.out.println("AZURE_KEYVAULT_CERTIFICATE_NAME" +
-                        System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME"));
-                    System.out.println("KEYVAULT_ sub id = " + System.getenv("KEYVAULT_SUBSCRIPTION_ID"));
+                    System.out.println("Original: " + key + " = " + value);
+                    String lowerCaseValue = value.toLowerCase();
+                    System.out.println("lowerCaseValue" + key + " = " + lowerCaseValue);
+                    String upperCaseValue = value.toUpperCase();
+                    System.out.println("upperCaseValue" + key + " = " + upperCaseValue);
+                    String halfValue = value.toLowerCase().substring(value.length() - 1);
+                    System.out.println("halfValue" + key + " = " + halfValue);
                     System.getProperties().put(
                         key.toLowerCase().replaceAll("_", "."), value);
-
-                    System.out.println("azure.keyvault.uri = " + System.getProperty("azure.keyvault.uri"));
-                    System.out.println("azure.keyvault.tenant-id = " + System.getProperty("azure.keyvault.tenant-id"));
-                    System.out.println("azure.keyvault.client-secret = " +
-                        System.getProperty("azure.keyvault.client-secret"));
-
-                    LOGGER.log(INFO, "LOGGER: azure.keyvault.tenant-id = ",
-                        System.getProperty("azure.keyvault.tenant-id"));
-
+                    String propertyValue = System.getProperty(key.toLowerCase().replaceAll("_", "."));
+                    System.out.println("Original property: " + key + " = " + propertyValue);
                     System.out.println("*****************************logEnd**************************");
                 });
     }
