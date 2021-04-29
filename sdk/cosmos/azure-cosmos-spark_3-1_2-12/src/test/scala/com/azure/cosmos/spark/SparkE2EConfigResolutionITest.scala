@@ -97,6 +97,32 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
     spark.close()
   }
 
+  it should "validate config names with 'spark.cosmos.' prefix" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.someTypo" -> "xyz",
+    )
+
+    try {
+      CosmosConfig.getEffectiveConfig(None, None, userConfig)
+      fail("Should throw on invalid config names")
+    } catch {
+      case e: Exception => e.getMessage shouldEqual
+        "The config property 'spark.cosmos.someTypo' is invalid. No config setting with this name exists."
+    }
+  }
+
+  it should "not validate config names without 'spark.cosmos.' prefix" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmoss.someTypo" -> "xyz",
+    )
+
+    CosmosConfig.getEffectiveConfig(None, None, userConfig)
+  }
+
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }

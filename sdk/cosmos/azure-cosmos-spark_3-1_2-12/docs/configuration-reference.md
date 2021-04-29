@@ -58,7 +58,7 @@ When doing read operations, users can specify a custom schema or allow the conne
 
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
-| `spark.cosmos.partitioning.strategy`     | `Default`    | The partitioning strategy used (Default, Custom, Restrictive or Aggressive) |
+| `spark.cosmos.read.partitioning.strategy`     | `Default`    | The partitioning strategy used (Default, Custom, Restrictive or Aggressive) |
 | `spark.cosmos.partitioning.targetedCount`      | None    | The targeted Partition Count. This parameter is optional and ignored unless strategy==Custom is used. In this case the Spark Connector won't dynamically calculate number of partitions but stick with this value.  |
 
 ### Throughput Control Config

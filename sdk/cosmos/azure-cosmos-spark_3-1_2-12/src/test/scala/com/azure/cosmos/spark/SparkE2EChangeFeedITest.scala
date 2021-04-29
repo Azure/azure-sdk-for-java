@@ -149,8 +149,8 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.read.startFrom" -> "Beginning",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.changeFeed.startFrom" -> "Beginning",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val writeCfg = Map(
@@ -199,7 +199,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> sinkContainerName,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val validationDF = spark

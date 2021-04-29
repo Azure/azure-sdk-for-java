@@ -25,7 +25,7 @@ class CosmosRowConverterITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val spark = this.getSpark()
