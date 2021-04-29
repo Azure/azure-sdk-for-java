@@ -137,8 +137,8 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaIncludeSystemProperties" -> "true",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.includeSystemProperties" -> "true",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
@@ -180,8 +180,8 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaIncludeTimestamp" -> "true",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.includeTimestamp" -> "true",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
@@ -223,7 +223,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
@@ -265,8 +265,8 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 c.isAlive, c.type, c.age from c",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.isAlive, c.type, c.age from c",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
@@ -301,8 +301,8 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts from c",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts from c",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
@@ -354,9 +354,9 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaSamplingSize" -> samplingSize.toString,
-      "spark.cosmos.read.inferSchemaQuery" -> "SELECT * FROM c ORDER BY c._ts",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.samplingSize" -> samplingSize.toString,
+      "spark.cosmos.read.inferSchema.query" -> "SELECT * FROM c ORDER BY c._ts",
       "spark.cosmos.partitioning.strategy" -> "Restrictive"
     )
 
