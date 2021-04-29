@@ -203,9 +203,6 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-                <junit.jupiter.execution.parallel.config.strategy>dynamic</junit.jupiter.execution.parallel.config.strategy>
-                <junit.jupiter.execution.parallel.config.dynamic.factor>10</junit.jupiter.execution.parallel.config.dynamic.factor>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -298,9 +295,6 @@
               </argLine>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-                <junit.jupiter.execution.parallel.config.strategy>dynamic</junit.jupiter.execution.parallel.config.strategy>
-                <junit.jupiter.execution.parallel.config.dynamic.factor>10</junit.jupiter.execution.parallel.config.dynamic.factor>
               </systemPropertyVariables>
             </configuration>
           </plugin>
