@@ -2,6 +2,9 @@
 
 ## 1.0.0-beta.7 (Unreleased)
 
+### New Features
+ - Support the local JRE key store
+
 
 ## 1.0.0-beta.6 (2021-04-19)
 ### Breaking Changes

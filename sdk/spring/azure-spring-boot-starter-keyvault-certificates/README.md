@@ -278,6 +278,20 @@ private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
 }
 ```
 
+
+### Enable local JRE key store
+
+The local JRE key store can also work with Key Vault key store. To enable this, add the following configuration:
+
+```yaml
+azure:
+    keyvault:
+        uri: <the URI of the Azure Key Vault to use>
+        jca:
+            overrideTrustManagerFactory: true
+```
+
+
 ### Configuring Spring Cloud Gateway
 
 To configure Spring Cloud Gateway for outbound SSL, add the following configuration:
