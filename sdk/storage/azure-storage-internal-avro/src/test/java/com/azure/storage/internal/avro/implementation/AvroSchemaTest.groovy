@@ -12,7 +12,6 @@ class AvroSchemaTest extends Specification {
         String className = specificationContext.getCurrentSpec().getName()
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-        System.out.println("junit.jupiter.execution.parallel.enabled = " + System.getProperty("junit.jupiter.execution.parallel.enabled", "not set"))
     }
 
     def "getBytes"() {
