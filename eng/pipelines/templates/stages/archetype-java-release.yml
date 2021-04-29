@@ -137,6 +137,7 @@ stages:
                         ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
+
           - ${{if ne(artifact.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
               displayName: "Publish to Maven Central"
@@ -200,6 +201,10 @@ stages:
                   deploy:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          paths:
+                            - CODEOWNERS
+                            - .github/CODEOWNERS
                       - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
                         parameters:
                           TargetVariable: "OwningGHUser"
