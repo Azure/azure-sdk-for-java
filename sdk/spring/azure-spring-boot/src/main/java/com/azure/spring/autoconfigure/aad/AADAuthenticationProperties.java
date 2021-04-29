@@ -54,6 +54,10 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String userNameAttribute;
 
     /**
+     * @see
+     * <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter
+     * readme.</a>
+     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      * @deprecated Now the redirect-url-template is not configurable.
      * <p>
      * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
@@ -61,9 +65,6 @@ public class AADAuthenticationProperties implements InitializingBean {
      * <p>
      * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
      * </p>
-     *
-     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
-     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      */
     @Deprecated
     private String redirectUriTemplate;
@@ -145,6 +146,11 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         private Set<String> allowedGroupIds = new HashSet<>();
 
+        /**
+         * enableFullList is used to control whether to list all group id, default is false
+         */
+        private Boolean enableFullList = false;
+
         public Set<String> getAllowedGroupIds() {
             return allowedGroupIds;
         }
@@ -159,6 +165,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         public void setAllowedGroupNames(List<String> allowedGroupNames) {
             this.allowedGroupNames = allowedGroupNames;
+        }
+
+        public Boolean getEnableFullList() {
+            return enableFullList;
+        }
+
+        public void setEnableFullList(Boolean enableFullList) {
+            this.enableFullList = enableFullList;
         }
 
         @Deprecated
@@ -350,14 +364,17 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public boolean isAllowedGroup(String group) {
+        if (this.getUserGroup().getEnableFullList()) {
+            return true;
+        }
         return Optional.ofNullable(getUserGroup())
                        .map(UserGroupProperties::getAllowedGroupNames)
                        .orElseGet(Collections::emptyList)
                        .contains(group)
             || Optional.ofNullable(getUserGroup())
-                               .map(UserGroupProperties::getAllowedGroupIds)
-                               .orElseGet(Collections::emptySet)
-                               .contains(group);
+                       .map(UserGroupProperties::getAllowedGroupIds)
+                       .orElseGet(Collections::emptySet)
+                       .contains(group);
     }
 
     @Override
@@ -411,7 +428,8 @@ public class AADAuthenticationProperties implements InitializingBean {
                             .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
                             .findAny()
                             .ifPresent(notUsed -> {
-                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
+                                throw new IllegalStateException("onDemand only support authorization_code grant type."
+                                    + " ");
                             });
     }
 

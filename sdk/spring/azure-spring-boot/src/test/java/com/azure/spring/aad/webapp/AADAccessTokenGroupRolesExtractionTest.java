@@ -61,6 +61,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
         when(properties.allowedGroupNamesConfigured()).thenReturn(true);
         when(properties.allowedGroupIdsConfigured()).thenReturn(true);
         when(properties.getUserGroup()).thenReturn(userGroup);
+        when(properties.getUserGroup().getEnableFullList()).thenReturn(false);
         when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
         when(accessToken.getTokenValue()).thenReturn("fake-access-token");
     }
@@ -105,6 +106,15 @@ public class AADAccessTokenGroupRolesExtractionTest {
         assertThat(groupsName).hasSize(2);
     }
 
+    @Test
+    public void testEnableFullList(){
+        setup();
+        when(properties.getUserGroup().getEnableFullList()).thenReturn(true);
+        Set<String> groupId= userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupId).hasSize(2);
+    }
+
+
     class GraphClientTest extends GraphClient {
 
         GraphClientTest(AADAuthenticationProperties properties) {
@@ -123,11 +133,13 @@ public class AADAccessTokenGroupRolesExtractionTest {
                 } catch (IOException ioException) {
                     break;
                 }
-                memberships.getValue()
-                           .stream()
-                           .filter(this::isGroupObject)
-                           .map(Membership::getDisplayName)
-                           .forEach(groups::add);
+                if(!properties.getUserGroup().getEnableFullList()){
+                    memberships.getValue()
+                               .stream()
+                               .filter(this::isGroupObject)
+                               .map(Membership::getDisplayName)
+                               .forEach(groups::add);
+                }
                 memberships.getValue()
                            .stream()
                            .filter(this::isGroupObject)

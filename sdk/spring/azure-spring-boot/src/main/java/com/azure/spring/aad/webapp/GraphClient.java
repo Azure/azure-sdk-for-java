@@ -50,11 +50,13 @@ public class GraphClient {
                 LOGGER.error("Can not get group information from graph server.", ioException);
                 break;
             }
-            memberships.getValue()
-                       .stream()
-                       .filter(this::isGroupObject)
-                       .map(Membership::getDisplayName)
-                       .forEach(groups::add);
+            if(!properties.getUserGroup().getEnableFullList()){
+                memberships.getValue()
+                           .stream()
+                           .filter(this::isGroupObject)
+                           .map(Membership::getDisplayName)
+                           .forEach(groups::add);
+            }
             memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
