@@ -1,5 +1,8 @@
 # Release History
 
+## 12.12.0-beta.1 (Unreleased)
+
+
 ## 12.11.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 
 
