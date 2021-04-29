@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.spring.cloud.config.web.pushbusrefresh;
 
+import org.springframework.cloud.bus.event.Destination;
 import org.springframework.cloud.bus.event.RemoteApplicationEvent;
 
 public class AppConfigurationBusRefreshEvent extends RemoteApplicationEvent {
@@ -13,8 +14,8 @@ public class AppConfigurationBusRefreshEvent extends RemoteApplicationEvent {
 
     private String endpoint;
 
-    AppConfigurationBusRefreshEvent(String endpoint, AppConfigurationBusRefreshEndpoint source, String origin) {
-        super("App Configuration Refresh Event", origin, null);
+    AppConfigurationBusRefreshEvent(String endpoint, AppConfigurationBusRefreshEndpoint source, String origin, Destination destination) {
+        super("App Configuration Refresh Event", origin, destination);
         this.endpoint = endpoint;
     }
 

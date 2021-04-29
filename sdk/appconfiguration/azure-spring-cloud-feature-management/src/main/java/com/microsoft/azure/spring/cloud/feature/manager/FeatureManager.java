@@ -28,7 +28,6 @@ import reactor.core.publisher.Mono;
 /**
  * Holds information on Feature Management properties and can check if a given feature is enabled.
  */
-@SuppressWarnings("serial")
 @Component("FeatureManagement")
 @ConfigurationProperties(prefix = "feature-management")
 public class FeatureManager extends HashMap<String, Object> {

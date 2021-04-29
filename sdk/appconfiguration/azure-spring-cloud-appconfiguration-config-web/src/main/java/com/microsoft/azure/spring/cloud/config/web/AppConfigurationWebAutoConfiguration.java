@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.bus.BusProperties;
+import org.springframework.cloud.bus.event.Destination;
 import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
@@ -68,9 +69,8 @@ public class AppConfigurationWebAutoConfiguration {
 
         @Bean
         public AppConfigurationBusRefreshEndpoint appConfigurationBusRefreshEndpoint(ApplicationContext context,
-            BusProperties bus,
-            AppConfigurationProperties appConfiguration) {
-            return new AppConfigurationBusRefreshEndpoint(context, bus.getId(), appConfiguration);
+            BusProperties bus, AppConfigurationProperties appConfiguration, Destination.Factory destinationFactory) {
+            return new AppConfigurationBusRefreshEndpoint(context, bus.getId(), destinationFactory, appConfiguration);
         }
 
         @Bean

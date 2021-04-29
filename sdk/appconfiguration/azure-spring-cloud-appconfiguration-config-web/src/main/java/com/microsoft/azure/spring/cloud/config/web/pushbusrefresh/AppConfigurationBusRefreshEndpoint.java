@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.cloud.bus.endpoint.AbstractBusEndpoint;
+import org.springframework.cloud.bus.event.Destination;
+import org.springframework.cloud.bus.event.PathDestinationFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,15 +43,16 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
     private AppConfigurationProperties appConfiguration;
 
     public AppConfigurationBusRefreshEndpoint(ApplicationEventPublisher context, String appId,
-            AppConfigurationProperties appConfiguration) {
-        super(context, appId);
+        Destination.Factory destinationFactory,
+        AppConfigurationProperties appConfiguration) {
+        super(context, appId, destinationFactory);
         this.appConfiguration = appConfiguration;
     }
 
     @PostMapping(value = "/")
     @ResponseBody
     public String refresh(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam Map<String, String> allRequestParams) throws IOException {
+        @RequestParam Map<String, String> allRequestParams) throws IOException {
         String reference = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         JsonNode kvReference = objectmapper.readTree(reference);
@@ -57,12 +60,12 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
         AppConfigurationEndpoint validation;
         try {
             validation = new AppConfigurationEndpoint(kvReference, appConfiguration.getStores(),
-                    allRequestParams);
+                allRequestParams);
         } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage());
             return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
         }
-        
+
         if (!validation.authenticate()) {
             return HttpStatus.UNAUTHORIZED.getReasonPhrase();
         }
@@ -74,7 +77,8 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
         } else {
             if (validation.triggerRefresh()) {
                 // Spring Bus is in use, will publish a RefreshRemoteApplicationEvent
-                publish(new AppConfigurationBusRefreshEvent(validation.getEndpoint(), this, getInstanceId()));
+                publish(new AppConfigurationBusRefreshEvent(validation.getEndpoint(), this, getInstanceId(),
+                    new PathDestinationFactory().getDestination(null)));
                 return HttpStatus.OK.getReasonPhrase();
             } else {
                 LOGGER.debug("Non Refreshable notification");
