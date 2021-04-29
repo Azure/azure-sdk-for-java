@@ -174,17 +174,14 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public boolean allowedGroupNamesConfigured() {
-        return Optional.of(this)
-                       .map(AADAuthenticationProperties::getUserGroup)
+        return Optional.of(this.getUserGroup())
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
                        .map(allowedGroupNames -> !allowedGroupNames.isEmpty())
                        .orElse(false);
-
     }
 
     public boolean allowedGroupIdsConfigured() {
-        return Optional.of(this)
-                       .map(AADAuthenticationProperties::getUserGroup)
+        return Optional.of(this.getUserGroup())
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
                        .map(allowedGroupIds -> !allowedGroupIds.isEmpty())
                        .orElse(false);
