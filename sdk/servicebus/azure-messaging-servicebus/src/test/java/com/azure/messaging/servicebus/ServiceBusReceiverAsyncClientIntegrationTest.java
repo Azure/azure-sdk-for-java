@@ -17,10 +17,12 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.SubQueue;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -83,6 +85,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         }
+    }
+
+    @Override
+    @AfterEach
+    public void teardownTest(TestInfo testInfo) {
+        logger.info("========= TEARDOWNLOCAL [{}] =========", testInfo.getDisplayName());
+        StepVerifier.resetDefaultTimeout();
+        afterTest();
     }
 
     /**
