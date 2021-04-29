@@ -30,7 +30,7 @@
 * Query performance improvements.
 
 ### 4.13.0 (2021-03-11) 
-#### NOTE: THIS RELEASE UPDATES `reactor-core` and `reactor-netty` MAJOR VERSIONS TO `2020.0.4 (Europium)` RELEASE TRAIN
+[!IMPORTANT] THIS RELEASE UPDATES `reactor-core` and `reactor-netty` MAJOR VERSIONS TO `2020.0.4 (Europium)` RELEASE TRAIN
 #### New Features
 * Updated `reactor-core` version to 3.4.3.
 * Updated `reactor-netty` version to 1.0.4.
@@ -92,7 +92,8 @@
 #### Key Bug Fixes
 * Improved the 449 retry policy to force back-off on initial retry and start with shorter back-offs.
 
-### 4.7.0 (2020-10-17) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
+### 4.7.0 (2020-10-17) 
+[!IMPORTANT] WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
 #### New Features
 * Added Beta API for transactional batches.
 
