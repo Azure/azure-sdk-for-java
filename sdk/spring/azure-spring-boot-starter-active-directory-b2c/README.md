@@ -270,7 +270,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        LOGGER.info("Webapp callWebApiA() returned: {}", body);
+        LOGGER.info("Call callWebApiA(), request '/webApiA/sample' returned: {}", body);
         return "Request '/webApiA/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
     ```
@@ -347,8 +347,8 @@ This scenario not support login. Just protect the server by validating the acces
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiA.SampleScope')")
     @GetMapping("/webApiA/sample")
-    public String callWebApiASample() {
-        LOGGER.info("WebApiA callWebApiASample() returned.");
+    public String webApiASample() {
+        LOGGER.info("Call webApiASample()");
         return "Request '/webApiA/sample'(WebApi A) returned successfully.";
     }
     ```
@@ -446,7 +446,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        LOGGER.info("WebApiA callWebApiB() returned: {}", body);
+        LOGGER.info("Call callWebApiB(), request '/webApiB/sample' returned: {}", body);
         return "Request 'webApiA/webApiB/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
     ```
@@ -460,8 +460,8 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
      */
     @PreAuthorize("hasAuthority('APPROLE_WebApiB.SampleScope')")
     @GetMapping("/webApiB/sample")
-    public String callWebApiBSample() {
-        LOGGER.info("WebApiB callWebApiBSample() returned.");
+    public String webApiBSample() {
+        LOGGER.info("Call webApiBSample()");
         return "Request '/webApiB/sample'(WebApi B) returned successfully.";
     }
     ```

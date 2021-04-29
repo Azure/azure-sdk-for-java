@@ -38,7 +38,7 @@ public class WebappAccessResourceController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        LOGGER.info("Webapp callWebApiA() returned: {}", body);
+        LOGGER.info("Call callWebApiA(), request '/webApiA/sample' returned: {}", body);
         return "Request '/webApiA/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
 
@@ -58,7 +58,7 @@ public class WebappAccessResourceController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        LOGGER.info("Webapp callWebApiAThenCallWebApiB() returned: {}", body);
+        LOGGER.info("Call callWebApiAThenCallWebApiB(), request '/webApiA/webApiB/sample' returned: {}", body);
         return "Request '/webApiA/webApiB/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
 }
