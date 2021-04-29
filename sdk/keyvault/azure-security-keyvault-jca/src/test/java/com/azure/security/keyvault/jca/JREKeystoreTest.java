@@ -102,10 +102,8 @@ public class JREKeystoreTest {
     public void testLocalKeystore() throws Exception {
         //   Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
 
-        /**
-         *
+        /*
          * Trust manager is used by the client, as the client need trust the server.
-         * If the server need trust the client, it is also used by the server.
          */
         Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
