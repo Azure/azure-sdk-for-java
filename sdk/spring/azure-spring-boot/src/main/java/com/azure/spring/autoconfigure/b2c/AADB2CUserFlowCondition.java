@@ -10,9 +10,9 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Configuration condition for activating OAuth2 client related beans.
+ * Configuration condition for activating AAD B2C OAuth2 security configuration beans.
  */
-public class ClientRegistrationCondition extends SpringBootCondition {
+public class AADB2CUserFlowCondition extends SpringBootCondition {
 
     @Override
     public ConditionOutcome getMatchOutcome(final ConditionContext context,
@@ -20,8 +20,7 @@ public class ClientRegistrationCondition extends SpringBootCondition {
         AADB2CProperties aadb2CProperties = Binder.get(context.getEnvironment())
                                                   .bind("azure.activedirectory.b2c", AADB2CProperties.class)
                                                   .get();
-        return new ConditionOutcome(!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())
-            || !CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients()),
-            "Configure at least one attribute 'user-flow' or 'authorization-clients'.");
+        return new ConditionOutcome(!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows()),
+            "Configure at least one attribute 'user-flow'.");
     }
 }
