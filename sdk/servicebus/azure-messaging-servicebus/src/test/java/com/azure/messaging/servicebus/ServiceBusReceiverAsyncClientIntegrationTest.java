@@ -170,7 +170,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         final ServiceBusReceivedMessage message = receiver.receiveMessages()
-            .flatMap( receivedMessage-> {
+            .flatMap(receivedMessage -> {
                 final Mono<Void> operation;
                 switch (dispositionStatus) {
                     case COMPLETED:

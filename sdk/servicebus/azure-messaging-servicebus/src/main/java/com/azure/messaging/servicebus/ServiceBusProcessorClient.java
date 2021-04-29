@@ -193,6 +193,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         receiverClient.receiveMessagesWithContext()
             .parallel(processorOptions.getMaxConcurrentCalls())
             .runOn(Schedulers.boundedElastic())
+
             .subscribe(new Subscriber<ServiceBusMessageContext>() {
                 @Override
                 public void onSubscribe(Subscription subscription) {
