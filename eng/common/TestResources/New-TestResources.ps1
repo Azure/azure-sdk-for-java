@@ -140,7 +140,7 @@ try {
     # Enumerate test resources to deploy. Fail if none found.
     $repositoryRoot = "$PSScriptRoot/../../.." | Resolve-Path
     $root = [System.IO.Path]::Combine($repositoryRoot, "sdk", $ServiceDirectory) | Resolve-Path
-    $templateFileName = 'test-resources2.json'
+    $templateFileName = 'test-resources.json'
     $templateFiles = @()
 
     Write-Verbose "Checking for '$templateFileName' files under '$root'"
