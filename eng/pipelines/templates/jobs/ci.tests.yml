@@ -124,7 +124,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} $(TestOptions) -pl $(PLSkipOptions)$(ProjectList) $(AdditionalOptions) -T 1C
+          options: ${{ parameters.TestOptions }} $(TestOptions) -pl $(PLSkipOptions)$(ProjectList) $(AdditionalOptions)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
