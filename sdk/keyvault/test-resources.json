@@ -13,8 +13,8 @@
       "type": "String"
     },
     "endpointSuffix": {
-      "defaultValue": "vault.azure.net",
-      "type": "String"
+      "type": "String",
+      "defaultValue": "vault.azure.net"
     },
     "testApplicationId": {
       "type": "String"
@@ -72,7 +72,7 @@
     }
   },
   "variables": {
-    "keyVaultName": "jcaKeyVault02",
+    "keyVaultName": "[parameters('baseName')]",
     "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
     "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
     "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"

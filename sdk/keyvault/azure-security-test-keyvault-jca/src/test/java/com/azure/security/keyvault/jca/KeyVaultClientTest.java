@@ -26,11 +26,20 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetAliases() {
+        System.out.println("*****************************logStart**************************");
+        keyVaultClient.getAliases().forEach(System.out::println);
+        System.out.println(keyVaultClient.getAliases().size());
+        System.out.println("*****************************logEnd**************************");
         assertNotNull(keyVaultClient.getAliases());
     }
 
     @Test
     public void testGetCertificate() {
+        System.out.println("*****************************logStart**************************");
+        String certificate_name = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME").length());
+        System.out.println(certificate_name.substring(0, certificate_name.length() - 1));
+        System.out.println("*****************************logEnd**************************");
         assertNotNull(keyVaultClient.getCertificate("myalias"));
     }
 
