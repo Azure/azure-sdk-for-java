@@ -126,7 +126,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
-        replacement = "azure.activedirectory.user-group.allowed-groups")
+        replacement = "azure.activedirectory.user-group.allowed-group-names")
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
@@ -161,12 +161,18 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
-        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
+                + "deprecated.",
+            replacement = "azure.activedirectory.user-group.allowed-group-names")
         public List<String> getAllowedGroups() {
             return allowedGroupNames;
         }
 
-        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
+                + "deprecated.",
+            replacement = "azure.activedirectory.user-group.allowed-group-names")
         public void setAllowedGroups(List<String> allowedGroups) {
             this.allowedGroupNames = allowedGroups;
         }
@@ -352,9 +358,9 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .orElseGet(Collections::emptyList)
                        .contains(group)
             || Optional.ofNullable(getUserGroup())
-                               .map(UserGroupProperties::getAllowedGroupIds)
-                               .orElseGet(Collections::emptySet)
-                               .contains(group);
+                       .map(UserGroupProperties::getAllowedGroupIds)
+                       .orElseGet(Collections::emptySet)
+                       .contains(group);
     }
 
     @Override
@@ -386,18 +392,20 @@ public class AADAuthenticationProperties implements InitializingBean {
         if (!StringUtils.hasText(tenantId)) {
             tenantId = "common";
         }
+
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
             throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
-                + "azure.activedirectory.user-group.allowed-groups should be empty. "
+                + "azure.activedirectory.user-group.allowed-groups/allowed-group-names should be empty. "
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
+                + ", and azure.activedirectory.user-group.allowed-groups/allowed-group-names="
+                + userGroup.getAllowedGroups());
         }
 
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupIds().isEmpty()) {
             throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
-                + "azure.activedirectory.user-group.allowed-groups-id should be empty. "
+                + "azure.activedirectory.user-group.allowed-group-ids should be empty. "
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-groups-id=" + userGroup.getAllowedGroupIds());
+                + ", and azure.activedirectory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
 
         authorizationClients.values()

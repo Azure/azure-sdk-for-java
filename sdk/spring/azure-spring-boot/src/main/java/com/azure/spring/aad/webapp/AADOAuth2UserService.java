@@ -25,6 +25,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -111,16 +112,20 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     }
 
     Set<String> extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken) {
-        Set<String> roles = Optional.of(accessToken)
-                                    .filter(notUsed -> properties.allowedGroupIdsConfigured()
-                                        || properties.allowedGroupNamesConfigured())
-                                    .map(AbstractOAuth2Token::getTokenValue)
-                                    .map(graphClient::getGroupsFromGraph)
-                                    .orElseGet(Collections::emptySet)
-                                    .stream()
-                                    .filter(properties::isAllowedGroup)
-                                    .map(group -> ROLE_PREFIX + group)
-                                    .collect(Collectors.toSet());
+        if (!properties.allowedGroupIdsConfigured() && !properties.allowedGroupNamesConfigured()) {
+            return Collections.emptySet();
+        }
+        Set<String> groups = Optional.of(accessToken)
+                                     .map(AbstractOAuth2Token::getTokenValue)
+                                     .map(graphClient::getGroupsFromGraph)
+                                     .orElseGet(Collections::emptySet);
+        Set<String> roles = Arrays.asList(properties.getUserGroup().getAllowedGroupIds(),
+            properties.getUserGroup().getAllowedGroupNames())
+                                  .stream()
+                                  .flatMap(Collection::stream)
+                                  .filter(groups::contains)
+                                  .map(group -> ROLE_PREFIX + group)
+                                  .collect(Collectors.toSet());
         return roles;
     }
 }

@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -53,13 +54,8 @@ public class GraphClient {
             memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
-                       .map(Membership::getDisplayName)
-                       .forEach(groups::add);
-            memberships.getValue()
-                       .stream()
-                       .filter(this::isGroupObject)
-                       .map(Membership::getObjectID)
-                       .forEach(groups::add);
+                       .map(membership -> Arrays.asList(membership.getDisplayName(), membership.getObjectID()))
+                       .forEach(groups::addAll);
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
                                            .orElse(null);
