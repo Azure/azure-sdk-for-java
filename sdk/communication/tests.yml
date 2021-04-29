@@ -1,5 +1,17 @@
 trigger: none
 
+parameters:
+  - name: TestPackagesEnabled
+    displayName: Tests Enabled
+    type: string
+    default: all
+    values:
+      - all
+      - chat
+      - identity
+      - phonenumbers
+      - sms
+
 stages:
 - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
@@ -47,9 +59,8 @@ stages:
       SKIP_LIVE_TEST: TRUE
       AZURE_SUBSCRIPTION_ID: $(acs-subscription-id)
       COMMUNICATION_LIVETEST_CONNECTION_STRING: $(communication-livetest-connection-string)
-      SMS_SERVICE_PHONE_NUMBER: $(communication-livetest-phone-number)
+      COMMUNICATION_PHONE_NUMBER: $(communication-livetest-phone-number)
       AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
       AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
       AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-      COMMUNICATION_PHONE_NUMBER: $(communication-livetest-phone-number-for-config)
-
+      TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}

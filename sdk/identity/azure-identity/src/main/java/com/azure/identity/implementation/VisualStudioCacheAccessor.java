@@ -7,12 +7,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.AzureAuthorityHosts;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -33,7 +35,6 @@ public class VisualStudioCacheAccessor {
         JsonNode output = null;
         String homeDir = System.getProperty("user.home");
         String settingsPath = "";
-        ObjectMapper mapper = new ObjectMapper();
         try {
             if (Platform.isWindows()) {
                 settingsPath = Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json")
@@ -48,12 +49,21 @@ public class VisualStudioCacheAccessor {
                 throw logger.logExceptionAsError(
                         new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
             }
-            File settingsFile = new File(settingsPath);
-            output = mapper.readTree(settingsFile);
+            output =  readJsonFile(settingsPath);
         } catch (Exception e) {
             return null;
         }
         return output;
+    }
+
+    JsonNode readJsonFile(String path) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
+        mapper.configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true);
+        mapper.configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
+
+        File settingsFile = new File(path);
+        return mapper.readTree(settingsFile);
     }
 
     /**

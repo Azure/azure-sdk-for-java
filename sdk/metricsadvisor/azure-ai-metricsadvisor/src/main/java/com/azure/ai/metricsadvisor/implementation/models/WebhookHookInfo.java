@@ -17,7 +17,7 @@ public final class WebhookHookInfo extends HookInfo {
     /*
      * The hookParameter property.
      */
-    @JsonProperty(value = "hookParameter", required = true)
+    @JsonProperty(value = "hookParameter")
     private WebhookHookParameter hookParameter;
 
     /**

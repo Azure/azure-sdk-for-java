@@ -20,10 +20,9 @@ Configuration Reference:
 | `spark.cosmos.useGatewayMode`      | `false`    | Use gateway mode for the client operations  |
 | `spark.cosmos.read.forceEventualConsistency`  | `true`    | Makes the client use Eventual consistency for read operations instead of using the default account level consistency |
 | `spark.cosmos.applicationName`      | None    | Application name  |
-
+| `spark.cosmos.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[eastus,westus]`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet) |
 
 ### Write Config
-
 
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
@@ -45,6 +44,14 @@ When doing read operations, users can specify a custom schema or allow the conne
 | `spark.cosmos.read.inferSchemaSamplingSize`      | `1000`    | Sampling size to use when inferring schema and not using a query. |
 | `spark.cosmos.read.inferSchemaIncludeSystemProperties`     | `false`    | When schema inference is enabled, whether the resulting schema will include all [Cosmos DB system properties](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items#properties-of-an-item). |
 | `spark.cosmos.read.inferSchemaIncludeTimestamp`     | `false`    | When schema inference is enabled, whether the resulting schema will include the document Timestamp (`_ts`). Not required if `spark.cosmos.read.inferSchemaIncludeSystemProperties` is enabled, as it will already include all system properties. |
+
+#### Json conversion configuration
+
+When reading json documents, if a document contains an attribute that does not map to the schema type, the user can decide whether to use a `null` value (Relaxed) or an exception (Strict). 
+
+| Config Property Name      | Default | Description |
+| :---        |    :----   |         :--- | 
+| `spark.cosmos.read.schemaConversionMode`     | `Relaxed`    | The schema conversion behavior (Relaxed, Strict) |
 
 #### Partitioning Strategy Config
 

@@ -26,7 +26,8 @@ private class ChangeFeedMicroBatchStream
   with SupportsAdmissionControl
   with CosmosLoggingTrait {
 
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  private val streamId = UUID.randomUUID().toString
+  logTrace(s"Instantiated ${this.getClass.getSimpleName}.$streamId")
 
   private val defaultParallelism = session.sparkContext.defaultParallelism
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
@@ -36,7 +37,6 @@ private class ChangeFeedMicroBatchStream
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
   private val client = CosmosClientCache(clientConfiguration, Some(cosmosClientStateHandle))
   private val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
-  private val streamId = UUID.randomUUID().toString
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
 
   override def latestOffset(): Offset = {
@@ -66,8 +66,15 @@ private class ChangeFeedMicroBatchStream
     assert(startOffset.isInstanceOf[ChangeFeedOffset], "Argument 'startOffset' is not a change feed offset.")
     assert(endOffset.isInstanceOf[ChangeFeedOffset], "Argument 'endOffset' is not a change feed offset.")
 
+    logInfo(s"--> planInputPartitions.$streamId, startOffset: ${startOffset.json()} - endOffset: ${endOffset.json()}")
     val start = startOffset.asInstanceOf[ChangeFeedOffset]
     val end = endOffset.asInstanceOf[ChangeFeedOffset]
+
+    val startChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(start.changeFeedState))
+    logInfo(s"Start-ChangeFeedState.$streamId: $startChangeFeedState")
+
+    val endChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(end.changeFeedState))
+    logInfo(s"End-ChangeFeedState.$streamId: $endChangeFeedState")
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
@@ -85,6 +92,7 @@ private class ChangeFeedMicroBatchStream
    * Returns a factory to create a `PartitionReader` for each `InputPartition`.
    */
   override def createReaderFactory(): PartitionReaderFactory = {
+    logInfo(s"--> createReaderFactory.$streamId")
     ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle)
   }
 
@@ -105,38 +113,36 @@ private class ChangeFeedMicroBatchStream
   // serialize them in the end offset returned to avoid any IO calls for the actual partitioning
   override def latestOffset(startOffset: Offset, readLimit: ReadLimit): Offset = {
 
-    // scalastyle:off null
-    // null means no more data to process
-    // null is used here because the DataSource V2 API is defined in Java
-    if (latestOffsetSnapshot == null) {
+    logInfo(s"--> latestOffset.$streamId")
+
+    val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
+    val offset = CosmosPartitionPlanner.getLatestOffset(
+      config,
+      startChangeFeedOffset,
+      readLimit,
+      Duration.ZERO,
+      this.clientConfiguration,
+      this.cosmosClientStateHandle,
+      this.containerConfig,
+      this.partitioningConfig,
+      this.defaultParallelism,
+      this.container
+    )
+
+    if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
+      logInfo(s"<-- latestOffset.$streamId - new offset ${offset.json()}")
+      this.latestOffsetSnapshot = Some(offset)
+      offset
+    } else {
+      logInfo(s"<-- latestOffset.$streamId - Finished returning null")
+
+      this.latestOffsetSnapshot = None
+
+      // scalastyle:off null
+      // null means no more data to process
+      // null is used here because the DataSource V2 API is defined in Java
       null
       // scalastyle:on null
-    } else {
-      val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
-      val offset = CosmosPartitionPlanner.getLatestOffset(
-        config,
-        startChangeFeedOffset,
-        readLimit,
-        Duration.ZERO,
-        this.clientConfiguration,
-        this.cosmosClientStateHandle,
-        this.containerConfig,
-        this.partitioningConfig,
-        this.defaultParallelism,
-        this.container
-      )
-
-      if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
-        this.latestOffsetSnapshot = Some(offset)
-        offset
-      } else {
-        // scalastyle:off null
-        // null means no more data to process
-        // null is used here because the DataSource V2 API is defined in Java
-        this.latestOffsetSnapshot = null
-        null
-        // scalastyle:on null
-      }
     }
   }
 

@@ -12,10 +12,10 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
-import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableServiceErrorException;
 import com.azure.data.tables.models.UpdateMode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -508,26 +508,19 @@ public class TablesAsyncClientTest extends TestBase {
         createdEntity.addProperty(newPropertyKey, "valueB");
 
         // Act & Assert
-        if (mode == UpdateMode.MERGE && tableClient.getTableUrl().contains("cosmos.azure.com")) {
-            // This scenario is currently broken when using the CosmosDB Table API
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
-                .verify();
-        } else {
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
-                .expectComplete()
-                .verify();
+        StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
 
-            // Assert and verify that the new properties are in there.
-            StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
-                .assertNext(entity -> {
-                    final Map<String, Object> properties = entity.getProperties();
-                    assertTrue(properties.containsKey(newPropertyKey));
-                    assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
-                })
-                .verifyComplete();
-        }
+        // Assert and verify that the new properties are in there.
+        StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
+            .assertNext(entity -> {
+                final Map<String, Object> properties = entity.getProperties();
+                assertTrue(properties.containsKey(newPropertyKey));
+                assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
+            })
+            .verifyComplete();
     }
 
     @Test
