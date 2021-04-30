@@ -18,7 +18,6 @@ import com.azure.resourcemanager.containerregistry.models.ImportMode;
 import com.azure.resourcemanager.containerregistry.models.ImportSource;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Iterator;
 import java.util.List;
