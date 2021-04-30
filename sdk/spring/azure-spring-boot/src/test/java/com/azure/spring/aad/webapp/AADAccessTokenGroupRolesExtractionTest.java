@@ -50,6 +50,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
 
         assertThat(groupsName).contains("ROLE_group1");
+        assertThat(groupsName).doesNotContain("ROLE_group5");
         assertThat(groupsName).hasSize(1);
     }
 
@@ -61,6 +62,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupsName).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        assertThat(groupsName).doesNotContain("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194abaaa");
         assertThat(groupsName).hasSize(1);
     }
 
@@ -75,7 +77,9 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupsName).contains("ROLE_group1");
+        assertThat(groupsName).doesNotContain("ROLE_group5");
         assertThat(groupsName).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        assertThat(groupsName).doesNotContain("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194abaaa");
         assertThat(groupsName).hasSize(2);
     }
 }
