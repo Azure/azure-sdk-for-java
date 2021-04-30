@@ -203,6 +203,7 @@
             <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <forkCount>2</forkCount>
+              <reuseForks>false</reuseForks>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
@@ -292,6 +293,7 @@
                 --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
               </argLine>
               <forkCount>2</forkCount>
+              <reuseForks>false</reuseForks>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>

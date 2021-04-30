@@ -205,6 +205,7 @@
                 -Xmx4096m
               </argLine>
               <forkCount>2</forkCount>
+              <reuseForks>false</reuseForks>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
@@ -299,6 +300,7 @@
                 --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
               </argLine>
               <forkCount>2</forkCount>
+              <reuseForks>false</reuseForks>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
