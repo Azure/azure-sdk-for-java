@@ -101,7 +101,7 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmos.someTypo" -> "xyz",
+      "spark.cosmos.someTypo" -> "xyz"
     )
 
     try {
@@ -117,7 +117,7 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmoss.someTypo" -> "xyz",
+      "spark.cosmoss.someTypo" -> "xyz"
     )
 
     CosmosConfig.getEffectiveConfig(None, None, userConfig)
