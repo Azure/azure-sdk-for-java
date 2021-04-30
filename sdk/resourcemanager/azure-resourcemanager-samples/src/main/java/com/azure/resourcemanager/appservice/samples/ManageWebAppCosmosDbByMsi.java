@@ -93,6 +93,7 @@ public final class ManageWebAppCosmosDbByMsi {
                 .withScope(vault.id())
                 .create();
 
+            // wait a bit for rbac
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
             //============================================================
@@ -116,14 +117,14 @@ public final class ManageWebAppCosmosDbByMsi {
             WebApp app = azureResourceManager.webApps()
                 .define(appName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
+                .withExistingResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withHttpsOnly(true)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.JAVA_8)
                 .withAppSetting("AZURE_KEYVAULT_URI", vault.vaultUri())
                 .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessTo(vault.id(), BuiltInRole.KEY_VAULT_SECRETS_USER)    // allow web app access vault secret
+                .withSystemAssignedIdentityBasedAccessTo(vault.id(), BuiltInRole.KEY_VAULT_SECRETS_USER)    // allow web app access Key Vault secret
                 .create();
 
             System.out.println("Created web app " + app.name());
@@ -157,7 +158,7 @@ public final class ManageWebAppCosmosDbByMsi {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             System.out.println("CURLing " + appUrl);
             System.out.println(Utils.sendGetRequest("https://" + appUrl));
-
+            // it might take more time for web app start up
 
             return true;
         } finally {
