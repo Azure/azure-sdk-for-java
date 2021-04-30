@@ -18,14 +18,14 @@ public class AuthClientTest {
 
     /**
      * Test getAuthorizationToken method.
-     * 
+     *
      * @throws Exception when a serious error occurs.
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        String tenantId = System.getenv("AZURE_KEYVAULT_TENANT-ID");
-        String clientId = System.getenv("AZURE_KEYVAULT_CLIENT-ID");
-        String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT-SECRET");
+        String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
+        String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
+        String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
         AuthClient authClient = new AuthClient();
         String result = authClient.getAccessToken(
             "https://management.azure.com/",

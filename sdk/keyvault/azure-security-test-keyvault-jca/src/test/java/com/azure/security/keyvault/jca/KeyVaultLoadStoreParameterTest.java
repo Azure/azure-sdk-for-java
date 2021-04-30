@@ -21,9 +21,9 @@ public class KeyVaultLoadStoreParameterTest {
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET")
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET")
         );
         assertNull(parameter.getProtectionParameter());
     }

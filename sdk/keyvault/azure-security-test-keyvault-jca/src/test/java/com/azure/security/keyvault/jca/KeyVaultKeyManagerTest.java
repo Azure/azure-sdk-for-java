@@ -33,16 +33,30 @@ public class KeyVaultKeyManagerTest {
                 .ifPresent(value -> {
                     System.out.println("*****************************logStart**************************");
                     System.out.println("Original: " + key + " = " + value);
-                    String lowerCaseValue = value.toLowerCase();
-                    System.out.println("lowerCaseValue" + key + " = " + lowerCaseValue);
-                    String upperCaseValue = value.toUpperCase();
-                    System.out.println("upperCaseValue" + key + " = " + upperCaseValue);
-                    String halfValue = value.toLowerCase().substring(value.length() - 1);
-                    System.out.println("halfValue" + key + " = " + halfValue);
-                    System.getProperties().put(
-                        key.toLowerCase().replaceAll("_", "."), value);
-                    String propertyValue = System.getProperty(key.toLowerCase().replaceAll("_", "."));
-                    System.out.println("Original property: " + key + " = " + propertyValue);
+                    String preValue = value.toLowerCase().substring(0, value.length() / 2);
+                    System.out.println("preValue" + key + " = " + preValue);
+                    String postValue = value.toLowerCase().substring(value.length() / 2, value.length() - 1);
+                    System.out.println("postValue" + key + " = " + postValue);
+                    System.out.println(key + "‘s length = " + value.length());
+
+                    if (key.equals("AZURE_KEYVAULT_URI")) {
+                        System.getProperties().put(
+                            key.toLowerCase().replaceAll("_", "."), value);
+                    } else {
+                        int index = key.lastIndexOf("_");
+                        StringBuilder sb = new StringBuilder(key.toLowerCase().replaceAll("_", "."));
+                        System.getProperties().put(sb.replace(index, index + 1, "-").toString(), value);
+                    }
+                    if (System.getProperty("azure.keyvault.client-id") != null) {
+                        String property = System.getProperty("azure.keyvault.client-id");
+                        System.out.println("Original property : " + key + " = " + property);
+                        String propertyPreValue = property.toLowerCase().substring(0, property.length() / 2);
+                        System.out.println("property preValue" + key + " = " + propertyPreValue);
+                        String propertyPostValue = property.toLowerCase().substring(property.length() / 2,
+                            property.length() - 1);
+                        System.out.println("property postValue" + key + " = " + propertyPostValue);
+                    }
+
                     System.out.println("*****************************logEnd**************************");
                 });
     }
@@ -52,16 +66,16 @@ public class KeyVaultKeyManagerTest {
         CertificateException {
         putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_SECRET");
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         keyStore.load(parameter);
         manager = new KeyVaultKeyManager(keyStore, null);
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
@@ -69,7 +83,7 @@ public class KeyVaultKeyManagerTest {
 
     @Test
     public void testPrivateKey() {
-        assertNotNull(manager.getPrivateKey("myalias"));
+        assertNotNull(manager.getPrivateKey(certificateName));
     }
 
 

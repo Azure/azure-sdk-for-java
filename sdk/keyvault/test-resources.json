@@ -309,21 +309,21 @@
       "type": "string",
       "value": "[variables('azureKeyVaultUrl')]"
     },
-    "AZURE_KEYVAULT_TENANT-ID": {
+    "AZURE_KEYVAULT_TENANT_ID": {
       "type": "string",
       "value": "[parameters('tenantId')]"
     },
-    "AZURE_KEYVAULT_CLIENT-ID": {
+    "AZURE_KEYVAULT_CLIENT_ID": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
-    "AZURE_KEYVAULT_CLIENT-SECRET": {
+    "AZURE_KEYVAULT_CLIENT_SECRET": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "AZURE_KEYVAULT_CERTIFICATE_NAME": {
+    "CERTIFICATE_SCRIPT_CONTENT": {
       "type": "string",
-      "value": "[parameters('certificateName')]"
+      "value": "[reference('createAddCertificate').outputs.certThumbprint]"
     }
   }
 }

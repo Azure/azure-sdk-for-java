@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 import java.security.KeyStore;
 import java.security.Security;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -21,23 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultJcaProviderTest {
 
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultJcaProviderTest.class.getName());
-
-    String getEnvValue(String key) {
-        String value = System.getenv(key);
-        System.out.println("*****************************logStart");
-        System.out.println("Original: " + key + " = " + value);
-        String lowerCaseValue = value.toLowerCase();
-        System.out.println("lowerCaseValue" + key + " = " + lowerCaseValue);
-        String upperCaseValue = value.toLowerCase();
-        System.out.println("upperCaseValue" + key + " = " + upperCaseValue);
-        String halfValue = value.toLowerCase().substring(value.length() - 1);
-        System.out.println("halfValue" + key + " = " + halfValue);
-        System.out.println("*****************************logEnd");
-        return value;
-    }
-
-
     public static void putEnvironmentPropertyToSystemProperty(String key) {
         Optional.of(key)
                 .map(System::getenv)
@@ -45,16 +27,43 @@ public class KeyVaultJcaProviderTest {
                 .ifPresent(value -> {
                     System.out.println("*****************************logStart**************************");
                     System.out.println("Original: " + key + " = " + value);
-                    String lowerCaseValue = value.toLowerCase();
-                    System.out.println("lowerCaseValue" + key + " = " + lowerCaseValue);
-                    String upperCaseValue = value.toUpperCase();
-                    System.out.println("upperCaseValue" + key + " = " + upperCaseValue);
-                    String halfValue = value.toLowerCase().substring(value.length() - 1);
-                    System.out.println("halfValue" + key + " = " + halfValue);
-                    System.getProperties().put(
-                        key.toLowerCase().replaceAll("_", "."), value);
-                    String propertyValue = System.getProperty(key.toLowerCase().replaceAll("_", "."));
-                    System.out.println("Original property: " + key + " = " + propertyValue);
+                    String preValue = value.toLowerCase().substring(0, value.length() / 2);
+                    System.out.println("preValue" + key + " = " + preValue);
+                    String postValue = value.toLowerCase().substring(value.length() / 2, value.length() - 1);
+                    System.out.println("postValue" + key + " = " + postValue);
+                    System.out.println(key + "‘s length = " + value.length());
+
+                    if (key.equals("AZURE_KEYVAULT_URI")) {
+                        System.getProperties().put(
+                            key.toLowerCase().replaceAll("_", "."), value);
+                    } else {
+                        int index = key.lastIndexOf("_");
+                        StringBuilder sb = new StringBuilder(key.toLowerCase().replaceAll("_", "."));
+                        System.getProperties().put(sb.replace(index, index + 1, "-").toString(), value);
+                    }
+                    if (System.getProperty("azure.keyvault.client-id") != null) {
+                        String property = System.getProperty("azure.keyvault.client-id");
+                        System.out.println("Original property : azure.keyvault.client-id = " + property);
+                        String propertyPreValue = property.toLowerCase().substring(0, property.length() / 2);
+                        System.out.println("property preValue: azure.keyvault.client-id = " + propertyPreValue);
+                        String propertyPostValue = property.toLowerCase().substring(property.length() / 2,
+                            property.length() - 1);
+                        System.out.println("property postValue: azure.keyvault.client-id = " + propertyPostValue);
+                    }
+
+                    if (System.getenv("CERTIFICATE_SCRIPT_CONTENT") != null) {
+                        String certificateScriptContent = System.getenv("CERTIFICATE_SCRIPT_CONTENT");
+                        System.out.println("Original certificate_script_content = " + certificateScriptContent);
+                        String propertyPreValue = certificateScriptContent.toLowerCase().substring(0,
+                            certificateScriptContent.length() / 2);
+                        System.out.println("property certificate_script_content = " + propertyPreValue);
+                        String propertyPostValue =
+                            certificateScriptContent.toLowerCase().substring(certificateScriptContent.length() / 2,
+                                certificateScriptContent.length() - 1);
+                        System.out.println("property postValue propertyPostValue = " + propertyPostValue);
+                    }
+
+
                     System.out.println("*****************************logEnd**************************");
                 });
     }
@@ -63,9 +72,9 @@ public class KeyVaultJcaProviderTest {
     public void setEnvironmentProperty() {
         putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_SECRET");
     }
 
     /**
@@ -90,10 +99,10 @@ public class KeyVaultJcaProviderTest {
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         keystore.load(parameter);
-        assertNotNull(keystore.getCertificate("myalias"));
+        assertNotNull(keystore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
     }
 }

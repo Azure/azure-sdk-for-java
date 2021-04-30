@@ -42,8 +42,35 @@ public class ServerSocketTest {
         Optional.of(key)
                 .map(System::getenv)
                 .filter(StringUtils::hasText)
-                .ifPresent(value -> System.getProperties().put(
-                    key.toLowerCase().replaceAll("_", "."), value));
+                .ifPresent(value -> {
+                    System.out.println("*****************************logStart**************************");
+                    System.out.println("Original: " + key + " = " + value);
+                    String preValue = value.toLowerCase().substring(0, value.length() / 2);
+                    System.out.println("preValue" + key + " = " + preValue);
+                    String postValue = value.toLowerCase().substring(value.length() / 2, value.length() - 1);
+                    System.out.println("postValue" + key + " = " + postValue);
+                    System.out.println(key + "‘s length = " + value.length());
+
+                    if (key.equals("AZURE_KEYVAULT_URI")) {
+                        System.getProperties().put(
+                            key.toLowerCase().replaceAll("_", "."), value);
+                    } else {
+                        int index = key.lastIndexOf("_");
+                        StringBuilder sb = new StringBuilder(key.toLowerCase().replaceAll("_", "."));
+                        System.getProperties().put(sb.replace(index, index + 1, "-").toString(), value);
+                    }
+                    if (System.getProperty("azure.keyvault.client-id") != null) {
+                        String property = System.getProperty("azure.keyvault.client-id");
+                        System.out.println("Original property : " + key + " = " + property);
+                        String propertyPreValue = property.toLowerCase().substring(0, property.length() / 2);
+                        System.out.println("property preValue" + key + " = " + propertyPreValue);
+                        String propertyPostValue = property.toLowerCase().substring(property.length() / 2,
+                            property.length() - 1);
+                        System.out.println("property postValue" + key + " = " + propertyPostValue);
+                    }
+
+                    System.out.println("*****************************logEnd**************************");
+                });
     }
 
     /**
@@ -70,15 +97,15 @@ public class ServerSocketTest {
          */
         putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_SECRET");
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -177,15 +204,15 @@ public class ServerSocketTest {
          */
         putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
         putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT-SECRET");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_ID");
+        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_SECRET");
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT-SECRET"));
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());

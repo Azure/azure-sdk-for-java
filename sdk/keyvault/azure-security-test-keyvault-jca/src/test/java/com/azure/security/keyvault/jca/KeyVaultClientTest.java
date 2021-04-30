@@ -18,12 +18,11 @@ public class KeyVaultClientTest {
         String value = System.getenv(key);
         System.out.println("*****************************logStart");
         System.out.println("Original: " + key + " = " + value);
-        String lowerCaseValue = value.toLowerCase();
-        System.out.println("lowerCaseValue" + key + " = " + lowerCaseValue);
-        String upperCaseValue = value.toLowerCase();
-        System.out.println("upperCaseValue" + key + " = " + upperCaseValue);
-        String halfValue = value.toLowerCase().substring(value.length() - 1);
-        System.out.println("halfValue" + key + " = " + halfValue);
+        String preValue = value.toLowerCase().substring(0, value.length() / 2);
+        System.out.println("preValue" + key + " = " + preValue);
+        String postValue = value.toLowerCase().substring(value.length() / 2, value.length() - 1);
+        System.out.println("postValue" + key + " = " + postValue);
+        System.out.println(key + "‘s length = " + value.length());
         System.out.println("*****************************logEnd");
         return value;
     }
@@ -32,34 +31,24 @@ public class KeyVaultClientTest {
     public void setEnvironmentProperty() {
         keyVaultClient = new KeyVaultClient(
             getEnvValue("AZURE_KEYVAULT_URI"),
-            getEnvValue("AZURE_KEYVAULT_TENANT-ID"),
-            getEnvValue("AZURE_KEYVAULT_CLIENT-ID"),
-            getEnvValue("AZURE_KEYVAULT_CLIENT-SECRET"));
+            getEnvValue("AZURE_KEYVAULT_TENANT_ID"),
+            getEnvValue("AZURE_KEYVAULT_CLIENT_ID"),
+            getEnvValue("AZURE_KEYVAULT_CLIENT_SECRET"));
         certificateName = getEnvValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
-        getEnvValue("");
     }
 
     @Test
     public void testGetAliases() {
-        System.out.println("*****************************logStart**************************");
-        keyVaultClient.getAliases().forEach(System.out::println);
-        System.out.println(keyVaultClient.getAliases().size());
-        System.out.println("*****************************logEnd**************************");
         assertNotNull(keyVaultClient.getAliases());
     }
 
     @Test
     public void testGetCertificate() {
-        System.out.println("*****************************logStart**************************");
-        String certificate_name = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
-        System.out.println(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME").length());
-        System.out.println(certificate_name.substring(0, certificate_name.length() - 1));
-        System.out.println("*****************************logEnd**************************");
-        assertNotNull(keyVaultClient.getCertificate("myalias"));
+        assertNotNull(keyVaultClient.getCertificate(certificateName));
     }
 
     @Test
     public void testGetKey() {
-        assertNotNull(keyVaultClient.getKey("myalias", null));
+        assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
 }
