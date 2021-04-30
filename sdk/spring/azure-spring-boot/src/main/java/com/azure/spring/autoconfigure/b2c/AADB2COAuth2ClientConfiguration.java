@@ -17,8 +17,6 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
@@ -117,17 +115,7 @@ public class AADB2COAuth2ClientConfiguration {
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
                                                          OAuth2AuthorizedClientRepository authorizedClients) {
-        DefaultOAuth2AuthorizedClientManager manager =
-            new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
-
-        OAuth2AuthorizedClientProvider authorizedClientProviders = OAuth2AuthorizedClientProviderBuilder.builder()
-                                                                    .authorizationCode()
-                                                                    .refreshToken()
-                                                                    .clientCredentials()
-                                                                    .password()
-                                                                    .build();
-        manager.setAuthorizedClientProvider(authorizedClientProviders);
-        return manager;
+        return new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
     }
 
     /**
