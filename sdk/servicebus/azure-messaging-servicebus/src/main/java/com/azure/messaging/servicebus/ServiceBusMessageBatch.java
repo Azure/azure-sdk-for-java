@@ -112,7 +112,7 @@ public final class ServiceBusMessageBatch {
         }
 
         if (this.sizeInBytes.addAndGet(size) > this.maxMessageSize) {
-            this.sizeInBytes.addAndGet( -1 * size );
+            this.sizeInBytes.addAndGet(-1 * size);
             return false;
         }
 
