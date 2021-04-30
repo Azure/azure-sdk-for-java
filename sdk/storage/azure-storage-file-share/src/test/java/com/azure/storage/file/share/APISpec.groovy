@@ -398,7 +398,7 @@ class APISpec extends Specification {
     }
 
     private def reformat(String text) {
-        def fullName = text.split(" ").collect { it.toLowerCase() }.join("")
+        def fullName = text.split(" ").collect { it.capitalize() }.join("")
         def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
 
         if (!matcher.find()) {
