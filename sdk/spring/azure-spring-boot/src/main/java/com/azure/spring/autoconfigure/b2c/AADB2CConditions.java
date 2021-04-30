@@ -16,12 +16,12 @@ import org.springframework.util.CollectionUtils;
 /**
  * Conditions for activating AAD B2C beans.
  */
-public class AADB2CConditions {
+public final class AADB2CConditions {
 
     /**
      * Web application or web resource server scenario condition.
      */
-    protected static final class CommonCondition extends AnyNestedCondition {
+    static final class CommonCondition extends AnyNestedCondition {
         CommonCondition() {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
@@ -56,7 +56,7 @@ public class AADB2CConditions {
     /**
      * OAuth2 client beans condition.
      */
-    static class ClientRegistrationCondition extends SpringBootCondition {
+    static final class ClientRegistrationCondition extends SpringBootCondition {
 
         @Override
         public ConditionOutcome getMatchOutcome(final ConditionContext context,
@@ -73,7 +73,7 @@ public class AADB2CConditions {
     /**
      * AAD B2C OAuth2 security configuration condition.
      */
-    static class UserFlowCondition extends SpringBootCondition {
+    static final class UserFlowCondition extends SpringBootCondition {
 
         @Override
         public ConditionOutcome getMatchOutcome(final ConditionContext context,

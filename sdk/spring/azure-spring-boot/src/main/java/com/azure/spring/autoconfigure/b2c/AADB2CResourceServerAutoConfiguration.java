@@ -74,6 +74,7 @@ public class AADB2CResourceServerAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
