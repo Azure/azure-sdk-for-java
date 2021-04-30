@@ -398,13 +398,16 @@ class APISpec extends Specification {
     }
 
     private def reformat(String text) {
-        def fullName = text.split(" ").collect { it.capitalize() }.join("")
-        def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)
+        def fullName = text.split(" ").collect { it.toLowerCase() }.join("")
+        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
 
         if (!matcher.find()) {
             return fullName
         }
-        return matcher[0][1] + matcher[0][3]
+        def prefix = matcher[0][1]
+        def suffix = "[" + matcher[0][4] + "]"
+
+        return prefix + suffix
     }
 
     HttpClient getHttpClient() {

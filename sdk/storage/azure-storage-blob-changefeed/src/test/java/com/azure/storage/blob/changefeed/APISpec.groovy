@@ -72,7 +72,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = refactorName(specificationContext.getCurrentIteration().getName())
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -90,6 +90,19 @@ class APISpec extends Specification {
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
 
         containerName = generateContainerName()
+    }
+
+    private def refactorName(String text) {
+        def fullName = text.split(" ").collect { it.toLowerCase() }.join("")
+        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
+
+        if (!matcher.find()) {
+            return fullName
+        }
+        def prefix = matcher[0][1]
+        def suffix = "[" + matcher[0][4] + "]"
+
+        return prefix + suffix
     }
 
     def cleanup() {

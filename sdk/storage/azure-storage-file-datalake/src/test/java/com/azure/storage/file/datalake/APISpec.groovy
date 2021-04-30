@@ -138,7 +138,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = refactorName(specificationContext.getCurrentIteration().getName())
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -162,6 +162,19 @@ class APISpec extends Specification {
         fsc = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName)
         fscAsync = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName)
         fsc.create()
+    }
+
+    private def refactorName(String text) {
+        def fullName = text.split(" ").collect { it.toLowerCase() }.join("")
+        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
+
+        if (!matcher.find()) {
+            return fullName
+        }
+        def prefix = matcher[0][1]
+        def suffix = "[" + matcher[0][4] + "]"
+
+        return prefix + suffix
     }
 
     def cleanup() {
