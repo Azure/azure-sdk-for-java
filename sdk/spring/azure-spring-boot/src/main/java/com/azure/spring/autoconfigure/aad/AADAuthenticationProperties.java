@@ -161,6 +161,7 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
+        @Deprecated
         @DeprecatedConfigurationProperty(
             reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
                 + "deprecated.",
@@ -169,10 +170,7 @@ public class AADAuthenticationProperties implements InitializingBean {
             return allowedGroupNames;
         }
 
-        @DeprecatedConfigurationProperty(
-            reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
-                + "deprecated.",
-            replacement = "azure.activedirectory.user-group.allowed-group-names")
+        @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
             this.allowedGroupNames = allowedGroups;
         }
