@@ -10,7 +10,7 @@ import com.azure.perf.test.core.PerfStressProgram;
  * <p>
  * Test scenarios:
  * <ul>
- *     <li>Set the configuration settings</li>
+ *     <li>Listing the configuration settings</li>
  * </ul>
  * To run performance tests from the command line, package the project into an uber jar using {@code mvn clean
  * package}. Then run the program using {@code java -jar compiled-jar-with-dependencies-path}
@@ -25,6 +25,6 @@ public class App {
      * @param args Arguments to the performance tests.
      */
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{SetConfigurationSettingTest.class}, args);
+        PerfStressProgram.run(new Class<?>[]{ListConfigurationSettingsTest.class}, args);
     }
 }

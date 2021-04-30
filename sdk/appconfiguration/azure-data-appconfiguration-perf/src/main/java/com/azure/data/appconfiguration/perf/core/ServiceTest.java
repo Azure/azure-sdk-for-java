@@ -12,7 +12,7 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 
 /**
- * Base class for Azure Formrecognizer performance tests.
+ * Base class for Azure App Configuration performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
@@ -22,7 +22,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected final ConfigurationAsyncClient configurationAsyncClient;
 
     /**
-     * The base class for Azure Text Analytics tests.
+     * The base class for Azure App Configuration tests.
      *
      * @param options the configurable options for performing perf testing on this class.
      *
