@@ -28,7 +28,7 @@ public class AADGroupIdRoleIT {
     @Test
     public void roleTest() {
         Map<String, String> properties = createDefaultProperties();
-        properties.put("azure.activedirectory.user-group.enable-group-id", "true");
+        properties.put("azure.activedirectory.user-group.allowed-group-ids", "ebc90e49-2b23-45fc-8b9c-ba8ffc605ff9");
         properties.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE);
         properties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE);
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
