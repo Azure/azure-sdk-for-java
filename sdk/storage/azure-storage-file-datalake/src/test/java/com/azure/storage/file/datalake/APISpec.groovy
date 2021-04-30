@@ -33,6 +33,7 @@ import com.azure.storage.file.datalake.models.PathProperties
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
+import org.spockframework.runtime.model.IterationInfo
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -138,7 +139,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = refactorName(specificationContext.getCurrentIteration().getName())
+        String fullTestName = getFullTestName(specificationContext.getCurrentIteration())
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -164,15 +165,14 @@ class APISpec extends Specification {
         fsc.create()
     }
 
-    private def refactorName(String text) {
-        def fullName = text.split(" ").collect { it.toLowerCase() }.join("")
-        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
+    private def getFullTestName(IterationInfo iterationInfo) {
+        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.toLowerCase() }.join("")
 
-        if (!matcher.find()) {
+        if (iterationInfo.getDataValues().length == 0) {
             return fullName
         }
-        def prefix = matcher[0][1]
-        def suffix = "[" + matcher[0][4] + "]"
+        def prefix = fullName
+        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
 
         return prefix + suffix
     }

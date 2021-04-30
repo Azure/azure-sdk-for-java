@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import org.spockframework.runtime.model.IterationInfo
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -72,7 +73,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = refactorName(specificationContext.getCurrentIteration().getName())
+        String fullTestName = getFullTestName(specificationContext.getCurrentIteration())
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -92,15 +93,14 @@ class APISpec extends Specification {
         containerName = generateContainerName()
     }
 
-    private def refactorName(String text) {
-        def fullName = text.split(" ").collect { it.toLowerCase() }.join("")
-        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
+    private def getFullTestName(IterationInfo iterationInfo) {
+        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.toLowerCase() }.join("")
 
-        if (!matcher.find()) {
+        if (iterationInfo.getDataValues().length == 0) {
             return fullName
         }
-        def prefix = matcher[0][1]
-        def suffix = "[" + matcher[0][4] + "]"
+        def prefix = fullName
+        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
 
         return prefix + suffix
     }

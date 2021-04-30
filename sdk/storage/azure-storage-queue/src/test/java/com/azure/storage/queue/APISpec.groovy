@@ -23,6 +23,7 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.queue.models.QueuesSegmentOptions
+import org.spockframework.runtime.model.IterationInfo
 import reactor.core.publisher.Mono
 import spock.lang.Specification
 
@@ -53,7 +54,7 @@ class APISpec extends Specification {
      */
     def setup() {
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        String testName = refactorName(specificationContext.currentIteration.getName())
+        String testName = getFullTestName(specificationContext.currentIteration)
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
@@ -188,19 +189,18 @@ class APISpec extends Specification {
         return builder
     }
 
+    private def getFullTestName(IterationInfo iterationInfo) {
+        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.capitalize() }.join("")
 
-    private def refactorName(String text) {
-        def fullName = text.split(" ").collect { it.capitalize() }.join("")
-        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
-
-        if (!matcher.find()) {
+        if (iterationInfo.getDataValues().length == 0) {
             return fullName
         }
-        def prefix = matcher[0][1]
-        def suffix = matcher[0][4]
+        def prefix = fullName
+        def suffix = iterationInfo.getIterationIndex()
 
         return prefix + suffix
     }
+
 
     OffsetDateTime getUTCNow() {
         return testResourceName.now()

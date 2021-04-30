@@ -133,7 +133,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Retry(count = 5, exceptions = [IOException])
+    @Retry(count = 5)
     def "Query csv serialization separator"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
