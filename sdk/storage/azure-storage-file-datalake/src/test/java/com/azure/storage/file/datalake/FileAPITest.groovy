@@ -2949,7 +2949,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Retry(count = 5, exceptions = [IOException])
+    @Retry(count = 5)
     def "Query min"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2995,7 +2995,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Retry(count = 5, exceptions = [IOException])
+    @Retry(count = 5)
     def "Query csv serialization separator"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3111,6 +3111,7 @@ class FileAPITest extends APISpec {
 
     /* Note: Input delimited tested everywhere else. */
     @Unroll
+    @Retry(count = 5)
     def "Query Input json"() {
         setup:
         FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
@@ -3192,6 +3193,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
         FileQueryJsonSerialization inSer = new FileQueryJsonSerialization()
@@ -3232,6 +3234,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()

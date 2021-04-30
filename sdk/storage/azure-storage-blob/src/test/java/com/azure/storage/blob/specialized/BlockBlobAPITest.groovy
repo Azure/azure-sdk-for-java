@@ -51,6 +51,7 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.atomic.AtomicBoolean
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -816,32 +817,6 @@ class BlockBlobAPITest extends APISpec {
 
         cleanup:
         file.delete()
-    }
-
-    @Requires({ liveMode() })
-    def "Upload from file no overwrite interrupted"() {
-        setup:
-        def file = getRandomFile(257 * 1024 * 1024)
-        def smallFile = getRandomFile(50)
-        blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
-
-        expect:
-        /*
-         * When the upload begins trigger an upload to write the blob after waiting 500 milliseconds so that the upload
-         * fails when it attempts to put the block list.
-         */
-        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString())
-            .doOnSubscribe({
-                blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).delaySubscription(Duration.ofMillis(500)).subscribe()
-            }))
-            .verifyErrorSatisfies({
-                assert it instanceof BlobStorageException
-                assert ((BlobStorageException) it).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
-            })
-
-        cleanup:
-        file.delete()
-        smallFile.delete()
     }
 
     @Requires({ liveMode() })
