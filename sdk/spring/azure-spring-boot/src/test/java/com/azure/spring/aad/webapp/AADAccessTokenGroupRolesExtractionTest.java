@@ -82,4 +82,11 @@ public class AADAccessTokenGroupRolesExtractionTest {
         assertThat(groupsName).doesNotContain("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194abaaa");
         assertThat(groupsName).hasSize(2);
     }
+
+    @Test
+    public void testEnableFullList() {
+        when(properties.getUserGroup().getEnableFullList()).thenReturn(true);
+        Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupsName).hasSize(4);
+    }
 }

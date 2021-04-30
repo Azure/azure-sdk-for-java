@@ -367,9 +367,6 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public boolean isAllowedGroup(String group) {
-        if (this.getUserGroup().getEnableFullList()) {
-            return true;
-        }
         return Optional.ofNullable(getUserGroup())
                        .map(UserGroupProperties::getAllowedGroupNames)
                        .orElseGet(Collections::emptyList)
