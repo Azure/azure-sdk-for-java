@@ -5,12 +5,8 @@ package com.azure.spring.autoconfigure.b2c;
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -35,7 +31,7 @@ import java.util.stream.Collectors;
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
  */
 @Configuration
-@Conditional({ AADB2COAuth2ClientConfiguration.AADB2CCondition.class, AADB2CClientRegistrationCondition.class })
+@Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.ClientRegistrationCondition.class })
 @EnableConfigurationProperties(AADB2CProperties.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AADB2COAuth2ClientConfiguration {
@@ -116,40 +112,5 @@ public class AADB2COAuth2ClientConfiguration {
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
                                                          OAuth2AuthorizedClientRepository authorizedClients) {
         return new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
-    }
-
-    /**
-     * Condition to trigger web application or web resource server scenario.
-     */
-    protected static final class AADB2CCondition extends AnyNestedCondition {
-        AADB2CCondition() {
-            super(ConfigurationPhase.REGISTER_BEAN);
-        }
-
-        /**
-         * Web application scenario condition.
-         */
-        @ConditionalOnWebApplication
-        @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-        @ConditionalOnProperty(
-            prefix = AADB2CProperties.PREFIX,
-            value = {
-                "client-id",
-                "client-secret"
-            }
-        )
-        static class WebAppMode {
-
-        }
-
-        /**
-         * Web resource server scenario condition.
-         */
-        @ConditionalOnWebApplication
-        @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-        @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })
-        static class WebApiMode {
-
-        }
     }
 }

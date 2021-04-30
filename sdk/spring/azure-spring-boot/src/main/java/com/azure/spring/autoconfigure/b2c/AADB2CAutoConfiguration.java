@@ -22,12 +22,12 @@ import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
- * When the configuration matches the {@link AADB2COAuth2ClientConfiguration.AADB2CCondition.WebAppMode} condition,
+ * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebAppMode} condition,
  * configure the necessary beans for AAD B2C authentication and authorization,
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@Conditional({ AADB2COAuth2ClientConfiguration.AADB2CCondition.class, AADB2CUserFlowCondition.class })
+@Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.UserFlowCondition.class })
 @EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2COAuth2ClientConfiguration.class)
 public class AADB2CAutoConfiguration {

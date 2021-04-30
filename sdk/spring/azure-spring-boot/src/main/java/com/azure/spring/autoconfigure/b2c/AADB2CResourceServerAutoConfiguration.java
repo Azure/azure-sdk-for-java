@@ -33,12 +33,12 @@ import java.util.List;
 
 /**
  *
- * When the configuration matches the {@link AADB2COAuth2ClientConfiguration.AADB2CCondition.WebApiMode} condition,
+ * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebApiMode} condition,
  * configure the necessary beans for AAD B2C resource server beans,
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@Conditional(AADB2COAuth2ClientConfiguration.AADB2CCondition.class)
+@Conditional(AADB2CConditions.CommonCondition.class)
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 @EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2COAuth2ClientConfiguration.class)
