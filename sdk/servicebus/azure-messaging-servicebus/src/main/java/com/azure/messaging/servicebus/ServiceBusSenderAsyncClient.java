@@ -539,7 +539,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         if (Objects.isNull(messages)) {
             return monoError(logger, new NullPointerException("'messages' cannot be null."));
         }
-
         return createMessageBatch().flatMap(messageBatch -> {
             StreamSupport.stream(messages.spliterator(), true)
                 .forEach(message -> messageBatch.tryAddMessage(message));
