@@ -405,7 +405,7 @@ class APISpec extends Specification {
             return fullName
         }
         def prefix = matcher[0][1]
-        def suffix = "[" + matcher[0][4] + "]"
+        def suffix = matcher[0][4]
 
         return prefix + suffix
     }
