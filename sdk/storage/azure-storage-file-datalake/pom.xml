@@ -204,6 +204,7 @@
               <argLine>
                 -Xmx4096m
               </argLine>
+              <forkCount>2</forkCount>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
@@ -297,6 +298,7 @@
                 --add-reads com.azure.storage.blob=ALL-UNNAMED
                 --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
               </argLine>
+              <forkCount>2</forkCount>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>

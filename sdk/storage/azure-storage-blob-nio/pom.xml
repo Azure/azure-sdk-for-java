@@ -173,6 +173,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
+              <forkCount>2</forkCount>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
@@ -255,6 +256,7 @@
                 --add-reads com.azure.storage.common=ALL-UNNAMED
                 --add-reads com.azure.storage.blob=ALL-UNNAMED
               </argLine>
+              <forkCount>2</forkCount>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
