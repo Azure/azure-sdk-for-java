@@ -6,6 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 
@@ -21,9 +22,10 @@ import scala.util.{Failure, Success, Try}
 import scala.compat.java8.FutureConverters._
 // scalastyle:on underscore.import
 
-class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWriteConfig)
-  extends AsyncItemWriter
-    with CosmosLoggingTrait {
+class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWriteConfig, diagnosticsConfig: DiagnosticsConfig)
+  extends AsyncItemWriter {
+
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
   private val maxConcurrency = cosmosWriteConfig.maxConcurrencyOpt
     .getOrElse(SparkUtils.getNumberOfHostCPUCores * MaxNumberOfThreadsPerCPUCore)
@@ -124,7 +126,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           // TODO moderakh we need to add log messages extract identifier (id, pk) and log
           return
         case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
-          logWarning(
+          log.logWarning(
             s"create item attempt #$attempt max remaining retries"
               + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)
@@ -147,7 +149,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         return
       } catch {
         case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
-          logWarning(
+          log.logWarning(
             s"upsert item attempt #$attempt max remaining retries "
               + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)

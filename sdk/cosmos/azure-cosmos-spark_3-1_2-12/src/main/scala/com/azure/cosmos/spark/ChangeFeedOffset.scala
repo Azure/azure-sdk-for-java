@@ -20,10 +20,7 @@ private case class ChangeFeedOffset
   inputPartitions: Option[Array[CosmosInputPartition]]
 ) extends Offset
   with Serializable
-  with PartitionOffset
-  with CosmosLoggingTrait {
-
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  with PartitionOffset {
 
   @transient private lazy val jsonPersisted = inputPartitions match {
     case Some(partitions) =>
@@ -63,7 +60,7 @@ private object ChangeFeedOffset {
         None
       }
 
-      ChangeFeedOffset(parsedNode.get(StatePropertyName).asText, inputPartitions)
+      ChangeFeedOffset(parsedNode.get(StatePropertyName).asText, Option.empty)
     } else {
       val message = s"Unable to deserialize offset '$json'."
       throw new IllegalArgumentException(message)

@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.CosmosParameterizedQuery
-import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.read.{InputPartition, PartitionReader, PartitionReaderFactory}
@@ -19,13 +19,14 @@ private case class ItemsScanPartitionReaderFactory
   diagnosticsOperationContext: DiagnosticsContext,
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
   diagnosticsConfig: DiagnosticsConfig
-) extends PartitionReaderFactory with CosmosLoggingTrait {
+) extends PartitionReaderFactory {
 
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createReader(partition: InputPartition): PartitionReader[InternalRow] = {
     val feedRange = partition.asInstanceOf[CosmosInputPartition].feedRange
-    logInfo(s"Creating an ItemsPartitionReader to read from feed-range [$feedRange]")
+    log.logInfo(s"Creating an ItemsPartitionReader to read from feed-range [$feedRange]")
 
     ItemsPartitionReader(config,
       feedRange,

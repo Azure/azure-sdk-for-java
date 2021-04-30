@@ -10,13 +10,13 @@ import com.azure.cosmos.implementation.feedranges.{FeedRangeContinuation, FeedRa
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.FeedRange
-import com.azure.cosmos.spark.{CosmosLoggingTrait, NormalizedRange}
+import com.azure.cosmos.spark.NormalizedRange
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[cosmos] object SparkBridgeImplementationInternal extends CosmosLoggingTrait {
+private[cosmos] object SparkBridgeImplementationInternal {
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
                                metadataCache: CosmosClientMetadataCachesSnapshot): Unit = {
 

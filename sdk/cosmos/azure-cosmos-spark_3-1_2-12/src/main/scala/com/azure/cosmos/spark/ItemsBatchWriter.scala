@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.write.streaming.{StreamingDataWriterFactory, StreamingWrite}
 import org.apache.spark.sql.connector.write.{BatchWrite, DataWriterFactory, PhysicalWriteInfo, WriterCommitMessage}
@@ -12,20 +13,21 @@ private class ItemsBatchWriter
 (
   userConfig: Map[String, String],
   inputSchema: StructType,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 )
   extends BatchWrite
-    with StreamingWrite
-    with CosmosLoggingTrait {
+    with StreamingWrite {
 
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createBatchWriterFactory(physicalWriteInfo: PhysicalWriteInfo): DataWriterFactory = {
-    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle)
+    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle, diagnosticsConfig)
   }
 
   override def createStreamingWriterFactory(physicalWriteInfo: PhysicalWriteInfo): StreamingDataWriterFactory = {
-    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle)
+    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle, diagnosticsConfig)
   }
 
   override def commit(writerCommitMessages: Array[WriterCommitMessage]): Unit = {

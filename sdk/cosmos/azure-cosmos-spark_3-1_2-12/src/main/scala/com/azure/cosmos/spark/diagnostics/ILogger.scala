@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.diagnostics
 
-trait ILogger {
+private[spark] trait ILogger {
   // Log methods that take only a String
   def logInfo(msg: => String)
 

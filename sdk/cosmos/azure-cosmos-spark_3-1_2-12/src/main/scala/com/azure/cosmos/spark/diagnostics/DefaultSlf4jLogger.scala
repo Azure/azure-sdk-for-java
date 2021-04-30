@@ -4,7 +4,7 @@ package com.azure.cosmos.spark.diagnostics
 
 import org.slf4j.{Logger, LoggerFactory}
 
-class CosmosLogging(classType: Class[_]) extends ILogger {
+private[spark] class DefaultSlf4jLogger(classType: Class[_]) extends ILogger {
   // Make the log field transient so that objects with Logging can
   // be serialized and used on another machine
   @transient private lazy val log: Logger = LoggerFactory.getLogger(logName)

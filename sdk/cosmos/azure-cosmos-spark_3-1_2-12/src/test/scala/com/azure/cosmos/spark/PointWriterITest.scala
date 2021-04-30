@@ -26,7 +26,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
 
-    val pointWriter = new PointWriter(container, writeConfig)
+    val pointWriter = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -51,7 +51,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
   "Point Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, Some(100))
-    val pointWriter = new PointWriter(container, writeConfig)
+    val pointWriter = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 5000) {

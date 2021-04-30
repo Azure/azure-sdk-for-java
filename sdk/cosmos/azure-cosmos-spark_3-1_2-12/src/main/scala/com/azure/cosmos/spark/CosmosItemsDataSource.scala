@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.SparkSession
 
 import java.util
@@ -19,7 +20,7 @@ import scala.collection.immutable.Map
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class CosmosItemsDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
+class CosmosItemsDataSource extends DataSourceRegister with TableProvider with BasicLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   assertOnSparkDriver()
@@ -52,6 +53,7 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
     *                   topic name, etc.
     */
   override def getTable(schema: StructType, partitioning: Array[Transform], properties: util.Map[String, String]): Table = {
+    val diagnostics = DiagnosticsConfig.parseDiagnosticsConfig(properties.asScala.toMap)
     // getTable - This is used for loading table with user specified schema and other transformations.
     new ItemsTable(
       sparkSession,

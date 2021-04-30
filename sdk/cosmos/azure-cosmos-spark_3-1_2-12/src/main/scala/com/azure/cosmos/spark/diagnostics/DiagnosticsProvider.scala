@@ -4,46 +4,18 @@
 package com.azure.cosmos.spark.diagnostics
 
 import com.azure.cosmos.implementation.spark.OperationListener
-import com.azure.cosmos.spark.SimpleDiagnostics
 
-import scala.collection.concurrent.TrieMap
-
-trait DiagnosticsProvider {
+private[spark] trait DiagnosticsProvider {
   def getLogger(classType: Class[_]) : ILogger
 
   def getOperationListener() : Option[OperationListener] = Option.empty
 }
 
-class DefaultDiagnostics extends DiagnosticsProvider {
-  override def getLogger(classType: Class[_]): ILogger = new CosmosLogging(classType)
+private[spark] class DefaultDiagnostics extends DiagnosticsProvider {
+  override def getLogger(classType: Class[_]): ILogger = new DefaultSlf4jLogger(classType)
 }
 
-private[spark] object DiagnosticsSelector {
-  private val providers = TrieMap[String, DiagnosticsProvider]()
-  providers.put(classOf[SimpleDiagnostics].getName, new DefaultDiagnostics)
-
-  def getOperationListener(diagnosticsProviderName: String) : DiagnosticsProvider = {
-    providers.get(diagnosticsProviderName) match {
-      case Some(provider) => {
-        provider
-      }
-      case None => {
-        this.synchronized {
-          providers.get(diagnosticsProviderName) match {
-            case Some(provider) => {
-              provider
-            }
-            case None => {
-
-              val provider: DiagnosticsProvider =
-                Class.forName(diagnosticsProviderName).asSubclass(classOf[DiagnosticsProvider]).getDeclaredConstructor().newInstance()
-
-              providers.put(diagnosticsProviderName, provider)
-              provider
-            }
-          }
-        }
-      }
-    }
-  }
+private[spark] class SimpleDiagnosticsProvider extends DiagnosticsProvider {
+  override def getLogger(classType: Class[_]): ILogger = new DefaultSlf4jLogger(classType)
+  override def getOperationListener() : Option[OperationListener] = Option.apply(new SimpleOperationListener)
 }

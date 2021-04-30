@@ -11,6 +11,7 @@ import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode,
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
+import com.azure.cosmos.spark.diagnostics.SimpleDiagnosticsProvider
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -266,7 +267,7 @@ private object DiagnosticsConfig {
     mandatory = false,
     parseFromStringFunction = diagnostics => {
       if (diagnostics == "simple") {
-        classOf[SimpleDiagnostics].getName
+        classOf[SimpleDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
         Class.forName(diagnostics).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
