@@ -317,11 +317,6 @@ This scenario not support login. Just protect the server by validating the acces
      <groupId>org.springframework.boot</groupId>
      <artifactId>spring-boot-starter-web</artifactId>
    </dependency>
-   
-   <dependency>
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-   </dependency>
    ```
    [//]: # "{x-version-update-end}"
 
