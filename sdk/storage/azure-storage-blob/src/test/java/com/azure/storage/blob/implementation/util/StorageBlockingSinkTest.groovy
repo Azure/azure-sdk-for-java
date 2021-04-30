@@ -199,7 +199,7 @@ class StorageBlockingSinkTest extends Specification {
             .timeout(Duration.ofMillis(100))
             .subscribe()
 
-        sleep(200)
+        sleep(500)
 
         blockingSink.emitNext(ByteBuffer.wrap(new byte[0]))
 
@@ -213,7 +213,7 @@ class StorageBlockingSinkTest extends Specification {
             .timeout(Duration.ofMillis(100))
             .subscribe()
 
-        sleep(200)
+        sleep(500)
 
         blockingSink.emitCompleteOrThrow()
 

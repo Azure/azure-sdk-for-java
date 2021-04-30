@@ -87,7 +87,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Retry(count = 5, exceptions = [IOException])
+    @Retry(count = 5)
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -133,7 +133,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Retry(count = 5, exceptions = [IOException])
+    @Retry(count = 5)
     def "Query csv serialization separator"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -249,6 +249,7 @@ class BlobBaseAPITest extends APISpec {
 
     /* Note: Input delimited tested everywhere */
     @Unroll
+    @Retry(count = 5)
     def "Query Input json"() {
         setup:
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization()
@@ -329,6 +330,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
         BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
@@ -368,6 +370,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -404,6 +407,7 @@ class BlobBaseAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
