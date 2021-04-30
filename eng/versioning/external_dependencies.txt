@@ -7,6 +7,7 @@
 
 # Format;
 # groupId:artifactId;dependency-version
+com.azure:azure-communication-common;1.0.0
 com.fasterxml.jackson.core:jackson-annotations;2.12.2
 com.fasterxml.jackson.core:jackson-core;2.12.2
 com.fasterxml.jackson.core:jackson-databind;2.12.2
@@ -25,7 +26,6 @@ com.microsoft.azure:azure-annotations;1.7.0
 com.microsoft.azure:azure-arm-client-runtime;1.7.3
 com.microsoft.azure:azure-client-authentication;1.7.3
 com.microsoft.azure:azure-client-runtime;1.7.3
-com.microsoft.azure:azure-communication-common;1.0.0
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
