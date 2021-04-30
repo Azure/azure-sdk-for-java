@@ -1,12 +1,12 @@
 azure:
   activedirectory:
-    client-id: 0fe800b3-5f47-47a8-b707-0f68e21d8b09
-    client-secret: .f7vyoQI~8_ys2-3CDXJ_x7Eu_bh7yG~b_
-    tenant-id: 8ae985ef-52e6-4146-8740-0a3f91e64c3b
+    client-id: <client-id>
+    client-secret: <client-secret>
+    tenant-id: <tenant-id>
     user-group:
       allowed-group-names: group1,group2
-      allowed-group-ids: c6243096-d3be-4a06-92ea-53043e43d8bf,c3cc3548-015c-40a9-8208-da5077f1cb94
-      enable-full-list: true
+      allowed-group-ids: <group1-id>,<group2-id>
+      enable-full-list: false
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:
