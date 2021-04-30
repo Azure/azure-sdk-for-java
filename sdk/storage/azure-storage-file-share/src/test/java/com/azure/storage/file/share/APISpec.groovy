@@ -32,6 +32,7 @@ import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
 import com.azure.storage.file.share.specialized.ShareLeaseClient
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
+import org.spockframework.runtime.model.IterationInfo
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Specification
@@ -97,7 +98,7 @@ class APISpec extends Specification {
     def setup() {
         premiumCredential = getCredential(PREMIUM_STORAGE)
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        String testName = reformat(specificationContext.currentIteration.getName())
+        String testName = reformat(specificationContext.currentIteration)
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
@@ -397,15 +398,14 @@ class APISpec extends Specification {
         return builder.buildFileClient()
     }
 
-    private def reformat(String text) {
-        def fullName = text.split(" ").collect { it.capitalize() }.join("")
-        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
+    private def reformat(IterationInfo iterationInfo) {
+        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.capitalize() }.join("")
 
-        if (!matcher.find()) {
+        if (iterationInfo.getDataValues().length == 0) {
             return fullName
         }
-        def prefix = matcher[0][1]
-        def suffix = matcher[0][4]
+        def prefix = fullName
+        def suffix = iterationInfo.getIterationIndex()
 
         return prefix + suffix
     }
