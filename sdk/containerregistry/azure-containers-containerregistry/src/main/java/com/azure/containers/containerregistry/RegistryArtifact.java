@@ -7,7 +7,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.ListTagsOptions;
+import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -237,7 +237,7 @@ public final class RegistryArtifact {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTags(ListTagsOptions) listTags}
+     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy)}  listTags}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -253,7 +253,7 @@ public final class RegistryArtifact {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactTagProperties> listTags() {
-        return listTags(null);
+        return listTags(TagOrderBy.NONE);
     }
 
     /**
@@ -270,14 +270,14 @@ public final class RegistryArtifact {
      *
      * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagsWithOptions}.
      *
-     * @param options The options that specifies the order in which the tags should be returned by the service.
+     * @param orderBy The order in which the tags should be returned by the service.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTags(ListTagsOptions options) {
-        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTags(options));
+    public PagedIterable<ArtifactTagProperties> listTags(TagOrderBy orderBy) {
+        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTags(orderBy));
     }
 
     /**

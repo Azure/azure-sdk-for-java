@@ -60,21 +60,21 @@ public final class ContainerRegistryClient {
     /**
      * Delete the repository identified by 'name'.
      *
-     * @param name Name of the repository (including the namespace).
+     * @param repository Name of the repository (including the namespace).
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteRepositoryResult deleteRepository(String name) {
-        return this.deleteRepositoryWithResponse(name, Context.NONE).getValue();
+    public DeleteRepositoryResult deleteRepository(String repository) {
+        return this.deleteRepositoryWithResponse(repository, Context.NONE).getValue();
     }
 
     /**
      * Delete the repository identified by 'name'.
      *
-     * @param name Name of the repository (including the namespace).
+     * @param repository Name of the repository (including the namespace).
      * @param context The context to associate with this operation.
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
@@ -82,8 +82,8 @@ public final class ContainerRegistryClient {
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String name, Context context) {
-        return this.asyncClient.deleteRepositoryWithResponse(name, context).block();
+    public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String repository, Context context) {
+        return this.asyncClient.deleteRepositoryWithResponse(repository, context).block();
     }
 
     /**

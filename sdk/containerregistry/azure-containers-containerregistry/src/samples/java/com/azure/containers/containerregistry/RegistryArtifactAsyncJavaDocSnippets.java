@@ -6,7 +6,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.ListTagsOptions;
 import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -132,9 +131,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
     public void listTagsWithOptionsCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions
-        ListTagsOptions options = new ListTagsOptions()
-            .setTagOrderBy(TagOrderBy.LAST_UPDATED_ON_DESCENDING);
-        client.listTags(options).byPage(10)
+        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING).byPage(10)
             .subscribe(tagPropertiesPagedResponse -> {
                 tagPropertiesPagedResponse.getValue().stream().forEach(
                     tagProperties -> System.out.println(tagProperties.getDigest()));

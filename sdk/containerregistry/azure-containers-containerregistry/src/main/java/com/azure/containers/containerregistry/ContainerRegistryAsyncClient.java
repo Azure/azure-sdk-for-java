@@ -125,24 +125,24 @@ public final class ContainerRegistryAsyncClient {
     /**
      * Delete the repository identified by 'name'.
      *
-     * @param name Name of the repository (including the namespace).
+     * @param repository Name of the repository (including the namespace).
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given name was not found.
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String name) {
-        return withContext(context -> deleteRepositoryWithResponse(name, context));
+    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String repository) {
+        return withContext(context -> deleteRepositoryWithResponse(repository, context));
     }
 
-    Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String name, Context context) {
+    Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String repository, Context context) {
         try {
-            if (name == null) {
+            if (repository == null) {
                 return monoError(logger, new NullPointerException("'name' cannot be null."));
             }
 
-            return this.registriesImplClient.deleteRepositoryWithResponseAsync(name, context)
+            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repository, context)
                 .onErrorMap(Utils::mapException);
 
         } catch (RuntimeException e) {
@@ -153,15 +153,15 @@ public final class ContainerRegistryAsyncClient {
     /**
      * Delete the repository identified by 'name'.
      *
-     * @param name Name of the image (including the namespace).
+     * @param repository Name of the image (including the namespace).
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given name was not found.
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteRepositoryResult> deleteRepository(String name) {
-        return withContext(context -> this.deleteRepository(name, context));
+    public Mono<DeleteRepositoryResult> deleteRepository(String repository) {
+        return withContext(context -> this.deleteRepository(repository, context));
     }
 
     Mono<DeleteRepositoryResult> deleteRepository(String name, Context context) {

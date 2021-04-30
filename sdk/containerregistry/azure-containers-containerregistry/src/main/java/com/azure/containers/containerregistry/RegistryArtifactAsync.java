@@ -12,7 +12,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.ListTagsOptions;
+import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -355,7 +355,7 @@ public final class RegistryArtifactAsync {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTags(ListTagsOptions) listTags}
+     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy)}  listTags}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -371,7 +371,7 @@ public final class RegistryArtifactAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ArtifactTagProperties> listTags() {
-        return listTags(null);
+        return listTags(TagOrderBy.NONE);
     }
 
     /**
@@ -388,32 +388,28 @@ public final class RegistryArtifactAsync {
      *
      * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions}.
      *
-     * @param options The options that specifies the order in which the tags should be returned by the service.
+     * @param orderBy The order in which the tags should be returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactTagProperties> listTags(ListTagsOptions options) {
+    public PagedFlux<ArtifactTagProperties> listTags(TagOrderBy orderBy) {
         return new PagedFlux<>(
-            (pageSize) -> withContext(context -> listTagsSinglePageAsync(pageSize, options, context)),
+            (pageSize) -> withContext(context -> listTagsSinglePageAsync(pageSize, orderBy, context)),
             (token, pageSize) -> withContext(context -> listTagsNextSinglePageAsync(token, context)));
     }
 
-    Mono<PagedResponse<ArtifactTagProperties>> listTagsSinglePageAsync(Integer pageSize, ListTagsOptions options, Context context) {
+    Mono<PagedResponse<ArtifactTagProperties>> listTagsSinglePageAsync(Integer pageSize, TagOrderBy orderBy, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            String orderBy = null;
-            if (options != null && options.getTagOrderBy() != null) {
-                orderBy = options.getTagOrderBy().toString();
-            }
+            final String orderByString = orderBy.equals(TagOrderBy.NONE) ? null : orderBy.toString();
 
-            String finalOrderBy = orderBy;
             return this.getDigest()
-                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(repositoryName, null, pageSize, finalOrderBy, res, context))
+                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(repositoryName, null, pageSize, orderByString, res, context))
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getTagProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {

@@ -6,7 +6,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.ListTagsOptions;
 import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -128,9 +127,7 @@ public class RegistryArtifactJavaDocSnippets {
     public void listTagsWithOptionsCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
-        ListTagsOptions options = new ListTagsOptions()
-            .setTagOrderBy(TagOrderBy.LAST_UPDATED_ON_DESCENDING);
-        client.listTags(options).iterableByPage(10).forEach(pagedResponse -> {
+        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10).forEach(pagedResponse -> {
             pagedResponse.getValue().stream().forEach(
                 tagProperties -> System.out.println(tagProperties.getDigest()));
         });

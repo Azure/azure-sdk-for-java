@@ -12,7 +12,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.ListRegistryArtifactOptions;
+import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -177,7 +177,7 @@ public final class ContainerRepositoryAsync {
      * Fetches all the artifacts associated with the given {@link #getName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listManifests(ListRegistryArtifactOptions) listManifests}
+     * use the overload that takes in the options parameter {@link #listManifests(ManifestOrderBy)}  listManifests}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -193,7 +193,7 @@ public final class ContainerRepositoryAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ArtifactManifestProperties> listManifests() {
-        return listManifests(null);
+        return listManifests(ManifestOrderBy.NONE);
     }
 
     /**
@@ -209,30 +209,26 @@ public final class ContainerRepositoryAsync {
      *
      * {@codesnippet com.azure.containers.containerregistry.async.repository.listManifestsWithOptions}.
      *
-     * @param options the options that specifies the order in which the artifacts are returned by the service.
+     * @param orderBy The order in which the artifacts are returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactManifestProperties> listManifests(ListRegistryArtifactOptions options) {
+    public PagedFlux<ArtifactManifestProperties> listManifests(ManifestOrderBy orderBy) {
         return new PagedFlux<>(
-            (pageSize) -> withContext(context -> listManifestsSinglePageAsync(pageSize, options, context)),
+            (pageSize) -> withContext(context -> listManifestsSinglePageAsync(pageSize, orderBy, context)),
             (token, pageSize) -> withContext(context -> listManifestsNextSinglePageAsync(token, context)));
     }
 
-    Mono<PagedResponse<ArtifactManifestProperties>> listManifestsSinglePageAsync(Integer pageSize, ListRegistryArtifactOptions options, Context context) {
+    Mono<PagedResponse<ArtifactManifestProperties>> listManifestsSinglePageAsync(Integer pageSize, ManifestOrderBy orderBy, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            String orderBy = null;
-            if (options != null && options.getManifestOrderBy() != null) {
-                orderBy = options.getManifestOrderBy().toString();
-            }
-
-            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderBy, context)
+            final String orderByString = orderBy == ManifestOrderBy.NONE ? null : orderBy.toString();
+            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderByString, context)
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {

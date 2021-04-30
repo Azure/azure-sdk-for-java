@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.ListRegistryArtifactOptions;
+import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -159,7 +159,7 @@ public final class ContainerRepository {
      * Fetches all the artifacts associated with the given {@link #getName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listManifests(ListRegistryArtifactOptions) listManifests}
+     * use the overload that takes in the options parameter {@link #listManifests(ManifestOrderBy)}  listManifests}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -175,7 +175,7 @@ public final class ContainerRepository {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactManifestProperties> listManifests() {
-        return this.listManifests(null);
+        return this.listManifests(ManifestOrderBy.NONE);
     }
 
     /**
@@ -192,14 +192,14 @@ public final class ContainerRepository {
      *
      * {@codesnippet com.azure.containers.containerregistry.repository.listManifestsWithOptions}.
      *
-     * @param options the options that specifies the order in which the artifacts are returned by the service.
+     * @param orderBy the order in which the artifacts are returned by the service.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactManifestProperties> listManifests(ListRegistryArtifactOptions options) {
-        return new PagedIterable<>(this.asyncClient.listManifests(options));
+    public PagedIterable<ArtifactManifestProperties> listManifests(ManifestOrderBy orderBy) {
+        return new PagedIterable<>(this.asyncClient.listManifests(orderBy));
     }
 
     /**
@@ -220,7 +220,7 @@ public final class ContainerRepository {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RepositoryProperties> updatePropertiesWithResponse(ContentProperties value, Context context) {
+    public Response<RepositoryProperties> updatePropertiesWithResponse(ContentProperties value, Context context) {
         return this.asyncClient.updatePropertiesWithResponse(value, context).block();
     }
 

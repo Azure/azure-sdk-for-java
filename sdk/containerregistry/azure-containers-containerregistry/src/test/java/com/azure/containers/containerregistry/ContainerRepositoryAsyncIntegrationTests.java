@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.ListRegistryArtifactOptions;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -162,17 +161,14 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        ListRegistryArtifactOptions options = new ListRegistryArtifactOptions()
-            .setManifestOrderBy(ManifestOrderBy.LAST_UPDATED_ON_ASCENDING);
-
-        StepVerifier.create(asyncClient.listManifests(options).byPage(PAGESIZE_2))
+        StepVerifier.create(asyncClient.listManifests(ManifestOrderBy.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
             .expectRecordedMatches(pagedResList -> validateListArtifactsByPage(pagedResList, true))
             .verifyComplete();
 
         validateListArtifactsByPage(
-            client.listManifests(options).streamByPage(PAGESIZE_2).collect(Collectors.toList()),
+            client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_ASCENDING).streamByPage(PAGESIZE_2).collect(Collectors.toList()),
             true);
     }
 
@@ -182,15 +178,13 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        ListRegistryArtifactOptions options = new ListRegistryArtifactOptions();
-
-        StepVerifier.create(asyncClient.listManifests(options).byPage(PAGESIZE_2))
+        StepVerifier.create(asyncClient.listManifests(ManifestOrderBy.NONE).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
             .expectRecordedMatches(pagedResList -> validateListArtifactsByPage(pagedResList))
             .verifyComplete();
 
-        validateListArtifactsByPage(client.listManifests(options).streamByPage(PAGESIZE_2).collect(Collectors.toList()));
+        validateListArtifactsByPage(client.listManifests(ManifestOrderBy.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
