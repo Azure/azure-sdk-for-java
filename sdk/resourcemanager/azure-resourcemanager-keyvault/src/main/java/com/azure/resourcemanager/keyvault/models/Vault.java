@@ -58,7 +58,7 @@ public interface Vault
     List<AccessPolicy> accessPolicies();
 
     /**
-     * @return whether role based access control (RBAC) for for authorization of data access is enabled.
+     * @return whether role based access control (RBAC) for authorization of data access is enabled.
      */
     boolean roleBasedAccessControlEnabled();
 
