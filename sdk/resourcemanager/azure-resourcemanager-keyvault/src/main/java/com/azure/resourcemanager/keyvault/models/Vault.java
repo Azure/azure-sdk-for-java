@@ -255,8 +255,12 @@ public interface Vault
             /**
              * Enable soft delete for the key vault.
              *
+             * @deprecated soft-delete protection is enabled by default.
+             * Users will no longer be able to opt out of or turn off soft-delete.
+             *
              * @return the next stage of key vault definition
              */
+            @Deprecated
             WithCreate withSoftDeleteEnabled();
 
             /**
@@ -445,8 +449,12 @@ public interface Vault
             /**
              * Enable soft delete for the key vault.
              *
+             * @deprecated soft-delete protection is enabled by default.
+             * Users will no longer be able to opt out of or turn off soft-delete.
+             *
              * @return the next stage of key vault definition
              */
+            @Deprecated
             Update withSoftDeleteEnabled();
 
             /**
