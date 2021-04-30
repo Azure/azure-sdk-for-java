@@ -83,8 +83,8 @@ public class TransportClientWrapper {
     public interface Builder {
 
          static void capture(List<Pair<Uri, RxDocumentServiceRequest>> capturedRequests, InvocationOnMock invocation) {
-             Uri physicalUri = invocation.getArgumentAt(0, Uri.class);
-             RxDocumentServiceRequest request = invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
+             Uri physicalUri = invocation.getArgument(0, Uri.class);
+             RxDocumentServiceRequest request = invocation.getArgument(1, RxDocumentServiceRequest.class);
              logger.debug("Uri: {}, request {}", physicalUri, request);
              capturedRequests.add(Pair.of(physicalUri, request));
         }
@@ -116,8 +116,8 @@ public class TransportClientWrapper {
                 TransportClient transportClient = Mockito.mock(TransportClient.class);
                 Mockito.doAnswer(invocation ->  {
                     i.incrementAndGet();
-                    Uri physicalUri = invocation.getArgumentAt(0, Uri.class);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
+                    Uri physicalUri = invocation.getArgument(0, Uri.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(1, RxDocumentServiceRequest.class);
                     Function2WithCheckedException<Integer, RxDocumentServiceRequest, StoreResponse> function
                         = responseFunctionDictionary.get(physicalUri);
                     if (function == null) {
@@ -278,8 +278,8 @@ public class TransportClientWrapper {
                 TransportClient transportClient = Mockito.mock(TransportClient.class);
                 Mockito.doAnswer(invocation ->  {
                     cnt.getAndIncrement();
-                    Uri physicalUri = invocation.getArgumentAt(0, Uri.class);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
+                    Uri physicalUri = invocation.getArgument(0, Uri.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(1, RxDocumentServiceRequest.class);
                     capture(capturedArgs, invocation);
 
                     Tuple tuple = new Tuple(physicalUri, request.getOperationType(), request.getResourceType());

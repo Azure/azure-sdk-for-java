@@ -16,10 +16,12 @@ class ChangeFeedStartFromBeginningImpl extends ChangeFeedStartFromInternal {
     public void populatePropertyBag() {
         super.populatePropertyBag();
 
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-            ChangeFeedStartFromTypes.BEGINNING);
+        synchronized(this) {
+            setProperty(
+                this,
+                Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
+                ChangeFeedStartFromTypes.BEGINNING);
+        }
     }
 
     @Override

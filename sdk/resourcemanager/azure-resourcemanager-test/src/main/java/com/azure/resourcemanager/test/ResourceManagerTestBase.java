@@ -20,6 +20,7 @@ import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
 
@@ -242,6 +243,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
             policies.add(new CookiePolicy());
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
+            }
+            if (httpLogDetailLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
+                policies.add(new HttpDebugLoggingPolicy());
+                httpLogDetailLevel = HttpLogDetailLevel.NONE;
             }
             httpPipeline = buildHttpPipeline(
                 credential,

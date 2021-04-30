@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.Constants;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -299,6 +300,15 @@ public final class TextAnalyticsClientBuilder {
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
+    }
+
+    /**
+     * Gets the default Azure Text Analytics headers and query parameters allow list.
+     *
+     * @return The default {@link HttpLogOptions} allow list.
+     */
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     }
 
     /**

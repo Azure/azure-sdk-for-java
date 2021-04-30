@@ -111,9 +111,6 @@ class QueueSASTests extends APISpec {
             .setProcessPermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new SasIpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255")
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
@@ -123,7 +120,6 @@ class QueueSASTests extends APISpec {
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
-            .setSasIpRange(ipRange)
             .setQueueName(queueClient.getQueueName())
             .generateSasQueryParameters(credential)
             .encode()
@@ -161,9 +157,6 @@ class QueueSASTests extends APISpec {
             .setUpdatePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new SasIpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255")
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
@@ -173,7 +166,6 @@ class QueueSASTests extends APISpec {
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
-            .setSasIpRange(ipRange)
             .setQueueName(queueClient.getQueueName())
             .generateSasQueryParameters(credential)
             .encode()
