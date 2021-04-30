@@ -120,6 +120,22 @@ public class VaultTests extends KeyVaultManagementTest {
         }
     }
 
+    @Test void canCRUDVaultWithRbac() {
+        Vault vault = keyVaultManager.vaults().define(vaultName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .enableRoleBasedAccessControl()
+            .create();
+
+        Assertions.assertTrue(vault.roleBasedAccessControlEnabled());
+
+        vault.update()
+            .disableRoleBasedAccessControl()
+            .apply();
+
+        Assertions.assertFalse(vault.roleBasedAccessControlEnabled());
+    }
+
     @Test
     public void canCRUDVaultAsync() throws Exception {
         // Create user service principal

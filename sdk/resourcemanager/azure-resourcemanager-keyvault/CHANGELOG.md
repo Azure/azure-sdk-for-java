@@ -2,6 +2,8 @@
 
 ## 2.5.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2019-09-01`
+- Supported `enableRoleBasedAccessControl` for `Vault`
 
 ## 2.4.0 (2021-04-28)
 
