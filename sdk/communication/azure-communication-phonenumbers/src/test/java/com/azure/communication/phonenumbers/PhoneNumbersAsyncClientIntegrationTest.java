@@ -25,8 +25,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
@@ -159,7 +158,9 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
                 return result.getFinalResult();
             })
-        )
+        ).assertNext((PurchasedPhoneNumber acquiredPhoneNumber) -> {
+            assertNotNull(acquiredPhoneNumber);
+        })
         .verifyComplete();
     }
 
