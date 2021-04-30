@@ -72,11 +72,4 @@ public interface KeyVaultManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
-
-    /**
-     * Gets the KeysClient object to access its operations.
-     *
-     * @return the KeysClient object.
-     */
-    KeysClient getKeys();
 }
