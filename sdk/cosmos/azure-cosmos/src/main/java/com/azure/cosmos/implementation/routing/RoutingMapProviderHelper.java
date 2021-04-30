@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.TreeSet;
 
 /**
  * Provide utility functionality to route request in direct connectivity mode in the Azure Cosmos DB database service.
@@ -91,6 +91,11 @@ public final class RoutingMapProviderHelper {
         if (sortedRanges == null) {
             throw new IllegalArgumentException("sortedRanges");
         }
+
+        // Removing duplicates from sortedRanges
+        TreeSet<Range<String>> distinctSortedRanges = new TreeSet<>(new Range.MinComparator<>());
+        distinctSortedRanges.addAll(sortedRanges);
+        sortedRanges = new ArrayList<>(distinctSortedRanges);
 
         if (!isSortedAndNonOverlapping(sortedRanges)) {
             throw new IllegalArgumentException("sortedRanges");
