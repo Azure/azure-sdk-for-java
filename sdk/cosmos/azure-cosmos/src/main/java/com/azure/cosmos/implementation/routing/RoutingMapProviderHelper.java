@@ -92,12 +92,11 @@ public final class RoutingMapProviderHelper {
             throw new IllegalArgumentException("sortedRanges");
         }
 
-        // Removing duplicates from sortedRanges
+        // Removing duplicates from sortedranges to check for nonoverlap
         TreeSet<Range<String>> distinctSortedRanges = new TreeSet<>(new Range.MinComparator<>());
         distinctSortedRanges.addAll(sortedRanges);
-        sortedRanges = new ArrayList<>(distinctSortedRanges);
 
-        if (!isSortedAndNonOverlapping(sortedRanges)) {
+        if (!isSortedAndNonOverlapping(new ArrayList<>(distinctSortedRanges))) {
             throw new IllegalArgumentException("sortedRanges");
         }
 
