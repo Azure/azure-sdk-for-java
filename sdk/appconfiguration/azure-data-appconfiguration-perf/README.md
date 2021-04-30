@@ -31,7 +31,7 @@ AZURE_APPCONFIG_CONNECTION_STRING=<app-configuration-connection-string>
 2. Execute the corresponding perf test in the project using the command.
    ```
    java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
-   java -jar sdk\appconfiguration\azure-data-appconfiguration-perf\target\azure-data-appconfiguration-pef-1.0.0-beta.1-jar-with-dependencies.jar listconfigurationsettings --warmup 1 --iterations 1 --parallel 6 --duration 10 --count 20
+   java -jar sdk\appconfiguration\azure-data-appconfiguration-perf\target\azure-data-appconfiguration-perf-1.0.0-beta.1-jar-with-dependencies.jar listconfigurationsettings --warmup 1 --iterations 1 --parallel 6 --duration 10 --count 20
 
 #### Common perf test command line options for App Configuration
 - `--duration` - Number of seconds to run the main test for. Default is 10.
