@@ -154,12 +154,4 @@ public class TestUtils {
                     .withRegistryUri(REGISTRY_URI))
                 .withTargetTags(tags));
     }
-
-    static Mono<Long> monoDelay(TestMode testMode) {
-        return monoDelay(testMode, SLEEP_TIME_IN_MILLISECONDS);
-    }
-
-    static Mono<Long> monoDelay(TestMode testMode, long delayInMs) {
-        return Mono.defer(() -> testMode == TestMode.PLAYBACK ? Mono.delay(Duration.ZERO) : Mono.delay(Duration.ofMillis(delayInMs)));
-    }
 }

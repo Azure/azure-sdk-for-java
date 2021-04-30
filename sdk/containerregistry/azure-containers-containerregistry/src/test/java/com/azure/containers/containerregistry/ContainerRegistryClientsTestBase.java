@@ -81,13 +81,6 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    List<String> getChildArtifacts(ContainerRepository repository) {
-        ArrayList<ArtifactManifestProperties> artifacts = new ArrayList<>();
-        repository.listManifests().forEach(repo -> artifacts.add(repo));
-
-        return getChildArtifacts(artifacts);
-    }
-
     List<String> getChildArtifacts(Collection<ArtifactManifestProperties> artifacts) {
         return artifacts.stream()
             .filter(artifact -> artifact.getArchitecture() != null)
@@ -253,23 +246,6 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertEquals(true, properties.isCanRead(), "canRead incorrect");
         assertEquals(true, properties.isCanWrite(), "canWrite incorrect");
     }
-
-    void importImage(String repositoryName, List<String> tags) {
-        TestUtils.importImage(getTestMode(), repositoryName, tags);
-    }
-
-    ContainerRepositoryAsync getContainerAsyncRepository(HttpClient httpClient, String repositoryName) {
-        return getContainerRegistryBuilder(httpClient)
-            .buildAsyncClient()
-            .getRepository(repositoryName);
-    }
-
-    ContainerRepository getContainerRepository(HttpClient httpClient, String repositoryName) {
-        return getContainerRegistryBuilder(httpClient)
-            .buildClient()
-            .getRepository(repositoryName);
-    }
-
 
     protected String getEndpoint(String endpoint) {
         return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
