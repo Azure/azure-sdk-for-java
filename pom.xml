@@ -778,7 +778,4 @@
       </modules>
     </profile>
   </profiles>
-    <modules>
-        <module>sdk/appconfiguration/azure-data-appconfiguration-pef</module>
-    </modules>
 </project>

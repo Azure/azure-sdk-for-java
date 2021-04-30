@@ -20,8 +20,9 @@ public class ListConfigurationSettingsTest extends ServiceTest<PerfStressOptions
     private static final String KEY_PREFIX = "keyPrefix";
     private static final String SETTING_VALUE = "value";
 
-    private static int settingCount = 1;
     private static SettingSelector keyFilterSelector = new SettingSelector().setKeyFilter(KEY_PREFIX + "*");
+
+    private int settingCount = options.getCount();
 
     /**
      * The ListConfigurationSettingsTest class.
@@ -30,7 +31,6 @@ public class ListConfigurationSettingsTest extends ServiceTest<PerfStressOptions
      */
     public ListConfigurationSettingsTest(PerfStressOptions options) {
         super(options);
-        settingCount = options.getCount();
     }
 
     @Override
