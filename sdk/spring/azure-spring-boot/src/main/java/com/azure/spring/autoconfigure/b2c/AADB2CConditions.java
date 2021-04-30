@@ -63,7 +63,7 @@ public final class AADB2CConditions {
                                                 final AnnotatedTypeMetadata metadata) {
             AADB2CProperties aadb2CProperties = Binder.get(context.getEnvironment())
                                                       .bind("azure.activedirectory.b2c", AADB2CProperties.class)
-                                                      .get();
+                                                      .orElseGet(AADB2CProperties::new);
             return new ConditionOutcome(!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())
                 || !CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients()),
                 "Configure at least one attribute 'user-flow' or 'authorization-clients'.");
@@ -80,7 +80,7 @@ public final class AADB2CConditions {
                                                 final AnnotatedTypeMetadata metadata) {
             AADB2CProperties aadb2CProperties = Binder.get(context.getEnvironment())
                                                       .bind("azure.activedirectory.b2c", AADB2CProperties.class)
-                                                      .get();
+                                                      .orElseGet(AADB2CProperties::new);
             return new ConditionOutcome(!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows()),
                 "Configure at least one attribute 'user-flow'.");
         }
