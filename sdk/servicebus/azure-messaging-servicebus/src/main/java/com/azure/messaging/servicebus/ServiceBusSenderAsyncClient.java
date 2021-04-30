@@ -366,7 +366,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @param messages Messages to be sent to the Service Bus Queue.
      * @param scheduledEnqueueTime OffsetDateTime at which the messages should appear in the Service Bus queue or topic.
-     * @param transactionContext   Transaction to associate with the operation.
+     * @param transactionContext Transaction to associate with the operation.
      * @return Sequence numbers of the scheduled messages which can be used to cancel the messages.
      * @throws NullPointerException If {@code messages}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      *                               {@code transactionContext.transactionId} is {@code null}.
