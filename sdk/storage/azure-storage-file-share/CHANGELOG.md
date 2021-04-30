@@ -1,5 +1,8 @@
 # Release History
 
+## 12.10.0-beta.1 (Unreleased)
+
+
 ## 12.9.0 (2021-04-29)
 - ShareLeaseClient now updates it's leaseID through a lease change.
 - Fixed a bug where working with a root directory client could improperly form requests and subdirectory clients
