@@ -54,10 +54,6 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String userNameAttribute;
 
     /**
-     * @see
-     * <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter
-     * readme.</a>
-     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      * @deprecated Now the redirect-url-template is not configurable.
      * <p>
      * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
@@ -65,6 +61,9 @@ public class AADAuthenticationProperties implements InitializingBean {
      * <p>
      * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
      * </p>
+     *
+     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
+     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
      */
     @Deprecated
     private String redirectUriTemplate;
@@ -127,7 +126,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
-        replacement = "azure.activedirectory.user-group.allowed-groups")
+        replacement = "azure.activedirectory.user-group.allowed-group-names")
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
@@ -176,11 +175,18 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
+                + "deprecated.",
+            replacement = "azure.activedirectory.user-group.allowed-group-names")
         public List<String> getAllowedGroups() {
             return allowedGroupNames;
         }
 
-        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
+                + "deprecated.",
+            replacement = "azure.activedirectory.user-group.allowed-group-names")
         public void setAllowedGroups(List<String> allowedGroups) {
             this.allowedGroupNames = allowedGroups;
         }
@@ -188,17 +194,14 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public boolean allowedGroupNamesConfigured() {
-        return Optional.of(this)
-                       .map(AADAuthenticationProperties::getUserGroup)
+        return Optional.of(this.getUserGroup())
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
                        .map(allowedGroupNames -> !allowedGroupNames.isEmpty())
                        .orElse(false);
-
     }
 
     public boolean allowedGroupIdsConfigured() {
-        return Optional.of(this)
-                       .map(AADAuthenticationProperties::getUserGroup)
+        return Optional.of(this.getUserGroup())
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
                        .map(allowedGroupIds -> !allowedGroupIds.isEmpty())
                        .orElse(false);
@@ -406,18 +409,20 @@ public class AADAuthenticationProperties implements InitializingBean {
         if (!StringUtils.hasText(tenantId)) {
             tenantId = "common";
         }
+
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
             throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
-                + "azure.activedirectory.user-group.allowed-groups should be empty. "
+                + "azure.activedirectory.user-group.allowed-groups/allowed-group-names should be empty. "
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-groups=" + userGroup.getAllowedGroups());
+                + ", and azure.activedirectory.user-group.allowed-groups/allowed-group-names="
+                + userGroup.getAllowedGroups());
         }
 
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupIds().isEmpty()) {
             throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
-                + "azure.activedirectory.user-group.allowed-groups-id should be empty. "
+                + "azure.activedirectory.user-group.allowed-group-ids should be empty. "
                 + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-groups-id=" + userGroup.getAllowedGroupIds());
+                + ", and azure.activedirectory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
 
         authorizationClients.values()
@@ -428,7 +433,7 @@ public class AADAuthenticationProperties implements InitializingBean {
                             .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
                             .findAny()
                             .ifPresent(notUsed -> {
-                                throw new IllegalStateException("onDemand only support authorization_code grant type.");
+                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
                             });
     }
 

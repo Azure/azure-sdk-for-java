@@ -31,9 +31,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         defaultProperties.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID);
         defaultProperties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET);
-        defaultProperties.put("azure.activedirectory.user-group.allowed-groups[0].groupName", "group1");
-        defaultProperties.put("azure.activedirectory.user-group.allowed-groups[0].groupId",
-            "ebc90e49-2b23-45fc-8b9c-ba8ffc605ff9");
+        defaultProperties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         defaultProperties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
         defaultProperties.put("azure.activedirectory.base-uri", AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE));
         defaultProperties.put("azure.activedirectory.graph-base-uri", AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE));
