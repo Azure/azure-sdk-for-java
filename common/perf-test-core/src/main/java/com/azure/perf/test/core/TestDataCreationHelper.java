@@ -44,6 +44,17 @@ public class TestDataCreationHelper {
         return Flux.range(0, quotient)
             .map(i -> byteBuffer.duplicate())
             .concatWithValues((ByteBuffer) byteBuffer.duplicate().limit(remainder));
+
+        // return Flux.range(0, quotient)
+        //     .map(i -> deepCopyByteBuffer(byteBuffer)
+        //     .concatWithValues((ByteBuffer) deepCopyByteBuffer(byteBuffer).limit(remainder));
+    }
+
+    private static ByteBuffer deepCopyByteBuffer(ByteBuffer buffer) {
+        ByteBuffer allocatedBuffer = ByteBuffer.allocate(buffer.remaining());
+        allocatedBuffer.put(buffer);
+        allocatedBuffer.rewind();
+        return allocatedBuffer;
     }
 
     /**
