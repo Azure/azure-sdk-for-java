@@ -32,26 +32,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JREKeystoreTest {
     private static final String fileSep = File.separator;
-    private static final String defaultStorePath =
-        PrivilegedActionImpl.privilegedGetProperty("java.home", "") +
-            fileSep + "lib" + fileSep + "security";
-    private static final String defaultStore =
-        defaultStorePath + fileSep + "cacerts";
-    private static final String jsseDefaultStore =
-        defaultStorePath + fileSep + "jssecacerts";
+    private static final String defaultStorePath = PrivilegedActionImpl.privilegedGetProperty("java.home", "") + fileSep + "lib" + fileSep + "security";
+    private static final String defaultStore = defaultStorePath + fileSep + "cacerts";
+    private static final String jsseDefaultStore = defaultStorePath + fileSep + "jssecacerts";
     private PrivateKeyStrategyImpl aliasStrategy = new PrivateKeyStrategyImpl();
     private static final String keyStorePassword = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
-    // private static final String keyStoreType = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.keyStoreType", KeyStore.getDefaultType());
-    //private static final String keyStoreProvider = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.keyStoreProvider", "");
     private static final String trustStorePassword = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.trustStorePassword", "changeit");
-    //private static final String trustStoreType = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.trustStoreType", KeyStore.getDefaultType());
-    //private static final String trustStoreProvider = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.trustStoreProvider", "");
     private static final String keyPassword = keyStorePassword;
     private static final Logger logger = Logger.getLogger(JREKeystoreTest.class.getName());
-
-
-    private static String privateKey =
-        "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/QWKhTKDVdZW0" +
+    private static String privateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/QWKhTKDVdZW0" +
             "rdC8OLD/3oCrkS4UMh3jh81g8vjOetuO8pki94Aj+vfvhIdSqB8ddhh8LdilAWp9" +
             "e03TLpgXf9DlVTVrkt7Yr7t1+V3YvSQonIf1RODSpLumHZY7VvIB2Hu9rDAxPGd4" +
             "AXTxJSokOb4JBEXCTSves8a3vY6NxNwprlBzRpqC7q/MyvpKki92I7CvWB8SQLla" +
@@ -100,14 +89,13 @@ public class JREKeystoreTest {
 
     @Test
     public void testLocalKeystore() throws Exception {
-        //   Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-
         Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         try (final FileInputStream inStream = new FileInputStream(getKeyStoreFile())) {
             keyStore.load(inStream, keyStorePassword.toCharArray());
         }
         keyStore.setEntry(aliasStrategy.chooseAlias(null, null), new KeyStore.PrivateKeyEntry(getKey(), getCertChain()), new KeyStore.PasswordProtection(keyPassword.toCharArray()));
+
         /*
          * Setup server side.
          */
@@ -144,8 +132,6 @@ public class JREKeystoreTest {
             trustStore.load(inStream, trustStorePassword.toCharArray());
         }
         trustStore.setEntry(aliasStrategy.chooseAlias(null, null), new KeyStore.PrivateKeyEntry(getKey(), getCertChain()), new KeyStore.PasswordProtection(keyPassword.toCharArray()));
-
-
         SSLContext clientSSLContext = SSLContexts.custom()
             .loadTrustMaterial(trustStore, null)
             .build();
@@ -177,13 +163,10 @@ public class JREKeystoreTest {
             logger.log(Level.SEVERE, "client can't read from the server socket.", ioe);
         }
 
-
         /*
          * And verify all went well.
          */
         assertEquals("Success", result);
-
-
     }
 
     private static PrivateKey getKey() throws Exception {
@@ -243,7 +226,6 @@ public class JREKeystoreTest {
 
     }
 
-
     private static class PrivilegedActionImpl implements PrivilegedAction<String> {
 
         private static String privilegedGetProperty(String theProp, String defaultVal) {
@@ -275,6 +257,5 @@ public class JREKeystoreTest {
             return (value == null || value.isEmpty()) ? defaultVal : value;
         }
     }
-
 
 }
