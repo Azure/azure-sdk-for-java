@@ -228,8 +228,8 @@ public final class ContainerRepositoryAsync {
             }
 
             String orderBy = null;
-            if (options != null && options.getRegistryArtifactOrderBy() != null) {
-                orderBy = options.getRegistryArtifactOrderBy().toString();
+            if (options != null && options.getManifestOrderBy() != null) {
+                orderBy = options.getManifestOrderBy().toString();
             }
 
             return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderBy, context)

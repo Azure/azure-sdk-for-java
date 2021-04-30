@@ -5,6 +5,8 @@
 package com.azure.containers.containerregistry.implementation;
 
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsResponse;
@@ -14,12 +16,10 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsResponse;
 import com.azure.containers.containerregistry.implementation.models.Manifest;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
-import com.azure.containers.containerregistry.implementation.models.ManifestProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -206,7 +206,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_manifests/{digest}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ManifestProperties>> getManifestProperties(
+        Mono<Response<ArtifactManifestProperties>> getManifestProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
@@ -216,7 +216,7 @@ public final class ContainerRegistriesImpl {
         @Patch("/acr/v1/{name}/_manifests/{digest}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ManifestProperties>> updateManifestProperties(
+        Mono<Response<ArtifactManifestProperties>> updateManifestProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
@@ -320,9 +320,9 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Manifest>> getManifestWithResponseAsync(String name, String reference, String accept) {
-        final String accept2 = "application/json";
+        final String acceptHeader = "application/json";
         return FluxUtil.withContext(
-                context -> service.getManifest(this.client.getUrl(), name, reference, accept, accept2, context));
+                context -> service.getManifest(this.client.getUrl(), name, reference, accept, acceptHeader, context));
     }
 
     /**
@@ -341,8 +341,8 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Manifest>> getManifestWithResponseAsync(
             String name, String reference, String accept, Context context) {
-        final String accept2 = "application/json";
-        return service.getManifest(this.client.getUrl(), name, reference, accept, accept2, context);
+        final String acceptHeader = "application/json";
+        return service.getManifest(this.client.getUrl(), name, reference, accept, acceptHeader, context);
     }
 
     /**
@@ -1112,7 +1112,8 @@ public final class ContainerRegistriesImpl {
      * @return tag attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactTagProperties> updateTagAttributesAsync(String name, String reference, ContentProperties value) {
+    public Mono<ArtifactTagProperties> updateTagAttributesAsync(
+            String name, String reference, ContentProperties value) {
         return updateTagAttributesWithResponseAsync(name, reference, value)
                 .flatMap(
                         (Response<ArtifactTagProperties> res) -> {
@@ -1328,7 +1329,8 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestProperties>> getManifestPropertiesWithResponseAsync(String name, String digest) {
+    public Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponseAsync(
+            String name, String digest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.getManifestProperties(this.client.getUrl(), name, digest, accept, context));
@@ -1346,7 +1348,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestProperties>> getManifestPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponseAsync(
             String name, String digest, Context context) {
         final String accept = "application/json";
         return service.getManifestProperties(this.client.getUrl(), name, digest, accept, context);
@@ -1363,10 +1365,10 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestProperties> getManifestPropertiesAsync(String name, String digest) {
+    public Mono<ArtifactManifestProperties> getManifestPropertiesAsync(String name, String digest) {
         return getManifestPropertiesWithResponseAsync(name, digest)
                 .flatMap(
-                        (Response<ManifestProperties> res) -> {
+                        (Response<ArtifactManifestProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1387,10 +1389,10 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestProperties> getManifestPropertiesAsync(String name, String digest, Context context) {
+    public Mono<ArtifactManifestProperties> getManifestPropertiesAsync(String name, String digest, Context context) {
         return getManifestPropertiesWithResponseAsync(name, digest, context)
                 .flatMap(
-                        (Response<ManifestProperties> res) -> {
+                        (Response<ArtifactManifestProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1411,7 +1413,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestProperties>> updateManifestPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponseAsync(
             String name, String digest, ContentProperties value) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1432,7 +1434,7 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestProperties>> updateManifestPropertiesWithResponseAsync(
+    public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponseAsync(
             String name, String digest, ContentProperties value, Context context) {
         final String accept = "application/json";
         return service.updateManifestProperties(this.client.getUrl(), name, digest, value, accept, context);
@@ -1450,10 +1452,11 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestProperties> updateManifestPropertiesAsync(String name, String digest, ContentProperties value) {
+    public Mono<ArtifactManifestProperties> updateManifestPropertiesAsync(
+            String name, String digest, ContentProperties value) {
         return updateManifestPropertiesWithResponseAsync(name, digest, value)
                 .flatMap(
-                        (Response<ManifestProperties> res) -> {
+                        (Response<ArtifactManifestProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1475,11 +1478,11 @@ public final class ContainerRegistriesImpl {
      * @return manifest attributes details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestProperties> updateManifestPropertiesAsync(
+    public Mono<ArtifactManifestProperties> updateManifestPropertiesAsync(
             String name, String digest, ContentProperties value, Context context) {
         return updateManifestPropertiesWithResponseAsync(name, digest, value, context)
                 .flatMap(
-                        (Response<ManifestProperties> res) -> {
+                        (Response<ArtifactManifestProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {

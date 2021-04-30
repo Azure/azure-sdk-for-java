@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.ListRegistryArtifactOptions;
-import com.azure.containers.containerregistry.models.RegistryArtifactOrderBy;
+import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -162,7 +162,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        ListRegistryArtifactOptions options = new ListRegistryArtifactOptions().setRegistryArtifactOrderBy(RegistryArtifactOrderBy.LAST_UPDATED_ON_ASCENDING);
+        ListRegistryArtifactOptions options = new ListRegistryArtifactOptions()
+            .setManifestOrderBy(ManifestOrderBy.LAST_UPDATED_ON_ASCENDING);
 
         StepVerifier.create(asyncClient.listManifests(options).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)

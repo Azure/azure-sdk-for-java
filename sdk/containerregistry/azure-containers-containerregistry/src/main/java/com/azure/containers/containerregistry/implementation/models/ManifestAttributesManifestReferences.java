@@ -55,7 +55,7 @@ public final class ManifestAttributesManifestReferences {
      *
      * @return the cpuArchitecture value.
      */
-    public ArtifactArchitecture getArchitecture() {
+    public ArtifactArchitecture getCpuArchitecture() {
         return this.cpuArchitecture;
     }
 

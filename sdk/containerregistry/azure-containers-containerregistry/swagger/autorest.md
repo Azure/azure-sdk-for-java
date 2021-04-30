@@ -40,7 +40,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ContentProperties,DeleteRepositoryResult,RegistryArtifactOrderBy,TagOrderBy,RepositoryProperties,ArtifactArchitecture,ArtifactOperatingSystem
+custom-types: ContentProperties,DeleteRepositoryResult,ManifestOrderBy,TagOrderBy,RepositoryProperties,ArtifactArchitecture,ArtifactOperatingSystem
 custom-types-subpackage: models
 ```
 

@@ -16,7 +16,7 @@ import java.util.List;
 /** Manifest attributes details. */
 @JsonFlatten
 @Immutable
-public class ManifestProperties {
+public class ArtifactManifestProperties {
     /*
      * Repository name
      */

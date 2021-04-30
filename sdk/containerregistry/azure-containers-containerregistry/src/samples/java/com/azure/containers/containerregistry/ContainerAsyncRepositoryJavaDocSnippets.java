@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.ListRegistryArtifactOptions;
-import com.azure.containers.containerregistry.models.RegistryArtifactOrderBy;
+import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -129,7 +129,7 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
         ContainerRepositoryAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.repository.listManifestsWithOptions
         ListRegistryArtifactOptions options = new ListRegistryArtifactOptions()
-            .setRegistryArtifactOrderBy(RegistryArtifactOrderBy.LAST_UPDATED_ON_DESCENDING);
+            .setManifestOrderBy(ManifestOrderBy.LAST_UPDATED_ON_DESCENDING);
         client.listManifests(options).byPage(10)
             .subscribe(ManifestPropertiesPagedResponse -> {
                 ManifestPropertiesPagedResponse.getValue().stream().forEach(

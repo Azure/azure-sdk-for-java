@@ -695,7 +695,7 @@
           "Registry"
         ],
         "description": "Update the attribute identified by `name` where `reference` is the name of the repository.",
-    	"operationId": "ContainerRegistry_SetProperties",
+        "operationId": "ContainerRegistry_SetProperties",
         "x-ms-examples": {
           "Update repository attributes": {
             "$ref": "./examples/UpdateRepositoryAttributes.json"
@@ -1297,32 +1297,38 @@
       "properties": {
         "imageName": {
           "type": "string",
+          "readOnly": true,
           "description": "Image name",
           "x-ms-client-name": "name"
         },
         "createdTime": {
           "type": "string",
+          "readOnly": true,
           "format": "date-time",
           "description": "Image created time",
           "x-ms-client-name": "createdOn"
         },
         "lastUpdateTime": {
           "type": "string",
+          "readOnly": true,
           "format": "date-time",
           "description": "Image last update time",
           "x-ms-client-name": "lastUpdatedOn"
         },
         "manifestCount": {
           "type": "integer",
+          "readOnly": true,
           "description": "Number of the manifests"
         },
         "tagCount": {
           "type": "integer",
+          "readOnly": true,
           "description": "Number of the tags"
         },
         "changeableAttributes": {
           "description": "Writeable properties of the resource",
           "$ref": "#/definitions/ChangeableAttributes",
+          "readOnly": true,
           "x-ms-client-name": "writeableProperties"
         }
       },
@@ -1405,17 +1411,19 @@
         "imageName",
         "tag"
       ],
-      "x-ms-client-name": "TagProperties",
+      "x-ms-client-name": "ArtifactTagProperties",
       "description": "Tag attributes",
       "properties": {
         "imageName": {
           "type": "string",
+          "readOnly": true,
           "description": "Image name",
           "x-ms-client-name": "repository"
         },
         "tag": {
           "x-ms-client-flatten": true,
           "description": "List of tag attribute details",
+          "readOnly": true,
           "$ref": "#/definitions/TagAttributesBase"
         }
       },
@@ -1450,20 +1458,24 @@
       "properties": {
         "name": {
           "type": "string",
+          "readOnly": true,
           "description": "Tag name"
         },
         "digest": {
           "type": "string",
+          "readOnly": true,
           "description": "Tag digest"
         },
         "createdTime": {
           "type": "string",
+          "readOnly": true,
           "format": "date-time",
           "description": "Tag created time",
           "x-ms-client-name": "createdOn"
         },
         "lastUpdateTime": {
           "type": "string",
+          "readOnly": true,
           "format": "date-time",
           "description": "Tag last update time",
           "x-ms-client-name": "lastUpdatedOn"
@@ -1471,6 +1483,7 @@
         "changeableAttributes": {
           "$ref": "#/definitions/ChangeableAttributes",
           "description": "Writeable properties of the resource",
+          "readOnly": true,
           "x-ms-client-name": "writeableProperties"
         }
       },
@@ -1497,6 +1510,7 @@
       ],
       "x-ms-enum": {
         "name": "TagOrderBy",
+        "modelAsString": true,
         "values": [
           {
             "value": "none",
@@ -1512,14 +1526,16 @@
             "value": "timeasc",
             "name": "LastUpdatedOnAscending",
             "description": "Order tags by LastUpdatedOn field, from least recently updated to most recently updated."
-            }
+          }
         ]
+      },
+      "default": "none",
+      "description": "Sort options for ordering tags in a collection.",
+      "x-accessibility": "public"
     },
-    "x-accessibility": "public"
-},
-"ArtifactArchitecture": {
-    "type": "string",
-    "enum": [
+    "ArtifactArchitecture": {
+      "type": "string",
+      "enum": [
         "386",
         "amd64",
         "arm",
@@ -1533,84 +1549,84 @@
         "riscv64",
         "s390x",
         "wasm"
-    ],
-    "x-ms-enum": {
+      ],
+      "x-ms-enum": {
         "name": "ArtifactArchitecture",
         "modelAsString": true,
         "values": [
-            {
-                "value": "386",
-                "name": "I386",
-                "description": ""
-            },
-            {
-                "value": "amd64",
-                "name": "Amd64",
-                "description": ""
-            },
-            {
-                "value": "arm",
-                "name": "Arm",
-                "description": ""
-            },
-            {
-                "value": "arm64",
-                "name": "Arm64",
-                "description": ""
-            },
-            {
-                "value": "mips",
-                "name": "Mips",
-                "description": ""
-            },
-            {
-                "value": "mipsle",
-                "name": "MipsLe",
-                "description": ""
-            },
-            {
-                "value": "mips64",
-                "name": "Mips64",
-                "description": ""
-            },
-            {
-                "value": "mips64le",
-                "name": "Mips64Le",
-                "description": ""
-            },
-            {
-                "value": "ppc64",
-                "name": "Ppc64",
-                "description": ""
-            },
-            {
-                "value": "ppc64le",
-                "name": "Ppc64Le",
-                "description": ""
-            },
-            {
-                "value": "riscv64",
-                "name": "RiscV64",
-                "description": ""
-            },
-            {
-                "value": "s390x",
-                "name": "S390x",
-                "description": ""
-            },
-            {
-                "value": "wasm",
-                "name": "Wasm",
-                "description": ""
-            }
+          {
+            "value": "386",
+            "name": "I386",
+            "description": ""
+          },
+          {
+            "value": "amd64",
+            "name": "Amd64",
+            "description": ""
+          },
+          {
+            "value": "arm",
+            "name": "Arm",
+            "description": ""
+          },
+          {
+            "value": "arm64",
+            "name": "Arm64",
+            "description": ""
+          },
+          {
+            "value": "mips",
+            "name": "Mips",
+            "description": ""
+          },
+          {
+            "value": "mipsle",
+            "name": "MipsLe",
+            "description": ""
+          },
+          {
+            "value": "mips64",
+            "name": "Mips64",
+            "description": ""
+          },
+          {
+            "value": "mips64le",
+            "name": "Mips64Le",
+            "description": ""
+          },
+          {
+            "value": "ppc64",
+            "name": "Ppc64",
+            "description": ""
+          },
+          {
+            "value": "ppc64le",
+            "name": "Ppc64Le",
+            "description": ""
+          },
+          {
+            "value": "riscv64",
+            "name": "RiscV64",
+            "description": ""
+          },
+          {
+            "value": "s390x",
+            "name": "S390x",
+            "description": ""
+          },
+          {
+            "value": "wasm",
+            "name": "Wasm",
+            "description": ""
+          }
         ]
+      },
+      "default": "none",
+      "x-accessibility": "public"
     },
-    "default": "none",
-    "x-accessibility": "public"
-},
-"ArtifactOperatingSystem": {
-    "type": "string",
-    "enum": [
+    "ArtifactOperatingSystem": {
+      "type": "string",
+      "enum": [
         "aix",
         "android",
         "darwin",
@@ -1625,80 +1641,80 @@
         "plan9",
         "solaris",
         "windows"
-    ],
-    "x-ms-enum": {
+      ],
+      "x-ms-enum": {
         "name": "ArtifactOperatingSystem",
         "modelAsString": true,
         "values": [
-            {
-                "value": "aix",
-                "name": "Aix",
-                "description": ""
-            },
-            {
-                "value": "android",
-                "name": "Android",
-                "description": ""
-            },
-            {
-                "value": "darwin",
-                "name": "Darwin",
-                "description": ""
-            },
-            {
-                "value": "dragonfly",
-                "name": "Dragonfly",
-                "description": ""
-            },
-            {
-                "value": "freebsd",
-                "name": "FreeBsd",
-                "description": ""
-            },
-            {
-                "value": "illumos",
-                "name": "Illumos",
-                "description": ""
-            },
-            {
-                "value": "ios",
-                "name": "IOs",
-                "description": ""
-            },
-            {
-                "value": "js",
-                "name": "Js",
-                "description": ""
-            },
-            {
-                "value": "linux",
-                "name": "Linux",
-                "description": ""
-            },
-            {
-                "value": "netbsd",
-                "name": "NetBsd",
-                "description": ""
-            },
-            {
-                "value": "openbsd",
-                "name": "OpenBsd",
-                "description": ""
-            },
-            {
-                "value": "plan9",
-                "name": "Plan9",
-                "description": ""
-            },
-            {
-                "value": "solaris",
-                "name": "Solaris",
-                "description": ""
-            },
-            {
-                "value": "windows",
-                "name": "Windows",
-                "description": ""
+          {
+            "value": "aix",
+            "name": "Aix",
+            "description": ""
+          },
+          {
+            "value": "android",
+            "name": "Android",
+            "description": ""
+          },
+          {
+            "value": "darwin",
+            "name": "Darwin",
+            "description": ""
+          },
+          {
+            "value": "dragonfly",
+            "name": "Dragonfly",
+            "description": ""
+          },
+          {
+            "value": "freebsd",
+            "name": "FreeBsd",
+            "description": ""
+          },
+          {
+            "value": "illumos",
+            "name": "Illumos",
+            "description": ""
+          },
+          {
+            "value": "ios",
+            "name": "IOs",
+            "description": ""
+          },
+          {
+            "value": "js",
+            "name": "Js",
+            "description": ""
+          },
+          {
+            "value": "linux",
+            "name": "Linux",
+            "description": ""
+          },
+          {
+            "value": "netbsd",
+            "name": "NetBsd",
+            "description": ""
+          },
+          {
+            "value": "openbsd",
+            "name": "OpenBsd",
+            "description": ""
+          },
+          {
+            "value": "plan9",
+            "name": "Plan9",
+            "description": ""
+          },
+          {
+            "value": "solaris",
+            "name": "Solaris",
+            "description": ""
+          },
+          {
+            "value": "windows",
+            "name": "Windows",
+            "description": ""
           }
         ]
       },
@@ -1767,7 +1783,7 @@
             "mediaType": "mediaType",
             "configMediaType": "configMediaType",
             "lastUpdateTime": "lastUpdateTime",
-            "architecture": "architecture",
+            "architecture": "amd64",
             "tags": [
               "tags",
               "tags"
@@ -1777,16 +1793,18 @@
       }
     },
     "ManifestAttributes": {
-      "x-ms-client-name": "ManifestProperties",
+      "x-ms-client-name": "ArtifactManifestProperties",
       "description": "Manifest attributes details",
       "properties": {
         "imageName": {
           "description": "Repository name",
           "type": "string",
+          "readOnly": true,
           "x-ms-client-name": "repositoryName"
         },
         "manifest": {
           "x-ms-client-flatten": true,
+          "readOnly": true,
           "description": "Manifest attributes",
           "$ref": "#/definitions/ManifestAttributesBase"
         }
@@ -1825,22 +1843,26 @@
       "properties": {
         "digest": {
           "type": "string",
+          "readOnly": true,
           "description": "Manifest"
         },
         "imageSize": {
           "type": "integer",
+          "readOnly": true,
           "format": "int64",
           "description": "Image size",
           "x-ms-client-name": "size"
         },
         "createdTime": {
           "type": "string",
+          "readOnly": true,
           "format": "date-time",
           "description": "Created time",
           "x-ms-client-name": "createdOn"
         },
         "lastUpdateTime": {
           "type": "string",
+          "readOnly": true,
           "format": "date-time",
           "description": "Last update time",
           "x-ms-client-name": "lastUpdatedOn"
@@ -1848,18 +1870,20 @@
         "architecture": {
           "$ref": "#/definitions/ArtifactArchitecture",
           "description": "CPU architecture",
-          "x-ms-client-name": "architecture",
+          "readOnly": true,
           "x-nullable": true
         },
         "os": {
           "$ref": "#/definitions/ArtifactOperatingSystem",
           "description": "Operating system",
           "x-ms-client-name": "operatingSystem",
+          "readOnly": true,
           "x-nullable": true
         },
         "references": {
           "x-accessibility": "internal",
           "type": "array",
+          "readOnly": true,
           "description": "List of manifest attributes details",
           "items": {
             "$ref": "#/definitions/ManifestAttributes_manifest_references",
@@ -1868,6 +1892,7 @@
         },
         "tags": {
           "type": "array",
+          "readOnly": true,
           "description": "List of tags",
           "items": {
             "type": "string",
@@ -1877,6 +1902,7 @@
         "changeableAttributes": {
           "$ref": "#/definitions/ChangeableAttributes",
           "description": "Writeable properties of the resource",
+          "readOnly": true,
           "x-ms-client-name": "writeableProperties"
         }
       },
@@ -1894,7 +1920,7 @@
         "mediaType": "mediaType",
         "configMediaType": "configMediaType",
         "lastUpdateTime": "lastUpdateTime",
-        "architecture": "architecture",
+        "architecture": "amd64",
         "tags": [
           "tags",
           "tags"
@@ -1921,6 +1947,7 @@
       ],
       "x-ms-enum": {
         "name": "ManifestOrderBy",
+        "modelAsString": true,
         "values": [
           {
             "value": "none",
@@ -2103,14 +2130,16 @@
       "properties": {
         "manifestsDeleted": {
           "type": "array",
+          "readOnly": true,
           "description": "SHA of the deleted image",
           "items": {
             "type": "string"
           },
-           "x-ms-client-name": "deletedManifests"
+          "x-ms-client-name": "deletedManifests"
         },
         "tagsDeleted": {
           "type": "array",
+          "readOnly": true,
           "description": "Tag of the deleted image",
           "items": {
             "type": "string"
@@ -2234,6 +2263,7 @@
         "architecture",
         "os"
       ],
+      "x-accessibility": "internal",
       "description": "Manifest attributes details",
       "properties": {
         "digest": {

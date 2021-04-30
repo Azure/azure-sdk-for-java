@@ -7,7 +7,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
-import com.azure.containers.containerregistry.implementation.models.ManifestProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
@@ -273,7 +272,7 @@ public final class RegistryArtifactAsync {
      * @param propsImpl implementation model for this type.
      * @return public model for propsImpl
      */
-    ArtifactManifestProperties mapProperties(ManifestProperties propsImpl) {
+    ArtifactManifestProperties mapProperties(com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties propsImpl) {
         return Utils.mapProperties(propsImpl, repositoryName);
     }
 

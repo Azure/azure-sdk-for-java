@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ListRegistryArtifactOptions {
-    private RegistryArtifactOrderBy registryArtifactOrderBy;
+    private ManifestOrderBy manifestOrderBy;
 
     /**
      * Initializes an instance of the ListRegistryArtifactOptions
@@ -22,8 +22,8 @@ public final class ListRegistryArtifactOptions {
      *
      * @return The order by tag value.
      */
-    public RegistryArtifactOrderBy getRegistryArtifactOrderBy() {
-        return this.registryArtifactOrderBy;
+    public ManifestOrderBy getManifestOrderBy() {
+        return this.manifestOrderBy;
     }
 
     /**
@@ -32,8 +32,8 @@ public final class ListRegistryArtifactOptions {
      * @param orderBy the order in which the registry artifact operation should be returned.
      * @return The order by tag value.
      */
-    public ListRegistryArtifactOptions setRegistryArtifactOrderBy(RegistryArtifactOrderBy orderBy) {
-        this.registryArtifactOrderBy = orderBy;
+    public ListRegistryArtifactOptions setManifestOrderBy(ManifestOrderBy orderBy) {
+        this.manifestOrderBy = orderBy;
         return this;
     }
 }

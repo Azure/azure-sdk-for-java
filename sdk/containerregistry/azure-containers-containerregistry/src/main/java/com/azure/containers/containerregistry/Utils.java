@@ -6,7 +6,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesManifestReferences;
-import com.azure.containers.containerregistry.implementation.models.ManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -50,7 +49,7 @@ import java.util.stream.Collectors;
 /**
  * This is the utility class that includes helper methods used across our clients.
  */
-public final class Utils {
+final class Utils {
     private static final String CONTINUATIONLINK_HEADER_NAME;
     private static final Pattern CONTINUATIONLINK_PATTERN;
     private static final String CLIENT_NAME;
@@ -123,7 +122,7 @@ public final class Utils {
      * @param propsImpl implementation model for this type.
      * @return public model for propsImpl
      */
-    static ArtifactManifestProperties mapProperties(ManifestProperties propsImpl, String repositoryName) {
+    static ArtifactManifestProperties mapProperties(com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties propsImpl, String repositoryName) {
         if (propsImpl == null) {
             return null;
         }
@@ -155,7 +154,7 @@ public final class Utils {
                 artifact.getDigest(),
                 null,
                 null,
-                artifact.getArchitecture(),
+                artifact.getCpuArchitecture(),
                 artifact.getOperatingSystem(),
                 null,
                 null,

@@ -4,47 +4,34 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for TagOrderBy. */
-public enum TagOrderBy {
-    /** Enum value none. */
-    NONE("none"),
+public final class TagOrderBy extends ExpandableStringEnum<TagOrderBy> {
+    /** Static value none for TagOrderBy. */
+    public static final TagOrderBy NONE = fromString("none");
 
-    /** Enum value timedesc. */
-    LAST_UPDATED_ON_DESCENDING("timedesc"),
+    /** Static value timedesc for TagOrderBy. */
+    public static final TagOrderBy LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
 
-    /** Enum value timeasc. */
-    LAST_UPDATED_ON_ASCENDING("timeasc");
-
-    /** The actual serialized value for a TagOrderBy instance. */
-    private final String value;
-
-    TagOrderBy(String value) {
-        this.value = value;
-    }
+    /** Static value timeasc for TagOrderBy. */
+    public static final TagOrderBy LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
 
     /**
-     * Parses a serialized value to a TagOrderBy instance.
+     * Creates or finds a TagOrderBy from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TagOrderBy object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding TagOrderBy.
      */
     @JsonCreator
-    public static TagOrderBy fromString(String value) {
-        TagOrderBy[] items = TagOrderBy.values();
-        for (TagOrderBy item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static TagOrderBy fromString(String name) {
+        return fromString(name, TagOrderBy.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known TagOrderBy values. */
+    public static Collection<TagOrderBy> values() {
+        return values(TagOrderBy.class);
     }
 }
