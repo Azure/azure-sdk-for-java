@@ -3271,6 +3271,7 @@ class FileAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
