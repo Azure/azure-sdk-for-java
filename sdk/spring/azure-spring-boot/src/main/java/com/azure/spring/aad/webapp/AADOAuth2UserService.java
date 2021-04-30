@@ -119,13 +119,13 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                      .map(AbstractOAuth2Token::getTokenValue)
                                      .map(graphClient::getGroupsFromGraph)
                                      .orElseGet(Collections::emptySet);
-        Set<String> roles = Arrays.asList(properties.getUserGroup().getAllowedGroupIds(),
-            properties.getUserGroup().getAllowedGroupNames())
-                                  .stream()
-                                  .flatMap(Collection::stream)
-                                  .filter(groups::contains)
-                                  .map(group -> ROLE_PREFIX + group)
-                                  .collect(Collectors.toSet());
+        Set<String> roles = Arrays
+            .asList(properties.getUserGroup().getAllowedGroupIds(), properties.getUserGroup().getAllowedGroupNames())
+            .stream()
+            .flatMap(Collection::stream)
+            .filter(groups::contains)
+            .map(group -> ROLE_PREFIX + group)
+            .collect(Collectors.toSet());
         return roles;
     }
 }
