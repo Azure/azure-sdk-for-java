@@ -12,6 +12,7 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
+import org.apache.spark.sql.catalyst.util.ArrayData
 
 import java.time.{OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
@@ -130,6 +131,7 @@ private object CosmosRowConverter
             case DateType => objectMapper.convertValue(rowData.asInstanceOf[Date].getTime, classOf[JsonNode])
             case TimestampType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
             case TimestampType => objectMapper.convertValue(rowData.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
+            case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[ArrayData])
             case arrayType: ArrayType => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[Seq[_]])
             case structType: StructType => rowTypeRouterToJsonArray(rowData, structType)
             case mapType: MapType =>
@@ -187,23 +189,41 @@ private object CosmosRowConverter
     }
 
     private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: Seq[Any]): ArrayNode = {
-        val arrayNode = objectMapper.createArrayNode()
+      val arrayNode = objectMapper.createArrayNode()
 
-        data.foreach(x =>
-            if (containsNull && x == null) {
-                arrayNode.add(objectMapper.nullNode())
-            }
-            else {
-                arrayNode.add(convertSparkSubItemToJsonNode(elementType, containsNull, x))
-            })
+      data.foreach(value => writeSparkArrayDataToArrayNode(arrayNode, elementType, containsNull, value))
 
-        arrayNode
+      arrayNode
+    }
+
+    private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: ArrayData): ArrayNode = {
+      val arrayNode = objectMapper.createArrayNode()
+
+      data.foreach(elementType, (_, value)
+        => writeSparkArrayDataToArrayNode(arrayNode, elementType, containsNull, value))
+
+      arrayNode
+    }
+
+    private def writeSparkArrayDataToArrayNode(arrayNode: ArrayNode,
+                                               elementType: DataType,
+                                               containsNull: Boolean,
+                                               value: Any): Unit = {
+      if (containsNull && value == null) {
+        arrayNode.add(objectMapper.nullNode())
+      }
+      else {
+        arrayNode.add(convertSparkSubItemToJsonNode(elementType, containsNull, value))
+      }
     }
 
     private def convertSparkSubItemToJsonNode(elementType: DataType, containsNull: Boolean, data: Any): JsonNode = {
         elementType match {
             case subDocuments: StructType => rowTypeRouterToJsonArray(data, subDocuments)
-            case subArray: ArrayType => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[Seq[_]])
+            case subArray: ArrayType if data.isInstanceOf[ArrayData]
+              => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[ArrayData])
+            case subArray: ArrayType
+              => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[Seq[_]])
             case _ => convertSparkDataTypeToJsonNode(elementType, data)
         }
     }
