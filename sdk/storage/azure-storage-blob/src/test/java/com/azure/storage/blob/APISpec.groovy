@@ -89,7 +89,7 @@ class APISpec extends Specification {
 
     public static final BinaryData defaultBinaryData = BinaryData.fromString(defaultText)
 
-    static int defaultDataSize = defaultData.remaining()
+    protected static int defaultDataSize = defaultData.remaining()
 
     protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
@@ -171,7 +171,7 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = refactorName(specificationContext.getCurrentIteration().getName())
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
@@ -183,7 +183,7 @@ class APISpec extends Specification {
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -197,6 +197,19 @@ class APISpec extends Specification {
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
         cc.create()
+    }
+
+    private def refactorName(String text) {
+        def fullName = text.split(" ").collect { it.toLowerCase() }.join("")
+        def matcher = (fullName =~ /([^\[]*)(\[)(.*)#(\d+)(\])$/)
+
+        if (!matcher.find()) {
+            return fullName
+        }
+        def prefix = matcher[0][1]
+        def suffix = "[" + matcher[0][4] + "]"
+
+        return prefix + suffix
     }
 
     def cleanup() {

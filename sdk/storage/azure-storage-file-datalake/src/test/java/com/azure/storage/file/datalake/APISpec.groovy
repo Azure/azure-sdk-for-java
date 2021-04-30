@@ -150,7 +150,7 @@ class APISpec extends Specification {
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
 
         primaryDataLakeServiceClient = setClient(primaryCredential)
         primaryDataLakeServiceAsyncClient = getServiceAsyncClient(primaryCredential)
