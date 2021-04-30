@@ -10,6 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
+import com.azure.resourcemanager.keyvault.fluent.KeysClient;
 import com.azure.resourcemanager.keyvault.fluent.OperationsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesClient;
@@ -146,6 +147,18 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         return this.operations;
     }
 
+    /** The KeysClient object to access its operations. */
+    private final KeysClient keys;
+
+    /**
+     * Gets the KeysClient object to access its operations.
+     *
+     * @return the KeysClient object.
+     */
+    public KeysClient getKeys() {
+        return this.keys;
+    }
+
     /**
      * Initializes an instance of KeyVaultManagementClient client.
      *
@@ -170,10 +183,11 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-02-14";
+        this.apiVersion = "2019-09-01";
         this.vaults = new VaultsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.keys = new KeysClientImpl(this);
     }
 }
