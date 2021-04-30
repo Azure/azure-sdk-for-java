@@ -159,10 +159,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
                 return result.getFinalResult();
             })
-        ).assertNext((PurchasedPhoneNumber acquiredPhoneNumber) -> {
-            assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
-            assertEquals(PhoneNumberCapabilityType.INBOUND, acquiredPhoneNumber.getCapabilities().getCalling());
-        })
+        )
         .verifyComplete();
     }
 
