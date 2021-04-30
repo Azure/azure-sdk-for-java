@@ -10,9 +10,6 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum TextAnalyticsServiceVersion implements ServiceVersion {
     V3_0("v3.0"),
-    V3_1_PREVIEW_1("v3.1-preview.1"),
-    V3_1_PREVIEW_2("v3.1-preview.2"),
-    V3_1_PREVIEW_3("v3.1-preview.3"),
     V3_1_PREVIEW_4("v3.1-preview.4");
     private final String version;
 
