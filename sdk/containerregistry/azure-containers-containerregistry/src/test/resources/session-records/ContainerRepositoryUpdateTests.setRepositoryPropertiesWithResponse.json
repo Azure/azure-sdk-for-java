@@ -1,0 +1,33 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f50303bd-0df9-4423-a533-22d4d4294656",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "342",
+      "StatusCode" : "200",
+      "Body" : "{\"registry\":\"pallavitcontainerregistry.azurecr.io\",\"imageName\":\"library/hello-seattle\",\"createdTime\":\"2021-04-15T18:54:34.1643688Z\",\"lastUpdateTime\":\"2021-04-15T19:14:43.7459133Z\",\"manifestCount\":12,\"tagCount\":2,\"changeableAttributes\":{\"deleteEnabled\":false,\"writeEnabled\":true,\"readEnabled\":true,\"listEnabled\":true,\"teleportEnabled\":false}}\n"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c57ed328-d82b-4573-a7e5-177a25f755ce"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "342",
+      "StatusCode" : "200",
+      "Body" : "{\"registry\":\"pallavitcontainerregistry.azurecr.io\",\"imageName\":\"library/hello-seattle\",\"createdTime\":\"2021-04-15T18:54:34.1643688Z\",\"lastUpdateTime\":\"2021-04-15T19:14:43.7459133Z\",\"manifestCount\":12,\"tagCount\":2,\"changeableAttributes\":{\"deleteEnabled\":false,\"writeEnabled\":true,\"readEnabled\":true,\"listEnabled\":true,\"teleportEnabled\":false}}\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/unknowntag",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5b3e4897-abfe-4c79-b711-b88e15a70102"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "118",
+      "StatusCode" : "404",
+      "Body" : "{\"errors\":[{\"code\":\"NAME_UNKNOWN\",\"message\":\"repository name not known to registry\",\"detail\":{\"name\":\"unknowntag\"}}]}\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

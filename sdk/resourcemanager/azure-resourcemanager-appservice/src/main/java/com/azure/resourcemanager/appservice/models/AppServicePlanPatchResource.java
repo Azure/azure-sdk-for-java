@@ -103,9 +103,8 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private String resourceGroup;
 
     /*
-     * This needs to set to <code>true</code> when creating a Linux App Service
-     * Plan, along with <code>kind</code> set to <code>Linux</code>. It should
-     * be <code>false</code> otherwise.
+     * If Linux app service plan <code>true</code>, <code>false</code>
+     * otherwise.
      */
     @JsonProperty(value = "properties.reserved")
     private Boolean reserved;
@@ -137,10 +136,17 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private Integer targetWorkerSizeId;
 
     /*
-     * Provisioning state of the App Service Environment.
+     * Provisioning state of the App Service Plan.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     */
+    @JsonProperty(value = "properties.kubeEnvironmentProfile")
+    private KubeEnvironmentProfile kubeEnvironmentProfile;
 
     /**
      * Get the workerTierName property: Target worker tier assigned to the App Service plan.
@@ -349,8 +355,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the reserved property: This needs to set to &lt;code&gt;true&lt;/code&gt; when creating a Linux App Service
-     * Plan, along with &lt;code&gt;kind&lt;/code&gt; set to &lt;code&gt;Linux&lt;/code&gt;. It should be
+     * Get the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @return the reserved value.
@@ -360,8 +365,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the reserved property: This needs to set to &lt;code&gt;true&lt;/code&gt; when creating a Linux App Service
-     * Plan, along with &lt;code&gt;kind&lt;/code&gt; set to &lt;code&gt;Linux&lt;/code&gt;. It should be
+     * Set the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @param reserved the reserved value to set.
@@ -457,12 +461,41 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the App Service Environment.
+     * Get the provisioningState property: Provisioning state of the App Service Plan.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     *
+     * @return the kubeEnvironmentProfile value.
+     */
+    public KubeEnvironmentProfile kubeEnvironmentProfile() {
+        return this.kubeEnvironmentProfile;
+    }
+
+    /**
+     * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     *
+     * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withKubeEnvironmentProfile(KubeEnvironmentProfile kubeEnvironmentProfile) {
+        this.kubeEnvironmentProfile = kubeEnvironmentProfile;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppServicePlanPatchResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
     }
 
     /**
@@ -475,6 +508,9 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
         super.validate();
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();
+        }
+        if (kubeEnvironmentProfile() != null) {
+            kubeEnvironmentProfile().validate();
         }
     }
 }

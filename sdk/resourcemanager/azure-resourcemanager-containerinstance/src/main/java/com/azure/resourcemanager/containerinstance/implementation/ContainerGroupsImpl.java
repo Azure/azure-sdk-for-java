@@ -68,7 +68,8 @@ public class ContainerGroupsImpl
                 .manager()
                 .serviceClient()
                 .getContainers()
-                .listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tailLineCount, Context.NONE)
+                .listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tailLineCount, null,
+                    Context.NONE)
                 .getValue();
 
         return logsInner != null ? logsInner.content() : null;
@@ -91,7 +92,7 @@ public class ContainerGroupsImpl
             .manager()
             .serviceClient()
             .getContainers()
-            .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount)
+            .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount, null)
             .map(LogsInner::content);
     }
 
