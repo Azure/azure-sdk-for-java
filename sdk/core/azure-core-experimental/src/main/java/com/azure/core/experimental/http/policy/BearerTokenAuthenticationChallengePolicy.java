@@ -5,11 +5,11 @@ package com.azure.core.experimental.http.policy;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.experimental.implementation.AccessTokenCacheImpl;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.AccessTokenCacheImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -23,7 +23,7 @@ public class BearerTokenAuthenticationChallengePolicy implements HttpPipelinePol
     private static final String BEARER = "Bearer";
     static final String WWW_AUTHENTICATE = "WWW-Authenticate";
 
-    private final com.azure.core.implementation.AccessTokenCacheImpl cache;
+    private final AccessTokenCacheImpl cache;
     private final String[] scopes;
 
     /**

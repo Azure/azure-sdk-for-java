@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.core.implementation;
 
 import com.azure.core.credential.AccessToken;
@@ -23,25 +20,25 @@ import java.util.function.Supplier;
 /**
  * A token cache that supports caching a token and refreshing it.
  */
-public class AccessTokenCacheImpl {
+public final class AccessTokenCache {
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
+    private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
-    private final AtomicReference<Sinks.One<AccessToken>> wip;
     private final TokenCredential tokenCredential;
+    // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
-    private final ClientLogger logger = new ClientLogger(AccessTokenCacheImpl.class);
+    private final ClientLogger logger = new ClientLogger(com.azure.core.credential.SimpleTokenCache.class);
 
     /**
-     * Creates an instance of AccessTokenCacheImpl with default scheme "Bearer".
+     * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
-     * @param tokenCredential the credential to be used to acquire token from.
      */
-    public AccessTokenCacheImpl(TokenCredential tokenCredential) {
+    public AccessTokenCache(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
@@ -55,13 +52,14 @@ public class AccessTokenCacheImpl {
      * @param tokenRequestContext The request context for token acquisition.
      * @return The Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-        return Mono.defer(retrieveToken(tokenRequestContext))
+    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+        return Mono.defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
 
-    private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext) {
+    private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext,
+                                                                boolean checkToForceFetchToken) {
         return () -> {
             try {
                 if (wip.compareAndSet(null, Sinks.one())) {
@@ -70,10 +68,13 @@ public class AccessTokenCacheImpl {
                     Mono<AccessToken> tokenRefresh;
                     Mono<AccessToken> fallback;
 
+                    // Check if the incoming token request context is different from the cached one. A different
+                    // token request context, requires to fetch a new token as the cached one won't work for the
+                    // passed in token request context.
+                    boolean forceRefresh = checkToForceFetchToken && checkIfWeShouldForceRefresh(tokenRequestContext);
+
                     Supplier<Mono<AccessToken>> tokenSupplier = () ->
                         tokenCredential.getToken(this.tokenRequestContext);
-
-                    boolean forceRefresh = checkIfWeShouldForceRefresh(tokenRequestContext);
 
                     if (forceRefresh) {
                         this.tokenRequestContext = tokenRequestContext;
@@ -91,7 +92,7 @@ public class AccessTokenCacheImpl {
                         } else {
                             // wait for timeout, then refresh
                             tokenRefresh = Mono.defer(tokenSupplier)
-                                               .delaySubscription(Duration.between(now, nextTokenRefresh));
+                                .delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
                         fallback = Mono.empty();
@@ -108,12 +109,27 @@ public class AccessTokenCacheImpl {
                         fallback = Mono.just(cache);
                     }
                     return tokenRefresh
-                       .materialize()
-                       .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
-                       .doOnError(sinksOne::tryEmitError)
-                       .doFinally(ignored -> wip.set(null));
+                        .materialize()
+                        .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                        .doOnError(sinksOne::tryEmitError)
+                        .doFinally(ignored -> wip.set(null));
+                } else if (cache != null && !cache.isExpired() && !checkToForceFetchToken) {
+                    // another thread might be refreshing the token proactively, but the current token is still valid
+                    return Mono.just(cache);
                 } else {
-                    return Mono.empty();
+                    // if a force refresh is possible, then exit and retry.
+                    if (checkToForceFetchToken) {
+                        return Mono.empty();
+                    }
+                    // another thread is definitely refreshing the expired token
+                    Sinks.One<AccessToken> sinksOne = wip.get();
+                    if (sinksOne == null) {
+                        // the refreshing thread has finished
+                        return Mono.just(cache);
+                    } else {
+                        // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
+                        return sinksOne.asMono().switchIfEmpty(Mono.defer(() -> Mono.just(cache)));
+                    }
                 }
             } catch (Throwable t) {
                 return Mono.error(t);
@@ -124,8 +140,8 @@ public class AccessTokenCacheImpl {
     private boolean checkIfWeShouldForceRefresh(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() == null ? false
-                        : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+            : (tokenRequestContext.getClaims() == null ? false
+            : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
