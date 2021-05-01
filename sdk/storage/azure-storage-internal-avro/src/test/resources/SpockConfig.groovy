@@ -2,7 +2,7 @@ import org.spockframework.runtime.model.parallel.ExecutionMode;
 
 runner {
     parallel {
-        enabled false
+        enabled true
         dynamic(10)
     }
 }
