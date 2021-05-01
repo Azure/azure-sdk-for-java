@@ -41,7 +41,7 @@ import spock.lang.Unroll
 import java.time.Duration
 import java.time.OffsetDateTime
 
-@ResourceLock("ServiceAPITest")
+@ResourceLock("ServiceProperties")
 class ServiceAPITest extends APISpec {
 
     BlobServiceClient anonymousClient;

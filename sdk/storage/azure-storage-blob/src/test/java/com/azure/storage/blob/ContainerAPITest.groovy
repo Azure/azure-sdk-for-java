@@ -36,6 +36,7 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.StorageImplUtils
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -858,6 +859,7 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
+    @ResourceLock("ServiceProperties")
     def "List blobs flat options deleted"() {
         setup:
         enableSoftDelete()
@@ -1260,6 +1262,7 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
+    @ResourceLock("ServiceProperties")
     def "List blobs hier options deleted"() {
         setup:
         enableSoftDelete()
