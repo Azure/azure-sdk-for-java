@@ -21,11 +21,13 @@ import com.azure.storage.file.share.models.SmbMultichannel
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
+@ResourceLock("ServiceProperties")
 class FileServiceAPITests extends APISpec {
     String shareName
 

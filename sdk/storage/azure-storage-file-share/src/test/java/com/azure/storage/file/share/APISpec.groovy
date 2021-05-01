@@ -102,6 +102,9 @@ class APISpec extends Specification {
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
         logger.info("Test Mode: {}, Name: {}", testMode, methodName)
+        if (testMode == TestMode.LIVE) {
+            methodName = UUID.randomUUID().toString().replaceAll("-", "")
+        }
         interceptorManager = new InterceptorManager(methodName, testMode)
         testResourceName = new TestResourceNamer(methodName, testMode,
             interceptorManager.getRecordedData())
