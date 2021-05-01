@@ -1,0 +1,93 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasimplutilstringtosign105286110e4156e46b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e88820a-9264-40f1-afd0-0cd246f9c67e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D90C70E12F8102",
+      "Last-Modified" : "Sat, 01 May 2021 07:15:20 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fa547961-f01e-0060-6859-3e8abe000000",
+      "x-ms-client-request-id" : "0e88820a-9264-40f1-afd0-0cd246f9c67e",
+      "Date" : "Sat, 01 May 2021 07:15:19 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasimplutilstringtosign105286110e4156e46b/javablobaccountsasimplutilstringtosign11406275c9741743",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eabecba5-c92b-4cc8-b5fb-01fa105993ed",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Sat, 01 May 2021 07:15:20 GMT",
+      "x-ms-version-id" : "2021-05-01T07:15:20.4365430Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sat, 01 May 2021 07:15:19 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8D90C70E13CD076",
+      "x-ms-request-id" : "58aed687-901e-00df-0259-3ebd1b000000",
+      "x-ms-client-request-id" : "eabecba5-c92b-4cc8-b5fb-01fa105993ed"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtcaccountsasimplutilstringtosign1",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5e43352b-5d1c-4e07-925f-b2c496b30f1b"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "4f7dfec8-501e-0079-7c59-3e0a05000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest2.blob.core.windows.net/\"><Prefix>jtcaccountsasimplutilstringtosign1</Prefix><Containers><Container><Name>jtcaccountsasimplutilstringtosign105286110e4156e46b</Name><Properties><Last-Modified>Sat, 01 May 2021 07:15:20 GMT</Last-Modified><Etag>\"0x8D90C70E12F8102\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><VersionLevelWormEnabled>false</VersionLevelWormEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "5e43352b-5d1c-4e07-925f-b2c496b30f1b",
+      "Date" : "Sat, 01 May 2021 07:15:19 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasimplutilstringtosign105286110e4156e46b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "000dc095-1f97-49fd-b063-26be186e0a6b"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "20e1970f-a01e-00b6-1f59-3e8457000000",
+      "x-ms-client-request-id" : "000dc095-1f97-49fd-b063-26be186e0a6b",
+      "Date" : "Sat, 01 May 2021 07:15:19 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcaccountsasimplutilstringtosign105286110e4156e46b", "javablobaccountsasimplutilstringtosign11406275c9741743" ]
+}

@@ -1,0 +1,115 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquireblobleasedurationfail2061745dd26e74c5a15?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "63e5106b-387a-46b7-813a-65d0c96103f9"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D90C70E164C01E",
+      "Last-Modified" : "Sat, 01 May 2021 07:15:20 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "6f405dec-f01e-00c9-5759-3e4bcc000000",
+      "x-ms-client-request-id" : "63e5106b-387a-46b7-813a-65d0c96103f9",
+      "Date" : "Sat, 01 May 2021 07:15:20 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquireblobleasedurationfail2061745dd26e74c5a15/javablobacquireblobleasedurationfail2129140f917531ba8",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35810e44-c956-43eb-a1c4-4ebaafcd90c1",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Sat, 01 May 2021 07:15:20 GMT",
+      "x-ms-version-id" : "2021-05-01T07:15:20.7814254Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sat, 01 May 2021 07:15:20 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8D90C70E171706E",
+      "x-ms-request-id" : "cde4887f-c01e-00a0-5a59-3e7280000000",
+      "x-ms-client-request-id" : "35810e44-c956-43eb-a1c4-4ebaafcd90c1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquireblobleasedurationfail2061745dd26e74c5a15/javablobacquireblobleasedurationfail2129140f917531ba8?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "00309107-18de-4b63-99e8-0533d54ed8ef"
+    },
+    "Response" : {
+      "content-length" : "327",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "fa5479c8-f01e-0060-3859-3e8abe000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:fa5479c8-f01e-0060-3859-3e8abe000000\nTime:2021-05-01T07:15:20.8591441Z</Message><HeaderName>x-ms-lease-duration</HeaderName><HeaderValue>70</HeaderValue></Error>",
+      "x-ms-client-request-id" : "00309107-18de-4b63-99e8-0533d54ed8ef",
+      "Date" : "Sat, 01 May 2021 07:15:20 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtcacquireblobleasedurationfail2",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "29b8098b-5f97-4b88-b926-72a54f76727b"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "2ef0050c-b01e-003c-4b59-3edfe6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest2.blob.core.windows.net/\"><Prefix>jtcacquireblobleasedurationfail2</Prefix><Containers><Container><Name>jtcacquireblobleasedurationfail2061745dd26e74c5a15</Name><Properties><Last-Modified>Sat, 01 May 2021 07:15:20 GMT</Last-Modified><Etag>\"0x8D90C70E164C01E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><VersionLevelWormEnabled>false</VersionLevelWormEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "29b8098b-5f97-4b88-b926-72a54f76727b",
+      "Date" : "Sat, 01 May 2021 07:15:20 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcacquireblobleasedurationfail2061745dd26e74c5a15?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e7328464-890b-4cde-80aa-bce17a30e345"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "dcab1f17-601e-00db-2459-3e301c000000",
+      "x-ms-client-request-id" : "e7328464-890b-4cde-80aa-bce17a30e345",
+      "Date" : "Sat, 01 May 2021 07:15:20 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcacquireblobleasedurationfail2061745dd26e74c5a15", "javablobacquireblobleasedurationfail2129140f917531ba8" ]
+}

@@ -2,7 +2,7 @@ import org.spockframework.runtime.model.parallel.ExecutionMode;
 
 runner {
     parallel {
-        enabled "LIVE".equalsIgnoreCase(System.getProperty("AZURE_TEST_MODE"))
+        enabled true
         dynamic(10)
     }
 }

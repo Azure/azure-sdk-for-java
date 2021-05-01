@@ -169,9 +169,7 @@ class APISpec extends Specification {
     def setup() {
         String fullTestName = getFullTestName(specificationContext.getCurrentIteration())
         String className = specificationContext.getCurrentSpec().getName()
-        int iterationIndex = fullTestName.lastIndexOf("[")
-        int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
-        this.testName = fullTestName.substring(0, substringIndex)
+        this.testName = fullTestName
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
 
@@ -202,28 +200,26 @@ class APISpec extends Specification {
             return fullName
         }
         def prefix = fullName
-        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
+        def suffix = iterationInfo.getIterationIndex()
 
         return prefix + suffix
     }
 
     def cleanup() {
-        if (!liveMode()) {
-            def cleanupClient = getServiceClientBuilder(primaryCredential,
-                String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
-                .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
-                .buildClient()
+        def cleanupClient = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
+            .buildClient()
 
-            def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-            for (def container : cleanupClient.listBlobContainers(options, null)) {
-                def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+        for (def container : cleanupClient.listBlobContainers(options, null)) {
+            def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
-                if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                    createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
-                }
-
-                containerClient.delete()
+            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
             }
+
+            containerClient.delete()
         }
 
         interceptorManager.close()
