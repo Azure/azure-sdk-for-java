@@ -128,7 +128,11 @@ class APISpec extends Specification {
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
-        this.testName = fullTestName.substring(0, substringIndex)
+        if (liveMode()) {
+            this.testName = UUID.randomUUID().toString().replaceAll("-", "")
+        } else {
+            this.testName = fullTestName.substring(0, substringIndex)
+        }
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
 
