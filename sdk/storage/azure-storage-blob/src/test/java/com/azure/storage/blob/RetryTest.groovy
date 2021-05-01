@@ -7,12 +7,12 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import reactor.test.StepVerifier
-import spock.lang.ResourceLock
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
 // Tests for package-private functionality.
-@ResourceLock("VirtualTimeScheduler")
+@Requires( { playbackMode() }) // https://github.com/reactor/reactor-core/issues/1098
 class RetryTest extends APISpec {
     static URL retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6, 2,
