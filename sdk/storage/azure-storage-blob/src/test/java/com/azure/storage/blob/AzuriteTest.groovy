@@ -118,7 +118,7 @@ class AzuriteTest extends APISpec {
     }
 
     @Unroll
-    def "URL ctor service client default credential"() {
+    def "Azurite URL constructing service client default azure credential"() {
         when:
         def serviceClient = getAzuriteServiceClient(azuriteEndpoints[index])
 
@@ -168,7 +168,7 @@ class AzuriteTest extends APISpec {
     }
 
     @Unroll
-    def "ctor container client with default credential"() {
+    def "Azurite URL construct container client with default azure credential"() {
         when:
         def containerClient = new BlobContainerClientBuilder()
             .endpoint(azuriteEndpoints[index] + "/container")
