@@ -43,15 +43,14 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
-import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.concurrent.atomic.AtomicBoolean
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -723,6 +722,7 @@ class BlockBlobAPITest extends APISpec {
 
     @Requires({ liveMode() })
     @Unroll
+    @ResourceLock("Upload from file")
     def "Upload from file"() {
         setup:
         def file = getRandomFile(fileSize)
@@ -1205,6 +1205,7 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @ResourceLock("Async buffered upload")
     def "Async buffered upload"() {
         setup:
         def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)

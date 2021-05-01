@@ -42,10 +42,13 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 import spock.lang.Ignore
 
@@ -2175,6 +2178,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Copy dest AC")
     def "Copy dest AC"() {
         setup:
         def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
