@@ -41,10 +41,8 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import org.spockframework.runtime.model.IterationInfo
-import org.spockframework.runtime.model.parallel.ExecutionMode
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Execution
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -62,7 +60,6 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
-@Execution(ExecutionMode.SAME_THREAD)
 class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
@@ -211,20 +208,22 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        def cleanupClient = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
-            .buildClient()
+        if (!liveMode()) {
+            def cleanupClient = getServiceClientBuilder(primaryCredential,
+                String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
+                .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
+                .buildClient()
 
-        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-        for (def container : cleanupClient.listBlobContainers(options, null)) {
-            def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+            def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+            for (def container : cleanupClient.listBlobContainers(options, null)) {
+                def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
-            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                }
+
+                containerClient.delete()
             }
-
-            containerClient.delete()
         }
 
         interceptorManager.close()
