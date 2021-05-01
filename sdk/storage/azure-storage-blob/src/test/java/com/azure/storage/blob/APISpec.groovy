@@ -41,8 +41,10 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import org.spockframework.runtime.model.IterationInfo
+import org.spockframework.runtime.model.parallel.ExecutionMode
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import spock.lang.Execution
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -60,6 +62,7 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
+@Execution(ExecutionMode.SAME_THREAD)
 class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
