@@ -3,6 +3,6 @@ import org.spockframework.runtime.model.parallel.ExecutionMode;
 runner {
     parallel {
         enabled false
-        dynamic(10)
+        dynamic(5)
     }
 }
