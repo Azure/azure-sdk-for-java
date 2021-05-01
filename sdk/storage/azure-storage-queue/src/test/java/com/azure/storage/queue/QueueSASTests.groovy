@@ -12,14 +12,12 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
-import org.junit.Test
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -99,7 +97,6 @@ class QueueSASTests extends APISpec {
         serviceSASSignatureValues.getQueueName() == queueName
     }
 
-    @Test
     def " QueueSAS enqueue dequeue with permissions"() {
         setup:
         queueClient.create()
@@ -144,7 +141,6 @@ class QueueSASTests extends APISpec {
         thrown(QueueStorageException)
     }
 
-    @Test
     def "QueueSAS update delete with permissions"() {
         setup:
         queueClient.create()
@@ -190,7 +186,6 @@ class QueueSASTests extends APISpec {
     }
 
     // NOTE: Serializer for set access policy keeps milliseconds
-    @Test
     def "QueueSAS enqueue dequeue with identifier"() {
         setup:
         queueClient.create()
@@ -236,7 +231,6 @@ class QueueSASTests extends APISpec {
         "sastest" == dequeueMsgIterIdentifier.next().getMessageText()
     }
 
-    @Test
     def "AccountSAS create delete queue"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
@@ -278,7 +272,6 @@ class QueueSASTests extends APISpec {
         notThrown(QueueStorageException)
     }
 
-    @Test
     def "AccountSAS list queues"() {
         def service = new AccountSasService()
             .setQueueAccess(true)
