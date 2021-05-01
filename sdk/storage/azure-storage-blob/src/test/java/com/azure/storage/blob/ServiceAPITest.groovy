@@ -35,11 +35,13 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@ResourceLock("ServiceAPITest")
 class ServiceAPITest extends APISpec {
 
     BlobServiceClient anonymousClient;
