@@ -1,0 +1,49 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/c0689a2c958848ae8115ca8f93cfc53ec0643f3d11ab45b0a0b13d14e86619d6?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "260f8eb3-b820-43ca-9a74-7eda94667536"
+    },
+    "Response" : {
+      "content-length" : "256",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "ca6d7c96-901e-00cf-195d-3e7873000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:ca6d7c96-901e-00cf-195d-3e7873000000\nTime:2021-05-01T07:45:22.3907544Z</Message></Error>",
+      "x-ms-client-request-id" : "260f8eb3-b820-43ca-9a74-7eda94667536",
+      "Date" : "Sat, 01 May 2021 07:45:22 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtcisconsistentreadversionuserprovidesetagclientchoosesversion",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d96633d4-781a-47a1-b542-75b7f5a1b384"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "ca6d7c9b-901e-00cf-1c5d-3e7873000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest2.blob.core.windows.net/\"><Prefix>jtcisconsistentreadversionuserprovidesetagclientchoosesversion</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "d96633d4-781a-47a1-b542-75b7f5a1b384",
+      "Date" : "Sat, 01 May 2021 07:45:22 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "c0689a2c958848ae8115ca8f93cfc53ec0643f3d11ab45b0a0b13d14e86619d6" ]
+}
