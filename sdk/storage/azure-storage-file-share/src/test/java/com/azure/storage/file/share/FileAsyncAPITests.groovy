@@ -18,8 +18,10 @@ import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
+import org.spockframework.runtime.model.parallel.ExecutionMode
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
+import spock.lang.Execution
 import spock.lang.Ignore
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -35,6 +37,7 @@ import java.time.ZoneOffset
 
 import static com.azure.storage.file.share.FileTestHelper.*
 
+@Execution(ExecutionMode.SAME_THREAD)
 class FileAsyncAPITests extends APISpec {
     ShareFileAsyncClient primaryFileAsyncClient
     ShareClient shareClient
