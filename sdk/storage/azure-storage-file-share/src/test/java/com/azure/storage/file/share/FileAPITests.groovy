@@ -20,10 +20,9 @@ import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
-import org.spockframework.runtime.model.parallel.ExecutionMode
-import spock.lang.Execution
 import spock.lang.Ignore
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -43,7 +42,7 @@ import static com.azure.storage.file.share.FileTestHelper.deleteFilesIfExists
 import static com.azure.storage.file.share.FileTestHelper.getRandomBuffer
 import static com.azure.storage.file.share.FileTestHelper.getRandomFile
 
-@Execution(ExecutionMode.SAME_THREAD)
+@ResourceLock("FileAPITests")
 class FileAPITests extends APISpec {
     ShareFileClient primaryFileClient
     ShareClient shareClient
