@@ -17,12 +17,10 @@ import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
 
-@ResourceLock("ServiceProperties")
 class FileServiceAsyncAPITests extends APISpec {
     String shareName
 
