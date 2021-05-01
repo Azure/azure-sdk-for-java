@@ -1,6 +1,6 @@
 runner {
     parallel {
-        enabled "true" == System.getProperty("junit.jupiter.execution.parallel.enabled")
+        enabled true
         dynamic(10)
     }
 }

@@ -9,7 +9,6 @@ import spock.lang.Unroll
 import java.nio.file.FileSystems
 
 class AzurePathTest extends APISpec {
-    @Shared
     AzureFileSystem fs
 
     // Just need one fs instance for creating the paths.

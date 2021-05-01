@@ -67,13 +67,8 @@ class APISpec extends Specification {
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     // both sync and async clients point to same container
-    @Shared
     BlobContainerClient cc
-
-    @Shared
     BlobContainerClient ccPremium
-
-    @Shared
     BlobContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.

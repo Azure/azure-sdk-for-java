@@ -56,13 +56,8 @@ class APISpec extends Specification {
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     // both sync and async clients point to same container
-    @Shared
     DataLakeFileSystemClient fsc
-
-    @Shared
     DataLakeFileSystemClient fscPremium
-
-    @Shared
     DataLakeFileSystemAsyncClient fscAsync
 
     // Fields used for conveniently creating blobs with data.
