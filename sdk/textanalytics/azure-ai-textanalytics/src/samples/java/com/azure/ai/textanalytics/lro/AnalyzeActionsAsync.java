@@ -5,9 +5,9 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * Sample demonstrates how to asynchronously execute actions in a batch of documents, such as key phrases extraction,
  * PII entities recognition actions.
  */
-public class AnalyzeBatchActionsAsync {
+public class AnalyzeActionsAsync {
     /**
      * Main method to invoke this demo about how to analyze a batch of tasks.
      *
@@ -52,15 +52,15 @@ public class AnalyzeBatchActionsAsync {
             ));
         }
 
-        client.beginAnalyzeBatchActions(documents,
+        client.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                 .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
                 .setExtractKeyPhrasesOptions(
                     new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"),
                     new ExtractKeyPhrasesOptions().setModelVersion("latest")),
-            new AnalyzeBatchActionsOptions().setIncludeStatistics(false))
+            new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
-                AnalyzeBatchActionsOperationDetail operationDetail = result.getValue();
+                AnalyzeActionsOperationDetail operationDetail = result.getValue();
                 System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
                                       + " failed actions: %d, total actions: %d%n",
                     operationDetail.getDisplayName(), operationDetail.getActionsSucceeded(),
@@ -68,12 +68,12 @@ public class AnalyzeBatchActionsAsync {
                     operationDetail.getActionsInTotal());
                 return result.getFinalResult();
             })
-            .subscribe(analyzeTasksResultPagedFlux -> analyzeTasksResultPagedFlux.byPage().subscribe(
+            .subscribe(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage().subscribe(
                 perPage -> {
                     System.out.printf("Response code: %d, Continuation Token: %s.%n",
                         perPage.getStatusCode(), perPage.getContinuationToken());
 
-                    for (AnalyzeBatchActionsResult actionsResult : perPage.getElements()) {
+                    for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
                         System.out.println("Entities recognition action results:");
                         for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
                             if (!actionResult.isError()) {
