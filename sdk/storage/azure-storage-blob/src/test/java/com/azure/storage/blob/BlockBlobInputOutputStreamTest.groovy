@@ -238,7 +238,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes1 == randomBytes
     }
 
-    def "IS consistent read control etag user provides version and etag"() {
+    def "IS consistent read etag user provides version and etag"() {
         setup:
         int length = Constants.KB
         byte[] randomBytes = getRandomByteArray(length)
@@ -264,7 +264,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes1 == randomBytes
     }
 
-    def "IS consistent read control etag user provides version client chooses etag"() {
+    def "IS consistent read etag user provides version client chooses etag"() {
         setup:
         int length = Constants.KB
         byte[] randomBytes = getRandomByteArray(length)
@@ -366,7 +366,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == randomBytes
     }
 
-    def "IS consistent read control version user provides version and etag"() {
+    def "IS consistent read version user provides version and etag"() {
         setup:
         int length = Constants.KB
         byte[] randomBytes = getRandomByteArray(length)
@@ -394,7 +394,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == randomBytes
     }
 
-    def "IS consistent read control version user provides etag client chooses version"() {
+    def "IS consistent read version user provides etag client chooses version"() {
         setup:
         int length = Constants.KB
         byte[] randomBytes = getRandomByteArray(length)

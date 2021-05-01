@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/c19aa5a7d8dc46579eca1f1db9b30b6e9ce193af66ac493a9ae10ab666c22d07?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/7058270986294915897167f8d6c354d68a9a6c2717734437b1e8d5aeb1ec113f?restype=container",
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a5b121b0-485c-49f6-8c95-e1df4045fdb1"
+      "x-ms-client-request-id" : "abcd5686-e264-4e2f-bef3-b4259150b277"
     },
     "Response" : {
       "content-length" : "256",
@@ -14,10 +14,10 @@
       "x-ms-error-code" : "OutOfRangeInput",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-request-id" : "e86dcafc-301e-007f-465a-3e39ba000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:e86dcafc-301e-007f-465a-3e39ba000000\nTime:2021-05-01T07:23:19.5155352Z</Message></Error>",
-      "x-ms-client-request-id" : "a5b121b0-485c-49f6-8c95-e1df4045fdb1",
-      "Date" : "Sat, 01 May 2021 07:23:18 GMT",
+      "x-ms-request-id" : "3de3a128-701e-0041-315c-3eaec5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:3de3a128-701e-0041-315c-3eaec5000000\nTime:2021-05-01T07:36:13.9317935Z</Message></Error>",
+      "x-ms-client-request-id" : "abcd5686-e264-4e2f-bef3-b4259150b277",
+      "Date" : "Sat, 01 May 2021 07:36:13 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
@@ -27,7 +27,7 @@
     "Headers" : {
       "x-ms-version" : "2020-06-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e4b5c4c9-1d20-4a67-876d-b75e552322c6"
+      "x-ms-client-request-id" : "4094d3c3-e4d9-4cd5-8266-af2cbefedc63"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -37,13 +37,13 @@
       "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "e976c9ff-201e-002e-375a-3ea436000000",
+      "x-ms-request-id" : "ddf605ee-901e-0076-645c-3e7c69000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest2.blob.core.windows.net/\"><Prefix>jtcisconsistentreadcontrolversionuserprovidesversionandetag</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "x-ms-client-request-id" : "e4b5c4c9-1d20-4a67-876d-b75e552322c6",
-      "Date" : "Sat, 01 May 2021 07:23:19 GMT",
+      "x-ms-client-request-id" : "4094d3c3-e4d9-4cd5-8266-af2cbefedc63",
+      "Date" : "Sat, 01 May 2021 07:36:14 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "c19aa5a7d8dc46579eca1f1db9b30b6e9ce193af66ac493a9ae10ab666c22d07" ]
+  "variables" : [ "7058270986294915897167f8d6c354d68a9a6c2717734437b1e8d5aeb1ec113f" ]
 }
