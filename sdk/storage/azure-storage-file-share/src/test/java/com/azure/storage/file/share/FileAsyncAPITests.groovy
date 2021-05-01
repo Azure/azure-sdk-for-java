@@ -22,7 +22,6 @@ import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -36,7 +35,6 @@ import java.time.ZoneOffset
 
 import static com.azure.storage.file.share.FileTestHelper.*
 
-@ResourceLock("FileAsyncAPITests")
 class FileAsyncAPITests extends APISpec {
     ShareFileAsyncClient primaryFileAsyncClient
     ShareClient shareClient

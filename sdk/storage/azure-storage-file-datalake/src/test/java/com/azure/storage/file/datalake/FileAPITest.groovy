@@ -41,7 +41,6 @@ import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Retry
 import spock.lang.Unroll
 
@@ -768,7 +767,6 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @ResourceLock("Set HTTP headers AC fail")
     def "Set HTTP headers AC fail"() {
         setup:
         noneMatch = setupPathMatchCondition(fc, noneMatch)
@@ -2242,7 +2240,6 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @ResourceLock("Upload from file options")
     def "Upload from file options"() {
         setup:
         def file = getRandomFile((int) dataSize)
@@ -2299,7 +2296,6 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() }) // Test uploads large amount of data
-    @ResourceLock("Async buffered upload")
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
@@ -2404,7 +2400,6 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({liveMode()}) // Test uploads large amount of data
-    @ResourceLock("Buffered upload chunked source")
     def "Buffered upload chunked source"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)

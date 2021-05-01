@@ -21,11 +21,9 @@ import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.ResourceLock
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@ResourceLock("BuilderHelperTest")
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"

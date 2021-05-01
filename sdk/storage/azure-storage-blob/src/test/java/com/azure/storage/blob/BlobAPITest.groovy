@@ -48,7 +48,6 @@ import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 import spock.lang.Ignore
 
@@ -1463,7 +1462,6 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    @ResourceLock("Set HTTP headers AC fail")
     def "Set HTTP headers AC fail"() {
         setup:
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
@@ -2119,7 +2117,6 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    @ResourceLock("Copy source AC")
     def "Copy source AC"() {
         setup:
         def t = new HashMap<String, String>()
@@ -2180,7 +2177,6 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    @ResourceLock("Copy dest AC")
     def "Copy dest AC"() {
         setup:
         def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
@@ -2447,7 +2443,6 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    @ResourceLock("Sync copy source AC")
     def "Sync copy source AC"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)

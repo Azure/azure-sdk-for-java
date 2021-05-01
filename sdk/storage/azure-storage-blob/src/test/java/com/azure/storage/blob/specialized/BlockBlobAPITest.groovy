@@ -43,7 +43,6 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -722,7 +721,6 @@ class BlockBlobAPITest extends APISpec {
 
     @Requires({ liveMode() })
     @Unroll
-    @ResourceLock("Upload from file")
     def "Upload from file"() {
         setup:
         def file = getRandomFile(fileSize)
@@ -889,7 +887,6 @@ class BlockBlobAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
-    @ResourceLock("Upload from file options")
     def "Upload from file options"() {
         setup:
         def file = getRandomFile(dataSize)
@@ -1206,7 +1203,6 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
-    @ResourceLock("Async buffered upload")
     def "Async buffered upload"() {
         setup:
         def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
@@ -1355,7 +1351,6 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
-    @ResourceLock("Buffered upload chunked source")
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because

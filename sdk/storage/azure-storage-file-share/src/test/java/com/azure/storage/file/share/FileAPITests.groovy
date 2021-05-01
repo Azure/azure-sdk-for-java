@@ -22,7 +22,6 @@ import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
 import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -42,7 +41,6 @@ import static com.azure.storage.file.share.FileTestHelper.deleteFilesIfExists
 import static com.azure.storage.file.share.FileTestHelper.getRandomBuffer
 import static com.azure.storage.file.share.FileTestHelper.getRandomFile
 
-@ResourceLock("FileAPITests")
 class FileAPITests extends APISpec {
     ShareFileClient primaryFileClient
     ShareClient shareClient
