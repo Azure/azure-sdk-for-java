@@ -270,7 +270,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "parse partitioning config with custom Strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom",
+      "spark.cosmos.read.partitioning.strategy" -> "Custom",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 
@@ -282,7 +282,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "parse partitioning config with custom Strategy even with incorrect casing" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.STRATEGY" -> "CuSTom",
+      "spark.cosmos.read.partitioning.strategy" -> "CuSTom",
       "spark.cosmos.partitioning.tarGETedCount" -> "8"
     )
 
@@ -305,7 +305,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing custom partitioning strategy without  mandatory targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom"
+      "spark.cosmos.read.partitioning.strategy" -> "Custom"
     )
 
     try {
@@ -322,7 +322,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing invalid partitioning strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Whatever"
+      "spark.cosmos.read.partitioning.strategy" -> "Whatever"
     )
 
     try {
@@ -330,14 +330,14 @@ class CosmosConfigSpec extends UnitSpec {
       fail("missing targetedCount")
     } catch {
       case e: Exception => e.getMessage shouldEqual
-        "invalid configuration for spark.cosmos.partitioning.strategy:Whatever. " +
+        "invalid configuration for spark.cosmos.read.partitioning.strategy:Whatever. " +
           "Config description: The partitioning strategy used (Default, Custom, Restrictive or Aggressive)"
     }
   }
 
   it should "parse partitioning config with restrictive Strategy ignores targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "restrictive",
+      "spark.cosmos.read.partitioning.strategy" -> "restrictive",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 

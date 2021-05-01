@@ -21,7 +21,7 @@ class SparkE2EQueryITest
   //scalastyle:off magic.number
 
   // NOTE: due to some bug in the emulator, sub-range feed range doesn't work
-  // "spark.cosmos.partitioning.strategy" -> "Restrictive" is added to the query tests
+  // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
 
@@ -52,7 +52,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val df = spark.read.format("cosmos.items").options(cfg).load()
@@ -88,7 +88,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // scalastyle:off underscore.import
@@ -139,7 +139,7 @@ class SparkE2EQueryITest
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true",
       "spark.cosmos.read.inferSchema.includeSystemProperties" -> "true",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
@@ -182,7 +182,7 @@ class SparkE2EQueryITest
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true",
       "spark.cosmos.read.inferSchema.includeTimestamp" -> "true",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
@@ -224,7 +224,7 @@ class SparkE2EQueryITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
@@ -267,7 +267,7 @@ class SparkE2EQueryITest
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true",
       "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.isAlive, c.type, c.age from c",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
@@ -303,7 +303,7 @@ class SparkE2EQueryITest
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true",
       "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts from c",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
@@ -357,7 +357,7 @@ class SparkE2EQueryITest
       "spark.cosmos.read.inferSchema.enabled" -> "true",
       "spark.cosmos.read.inferSchema.samplingSize" -> samplingSize.toString,
       "spark.cosmos.read.inferSchema.query" -> "SELECT * FROM c ORDER BY c._ts",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
@@ -387,7 +387,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // scalastyle:off underscore.import
@@ -446,7 +446,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val df = spark.read.format("cosmos.items").options(cfg).load()
