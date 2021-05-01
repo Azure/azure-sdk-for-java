@@ -35,13 +35,16 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import org.spockframework.runtime.model.parallel.ExecutionMode
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Execution
 import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@Execution(ExecutionMode.SAME_THREAD)
 class ServiceAPITest extends APISpec {
 
     BlobServiceClient anonymousClient;
