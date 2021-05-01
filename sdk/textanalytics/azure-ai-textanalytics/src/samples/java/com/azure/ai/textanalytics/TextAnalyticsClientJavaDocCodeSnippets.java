@@ -1033,7 +1033,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      * Code snippet for
      * {@link TextAnalyticsClient#beginAnalyzeActions(Iterable, TextAnalyticsActions, AnalyzeActionsOptions, Context)}
      */
-    public void analyzeTasksMaxOverload() {
+    public void analyzeActionsMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-AnalyzeActionsOptions-Context
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en"),

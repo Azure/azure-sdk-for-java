@@ -621,29 +621,29 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    // Analyze batch actions
+    // Analyze multiple actions
     @Test
-    abstract void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeActionsWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeActionsEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeBatchActionsPartialCompleted(HttpClient httpClient,
+    abstract void analyzeActionsPartialCompleted(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeBatchActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeLinkedEntityTasks(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeLinkedEntityActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -1549,11 +1549,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         List<AnalyzeActionsResult> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            validateAnalyzeTasksResult(showStatistics, expected.get(i), actual.get(i));
+            validateAnalyzeActionsResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
-    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeActionsResult expected,
+    static void validateAnalyzeActionsResult(boolean showStatistics, AnalyzeActionsResult expected,
         AnalyzeActionsResult actual) {
         // TODO: batch actions has return non statistics.
         // Issue: https://github.com/Azure/azure-sdk-for-java/issues/19672

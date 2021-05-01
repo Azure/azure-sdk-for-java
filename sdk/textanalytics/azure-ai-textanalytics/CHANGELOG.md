@@ -1,6 +1,8 @@
 # Release History
 ## 5.1.0-beta.7 (Unreleased)
-
+### Breaking changes
+- Removed `batch` keyword from the model names, `AnalyzeBatchActionsResult`, `AnalyzeBatchActionsOperationDetail`, 
+  `AnalyzeBatchActionOptions` and the related method names, such as renamed `beginAnalyzeBatchActions` to `beginAnalyzeActions`.
 
 ## 5.1.0-beta.6 (2021-04-06)
 ### Breaking changes

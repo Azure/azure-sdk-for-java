@@ -1057,9 +1057,9 @@ final class TestUtils {
     }
 
     /**
-     * Helper method that get a multiple-pages (AnalyzeTasksResult) list.
+     * Helper method that get a multiple-pages (AnalyzeActionsResult) list.
      */
-    static List<AnalyzeActionsResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
+    static List<AnalyzeActionsResult> getExpectedAnalyzeActionsResultListForMultiplePages(int startIndex,
         int firstPage, int secondPage) {
         List<AnalyzeActionsResult> analyzeActionsResults = new ArrayList<>();
         // First Page

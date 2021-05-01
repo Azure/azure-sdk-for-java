@@ -68,7 +68,7 @@ public class AnalyzeActionsAsync {
                     operationDetail.getActionsInTotal());
                 return result.getFinalResult();
             })
-            .subscribe(analyzeTasksResultPagedFlux -> analyzeTasksResultPagedFlux.byPage().subscribe(
+            .subscribe(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage().subscribe(
                 perPage -> {
                     System.out.printf("Response code: %d, Continuation Token: %s.%n",
                         perPage.getStatusCode(), perPage.getContinuationToken());

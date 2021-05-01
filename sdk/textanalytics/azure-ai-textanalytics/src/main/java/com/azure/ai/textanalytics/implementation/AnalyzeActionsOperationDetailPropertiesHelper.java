@@ -34,11 +34,11 @@ public final class AnalyzeActionsOperationDetailPropertiesHelper {
     /**
      * The method called from {@link AnalyzeActionsOperationDetail} to set it's accessor.
      *
-     * @param analyzeTaskOperationResultAccessor The accessor.
+     * @param analyzeActionsOperationDetailAccessor The accessor.
      */
     public static void setAccessor(
-        final AnalyzeActionsOperationDetailAccessor analyzeTaskOperationResultAccessor) {
-        accessor = analyzeTaskOperationResultAccessor;
+        final AnalyzeActionsOperationDetailAccessor analyzeActionsOperationDetailAccessor) {
+        accessor = analyzeActionsOperationDetailAccessor;
     }
 
     public static void setOperationId(AnalyzeActionsOperationDetail operationResult, String operationId) {

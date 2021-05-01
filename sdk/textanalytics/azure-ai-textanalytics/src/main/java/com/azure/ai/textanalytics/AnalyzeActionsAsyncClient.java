@@ -326,27 +326,27 @@ class AnalyzeActionsAsyncClient {
             final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
             final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
             return service.analyzeStatusWithResponseAsync(operationId, showStats, topValue, skipValue, context)
-                .map(this::toAnalyzeTasksPagedResponse)
+                .map(this::toAnalyzeActionsResultPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } else {
             return service.analyzeStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                .map(this::toAnalyzeTasksPagedResponse)
+                .map(this::toAnalyzeActionsResultPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
     }
 
-    private PagedResponse<AnalyzeActionsResult> toAnalyzeTasksPagedResponse(Response<AnalyzeJobState> response) {
+    private PagedResponse<AnalyzeActionsResult> toAnalyzeActionsResultPagedResponse(Response<AnalyzeJobState> response) {
         final AnalyzeJobState analyzeJobState = response.getValue();
         return new PagedResponseBase<Void, AnalyzeActionsResult>(
             response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
-            Arrays.asList(toAnalyzeTasks(analyzeJobState)),
+            Arrays.asList(toAnalyzeActionsResult(analyzeJobState)),
             analyzeJobState.getNextLink(),
             null);
     }
 
-    private AnalyzeActionsResult toAnalyzeTasks(AnalyzeJobState analyzeJobState) {
+    private AnalyzeActionsResult toAnalyzeActionsResult(AnalyzeJobState analyzeJobState) {
         TasksStateTasks tasksStateTasks = analyzeJobState.getTasks();
         final List<TasksStateTasksEntityRecognitionPiiTasksItem> piiTasksItems =
             tasksStateTasks.getEntityRecognitionPiiTasks();
