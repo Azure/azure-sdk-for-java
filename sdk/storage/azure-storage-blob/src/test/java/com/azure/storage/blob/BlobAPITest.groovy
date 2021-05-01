@@ -1463,6 +1463,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Set HTTP headers AC fail")
     def "Set HTTP headers AC fail"() {
         setup:
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
@@ -2118,6 +2119,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Copy source AC")
     def "Copy source AC"() {
         setup:
         def t = new HashMap<String, String>()
@@ -2445,6 +2447,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Sync copy source AC")
     def "Sync copy source AC"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)

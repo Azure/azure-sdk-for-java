@@ -18,6 +18,7 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.util.function.Consumer
@@ -2104,6 +2105,7 @@ class DirectoryAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Set HTTP headers AC fail")
     def "Set HTTP headers AC fail"() {
         setup:
         noneMatch = setupPathMatchCondition(dc, noneMatch)

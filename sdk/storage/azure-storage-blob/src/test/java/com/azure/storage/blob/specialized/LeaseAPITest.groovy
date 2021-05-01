@@ -14,6 +14,7 @@ import com.azure.storage.blob.options.BlobBreakLeaseOptions
 import com.azure.storage.blob.options.BlobChangeLeaseOptions
 import com.azure.storage.blob.options.BlobReleaseLeaseOptions
 import com.azure.storage.blob.options.BlobRenewLeaseOptions
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -473,6 +474,7 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Change blob lease AC")
     def "Change blob lease AC"() {
         setup:
         def bc = createBlobClient()
@@ -502,6 +504,7 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Change blob lease AC fail")
     def "Change blob lease AC fail"() {
         setup:
         def bc = createBlobClient()
@@ -542,6 +545,7 @@ class LeaseAPITest extends APISpec {
 
 
     @Unroll
+    @ResourceLock("Acquire container lease")
     def "Acquire container lease"() {
         setup:
         def leaseClient = createLeaseClient(cc, proposedID)
@@ -592,6 +596,7 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Acquire container lease AC")
     def "Acquire container lease AC"() {
         setup:
         def mac = new BlobLeaseRequestConditions()
@@ -613,6 +618,7 @@ class LeaseAPITest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("Acquire container lease AC fail")
     def "Acquire container lease AC fail"() {
         setup:
         def mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)

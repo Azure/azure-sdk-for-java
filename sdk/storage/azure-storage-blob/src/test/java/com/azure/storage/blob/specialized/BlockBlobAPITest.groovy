@@ -889,6 +889,7 @@ class BlockBlobAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
+    @ResourceLock("Upload from file options")
     def "Upload from file options"() {
         setup:
         def file = getRandomFile(dataSize)
@@ -1354,6 +1355,7 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @ResourceLock("Buffered upload chunked source")
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
