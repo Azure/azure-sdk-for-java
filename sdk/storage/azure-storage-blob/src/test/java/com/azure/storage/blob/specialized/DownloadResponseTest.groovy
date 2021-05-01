@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -181,6 +182,7 @@ class DownloadResponseTest extends APISpec {
     }
 
     @Unroll
+    @ResourceLock("VirtualTimeScheduler")
     def "Timeout"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT,
