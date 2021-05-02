@@ -99,6 +99,7 @@ public final class KeyVaultBackupAsyncClient {
 
         clientImpl = new KeyVaultBackupClientImplBuilder()
             .pipeline(httpPipeline)
+            .apiVersion(this.serviceVersion)
             .buildClient();
     }
 
