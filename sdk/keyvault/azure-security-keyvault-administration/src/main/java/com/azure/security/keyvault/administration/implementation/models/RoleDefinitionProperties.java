@@ -5,88 +5,41 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Role definition. */
-@JsonFlatten
+/** Role definition properties. */
 @Fluent
-public class RoleDefinition {
-    /*
-     * The role definition ID.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /*
-     * The role definition name.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * The role definition type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private RoleDefinitionType type;
-
+public final class RoleDefinitionProperties {
     /*
      * The role name.
      */
-    @JsonProperty(value = "properties.roleName")
+    @JsonProperty(value = "roleName")
     private String roleName;
 
     /*
      * The role definition description.
      */
-    @JsonProperty(value = "properties.description")
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The role type.
      */
-    @JsonProperty(value = "properties.type")
+    @JsonProperty(value = "type")
     private RoleType roleType;
 
     /*
      * Role definition permissions.
      */
-    @JsonProperty(value = "properties.permissions")
+    @JsonProperty(value = "permissions")
     private List<Permission> permissions;
 
     /*
      * Role definition assignable scopes.
      */
-    @JsonProperty(value = "properties.assignableScopes")
+    @JsonProperty(value = "assignableScopes")
     private List<RoleScope> assignableScopes;
-
-    /**
-     * Get the id property: The role definition ID.
-     *
-     * @return the id value.
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The role definition name.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The role definition type.
-     *
-     * @return the type value.
-     */
-    public RoleDefinitionType getType() {
-        return this.type;
-    }
 
     /**
      * Get the roleName property: The role name.
@@ -101,9 +54,9 @@ public class RoleDefinition {
      * Set the roleName property: The role name.
      *
      * @param roleName the roleName value to set.
-     * @return the RoleDefinition object itself.
+     * @return the RoleDefinitionProperties object itself.
      */
-    public RoleDefinition setRoleName(String roleName) {
+    public RoleDefinitionProperties setRoleName(String roleName) {
         this.roleName = roleName;
         return this;
     }
@@ -121,9 +74,9 @@ public class RoleDefinition {
      * Set the description property: The role definition description.
      *
      * @param description the description value to set.
-     * @return the RoleDefinition object itself.
+     * @return the RoleDefinitionProperties object itself.
      */
-    public RoleDefinition setDescription(String description) {
+    public RoleDefinitionProperties setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -141,9 +94,9 @@ public class RoleDefinition {
      * Set the roleType property: The role type.
      *
      * @param roleType the roleType value to set.
-     * @return the RoleDefinition object itself.
+     * @return the RoleDefinitionProperties object itself.
      */
-    public RoleDefinition setRoleType(RoleType roleType) {
+    public RoleDefinitionProperties setRoleType(RoleType roleType) {
         this.roleType = roleType;
         return this;
     }
@@ -161,9 +114,9 @@ public class RoleDefinition {
      * Set the permissions property: Role definition permissions.
      *
      * @param permissions the permissions value to set.
-     * @return the RoleDefinition object itself.
+     * @return the RoleDefinitionProperties object itself.
      */
-    public RoleDefinition setPermissions(List<Permission> permissions) {
+    public RoleDefinitionProperties setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -181,9 +134,9 @@ public class RoleDefinition {
      * Set the assignableScopes property: Role definition assignable scopes.
      *
      * @param assignableScopes the assignableScopes value to set.
-     * @return the RoleDefinition object itself.
+     * @return the RoleDefinitionProperties object itself.
      */
-    public RoleDefinition setAssignableScopes(List<RoleScope> assignableScopes) {
+    public RoleDefinitionProperties setAssignableScopes(List<RoleScope> assignableScopes) {
         this.assignableScopes = assignableScopes;
         return this;
     }

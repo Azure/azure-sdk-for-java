@@ -8,28 +8,29 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * A class describing allowed and denied actions and data actions of a {@link KeyVaultRoleDefinition}.
+ * A class describing allowed and forbidden actions and data actions of a {@link KeyVaultRoleDefinition}.
  */
 @Immutable
 public final class KeyVaultPermission {
     private final List<String> allowedActions;
-    private final List<String> deniedActions;
-    private final List<String> allowedDataActions;
-    private final List<String> deniedDataActions;
+    private final List<String> notActions;
+    private final List<KeyVaultDataAction> allowedDataActions;
+    private final List<KeyVaultDataAction> notDataActions;
 
     /**
-     * Creates a new {@link KeyVaultPermission} with the specified allowed and denied actions and data actions.
+     * Creates a new {@link KeyVaultPermission} with the specified allowed and forbidden actions and data actions.
      *
      * @param allowedActions The actions this {@link KeyVaultPermission permission} allows.
-     * @param deniedActions The actions this {@link KeyVaultPermission permission} denies.
+     * @param notActions The actions this {@link KeyVaultPermission permission} forbids.
      * @param allowedDataActions The data actions this {@link KeyVaultPermission permission} allows.
-     * @param deniedDataActions The data actions this {@link KeyVaultPermission permission} denies.
+     * @param notDataActions The data actions this {@link KeyVaultPermission permission} forbids.
      */
-    public KeyVaultPermission(List<String> allowedActions, List<String> deniedActions, List<String> allowedDataActions, List<String> deniedDataActions) {
+    public KeyVaultPermission(List<String> allowedActions, List<String> notActions,
+                              List<KeyVaultDataAction> allowedDataActions, List<KeyVaultDataAction> notDataActions) {
         this.allowedActions = allowedActions;
-        this.deniedActions = deniedActions;
+        this.notActions = notActions;
         this.allowedDataActions = allowedDataActions;
-        this.deniedDataActions = deniedDataActions;
+        this.notDataActions = notDataActions;
     }
 
     /**
@@ -42,12 +43,12 @@ public final class KeyVaultPermission {
     }
 
     /**
-     * Get the actions this {@link KeyVaultPermission permission} denies.
+     * Get the actions this {@link KeyVaultPermission permission} forbids.
      *
-     * @return The denied actions.
+     * @return The forbidden actions.
      */
-    public List<String> getDeniedActions() {
-        return deniedActions;
+    public List<String> getNotActions() {
+        return notActions;
     }
 
     /**
@@ -55,16 +56,16 @@ public final class KeyVaultPermission {
      *
      * @return The allowed data actions.
      */
-    public List<String> getAllowedDataActions() {
+    public List<KeyVaultDataAction> getAllowedDataActions() {
         return allowedDataActions;
     }
 
     /**
-     * Get the data actions this {@link KeyVaultPermission permission} denies.
+     * Get the data actions this {@link KeyVaultPermission permission} forbids.
      *
-     * @return The denied data actions.
+     * @return The forbidden data actions.
      */
-    public List<String> getDeniedDataActions() {
-        return deniedDataActions;
+    public List<KeyVaultDataAction> getNotDataActions() {
+        return notDataActions;
     }
 }
