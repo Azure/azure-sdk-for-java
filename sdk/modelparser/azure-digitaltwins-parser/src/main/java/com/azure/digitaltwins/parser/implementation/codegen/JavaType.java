@@ -231,7 +231,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
 
         codeWriter.addNewLine();
 
-        for(JavaScope javaScope : this.scopes) {
+        for (JavaScope javaScope : this.scopes) {
             javaScope.generateCode(codeWriter);
         }
 

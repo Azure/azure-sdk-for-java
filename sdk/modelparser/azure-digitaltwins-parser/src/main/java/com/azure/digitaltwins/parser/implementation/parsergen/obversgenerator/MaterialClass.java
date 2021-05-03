@@ -4,7 +4,14 @@
 package com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.parser.implementation.codegen.*;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaSorted;
+import com.azure.digitaltwins.parser.implementation.codegen.Access;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaScope;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaLibrary;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
+import com.azure.digitaltwins.parser.implementation.codegen.Novelty;
+import com.azure.digitaltwins.parser.implementation.codegen.Multiplicity;
+import com.azure.digitaltwins.parser.implementation.codegen.Mutability;
 import com.azure.digitaltwins.parser.implementation.parsergen.TypeGenerator;
 import com.azure.digitaltwins.parser.implementation.parsergen.MaterialClassDigest;
 import com.azure.digitaltwins.parser.implementation.parsergen.NameFormatter;
