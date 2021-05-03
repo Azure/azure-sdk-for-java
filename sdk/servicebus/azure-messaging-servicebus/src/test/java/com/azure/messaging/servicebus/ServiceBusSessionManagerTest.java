@@ -269,7 +269,7 @@ class ServiceBusSessionManagerTest {
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(
             Mono.fromCallable(() -> OffsetDateTime.now().plus(Duration.ofSeconds(5))));
 
-        // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
+        // Mockito.mockConstruction should be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (
             MockedConstruction<LockRenewalOperation> mockedLockRenewOperation = Mockito.mockConstructionWithAnswer(LockRenewalOperation.class,
                 invocationOnMock -> new LockRenewalOperation("lockToken", Duration.ofSeconds(30), true,
