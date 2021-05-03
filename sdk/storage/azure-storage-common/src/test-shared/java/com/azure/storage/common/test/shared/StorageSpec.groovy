@@ -5,6 +5,6 @@ package com.azure.storage.common.test.shared;
 
 import spock.lang.Specification;
 
-public class StorageSpec extends Specification {
+class StorageSpec extends Specification {
     protected static final TestEnvironment ENVIRONMENT = new TestEnvironment();
 }
