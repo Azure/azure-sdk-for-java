@@ -5,10 +5,12 @@ package com.azure.cosmos.implementation.http;
 
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import io.netty.channel.ChannelOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -24,9 +26,14 @@ public class ReactorNettyHttpClientTest {
     private HttpClient reactorNettyHttpClient;
 
     @BeforeClass(groups = "unit")
-    public void before_ReactorNettyHttpClientTest() throws Exception {
+    public void before_ReactorNettyHttpClientTest() {
         this.configs = new Configs();
         this.reactorNettyHttpClient = HttpClient.createFixed(new HttpClientConfig(this.configs));
+    }
+
+    @AfterClass(groups = "unit")
+    public void after_ReactorNettyHttpClientTest() {
+        LifeCycleUtils.closeQuietly(reactorNettyHttpClient);
     }
 
     @Test(groups = "unit")
@@ -65,4 +72,3 @@ public class ReactorNettyHttpClientTest {
         assertThat(connectionTimeoutInMillis).isEqualTo((int) this.configs.getConnectionAcquireTimeout().toMillis());
     }
 }
-
