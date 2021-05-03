@@ -5,6 +5,7 @@ package com.azure.spring.keyvault;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
@@ -145,6 +146,16 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
         final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
         final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST, DEFAULT_AUTHORITY_HOST);
+        final Boolean enableCliAuth = Optional.ofNullable(getPropertyValue(normalizedName, Property.CLI_CREDENTIALS_ENABLED))
+            .map(Boolean::valueOf)
+            .orElse(false);
+
+        if (enableCliAuth) {
+            LOGGER.debug("Will use cli credentials");
+            return new AzureCliCredentialBuilder()
+                    .build();
+        }
+
         if (clientId != null && tenantId != null && clientKey != null) {
             LOGGER.debug("Will use custom credentials");
             return new ClientSecretCredentialBuilder()

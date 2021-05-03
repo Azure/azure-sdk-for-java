@@ -19,6 +19,14 @@ public class KeyVaultProperties {
     public static final String PREFIX = "azure.keyvault";
     public static final String DELIMITER = ".";
 
+    public Boolean getCliCredentialEnabled() {
+        return cliCredentialEnabled;
+    }
+
+    public void setCliCredentialEnabled(Boolean cliCredentialEnabled) {
+        this.cliCredentialEnabled = cliCredentialEnabled;
+    }
+
     public String getClientId() {
         return clientId;
     }
@@ -125,6 +133,7 @@ public class KeyVaultProperties {
     private String caseSensitiveKeys;
     private String certificatePassword;
     private String certificatePath;
+    private Boolean cliCredentialEnabled;
     private String clientId;
     private String clientKey;
     /**
@@ -147,6 +156,7 @@ public class KeyVaultProperties {
         CERTIFICATE_PATH("certificate-path"),
         CLIENT_ID("client-id"),
         CLIENT_KEY("client-key"),
+        CLI_CREDENTIALS_ENABLED("cli-credentials-enabled"),
         ENABLED("enabled"),
         ORDER("order"),
         REFRESH_INTERVAL("refresh-interval"),

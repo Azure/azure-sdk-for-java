@@ -4,6 +4,7 @@
 package com.azure.spring.keyvault;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.AzureCliCredential;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.ALLOW_TELEMETRY;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CERTIFICATE_PATH;
+import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLI_CREDENTIALS_ENABLED;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_ID;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_KEY;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.TENANT_ID;
@@ -103,6 +105,18 @@ public class KeyVaultEnvironmentPostProcessorTest {
         final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials();
 
         assertThat(credentials, IsInstanceOf.instanceOf(ManagedIdentityCredential.class));
+    }
+
+    @Test
+    public void testGetCredentialsWhenCliCredentialIsEnabled() {
+        testProperties.put(KeyVaultProperties.getPropertyName(CLI_CREDENTIALS_ENABLED), true);
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials();
+
+        assertThat(credentials, IsInstanceOf.instanceOf(AzureCliCredential.class));
     }
 
     @Test

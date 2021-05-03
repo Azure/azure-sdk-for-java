@@ -60,7 +60,7 @@ To use the custom configuration, open `application.properties` file and add belo
 - `azure.keyvault.secret-service-version`
    - The valid secret-service-version value can be found [here][version_link]. 
    - This property is optional, if property not set, the property will be filled with the latest value.
-
+- `cli-credentials-enabled` enables the Azure Cli for authentication. The property is optional, and is false by default.
 ```
 azure.keyvault.enabled=true
 azure.keyvault.uri=put-your-azure-keyvault-uri-here
@@ -72,6 +72,7 @@ azure.keyvault.refresh-interval=1800000
 azure.keyvault.secret-keys=key1,key2,key3
 azure.keyvault.authority-host=put-your-own-authority-host-here(fill with default value if empty)
 azure.keyvault.secret-service-version=specify secretServiceVersion value(fill with default value if empty)
+azure.keyvault.cli-credentials-enabled=false
 ```
 
 ### Use MSI / Managed identities 
