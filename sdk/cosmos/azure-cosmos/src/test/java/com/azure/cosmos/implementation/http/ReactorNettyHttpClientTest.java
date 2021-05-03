@@ -1,0 +1,68 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.http;
+
+
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import io.netty.channel.ChannelOption;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * Tests that partition manager correctly resolves addresses for requests and does appropriate number of cache refreshes.
+ */
+public class ReactorNettyHttpClientTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReactorNettyHttpClientTest.class);
+    private Configs configs;
+    private HttpClient reactorNettyHttpClient;
+
+    @BeforeClass(groups = "unit")
+    public void before_ReactorNettyHttpClientTest() throws Exception {
+        this.configs = new Configs();
+        this.reactorNettyHttpClient = HttpClient.createFixed(new HttpClientConfig(this.configs));
+    }
+
+    @Test(groups = "unit")
+    public void testHttpClientWithMaxHeaderSize() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        assertThat(httpClient.configuration().decoder().maxHeaderSize()).isEqualTo(this.configs.getMaxHttpHeaderSize());
+    }
+
+    @Test(groups = "unit")
+    public void testHttpClientWithMaxChunkSize() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        assertThat(httpClient.configuration().decoder().maxChunkSize()).isEqualTo(this.configs.getMaxHttpChunkSize());
+    }
+
+    @Test(groups = "unit")
+    public void testHttpClientWithMaxInitialLineLength() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        assertThat(httpClient.configuration().decoder().maxInitialLineLength()).isEqualTo(this.configs.getMaxHttpInitialLineLength());
+    }
+
+    @Test(groups = "unit")
+    public void testHttpClientWithValidateHeaders() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        assertThat(httpClient.configuration().decoder().validateHeaders()).isTrue();
+    }
+
+    @Test(groups = "unit")
+    public void testHttpClientWithOptions() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        Integer connectionTimeoutInMillis = (Integer) httpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
+        assertThat(connectionTimeoutInMillis).isEqualTo((int) this.configs.getConnectionAcquireTimeout().toMillis());
+    }
+}
+
