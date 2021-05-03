@@ -15,7 +15,8 @@
 * Updated `azure-cosmos` to hotfix version 4.13.1.
 
 ### 3.5.0 (2021-03-11)
-> [!IMPORTANT] This release supports spring boot 2.4.3 and above.
+> [!IMPORTANT] 
+> This release supports spring boot 2.4.3 and above.
 #### New Features
 * Updated `spring-boot` to major version 2.4.3.
 * Updated `spring-core` to major version 5.3.4.
