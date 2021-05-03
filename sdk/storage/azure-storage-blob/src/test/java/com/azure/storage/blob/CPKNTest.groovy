@@ -36,7 +36,7 @@ class CPKNTest extends APISpec {
         builder = getContainerClientBuilder(cc.getBlobContainerUrl())
             .credential(primaryCredential)
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (environment.testMode == TestMode.RECORD && recordLiveMode) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 

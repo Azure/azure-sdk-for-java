@@ -136,7 +136,7 @@ class ServiceAPITest extends APISpec {
     }
 
     BlobContainerClientBuilder optionalRecordingPolicy(BlobContainerClientBuilder builder) {
-        if (testMode == TestMode.RECORD) {
+        if (environment.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
         return builder

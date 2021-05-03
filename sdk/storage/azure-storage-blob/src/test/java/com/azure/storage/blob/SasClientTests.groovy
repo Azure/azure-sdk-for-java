@@ -683,7 +683,7 @@ class SasClientTests extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (testMode == TestMode.RECORD) {
+        if (environment.testMode == TestMode.RECORD) {
             recordPolicy = interceptorManager.getRecordPolicy()
         }
 

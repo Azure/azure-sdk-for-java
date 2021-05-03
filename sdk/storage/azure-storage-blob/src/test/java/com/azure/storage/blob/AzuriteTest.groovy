@@ -30,7 +30,7 @@ class AzuriteTest extends APISpec {
             .httpClient(getHttpClient())
             .credential(azuriteCredential)
 
-        if(testMode == TestMode.RECORD) {
+        if(environment.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
