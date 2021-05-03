@@ -62,6 +62,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -288,7 +289,9 @@ class ServiceBusSessionManagerTest {
                 .verify(Duration.ofSeconds(45));
 
             // message onNext should trigger `LockRenewalOperation` once only for one session.
-            Assertions.assertEquals(1, mockedLockRenewOperation.constructed().size());
+            final List<LockRenewalOperation> actualOperations = mockedLockRenewOperation.constructed();
+            Assertions.assertEquals(1, actualOperations.size());
+            doNothing().when(actualOperations.get(0)).close();
         }
 
     }
