@@ -71,7 +71,7 @@ public final class AccessTokenCache {
                     // Check if the incoming token request context is different from the cached one. A different
                     // token request context, requires to fetch a new token as the cached one won't work for the
                     // passed in token request context.
-                    boolean forceRefresh = checkToForceFetchToken && checkIfWeShouldForceRefresh(tokenRequestContext);
+                    boolean forceRefresh = checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext);
 
                     Supplier<Mono<AccessToken>> tokenSupplier = () ->
                         tokenCredential.getToken(this.tokenRequestContext);
@@ -137,7 +137,7 @@ public final class AccessTokenCache {
         };
     }
 
-    private boolean checkIfWeShouldForceRefresh(TokenRequestContext tokenRequestContext) {
+    private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
             : (tokenRequestContext.getClaims() == null ? false

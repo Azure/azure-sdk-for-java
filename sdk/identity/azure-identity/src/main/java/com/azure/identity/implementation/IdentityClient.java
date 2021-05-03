@@ -72,7 +72,15 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -256,7 +264,7 @@ public class IdentityClient {
                 publicClientApplicationBuilder.executorService(options.getExecutorService());
             }
 
-            if (!options.isCp1disabled()) {
+            if (!options.isCp1Disabled()) {
                 Set<String> set = new HashSet<>(1);
                 set.add("CP1");
                 publicClientApplicationBuilder.clientCapabilities(set);

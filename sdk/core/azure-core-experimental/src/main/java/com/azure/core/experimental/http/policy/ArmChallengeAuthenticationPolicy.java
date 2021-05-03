@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * This is a temporary class to support ARM Challenge based authentication. It will
  * move to azure-resource-manager package.
  */
-public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationChallengePolicy {
+public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationChallengePolicy {
     private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN =
         Pattern.compile("(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?");
     private static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
@@ -41,13 +41,13 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
     private static final String ARM_SCOPES_KEY = "ARMScopes";
 
     /**
-     * Creates ARMChallengeAuthenticationPolicy.
+     * Creates ArmChallengeAuthenticationPolicy.
      *
      * @param credential the token credential to authenticate the request
      * @param environment the environment with endpoints for authentication
      * @param scopes the scopes used in credential, using default scopes when empty
      */
-    public ARMChallengeAuthenticationPolicy(TokenCredential credential,
+    public ArmChallengeAuthenticationPolicy(TokenCredential credential,
                                             AzureEnvironment environment, String... scopes) {
         super(credential, scopes);
         this.scopes = scopes;
