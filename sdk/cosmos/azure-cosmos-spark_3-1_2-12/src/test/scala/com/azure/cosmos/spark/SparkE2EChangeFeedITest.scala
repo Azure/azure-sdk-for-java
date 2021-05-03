@@ -182,7 +182,7 @@ class SparkE2EChangeFeedITest
         .load()
       val microBatchQuery = changeFeedDF
         .writeStream
-        .format("cosmos.items")
+        .format("cosmos.oltp")
         .queryName(testId)
         .options(writeCfg)
         .option("checkpointLocation", s"/tmp/$testId/")
@@ -204,7 +204,7 @@ class SparkE2EChangeFeedITest
 
     val validationDF = spark
       .read
-      .format("cosmos.items")
+      .format("cosmos.oltp")
       .options(validationCfg)
       .load()
 

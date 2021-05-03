@@ -41,7 +41,7 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer
     )
-    df.write.format("cosmos.items").mode("append").options(options).save()
+    df.write.format("cosmos.oltp").mode("append").options(options).save()
 
     // verify data is written
 
@@ -85,7 +85,7 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true"
     )
-    val df = spark.read.format("cosmos.items").options(options).load()
+    val df = spark.read.format("cosmos.oltp").options(options).load()
 
     val rowsArray = df.where("number = '27'").collect()
     rowsArray should have size 1
