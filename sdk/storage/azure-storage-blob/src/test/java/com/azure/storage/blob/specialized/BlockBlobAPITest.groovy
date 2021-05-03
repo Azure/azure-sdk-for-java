@@ -49,9 +49,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
-import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.concurrent.atomic.AtomicBoolean
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient

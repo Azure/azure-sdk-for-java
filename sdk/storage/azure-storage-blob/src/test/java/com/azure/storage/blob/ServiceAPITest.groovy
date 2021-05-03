@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.credential.AzureSasCredential
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
@@ -16,7 +15,6 @@ import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobSignedIdentifier
@@ -37,11 +35,13 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@ResourceLock("ServiceProperties")
 class ServiceAPITest extends APISpec {
 
     BlobServiceClient anonymousClient;
