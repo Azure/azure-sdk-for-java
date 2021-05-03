@@ -23,7 +23,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
-import com.azure.storage.common.test.StorageSpec
+import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
@@ -99,11 +99,11 @@ class APISpec extends StorageSpec {
         String testName = reformat(specificationContext.currentIteration)
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", environment.testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, environment.testMode)
-        testResourceName = new TestResourceNamer(methodName, environment.testMode,
+        logger.info("Test Mode: {}, Name: {}", ENVIRONMENT.testMode, methodName)
+        interceptorManager = new InterceptorManager(methodName, ENVIRONMENT.testMode)
+        testResourceName = new TestResourceNamer(methodName, ENVIRONMENT.testMode,
             interceptorManager.getRecordedData())
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
@@ -124,7 +124,7 @@ class APISpec extends StorageSpec {
      */
     def cleanup() {
         interceptorManager.close()
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             def cleanupFileServiceClient = new ShareServiceClientBuilder()
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
@@ -145,7 +145,7 @@ class APISpec extends StorageSpec {
         String accountName
         String accountKey
 
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -162,7 +162,7 @@ class APISpec extends StorageSpec {
     }
 
     static boolean liveMode() {
-        return environment.testMode != TestMode.PLAYBACK
+        return ENVIRONMENT.testMode != TestMode.PLAYBACK
     }
 
     def generateShareName() {
@@ -217,8 +217,8 @@ class APISpec extends StorageSpec {
 
     def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
         ShareServiceClientBuilder shareServiceClientBuilder = new ShareServiceClientBuilder();
-        if (environment.testMode != TestMode.PLAYBACK) {
-            if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 shareServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
             }
             return shareServiceClientBuilder
@@ -243,7 +243,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -260,7 +260,7 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -273,8 +273,8 @@ class APISpec extends StorageSpec {
 
     def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String snapshot) {
         ShareClientBuilder builder = new ShareClientBuilder()
-        if (environment.testMode != TestMode.PLAYBACK) {
-            if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             return builder.connectionString(connectionString)
@@ -293,8 +293,8 @@ class APISpec extends StorageSpec {
 
     def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        if (environment.testMode != TestMode.PLAYBACK) {
-            if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             return builder.connectionString(connectionString)
@@ -320,7 +320,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
         if (credential != null) {
@@ -332,8 +332,8 @@ class APISpec extends StorageSpec {
 
     def fileBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String filePath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        if (environment.testMode != TestMode.PLAYBACK) {
-            if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             return builder
@@ -361,7 +361,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
         if (credential != null) {
@@ -385,7 +385,7 @@ class APISpec extends StorageSpec {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -481,7 +481,7 @@ class APISpec extends StorageSpec {
     }
 
     void sleepIfLive(long milliseconds) {
-        if (environment.testMode == TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -490,13 +490,13 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live or record mode
     def sleepIfRecord(long milliseconds) {
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (environment.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     /**
@@ -526,7 +526,7 @@ class APISpec extends StorageSpec {
     }
 
     static boolean playbackMode() {
-        return environment.testMode == TestMode.PLAYBACK
+        return ENVIRONMENT.testMode == TestMode.PLAYBACK
     }
 
     def getPerCallVersionPolicy() {

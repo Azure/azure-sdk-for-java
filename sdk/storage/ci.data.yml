@@ -23,7 +23,6 @@ trigger:
       - sdk/storage/azure-storage-internal-avro
       - sdk/storage/azure-storage-perf
       - sdk/storage/azure-storage-queue
-      - sdk/storage/azure-storage-test-common
       - sdk/storage/mgmt
       - sdk/storage/mgmt-v2016_01_01
       - sdk/storage/mgmt-v2017_10_01
@@ -57,7 +56,6 @@ pr:
       - sdk/storage/azure-storage-internal-avro
       - sdk/storage/azure-storage-perf
       - sdk/storage/azure-storage-queue
-      - sdk/storage/azure-storage-test-common
       - sdk/storage/mgmt
       - sdk/storage/mgmt-v2016_01_01
       - sdk/storage/mgmt-v2017_10_01

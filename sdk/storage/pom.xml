@@ -115,7 +115,6 @@
         <module>azure-storage-internal-avro</module>
         <module>azure-storage-queue</module>
         <module>azure-storage-perf</module>
-        <module>azure-storage-test-common</module>
         <module>microsoft-azure-storage-blob</module>
       </modules>
     </profile>

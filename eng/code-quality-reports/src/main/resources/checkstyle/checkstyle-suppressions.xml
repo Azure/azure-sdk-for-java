@@ -6,6 +6,7 @@
 <suppressions>
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
+  <suppress checks="Javadoc" files="src[/\\]test-shared[/\\]java[/\\].*.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>
@@ -414,7 +415,7 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-storage-test-common|azure-search-perf|azure-identity-perf|azure-template-perf[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf|azure-template-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields"
             files=".*[/\\]azure-identity-perf|azure-search-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf|azure-search-perf|perf-test-core[/\\].*\.java"/>

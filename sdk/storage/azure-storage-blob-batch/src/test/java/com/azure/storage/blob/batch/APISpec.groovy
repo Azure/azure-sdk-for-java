@@ -22,7 +22,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.test.StorageSpec
+import com.azure.storage.common.test.shared.StorageSpec
 import org.spockframework.runtime.model.IterationInfo
 import spock.lang.Requires
 import spock.lang.Shared
@@ -90,8 +90,8 @@ class APISpec extends StorageSpec {
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, environment.testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, environment.testMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, ENVIRONMENT.testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
@@ -121,14 +121,14 @@ class APISpec extends StorageSpec {
     }
 
     static boolean liveMode() {
-        return environment.testMode == TestMode.LIVE
+        return ENVIRONMENT.testMode == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -157,8 +157,8 @@ class APISpec extends StorageSpec {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
 
-        if (environment.testMode != TestMode.PLAYBACK) {
-            if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
 
@@ -199,7 +199,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -219,7 +219,7 @@ class APISpec extends StorageSpec {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -228,7 +228,7 @@ class APISpec extends StorageSpec {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {

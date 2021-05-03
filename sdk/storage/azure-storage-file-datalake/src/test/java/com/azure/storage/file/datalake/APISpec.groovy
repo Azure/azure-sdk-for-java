@@ -26,7 +26,7 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
-import com.azure.storage.common.test.StorageSpec
+import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
@@ -141,8 +141,8 @@ class APISpec extends StorageSpec {
         } else {
             this.testName = fullTestName.substring(0, substringIndex)
         }
-        this.interceptorManager = new InterceptorManager(className + fullTestName, environment.testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, environment.testMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, ENVIRONMENT.testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
@@ -200,18 +200,18 @@ class APISpec extends StorageSpec {
     }
 
     static boolean liveMode() {
-        return environment.testMode == TestMode.LIVE
+        return ENVIRONMENT.testMode == TestMode.LIVE
     }
 
     static boolean playbackMode() {
-        return environment.testMode == TestMode.PLAYBACK
+        return ENVIRONMENT.testMode == TestMode.PLAYBACK
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -241,8 +241,8 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode != TestMode.PLAYBACK) {
-            if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -320,7 +320,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -333,7 +333,7 @@ class APISpec extends StorageSpec {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -400,7 +400,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -417,7 +417,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -431,7 +431,7 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -445,7 +445,7 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -459,7 +459,7 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -477,7 +477,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -491,7 +491,7 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -508,7 +508,7 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -763,7 +763,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -794,7 +794,7 @@ class APISpec extends StorageSpec {
     }
 
     def sleepIfLive(long milliseconds) {
-        if (environment.testMode == TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode == TestMode.PLAYBACK) {
             return
         }
         sleep(milliseconds)

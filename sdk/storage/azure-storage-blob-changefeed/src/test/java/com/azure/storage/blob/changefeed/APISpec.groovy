@@ -22,7 +22,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.test.StorageSpec
+import com.azure.storage.common.test.shared.StorageSpec
 import org.spockframework.runtime.model.IterationInfo
 import spock.lang.Requires
 import spock.lang.Shared
@@ -67,7 +67,7 @@ class APISpec extends StorageSpec {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", environment.testMode))
+        System.out.println(String.format("--------%s---------", ENVIRONMENT.testMode))
     }
 
     def setup() {
@@ -76,8 +76,8 @@ class APISpec extends StorageSpec {
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, environment.testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, environment.testMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, ENVIRONMENT.testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
@@ -119,14 +119,14 @@ class APISpec extends StorageSpec {
     }
 
     static boolean playbackMode() {
-        return environment.testMode == TestMode.PLAYBACK
+        return ENVIRONMENT.testMode == TestMode.PLAYBACK
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (environment.testMode == TestMode.RECORD || environment.testMode == TestMode.LIVE) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -144,7 +144,7 @@ class APISpec extends StorageSpec {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (environment.testMode == TestMode.RECORD || environment.testMode == TestMode.LIVE) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -213,7 +213,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 

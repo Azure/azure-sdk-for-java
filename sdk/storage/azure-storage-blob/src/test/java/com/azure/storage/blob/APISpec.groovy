@@ -40,13 +40,12 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
-import com.azure.storage.common.test.StorageSpec
+import com.azure.storage.common.test.shared.StorageSpec
 import org.spockframework.runtime.model.IterationInfo
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
-import spock.lang.Specification
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
@@ -162,7 +161,7 @@ class APISpec extends StorageSpec {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", environment.testMode))
+        System.out.println(String.format("--------%s---------", ENVIRONMENT.testMode))
     }
 
     def setup() {
@@ -175,8 +174,8 @@ class APISpec extends StorageSpec {
         } else {
             this.testName = fullTestName.substring(0, substringIndex)
         }
-        this.interceptorManager = new InterceptorManager(className + fullTestName, environment.testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, environment.testMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, ENVIRONMENT.testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
@@ -235,18 +234,18 @@ class APISpec extends StorageSpec {
     }
 
     static boolean liveMode() {
-        return environment.testMode == TestMode.LIVE
+        return ENVIRONMENT.testMode == TestMode.LIVE
     }
 
     static boolean playbackMode() {
-        return environment.testMode == TestMode.PLAYBACK
+        return ENVIRONMENT.testMode == TestMode.PLAYBACK
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (environment.testMode == TestMode.RECORD || environment.testMode == TestMode.LIVE) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -279,8 +278,8 @@ class APISpec extends StorageSpec {
     }
 
     def setOauthCredentials(BlobServiceClientBuilder builder) {
-        if (environment.testMode != TestMode.PLAYBACK) {
-            if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -327,7 +326,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -377,7 +376,7 @@ class APISpec extends StorageSpec {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -390,7 +389,7 @@ class APISpec extends StorageSpec {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -408,7 +407,7 @@ class APISpec extends StorageSpec {
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -424,7 +423,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -440,7 +439,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -453,7 +452,7 @@ class APISpec extends StorageSpec {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -469,7 +468,7 @@ class APISpec extends StorageSpec {
             builder.sasToken(sasToken)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -486,7 +485,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -496,7 +495,7 @@ class APISpec extends StorageSpec {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (environment.testMode == TestMode.RECORD || environment.testMode == TestMode.LIVE) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -874,7 +873,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -983,7 +982,7 @@ class APISpec extends StorageSpec {
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (environment.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {

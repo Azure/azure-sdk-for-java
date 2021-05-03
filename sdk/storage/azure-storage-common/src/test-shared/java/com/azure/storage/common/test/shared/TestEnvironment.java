@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.test;
+package com.azure.storage.common.test.shared;
 
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;

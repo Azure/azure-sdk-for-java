@@ -450,7 +450,7 @@ class FileSASTests extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryFileServiceClient.generateAccountSas(sasValues)
         HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             recordPolicy = interceptorManager.getRecordPolicy()
         }
         def pathName = generatePathName()

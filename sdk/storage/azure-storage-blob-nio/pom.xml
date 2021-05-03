@@ -69,14 +69,16 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <classifier>tests</classifier>
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-test-common</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-test-common;current} -->
+      <artifactId>azure-core-test</artifactId>
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

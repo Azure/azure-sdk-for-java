@@ -355,7 +355,7 @@ class QueueSASTests extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryQueueServiceClient.generateAccountSas(sasValues)
         HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             recordPolicy = interceptorManager.getRecordPolicy()
         }
 

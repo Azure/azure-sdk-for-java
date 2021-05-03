@@ -22,7 +22,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
-import com.azure.storage.common.test.StorageSpec
+import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import org.spockframework.runtime.model.IterationInfo
 import reactor.core.publisher.Mono
@@ -55,10 +55,10 @@ class APISpec extends StorageSpec {
         String testName = getFullTestName(specificationContext.currentIteration)
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", environment.testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, environment.testMode)
-        testResourceName = new TestResourceNamer(methodName, environment.testMode, interceptorManager.getRecordedData())
-        if (environment.testMode != TestMode.PLAYBACK) {
+        logger.info("Test Mode: {}, Name: {}", ENVIRONMENT.testMode, methodName)
+        interceptorManager = new InterceptorManager(methodName, ENVIRONMENT.testMode)
+        testResourceName = new TestResourceNamer(methodName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
@@ -74,7 +74,7 @@ class APISpec extends StorageSpec {
      */
     def cleanup() {
         interceptorManager.close()
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
@@ -90,7 +90,7 @@ class APISpec extends StorageSpec {
         String accountName
         String accountKey
 
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -108,7 +108,7 @@ class APISpec extends StorageSpec {
 
     def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
         return builder
@@ -119,7 +119,7 @@ class APISpec extends StorageSpec {
     def queueBuilderHelper(final InterceptorManager interceptorManager) {
         def queueName = testResourceName.randomName("queue", 16)
         QueueClientBuilder builder = new QueueClientBuilder()
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
         return builder
@@ -139,7 +139,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -156,7 +156,7 @@ class APISpec extends StorageSpec {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (environment.testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -182,7 +182,7 @@ class APISpec extends StorageSpec {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (environment.testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -196,7 +196,7 @@ class APISpec extends StorageSpec {
     }
 
     def sleepIfLive(long milliseconds) {
-        if (environment.testMode == TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -204,11 +204,11 @@ class APISpec extends StorageSpec {
     }
 
     boolean liveMode() {
-        return environment.testMode == TestMode.RECORD
+        return ENVIRONMENT.testMode == TestMode.RECORD
     }
 
     def getMessageUpdateDelay(long liveTestDurationInMillis) {
-        return (environment.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {
