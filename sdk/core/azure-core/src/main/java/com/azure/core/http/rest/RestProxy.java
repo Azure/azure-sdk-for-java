@@ -54,7 +54,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.isReturnTypeDecodable;
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 import static com.azure.core.util.FluxUtil.monoError;
 
