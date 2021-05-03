@@ -40,13 +40,14 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.spockframework:spock-core:[2.0-M4-groovy-2.5]</include> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+                <include>org.spockframework:spock-core:[2.0-M4-groovy-2.5]</include> <!-- {x-include-update;org.spockframework:spock-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
