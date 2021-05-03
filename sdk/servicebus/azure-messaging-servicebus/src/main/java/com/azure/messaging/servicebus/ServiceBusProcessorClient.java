@@ -14,14 +14,12 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.annotation.NonNull;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -63,7 +61,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
-    private final Set<Subscription> receiverSubscriptions = Collections.synchronizedSet(new HashSet<>());
+    // Use ConcurrentHashMap as a set because there is no ConcurrentHasSet.
+    private final Map<Subscription, Subscription> receiverSubscriptions = new ConcurrentHashMap<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
     private final TracerProvider tracerProvider;
@@ -164,7 +163,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     @Override
     public synchronized void close() {
         isRunning.set(false);
-        receiverSubscriptions.forEach(Subscription::cancel);
+        receiverSubscriptions.keySet().forEach(Subscription::cancel);
         receiverSubscriptions.clear();
         if (scheduledExecutor != null) {
             scheduledExecutor.shutdown();
@@ -188,7 +187,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private synchronized void receiveMessages() {
         if (receiverSubscriptions.size() > 0) {
-            //receiverSubscriptions.forEach(subscription -> subscription.request(1L));
+            // For the case of start -> stop -> start again
+            receiverSubscriptions.keySet().forEach(subscription -> subscription.request(1L));
             return;
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
@@ -201,9 +201,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 private Subscription subscription;
 
                 @Override
-                public void onSubscribe(@NonNull Subscription subscription) {
+                public void onSubscribe(Subscription subscription) {
                     this.subscription = subscription;
-                    receiverSubscriptions.add(subscription);
+                    receiverSubscriptions.put(subscription, subscription);
                     subscription.request(1);
                 }
 
@@ -333,14 +333,14 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
     }
 
-    private synchronized void restartMessageReceiver(Object requester) {
+    private synchronized void restartMessageReceiver(Subscription requester) {
         if (!isRunning()) {
             return;
         }
-        if (!receiverSubscriptions.contains(requester)) {
+        if (!receiverSubscriptions.containsKey(requester)) {
             return;
         }
-        receiverSubscriptions.forEach(Subscription::cancel);
+        receiverSubscriptions.keySet().forEach(Subscription::cancel);
         receiverSubscriptions.clear();
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverClient.close();
