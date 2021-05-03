@@ -281,7 +281,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                     new ListDataFeedFilter()
                         .setDataFeedStatus(DataFeedStatus.ACTIVE)
                         .setDataFeedGranularityType(DataFeedGranularityType.DAILY))
-                .setTop(3), Context.NONE)
+                .setMaxPageSize(3), Context.NONE)
             .forEach(dataFeed -> {
                 System.out.printf("Data feed Id: %s%n", dataFeed.getId());
                 System.out.printf("Data feed description: %s%n", dataFeed.getOptions().getDescription());
@@ -495,7 +495,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks#ListHookOptions-Context
         ListHookOptions options = new ListHookOptions()
             .setSkip(100)
-            .setTop(20);
+            .setMaxPageSize(20);
         PagedIterable<NotificationHook> hooks = metricsAdvisorAdminClient.listHooks(options, Context.NONE);
         Stream<PagedResponse<NotificationHook>> hooksPageStream = hooks.streamByPage();
         int[] pageCount = new int[1];

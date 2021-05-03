@@ -115,7 +115,8 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList = new ArrayList<>();
-        StepVerifier.create(client.listHooks(new ListHookOptions().setTop(ListHookInput.INSTANCE.pageSize)).byPage())
+        StepVerifier.create(client.listHooks(new ListHookOptions().setMaxPageSize(ListHookInput.INSTANCE.pageSize))
+            .byPage())
             .thenConsumeWhile(hookPageList::add)
             .verifyComplete();
 

@@ -9,16 +9,16 @@ import java.util.List;
  * Describes the additional parameters for the API to list incidents detected.
  */
 public final class ListIncidentsDetectedOptions {
-    private Integer top;
+    private Integer maxPageSize;
     private List<DimensionKey> dimensionsToFilter;
 
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maximum page size.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -33,11 +33,11 @@ public final class ListIncidentsDetectedOptions {
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The top value.
+     * @param maxPageSize The maximum page size.
      * @return ListIncidentsDetectedOptions itself.
      */
-    public ListIncidentsDetectedOptions setTop(int top) {
-        this.top = top;
+    public ListIncidentsDetectedOptions setMaxPageSize(int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 

@@ -7,17 +7,17 @@ package com.azure.ai.metricsadvisor.models;
  * Describes the additional parameters for the API to list values of a dimension that have anomalies.
  */
 public final class ListAnomalyDimensionValuesOptions {
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
     private DimensionKey dimensionToFilter;
 
     /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maximum page size.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -42,11 +42,11 @@ public final class ListAnomalyDimensionValuesOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The top value.
+     * @param maxPageSize The maximum page size.
      * @return The ListDimensionValuesWithAnomaliesOptions object itself.
      */
-    public ListAnomalyDimensionValuesOptions setTop(int top) {
-        this.top = top;
+    public ListAnomalyDimensionValuesOptions setMaxPageSize(int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 

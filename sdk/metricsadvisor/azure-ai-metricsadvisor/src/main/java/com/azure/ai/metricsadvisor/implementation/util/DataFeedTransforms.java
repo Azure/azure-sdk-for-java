@@ -17,6 +17,9 @@ import com.azure.ai.metricsadvisor.implementation.models.AzureDataExplorerDataFe
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataLakeStorageGen2DataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataLakeStorageGen2DataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataLakeStorageGen2Parameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsDataFeed;
+import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsDataFeedPatch;
+import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsParameter;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableParameter;
@@ -46,6 +49,7 @@ import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureCosmosDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
+import com.azure.ai.metricsadvisor.models.AzureEventHubsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureTableDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedAccessMode;
@@ -176,6 +180,14 @@ public final class DataFeedTransforms {
                 dataSourceParameter.getQuery()
             ));
             dataFeedSourceType = DataFeedSourceType.AZURE_DATA_EXPLORER;
+        } else if (dataFeedDetail instanceof AzureEventHubsDataFeed) {
+            final AzureEventHubsParameter dataSourceParameter =
+                ((AzureEventHubsDataFeed) dataFeedDetail).getDataSourceParameter();
+            dataFeed.setSource(new AzureEventHubsDataFeedSource(
+                dataSourceParameter.getConnectionString(),
+                dataSourceParameter.getConsumerGroup()
+            ));
+            dataFeedSourceType = DataFeedSourceType.AZURE_EVENT_HUBS;
         } else if (dataFeedDetail instanceof AzureTableDataFeed) {
             final AzureTableParameter dataSourceParameter = ((AzureTableDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
@@ -298,6 +310,13 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new SqlSourceParameter()
                     .setConnectionString(azureDataExplorerDataFeedSource.getConnectionString())
                     .setQuery(azureDataExplorerDataFeedSource.getQuery()));
+        } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
+            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
+                ((AzureEventHubsDataFeedSource) dataFeedSource);
+            dataFeedDetail = new AzureEventHubsDataFeed()
+                .setDataSourceParameter(new AzureEventHubsParameter()
+                    .setConnectionString(azureEventHubsDataFeedSource.getConnectionString())
+                    .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureTableDataFeed()
@@ -413,6 +432,13 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new SqlSourceParameter()
                     .setConnectionString(azureDataExplorerDataFeedSource.getConnectionString())
                     .setQuery(azureDataExplorerDataFeedSource.getQuery()));
+        } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
+            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
+                ((AzureEventHubsDataFeedSource) dataFeedSource);
+            dataFeedDetailPatch = new AzureEventHubsDataFeedPatch()
+                .setDataSourceParameter(new AzureEventHubsParameter()
+                    .setConnectionString(azureEventHubsDataFeedSource.getConnectionString())
+                    .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureTableDataFeedPatch()

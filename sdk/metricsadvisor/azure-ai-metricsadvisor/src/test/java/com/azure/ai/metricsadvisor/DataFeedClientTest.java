@@ -133,7 +133,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions().setTop(3),
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions()
+                .setMaxPageSize(3),
             Context.NONE)
             .iterableByPage()) {
             assertTrue(3 >= dataFeedPagedResponse.getValue().size());

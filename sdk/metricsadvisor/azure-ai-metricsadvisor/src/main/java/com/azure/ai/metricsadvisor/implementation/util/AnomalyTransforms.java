@@ -89,6 +89,8 @@ public class AnomalyTransforms {
         if (innerAnomaly.getProperty() != null) {
             AnomalyHelper.setSeverity(dataPointAnomaly, innerAnomaly.getProperty().getAnomalySeverity());
             AnomalyHelper.setStatus(dataPointAnomaly, innerAnomaly.getProperty().getAnomalyStatus());
+            AnomalyHelper.setValue(dataPointAnomaly, innerAnomaly.getProperty().getValue());
+            AnomalyHelper.setExpectedValue(dataPointAnomaly, innerAnomaly.getProperty().getExpectedValue());
         }
 
         AnomalyHelper.setTimeStamp(dataPointAnomaly, innerAnomaly.getTimestamp());

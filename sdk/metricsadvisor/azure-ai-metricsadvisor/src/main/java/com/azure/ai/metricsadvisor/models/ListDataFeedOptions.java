@@ -11,7 +11,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class ListDataFeedOptions {
     private ListDataFeedFilter listDataFeedFilter;
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
 
     /**
@@ -42,21 +42,21 @@ public final class ListDataFeedOptions {
     /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maximum page size.
      */
-    public Integer getTop() {
-        return top;
+    public Integer getMaxPageSize() {
+        return maxPageSize;
     }
 
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The top value.
+     * @param maxPageSize The maximum page size.
      *
      * @return The ListDataFeedOptions object itself.
      */
-    public ListDataFeedOptions setTop(final int top) {
-        this.top = top;
+    public ListDataFeedOptions setMaxPageSize(final int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 

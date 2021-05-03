@@ -462,7 +462,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             dataFeedFilter.getStatus() != null
                 ? EntityStatus.fromString(dataFeedFilter.getStatus().toString()) : null,
             dataFeedFilter.getCreator(),
-            options.getSkip(), options.getTop(), withTracing)
+            options.getSkip(), options.getMaxPageSize(), withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data feeds"))
             .doOnSuccess(response -> logger.info("Listed data feeds {}", response))
             .doOnError(error -> logger.warning("Failed to list all data feeds information - {}", error))
@@ -552,7 +552,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             UUID.fromString(dataFeedId),
             queryOptions,
             options.getSkip(),
-            options.getTop(),
+            options.getMaxPageSize(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
@@ -1305,7 +1305,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
         return service.listHooksSinglePageAsync(
             options != null ? options.getHookNameFilter() : null,
             options != null ? options.getSkip() : null,
-            options != null ? options.getTop() : null,
+            options != null ? options.getMaxPageSize() : null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing hooks"))
             .doOnSuccess(response -> logger.info("Listed hooks {}", response))
