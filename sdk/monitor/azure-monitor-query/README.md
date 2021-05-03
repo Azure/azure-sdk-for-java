@@ -1,94 +1,269 @@
-# README.md template
+# Azure Monitor query client library for Java
 
-Use the guidelines in each section of this template to ensure consistency and readability of your README. The README resides in your package's GitHub repository at the root of its directory within the repo. It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on docs.microsoft.com. 
+Azure Monitor helps you maximize the availability and performance of your applications and services. It delivers a
+comprehensive solution for collecting, analyzing, and acting on telemetry from your cloud and on-premises environments.
 
-**Title**: The H1 of your README should be in the format: `# [Product Name] client library for [Language]`
+All data collected by Azure Monitor fits into one of two fundamental types, metrics and logs. Metrics are numerical
+values that describe some aspect of a system at a particular point in time. They are lightweight and capable of
+supporting near real-time scenarios. Logs contain different kinds of data organized into records with different sets of
+properties for each type. Telemetry such as events and traces are stored as logs in addition to performance data so that
+it can all be combined for analysis.
 
-* All headings, including the H1, should use **sentence-style capitalization**. Refer to the [Microsoft Style Guide][style-guide-msft].
-* Example: `# Azure Batch client library for Python`
+This client library provides access to query metrics and logs collected by Azure Monitor.
 
-**Introduction**: The introduction appears directly under the title (H1) of your README.
-
-* **DO NOT** use an "Introduction" or "Overview" heading (H2) for this section.
-* First sentence: **Describe the service** briefly. You can usually use the first line of the service's docs landing page for this (Example: [Cosmos DB docs landing page](https://docs.microsoft.com/azure/cosmos-db/)).
-* Next, add a **bulleted list** of the **most common tasks** supported by the package or library, prefaced with "Use the client library for [Product Name] to:". Then, provide code snippets for these tasks in the [Examples](#examples) section later in the document. Keep the task list short but include those tasks most developers need to perform with your package.
-
-> TIP: Your README should be as **brief** as possible but **no more brief** than necessary to get a developer new to Azure, the service, or the package up and running quickly. Keep it brief, but include everything a developer needs to make their first API call successfully.
+[Source code][source_code] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
 ## Getting started
 
-This section should include everything a developer needs to do to install and create their first client connection *very quickly*.
+### Prerequisites
 
-### Install the package
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+- [Azure Subscription][azure_subscription]
 
-First, provide instruction for obtaining and installing the package or library. This section might include only a single line of code, like `pip install package-name`, but should enable a developer to successfully install the package from NuGet, pip, npm, Maven, or even cloning a GitHub repository.
+### Include the Package
 
-Include a **Prerequisites** line after the install command that details any requirements that must be satisfied before a developer can [authenticate](#authenticate-the-client) and test all of the snippets in the [Examples](#examples) section. For example, for Cosmos DB:
+[//]: # ({x-version-update-start;com.azure:azure-monitor-query;current})
 
-**Prerequisites**: You must have an [Azure subscription](https://azure.microsoft.com/free/), [Cosmos DB account](https://docs.microsoft.com/azure/cosmos-db/account-overview) (SQL API), and [Python 3.6+](https://www.python.org/downloads/) to use this package.
+```xml
 
-### Authenticate the client
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-monitor-query</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+```
 
-If your library requires authentication for use, such as for Azure services, include instructions and example code needed for initializing and authenticating.
+[//]: # ({x-version-update-end})
 
-For example, include details on obtaining an account key and endpoint URI, setting environment variables for each, and initializing the client object.
+### Create Azure Monitor query client
+
+```java
+AzureMonitorQueryClient queryClient=new AzureMonitorQueryClientBuilder()
+    .credential(tokenCredential)
+    .buildClient();
+```
+
+### Create Azure Monitor query async client
+
+```java
+AzureMonitorQueryAsyncClient queryClient=new AzureMonitorQueryClientBuilder()
+    .credential(tokenCredential)
+    .buildAsyncClient();
+```
+
+### Get logs for a query
+
+```java
+LogsQueryResult queryResults=queryClient.queryLogs("{workspace-id}","{kusto-query}",
+    new QueryTimeSpan(Duration.ofDays(2)));
+    System.out.println("Number of tables = "+queryResults.getLogsTables().size());
+
+// Sample to iterate over all cells in the table
+    for(LogsTable table:queryResults.getLogsTables()){
+    for(LogsTableCell tableCell:table.getAllTableCells()){
+    System.out.println("Column = "+tableCell.getColumnName()+"; value = "+tableCell.getRowValue());
+    }
+    }
+```
+
+### Get logs for a batch of queries
+
+```java
+LogsQueryBatch logsQueryBatch=new LogsQueryBatch()
+    .addQuery("{workspace-id}","{query-1}",new QueryTimeSpan(Duration.ofDays(2)))
+    .addQuery("{workspace-id}","{query-2}",new QueryTimeSpan(Duration.ofDays(30)));
+
+    LogsQueryBatchResultCollection batchResultCollection=azureLogQueryClient
+    .queryLogsBatchWithResponse(logsQueryBatch,Context.NONE).getValue();
+
+    List<LogsQueryBatchResult> responses=batchResultCollection.getBatchResults();
+
+    for(LogsQueryBatchResult response:responses){
+    LogsQueryResult queryResult=response.getQueryResult();
+
+    // Sample to iterate by row
+    for(LogsTable table:queryResult.getLogsTables()){
+    for(LogsTableRow row:table.getTableRows()){
+    System.out.println("Row index "+row.getRowIndex());
+    row.getTableRow()
+    .forEach(cell->System.out.println("Column = "+cell.getColumnName()+"; value = "+cell.getRowValue()));
+    }
+    }
+    }
+```
+
+### Get logs for a query with server timeout
+
+```java
+// set request options: server timeout, rendering, statistics
+LogsQueryOptions options=new LogsQueryOptions("{workspace-id}",
+    "{query}",new QueryTimeSpan(Duration.ofDays(2)))
+    .setServerTimeout(Duration.ofSeconds(30));
+
+// make service call with these request options set as filter header
+    Response<LogsQueryResult> response=azureMonitorQueryClient.queryLogsWithResponse(options,Context.NONE);
+    LogsQueryResult logsQueryResult=response.getValue();
+
+// Sample to iterate by row
+    for(LogsTable table:logsQueryResult.getLogsTables()){
+    for(LogsTableRow row:table.getTableRows()){
+    System.out.println("Row index "+row.getRowIndex());
+    row.getTableRow()
+    .forEach(cell->System.out.println("Column = "+cell.getColumnName()+"; value = "+cell.getRowValue()));
+    }
+    }
+```
+
+### Get metrics
+
+```java
+Response<MetricsQueryResult> metricsResponse=azureMonitorQueryClient
+    .queryMetricsWithResponse(
+    "{resource-id}",
+    Arrays.asList("SuccessfulCalls"),
+    new MetricsQueryOptions()
+    .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
+    .setTimespan(Duration.ofDays(30).toString())
+    .setInterval(Duration.ofHours(1))
+    .setTop(100)
+    .setAggregation("1,2,3,4,5"),
+    Context.NONE);
+
+    MetricsQueryResult metricsQueryResult=metricsResponse.getValue();
+    List<Metrics> metrics=metricsQueryResult.getMetrics();
+    metrics.stream()
+    .forEach(metric->{
+    System.out.println(metric.getMetricsName());
+    System.out.println(metric.getId());
+    System.out.println(metric.getType());
+    System.out.println(metric.getUnit());
+    System.out.println(metric.getTimeSeries().size());
+    System.out.println(metric.getTimeSeries().get(0).getData().size());
+    metric.getTimeSeries()
+    .stream()
+    .flatMap(ts->ts.getData().stream())
+    .forEach(mv->System.out.println(mv.getTimeStamp().toString()+"; Count = "+mv.getCount()+
+    "; Average = "+mv.getAverage()+"; Maximum  "+mv.getMaximum()+"; Minimum = "+mv.getMinimum()));
+    });
+    }
+```
 
 ## Key concepts
 
-The *Key concepts* section should describe the functionality of the main classes. Point out the most important and useful classes in the package (with links to their reference pages) and explain how those classes work together. Feel free to use bulleted lists, tables, code blocks, or even diagrams for clarity.
+### Logs
+
+Azure Monitor Logs is a feature of Azure Monitor that collects and organizes log and performance data from monitored
+resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual
+machines agents, and usage and performance data from applications can be consolidated into a single workspace so they
+can be analyzed together using a sophisticated query language that's capable of quickly analyzing millions of records.
+You may perform a simple query that just retrieves a specific set of records or perform sophisticated data analysis to
+identify critical patterns in your monitoring data.
+
+#### Log Analytics workspaces
+
+Data collected by Azure Monitor Logs is stored in one or more Log Analytics workspaces. The workspace defines the
+geographic location of the data, access rights defining which users can access data, and configuration settings such as
+the pricing tier and data retention.
+
+You must create at least one workspace to use Azure Monitor Logs. A single workspace may be sufficient for all of your
+monitoring data, or may choose to create multiple workspaces depending on your requirements. For example, you might have
+one workspace for your production data and another for testing.
+
+#### Log queries
+
+Data is retrieved from a Log Analytics workspace using a log query which is a read-only request to process data and
+return results. Log queries are written
+in [Kusto Query Language (KQL)](https://docs.microsoft.com/azure/data-explorer/kusto/query/), which is the same query
+language used by Azure Data Explorer. You can write log queries in Log Analytics to interactively analyze their results,
+use them in alert rules to be proactively notified of issues, or include their results in workbooks or dashboards.
+Insights include prebuilt queries to support their views and workbooks.
+
+### Metrics
+
+Azure Monitor Metrics is a feature of Azure Monitor that collects numeric data from monitored resources into a time
+series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a
+system at a particular time. Metrics in Azure Monitor are lightweight and capable of supporting near real-time scenarios
+making them particularly useful for alerting and fast detection of issues. You can analyze them interactively with
+metrics explorer, be proactively notified with an alert when a value crosses a threshold, or visualize them in a
+workbook or dashboard.
+
+#### Metrics data structure
+
+Data collected by Azure Monitor Metrics is stored in a time-series database which is optimized for analyzing
+time-stamped data. Each set of metric values is a time series with the following properties:
+
+- The time the value was collected
+- The resource the value is associated with
+- A namespace that acts like a category for the metric
+- A metric name
+- The value itself
+- Some metrics may have multiple dimensions as described in Multi-dimensional metrics. Custom metrics can have up to 10
+  dimensions.
 
 ## Examples
 
-Include code snippets and short descriptions for each task you listed in the [Introduction](#introduction) (the bulleted list). Briefly explain each operation, but include enough clarity to explain complex or otherwise tricky operations.
-
-If possible, use the same example snippets that your in-code documentation uses. For example, use the snippets in your `examples.py` that Sphinx ingests via its [literalinclude](https://www.sphinx-doc.org/en/1.5/markup/code.html?highlight=code%20examples#includes) directive. The `examples.py` file containing the snippets should reside alongside your package's code, and should be tested in an automated fashion.
-
-Each example in the *Examples* section starts with an H3 that describes the example. At the top of this section, just under the *Examples* H2, add a bulleted list linking to each example H3. Each example should deep-link to the types and/or members used in the example.
-
-* [Create the thing](#create-the-thing)
-* [Get the thing](#get-the-thing)
-* [List the things](#list-the-things)
-
-### Create the thing
-
-Use the `create_thing` method to create a Thing reference; this method does not make a network call. To persist the Thing in the service, call `Thing.save`.
-
-```Python
-thing = client.create_thing(id, name)
-thing.save()
-```
-
-### Get the thing
-
-The `get_thing` method retrieves a Thing from the service. The `id` parameter is the unique ID of the Thing, not its "name" property.
-
-```Python
-thing = client.get_thing(id)
-```
-
-### List the things
-
-Use `list_things` to get one or more Thing objects from the service. If there are no Things available, a `404` exception is thrown (see [Troubleshooting](#troubleshooting) for details on handling exceptions).
-
-```Python
-things = client.list_things()
-```
+* [Get logs for a query](#get-query "Get logs for a query")
+* [Get logs for a batch for queries](#get-batch-query "Get logs for a batch of queries")
+* [Get logs for a query with server timeout](#get-query-server-timeout "Get logs for a query with server timeout")
+* [Get metrics](#get-metrics "Get metrics")
 
 ## Troubleshooting
 
-Describe common errors and exceptions, how to "unpack" them if necessary, and include guidance for graceful handling and recovery.
+### Enable client logging
 
-Provide information to help developers avoid throttling or other service-enforced errors they might encounter. For example, provide guidance and examples for using retry or connection policies in the API.
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][log_levels].
 
-If the package or a related package supports it, include tips for logging or enabling instrumentation to help them debug their code.
+### Default HTTP Client
+
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure the
+client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 
-* Provide a link to additional code examples, ideally to those sitting alongside the README in the package's `/samples` directory.
-* If appropriate, point users to other packages that might be useful.
-* If you think there's a good chance that developers might stumble across your package in error (because they're searching for specific functionality and mistakenly think the package provides that functionality), point them to the packages they might be looking for.
+- Samples are explained in detail [here][samples_readme].
+
+## Contributing
+
+This project welcomes contributions and suggestions. Most contributions require you to agree to
+a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
+to use your contribution.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
+do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see
+the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or
+comments.
 
 <!-- LINKS -->
-[style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
+[azure_subscription]: https://azure.microsoft.com/free
+
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+
+[product_documentation]: https://aka.ms/awps/doc
+
+[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+
+[cla]: https://cla.microsoft.com
+
+[coc]: https://opensource.microsoft.com/codeofconduct/
+
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+
+[coc_contact]: mailto:opencode@microsoft.com
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmonitor%2Fazure-monitor-query%2FREADME.png)
