@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -24,7 +23,6 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER = "Bearer";
 
-    private final TokenCredential credential;
     private final String[] scopes;
     private final AccessTokenCache cache;
 
@@ -36,7 +34,6 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      */
     public BearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
-        this.credential = credential;
         this.scopes = scopes;
         this.cache = new AccessTokenCache(credential);
     }

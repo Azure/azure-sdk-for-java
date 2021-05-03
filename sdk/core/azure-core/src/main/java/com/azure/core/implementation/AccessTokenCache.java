@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.implementation;
 
 import com.azure.core.credential.AccessToken;
@@ -32,7 +35,7 @@ public final class AccessTokenCache {
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
-    private final ClientLogger logger = new ClientLogger(com.azure.core.credential.SimpleTokenCache.class);
+    private final ClientLogger logger = new ClientLogger(AccessTokenCache.class);
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
