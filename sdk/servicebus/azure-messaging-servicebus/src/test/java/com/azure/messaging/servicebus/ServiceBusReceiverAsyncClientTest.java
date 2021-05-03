@@ -42,7 +42,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -316,7 +315,7 @@ class ServiceBusReceiverAsyncClientTest {
             CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
-        try(
+        try (
             MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
                 invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), Duration.ofSeconds(30),
                     new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()))) {
