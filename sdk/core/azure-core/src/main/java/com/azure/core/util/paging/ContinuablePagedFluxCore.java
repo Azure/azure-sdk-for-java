@@ -179,7 +179,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          */
         return retrievePage(state, pageRetriever, pageSize)
             .expand(page -> {
-                state.setLastContinuationToken(page.getContinuationToken(), continuationPredicate);
+                state.setLastContinuationToken(page.getContinuationToken(), t -> !continuationPredicate.test(t));
                 return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
             }, 4);
     }
