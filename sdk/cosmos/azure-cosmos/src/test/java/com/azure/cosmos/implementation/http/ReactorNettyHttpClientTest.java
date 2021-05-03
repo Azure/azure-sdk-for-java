@@ -37,35 +37,35 @@ public class ReactorNettyHttpClientTest {
     }
 
     @Test(groups = "unit")
-    public void testHttpClientWithMaxHeaderSize() {
+    public void httpClientWithMaxHeaderSize() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
         assertThat(httpClient.configuration().decoder().maxHeaderSize()).isEqualTo(this.configs.getMaxHttpHeaderSize());
     }
 
     @Test(groups = "unit")
-    public void testHttpClientWithMaxChunkSize() {
+    public void httpClientWithMaxChunkSize() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
         assertThat(httpClient.configuration().decoder().maxChunkSize()).isEqualTo(this.configs.getMaxHttpChunkSize());
     }
 
     @Test(groups = "unit")
-    public void testHttpClientWithMaxInitialLineLength() {
+    public void httpClientWithMaxInitialLineLength() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
         assertThat(httpClient.configuration().decoder().maxInitialLineLength()).isEqualTo(this.configs.getMaxHttpInitialLineLength());
     }
 
     @Test(groups = "unit")
-    public void testHttpClientWithValidateHeaders() {
+    public void httpClientWithValidateHeaders() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
         assertThat(httpClient.configuration().decoder().validateHeaders()).isTrue();
     }
 
     @Test(groups = "unit")
-    public void testHttpClientWithOptions() {
+    public void httpClientWithOptions() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
         Integer connectionTimeoutInMillis = (Integer) httpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
