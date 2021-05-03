@@ -61,7 +61,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
-    // Use ConcurrentHashMap as a set because there is no ConcurrentHasSet.
+    // Use ConcurrentHashMap as a set because there is no ConcurrentHashSet.
     private final Map<Subscription, Subscription> receiverSubscriptions = new ConcurrentHashMap<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
