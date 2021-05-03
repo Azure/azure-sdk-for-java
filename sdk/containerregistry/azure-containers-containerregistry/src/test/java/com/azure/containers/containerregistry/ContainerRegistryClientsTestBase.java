@@ -34,6 +34,7 @@ import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.getCredential;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
@@ -248,7 +249,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
     }
 
     protected String getEndpoint(String endpoint) {
-        return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+        return interceptorManager.isPlaybackMode() ? REGISTRY_ENDPOINT_PLAYBACK
             : endpoint;
     }
 

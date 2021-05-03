@@ -53,6 +53,7 @@ public class TestUtils {
     public static final long SLEEP_TIME_IN_MILLISECONDS;
     public static final String ANONYMOUS_REGISTRY_NAME;
     public static final String LOGIN_SERVER_SUFFIX;
+    public static final String REGISTRY_ENDPOINT_PLAYBACK;
 
     static {
         CONFIGURATION = Configuration.getGlobalConfiguration().clone();
@@ -83,6 +84,7 @@ public class TestUtils {
         ANONYMOUS_REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_NAME");
         ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
         LOGIN_SERVER_SUFFIX = "azurecr.io";
+        REGISTRY_ENDPOINT_PLAYBACK = "https://playbackregistry.azurecr.io";
     }
 
     static class FakeCredentials implements TokenCredential {

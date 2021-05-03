@@ -54,7 +54,7 @@ public final class ContainerRegistryAsyncClient {
         try {
             URL endpointUrl = new URL(endpoint);
             this.loginServer = endpointUrl.getHost();
-            this.registryName = this.loginServer.indexOf(".") == -1 ? null : this.loginServer.split("\\.")[0];
+            this.registryName = this.loginServer.split("\\.")[0];
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }

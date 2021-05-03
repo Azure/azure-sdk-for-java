@@ -16,8 +16,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -89,7 +87,6 @@ public final class ContainerRegistryClientBuilder {
     private TokenCredential credential;
     private HttpPipeline httpPipeline;
     private HttpLogOptions httpLogOptions;
-    private SerializerAdapter serializerAdapter;
     private RetryPolicy retryPolicy;
     private ContainerRegistryServiceVersion version;
 
@@ -139,6 +136,9 @@ public final class ContainerRegistryClientBuilder {
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
     public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
+        if (this.httpPipeline != null && httpPipeline == null) {
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.httpPipeline = httpPipeline;
         return this;
     }
@@ -164,6 +164,9 @@ public final class ContainerRegistryClientBuilder {
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
     public ContainerRegistryClientBuilder httpClient(HttpClient httpClient) {
+        if (this.httpClient != null && httpClient == null) {
+            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
         this.httpClient = httpClient;
         return this;
     }
@@ -258,10 +261,6 @@ public final class ContainerRegistryClientBuilder {
      * @throws NullPointerException If {@code credential} or {@code httpPipeline} has not been set.
      */
     public ContainerRegistryAsyncClient buildAsyncClient() {
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-
         // Service version
         ContainerRegistryServiceVersion serviceVersion = (version != null)
             ? version
