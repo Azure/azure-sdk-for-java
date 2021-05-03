@@ -21,7 +21,6 @@ import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -159,7 +158,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .flatMap(responseAcquiredPhone -> {
                     PhoneNumberCapabilities oldPhoneNumberCap = responseAcquiredPhone.getValue().getCapabilities();
                     PhoneNumberCapabilities newPhoneNumberCap = getNewPhoneCapabilities(oldPhoneNumberCap);
-                    return beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities",newPhoneNumberCap)
+                    return beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", newPhoneNumberCap)
                         .last()
                         .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasedPhoneNumber> result) -> {
                             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -256,15 +255,15 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
     }
 
-    private PhoneNumberCapabilities getNewPhoneCapabilities (PhoneNumberCapabilities capabilities){
-        if(capabilities.getSms()!=PhoneNumberCapabilityType.INBOUND_OUTBOUND){
+    private PhoneNumberCapabilities getNewPhoneCapabilities(PhoneNumberCapabilities capabilities) {
+        if (capabilities.getSms() != PhoneNumberCapabilityType.INBOUND_OUTBOUND) {
             capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        }else{
+        } else {
             capabilities.setSms(PhoneNumberCapabilityType.OUTBOUND);
         }
-        if(capabilities.getCalling()!=PhoneNumberCapabilityType.OUTBOUND){
+        if (capabilities.getCalling() != PhoneNumberCapabilityType.OUTBOUND) {
             capabilities.setCalling(PhoneNumberCapabilityType.OUTBOUND);
-        }else{
+        } else {
             capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         }
         return capabilities;

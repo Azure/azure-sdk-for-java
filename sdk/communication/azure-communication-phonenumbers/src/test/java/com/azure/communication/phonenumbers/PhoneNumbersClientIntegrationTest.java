@@ -183,7 +183,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber>
         beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
-        PhoneNumberCapabilities capabilities = getNewPhoneCapabilities(httpClient,phoneNumber,testName);
+        PhoneNumberCapabilities capabilities = getNewPhoneCapabilities(httpClient, phoneNumber, testName);
         if (withContext) {
             return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, Context.NONE));
@@ -192,18 +192,18 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
     }
 
-    private PhoneNumberCapabilities getNewPhoneCapabilities (HttpClient httpClient, String phoneNumber, String testName){
+    private PhoneNumberCapabilities getNewPhoneCapabilities(HttpClient httpClient, String phoneNumber, String testName) {
         PhoneNumberCapabilities newCapabilities = new PhoneNumberCapabilities();
-        PurchasedPhoneNumber acquiredNumber =this.getClientWithConnectionString(httpClient,testName).getPurchasedPhoneNumber(phoneNumber);
+        PurchasedPhoneNumber acquiredNumber = this.getClientWithConnectionString(httpClient, testName).getPurchasedPhoneNumber(phoneNumber);
 
-        if (acquiredNumber.getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND){
+        if (acquiredNumber.getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND) {
             newCapabilities.setSms(PhoneNumberCapabilityType.OUTBOUND);
-        }else{
+        } else {
             newCapabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         }
-        if (acquiredNumber.getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND){
+        if (acquiredNumber.getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND) {
             newCapabilities.setCalling(PhoneNumberCapabilityType.OUTBOUND);
-        }else{
+        } else {
             newCapabilities.setSms(PhoneNumberCapabilityType.INBOUND);
         }
 
