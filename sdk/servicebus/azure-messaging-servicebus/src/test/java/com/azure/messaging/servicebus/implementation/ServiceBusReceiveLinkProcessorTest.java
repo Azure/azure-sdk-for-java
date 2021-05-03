@@ -524,6 +524,7 @@ class ServiceBusReceiveLinkProcessorTest {
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(0);
+        when(link1.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(processor)

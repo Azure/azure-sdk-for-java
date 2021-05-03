@@ -268,24 +268,28 @@ class ServiceBusSessionManagerTest {
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(
             Mono.fromCallable(() -> OffsetDateTime.now().plus(Duration.ofSeconds(5))));
 
-        MockedConstruction<LockRenewalOperation> mockedLockRenewOperation = Mockito.mockConstructionWithAnswer(LockRenewalOperation.class,
-            invocationOnMock -> new LockRenewalOperation("lockToken", Duration.ofSeconds(30), true,
-                (lock) -> Mono.empty(), OffsetDateTime.now()));
+        // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
+        try (
+            MockedConstruction<LockRenewalOperation> mockedLockRenewOperation = Mockito.mockConstructionWithAnswer(LockRenewalOperation.class,
+                invocationOnMock -> new LockRenewalOperation("lockToken", Duration.ofSeconds(30), true,
+                    (lock) -> Mono.empty(), OffsetDateTime.now()))) {
 
-        // Act & Assert
-        StepVerifier.create(sessionManager.receive())
-            .then(() -> {
-                for (int i = 0; i < numberOfMessages; i++) {
-                    messageSink.next(message);
-                }
-            })
-            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-            .thenCancel()
-            .verify(Duration.ofSeconds(45));
+            // Act & Assert
+            StepVerifier.create(sessionManager.receive())
+                .then(() -> {
+                    for (int i = 0; i < numberOfMessages; i++) {
+                        messageSink.next(message);
+                    }
+                })
+                .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+                .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+                .thenCancel()
+                .verify(Duration.ofSeconds(45));
 
-        // message onNext should trigger `LockRenewalOperation` once only for one session.
-        Assertions.assertEquals(1, mockedLockRenewOperation.constructed().size());
+            // message onNext should trigger `LockRenewalOperation` once only for one session.
+             Assertions.assertEquals(1, mockedLockRenewOperation.constructed().size());
+        }
+
     }
 
     /**
