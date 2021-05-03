@@ -98,6 +98,8 @@ class ServiceBusSessionManagerTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ServiceBusManagementNode managementNode;
+    @Mock
+    private LockRenewalOperation lockRenewOperation;
     @Captor
     private ArgumentCaptor<String> linkNameCaptor;
 
@@ -126,6 +128,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getEntityPath()).thenReturn(ENTITY_PATH);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
+        doNothing().when(lockRenewOperation).close();;
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
@@ -273,8 +276,7 @@ class ServiceBusSessionManagerTest {
         // Mockito.mockConstruction should be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (
             MockedConstruction<LockRenewalOperation> mockedLockRenewOperation = Mockito.mockConstructionWithAnswer(LockRenewalOperation.class,
-                invocationOnMock -> new LockRenewalOperation("lockToken", Duration.ofSeconds(30), true,
-                    (lock) -> Mono.empty(), OffsetDateTime.now()))) {
+                invocationOnMock -> lockRenewOperation)) {
 
             // Act & Assert
             StepVerifier.create(sessionManager.receive())
@@ -291,7 +293,6 @@ class ServiceBusSessionManagerTest {
             // message onNext should trigger `LockRenewalOperation` once only for one session.
             final List<LockRenewalOperation> mockedOperations = mockedLockRenewOperation.constructed();
             Assertions.assertEquals(1, mockedOperations.size());
-            doNothing().when(mockedOperations.get(0)).close();
         }
 
     }
