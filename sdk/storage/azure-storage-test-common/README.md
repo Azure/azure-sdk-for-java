@@ -1,4 +1,4 @@
-# Azure Storage Test Common
+# Azure Storage Test Common shared library for Java
 
 Represents common test code for Azure Storage SDK for Java.
 
