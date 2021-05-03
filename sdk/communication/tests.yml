@@ -23,7 +23,7 @@ stages:
           - $(sub-config-communication-services-cloud-test-resources-python)
       Int:
         SubscriptionConfiguration: $(sub-config-communication-int-test-resources)
-    Clouds: Public,Int
+    Clouds: Int
     Artifacts:
       - name: azure-communication-chat
         groupId: com.azure
