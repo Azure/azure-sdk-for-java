@@ -62,7 +62,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -98,8 +97,6 @@ class ServiceBusSessionManagerTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ServiceBusManagementNode managementNode;
-    @Mock
-    private LockRenewalOperation lockRenewOperation;
     @Captor
     private ArgumentCaptor<String> linkNameCaptor;
 
@@ -128,7 +125,6 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getEntityPath()).thenReturn(ENTITY_PATH);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
-        doNothing().when(lockRenewOperation).close();;
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
