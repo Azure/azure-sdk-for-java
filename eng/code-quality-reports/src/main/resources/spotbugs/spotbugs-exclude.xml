@@ -733,6 +733,12 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
+  <!-- Disable some spotbugs rules on azure-storage-test-common -->
+  <Match>
+    <Class name="~com\.azure\.storage\.common\.test\.StorageSpec(.*)" />
+    <Bug pattern="LI_LAZY_INIT_STATIC, MS_SHOULD_BE_FINAL"/>
+  </Match>
+
   <!-- StringUtils.strip can return NULL so the NULL check is required -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
