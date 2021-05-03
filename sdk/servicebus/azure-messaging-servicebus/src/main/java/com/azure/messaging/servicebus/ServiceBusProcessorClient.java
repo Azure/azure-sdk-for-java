@@ -198,7 +198,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
         for (int i = 0; i < processorOptions.getMaxConcurrentCalls(); i++) {
             subscribers[i] = new CoreSubscriber<ServiceBusMessageContext>() {
-                private Subscription subscription;
+                private Subscription subscription = null;
 
                 @Override
                 public void onSubscribe(Subscription subscription) {
