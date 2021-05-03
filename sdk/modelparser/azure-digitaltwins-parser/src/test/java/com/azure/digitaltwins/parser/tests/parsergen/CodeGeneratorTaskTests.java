@@ -28,8 +28,8 @@ public class CodeGeneratorTaskTests extends GeneratedCodeCompareBase {
             FileHelpers.getTestResourcesDirectoryPath(TEST_SUB_DIRECTORY + "/" + testSubDirectory));
 
         // Uncomment out the following line to inspect the generated code.
-        // codeGeneratorTask.run();
-        // cleanUpGeneratedCodes(testSubDirectory);
+        codeGeneratorTask.run();
+        cleanUpGeneratedCodes(testSubDirectory);
     }
 
     // Clean up every generated code for each test directory

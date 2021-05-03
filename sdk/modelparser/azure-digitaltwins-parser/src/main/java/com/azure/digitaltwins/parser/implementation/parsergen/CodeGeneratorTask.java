@@ -79,6 +79,7 @@ public final class CodeGeneratorTask {
         parserLibrary.jImport("java.util.Iterator");
         parserLibrary.jImport("java.util.Map");
         parserLibrary.jImport("java.util.HashSet");
+        parserLibrary.jImport("java.util.Set");
         parserLibrary.jImport("java.util.regex.Pattern");
 
         logger.info("Base class is " + metamodelDigest.getBaseClass());

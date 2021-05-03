@@ -86,7 +86,7 @@ public class ConcreteSubclass {
      * @param varName Name of the variable to which to add the enum value.
      */
     public void addEnumValue(JavaSorted sorted, String varName) {
-        // TODO: to be implemented.
+        sorted.line(varName.concat(".add(").concat(this.kindValue).concat(");"));
     }
 
     /**

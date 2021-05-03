@@ -4,11 +4,7 @@
 package com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaLibrary;
-import com.azure.digitaltwins.parser.implementation.codegen.Access;
-import com.azure.digitaltwins.parser.implementation.codegen.Novelty;
-import com.azure.digitaltwins.parser.implementation.codegen.Multiplicity;
+import com.azure.digitaltwins.parser.implementation.codegen.*;
 import com.azure.digitaltwins.parser.implementation.parsergen.TypeGenerator;
 import com.azure.digitaltwins.parser.implementation.parsergen.MaterialClassDigest;
 import com.azure.digitaltwins.parser.implementation.parsergen.NameFormatter;
@@ -202,7 +198,85 @@ public class MaterialClass implements TypeGenerator {
             obverseClass.addRemarks("This is a base class for all classes that correspond to elements in DTDL models.");
         }
 
+        JavaScope staticDeclaration = obverseClass.staticDeclaration();
+        generateVersionlessTypes(obverseClass, staticDeclaration);
+        generateConcreteKinds(obverseClass, staticDeclaration);
+        generateBadTypeFormatStrings(obverseClass, staticDeclaration);
         // TODO: implement the rest.
+    }
+
+    private void generateBadTypeFormatStrings(JavaClass obverseClass, JavaScope staticDeclaration) {
+        obverseClass.field(
+            Access.PRIVATE,
+            "Map<Integer, String>",
+            "BAD_TYPE_ACTION_FORMAT",
+            "new HashMap<>()",
+            Multiplicity.STATIC,
+            Mutability.FINAL,
+            null);
+
+        obverseClass.field(
+            Access.PRIVATE,
+            "Map<Integer, String>",
+            "BAD_TYPE_CAUSE_FORMAT",
+            "new HashMap<>()",
+            Multiplicity.STATIC,
+            Mutability.FINAL,
+            null);
+
+        for (Map.Entry<Integer, String> kvp : this.materialClassDigest.getBadTypeActionFormat().entrySet()) {
+            staticDeclaration.line("BAD_TYPE_ACTION_FORMAT.put("
+                .concat(String.valueOf(kvp.getKey()))
+                .concat(", \"")
+                .concat(kvp.getValue())
+                .concat("\";"));
+        }
+
+        staticDeclaration.jBreak();
+
+        for (Map.Entry<Integer, String> kvp : this.materialClassDigest.getBadTypeCauseFormat().entrySet()) {
+            staticDeclaration.line("BAD_TYPE_CAUSE_FORMAT.put("
+                .concat(String.valueOf(kvp.getKey()))
+                .concat(", \"")
+                .concat(kvp.getValue())
+                .concat("\";"));
+        }
+
+        staticDeclaration.jBreak();
+    }
+
+    private void generateConcreteKinds(JavaClass obverseClass, JavaScope staticDeclaration) {
+        obverseClass.field(
+            Access.PRIVATE,
+            "Map<Integer, Set<" + this.kindEnum + ">>",
+            "CONCRETE_KINDS",
+            "new HashMap<>()",
+            Multiplicity.STATIC,
+            Mutability.FINAL,
+            null);
+
+        for (int dtdlVersion : this.materialClassDigest.getDtdlVersions()) {
+            staticDeclaration.line("CONCRETE_KINDS.put(" + dtdlVersion + ", new HashSet<>());");
+
+            List<ConcreteSubclass> concreteSubclasses = this.concreteSubclasses.get(dtdlVersion);
+
+            if (concreteSubclasses != null) {
+                JavaSorted sorted = staticDeclaration.sorted();
+                for (ConcreteSubclass concreteSubclass : concreteSubclasses) {
+                    concreteSubclass.addEnumValue(sorted, "CONCRETE_KINDS.get(" + dtdlVersion + ")");
+                }
+            }
+
+            staticDeclaration.jBreak();
+        }
+    }
+
+    private void generateVersionlessTypes(JavaClass javaClass, JavaScope staticDeclaration) {
+        javaClass.field(Access.PRIVATE, "HashSet<String>", "VERSION_LESS_TYPES", "new HashSet<>()", Multiplicity.STATIC, Mutability.FINAL, null);
+
+        for (String typeId : this.typeIds) {
+            staticDeclaration.line("VERSION_LESS_TYPES.add(\"" + typeId + "\");");
+        }
     }
 
     private String getImplementingInterfaces() {
