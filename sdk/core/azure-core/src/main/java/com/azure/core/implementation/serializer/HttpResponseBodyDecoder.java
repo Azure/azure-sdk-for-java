@@ -43,7 +43,6 @@ import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
  */
 public final class HttpResponseBodyDecoder {
     private static final Map<Type, Boolean> RETURN_TYPE_DECODEABLE_MAP = new ConcurrentHashMap<>();
-    private static final Map<Type, Boolean> SHOULD_EAGERLY_READ_RESPONSE_MAP = new ConcurrentHashMap<>();
 
     // TODO (jogiles) JavaDoc (even though it is non-public
     static Mono<Object> decode(final String body,
