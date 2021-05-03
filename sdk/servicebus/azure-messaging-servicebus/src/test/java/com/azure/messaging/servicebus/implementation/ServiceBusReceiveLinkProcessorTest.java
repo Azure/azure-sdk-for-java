@@ -534,7 +534,10 @@ class ServiceBusReceiveLinkProcessorTest {
             })
             .expectNext(message1)
             .expectNext(message2)
-            .then(() -> endpointProcessor.complete())
+            .then(() -> {
+                endpointProcessor.complete();
+                messagePublisher.complete();
+            })
             .expectComplete()
             .verify();
 
