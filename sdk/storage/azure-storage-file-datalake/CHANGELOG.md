@@ -3,6 +3,9 @@
 ## 12.5.0-beta.4 (Unreleased)
 - Added support for the 2020-08-04 service version.
 - Added support to specify Parquet Input Serialization when querying a file.
+- Added support to undelete a file or directory
+- Added support to list deletedPaths
+- Added support to get/set service properties
 
 ## 12.5.0-beta.3 (2021-04-16)
 - Updated `azure-storage-blob` version to `12.11.0-beta.3` to pickup fixes for blob output stream.
