@@ -158,8 +158,6 @@ public class SmsTestBase extends TestBase {
     }
 
     protected boolean shouldEnableSmsTests() {
-        System.out.println("SKIP_SMS_TEST: " + SKIP_SMS_TEST);
-        System.out.println("Boolean.parseBoolean(SKIP_SMS_TEST): " + Boolean.parseBoolean(SKIP_SMS_TEST));
         return TEST_PACKAGES_ENABLED.matches("(all|sms)") && !Boolean.parseBoolean(SKIP_SMS_TEST);
     }
 }
