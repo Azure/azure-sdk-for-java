@@ -124,6 +124,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getHostname()).thenReturn(NAMESPACE);
         when(amqpReceiveLink.getEntityPath()).thenReturn(ENTITY_PATH);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
@@ -287,7 +288,7 @@ class ServiceBusSessionManagerTest {
                 .verify(Duration.ofSeconds(45));
 
             // message onNext should trigger `LockRenewalOperation` once only for one session.
-             Assertions.assertEquals(1, mockedLockRenewOperation.constructed().size());
+            Assertions.assertEquals(1, mockedLockRenewOperation.constructed().size());
         }
 
     }
