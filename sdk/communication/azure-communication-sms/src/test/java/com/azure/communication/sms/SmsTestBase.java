@@ -49,8 +49,8 @@ public class SmsTestBase extends TestBase {
     private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
         .get("TEST_PACKAGES_ENABLED", "all");
 
-    private static final String SKIP_TEST = Configuration.getGlobalConfiguration()
-        .get("SKIP_TEST", "False");
+    private static final String SKIP_SMS_TEST = Configuration.getGlobalConfiguration()
+        .get("SKIP_SMS_TEST", "False");
 
     protected static final String MESSAGE = "Hello";
 
@@ -158,6 +158,6 @@ public class SmsTestBase extends TestBase {
     }
 
     protected boolean shouldEnableSmsTests() {
-        return TEST_PACKAGES_ENABLED.matches("(all|sms)") || Boolean.parseBoolean(SKIP_TEST);
+        return TEST_PACKAGES_ENABLED.matches("(all|sms)") || !Boolean.parseBoolean(SKIP_SMS_TEST);
     }
 }
