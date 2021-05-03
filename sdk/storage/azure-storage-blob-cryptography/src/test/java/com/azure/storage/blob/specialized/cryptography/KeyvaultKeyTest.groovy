@@ -31,7 +31,7 @@ class KeyvaultKeyTest extends APISpec {
 
     def setup() {
         def keyVaultUrl = "https://azstoragesdkvault.vault.azure.net/"
-        if (testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL")
         }
 
@@ -128,7 +128,7 @@ class KeyvaultKeyTest extends APISpec {
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (!interceptorManager.isPlaybackMode()) {
-            if (testMode == TestMode.RECORD) {
+            if (environment.testMode == TestMode.RECORD) {
                 policies.add(interceptorManager.getRecordPolicy());
             }
         }
