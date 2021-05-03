@@ -945,6 +945,11 @@ public class ShareFileClient {
      * @return The {@link ShareFileUploadInfo file upload info}
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
+     *
+     * @deprecated Deprecated in favor of
+     * {@link ShareFileClient#uploadRange(ShareFileUploadRangeOptions)} and
+     * {@link ShareFileClient#uploadBufferedRange(ShareFileUploadBufferedRangeOptions)}.
+     * The former emulates this method while the latter buffers and uploads in parallel.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -976,6 +981,11 @@ public class ShareFileClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     *
+     * @deprecated Deprecated in favor of
+     * {@link ShareFileClient#uploadRangeWithResponse(ShareFileUploadRangeOptions, Duration, Context)} and
+     * {@link ShareFileClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions, Duration, Context)}.
+     * The former emulates this method while the latter buffers and uploads in parallel.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1009,6 +1019,11 @@ public class ShareFileClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     *
+     * @deprecated Deprecated in favor of
+     * {@link ShareFileClient#uploadRangeWithResponse(ShareFileUploadRangeOptions, Duration, Context)} and
+     * {@link ShareFileClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions, Duration, Context)}.
+     * The former emulates this method while the latter buffers and uploads in parallel.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1019,20 +1034,94 @@ public class ShareFileClient {
             timeout, context);
     }
 
+    /**
+     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
+     * in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.upload#ShareFileUploadRangeOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options Argument collection for the upload operation.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     */
     public ShareFileUploadInfo uploadRange(ShareFileUploadRangeOptions options) {
         return this.uploadRangeWithResponse(options, null, Context.NONE).getValue();
     }
 
+    /**
+     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
+     * in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.upload#ShareFileUploadRangeOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options Argument collection for the upload operation.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     */
     public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(
             shareFileAsyncClient.uploadRangeWithResponse(options, context), timeout);
     }
 
+    /**
+     * Buffers a range of bytes and uploads sub-ranges in parallel to a file in storage file service. Upload operations
+     * perform an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.upload#ShareFileUploadBufferedRangeOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options Argument collection for the upload operation.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     */
     public ShareFileUploadInfo uploadBufferedRange(ShareFileUploadBufferedRangeOptions options) {
         return uploadBufferedRangeWithResponse(options, null, Context.NONE).getValue();
     }
 
+    /**
+     * Buffers a range of bytes and uploads sub-ranges in parallel to a file in storage file service. Upload operations
+     * perform an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.upload#ShareFileUploadBufferedRangeOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options Argument collection for the upload operation.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     */
     public Response<ShareFileUploadInfo> uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions options,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(
