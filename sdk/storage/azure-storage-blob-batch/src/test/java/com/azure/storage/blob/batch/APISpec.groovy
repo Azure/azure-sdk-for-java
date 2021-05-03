@@ -22,17 +22,17 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.StorageSpec
 import org.spockframework.runtime.model.IterationInfo
 import spock.lang.Requires
 import spock.lang.Shared
-import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
-class APISpec extends Specification {
+class APISpec extends StorageSpec {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
 
@@ -69,7 +69,6 @@ class APISpec extends Specification {
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential versionedCredential
-    static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
@@ -81,7 +80,6 @@ class APISpec extends Specification {
     protected String testName
 
     def setupSpec() {
-        testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         versionedCredential = getCredential(VERSIONED_STORAGE)
     }
@@ -92,8 +90,8 @@ class APISpec extends Specification {
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, environment.testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, environment.testMode, interceptorManager.getRecordedData())
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
@@ -122,29 +120,15 @@ class APISpec extends Specification {
         interceptorManager.close()
     }
 
-    static TestMode setupTestMode() {
-        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (testMode != null) {
-            try {
-                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ignore) {
-                return TestMode.PLAYBACK
-            }
-        }
-
-        return TestMode.PLAYBACK
-    }
-
     static boolean liveMode() {
-        return setupTestMode() == TestMode.LIVE
+        return environment.testMode == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -173,8 +157,8 @@ class APISpec extends Specification {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
 
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
+        if (environment.testMode != TestMode.PLAYBACK) {
+            if (environment.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
 
@@ -215,7 +199,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (environment.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -235,7 +219,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
+        if (environment.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -244,7 +228,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
