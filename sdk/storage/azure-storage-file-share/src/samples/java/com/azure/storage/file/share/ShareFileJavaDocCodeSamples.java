@@ -18,7 +18,6 @@ import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
-import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;

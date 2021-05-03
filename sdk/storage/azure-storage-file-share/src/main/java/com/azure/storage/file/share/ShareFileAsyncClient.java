@@ -64,8 +64,9 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileUploadBufferedRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
-import com.azure.storage.file.share.models.ShareFileUploadOptions;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -1329,41 +1330,67 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> uploadRange(data, length, offset, requestConditions, context));
+            return withContext(context -> uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length)
+                .setOffset(offset).setRequestConditions(requestConditions), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    public Mono<ShareFileUploadInfo> uploadRange(ShareFileUploadRangeOptions options) {
+        try {
+            return uploadRangeWithResponse(options).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    public Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options) {
+        try {
+            return withContext(context -> uploadRangeWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Uploads a range of bytes to specific offset of a file in storage file service. Upload operations performs an
-     * in-place write on the specified file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
-     *
-     * @param options {@link ShareFileUploadOptions} that contain the arguments for this method.
-     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
-     * status code.
-     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
-     * status code 413 (Request Entity Too Large)
+     * One-shot upload range.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileUploadInfo>> SOME_NEW_METHOD_NAME(ShareFileUploadOptions options) {
+    Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options, Context context) {
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
+        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
+        context = context == null ? Context.NONE : context;
+
+        Flux<ByteBuffer> data = options.getDataFlux() == null
+            ? Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(), (int)FILE_DEFAULT_BLOCK_SIZE, true)
+            : options.getDataFlux();
+
+        return azureFileStorageClient.getFiles()
+            .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
+                options.getLength(), data, null, null, requestConditions.getLeaseId(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(this::uploadResponse);
+    }
+
+    public Mono<ShareFileUploadInfo> uploadBufferedRange(ShareFileUploadBufferedRangeOptions options) {
         try {
-            return withContext(context -> parallelUploadWithResponse(options, context));
+            return uploadBufferedRangeWithResponse(options).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareFileUploadInfo>> parallelUploadWithResponse(ShareFileUploadOptions options, Context context) {
+    public Mono<Response<ShareFileUploadInfo>> uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions options) {
+        try {
+            return withContext(context -> uploadBufferedRangeWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareFileUploadInfo>> uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions options, Context context) {
         try {
             StorageImplUtils.assertNotNull("options", options);
             ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
@@ -1371,14 +1398,15 @@ public class ShareFileAsyncClient {
                 : options.getRequestConditions();
             final ParallelTransferOptions validatedParallelTransferOptions =
                 ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+            long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
 
             Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks = (stream) ->
-                uploadInChunks(stream, options.getOffset(), validatedParallelTransferOptions, validatedRequestConditions, context);
+                uploadInChunks(stream, validatedOffset, validatedParallelTransferOptions, validatedRequestConditions, context);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) ->
-                uploadRange(ProgressReporter.addProgressReporting(
-                        stream, validatedParallelTransferOptions.getProgressReceiver()),
-                    length, options.getOffset(), validatedRequestConditions, context);
+                uploadRangeWithResponse(new ShareFileUploadRangeOptions(ProgressReporter.addProgressReporting(
+                    stream, validatedParallelTransferOptions.getProgressReceiver()), length)
+                    .setOffset(options.getOffset()).setRequestConditions(validatedRequestConditions), context);
 
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(),
@@ -1392,23 +1420,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    /**
-     * One-shot upload range.
-     */
-    Mono<Response<ShareFileUploadInfo>> uploadRange(Flux<ByteBuffer> data, long length, Long offset,
-        ShareRequestConditions requestConditions, Context context) {
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        long rangeOffset = (offset == null) ? 0L : offset;
-        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + length - 1);
-        context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getFiles()
-            .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                length, data, null, null, requestConditions.getLeaseId(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::uploadResponse);
-    }
-
-    Mono<Response<ShareFileUploadInfo>> uploadInChunks(Flux<ByteBuffer> data, Long offset,
+    Mono<Response<ShareFileUploadInfo>> uploadInChunks(Flux<ByteBuffer> data, long offset,
         ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
@@ -1450,7 +1462,8 @@ public class ShareFileAsyncClient {
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
                     progressLock, totalProgress);
-                return uploadRange(progressData, currentBufferLength, currentOffset, requestConditions, context)
+                return uploadRangeWithResponse(new ShareFileUploadRangeOptions(progressData, currentBufferLength)
+                    .setOffset(currentOffset).setRequestConditions(requestConditions), context)
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency())
             .last();

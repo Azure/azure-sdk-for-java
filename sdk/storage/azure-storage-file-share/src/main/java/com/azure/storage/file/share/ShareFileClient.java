@@ -27,8 +27,9 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileUploadBufferedRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
-import com.azure.storage.file.share.models.ShareFileUploadOptions;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -46,6 +47,8 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -1011,38 +1014,29 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareFileAsyncClient.uploadRange(Utility
-                .convertStreamToByteBuffer(data, length, (int) ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE, true),
-            length, offset, requestConditions, context), timeout);
+        return this.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(data, length).setOffset(offset).setRequestConditions(requestConditions),
+            timeout, context);
     }
 
-    /**
-     * Uploads a range of bytes to specific offset of a file in storage file service. Upload operations performs an
-     * in-place write on the specified file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadWithResponse#ShareFileUploadOptions-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
-     *
-     * @param options {@link ShareFileUploadOptions} that contain the arguments for this method.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
-     * status code.
-     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
-     * status code 413 (Request Entity Too Large)
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareFileUploadInfo> SOME_NEW_METHOD_NAME(ShareFileUploadOptions options, Duration timeout,
-        Context context) {
+    public ShareFileUploadInfo uploadRange(ShareFileUploadRangeOptions options) {
+        return this.uploadRangeWithResponse(options, null, Context.NONE).getValue();
+    }
+
+    public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
+        Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(
-            shareFileAsyncClient.parallelUploadWithResponse(options, context), timeout);
+            shareFileAsyncClient.uploadRangeWithResponse(options, context), timeout);
+    }
+
+    public ShareFileUploadInfo uploadBufferedRange(ShareFileUploadBufferedRangeOptions options) {
+        return uploadBufferedRangeWithResponse(options, null, Context.NONE).getValue();
+    }
+
+    public Response<ShareFileUploadInfo> uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions options,
+        Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(
+            shareFileAsyncClient.uploadBufferedRangeWithResponse(options, context), timeout);
     }
 
     /**

@@ -14,6 +14,7 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
+import com.azure.storage.file.share.models.ShareFileUploadBufferedRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
@@ -270,13 +271,13 @@ class FileAPITests extends APISpec {
     }
 
     @Unroll
-    def "Upload range greater than max put range"() {
+    def "Upload buffered range greater than max put range"() {
         given:
         primaryFileClient.create(length)
         def data = new ByteArrayInputStream(getRandomBuffer(length));
 
         when:
-        primaryFileClient.upload(data, length)
+        primaryFileClient.uploadBufferedRange(new ShareFileUploadBufferedRangeOptions(data, length))
 
         then:
         notThrown(Exception)
