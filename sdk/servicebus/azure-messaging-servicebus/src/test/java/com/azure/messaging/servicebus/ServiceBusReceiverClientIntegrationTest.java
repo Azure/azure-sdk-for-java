@@ -445,10 +445,17 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
         // Act
-        final IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
+        int actualCount = (int) messages.stream().count();
+
+        // 'peekMessages' API returns maxMessages but it can be less as well by design.
+        if (actualCount < maxMessages) {
+            messages = receiver.peekMessages(maxMessages);
+            actualCount += (int) messages.stream().count();
+        }
 
         // Assert
-        assertEquals(maxMessages, (int) messages.stream().count());
+        assertEquals(maxMessages, actualCount);
     }
 
     /**

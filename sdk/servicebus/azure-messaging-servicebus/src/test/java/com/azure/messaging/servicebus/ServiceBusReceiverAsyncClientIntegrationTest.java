@@ -567,7 +567,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .expectNextCount(maxMessages)
             .verifyComplete();
 
-        // cleanup
+        long actualCount = receiver.peekMessages(maxMessages, fromSequenceNumber).toStream().count();
+
+        // 'peekMessages' API returns maxMessages but it can be less as well by design.
+        if (actualCount < maxMessages) {
+            actualCount += receiver.peekMessages(maxMessages).toStream().count();
+        }
+
+        assertEquals(maxMessages, actualCount);
+
         StepVerifier.create(receiver.receiveMessages().take(maxMessages))
             .assertNext(receivedMessage -> {
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
