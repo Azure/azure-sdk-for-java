@@ -159,7 +159,7 @@ public final class ContainerRepository {
      * Fetches all the artifacts associated with the given {@link #getName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listManifests(ManifestOrderBy)}  listManifests}
+     * use the overload that takes in the options parameter {@link #listManifests(ManifestOrderBy, Context)}   listManifests}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -175,7 +175,7 @@ public final class ContainerRepository {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactManifestProperties> listManifests() {
-        return this.listManifests(ManifestOrderBy.NONE);
+        return this.listManifests(ManifestOrderBy.NONE, Context.NONE);
     }
 
     /**
@@ -193,13 +193,14 @@ public final class ContainerRepository {
      * {@codesnippet com.azure.containers.containerregistry.repository.listManifestsWithOptions}.
      *
      * @param orderBy the order in which the artifacts are returned by the service.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactManifestProperties> listManifests(ManifestOrderBy orderBy) {
-        return new PagedIterable<>(this.asyncClient.listManifests(orderBy));
+    public PagedIterable<ArtifactManifestProperties> listManifests(ManifestOrderBy orderBy, Context context) {
+        return new PagedIterable<>(this.asyncClient.listManifests(orderBy, context));
     }
 
     /**

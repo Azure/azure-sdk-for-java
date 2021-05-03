@@ -187,7 +187,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
             .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, true))
             .verifyComplete();
 
-        validateListTags(client.listTags(TagOrderBy.LAST_UPDATED_ON_ASCENDING).streamByPage(PAGESIZE_2).collect(Collectors.toList()), true);
+        validateListTags(client.listTags(TagOrderBy.LAST_UPDATED_ON_ASCENDING, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()), true);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -202,7 +202,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
             .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, false))
             .verifyComplete();
 
-        validateListTags(client.listTags(TagOrderBy.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()), false);
+        validateListTags(client.listTags(TagOrderBy.NONE, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

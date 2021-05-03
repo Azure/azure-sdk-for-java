@@ -127,7 +127,7 @@ public class RegistryArtifactJavaDocSnippets {
     public void listTagsWithOptionsCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
-        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10).forEach(pagedResponse -> {
+        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10).forEach(pagedResponse -> {
             pagedResponse.getValue().stream().forEach(
                 tagProperties -> System.out.println(tagProperties.getDigest()));
         });

@@ -237,7 +237,7 @@ public final class RegistryArtifact {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy)}  listTags}
+     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy, Context)}  listTags}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -253,7 +253,7 @@ public final class RegistryArtifact {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactTagProperties> listTags() {
-        return listTags(TagOrderBy.NONE);
+        return listTags(TagOrderBy.NONE, Context.NONE);
     }
 
     /**
@@ -271,13 +271,14 @@ public final class RegistryArtifact {
      * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagsWithOptions}.
      *
      * @param orderBy The order in which the tags should be returned by the service.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTags(TagOrderBy orderBy) {
-        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTags(orderBy));
+    public PagedIterable<ArtifactTagProperties> listTags(TagOrderBy orderBy, Context context) {
+        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTags(orderBy, context));
     }
 
     /**

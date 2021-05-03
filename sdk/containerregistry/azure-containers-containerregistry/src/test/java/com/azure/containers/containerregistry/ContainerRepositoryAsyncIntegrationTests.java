@@ -168,7 +168,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
             .verifyComplete();
 
         validateListArtifactsByPage(
-            client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_ASCENDING).streamByPage(PAGESIZE_2).collect(Collectors.toList()),
+            client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_ASCENDING, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()),
             true);
     }
 
@@ -184,7 +184,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
             .expectRecordedMatches(pagedResList -> validateListArtifactsByPage(pagedResList))
             .verifyComplete();
 
-        validateListArtifactsByPage(client.listManifests(ManifestOrderBy.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()));
+        validateListArtifactsByPage(client.listManifests(ManifestOrderBy.NONE, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

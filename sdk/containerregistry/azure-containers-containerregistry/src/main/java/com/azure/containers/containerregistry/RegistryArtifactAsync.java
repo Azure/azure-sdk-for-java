@@ -400,6 +400,12 @@ public final class RegistryArtifactAsync {
             (token, pageSize) -> withContext(context -> listTagsNextSinglePageAsync(token, context)));
     }
 
+    PagedFlux<ArtifactTagProperties> listTags(TagOrderBy orderBy, Context context) {
+        return new PagedFlux<>(
+            (pageSize) -> listTagsSinglePageAsync(pageSize, orderBy, context),
+            (token, pageSize) -> listTagsNextSinglePageAsync(token, context));
+    }
+
     Mono<PagedResponse<ArtifactTagProperties>> listTagsSinglePageAsync(Integer pageSize, TagOrderBy orderBy, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {

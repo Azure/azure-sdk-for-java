@@ -97,6 +97,12 @@ public final class ContainerRegistryAsyncClient {
             (token, pageSize) -> withContext(context -> listRepositoryNamesNextSinglePageAsync(token, context)));
     }
 
+    PagedFlux<String> listRepositoryNames(Context context) {
+        return new PagedFlux<>(
+            (pageSize) -> listRepositoryNamesSinglePageAsync(pageSize, context),
+            (token, pageSize) -> listRepositoryNamesNextSinglePageAsync(token, context));
+    }
+
     Mono<PagedResponse<String>> listRepositoryNamesSinglePageAsync(Integer pageSize, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
@@ -123,26 +129,26 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * Delete the repository identified by 'name'.
+     * Delete the repository identified by 'repositoryName'.
      *
-     * @param repository Name of the repository (including the namespace).
+     * @param repositoryName Name of the repository (including the namespace).
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given name was not found.
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String repository) {
-        return withContext(context -> deleteRepositoryWithResponse(repository, context));
+    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String repositoryName) {
+        return withContext(context -> deleteRepositoryWithResponse(repositoryName, context));
     }
 
-    Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String repository, Context context) {
+    Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponse(String repositoryName, Context context) {
         try {
-            if (repository == null) {
-                return monoError(logger, new NullPointerException("'name' cannot be null."));
+            if (repositoryName == null) {
+                return monoError(logger, new NullPointerException("'repositoryName' cannot be null."));
             }
 
-            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repository, context)
+            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
                 .onErrorMap(Utils::mapException);
 
         } catch (RuntimeException e) {
@@ -151,31 +157,31 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * Delete the repository identified by 'name'.
+     * Delete the repository identified by 'repositoryName'.
      *
-     * @param repository Name of the image (including the namespace).
+     * @param repositoryName Name of the image (including the namespace).
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given name was not found.
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteRepositoryResult> deleteRepository(String repository) {
-        return withContext(context -> this.deleteRepository(repository, context));
+    public Mono<DeleteRepositoryResult> deleteRepository(String repositoryName) {
+        return withContext(context -> this.deleteRepository(repositoryName, context));
     }
 
-    Mono<DeleteRepositoryResult> deleteRepository(String name, Context context) {
-        return this.deleteRepositoryWithResponse(name, context).map(Response::getValue);
+    Mono<DeleteRepositoryResult> deleteRepository(String repositoryName, Context context) {
+        return this.deleteRepositoryWithResponse(repositoryName, context).map(Response::getValue);
     }
 
     /**
      * Get an instance of container repository class.
      *
-     * @param repository Name of the repository (including the namespace).
+     * @param repositoryName Name of the repository (including the namespace).
      * @return repository client.
      */
-    public ContainerRepositoryAsync getRepository(String repository) {
-        return new ContainerRepositoryAsync(repository, httpPipeline, endpoint, apiVersion);
+    public ContainerRepositoryAsync getRepository(String repositoryName) {
+        return new ContainerRepositoryAsync(repositoryName, httpPipeline, endpoint, apiVersion);
     }
 
     /**

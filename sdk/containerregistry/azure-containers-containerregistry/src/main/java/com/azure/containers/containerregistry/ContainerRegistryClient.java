@@ -54,27 +54,39 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositoryNames() {
-        return new PagedIterable<String>(asyncClient.listRepositoryNames());
+        return listRepositoryNames(Context.NONE);
     }
 
     /**
-     * Delete the repository identified by 'name'.
+     * List all the repository names in this registry.
      *
-     * @param repository Name of the repository (including the namespace).
+     * @param context The context to associate with this operation.
+     * @return list of repositories.
+     * @throws ClientAuthenticationException thrown if the client credentials do not have access to perform this operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listRepositoryNames(Context context) {
+        return new PagedIterable<String>(asyncClient.listRepositoryNames(context));
+    }
+
+    /**
+     * Delete the repository identified by 'repositoryName'.
+     *
+     * @param repositoryName Name of the repository (including the namespace).
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository to be deleted does not exist.
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteRepositoryResult deleteRepository(String repository) {
-        return this.deleteRepositoryWithResponse(repository, Context.NONE).getValue();
+    public DeleteRepositoryResult deleteRepository(String repositoryName) {
+        return this.deleteRepositoryWithResponse(repositoryName, Context.NONE).getValue();
     }
 
     /**
-     * Delete the repository identified by 'name'.
+     * Delete the repository identified by 'repositoryName'.
      *
-     * @param repository Name of the repository (including the namespace).
+     * @param repositoryName Name of the repository (including the namespace).
      * @param context The context to associate with this operation.
      * @return deleted repository properties.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
@@ -82,28 +94,28 @@ public final class ContainerRegistryClient {
      * @throws NullPointerException thrown if the name is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String repository, Context context) {
-        return this.asyncClient.deleteRepositoryWithResponse(repository, context).block();
+    public Response<DeleteRepositoryResult> deleteRepositoryWithResponse(String repositoryName, Context context) {
+        return this.asyncClient.deleteRepositoryWithResponse(repositoryName, context).block();
     }
 
     /**
      * Get an instance of repository client from the registry client.
      *
-     * @param repository Name of the repository (including the namespace).
+     * @param repositoryName Name of the repository (including the namespace).
      * @return repository client.
      */
-    public ContainerRepository getRepository(String repository) {
-        return new ContainerRepository(this.asyncClient.getRepository(repository));
+    public ContainerRepository getRepository(String repositoryName) {
+        return new ContainerRepository(this.asyncClient.getRepository(repositoryName));
     }
 
     /**
      * Get an instance of registry artifact class.
      *
-     * @param repository Name of the repository (including the namespace).
+     * @param repositoryName Name of the repository (including the namespace).
      * @param tagOrDigest Tag or digest associated with the artifact.
      * @return repository client.
      */
-    public RegistryArtifact getArtifact(String repository, String tagOrDigest) {
-        return new RegistryArtifact(this.asyncClient.getArtifact(repository, tagOrDigest));
+    public RegistryArtifact getArtifact(String repositoryName, String tagOrDigest) {
+        return new RegistryArtifact(this.asyncClient.getArtifact(repositoryName, tagOrDigest));
     }
 }

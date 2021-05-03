@@ -221,6 +221,12 @@ public final class ContainerRepositoryAsync {
             (token, pageSize) -> withContext(context -> listManifestsNextSinglePageAsync(token, context)));
     }
 
+    PagedFlux<ArtifactManifestProperties> listManifests(ManifestOrderBy orderBy, Context context) {
+        return new PagedFlux<>(
+            (pageSize) -> listManifestsSinglePageAsync(pageSize, orderBy, context),
+            (token, pageSize) -> listManifestsNextSinglePageAsync(token, context));
+    }
+
     Mono<PagedResponse<ArtifactManifestProperties>> listManifestsSinglePageAsync(Integer pageSize, ManifestOrderBy orderBy, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {

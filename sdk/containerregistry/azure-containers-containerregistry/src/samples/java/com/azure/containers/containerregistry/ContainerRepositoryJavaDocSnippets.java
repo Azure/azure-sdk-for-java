@@ -122,7 +122,7 @@ public class ContainerRepositoryJavaDocSnippets {
     public void listManifestPropertiesWithOptionsCodeSnippet() {
         ContainerRepository client = getClient();
         // BEGIN: com.azure.containers.containerregistry.repository.listManifestsWithOptions
-        client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10)
+        client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
