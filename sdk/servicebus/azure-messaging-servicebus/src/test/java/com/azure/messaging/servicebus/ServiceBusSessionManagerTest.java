@@ -289,9 +289,9 @@ class ServiceBusSessionManagerTest {
                 .verify(Duration.ofSeconds(45));
 
             // message onNext should trigger `LockRenewalOperation` once only for one session.
-            final List<LockRenewalOperation> actualOperations = mockedLockRenewOperation.constructed();
-            Assertions.assertEquals(1, actualOperations.size());
-            doNothing().when(actualOperations.get(0)).close();
+            final List<LockRenewalOperation> mockedOperations = mockedLockRenewOperation.constructed();
+            Assertions.assertEquals(1, mockedOperations.size());
+            doNothing().when(mockedOperations.get(0)).close();
         }
 
     }
