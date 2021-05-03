@@ -55,6 +55,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.isReturnTypeDecodable;
+import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -127,7 +128,7 @@ public final class RestProxy implements InvocationHandler {
             final HttpRequest request = createHttpRequest(methodParser, args);
             Context context = methodParser.setContext(args)
                 .addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", isReturnTypeDecodable(methodParser.getReturnType()));
+                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {
