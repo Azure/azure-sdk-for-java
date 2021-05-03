@@ -19,7 +19,6 @@ import java.util.Arrays;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
-import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
@@ -38,7 +37,7 @@ public class RegistryArtifactTest extends ContainerRegistryClientsTestBase {
     void beforeEach() {
         TestUtils.importImage(
             ImplUtils.getTestMode(),
-            HELLO_WORLD_SEATTLE_REPOSITORY_NAME,
+            HELLO_WORLD_REPOSITORY_NAME,
             Arrays.asList(
                 LATEST_TAG_NAME,
                 V1_TAG_NAME,

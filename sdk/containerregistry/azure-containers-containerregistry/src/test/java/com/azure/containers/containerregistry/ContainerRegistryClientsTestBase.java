@@ -75,6 +75,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
             .credential(credential);
 
+        // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         return builder;
     }
 
