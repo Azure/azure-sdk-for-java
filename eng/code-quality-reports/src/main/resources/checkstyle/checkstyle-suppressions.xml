@@ -555,4 +555,8 @@ the main ServiceBusClientBuilder. -->
   <!-- This policy is purely an implementation detail and should not be used by customers -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.data.tables.implementation.CosmosPatchTransformPolicy"/>
+
+  <!-- Suppress checks on AutoRest generated Text Analytics service code -->
+  <suppress checks="WhitespaceAround"
+            files="com.azure.ai.textanalytics.implementation.models.TasksStateTasksDetails"/>
 </suppressions>
