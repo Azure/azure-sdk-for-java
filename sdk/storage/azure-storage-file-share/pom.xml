@@ -66,6 +66,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-test-common</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-test-common;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
