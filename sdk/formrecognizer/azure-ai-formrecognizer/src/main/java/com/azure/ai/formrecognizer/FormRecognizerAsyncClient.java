@@ -243,10 +243,10 @@ public final class FormRecognizerAsyncClient {
                 streamActivationOperation(
                     contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                         ContentType.fromString(contentType.toString()),
-                        form,
-                        length,
                         isFieldElementsIncluded,
                         finalRecognizeCustomFormsOptions.getPages(),
+                        form,
+                        length,
                         context)
                         .map(response ->
                             new FormRecognizerOperationResult(
@@ -420,8 +420,6 @@ public final class FormRecognizerAsyncClient {
                 finalRecognizeContentOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType,
-                        form,
-                        length,
                         finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
@@ -429,6 +427,8 @@ public final class FormRecognizerAsyncClient {
                             ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
                             recognizeContentOptions.getReadingOrder().toString())
                             : null,
+                        form,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
@@ -603,11 +603,11 @@ public final class FormRecognizerAsyncClient {
                 streamActivationOperation(
                     (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
                         contentType,
-                        receipt,
-                        length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         finalRecognizeReceiptsOptions.getPages(),
+                        receipt,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -782,11 +782,11 @@ public final class FormRecognizerAsyncClient {
                 streamActivationOperation(
                     (contentType -> service.analyzeBusinessCardAsyncWithResponseAsync(
                         contentType,
-                        businessCard,
-                        length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         finalRecognizeBusinessCardsOptions.getPages(),
+                        businessCard,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -963,10 +963,10 @@ public final class FormRecognizerAsyncClient {
                 streamActivationOperation(
                     (contentType -> service.analyzeIdDocumentAsyncWithResponseAsync(
                         contentType,
-                        identityDocument,
-                        length,
                         isFieldElementsIncluded,
                         finalRecognizeIdentityDocumentOptions.getPages(),
+                        identityDocument,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -1231,11 +1231,11 @@ public final class FormRecognizerAsyncClient {
                 streamActivationOperation(
                     (contentType -> service.analyzeInvoiceAsyncWithResponseAsync(
                         contentType,
-                        invoice,
-                        length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         finalRecognizeInvoicesOptions.getPages(),
+                        invoice,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
