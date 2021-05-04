@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
@@ -11,8 +10,6 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
@@ -85,11 +82,6 @@ class APISpec extends StorageSpec {
     protected static int defaultDataSize = defaultData.remaining()
 
     protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
-
-    // Prefixes for blobs and containers
-    String containerPrefix = "jtc" // java test container
-
-    String blobPrefix = "javablob"
 
     /*
     The values below are used to create data-driven tests for access conditions.
@@ -187,7 +179,7 @@ class APISpec extends StorageSpec {
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
             .buildClient()
 
-        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + namer.getResourcePrefix())
+        def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
         for (def container : cleanupClient.listBlobContainers(options, null)) {
             def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
@@ -456,19 +448,15 @@ class APISpec extends StorageSpec {
     }
 
     def generateContainerName() {
-        generateResourceName(containerPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
     def generateBlobName() {
-        generateResourceName(blobPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
-    private String generateResourceName(String prefix, int entityNo) {
-        namer.getRandomName(prefix + namer.getResourcePrefix() + entityNo, 63)
-    }
-
-    String getConfigValue(String value) {
-        return resourceNamer.recordValueFromConfig(value)
+    private String generateResourceName(int entityNo) {
+        namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
     String getBlockID() {

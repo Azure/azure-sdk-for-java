@@ -350,13 +350,13 @@ class SasClientTests extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
-        def saoid = getRandomUUID()
+        def saoid = namer.getRandomUuid()
 
         when:
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
@@ -380,13 +380,13 @@ class SasClientTests extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
-        def cid = getRandomUUID()
+        def cid = namer.getRandomUuid()
 
         when:
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
@@ -410,10 +410,10 @@ class SasClientTests extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         def cid = "invalidcid"
@@ -852,9 +852,9 @@ class SasClientTests extends APISpec {
 
     UserDelegationKey getUserDelegationInfo() {
         def key = getOAuthServiceClient().getUserDelegationKey(namer.getUtcNow().minusDays(1), namer.getUtcNow().plusDays(1))
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
         return key
     }

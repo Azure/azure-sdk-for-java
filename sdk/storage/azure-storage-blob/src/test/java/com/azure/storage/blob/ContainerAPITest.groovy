@@ -578,7 +578,7 @@ class ContainerAPITest extends APISpec {
         bu.upload(defaultInputStream.get(), 7)
 
         when:
-        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         then:
         def blob = blobs.next()
@@ -619,7 +619,7 @@ class ContainerAPITest extends APISpec {
         bu.seal()
 
         when:
-        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         then:
         def blob = blobs.next()
@@ -662,7 +662,7 @@ class ContainerAPITest extends APISpec {
         bu.create(512)
 
         when:
-        def blobs = ccPremium.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = ccPremium.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         //ContainerListBlobFlatSegmentHeaders headers = response.headers()
         //List<BlobItem> blobs = responseiterator()()
@@ -1486,7 +1486,7 @@ class ContainerAPITest extends APISpec {
         bu.seal()
 
         when:
-        def blobs = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         then:
         def blob = blobs.next()
