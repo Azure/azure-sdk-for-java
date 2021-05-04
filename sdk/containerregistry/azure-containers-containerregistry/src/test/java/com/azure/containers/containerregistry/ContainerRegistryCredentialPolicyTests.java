@@ -122,7 +122,7 @@ public class ContainerRegistryCredentialPolicyTests {
 
         // Validate that the token creation was called with the correct arguments.
         ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
-        verify(spyPolicy).addAuthorization(any(HttpPipelineCallContext.class), argument.capture());
+        verify(spyPolicy).authorizeRequest(any(HttpPipelineCallContext.class), argument.capture());
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
         assertEquals(SERVICENAME, requestContext.getServiceName());
