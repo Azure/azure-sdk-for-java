@@ -530,8 +530,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .directMode()
                 .buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
-            CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-            ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
             Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
                 .thenReturn(Mono.error(new CosmosException(400, "TestBadRequest")));
