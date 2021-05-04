@@ -253,6 +253,10 @@ class ServiceBusReceiveLinkProcessorTest {
         when(link2.getCredits()).thenReturn(1);
         when(link3.getCredits()).thenReturn(1);
 
+        when(link1.closeAsync()).thenReturn(Mono.empty());
+        when(link2.closeAsync()).thenReturn(Mono.empty());
+        when(link3.closeAsync()).thenReturn(Mono.empty());
+
         final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
