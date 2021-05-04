@@ -45,7 +45,7 @@ public final class PollerFactory<U> {
     }
 
     public PollerFlux<PollResult, U> createOperationResourcePoller(
-            Supplier<Mono<Response<?>>> activation, Type resultType) {
+            Supplier<Mono<? extends Response<?>>> activation, Type resultType) {
         return new PollerFlux<>(
                 pollInterval,
                 ctx -> activation.get()
