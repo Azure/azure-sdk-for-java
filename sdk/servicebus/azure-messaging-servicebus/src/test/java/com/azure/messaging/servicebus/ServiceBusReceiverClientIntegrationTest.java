@@ -443,7 +443,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
         sendMessage(message);
 
-        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
         // Act
         final IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
 
