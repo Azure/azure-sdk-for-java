@@ -6,4 +6,4 @@ package com.azure.storage.blob.models;
 /**
  * Defines the input parquet serialization for a blob quick query request.
  */
-public class BlobQueryParquetSerialization implements BlobQuerySerialization { }
+class BlobQueryParquetSerialization implements BlobQuerySerialization { }
