@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sample for recognizing commonly found ID document fields from a file source URL of an invoice document.
+ * Sample for recognizing commonly found ID document fields from a file source URL of an identity document.
  * See fields found on an identity document here: https://aka.ms/formrecognizer/iddocumentfields
  */
 public class RecognizeIdentityDocumentsFromUrl {
