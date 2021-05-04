@@ -89,7 +89,7 @@ class APISpec extends StorageSpec {
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
 
-    TestResourceNamer resourceNamer
+    protected TestResourceNamer resourceNamer
     def InterceptorManager interceptorManager
     protected String testName
 
