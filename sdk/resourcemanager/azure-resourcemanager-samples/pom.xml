@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -86,11 +86,6 @@
       <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.github.cverges.expect4j</groupId>
-      <artifactId>expect4j</artifactId>
-      <version>1.6</version> <!-- {x-version-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
@@ -103,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.10.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -123,7 +118,7 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
-      <version>4.10.3</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
@@ -203,14 +198,13 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.httpcomponents:httpclient:[4.5.13]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-                <include>io.fabric8:kubernetes-client:[4.10.3]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
+                <include>io.fabric8:kubernetes-client:[4.13.2]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
                 <include>com.google.guava:guava:[29.0-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
                 <include>com.github.docker-java:docker-java:[3.2.1]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[8.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
-                <include>com.github.cverges.expect4j:expect4j:[1.6]</include> <!-- {x-include-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
                 <include>commons-net:commons-net:[3.6]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>

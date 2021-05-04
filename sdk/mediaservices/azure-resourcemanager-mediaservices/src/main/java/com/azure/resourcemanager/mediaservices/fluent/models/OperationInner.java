@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mediaservices.models.ActionType;
 import com.azure.resourcemanager.mediaservices.models.OperationDisplay;
 import com.azure.resourcemanager.mediaservices.models.Properties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,18 @@ public final class OperationInner {
      */
     @JsonProperty(value = "properties")
     private Properties properties;
+
+    /*
+     * Whether the operation applies to data-plane.
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
+
+    /*
+     * Indicates the action type.
+     */
+    @JsonProperty(value = "actionType")
+    private ActionType actionType;
 
     /**
      * Get the name property: The operation name.
@@ -117,6 +130,46 @@ public final class OperationInner {
      */
     public OperationInner withProperties(Properties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the isDataAction property: Whether the operation applies to data-plane.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: Whether the operation applies to data-plane.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
+        return this;
+    }
+
+    /**
+     * Get the actionType property: Indicates the action type.
+     *
+     * @return the actionType value.
+     */
+    public ActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
+     * Set the actionType property: Indicates the action type.
+     *
+     * @param actionType the actionType value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withActionType(ActionType actionType) {
+        this.actionType = actionType;
         return this;
     }
 

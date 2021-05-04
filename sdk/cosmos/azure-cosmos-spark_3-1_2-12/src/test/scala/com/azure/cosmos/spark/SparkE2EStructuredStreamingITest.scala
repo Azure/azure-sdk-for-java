@@ -44,14 +44,14 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(1000)
+    Thread.sleep(5000)
 
     val changeFeedCfg = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false"
+      "spark.cosmos.read.inferSchema.enabled" -> "false"
     )
 
     val writeCfg = Map(
@@ -60,7 +60,7 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> targetContainer.getId,
       "spark.cosmos.write.strategy" -> "ItemOverwrite",
-      "spark.cosmos.write.bulkEnabled" -> "true",
+      "spark.cosmos.write.bulk.enabled" -> "true",
       "checkpointLocation" -> ("/tmp/" + testId + "/")
     )
 
@@ -78,9 +78,8 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    microBatchQuery.processAllAvailable()
-
-    Thread.sleep(1000)
+    Thread.sleep(20000)
+    microBatchQuery.stop()
 
     var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
     logInfo(s"RecordCount in source container after first execution: $sourceCount")
@@ -104,7 +103,7 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(1000)
+    Thread.sleep(5000)
 
     val secondChangeFeedDF = spark
       .readStream
@@ -121,16 +120,14 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    secondMicroBatchQuery.processAllAvailable()
-
-    Thread.sleep(1000)
+    Thread.sleep(20000)
+    secondMicroBatchQuery.stop()
 
     sourceCount = getRecordCountOfContainer(sourceContainer)
     logInfo(s"RecordCount in source container after second execution: $sourceCount")
     targetCount = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after second execution: $targetCount")
 
-    processedRecordCount.get() shouldEqual 10L
     sourceCount shouldEqual 110L
     sourceCount shouldEqual targetCount
 

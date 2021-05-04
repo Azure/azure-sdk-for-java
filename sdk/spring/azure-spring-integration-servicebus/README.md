@@ -17,7 +17,7 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-servicebus</artifactId>
-    <version>2.4.0</version>
+    <version>2.5.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

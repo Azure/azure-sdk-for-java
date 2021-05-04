@@ -14,7 +14,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -2054,9 +2054,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdDocuments(data,
+                client.beginRecognizeIdentityDocuments(data,
                     dataLength,
-                    new RecognizeIdDocumentOptions()
+                    new RecognizeIdentityDocumentOptions()
                         .setContentType(FormContentType.IMAGE_JPEG)
                         .setPollInterval(durationTestMode),
                     Context.NONE
@@ -2074,7 +2074,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeIDDocumentDataNullData(HttpClient httpClient,
                                                 FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class, () -> client.beginRecognizeIdDocuments(
+        assertThrows(NullPointerException.class, () -> client.beginRecognizeIdentityDocuments(
             null, 0));
     }
 
@@ -2088,10 +2088,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
-                = client.beginRecognizeIdDocuments(
+                = client.beginRecognizeIdentityDocuments(
                 getContentDetectionFileData(filePath),
                 dataLength,
-                new RecognizeIdDocumentOptions().setPollInterval(durationTestMode),
+                new RecognizeIdentityDocumentOptions().setPollInterval(durationTestMode),
                 Context.NONE
             );
             syncPoller.waitForCompletion();
@@ -2109,9 +2109,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdDocuments(data,
+                client.beginRecognizeIdentityDocuments(data,
                     dataLength,
-                    new RecognizeIdDocumentOptions()
+                    new RecognizeIdentityDocumentOptions()
                         .setContentType(FormContentType.IMAGE_JPEG)
                         .setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode),
@@ -2131,10 +2131,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdDocuments(
+                client.beginRecognizeIdentityDocuments(
                     data,
                     dataLength,
-                    new RecognizeIdDocumentOptions()
+                    new RecognizeIdentityDocumentOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setPollInterval(durationTestMode),
                     Context.NONE
@@ -2154,10 +2154,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeIdDocuments(
+                () -> client.beginRecognizeIdentityDocuments(
                     data,
                     dataLength,
-                    new RecognizeIdDocumentOptions()
+                    new RecognizeIdentityDocumentOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setPollInterval(durationTestMode),
                     Context.NONE
@@ -2179,8 +2179,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdDocumentsFromUrl(sourceUrl,
-                    new RecognizeIdDocumentOptions()
+                client.beginRecognizeIdentityDocumentsFromUrl(sourceUrl,
+                    new RecognizeIdentityDocumentOptions()
                         .setPollInterval(durationTestMode),
                     Context.NONE
                 );
@@ -2199,9 +2199,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeIdDocumentsFromUrl(
+                () -> client.beginRecognizeIdentityDocumentsFromUrl(
                     invalidSourceUrl,
-                    new RecognizeIdDocumentOptions().setPollInterval(durationTestMode),
+                    new RecognizeIdentityDocumentOptions().setPollInterval(durationTestMode),
                     Context.NONE
                 ).getFinalResult());
             FormRecognizerErrorInformation errorInformation =
@@ -2221,8 +2221,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdDocumentsFromUrl(sourceUrl,
-                    new RecognizeIdDocumentOptions().setFieldElementsIncluded(true)
+                client.beginRecognizeIdentityDocumentsFromUrl(sourceUrl,
+                    new RecognizeIdentityDocumentOptions().setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode),
                 Context.NONE);
             syncPoller.waitForCompletion();

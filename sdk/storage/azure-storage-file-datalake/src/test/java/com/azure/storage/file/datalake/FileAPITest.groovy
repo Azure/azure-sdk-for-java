@@ -15,6 +15,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.FileExpirationOffset
 import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
@@ -43,6 +44,7 @@ import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -2297,7 +2299,6 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() }) // Test uploads large amount of data
-    @Ignore("Timeouts")
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
@@ -2369,7 +2370,6 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
-    @Ignore // Hanging in pipeline
     def "Buffered upload with reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2403,7 +2403,6 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({liveMode()}) // Test uploads large amount of data
-    @Ignore("Timeouts")
     def "Buffered upload chunked source"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
@@ -2625,7 +2624,6 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
-//    @Ignore("failing in ci")
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2954,6 +2952,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5)
     def "Query min"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2999,6 +2998,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5)
     def "Query csv serialization separator"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3114,6 +3114,7 @@ class FileAPITest extends APISpec {
 
     /* Note: Input delimited tested everywhere else. */
     @Unroll
+    @Retry(count = 5)
     def "Query Input json"() {
         setup:
         FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
@@ -3230,6 +3231,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
         FileQueryJsonSerialization inSer = new FileQueryJsonSerialization()
@@ -3270,6 +3272,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3306,6 +3309,7 @@ class FileAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()

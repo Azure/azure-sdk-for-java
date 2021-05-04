@@ -40,6 +40,7 @@ class LeaseAPITest extends APISpec {
 
         then:
         leaseId != null
+        leaseClient.getLeaseId() == leaseId
 
         when:
         def response = primaryFileClient.getPropertiesWithResponse(null, null)
@@ -129,10 +130,16 @@ class LeaseAPITest extends APISpec {
         setup:
         def leaseClient = createLeaseClient(primaryFileClient, getRandomUUID())
         leaseClient.acquireLease()
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(getRandomUUID(), null, null)
-        def leaseClient2 = createLeaseClient(primaryFileClient, changeLeaseResponse.getValue())
 
-        expect:
+        when:
+        def newLeaseId = getRandomUUID()
+        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(newLeaseId, null, null)
+
+        then:
+        changeLeaseResponse.getValue() == leaseClient.getLeaseId()
+        leaseClient.getLeaseId() == newLeaseId
+
+        def leaseClient2 = createLeaseClient(primaryFileClient, changeLeaseResponse.getValue())
         leaseClient2.releaseLeaseWithResponse(null, null).getStatusCode() == 200
     }
 
@@ -161,12 +168,15 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Acquire share lease"() {
         setup:
-        def leaseResponse = createLeaseClient(shareClient, proposedID).acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(leaseTime), null, null)
+        def leaseClient = createLeaseClient(shareClient, proposedID)
 
         when:
-        def properties = shareClient.getProperties()
+        def leaseResponse = leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(leaseTime), null, null)
 
         then:
+        leaseClient.getLeaseId() == leaseResponse.getValue()
+
+        def properties = shareClient.getProperties()
         leaseResponse.getValue() != null
         validateBasicHeaders(leaseResponse.getHeaders())
         properties.getLeaseState() == leaseState
@@ -241,12 +251,15 @@ class LeaseAPITest extends APISpec {
     def "Renew share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
+        def leaseClient = createLeaseClient(shareClient, leaseID)
 
+        when:
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRecord(16000)
-        def renewLeaseResponse = createLeaseClient(shareClient, leaseID).renewLeaseWithResponse(null, null)
+        def renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null)
 
-        expect:
+        then:
+        leaseClient.getLeaseId() == renewLeaseResponse.getValue()
         shareClient.getProperties().getLeaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.getHeaders())
     }
@@ -423,11 +436,16 @@ class LeaseAPITest extends APISpec {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
         def leaseClient = createLeaseClient(shareClient, leaseID)
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(getRandomUUID(), null, null)
-        leaseID = changeLeaseResponse.getValue()
 
-        expect:
-        createLeaseClient(shareClient, leaseID).releaseLeaseWithResponse(null, null).getStatusCode() == 200
+        when:
+        def newLeaseId = getRandomUUID()
+        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(newLeaseId, null, null)
+
+        then:
+        newLeaseId == changeLeaseResponse.getValue()
+        changeLeaseResponse.getValue() == leaseClient.getLeaseId()
+
+        createLeaseClient(shareClient, newLeaseId).releaseLeaseWithResponse(null, null).getStatusCode() == 200
         validateBasicHeaders(changeLeaseResponse.getHeaders())
     }
 

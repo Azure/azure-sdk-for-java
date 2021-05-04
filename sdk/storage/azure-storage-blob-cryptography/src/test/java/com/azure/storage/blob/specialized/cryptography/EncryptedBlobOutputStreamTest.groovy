@@ -14,11 +14,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
     BlobContainerClient cc
 
     String keyId
-
-    @Shared
     def fakeKey
-
-    @Shared
     def fakeKeyResolver
 
 

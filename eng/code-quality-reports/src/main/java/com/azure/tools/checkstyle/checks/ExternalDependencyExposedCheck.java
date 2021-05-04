@@ -67,8 +67,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
                 break;
             case TokenTypes.CLASS_DEF:
                 // CLASS_DEF always has MODIFIERS
-                final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(
-                    token.findFirstToken(TokenTypes.MODIFIERS));
+                final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(token);
                 isPublicClass =
                     accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED);
                 break;
@@ -90,11 +89,9 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
      * @param methodDefToken METHOD_DEF AST node
      */
     private void checkNoExternalDependencyExposed(DetailAST methodDefToken) {
-        final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
-
         // Getting the modifier of the method to determine if it is 'public' or 'protected'.
         // Ignore the check if it is neither of 'public' nor 'protected',
-        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(methodDefToken);
         if (!accessModifier.equals(AccessModifierOption.PUBLIC) && !accessModifier.equals(AccessModifierOption.PROTECTED)) {
             return;
         }

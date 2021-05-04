@@ -7,7 +7,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
-import com.azure.containers.containerregistry.implementation.Utils;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -26,7 +25,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Initializes a new instance of the asynchronous ContainerRegistry type.
+ * Instantiates Container Registry async client.
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class ContainerRegistryAsyncClient {

@@ -22,17 +22,17 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.queue.models.QueuesSegmentOptions
+import org.spockframework.runtime.model.IterationInfo
 import reactor.core.publisher.Mono
-import spock.lang.Specification
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
-class APISpec extends Specification {
+class APISpec extends StorageSpec {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
-    def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     InterceptorManager interceptorManager
     TestResourceNamer testResourceName
 
@@ -45,7 +45,6 @@ class APISpec extends Specification {
 
     // Test name for test method name.
     String methodName
-    TestMode testMode = getTestMode()
     String connectionString
 
     /**
@@ -53,13 +52,13 @@ class APISpec extends Specification {
      */
     def setup() {
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        String testName = refactorName(specificationContext.currentIteration.getName())
+        String testName = getFullTestName(specificationContext.currentIteration)
         String className = specificationContext.getCurrentSpec().getName()
         methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode, interceptorManager.getRecordedData())
-        if (getTestMode() != TestMode.PLAYBACK) {
+        logger.info("Test Mode: {}, Name: {}", ENVIRONMENT.testMode, methodName)
+        interceptorManager = new InterceptorManager(methodName, ENVIRONMENT.testMode)
+        testResourceName = new TestResourceNamer(methodName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
@@ -75,7 +74,7 @@ class APISpec extends Specification {
      */
     def cleanup() {
         interceptorManager.close()
-        if (getTestMode() != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
@@ -87,35 +86,11 @@ class APISpec extends Specification {
         }
     }
 
-    /**
-     * Test mode is initialized whenever test is executed. Helper method which is used to determine what to do under
-     * certain test mode.
-     * @return The TestMode:
-     * <ul>
-     *     <li>Playback: (default if no test mode setup)</li>
-     * </ul>
-     */
-    def getTestMode() {
-        def azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ignored) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
-                return TestMode.PLAYBACK
-            }
-        }
-
-        logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE)
-        return TestMode.PLAYBACK
-    }
-
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -133,7 +108,7 @@ class APISpec extends Specification {
 
     def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
         return builder
@@ -144,7 +119,7 @@ class APISpec extends Specification {
     def queueBuilderHelper(final InterceptorManager interceptorManager) {
         def queueName = testResourceName.randomName("queue", 16)
         QueueClientBuilder builder = new QueueClientBuilder()
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
         return builder
@@ -164,7 +139,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -181,23 +156,25 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
         return builder
     }
 
+    private def getFullTestName(IterationInfo iterationInfo) {
+        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.capitalize() }.join("")
 
-    private def refactorName(String text) {
-        def fullName = text.split(" ").collect { it.capitalize() }.join("")
-        def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)
-
-        if (!matcher.find()) {
+        if (iterationInfo.getDataValues().length == 0) {
             return fullName
         }
-        return matcher[0][1] + matcher[0][3]
+        def prefix = fullName
+        def suffix = iterationInfo.getIterationIndex()
+
+        return prefix + suffix
     }
+
 
     OffsetDateTime getUTCNow() {
         return testResourceName.now()
@@ -205,7 +182,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -219,7 +196,7 @@ class APISpec extends Specification {
     }
 
     def sleepIfLive(long milliseconds) {
-        if (testMode == TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -227,11 +204,11 @@ class APISpec extends Specification {
     }
 
     boolean liveMode() {
-        return testMode == TestMode.RECORD
+        return ENVIRONMENT.testMode == TestMode.RECORD
     }
 
     def getMessageUpdateDelay(long liveTestDurationInMillis) {
-        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {

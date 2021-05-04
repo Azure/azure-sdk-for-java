@@ -41,7 +41,7 @@ public class ContainerRepositoryAsyncClientUpdateTests extends ContainerRegistry
         recordFileName = PARENT_FILENAME + "setRepositoryPropertiesWithResponse[1].json";
         ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
-        StepVerifier.create(client.setProperties(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
+        StepVerifier.create(client.updateProperties(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
             .assertNext(res -> validateContentProperties(res.getWriteableProperties()))
             .verifyComplete();
     }
@@ -51,11 +51,11 @@ public class ContainerRepositoryAsyncClientUpdateTests extends ContainerRegistry
         recordFileName = PARENT_FILENAME + "setRepositoryPropertiesThrowsWithResponse[1].json";
         ContainerRepositoryAsyncClient client = getUnknownContainerRepositoryAsyncClient();
 
-        StepVerifier.create(client.setProperties(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
+        StepVerifier.create(client.updateProperties(writeableProperties).then(monoDelay().flatMap(res -> client.getProperties())))
             .expectError(ResourceNotFoundException.class)
             .verify();
 
-        StepVerifier.create(client.setProperties(null).then(monoDelay().flatMap(res -> client.getProperties())))
+        StepVerifier.create(client.updateProperties(null).then(monoDelay().flatMap(res -> client.getProperties())))
             .expectError(NullPointerException.class)
             .verify();
     }
@@ -69,7 +69,7 @@ public class ContainerRepositoryAsyncClientUpdateTests extends ContainerRegistry
         List<RegistryArtifactProperties> repositories = props.stream().collect(Collectors.toList());
         String digest = getChildArtifactDigest(repositories);
 
-        StepVerifier.create(client.setManifestProperties(digest, writeableProperties).then(monoDelay().flatMap(res -> client.getRegistryArtifactProperties(digest))))
+        StepVerifier.create(client.updateManifestProperties(digest, writeableProperties).then(monoDelay().flatMap(res -> client.getRegistryArtifactProperties(digest))))
             .assertNext(res -> validateContentProperties(res.getWriteableProperties()))
             .verifyComplete();
     }
@@ -79,15 +79,15 @@ public class ContainerRepositoryAsyncClientUpdateTests extends ContainerRegistry
         recordFileName = PARENT_FILENAME + "setManifestPropertiesThrowsWithResponse[1].json";
         ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
-        StepVerifier.create(client.setManifestProperties(DIGEST_UNKNOWN, writeableProperties))
+        StepVerifier.create(client.updateManifestProperties(DIGEST_UNKNOWN, writeableProperties))
             .expectError(ResourceNotFoundException.class)
             .verify();
 
-        StepVerifier.create(client.setManifestProperties(null, writeableProperties))
+        StepVerifier.create(client.updateManifestProperties(null, writeableProperties))
             .expectError(NullPointerException.class)
             .verify();
 
-        StepVerifier.create(client.setManifestProperties(DIGEST_UNKNOWN, null))
+        StepVerifier.create(client.updateManifestProperties(DIGEST_UNKNOWN, null))
             .expectError(NullPointerException.class)
             .verify();
 
@@ -126,7 +126,7 @@ public class ContainerRepositoryAsyncClientUpdateTests extends ContainerRegistry
         recordFileName = PARENT_FILENAME + "setTagPropertiesWithResponse[1].json";
         ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
-        StepVerifier.create(client.setTagProperties(TAG_TO_UPDATE, writeableProperties).then(monoDelay().flatMap(res -> client.getTagProperties(TAG_TO_UPDATE))))
+        StepVerifier.create(client.updateTagProperties(TAG_TO_UPDATE, writeableProperties).then(monoDelay().flatMap(res -> client.getTagProperties(TAG_TO_UPDATE))))
             .assertNext(res -> validateContentProperties(res.getWriteableProperties()))
             .verifyComplete();
     }
@@ -136,15 +136,15 @@ public class ContainerRepositoryAsyncClientUpdateTests extends ContainerRegistry
         recordFileName = PARENT_FILENAME + "setTagPropertiesThrowsWithResponse[1].json";
         ContainerRepositoryAsyncClient client = getContainerRepositoryAsyncClient();
 
-        StepVerifier.create(client.setTagProperties(TAG_UNKNOWN, writeableProperties))
+        StepVerifier.create(client.updateTagProperties(TAG_UNKNOWN, writeableProperties))
             .expectError(ResourceNotFoundException.class)
             .verify();
 
-        StepVerifier.create(client.setTagProperties(null, writeableProperties))
+        StepVerifier.create(client.updateTagProperties(null, writeableProperties))
             .expectError(NullPointerException.class)
             .verify();
 
-        StepVerifier.create(client.setTagProperties(TAG_UNKNOWN, null))
+        StepVerifier.create(client.updateTagProperties(TAG_UNKNOWN, null))
             .expectError(NullPointerException.class)
             .verify();
     }
