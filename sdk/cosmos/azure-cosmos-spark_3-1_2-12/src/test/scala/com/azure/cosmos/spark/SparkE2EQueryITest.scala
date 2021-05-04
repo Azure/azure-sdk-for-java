@@ -55,7 +55,7 @@ class SparkE2EQueryITest
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
-    val df = spark.read.format("cosmos.items").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.where("nestedObject.prop2 = '6'").collect()
     rowsArray should have size 1
 
@@ -105,7 +105,7 @@ class SparkE2EQueryITest
       StructField("isAlive", BooleanType)
     ))
 
-    val df = spark.read.schema(customSchema).format("cosmos.items").options(cfg).load()
+    val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.where("isAlive = 'true' and type = 'cat'").orderBy("age").collect()
     rowsArray should have size 20
 
@@ -143,7 +143,7 @@ class SparkE2EQueryITest
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
     rowsArrayWithInference should have size 1
 
@@ -186,7 +186,7 @@ class SparkE2EQueryITest
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
     rowsArrayWithInference should have size 1
 
@@ -228,7 +228,7 @@ class SparkE2EQueryITest
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
     rowsArrayWithInference should have size 1
 
@@ -271,7 +271,7 @@ class SparkE2EQueryITest
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'duck'").collect()
     rowsArrayWithInference should have size 1
 
@@ -307,7 +307,7 @@ class SparkE2EQueryITest
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'duck'").collect()
     rowsArrayWithInference should have size 1
 
@@ -360,7 +360,7 @@ class SparkE2EQueryITest
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rows = dfWithInference.where("type = 'animal'").collect()
     rows should have size expectedResults
 
@@ -401,7 +401,7 @@ class SparkE2EQueryITest
       StructField("id", StringType)
     ))
 
-    val df = spark.read.schema(customSchema).format("cosmos.items").options(cfg).load()
+    val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.collect()
 
     for (index <- 0 until rowsArray.length) {
@@ -449,7 +449,7 @@ class SparkE2EQueryITest
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
-    val df = spark.read.format("cosmos.items").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.where("nestedObject.prop2 = '6'").collect()
     rowsArray should have size 1
 

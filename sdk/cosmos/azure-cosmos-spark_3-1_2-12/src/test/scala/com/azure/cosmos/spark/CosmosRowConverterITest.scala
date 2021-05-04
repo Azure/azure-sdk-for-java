@@ -41,7 +41,7 @@ class CosmosRowConverterITest
 
     testStream
       .write
-      .format("cosmos.items")
+      .format("cosmos.oltp")
       .options(cfg)
       .mode("Append")
       .save()
