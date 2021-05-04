@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -35,7 +34,6 @@ import static org.mockito.Mockito.when;
 /**
  * Represents a renewal session or message lock renewal operation that.
  */
-@Disabled
 class LockRenewalOperationTest {
     private static final String A_LOCK_TOKEN = "a-lock-token";
 

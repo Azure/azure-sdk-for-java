@@ -434,7 +434,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -445,17 +445,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
         // Act
-        IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
-        int actualCount = (int) messages.stream().count();
-
-        // 'peekMessages' API returns maxMessages but it can be less as well by design.
-        if (actualCount < maxMessages) {
-            messages = receiver.peekMessages(maxMessages);
-            actualCount += (int) messages.stream().count();
-        }
+        final IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
 
         // Assert
-        assertEquals(maxMessages, actualCount);
+        assertEquals(maxMessages, (int) messages.stream().count());
     }
 
     /**
