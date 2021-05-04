@@ -230,6 +230,7 @@ public class BlobQueryReader {
             generatedFormat.setJsonTextConfiguration(transformJson(
                 (BlobQueryJsonSerialization) userSerialization));
 
+            // TODO (gapra): uncomment when parquet is released
         /*} else if (userSerialization instanceof BlobQueryParquetSerialization) {
 
             generatedFormat.setType(QueryFormatType.PARQUET);
@@ -322,6 +323,7 @@ public class BlobQueryReader {
      * @param parquetSerialization {@link BlobQueryParquetSerialization}
      * @return {@link JsonTextConfiguration}
      */
+    // TODO (gapra): uncomment when parquet is released
     /*private static Object transformParquet(BlobQueryParquetSerialization parquetSerialization) {
         if (parquetSerialization == null) {
             return null;

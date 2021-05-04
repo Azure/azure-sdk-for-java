@@ -444,6 +444,7 @@ class Transforms {
         } else if (ser instanceof FileQueryArrowSerialization) {
             FileQueryArrowSerialization arrSer = (FileQueryArrowSerialization) ser;
             return new BlobQueryArrowSerialization().setSchema(toBlobQueryArrowSchema(arrSer.getSchema()));
+            // TODO (gapra): uncomment when parquet is released
         /*} else if (ser instanceof FileQueryParquetSerialization) {
             return new BlobQueryParquetSerialization(); */
         } else {
