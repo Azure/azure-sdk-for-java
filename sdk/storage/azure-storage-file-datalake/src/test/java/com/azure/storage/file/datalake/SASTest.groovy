@@ -806,7 +806,7 @@ class SASTest extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             recordPolicy = interceptorManager.getRecordPolicy()
         }
         def pathName = generatePathName()

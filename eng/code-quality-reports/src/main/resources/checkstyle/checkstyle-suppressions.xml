@@ -6,6 +6,7 @@
 <suppressions>
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
+  <suppress checks="Javadoc" files="src[/\\]test-shared[/\\]java[/\\].*.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>

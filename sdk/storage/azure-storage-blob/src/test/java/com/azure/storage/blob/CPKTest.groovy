@@ -31,7 +31,7 @@ class CPKTest extends APISpec {
             .httpClient(getHttpClient())
             .credential(primaryCredential)
 
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
