@@ -303,7 +303,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void uploadRange() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         shareFileAsyncClient.uploadRange(new ShareFileUploadRangeOptions(
             Flux.just(defaultData), defaultData.remaining())).subscribe(
@@ -311,7 +311,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadOptions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions
     }
 
     /**
@@ -320,7 +320,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void uploadRangeWithResponse() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         shareFileAsyncClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
             Flux.just(defaultData), defaultData.remaining())).subscribe(
@@ -328,7 +328,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete deleting the file!")
             );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadOptions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions
     }
 
     /**
