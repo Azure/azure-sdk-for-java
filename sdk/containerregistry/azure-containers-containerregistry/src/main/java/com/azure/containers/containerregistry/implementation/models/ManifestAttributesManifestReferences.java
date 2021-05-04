@@ -6,28 +6,28 @@ package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.ArtifactArchitecture;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Manifest attributes details. */
-@Fluent
+@Immutable
 public final class ManifestAttributesManifestReferences {
     /*
      * Manifest digest
      */
-    @JsonProperty(value = "digest", required = true)
+    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture", required = true)
-    private ArtifactArchitecture cpuArchitecture;
+    @JsonProperty(value = "architecture", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os", required = true)
+    @JsonProperty(value = "os", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactOperatingSystem operatingSystem;
 
     /**
@@ -40,34 +40,12 @@ public final class ManifestAttributesManifestReferences {
     }
 
     /**
-     * Set the digest property: Manifest digest.
+     * Get the architecture property: CPU architecture.
      *
-     * @param digest the digest value to set.
-     * @return the ManifestAttributesManifestReferences object itself.
+     * @return the architecture value.
      */
-    public ManifestAttributesManifestReferences setDigest(String digest) {
-        this.digest = digest;
-        return this;
-    }
-
-    /**
-     * Get the cpuArchitecture property: CPU architecture.
-     *
-     * @return the cpuArchitecture value.
-     */
-    public ArtifactArchitecture getCpuArchitecture() {
-        return this.cpuArchitecture;
-    }
-
-    /**
-     * Set the cpuArchitecture property: CPU architecture.
-     *
-     * @param cpuArchitecture the cpuArchitecture value to set.
-     * @return the ManifestAttributesManifestReferences object itself.
-     */
-    public ManifestAttributesManifestReferences setCpuArchitecture(ArtifactArchitecture cpuArchitecture) {
-        this.cpuArchitecture = cpuArchitecture;
-        return this;
+    public ArtifactArchitecture getArchitecture() {
+        return this.architecture;
     }
 
     /**
@@ -77,16 +55,5 @@ public final class ManifestAttributesManifestReferences {
      */
     public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
-    }
-
-    /**
-     * Set the operatingSystem property: Operating system.
-     *
-     * @param operatingSystem the operatingSystem value to set.
-     * @return the ManifestAttributesManifestReferences object itself.
-     */
-    public ManifestAttributesManifestReferences setOperatingSystem(ArtifactOperatingSystem operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
     }
 }

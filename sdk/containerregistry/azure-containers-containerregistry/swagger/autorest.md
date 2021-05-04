@@ -29,7 +29,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: containerregistry.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/40e8bf1504ed672e86027b240dddd9ca94a15d4c/specification/containerregistry/data-plane/Azure.ContainerRegistry/preview/2019-08-15-preview/containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true

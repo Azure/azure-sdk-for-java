@@ -154,7 +154,7 @@ final class Utils {
                 artifact.getDigest(),
                 null,
                 null,
-                artifact.getCpuArchitecture(),
+                artifact.getArchitecture(),
                 artifact.getOperatingSystem(),
                 null,
                 null,
