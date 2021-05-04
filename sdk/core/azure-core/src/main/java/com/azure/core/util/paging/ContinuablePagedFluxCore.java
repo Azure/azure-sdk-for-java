@@ -4,6 +4,7 @@
 package com.azure.core.util.paging;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -38,6 +39,8 @@ import java.util.function.Supplier;
  */
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
     extends ContinuablePagedFlux<C, T, P> {
+    private final ClientLogger logger = new ClientLogger(ContinuablePagedFluxCore.class);
+
     final Supplier<PageRetriever<C, P>> pageRetrieverProvider;
     final Integer defaultPageSize;
 
@@ -78,7 +81,8 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
         if (pageSize != null && pageSize <= 0) {
-            throw new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize);
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
         }
         this.defaultPageSize = pageSize;
     }
@@ -179,7 +183,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          */
         return retrievePage(state, pageRetriever, pageSize)
             .expand(page -> {
-                state.setLastContinuationToken(page.getContinuationToken(), t -> !continuationPredicate.test(t));
+                state.setLastContinuationToken(page.getContinuationToken(), t -> !getContinuationPredicate().test(t));
                 return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
             }, 4);
     }

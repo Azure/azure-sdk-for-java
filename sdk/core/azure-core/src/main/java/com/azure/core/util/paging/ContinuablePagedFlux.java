@@ -20,14 +20,15 @@ import java.util.function.Predicate;
  * @see ContinuablePage
  */
 public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
-    final Predicate<C> continuationPredicate;
+    private final Predicate<C> continuationPredicate;
 
     /**
      * Creates an instance of ContinuablePagedFlux.
      * <p>
      * Continuation completes when the last returned continuation token is null.
      */
-    protected ContinuablePagedFlux() {
+    // This is public as previously there was no empty constructor, so there was an implicit public empty constructor.
+    public ContinuablePagedFlux() {
         this(Objects::nonNull);
     }
 
@@ -82,4 +83,13 @@ public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>
      * @return A {@link Flux} of {@link ContinuablePage}.
      */
     public abstract Flux<P> byPage(C continuationToken, int preferredPageSize);
+
+    /**
+     * Gets the {@link Predicate} that determines if paging should continue.
+     *
+     * @return The {@link Predicate} that determines if paging should continue.
+     */
+    protected final Predicate<C> getContinuationPredicate() {
+        return continuationPredicate;
+    }
 }
