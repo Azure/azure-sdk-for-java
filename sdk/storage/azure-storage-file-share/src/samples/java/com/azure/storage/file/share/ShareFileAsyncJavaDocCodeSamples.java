@@ -315,7 +315,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)}
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)}
      */
     public void uploadRangeWithResponse() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
@@ -331,7 +332,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#uploadBufferedRange(ShareFileUploadBufferedRangeOptions)}
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#uploadBufferedRange(ShareFileUploadBufferedRangeOptions)}
      */
     public void uploadBufferedRange() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
@@ -347,7 +349,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions)}
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions)}
      */
     public void uploadBufferedRangeWithResponse() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
@@ -363,7 +366,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#uploadWithResponse(Flux, long, Long, ShareRequestConditions)}
+     * Generates a code sample for using
+     * {@link ShareFileAsyncClient#uploadWithResponse(Flux, long, Long, ShareRequestConditions)}
      */
     public void uploadDataWithLease() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();

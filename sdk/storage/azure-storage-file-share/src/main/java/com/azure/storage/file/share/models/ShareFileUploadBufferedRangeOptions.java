@@ -72,7 +72,7 @@ public class ShareFileUploadBufferedRangeOptions {
      * Gets the length of the data associated with an {@link InputStream} or {@link Flux}&lt;{@link ByteBuffer}&gt;.
      *
      * @return The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream} or {@link Flux<ByteBuffer>}.
+     * data provided in the {@link InputStream} or {@link Flux}&lt;{@link ByteBuffer}&gt;.
      */
     public long getLength() {
         return length;
