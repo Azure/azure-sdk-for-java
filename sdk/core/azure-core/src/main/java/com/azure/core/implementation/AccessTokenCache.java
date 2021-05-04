@@ -56,6 +56,7 @@ public final class AccessTokenCache {
      * @return The Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+        Objects.requireNonNull(tokenRequestContext, "The token request context cannot be null.");
         return Mono.defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
@@ -74,7 +75,8 @@ public final class AccessTokenCache {
                     // Check if the incoming token request context is different from the cached one. A different
                     // token request context, requires to fetch a new token as the cached one won't work for the
                     // passed in token request context.
-                    boolean forceRefresh = checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext);
+                    boolean forceRefresh = (checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
+                        || this.tokenRequestContext == null;
 
                     Supplier<Mono<AccessToken>> tokenSupplier = () ->
                         tokenCredential.getToken(this.tokenRequestContext);
