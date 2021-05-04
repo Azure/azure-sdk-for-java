@@ -4,6 +4,7 @@
 package com.azure.core.test;
 
 import com.azure.core.test.implementation.TestRunMetrics;
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -15,9 +16,15 @@ import java.util.Objects;
  * JUnit 5 extension class which reports on testing running and simple metrics about the test such as run time.
  */
 public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+    private static final boolean LOG_EXECUTION_STATUS = Configuration.getGlobalConfiguration()
+        .get("system.debug", Boolean::parseBoolean);
 
     @Override
     public void beforeTestExecution(ExtensionContext extensionContext) {
+        if (!LOG_EXECUTION_STATUS) {
+            return;
+        }
+
         String displayName = extensionContext.getDisplayName();
 
         String testName = "";
@@ -45,6 +52,10 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
 
     @Override
     public void afterTestExecution(ExtensionContext context) {
+        if (!LOG_EXECUTION_STATUS) {
+            return;
+        }
+
         TestRunMetrics testInformation = getStore(context)
             .remove(context.getRequiredTestMethod(), TestRunMetrics.class);
         long duration = System.currentTimeMillis() - testInformation.getStartMillis();
