@@ -44,9 +44,6 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
         .get("TEST_PACKAGES_ENABLED", "all");
 
-    protected static final String SKIP_PHONENUMBERS_TEST = Configuration.getGlobalConfiguration()
-        .get("SKIP_PHONENUMBERS_TEST", "False");
-
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
         new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("id")
