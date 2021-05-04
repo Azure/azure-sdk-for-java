@@ -1,0 +1,27 @@
+trigger: none
+
+variables:
+  - template: ../../eng/pipelines/templates/variables/globals.yml
+  - name: AdditionalArgs
+    value: ''
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      TestName: 'Integration'
+      MatrixConfigs:
+        - Name: Cosmos_live_test_integration
+          Path: sdk/cosmos/integration-matrix.json
+          Selection: all
+          GenerateVMJobs: true
+      ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-spring-data-cosmos-test
+          groupId: com.azure
+          safeName: azurespringdatacosmostest
+      TimeoutInMinutes: 90
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestStepMavenInputs:
+        goals: clean verify
+        options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
