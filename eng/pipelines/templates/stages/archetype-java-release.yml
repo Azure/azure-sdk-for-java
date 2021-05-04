@@ -203,7 +203,6 @@ stages:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           paths:
-                            - CODEOWNERS
                             - .github/CODEOWNERS
                       - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
                         parameters:

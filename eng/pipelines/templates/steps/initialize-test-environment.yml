@@ -1,7 +1,6 @@
 parameters:
-  - name: Paths
-    type: object
-    default: []
+  - name: ServiceDirectory
+    type: string
   - name: Artifacts
     type: object
     default: []
@@ -15,7 +14,8 @@ parameters:
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
     parameters:
-      Paths: ${{ parameters.Paths }}
+      Paths:
+        - '**/*.xml'
 
   - task: UsePythonVersion@0
     displayName: 'Use Python 3.6'
