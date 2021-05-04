@@ -166,7 +166,7 @@ public class Configuration {
     @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
     private String testScenario = "GET";
 
-    @Parameter(names = "-accountNameInGraphiteReporter", description = "if set to true, account name with be appended in graphite reporter")
+    @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
 
     public enum Environment {
