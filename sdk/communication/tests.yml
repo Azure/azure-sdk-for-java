@@ -15,6 +15,13 @@ parameters:
 stages:
 - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    CloudConfig:
+      Public:
+        SubscriptionConfigurations:
+          - $(sub-config-azure-cloud-test-resources)
+          - $(sub-config-communication-services-cloud-test-resources-common)
+          - $(sub-config-communication-services-cloud-test-resources-java)
+    Clouds: Public
     Artifacts:
       - name: azure-communication-chat
         groupId: com.azure
@@ -57,10 +64,4 @@ stages:
     EnvVars:
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
-      AZURE_SUBSCRIPTION_ID: $(acs-subscription-id)
-      COMMUNICATION_LIVETEST_CONNECTION_STRING: $(communication-livetest-connection-string)
-      COMMUNICATION_PHONE_NUMBER: $(communication-livetest-phone-number)
-      AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-      AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-      AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
       TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}
