@@ -11,10 +11,10 @@ import java.util.List;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 
 /**
- * Options that may be passed when using recognize ID Document APIs on Form Recognizer client.
+ * Options that may be passed when using recognize identity documents APIs on Form Recognizer client.
  */
 @Fluent
-public final class RecognizeIdDocumentOptions {
+public final class RecognizeIdentityDocumentOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private List<String> pages;
@@ -53,9 +53,9 @@ public final class RecognizeIdDocumentOptions {
      *
      * @param contentType the provided form content type.
      *
-     * @return the updated {@code RecognizeIdDocumentOptions} value.
+     * @return the updated {@code RecognizeIdentityDocumentOptions} value.
      */
-    public RecognizeIdDocumentOptions setContentType(final FormContentType contentType) {
+    public RecognizeIdentityDocumentOptions setContentType(final FormContentType contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -65,9 +65,9 @@ public final class RecognizeIdDocumentOptions {
      *
      * @param includeFieldElements the boolean to specify if to include form element references in the result.
      *
-     * @return the updated {@code RecognizeIdDocumentOptions} value.
+     * @return the updated {@code RecognizeIdentityDocumentOptions} value.
      */
-    public RecognizeIdDocumentOptions setFieldElementsIncluded(final boolean includeFieldElements) {
+    public RecognizeIdentityDocumentOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
         return this;
     }
@@ -78,9 +78,9 @@ public final class RecognizeIdDocumentOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code RecognizeIdDocumentOptions} value.
+     * @return the updated {@code RecognizeIdentityDocumentOptions} value.
      */
-    public RecognizeIdDocumentOptions setPollInterval(final Duration pollInterval) {
+    public RecognizeIdentityDocumentOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }
@@ -104,9 +104,9 @@ public final class RecognizeIdDocumentOptions {
      * range with a comma, ex - ["1-3", 4].</p>
      *
      * @param pages the custom page numbers value to set.
-     * @return the updated {@code RecognizeIdDocumentOptions} value.
+     * @return the updated {@code RecognizeIdentityDocumentOptions} value.
      */
-    public RecognizeIdDocumentOptions setPages(List<String> pages) {
+    public RecognizeIdentityDocumentOptions setPages(List<String> pages) {
         this.pages = pages;
         return this;
     }
