@@ -20,7 +20,6 @@ public class StorageResourceNamer {
     public StorageResourceNamer(String testName, TestMode testMode, RecordedData recordedData) {
         Objects.requireNonNull(testName);
         Objects.requireNonNull(testMode);
-        Objects.requireNonNull(recordedData);
         resourcePrefix = getCrc32(testName);
         testResourceNamer = new TestResourceNamer(resourcePrefix, testMode, recordedData);
     }
