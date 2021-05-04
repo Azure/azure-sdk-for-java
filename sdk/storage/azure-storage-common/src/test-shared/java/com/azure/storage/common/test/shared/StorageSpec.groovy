@@ -53,14 +53,8 @@ class StorageSpec extends Specification {
     }
 
     protected HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
+            NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
             return builder.build()
         } else {
             return interceptorManager.getPlaybackClient()
