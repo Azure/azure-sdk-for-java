@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.test.shared;
 
 import com.azure.core.test.TestMode;
@@ -46,6 +49,6 @@ public class StorageResourceNamer {
     private static String getCrc32(String input) {
         CRC32 crc32 = new CRC32();
         crc32.update(input.getBytes(StandardCharsets.UTF_8));
-        return String.format(Locale.US,"%08X", crc32.getValue()).toLowerCase();
+        return String.format(Locale.US, "%08X", crc32.getValue()).toLowerCase();
     }
 }
