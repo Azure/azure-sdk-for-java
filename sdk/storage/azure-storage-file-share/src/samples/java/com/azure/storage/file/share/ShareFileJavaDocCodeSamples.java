@@ -17,18 +17,22 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileUploadBufferedRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -310,21 +314,63 @@ public class ShareFileJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#InputStream-long-Long-Duration-Context
     }
 
-//    /**
-//     * Code snippet for {@link ShareFileClient#uploadWithResponse(ShareFileUploadOptions, Duration, Context)}.
-//     */
-//    public void uploadOptionsBag() {
-//        ShareFileClient fileClient = createClientWithCredential();
-//        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
-//
-//        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#ShareFileUploadOptions-Duration-Context
-//        InputStream uploadData = new ByteArrayInputStream(data);
-//        Response<ShareFileUploadInfo> response = fileClient.uploadWithResponse(
-//            new ShareFileUploadOptions(uploadData, data.length), Duration.ofSeconds(30), null);
-//        System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
-//        System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
-//        // END: com.azure.storage.file.share.ShareFileClient.uploadWithResponse#ShareFileUploadOptions-Duration-Context
-//    }
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadRange(ShareFileUploadRangeOptions)}
+     */
+    public void uploadRange() {
+        ShareFileClient shareFileClient = createClientWithSASToken();
+        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadOptions
+        InputStream uploadData = new ByteArrayInputStream(data);
+        ShareFileUploadInfo response = shareFileClient.uploadRange(new ShareFileUploadRangeOptions(
+            uploadData, data.length));
+        System.out.println("Complete uploading the data with eTag: " + response.getETag());
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)}
+     */
+    public void uploadRangeWithResponse() {
+        ShareFileClient shareFileClient = createClientWithSASToken();
+        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadOptions
+        InputStream uploadData = new ByteArrayInputStream(data);
+        Response<ShareFileUploadInfo> response = shareFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
+            uploadData, data.length), Duration.ofSeconds(30), null);
+        System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
+        System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadBufferedRange(ShareFileUploadBufferedRangeOptions)}
+     */
+    public void uploadBufferedRange() {
+        ShareFileClient shareFileAsyncClient = createClientWithSASToken();
+        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRange#ShareFileUploadBufferedRangeOptions
+        InputStream uploadData = new ByteArrayInputStream(data);
+        ShareFileUploadInfo response = shareFileAsyncClient.uploadBufferedRange(new ShareFileUploadBufferedRangeOptions(
+            uploadData, data.length));
+        System.out.println("Complete uploading the data with eTag: " + response.getETag());
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRange#ShareFileUploadBufferedRangeOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions)}
+     */
+    public void uploadBufferedRangeWithResponse() {
+        ShareFileClient shareFileAsyncClient = createClientWithSASToken();
+        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions
+        InputStream uploadData = new ByteArrayInputStream(data);
+        Response<ShareFileUploadInfo> response = shareFileAsyncClient.uploadBufferedRangeWithResponse(new ShareFileUploadBufferedRangeOptions(
+            uploadData, data.length), Duration.ofSeconds(30), null);
+        System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
+        System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions
+    }
 
     /**
      * Code snippet for {@link ShareFileClient#uploadWithResponse(InputStream, long, Long, ShareRequestConditions, Duration, Context)}.
