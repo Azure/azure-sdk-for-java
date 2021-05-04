@@ -24,6 +24,6 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync().then(Mono.defer(() -> shareDirectoryAsyncClient.create())).then();
+        return super.setupAsync().then(shareDirectoryAsyncClient.create()).then();
     }
 }

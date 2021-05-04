@@ -26,8 +26,11 @@ public abstract class ShareTest<TOptions extends PerfStressOptions> extends Serv
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync().then(Mono.defer(() -> {
-            return Mono.just(shareClient.create());
-        })).then();
+        return super.setupAsync().then(shareAsyncClient.create()).then();
+    }
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        return shareAsyncClient.delete().then(super.cleanupAsync());
     }
 }
