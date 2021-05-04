@@ -183,31 +183,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber>
         beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
-        PhoneNumberCapabilities capabilities = getNewPhoneCapabilities(httpClient, phoneNumber, testName);
+        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, testName);
+        PhoneNumberCapabilities capabilities = getNewPhoneCapabilities(client.getPurchasedPhoneNumber(phoneNumber));
         if (withContext) {
-            return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, Context.NONE));
+            return setPollInterval(client.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, Context.NONE));
         }
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
-    }
-
-    private PhoneNumberCapabilities getNewPhoneCapabilities(HttpClient httpClient, String phoneNumber, String testName) {
-        PhoneNumberCapabilities newCapabilities = new PhoneNumberCapabilities();
-        PurchasedPhoneNumber acquiredNumber = this.getClientWithConnectionString(httpClient, testName).getPurchasedPhoneNumber(phoneNumber);
-
-        if (acquiredNumber.getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND) {
-            newCapabilities.setSms(PhoneNumberCapabilityType.OUTBOUND);
-        } else {
-            newCapabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        }
-        if (acquiredNumber.getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND) {
-            newCapabilities.setCalling(PhoneNumberCapabilityType.OUTBOUND);
-        } else {
-            newCapabilities.setSms(PhoneNumberCapabilityType.INBOUND);
-        }
-
-        return newCapabilities;
+        return setPollInterval(client.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
     }
 
     private <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {

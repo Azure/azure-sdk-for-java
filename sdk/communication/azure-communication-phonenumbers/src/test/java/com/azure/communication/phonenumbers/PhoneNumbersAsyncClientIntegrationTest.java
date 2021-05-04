@@ -156,8 +156,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities").getPurchasedPhoneNumberWithResponse(phoneNumber)
                 .flatMap(responseAcquiredPhone -> {
-                    PhoneNumberCapabilities oldPhoneNumberCap = responseAcquiredPhone.getValue().getCapabilities();
-                    PhoneNumberCapabilities newPhoneNumberCap = getNewPhoneCapabilities(oldPhoneNumberCap);
+                    PhoneNumberCapabilities newPhoneNumberCap = getNewPhoneCapabilities(responseAcquiredPhone.getValue());
                     return beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", newPhoneNumberCap)
                         .last()
                         .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasedPhoneNumber> result) -> {
@@ -253,20 +252,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
             .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
-    }
-
-    private PhoneNumberCapabilities getNewPhoneCapabilities(PhoneNumberCapabilities capabilities) {
-        if (capabilities.getSms() != PhoneNumberCapabilityType.INBOUND_OUTBOUND) {
-            capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        } else {
-            capabilities.setSms(PhoneNumberCapabilityType.OUTBOUND);
-        }
-        if (capabilities.getCalling() != PhoneNumberCapabilityType.OUTBOUND) {
-            capabilities.setCalling(PhoneNumberCapabilityType.OUTBOUND);
-        } else {
-            capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
-        }
-        return capabilities;
     }
 
     private <T, U> PollerFlux<T, U> setPollInterval(PollerFlux<T, U> pollerFlux) {
