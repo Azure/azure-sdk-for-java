@@ -21,13 +21,22 @@ class StorageSpec extends Specification {
 
     def setup() {
         testName = getTestName()
-        interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-        resourceNamer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+        if (shouldUseThisToRecord()) {
+            interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
+            resourceNamer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+        }
         System.out.printf("========================= %s =========================%n", testName)
     }
 
     def cleanup() {
-        interceptorManager.close()
+        if (shouldUseThisToRecord()) {
+            interceptorManager.close()
+        }
+    }
+
+    // TODO (kasobol-msft) Remove this when all modules are migrated.
+    protected shouldUseThisToRecord() {
+        return false
     }
 
     protected StorageResourceNamer getResourceNamer() {
