@@ -137,12 +137,13 @@ public final class FluxUtil {
     }
 
     /**
-     * Creates a Flux that is capable of reliably downloading by applying reply logic when an error occurs.
+     * Creates a {@link Flux} that is capable of reliably downloading by applying reply logic when an error occurs.
      *
      * @param initialDownloadSupplier Supplier of the initial download.
      * @param resumePredicate A predicate to determine if the download should be resumed when an error occurs.
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @param resumeDownload A function which takes the current download offset and resumes from that position.
+     * @return A {@link Flux} that downloads reliably.
      */
     public static Flux<ByteBuffer> createReliableDownloadFlux(Supplier<Flux<ByteBuffer>> initialDownloadSupplier,
         Predicate<Throwable> resumePredicate, int maxRetries, Function<Long, Flux<ByteBuffer>> resumeDownload) {
