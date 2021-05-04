@@ -125,6 +125,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilitiesWithoutContext(HttpClient httpClient) {
+        assumeTrue(!Boolean.parseBoolean(SKIP_PHONENUMBERS_TEST));
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         PurchasedPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", false).getFinalResult();
         assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
@@ -134,6 +135,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
+        assumeTrue(!Boolean.parseBoolean(SKIP_PHONENUMBERS_TEST));
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         PurchasedPhoneNumber acquiredPhoneNumber = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesSync", true).getFinalResult();
         assertEquals(PhoneNumberCapabilityType.INBOUND_OUTBOUND, acquiredPhoneNumber.getCapabilities().getSms());
