@@ -695,6 +695,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
     def "Query parquet output IA"() {
         setup:
         def outSer = new BlobQueryParquetSerialization()
