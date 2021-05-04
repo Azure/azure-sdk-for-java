@@ -90,7 +90,7 @@ class ServiceAPITest extends APISpec {
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
                 .setPermissions("racwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))))
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))))
         cc.getBlobClient(blobName).upload(BinaryData.fromBytes("test".getBytes()))
         def sas = cc.generateSas(new BlobServiceSasSignatureValues(identifier))
         if (unsanitize) {
@@ -137,7 +137,7 @@ class ServiceAPITest extends APISpec {
 
     BlobContainerClientBuilder optionalRecordingPolicy(BlobContainerClientBuilder builder) {
         if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+            builder.addPolicy(getRecordPolicy())
         }
         return builder
     }
@@ -1100,7 +1100,7 @@ class ServiceAPITest extends APISpec {
 //        def oldName = generateContainerName()
 //        def newName = generateContainerName()
 //        primaryBlobServiceClient.createBlobContainer(oldName)
-//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
 //        def serviceClient = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
 //
 //        when:
