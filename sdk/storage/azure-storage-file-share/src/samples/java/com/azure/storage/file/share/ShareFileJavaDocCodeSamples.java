@@ -335,13 +335,13 @@ public class ShareFileJavaDocCodeSamples {
     public void uploadRangeWithResponse() {
         ShareFileClient shareFileClient = createClientWithSASToken();
         byte[] data = "default".getBytes(StandardCharsets.UTF_8);
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeWithResponse#ShareFileUploadRangeOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeWithResponse#ShareFileUploadRangeOptions-Duration-Context
         InputStream uploadData = new ByteArrayInputStream(data);
         Response<ShareFileUploadInfo> response = shareFileClient.uploadRangeWithResponse(
             new ShareFileUploadRangeOptions(uploadData, data.length), Duration.ofSeconds(30), null);
         System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
         System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
-        // END: com.azure.storage.file.share.ShareFileClient.uploadRangeWithResponse#ShareFileUploadRangeOptions
+        // END: com.azure.storage.file.share.ShareFileClient.uploadRangeWithResponse#ShareFileUploadRangeOptions-Duration-Context
     }
 
     /**
@@ -366,13 +366,13 @@ public class ShareFileJavaDocCodeSamples {
     public void uploadBufferedRangeWithResponse() {
         ShareFileClient shareFileAsyncClient = createClientWithSASToken();
         byte[] data = "default".getBytes(StandardCharsets.UTF_8);
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions-Duration-Context
         InputStream uploadData = new ByteArrayInputStream(data);
         Response<ShareFileUploadInfo> response = shareFileAsyncClient.uploadBufferedRangeWithResponse(
             new ShareFileUploadBufferedRangeOptions(uploadData, data.length), Duration.ofSeconds(30), null);
         System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
         System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
-        // END: com.azure.storage.file.share.ShareFileClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions
+        // END: com.azure.storage.file.share.ShareFileClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions-Duration-Context
     }
 
     /**
