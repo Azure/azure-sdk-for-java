@@ -4,12 +4,10 @@
 package com.azure.storage.common.test.shared
 
 import com.azure.core.http.HttpClient
-import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.util.Configuration
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
@@ -17,13 +15,13 @@ class StorageSpec extends Specification {
 
     private String testName
     private InterceptorManager interceptorManager
-    private StorageResourceNamer resourceNamer
+    private StorageResourceNamer namer
 
     def setup() {
         testName = getTestName()
         if (shouldUseThisToRecord()) {
             interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-            resourceNamer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+            namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
         }
         System.out.printf("========================= %s =========================%n", testName)
     }
@@ -39,9 +37,9 @@ class StorageSpec extends Specification {
         return false
     }
 
-    protected StorageResourceNamer getResourceNamer() {
-        Objects.requireNonNull(resourceNamer, "resourceNamer has not been initialized yet")
-        return resourceNamer
+    protected StorageResourceNamer getNamer() {
+        Objects.requireNonNull(namer, "namer has not been initialized yet")
+        return namer
     }
 
     protected HttpPipelinePolicy getRecordPolicy() {

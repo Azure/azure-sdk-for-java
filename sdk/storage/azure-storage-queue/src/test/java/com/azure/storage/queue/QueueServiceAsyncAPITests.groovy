@@ -21,14 +21,14 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Get queue client"() {
         given:
-        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(resourceNamer.getRandomName(60))
+        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(namer.getRandomName(60))
         expect:
         queueAsyncClient instanceof QueueAsyncClient
     }
 
     def "Create queue"() {
         given:
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
         expect:
         StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, null)).assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
@@ -67,7 +67,7 @@ class QueueServiceAsyncAPITests extends APISpec {
     @Unroll
     def "Create queue maxOverload"() {
         given:
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, metadata))
         def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
@@ -90,7 +90,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Create queue with invalid metadata"() {
         given:
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value")))
         then:
@@ -101,7 +101,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Delete queue"() {
         given:
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
         primaryQueueServiceAsyncClient.createQueue(queueName).block()
         when:
         def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(queueName))
@@ -118,7 +118,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Delete queue error"() {
         when:
-        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(resourceNamer.getRandomName(16)))
+        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(namer.getRandomName(16)))
         then:
         deleteQueueVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, QueueErrorCode.QUEUE_NOT_FOUND)
@@ -128,7 +128,7 @@ class QueueServiceAsyncAPITests extends APISpec {
     @Unroll
     def "List queues"() {
         given:
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
         LinkedList<QueueItem> testQueues = new LinkedList<>()
         for (int i = 0; i < 3; i++) {
             String version = Integer.toString(i)
@@ -138,7 +138,7 @@ class QueueServiceAsyncAPITests extends APISpec {
             primaryQueueServiceAsyncClient.createQueueWithResponse(queue.getName(), queue.getMetadata()).block()
         }
         when:
-        def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options.setPrefix(resourceNamer.getResourcePrefix())))
+        def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options.setPrefix(namer.getResourcePrefix())))
         then:
         queueListVerifier.assertNext {
             assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
@@ -157,7 +157,7 @@ class QueueServiceAsyncAPITests extends APISpec {
     def "List empty queues"() {
         expect:
         // Queue was never made with the prefix, should expect no queues to be listed.
-        StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().setPrefix(resourceNamer.getResourcePrefix())))
+        StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix())))
             .expectNextCount(0)
             .verifyComplete()
     }

@@ -29,7 +29,7 @@ class QueueSASTests extends APISpec {
 
     def setup() {
         primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
-        queueClient = primaryQueueServiceClient.getQueueClient(resourceNamer.getRandomName(60))
+        queueClient = primaryQueueServiceClient.getQueueClient(namer.getRandomName(60))
     }
 
     @Unroll
@@ -105,8 +105,8 @@ class QueueSASTests extends APISpec {
             .setReadPermission(true)
             .setAddPermission(true)
             .setProcessPermission(true)
-        def startTime = resourceNamer.getUtcNow().minusDays(1)
-        def expiryTime = resourceNamer.getUtcNow().plusDays(1)
+        def startTime = namer.getUtcNow().minusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
@@ -150,8 +150,8 @@ class QueueSASTests extends APISpec {
             .setAddPermission(true)
             .setProcessPermission(true)
             .setUpdatePermission(true)
-        def startTime = resourceNamer.getUtcNow().minusDays(1)
-        def expiryTime = resourceNamer.getUtcNow().plusDays(1)
+        def startTime = namer.getUtcNow().minusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
@@ -195,11 +195,11 @@ class QueueSASTests extends APISpec {
             .setAddPermission(true)
             .setUpdatePermission(true)
             .setProcessPermission(true)
-        def expiryTime = resourceNamer.getUtcNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
-        def startTime = resourceNamer.getUtcNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
+        def expiryTime = namer.getUtcNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
+        def startTime = namer.getUtcNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
         QueueSignedIdentifier identifier = new QueueSignedIdentifier()
-            .setId(resourceNamer.getRandomUuid())
+            .setId(namer.getRandomUuid())
             .setAccessPolicy(new QueueAccessPolicy().setPermissions(permissions.toString())
                 .setExpiresOn(expiryTime).setStartsOn(startTime))
         queueClient.setAccessPolicy(Arrays.asList(identifier))
@@ -241,7 +241,7 @@ class QueueSASTests extends APISpec {
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def expiryTime = resourceNamer.getUtcNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
@@ -258,7 +258,7 @@ class QueueSASTests extends APISpec {
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
         sc.createQueue(queueName)
 
         then:
@@ -280,7 +280,7 @@ class QueueSASTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setListPermission(true)
-        def expiryTime = resourceNamer.getUtcNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
@@ -317,7 +317,7 @@ class QueueSASTests extends APISpec {
             .setWritePermission(true)
             .setListPermission(true)
             .setDeletePermission(true)
-        def expiryTime = resourceNamer.getUtcNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def sas = new AccountSasSignatureValues()
             .setServices(service.toString())
@@ -327,7 +327,7 @@ class QueueSASTests extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
 
         when:
         def sc = getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas, null).buildClient()
@@ -350,7 +350,7 @@ class QueueSASTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = resourceNamer.getUtcNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryQueueServiceClient.generateAccountSas(sasValues)
 

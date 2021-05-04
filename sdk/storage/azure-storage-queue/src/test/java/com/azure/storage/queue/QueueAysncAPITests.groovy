@@ -29,7 +29,7 @@ class QueueAysncAPITests extends APISpec {
     def queueName
 
     def setup() {
-        queueName = resourceNamer.getRandomName(60)
+        queueName = namer.getRandomName(60)
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper().buildAsyncClient()
         queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
     }

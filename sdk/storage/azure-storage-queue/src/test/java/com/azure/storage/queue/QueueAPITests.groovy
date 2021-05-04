@@ -30,7 +30,7 @@ class QueueAPITests extends APISpec {
     String queueName
 
     def setup() {
-        queueName = resourceNamer.getRandomName(60)
+        queueName = namer.getRandomName(60)
         primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
     }

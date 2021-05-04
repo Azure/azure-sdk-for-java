@@ -60,7 +60,7 @@ class APISpec extends StorageSpec {
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(resourceNamer.getResourcePrefix()),
+            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()),
                 null, Context.NONE).each {
                 queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName())
             }
@@ -102,7 +102,7 @@ class APISpec extends StorageSpec {
     }
 
     def queueBuilderHelper() {
-        def queueName = resourceNamer.getRandomName(60)
+        def queueName = namer.getRandomName(60)
         QueueClientBuilder builder = new QueueClientBuilder()
         return builder
             .connectionString(connectionString)
