@@ -190,7 +190,17 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Enable cross entity transaction on the connection to Service bus. Use this feature only when your transaction
-     * scope spans across different Service Bus entities.
+     * scope spans across different Service Bus entities. This feature is achieved by routing all the messages through
+     * one 'send-via' entity on server side as explained next.
+     * Once clients are created for multiple entities, the first entity that an operation occurs on becomes the
+     * entity through which all subsequent sends will be routed through ('send-via' entity). This enables the service to
+     * perform a transaction that is meant to span multiple entities. This means that subsequent entities that perform
+     * their first operation need to either be senders, or if they are receivers they need to be on the same entity as
+     * the initial entity through which all sends are routed through (otherwise the service would not be able to ensure
+     * that the transaction is committed because it cannot route a receive operation through a different entity). For
+     * instance, if you have SenderA (For entity A) and ReceiverB (For entity B) that are created from a client with
+     * cross-entity transactions enabled, you would need to receive first with ReceiverB to allow this to work. If you
+     * first send to entity A, and then attempted to receive from entity B, an exception would be thrown.
      *
      * <p><strong>Avoid using non-transaction API on this client</strong></p>
      * Since this feature will set up connection to Service Bus optimised to enable this feature. Once all the clients
@@ -198,7 +208,7 @@ public final class ServiceBusClientBuilder {
      * entity. All the messages will flow via this queue. Thus this client is not suitable for any non-transaction API.
      *
      * <p><strong>When not to enable this feature</strong></p>
-     * If your transaction involved in one Service bus entity only. For example you are receiving from one
+     * If your transaction is involved in one Service bus entity only. For example you are receiving from one
      * queue/subscription and you want to settle your own messages which are part of one transaction.
      *
      * @return The updated {@link ServiceBusSenderClientBuilder} object.
