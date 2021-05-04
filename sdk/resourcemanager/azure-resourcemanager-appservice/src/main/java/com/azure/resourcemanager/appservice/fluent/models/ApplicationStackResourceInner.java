@@ -50,6 +50,13 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties.frameworks")
     private List<ApplicationStack> frameworks;
 
+    /*
+     * <code>true</code> if this is the stack is deprecated; otherwise,
+     * <code>false</code>.
+     */
+    @JsonProperty(value = "properties.isDeprecated")
+    private List<ApplicationStack> isDeprecated;
+
     /**
      * Get the namePropertiesName property: Application stack name.
      *
@@ -151,6 +158,35 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if this is the stack is deprecated; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @return the isDeprecated value.
+     */
+    public List<ApplicationStack> isDeprecated() {
+        return this.isDeprecated;
+    }
+
+    /**
+     * Set the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if this is the stack is deprecated; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @param isDeprecated the isDeprecated value to set.
+     * @return the ApplicationStackResourceInner object itself.
+     */
+    public ApplicationStackResourceInner withIsDeprecated(List<ApplicationStack> isDeprecated) {
+        this.isDeprecated = isDeprecated;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationStackResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -163,6 +199,9 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
         }
         if (frameworks() != null) {
             frameworks().forEach(e -> e.validate());
+        }
+        if (isDeprecated() != null) {
+            isDeprecated().forEach(e -> e.validate());
         }
     }
 }

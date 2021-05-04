@@ -31,12 +31,12 @@ class KeyvaultKeyTest extends APISpec {
 
     def setup() {
         def keyVaultUrl = "https://azstoragesdkvault.vault.azure.net/"
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL")
         }
 
         keyClient = new KeyClientBuilder()
-            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_1))
+            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_2))
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
             .buildClient()
@@ -48,7 +48,7 @@ class KeyvaultKeyTest extends APISpec {
             .setKeySize(2048))
 
         AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_1))
+            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_2))
             .httpClient(getHttpClient())
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()
@@ -128,7 +128,7 @@ class KeyvaultKeyTest extends APISpec {
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (!interceptorManager.isPlaybackMode()) {
-            if (testMode == TestMode.RECORD) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 policies.add(interceptorManager.getRecordPolicy());
             }
         }

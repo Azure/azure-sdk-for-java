@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner;
 import java.time.OffsetDateTime;

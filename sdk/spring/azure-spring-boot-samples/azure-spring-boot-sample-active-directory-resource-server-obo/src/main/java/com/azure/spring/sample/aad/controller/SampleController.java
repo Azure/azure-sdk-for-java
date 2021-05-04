@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @RestController
@@ -28,7 +29,9 @@ public class SampleController {
 
     private static final String GRAPH_ME_ENDPOINT = "https://graph.microsoft.com/v1.0/me";
 
-    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8082/file";
+    private static final String CUSTOM_LOCAL_FILE_ENDPOINT = "http://localhost:8082/webapiB";
+
+    private static final String CUSTOM_LOCAL_READ_ENDPOINT = "http://localhost:8083/webapiC";
 
     @Autowired
     private WebClient webClient;
@@ -38,6 +41,7 @@ public class SampleController {
 
     /**
      * Call the graph resource, return user information
+     *
      * @return Response with graph data
      */
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
@@ -53,6 +57,7 @@ public class SampleController {
 
     /**
      * Call the graph resource with annotation, return user information
+     *
      * @param graph authorized client for Graph
      * @return Response with graph data
      */
@@ -64,18 +69,20 @@ public class SampleController {
 
     /**
      * Call custom resources, combine all the response and return.
-     * @param custom authorized client for Custom
+     *
+     * @param webapiBClient authorized client for Custom
      * @return Response Graph and Custom data.
      */
-    @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
-    @GetMapping("call-custom")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
+    @GetMapping("webapiA/webapiB")
     public String callCustom(
-        @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-        return callCustomLocalFileEndpoint(custom);
+        @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiBClient) {
+        return callWebApiBEndpoint(webapiBClient);
     }
 
     /**
      * Call microsoft graph me endpoint
+     *
      * @param graph Authorized Client
      * @return Response string data.
      */
@@ -97,22 +104,44 @@ public class SampleController {
 
     /**
      * Call custom local file endpoint
-     * @param custom Authorized Client
+     *
+     * @param webapiBClient Authorized Client
      * @return Response string data.
      */
-    private String callCustomLocalFileEndpoint(OAuth2AuthorizedClient custom) {
-        if (null != custom) {
+    private String callWebApiBEndpoint(OAuth2AuthorizedClient webapiBClient) {
+        if (null != webapiBClient) {
             String body = webClient
                 .get()
                 .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-                .attributes(oauth2AuthorizedClient(custom))
+                .attributes(oauth2AuthorizedClient(webapiBClient))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-            LOGGER.info("Response from Custom: {}", body);
-            return "Custom response " + (null != body ? "success." : "failed.");
+            LOGGER.info("Response from webapiB: {}", body);
+            return "webapiB response " + (null != body ? "success." : "failed.");
         } else {
-            return "Custom response failed.";
+            return "webapiB response failed.";
         }
+    }
+
+    /**
+     * Access to protected data through client credential flow. The access token is obtained by webclient, or
+     * <p>@RegisteredOAuth2AuthorizedClient("webapiC")</p>. In the end, these two approaches will be executed to
+     * DefaultOAuth2AuthorizedClientManager#authorize method, get the access token.
+     *
+     * @return Respond to protected data.
+     */
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
+    @GetMapping("webapiA/webapiC")
+    public String callClientCredential() {
+        String body = webClient
+            .get()
+            .uri(CUSTOM_LOCAL_READ_ENDPOINT)
+            .attributes(clientRegistrationId("webapiC"))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+        LOGGER.info("Response from Client Credential: {}", body);
+        return "client Credential response " + (null != body ? "success." : "failed.");
     }
 }

@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.test.TestMode
-import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -14,12 +12,8 @@ import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
-import com.azure.storage.file.share.models.ShareStorageException
-import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
-
-import java.time.Duration
 
 class FileServiceAsyncAPITests extends APISpec {
     String shareName

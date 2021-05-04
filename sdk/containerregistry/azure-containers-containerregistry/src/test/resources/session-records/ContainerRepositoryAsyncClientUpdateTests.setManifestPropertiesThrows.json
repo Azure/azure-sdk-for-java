@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle/_manifests/unknown:digest",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ebdd139e-a63b-4488-bcfd-9c0f32e6bac9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "19",
+      "StatusCode" : "404",
+      "Body" : "404 page not found\n"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

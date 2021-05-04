@@ -96,6 +96,8 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         client.listMetricSeriesDefinitions(METRIC_ID,
                 TIME_SERIES_START_TIME)
+            .stream()
+            .limit(LISTING_SERIES_DEFINITIONS_LIMIT)
             .forEach(metricSeriesDefinition -> {
                 assertNotNull(metricSeriesDefinition.getMetricId());
                 assertNotNull(metricSeriesDefinition.getSeriesKey());

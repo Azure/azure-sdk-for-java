@@ -33,7 +33,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.UploadBufferPool;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -382,7 +382,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             }
 
             return overwriteCheck
-                .then(uploadWithResponse(Flux.just(ByteBuffer.wrap(data.toBytes())), null, null, null, null,
+                .then(uploadWithResponse(Flux.just(data.toByteBuffer()), null, null, null, null,
                     requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -573,21 +573,19 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        /*
-        We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
-        others are being sent.
-         */
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
-            parallelTransferOptions.getBlockSizeLong(), BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
+        BufferStagingArea pool = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(),
+            BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data,
             ModelHelper.wrapBlobOptions(parallelTransferOptions));
 
         /*
          Write to the pool and upload the output.
+         maxConcurrency = 1 when writing means only 1 BufferAggregator will be accumulating at a time.
+         parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
+         only concurrency + 1 chunks at a time.
          */
-        return chunkedSource.concatMap(pool::write)
-            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
+        return chunkedSource.flatMapSequential(pool::write, 1)
             .concatWith(Flux.defer(pool::flush))
             .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.
@@ -605,7 +603,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
                     .map(x -> blockId)
-                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency())
             .collect(Collectors.toList())

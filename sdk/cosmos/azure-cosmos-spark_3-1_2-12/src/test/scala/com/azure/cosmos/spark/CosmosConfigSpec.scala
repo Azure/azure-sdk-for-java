@@ -8,20 +8,25 @@ import java.time.Instant
 class CosmosConfigSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
 
+  private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
+
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
-      "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",
       "spark.cosmos.applicationName" -> "myapp",
-      "spark.cosmos.useGatewayMode" -> "true"
+      "spark.cosmos.useGatewayMode" -> "true",
+      "spark.cosmos.preferredRegionsList" -> "[west us, eastus1]"
     )
 
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
-    endpointConfig.endpoint shouldEqual "https://localhsot:8081"
+    endpointConfig.endpoint shouldEqual sampleProdEndpoint
     endpointConfig.key shouldEqual "xyz"
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
+    endpointConfig.preferredRegionsList.isDefined shouldEqual true
+    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
   }
 
   it should "validate account endpoint" in {
@@ -40,6 +45,107 @@ class CosmosConfigSpec extends UnitSpec {
     }
   }
 
+  it should "validate preferred regions" in {
+    var userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "a.b"
+    )
+
+    try {
+      CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+      fail("invalid preferred region list")
+    } catch {
+      case e: Exception => {
+        e.getMessage shouldEqual
+          "invalid configuration for spark.cosmos.preferredRegionsList:a.b. Config description: Preferred Region List"
+      }
+    }
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[westus, eastus"
+    )
+
+    try {
+      CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+      fail("invalid preferred region list")
+    } catch {
+      case e: Exception => {
+        e.getMessage shouldEqual
+          "invalid configuration for spark.cosmos.preferredRegionsList:[westus, eastus. Config description: Preferred Region List"
+      }
+    }
+  }
+
+  it should "preferred regions parsing" in {
+    var userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[eastus, west us1]"
+    )
+
+    var config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "eastus, west us1"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> " eastus , west us1 "
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> " [ eastus , west us1 ] "
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "west us1"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[west us1]"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("westus1")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[]"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array[String]()
+
+  }
+
+
   it should "complain if mandatory config is missing" in {
     val userConfig = Map(
       "spark.cosmos.accountKey" -> "xyz"
@@ -57,12 +163,27 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "parse read configuration" in {
     val userConfig = Map(
-      "spark.cosmos.read.forceEventualConsistency" -> "false"
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict"
     )
 
     val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
     config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+  }
+
+  it should "throw on invalid read configuration" in {
+    val userConfig = Map(
+      "spark.cosmos.read.schemaConversionMode" -> "not a valid value"
+    )
+
+    try {
+      CosmosReadConfig.parseCosmosReadConfig(userConfig)
+      fail("should have throw on invalid value")
+    } catch {
+      case e: Exception => succeed
+    }
   }
 
   it should "parse read configuration default" in {
@@ -70,16 +191,17 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosReadConfig.parseCosmosReadConfig(Map.empty[String, String])
 
     config.forceEventualConsistency shouldBe true
+    config.schemaConversionMode shouldBe SchemaConversionModes.Relaxed
   }
 
   it should "parse inference configuration" in {
     val customQuery = "select * from c"
     val userConfig = Map(
-      "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
-      "spark.cosmos.read.inferSchemaEnabled" -> "false",
-      "spark.cosmos.read.inferSchemaIncludeSystemProperties" -> "true",
-      "spark.cosmos.read.inferSchemaIncludeTimestamp" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> customQuery
+      "spark.cosmos.read.inferSchema.samplingSize" -> "50",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.inferSchema.includeSystemProperties" -> "true",
+      "spark.cosmos.read.inferSchema.includeTimestamp" -> "true",
+      "spark.cosmos.read.inferSchema.query" -> customQuery
     )
 
     val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
@@ -107,17 +229,19 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosWriteConfig.parseWriteConfig(userConfig)
 
     config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemOverwrite
-    config.maxRetryCount shouldEqual 3
+    config.maxRetryCount shouldEqual 10
     config.bulkEnabled shouldEqual true
-    config.maxConcurrencyOpt.isDefined shouldEqual false
+    config.pointMaxConcurrency.isDefined shouldEqual false
+    config.bulkMaxPendingOperations.isDefined shouldEqual false
+
   }
 
-  it should "parse write config" in {
+  it should "parse point write config" in {
     val userConfig = Map(
       "spark.cosmos.write.strategy" -> "ItemAppend",
       "spark.cosmos.write.maxRetryCount" -> "8",
-      "spark.cosmos.write.bulkEnabled" -> "false",
-      "spark.cosmos.write.maxConcurrency" -> "12"
+      "spark.cosmos.write.bulk.enabled" -> "false",
+      "spark.cosmos.write.point.maxConcurrency" -> "12"
     )
 
     val config = CosmosWriteConfig.parseWriteConfig(userConfig)
@@ -125,12 +249,28 @@ class CosmosConfigSpec extends UnitSpec {
     config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
     config.maxRetryCount shouldEqual 8
     config.bulkEnabled shouldEqual false
-    config.maxConcurrencyOpt.get shouldEqual 12
+    config.pointMaxConcurrency.get shouldEqual 12
+  }
+
+  it should "parse bulk write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemAppend",
+      "spark.cosmos.write.maxRetryCount" -> "8",
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "spark.cosmos.write.bulk.maxPendingOperations" -> "12"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
+    config.maxRetryCount shouldEqual 8
+    config.bulkEnabled shouldEqual true
+    config.bulkMaxPendingOperations.get shouldEqual 12
   }
 
   it should "parse partitioning config with custom Strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom",
+      "spark.cosmos.read.partitioning.strategy" -> "Custom",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 
@@ -142,7 +282,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "parse partitioning config with custom Strategy even with incorrect casing" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.STRATEGY" -> "CuSTom",
+      "spark.cosmos.read.partitioning.strategy" -> "CuSTom",
       "spark.cosmos.partitioning.tarGETedCount" -> "8"
     )
 
@@ -150,18 +290,6 @@ class CosmosConfigSpec extends UnitSpec {
 
     config.partitioningStrategy shouldEqual PartitioningStrategies.Custom
     config.targetedPartitionCount.get shouldEqual 8
-  }
-
-  it should "parse partitioning config with correct empty strategy" in {
-    val partitioningConfig = Map(
-      "spark.cosmos.partitioning.STRATEGY" -> "",
-      "spark.cosmos.partitioning.tarGETedCount" -> "8"
-    )
-
-    val config = CosmosPartitioningConfig.parseCosmosPartitioningConfig(partitioningConfig)
-
-    config.partitioningStrategy shouldEqual PartitioningStrategies.Default
-    config.targetedPartitionCount shouldEqual None
   }
 
   it should "parse partitioning config without strategy" in {
@@ -177,7 +305,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing custom partitioning strategy without  mandatory targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom"
+      "spark.cosmos.read.partitioning.strategy" -> "Custom"
     )
 
     try {
@@ -194,7 +322,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing invalid partitioning strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Whatever"
+      "spark.cosmos.read.partitioning.strategy" -> "Whatever"
     )
 
     try {
@@ -202,14 +330,14 @@ class CosmosConfigSpec extends UnitSpec {
       fail("missing targetedCount")
     } catch {
       case e: Exception => e.getMessage shouldEqual
-        "invalid configuration for spark.cosmos.partitioning.strategy:Whatever. " +
+        "invalid configuration for spark.cosmos.read.partitioning.strategy:Whatever. " +
           "Config description: The partitioning strategy used (Default, Custom, Restrictive or Aggressive)"
     }
   }
 
   it should "parse partitioning config with restrictive Strategy ignores targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "restrictive",
+      "spark.cosmos.read.partitioning.strategy" -> "restrictive",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 
@@ -236,7 +364,7 @@ class CosmosConfigSpec extends UnitSpec {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "FULLFidelity",
       "spark.cosmos.changeFeed.STARTfrom" -> "NOW",
-      "spark.cosmos.changeFeed.maxItemCountPerTriggerHint" -> "54"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
     )
 
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
@@ -251,7 +379,7 @@ class CosmosConfigSpec extends UnitSpec {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "incremental",
       "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
-      "spark.cosmos.changeFeed.maxItemCountPerTriggerHint" -> "54"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
     )
 
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
@@ -304,7 +432,7 @@ class CosmosConfigSpec extends UnitSpec {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "Incremental",
       "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
-      "spark.cosmos.changeFeed.maxItemCountPerTriggerHint" -> "54OOrMore"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54OOrMore"
     )
 
     try {
@@ -312,7 +440,7 @@ class CosmosConfigSpec extends UnitSpec {
       fail("incorrect mode")
     } catch {
       case e: Exception => e.getMessage shouldEqual
-        "invalid configuration for spark.cosmos.changeFeed.maxItemCountPerTriggerHint:54OOrMore. " +
+        "invalid configuration for spark.cosmos.changeFeed.itemCountPerTriggerHint:54OOrMore. " +
           "Config description: Approximate maximum number of items read from change feed for each trigger"
     }
   }

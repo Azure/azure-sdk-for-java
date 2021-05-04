@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateLinkResourceListResultInner;
 import com.azure.resourcemanager.mediaservices.models.PrivateLinkResource;
@@ -16,10 +15,11 @@ import java.util.stream.Collectors;
 public final class PrivateLinkResourceListResultImpl implements PrivateLinkResourceListResult {
     private PrivateLinkResourceListResultInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     PrivateLinkResourceListResultImpl(
-        PrivateLinkResourceListResultInner innerObject, MediaservicesManager serviceManager) {
+        PrivateLinkResourceListResultInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +42,7 @@ public final class PrivateLinkResourceListResultImpl implements PrivateLinkResou
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

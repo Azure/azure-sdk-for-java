@@ -342,16 +342,6 @@ public abstract class KeyClientTestBase extends TestBase {
         testRunner.accept(keyOptions);
     }
 
-    @Test
-    public abstract void exportKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
-
-    void exportKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        CreateKeyOptions createKeyOptions = new CreateKeyOptions(generateResourceId(KEY_NAME), KeyType.RSA)
-            .setExportable(true);
-
-        testRunner.accept(createKeyOptions);
-    }
-
     String generateResourceId(String suffix) {
         if (interceptorManager.isPlaybackMode()) {
             return suffix;
@@ -395,6 +385,7 @@ public abstract class KeyClientTestBase extends TestBase {
         assertEquals(expected.getKeyType(), actual.getKey().getKeyType());
         assertEquals(expected.getExpiresOn(), actual.getProperties().getExpiresOn());
         assertEquals(expected.getNotBefore(), actual.getProperties().getNotBefore());
+        assertEquals(expected.getTags(), actual.getProperties().getTags());
     }
 
     public String getEndpoint() {

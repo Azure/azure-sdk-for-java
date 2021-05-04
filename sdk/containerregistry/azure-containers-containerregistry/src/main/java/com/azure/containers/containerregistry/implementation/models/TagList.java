@@ -14,14 +14,14 @@ public final class TagList {
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName")
+    @JsonProperty(value = "imageName", required = true)
     private String repository;
 
     /*
      * List of tag attribute details
      */
     @JsonProperty(value = "tags")
-    private List<TagAttributesBase> tags;
+    private List<TagAttributesBase> tagAttributeBases;
 
     /*
      * The link property.
@@ -50,22 +50,22 @@ public final class TagList {
     }
 
     /**
-     * Get the tags property: List of tag attribute details.
+     * Get the tagAttributeBases property: List of tag attribute details.
      *
-     * @return the tags value.
+     * @return the tagAttributeBases value.
      */
-    public List<TagAttributesBase> getTags() {
-        return this.tags;
+    public List<TagAttributesBase> getTagAttributeBases() {
+        return this.tagAttributeBases;
     }
 
     /**
-     * Set the tags property: List of tag attribute details.
+     * Set the tagAttributeBases property: List of tag attribute details.
      *
-     * @param tags the tags value to set.
+     * @param tagAttributeBases the tagAttributeBases value to set.
      * @return the TagList object itself.
      */
-    public TagList setTags(List<TagAttributesBase> tags) {
-        this.tags = tags;
+    public TagList setTagAttributeBases(List<TagAttributesBase> tagAttributeBases) {
+        this.tagAttributeBases = tagAttributeBases;
         return this;
     }
 

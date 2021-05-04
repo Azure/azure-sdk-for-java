@@ -4,8 +4,8 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0d33ef1b-4ec6-448e-a80e-3d43bcba60a7",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e7cb695c-e2dd-4f2b-9054-ef46a8ec9d75",
       "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
@@ -14,14 +14,14 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 09 Feb 2021 06:52:28 GMT",
+      "Date" : "Wed, 21 Apr 2021 19:11:50 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test46465942c4')",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('test19146f31c4')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "10182590-f002-0039-4ab0-fe3140000000",
+      "x-ms-request-id" : "1394fe5b-7002-0066-05e2-362757000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "0d33ef1b-4ec6-448e-a80e-3d43bcba60a7",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test46465942c4')"
+      "x-ms-client-request-id" : "e7cb695c-e2dd-4f2b-9054-ef46a8ec9d75",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('test19146f31c4')"
     },
     "Exception" : null
   }, {
@@ -29,8 +29,8 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "44bb01a7-e0ff-4532-b9a5-db1c73e46856",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a8d79411-b60e-4c7f-a01d-7a66d08974ef",
       "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
@@ -39,14 +39,14 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 09 Feb 2021 06:52:29 GMT",
+      "Date" : "Wed, 21 Apr 2021 19:11:50 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test725307e6a3')",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('test9910019aba')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "101825a3-f002-0039-5ab0-fe3140000000",
+      "x-ms-request-id" : "1394fe69-7002-0066-0fe2-362757000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "44bb01a7-e0ff-4532-b9a5-db1c73e46856",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test725307e6a3')"
+      "x-ms-client-request-id" : "a8d79411-b60e-4c7f-a01d-7a66d08974ef",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('test9910019aba')"
     },
     "Exception" : null
   }, {
@@ -54,8 +54,8 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dfullmetadata",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a162f6a4-c476-417b-b827-cc3ac90eac4b"
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1af3f087-64ff-41b7-9498-75ea596c4507"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -65,13 +65,13 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "101825ae-f002-0039-63b0-fe3140000000",
-      "Body" : "{\"odata.metadata\":\"https://brsiegelsample.table.core.windows.net/$metadata#Tables\",\"value\":[{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('tablename80216edb')\",\"odata.editLink\":\"Tables('tablename80216edb')\",\"TableName\":\"tablename80216edb\"},{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('test018281959e')\",\"odata.editLink\":\"Tables('test018281959e')\",\"TableName\":\"test018281959e\"},{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('test1641929ada')\",\"odata.editLink\":\"Tables('test1641929ada')\",\"TableName\":\"test1641929ada\"},{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('test46465942c4')\",\"odata.editLink\":\"Tables('test46465942c4')\",\"TableName\":\"test46465942c4\"},{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('test47306a89a9')\",\"odata.editLink\":\"Tables('test47306a89a9')\",\"TableName\":\"test47306a89a9\"},{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('test66826ac2a8')\",\"odata.editLink\":\"Tables('test66826ac2a8')\",\"TableName\":\"test66826ac2a8\"},{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('test725307e6a3')\",\"odata.editLink\":\"Tables('test725307e6a3')\",\"TableName\":\"test725307e6a3\"},{\"odata.type\":\"brsiegelsample.Tables\",\"odata.id\":\"https://brsiegelsample.table.core.windows.net/Tables('test895183964f')\",\"odata.editLink\":\"Tables('test895183964f')\",\"TableName\":\"test895183964f\"}]}",
-      "Date" : "Tue, 09 Feb 2021 06:52:29 GMT",
-      "x-ms-client-request-id" : "a162f6a4-c476-417b-b827-cc3ac90eac4b",
+      "x-ms-request-id" : "1394fe6e-7002-0066-13e2-362757000000",
+      "Body" : "{\"odata.metadata\":\"https://tablesstoragetests.table.core.windows.net/$metadata#Tables\",\"value\":[{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename03571976')\",\"odata.editLink\":\"Tables('tablename03571976')\",\"TableName\":\"tablename03571976\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename044420df')\",\"odata.editLink\":\"Tables('tablename044420df')\",\"TableName\":\"tablename044420df\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename04662be6')\",\"odata.editLink\":\"Tables('tablename04662be6')\",\"TableName\":\"tablename04662be6\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename08978f18')\",\"odata.editLink\":\"Tables('tablename08978f18')\",\"TableName\":\"tablename08978f18\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename11087fe3')\",\"odata.editLink\":\"Tables('tablename11087fe3')\",\"TableName\":\"tablename11087fe3\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename12966e73')\",\"odata.editLink\":\"Tables('tablename12966e73')\",\"TableName\":\"tablename12966e73\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename14429fc7')\",\"odata.editLink\":\"Tables('tablename14429fc7')\",\"TableName\":\"tablename14429fc7\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename16119249')\",\"odata.editLink\":\"Tables('tablename16119249')\",\"TableName\":\"tablename16119249\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename282589eb')\",\"odata.editLink\":\"Tables('tablename282589eb')\",\"TableName\":\"tablename282589eb\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename2833823e')\",\"odata.editLink\":\"Tables('tablename2833823e')\",\"TableName\":\"tablename2833823e\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename3141292c')\",\"odata.editLink\":\"Tables('tablename3141292c')\",\"TableName\":\"tablename3141292c\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename3143849a')\",\"odata.editLink\":\"Tables('tablename3143849a')\",\"TableName\":\"tablename3143849a\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename33472944')\",\"odata.editLink\":\"Tables('tablename33472944')\",\"TableName\":\"tablename33472944\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename356985c7')\",\"odata.editLink\":\"Tables('tablename356985c7')\",\"TableName\":\"tablename356985c7\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename392725ad')\",\"odata.editLink\":\"Tables('tablename392725ad')\",\"TableName\":\"tablename392725ad\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename40874296')\",\"odata.editLink\":\"Tables('tablename40874296')\",\"TableName\":\"tablename40874296\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename45987f59')\",\"odata.editLink\":\"Tables('tablename45987f59')\",\"TableName\":\"tablename45987f59\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename47370248')\",\"odata.editLink\":\"Tables('tablename47370248')\",\"TableName\":\"tablename47370248\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename4849268f')\",\"odata.editLink\":\"Tables('tablename4849268f')\",\"TableName\":\"tablename4849268f\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename503406ac')\",\"odata.editLink\":\"Tables('tablename503406ac')\",\"TableName\":\"tablename503406ac\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename60953448')\",\"odata.editLink\":\"Tables('tablename60953448')\",\"TableName\":\"tablename60953448\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename77187719')\",\"odata.editLink\":\"Tables('tablename77187719')\",\"TableName\":\"tablename77187719\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename77750bf0')\",\"odata.editLink\":\"Tables('tablename77750bf0')\",\"TableName\":\"tablename77750bf0\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename82128931')\",\"odata.editLink\":\"Tables('tablename82128931')\",\"TableName\":\"tablename82128931\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename84406b48')\",\"odata.editLink\":\"Tables('tablename84406b48')\",\"TableName\":\"tablename84406b48\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename8726059c')\",\"odata.editLink\":\"Tables('tablename8726059c')\",\"TableName\":\"tablename8726059c\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename88230521')\",\"odata.editLink\":\"Tables('tablename88230521')\",\"TableName\":\"tablename88230521\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename8953902e')\",\"odata.editLink\":\"Tables('tablename8953902e')\",\"TableName\":\"tablename8953902e\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('tablename898159dc')\",\"odata.editLink\":\"Tables('tablename898159dc')\",\"TableName\":\"tablename898159dc\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test02522d0397')\",\"odata.editLink\":\"Tables('test02522d0397')\",\"TableName\":\"test02522d0397\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test0664192ac6')\",\"odata.editLink\":\"Tables('test0664192ac6')\",\"TableName\":\"test0664192ac6\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test0983218fa9')\",\"odata.editLink\":\"Tables('test0983218fa9')\",\"TableName\":\"test0983218fa9\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test1457366bdb')\",\"odata.editLink\":\"Tables('test1457366bdb')\",\"TableName\":\"test1457366bdb\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test15685ee495')\",\"odata.editLink\":\"Tables('test15685ee495')\",\"TableName\":\"test15685ee495\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test16319d44c5')\",\"odata.editLink\":\"Tables('test16319d44c5')\",\"TableName\":\"test16319d44c5\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test19146f31c4')\",\"odata.editLink\":\"Tables('test19146f31c4')\",\"TableName\":\"test19146f31c4\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test29463150c6')\",\"odata.editLink\":\"Tables('test29463150c6')\",\"TableName\":\"test29463150c6\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test29748501d8')\",\"odata.editLink\":\"Tables('test29748501d8')\",\"TableName\":\"test29748501d8\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test462669dec2')\",\"odata.editLink\":\"Tables('test462669dec2')\",\"TableName\":\"test462669dec2\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test489519fa0b')\",\"odata.editLink\":\"Tables('test489519fa0b')\",\"TableName\":\"test489519fa0b\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test49036e245f')\",\"odata.editLink\":\"Tables('test49036e245f')\",\"TableName\":\"test49036e245f\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test585151a551')\",\"odata.editLink\":\"Tables('test585151a551')\",\"TableName\":\"test585151a551\"},{\"odata.type\":\"tablesstoragetests.Tables\",\"odata.id\":\"https://tablesstoragetests.table.core.windows.net/Tables('test9910019aba')\",\"odata.editLink\":\"Tables('test9910019aba')\",\"TableName\":\"test9910019aba\"}]}",
+      "Date" : "Wed, 21 Apr 2021 19:11:50 GMT",
+      "x-ms-client-request-id" : "1af3f087-64ff-41b7-9498-75ea596c4507",
       "Content-Type" : "application/json;odata=fullmetadata;streaming=true;charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test46465942c4", "test725307e6a3" ]
+  "variables" : [ "test19146f31c4", "test9910019aba" ]
 }
