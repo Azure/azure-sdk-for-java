@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -12,11 +13,18 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Header;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -29,6 +37,7 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.setSyncPollerPollInterval;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -110,6 +119,61 @@ public class FormTrainingClientBuilderTest extends TestBase {
             // PLAYBACK mode has Error Details: null
             assertTrue(exception.getMessage().contains("Max retries 3 times exceeded. Error Details:"));
         });
+    }
+
+    @Test
+    @DoNotRecord
+    public void applicationIdFallsBackToLogOptions() {
+        FormTrainingClient formTrainingClient =
+            new FormTrainingClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .httpClient(httpRequest -> {
+                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class,
+            () -> formTrainingClient.getAccountProperties());
+    }
+
+    @Test
+    @DoNotRecord
+    public void clientOptionsIsPreferredOverLogOptions() {
+        FormTrainingClient formTrainingClient =
+            new FormTrainingClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+                .httpClient(httpRequest -> {
+                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class,
+            () -> formTrainingClient.getAccountProperties());
+    }
+
+    @Test
+    @DoNotRecord
+    public void clientOptionHeadersAreAddedLast() {
+        FormTrainingClient formTrainingClient =
+            new FormTrainingClientBuilder()
+                .endpoint(getEndpoint())
+                .credential(new AzureKeyCredential(getApiKey()))
+                .clientOptions(new ClientOptions()
+                                   .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .httpClient(httpRequest -> {
+                    assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                    return Mono.just(new MockHttpResponse(httpRequest, 400));
+                })
+                .buildClient();
+        assertThrows(HttpResponseException.class,
+            () -> formTrainingClient.getAccountProperties());
     }
 
     // Client builder runner

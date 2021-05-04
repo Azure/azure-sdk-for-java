@@ -46,6 +46,7 @@ import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 import spock.lang.Ignore
 
@@ -2952,6 +2953,7 @@ class BlobAPITest extends APISpec {
         AccessTier.COOL | AccessTier.HOT
     }
 
+    @ResourceLock("ServiceProperties")
     def "Undelete"() {
         setup:
         enableSoftDelete()
@@ -2970,6 +2972,7 @@ class BlobAPITest extends APISpec {
         disableSoftDelete() == null
     }
 
+    @ResourceLock("ServiceProperties")
     def "Undelete min"() {
         setup:
         enableSoftDelete()
