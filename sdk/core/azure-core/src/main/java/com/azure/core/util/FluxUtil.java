@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
+import com.azure.core.implementation.ReliableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
@@ -31,6 +32,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -131,6 +134,19 @@ public final class FluxUtil {
         byte[] byteArray = new byte[length];
         byteBuffer.get(byteArray);
         return byteArray;
+    }
+
+    /**
+     * Creates a Flux that is capable of reliably downloading by applying reply logic when an error occurs.
+     *
+     * @param initialDownloadSupplier Supplier of the initial download.
+     * @param resumePredicate A predicate to determine if the download should be resumed when an error occurs.
+     * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
+     * @param resumeDownload A function which takes the current download offset and resumes from that position.
+     */
+    public static Flux<ByteBuffer> createReliableDownloadFlux(Supplier<Flux<ByteBuffer>> initialDownloadSupplier,
+        Predicate<Throwable> resumePredicate, int maxRetries, Function<Long, Flux<ByteBuffer>> resumeDownload) {
+        return new ReliableDownloadFlux(initialDownloadSupplier, resumePredicate, maxRetries, resumeDownload);
     }
 
     /**
