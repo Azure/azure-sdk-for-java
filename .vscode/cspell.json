@@ -2,9 +2,7 @@
   "version": "0.1",
   "language": "en",
   "languageId": "java",
-  "dictionaries": [
-    "powershell"
-  ],
+  "dictionaries": ["powershell"],
   "ignorePaths": [
     "**/session-records/**",
     "*.jar",
@@ -36,8 +34,30 @@
     "*.pub",
     "*.x509",
     "*.certificate",
-    "*.crt"
+    "*.crt",
+    ".vscode/cspell.json"
   ],
-  "words": [],
+  "words": ["azsdk", "pwsh"],
+  "overrides": [
+    {
+      "filename": "**/eng/pipelines/templates/jobs/ci.yml",
+      "words": [
+        "dskip",
+        "dinject",
+        "codesnippets",
+        "dgenerate",
+        "dspotbugs",
+        "dcheckstyle",
+        "drevapi",
+        "dalt",
+        "apireview",
+        "setuptools",
+        "dgpg",
+        "dmaven",
+        "checkstyle",
+        "dverify"
+      ]
+    }
+  ],
   "allowCompoundWords": false
 }
