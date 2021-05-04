@@ -110,8 +110,6 @@ public class ClientSideRequestStatistics {
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
         CosmosException exception) {
         Instant responseTime = Instant.now();
-        connectionMode = ConnectionMode.GATEWAY;
-
 
         synchronized (this) {
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
@@ -129,7 +127,12 @@ public class ClientSideRequestStatistics {
             }
             this.gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
+                if (rxDocumentServiceRequest.getResourceType().equals(ResourceType.Document)) {
+                    connectionMode = ConnectionMode.GATEWAY;
+                }
+
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+                this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
             }
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
@@ -346,6 +349,7 @@ public class ClientSideRequestStatistics {
     private static class GatewayStatistics {
         String sessionToken;
         OperationType operationType;
+        ResourceType resourceType;
         int statusCode;
         int subStatusCode;
         String requestCharge;
@@ -373,6 +377,10 @@ public class ClientSideRequestStatistics {
 
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
+        }
+
+        public ResourceType getResourceType() {
+            return resourceType;
         }
     }
 }
