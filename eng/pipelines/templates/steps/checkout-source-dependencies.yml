@@ -16,7 +16,7 @@ steps:
   - pwsh: |
       $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
       $javaPaths = $paths | ForEach-Object { $_ + '/**/*.java' }
-      Invoke-Expression -Command "git sparse-checkout set eng '**/*.xml' '**/*.md' $javaPaths"
+      Invoke-Expression -Command "git sparse-checkout set eng '**/*.xml' '**/*.md' '**/test-resources.json' $javaPaths"
       Write-Host "Set sparse checkout paths to:"
       Get-Content .git/info/sparse-checkout
     displayName: Sparse checkout module paths
