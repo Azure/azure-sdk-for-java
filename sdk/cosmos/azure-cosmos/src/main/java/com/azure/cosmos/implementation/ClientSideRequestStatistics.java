@@ -32,7 +32,6 @@ public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext clientContext;
     private final DiagnosticsClientContext diagnosticsClientContext;
-    private ConnectionMode connectionMode;
 
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
@@ -60,7 +59,6 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
-        this.connectionMode = ConnectionMode.DIRECT;
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
@@ -73,7 +71,6 @@ public class ClientSideRequestStatistics {
     public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
         Instant responseTime = Instant.now();
-        connectionMode = ConnectionMode.DIRECT;
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
@@ -127,10 +124,6 @@ public class ClientSideRequestStatistics {
             }
             this.gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
-                if (rxDocumentServiceRequest.getResourceType().equals(ResourceType.Document)) {
-                    connectionMode = ConnectionMode.GATEWAY;
-                }
-
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
             }
@@ -284,7 +277,6 @@ public class ClientSideRequestStatistics {
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
-            generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
             int initialIndex =
