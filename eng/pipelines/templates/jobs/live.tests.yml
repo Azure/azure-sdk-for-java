@@ -47,9 +47,7 @@ jobs:
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
-          Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml

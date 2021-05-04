@@ -59,9 +59,7 @@ jobs:
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
-          Paths:
-            - '${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
 
       - template: ../steps/cache-maven-repository.yml
