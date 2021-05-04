@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.models;
 
 /**
- * Defines values for ReadingOrder.
+ * Defines values for FormReadingOrder.
  */
-public enum ReadingOrder {
+public enum FormReadingOrder {
 
     /**
      * Enum value basic.
@@ -22,23 +22,23 @@ public enum ReadingOrder {
     NATURAL("natural");
 
     /**
-     * The actual serialized value for a ReadingOrder instance.
+     * The actual serialized value for a FormReadingOrder instance.
      */
     private final String value;
 
-    ReadingOrder(String value) {
+    FormReadingOrder(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ReadingOrder instance.
+     * Parses a serialized value to a FormReadingOrder instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ReadingOrder object, or null if unable to parse.
+     * @return the parsed FormReadingOrder object, or null if unable to parse.
      */
-    public static ReadingOrder fromString(String value) {
-        ReadingOrder[] items = ReadingOrder.values();
-        for (ReadingOrder item : items) {
+    public static FormReadingOrder fromString(String value) {
+        FormReadingOrder[] items = FormReadingOrder.values();
+        for (FormReadingOrder item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

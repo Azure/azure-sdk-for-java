@@ -10,28 +10,22 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Sample for recognizing commonly found License document fields from a local file input stream.
- * See fields found on a ID document here:
- * https://aka.ms/formrecognizer/iddocumentfields
+ * Sample for recognizing commonly found ID document fields from a file source URL of an invoice document.
+ * See fields found on an identity document here: https://aka.ms/formrecognizer/iddocumentfields
  */
-public class RecognizeIdDocuments {
+public class RecognizeIdentityDocumentsFromUrl {
 
     /**
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
-     *
-     * @throws IOException from reading file.
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
@@ -40,18 +34,15 @@ public class RecognizeIdDocuments {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
-            + "sample-forms/ID documents/license.jpg");
-        byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        String licenseDocumentUrl = "https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/"
+            + "azure-ai-formrecognizer/src/test/resources/sample_files/Test/license.jpg";
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeIdentityDocumentPoller
+            = client.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl);
 
-        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeIDDocumentPoller =
-            client.beginRecognizeIdDocuments(targetStream, sourceFile.length());
+        List<RecognizedForm> identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 
-        List<RecognizedForm> idDocumentResults = analyzeIDDocumentPoller.getFinalResult();
-
-        for (int i = 0; i < idDocumentResults.size(); i++) {
-            RecognizedForm recognizedForm = idDocumentResults.get(i);
+        for (int i = 0; i < identityDocumentResults.size(); i++) {
+            RecognizedForm recognizedForm = identityDocumentResults.get(i);
             Map<String, FormField> recognizedFields = recognizedForm.getFields();
             System.out.printf("----------- Recognized license info for page %d -----------%n", i);
             FormField addressField = recognizedFields.get("Address");
