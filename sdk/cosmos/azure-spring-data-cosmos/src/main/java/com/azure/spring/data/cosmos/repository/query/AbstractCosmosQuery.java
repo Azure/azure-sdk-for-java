@@ -93,6 +93,8 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         return method.isCollectionQuery();
     }
 
-    protected boolean isSliceQuery() { return method.isSliceQuery(); }
+    protected boolean isSliceQuery() {
+        return method.isSliceQuery();
+    }
 
 }
