@@ -7,8 +7,8 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.implementation.models.AcrAccessToken;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.AcrRefreshToken;
-import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.FormParam;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -55,9 +55,9 @@ public final class AuthenticationsImpl {
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrRefreshToken>> exchangeAadAccessTokenForAcrRefreshToken(
                 @HostParam("url") String url,
-                @BodyParam("application/x-www-form-urlencoded") String grantType,
-                @BodyParam("application/x-www-form-urlencoded") String service,
-                @BodyParam("application/x-www-form-urlencoded") String accessToken,
+                @FormParam("grant_type") String grantType,
+                @FormParam("service") String service,
+                @FormParam("access_token") String accessToken,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -67,10 +67,10 @@ public final class AuthenticationsImpl {
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessToken(
                 @HostParam("url") String url,
-                @BodyParam("application/x-www-form-urlencoded") String grantType,
-                @BodyParam("application/x-www-form-urlencoded") String service,
-                @BodyParam("application/x-www-form-urlencoded") String scope,
-                @BodyParam("application/x-www-form-urlencoded") String refreshToken,
+                @FormParam("grant_type") String grantType,
+                @FormParam("service") String service,
+                @FormParam("scope") String scope,
+                @FormParam("refresh_token") String refreshToken,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }

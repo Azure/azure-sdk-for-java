@@ -1510,7 +1510,6 @@
       ],
       "x-ms-enum": {
         "name": "TagOrderBy",
-        "modelAsString": true,
         "values": [
           {
             "value": "none",
@@ -1947,7 +1946,6 @@
       ],
       "x-ms-enum": {
         "name": "ManifestOrderBy",
-        "modelAsString": true,
         "values": [
           {
             "value": "none",

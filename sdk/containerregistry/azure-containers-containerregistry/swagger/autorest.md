@@ -118,4 +118,22 @@ directive:
     $["properties"]["tag"].readOnly = true;
 ```
 
+### Set modelAsString flag for the enum values of TagOrderBy
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TagOrderBy
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+```
+
+### Set modelAsString flag for the enum values of ManifestOrderBy
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ManifestOrderBy
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+```
+
 
