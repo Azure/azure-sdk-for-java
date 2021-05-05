@@ -1515,13 +1515,12 @@ public class ShareFileAsyncClient {
         We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
         others are being sent.
          */
-        BufferStagingArea pool = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
+        BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
-        return chunkedSource.concatMap(pool::write)
-            .limitRate(parallelTransferOptions.getMaxConcurrency()) // This guarantees that concatMap will only buffer maxConcurrency * chunkSize data
-            .concatWith(Flux.defer(pool::flush))
+        return chunkedSource.flatMapSequential(stagingArea::write)
+            .concatWith(Flux.defer(stagingArea::flush))
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
             /* As an example, data consists of ByteBuffers of length 10-10-5.
