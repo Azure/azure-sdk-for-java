@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 50,
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The base resource name."
+      }
+    },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The client OID to grant access to test resources."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location of the resource. By default, this is the same as the resource group."
+      }
+    }
+  },
+  "variables": {
+    "deviceProvisioningServiceInstanceResourceId": "[resourceId('Microsoft.Devices/provisioningServices', parameters('baseName'))]",
+    "namespaceResourceId": "[resourceId('Microsoft.EventHub/namespaces', parameters('baseName'))]",
+    "rbacOwnerRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+    "DpsOwnerRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'bcd981a7-7f74-457b-83e1-cceb9e632ffe')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(resourceGroup().id)]",
+      "properties": {
+        "roleDefinitionId": "[variables('rbacOwnerRoleDefinitionId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Devices/provisioningServices",
+      "apiVersion": "2020-03-01",
+      "name": "[parameters('baseName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "capacity": 1
+      },
+      "properties": {
+        "state": "Active",
+        "provisioningState": "Succeeded",
+        "iotHubs": [],
+        "allocationPolicy": "Hashed"
+      }
+    },
+	{
+      "type": "Microsoft.Devices/provisioningServices/providers/roleAssignments",
+      "apiVersion": "2020-03-01-preview",
+      "name": "[concat(parameters('baseName'),'/Microsoft.Authorization/', guid(uniqueString(parameters('baseName'))))]",
+      "properties": {
+        "roleDefinitionId": "[variables('DpsOwnerRoleDefinitionId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      },
+      "dependsOn": [
+        "[variables('deviceProvisioningServiceInstanceResourceId')]"
+      ]
+    }
+  ]
+}
