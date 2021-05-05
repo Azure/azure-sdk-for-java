@@ -79,7 +79,8 @@ azure:
     client-secret: <client-secret>
     tenant-id: <tenant-id>
     user-group:
-      allowed-groups: group1, group2
+      allowed-group-names: group1,group2
+      allowed-group-ids: <group1-id>,<group2-id>
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:

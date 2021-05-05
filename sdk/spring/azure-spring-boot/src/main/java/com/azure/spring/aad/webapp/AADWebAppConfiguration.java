@@ -121,7 +121,7 @@ public class AADWebAppConfiguration {
                                      .orElseGet(Stream::empty)
                                      .collect(Collectors.toSet());
         result.addAll(openidScopes());
-        if (properties.allowedGroupsConfigured()) {
+        if (properties.allowedGroupIdsConfigured() || properties.allowedGroupNamesConfigured()) {
             // The 2 scopes are need to get group name from graph.
             result.add(properties.getGraphBaseUri() + "User.Read");
             result.add(properties.getGraphBaseUri() + "Directory.Read.All");

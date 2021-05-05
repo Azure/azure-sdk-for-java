@@ -57,11 +57,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     EncryptedBlobClient ebc // encrypted client for download
 
     String keyId
-
-    @Shared
     FakeKey fakeKey
-
-    @Shared
     def fakeKeyResolver
 
 

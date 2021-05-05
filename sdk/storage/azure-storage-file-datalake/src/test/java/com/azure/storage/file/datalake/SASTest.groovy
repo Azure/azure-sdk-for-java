@@ -50,9 +50,6 @@ class SASTest extends APISpec {
         return new DataLakeServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
             .setStartTime(getUTCNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
             .setCacheControl("cache")
             .setContentDisposition("disposition")
             .setContentEncoding("encoding")
@@ -809,7 +806,7 @@ class SASTest extends APISpec {
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
         HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             recordPolicy = interceptorManager.getRecordPolicy()
         }
         def pathName = generatePathName()
