@@ -184,7 +184,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     private SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber>
         beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName, boolean withContext) {
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, testName);
-        PhoneNumberCapabilities capabilities = getNewPhoneCapabilities(client.getPurchasedPhoneNumber(phoneNumber));
+        Response<PurchasedPhoneNumber> responseAcquiredPhone = client.getPurchasedPhoneNumberWithResponse(phoneNumber, Context.NONE);
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(responseAcquiredPhone.getValue().getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND);
         if (withContext) {
             return setPollInterval(client.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, Context.NONE));
         }

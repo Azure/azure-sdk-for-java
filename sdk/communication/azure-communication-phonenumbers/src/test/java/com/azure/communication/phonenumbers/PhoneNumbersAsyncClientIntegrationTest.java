@@ -156,8 +156,10 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities").getPurchasedPhoneNumberWithResponse(phoneNumber)
                 .flatMap(responseAcquiredPhone -> {
-                    PhoneNumberCapabilities newPhoneNumberCap = getNewPhoneCapabilities(responseAcquiredPhone.getValue());
-                    return beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", newPhoneNumberCap)
+                    PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+                    capabilities.setCalling(responseAcquiredPhone.getValue().getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND);
+                    capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND);
+                    return beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", capabilities)
                         .last()
                         .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasedPhoneNumber> result) -> {
                             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());

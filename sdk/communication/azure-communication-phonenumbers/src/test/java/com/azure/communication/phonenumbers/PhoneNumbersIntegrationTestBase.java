@@ -11,9 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
-import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -136,20 +133,6 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
         }
-    }
-
-    protected PhoneNumberCapabilities getNewPhoneCapabilities(PurchasedPhoneNumber phoneNumber) {
-        if (phoneNumber.getCapabilities().getSms() != PhoneNumberCapabilityType.INBOUND_OUTBOUND) {
-            phoneNumber.getCapabilities().setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-        } else {
-            phoneNumber.getCapabilities().setSms(PhoneNumberCapabilityType.OUTBOUND);
-        }
-        if (phoneNumber.getCapabilities().getCalling() != PhoneNumberCapabilityType.OUTBOUND) {
-            phoneNumber.getCapabilities().setCalling(PhoneNumberCapabilityType.OUTBOUND);
-        } else {
-            phoneNumber.getCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND);
-        }
-        return phoneNumber.getCapabilities();
     }
 
     private String redact(String content, Matcher matcher, String replacement) {
