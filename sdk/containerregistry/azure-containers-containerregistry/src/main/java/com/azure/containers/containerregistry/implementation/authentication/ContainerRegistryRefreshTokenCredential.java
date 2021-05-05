@@ -39,5 +39,4 @@ public class ContainerRegistryRefreshTokenCredential {
         return Mono.defer(() -> aadTokenCredential.getToken(new TokenRequestContext().addScopes(AAD_DEFAULT_SCOPE))
             .flatMap(token -> this.tokenService.getAcrRefreshTokenAsync(token.getToken(), serviceName)));
     }
-
 }

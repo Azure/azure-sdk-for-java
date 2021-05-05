@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.implementation.authentication.Cont
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.experimental.http.policy.BearerTokenAuthenticationChallengePolicy;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -61,49 +60,18 @@ final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthentication
     }
 
     /**
-     * Creates an instance of ContainerRegistryCredentialsPolicy.
-     *
-     * @param context call context for the http pipeline.
-     * @param next next http policy to run.
-     */
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
-        }
-
-        HttpPipelineNextPolicy nextPolicy = next.clone();
-        return next.process()
-            .flatMap(httpResponse -> {
-                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
-                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                    return onChallenge(context, httpResponse).flatMap(retry -> {
-                        if (retry) {
-                            return nextPolicy.process();
-                        } else {
-                            return Mono.just(httpResponse);
-                        }
-                    });
-                }
-                return Mono.just(httpResponse);
-            });
-    }
-
-    /**
      * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
      *
      * @param context the HTTP pipeline context.
      * @param tokenRequestContext the token request conext to be used for token acquisition.
      * @return a {@link Mono} containing {@link Void}
      */
-    Mono<Boolean> addAuthorization(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+    @Override
+    public Mono<Void> authorizeRequest(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return tokenService.getToken(tokenRequestContext)
             .flatMap((token) -> {
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
-                return Mono.just(true);
-            }).onErrorResume(throwable -> {
-                logger.error("Failed to get the token for the call with exception" + throwable);
-                return Mono.just(false);
+                return Mono.empty();
             });
     }
 
@@ -122,16 +90,17 @@ final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthentication
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
             if (!(response.getStatusCode() == 401 && authHeader != null)) {
                 return Mono.just(false);
-            }
+            } else {
+                Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
+                if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
+                    String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
+                    String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
+                    return authorizeRequest(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
+                        .then(Mono.defer(() -> Mono.just(true)));
+                }
 
-            Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
-            if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
-                String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
-                String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
-                return addAuthorization(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
+                return Mono.just(false);
             }
-
-            return Mono.just(false);
         });
     }
 
