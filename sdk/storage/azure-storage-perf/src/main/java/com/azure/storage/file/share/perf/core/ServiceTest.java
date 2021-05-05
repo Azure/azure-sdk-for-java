@@ -12,7 +12,7 @@ import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    protected static final long MAX_SHARE_SIZE = 4398046511104l;
+    protected static final long MAX_SHARE_SIZE = 4398046511104L;
 
     protected final ShareServiceClient shareServiceClient;
     protected final ShareServiceAsyncClient shareServiceAsyncClient;
