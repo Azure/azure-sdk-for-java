@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeBatchActionsResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
@@ -19,7 +19,7 @@ import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
@@ -982,24 +982,24 @@ final class TestUtils {
     /**
      * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
-    static AnalyzeBatchActionsResult getExpectedAnalyzeBatchActionsResult(
+    static AnalyzeActionsResult getExpectedAnalyzeBatchActionsResult(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
         IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
 
-        final AnalyzeBatchActionsResult analyzeBatchActionsResult = new AnalyzeBatchActionsResult();
-        AnalyzeBatchActionsResultPropertiesHelper.setStatistics(analyzeBatchActionsResult,
+        final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
+        AnalyzeActionsResultPropertiesHelper.setStatistics(analyzeActionsResult,
             new TextDocumentBatchStatistics(1, 1, 0, 1));
-        AnalyzeBatchActionsResultPropertiesHelper.setRecognizeEntitiesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesActionResults(analyzeActionsResult,
             recognizeEntitiesActionResults);
-        AnalyzeBatchActionsResultPropertiesHelper.setRecognizePiiEntitiesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesActionResults(analyzeActionsResult,
             recognizePiiEntitiesActionResults);
-        AnalyzeBatchActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesActionResults(analyzeActionsResult,
             extractKeyPhrasesActionResults);
-        AnalyzeBatchActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeBatchActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeActionsResult,
             recognizeLinkedEntitiesActionResults);
-        return analyzeBatchActionsResult;
+        return analyzeActionsResult;
     }
 
     /**
@@ -1057,13 +1057,13 @@ final class TestUtils {
     }
 
     /**
-     * Helper method that get a multiple-pages (AnalyzeTasksResult) list.
+     * Helper method that get a multiple-pages (AnalyzeActionsResult) list.
      */
-    static List<AnalyzeBatchActionsResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
+    static List<AnalyzeActionsResult> getExpectedAnalyzeActionsResultListForMultiplePages(int startIndex,
         int firstPage, int secondPage) {
-        List<AnalyzeBatchActionsResult> analyzeBatchActionsResults = new ArrayList<>();
+        List<AnalyzeActionsResult> analyzeActionsResults = new ArrayList<>();
         // First Page
-        analyzeBatchActionsResults.add(getExpectedAnalyzeBatchActionsResult(
+        analyzeActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
                 false, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
@@ -1074,7 +1074,7 @@ final class TestUtils {
         ));
         // Second Page
         startIndex += firstPage;
-        analyzeBatchActionsResults.add(getExpectedAnalyzeBatchActionsResult(
+        analyzeActionsResults.add(getExpectedAnalyzeBatchActionsResult(
             IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(
                 false, TIME_NOW, getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
@@ -1083,7 +1083,7 @@ final class TestUtils {
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(Collections.emptyList())
         ));
-        return analyzeBatchActionsResults;
+        return analyzeActionsResults;
     }
 
     /**

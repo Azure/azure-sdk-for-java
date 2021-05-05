@@ -14,7 +14,7 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-    <version>3.0.0-beta.5</version>
+    <version>3.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -101,7 +101,6 @@ This starter allows you to securely manage and tightly control your certificates
     ![Copy secrets](resource/copy-secrets.png)
 
 Add these items in your `application.yml`:
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side/src/main/resources/application.yml#L1-L12 -->
 ```yaml
 azure:
   keyvault:
@@ -109,7 +108,6 @@ azure:
     tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
     client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
-    # managed-identity:  # The user-assigned managed identity object-id to use.
 server:
   port: 8443
   ssl:
@@ -141,12 +139,13 @@ Make sure the client-id can access target Key Vault. Here are steps to configure
 
 #### Using a managed identity
 
-If you are using managed identity instead of client-id, add these items in your `application.yml`:
+If you are using managed identity instead of App registrations, add these items in your `application.yml`:
 
 ```yaml
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
+#    managed-identity: # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
 server:
   ssl:
     key-alias: <the name of the certificate in Azure Key Vault to use>
@@ -159,7 +158,6 @@ Make sure the managed identity can access target Key Vault.
 
 #### Using a client ID and client secret
 Add these items in your `application.yml`:
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/resources/application.yml#L1-L7 -->
 ```yaml
 azure:
   keyvault:
@@ -167,20 +165,18 @@ azure:
     tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
     client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
-    # managed-identity:  # The user-assigned managed identity object-id to use.
 ```
 Make sure the client-id can access target Key Vault. 
 
 Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L46 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L45 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
     KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
     KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.aad-authentication-url"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
         System.getProperty("azure.keyvault.client-secret"));
@@ -201,11 +197,12 @@ public RestTemplate restTemplateWithTLS() throws Exception {
 
 #### Using a managed identity
 
-If you are using managed identity instead of client-id, add these items in your `application.yml`:
+If you are using managed identity instead of App registration, add these items in your `application.yml`:
 ```yaml
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
+#    managed-identity:  # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
 ```
 Make sure the managed identity can access target Key Vault.
 
@@ -248,14 +245,13 @@ server:
 
 Step 2. On the client side, update `RestTemplate`. Example:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L48-L77 -->
+<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L47-L75 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
     KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
     KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
-        System.getProperty("azure.keyvault.aad-authentication-url"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
         System.getProperty("azure.keyvault.client-secret"));
@@ -290,7 +286,7 @@ To configure Spring Cloud Gateway for outbound SSL, add the following configurat
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
-    jca: 
+    jca:
       overrideTrustManagerFactory: true
 ```
 

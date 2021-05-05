@@ -147,6 +147,7 @@ public class SearchClientBuilderTests {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
         SearchClient searchClient = new SearchClientBuilder()
@@ -158,13 +159,14 @@ public class SearchClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, searchClient::getDocumentCount);
+        assertThrows(HttpResponseException.class, searchClient::getDocumentCount);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void applicationIdFallsBackToLogOptions() {
         SearchClient searchClient = new SearchClientBuilder()
@@ -175,11 +177,11 @@ public class SearchClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, searchClient::getDocumentCount);
+        assertThrows(HttpResponseException.class, searchClient::getDocumentCount);
     }
 
     @Test
@@ -193,10 +195,10 @@ public class SearchClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, searchClient::getDocumentCount);
+        assertThrows(HttpResponseException.class, searchClient::getDocumentCount);
     }
 }

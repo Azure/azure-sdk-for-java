@@ -1,5 +1,12 @@
 azure:
   activedirectory:
+    client-id: <client-id>
+    client-secret: <client-secret>
+    tenant-id: <tenant-id>
+    user-group:
+      allowed-group-names: group1,group2
+      allowed-group-ids: <group1-id>,<group2-id>
+    post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:
         on-demand: true
@@ -8,9 +15,6 @@ azure:
         scopes:
           - https://graph.microsoft.com/User.Read
           - https://graph.microsoft.com/Directory.Read.All
-    client-id: <client-id>
-    client-secret: <client-secret>
-    tenant-id: <tenant-id>
-    user-group:
-      allowed-groups: group1, group2
-    post-logout-redirect-uri: http://localhost:8080
+#      webapiA:
+#        scopes:
+#          - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope

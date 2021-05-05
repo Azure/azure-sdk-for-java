@@ -8,6 +8,12 @@ variables:
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
+      CloudConfig:
+        Cosmos_Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      Clouds: 'Cosmos_Public'
       MatrixConfigs:
         - Name: Cosmos_live_test
           Path: sdk/cosmos/platform-matrix.json
@@ -33,6 +39,11 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       TestName: 'Integration'
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
       MatrixConfigs:
         - Name: Cosmos_live_test_integration
           Path: sdk/cosmos/integration-matrix.json
@@ -49,3 +60,11 @@ stages:
       TestStepMavenInputs:
         goals: clean verify
         options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
+
+  - ${{ if or(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest')) }}:
+    - template: /sdk/cosmos/ci.spark.databricks.yml
+      parameters:
+        CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
+        CosmosKey: $(spark-databricks-cosmos-key)
+        DatabricksEndpoint: $(spark-databricks-endpoint)
+        DatabricksToken: $(spark-databricks-token)

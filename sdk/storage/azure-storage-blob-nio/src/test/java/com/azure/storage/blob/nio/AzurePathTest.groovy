@@ -3,13 +3,13 @@
 
 package com.azure.storage.blob.nio
 
-import spock.lang.Shared
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.nio.file.FileSystems
 
+@ResourceLock("AzurePathTest")
 class AzurePathTest extends APISpec {
-    @Shared
     AzureFileSystem fs
 
     // Just need one fs instance for creating the paths.

@@ -177,7 +177,7 @@ class LockRenewalOperationTest {
         // At most 3 times because we renew the lock before it expires (by some seconds).
         final int atMost = 2;
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
-        final Duration totalSleepPeriod = renewalPeriod.plusMillis(1000);
+        final Duration totalSleepPeriod = renewalPeriod.plusSeconds(1);
 
         when(renewalOperation.apply(A_LOCK_TOKEN))
             .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
@@ -188,11 +188,11 @@ class LockRenewalOperationTest {
         StepVerifier.create(operation.getCompletionOperation())
             .thenAwait(totalSleepPeriod)
             .then(() -> {
-                logger.info("Finished renewals for first sleep. Cancelling");
+                logger.info("Finished renewals for first sleep. Cancelling.");
                 operation.close();
             })
             .expectComplete()
-            .verify(Duration.ofMillis(1000));
+            .verify(renewalPeriod);
 
         // Assert
         assertEquals(LockRenewalStatus.CANCELLED, operation.getStatus());

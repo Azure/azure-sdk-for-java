@@ -38,6 +38,11 @@ public class ClearingSessionContainerClientRetryPolicy extends DocumentClientRet
     }
 
     @Override
+    public RetryContext getRetryContext() {
+        return this.retryPolicy.getRetryContext();
+    }
+
+    @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
 
         return this.retryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {

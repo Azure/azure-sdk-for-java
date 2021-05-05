@@ -41,34 +41,24 @@ import java.util.stream.Collectors;
  * </p>
  *
  * <p><strong>Creating an instance of DynamicRequest using the constructor</strong></p>
+ * {@codesnippet com.azure.core.experimental.http.dynamicrequest.instantiation}
  *
- * <pre>{@code
- * ObjectSerializer serializer = new JacksonJsonSerializerBuilder().build();
- * HttpPipeline pipeline = new HttpPipelineBuilder().build();
- * DynamicRequest request = new DynamicRequest(serializer, createHttpPipeline());
- * }</pre>
- *
- * <p><strong>Creating an instance of DynamicRequest using a client</strong></p>
- * <pre>{@code
- * DynamicRequest request = petServiceClient.getPet(); // preconfigures some components of request like URL
- * }</pre>
+ * <p>An Azure service client may provide methods that are specific to the service which returns an instance
+ * {@link DynamicRequest} that comes preconfigured with some request components like the endpoint, required path
+ * params, headers etc. </p>
  *
  * <p><strong>Configuring the request with a path param and making a HTTP GET request</strong></p>
  * Continuing with the pet store example, getting information about a pet requires making a
  * <a href="https://petstore.swagger.io/#/pet/getPetById">HTTP GET call
  * to the pet service</a> and setting the pet id in path param as shown in the sample below.
- * <pre>{@code
- * DynamicResponse response = dynamicRequest
- *      .setUrl("https://petstore.example.com/pet/{petId}") // may already be set if request is created from a client
- *      .setPathParam("petId", 2343245)
- *      .send(); // makes the service call
- * }</pre>
+ *
+ * {@codesnippet com.azure.core.experimental.http.dynamicrequest.getrequest}
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, a HTTP POST call should
  * be made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
- * <p>
+ *
  * The JSON structure for the request is defined as follows:
  * <pre>{@code
  * {
@@ -90,47 +80,15 @@ import java.util.stream.Collectors;
  *   "status": "available"
  * }
  * }</pre>
- * <p>
+ *
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other Json building library can be used to achieve similar results.
  *
- * <pre>{@code
- * JsonArray photoUrls = Json.createArrayBuilder()
- *         .add("https://imgur.com/pet1")
- *         .add("https://imgur.com/pet2")
- *         .build();
+ * {@codesnippet com.azure.core.experimental.http.dynamicrequest.createjsonrequest}
  *
- * JsonArray tags = Json.createArrayBuilder()
- *         .add(Json.createObjectBuilder()
- *                 .add("id", 0)
- *                 .add("name", "Labrador")
- *                 .build())
- *         .add(Json.createObjectBuilder()
- *                 .add("id", 1)
- *                 .add("name", "2021")
- *                 .build())
- *         .build();
- *
- * JsonObject requestBody = Json.createObjectBuilder()
- *         .add("id", 0)
- *         .add("name", "foo")
- *         .add("status", "available")
- *         .add("category", Json.createObjectBuilder().add("id", 0).add("name", "dog"))
- *         .add("photoUrls", photoUrls)
- *         .add("tags", tags)
- *         .build();
- *
- * String requestBodyStr = requestBody.toString();
- * }</pre>
- * <p>
  * Now, this string representation of the JSON request can be set as body of DynamicRequest
- * <pre>{@code
- * DynamicResponse response = dynamicRequest
- *         .setUrl("https://petstore.example.com/pet") // may already be set if request is created from a client
- *         .addHeader("Content-Type", "application/json")
- *         .setBody(requestBodyStr)
- *         .send(); // makes the service call
- * }</pre>
+ *
+ * {@codesnippet com.azure.core.experimental.http.dynamicrequest.postrequest}
  */
 public final class DynamicRequest {
     private final ClientLogger logger = new ClientLogger(DynamicRequest.class);
@@ -148,6 +106,7 @@ public final class DynamicRequest {
      * {@link HttpPipelinePolicy Http pipeline policies} will be applied before sending the request.
      * @param objectSerializer a serializer for serializing and deserializing payloads
      * @param httpPipeline the pipeline to send the actual HTTP request
+     *
      * @throws NullPointerException if either of objectSerializer or httpPipeline is null
      */
     public DynamicRequest(ObjectSerializer objectSerializer, HttpPipeline httpPipeline) {

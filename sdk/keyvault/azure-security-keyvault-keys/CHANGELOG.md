@@ -1,7 +1,47 @@
 # Release History
 
-## 4.3.0-beta.6 (Unreleased)
+## 4.3.0-beta.8 (Unreleased)
 
+
+## 4.3.0-beta.7 (2021-04-29)
+
+### Bug fixes
+- Fixed issue that prevented setting tags on keys when creating or importing them.
+
+### Breaking Changes
+- Removed the `exportKey()` operation from `KeyAsyncClient` and `KeyClient`, as it is not yet supported in the current service version.
+
+## 4.3.0-beta.6 (2021-04-09)
+
+### Breaking Changes
+- Renamed `EncryptOptions` to `EncryptParameters`.
+- Renamed `DecryptOptions` to `DecryptParameters`.
+- Changed `KeyVaultKeyIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
+- Removed the following classes:
+    - `LocalCryptographyAsyncClient`
+    - `LocalCryptographyClient`
+    - `LocalCryptographyClientBuilder`
+    - `LocalKeyEncryptionKeyClient`
+    - `LocalKeyEncryptionKeyAsyncClient`
+    - `LocalKeyEncryptionKeyClientBuilder`
+
+### New features
+- Added support for service version `7.2`.
+- Made all `JsonWebKey` properties settable.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added convenience class `CreateOctKeyOptions`.
+- Added support for building local-only cryptography clients by providing a `JsonWebKey` for local operations:
+    - `CryptograhpyClientBuilder.jsonWebKey(JsonWebKey)`
+- Added support for building local-only key encryption key clients by providing a `JsonWebKey` for local operations:
+    - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey(JsonWebKey)`
+    - `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey(JsonWebKey)`
+- `CryptograhpyClientBuilder.keyIdentifier(String)` now throws a `NullPointerException` if a `null` value is provided as an argument.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.1`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.1`
+- Upgraded `azure-identity` dependency to `1.2.5`
 
 ## 4.3.0-beta.5 (2021-03-12)
 

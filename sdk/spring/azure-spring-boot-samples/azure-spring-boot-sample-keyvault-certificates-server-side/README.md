@@ -24,13 +24,47 @@ azure:
     tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
     client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
     client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
+server:
+  port: 8443
+  ssl:
+    key-alias:           # The alias corresponding to the certificate in Azure Key Vault.
+    key-store-type:      # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
 ```
 
 ### How to run
+
+#### Run with TLS
 1. Start SampleApplication
 1. Access https://localhost:8443/
 
 Then you will get
+```text
+Hello World
+``` 
+
+#### Run with MTLS
+
+1. Add properties in application.yml:
+```yaml
+azure:
+  keyvault:
+    uri:                 # The URI to the Azure Key Vault used
+    tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
+    client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
+    client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
+server:
+  port: 8443
+  ssl:
+    key-alias:           # The alias corresponding to the certificate in Azure Key Vault.
+    key-store-type:      # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
+    client-auth:         # Used for MTLS
+    trust-store-type:    # Used for MTLS   
+```
+1. Start SampleApplication
+1. MTLS for mutual authentication. So your client needs have a trusted CA certificate.([azure-spring-boot-sample-keyvault-certificates-client-side]is a trusted client sample.)
+1. Your client access https://localhost:8443/
+
+Then the client or server will get
 ```text
 Hello World
 ``` 

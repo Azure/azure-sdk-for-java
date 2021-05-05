@@ -18,33 +18,37 @@ import java.util.Random;
 public class TestDataCreationHelper {
     private static final int RANDOM_BYTES_LENGTH = 1024 * 1024; // 1MB
     private static final byte[] RANDOM_BYTES;
-    private static final ByteBuffer RANDOM_BYTE_BUFFER;
     private static final int SIZE = (1024 * 1024 * 1024) + 1;
 
     static {
         Random random = new Random(0);
         RANDOM_BYTES = new byte[RANDOM_BYTES_LENGTH];
         random.nextBytes(RANDOM_BYTES);
-        RANDOM_BYTE_BUFFER = ByteBuffer.wrap(TestDataCreationHelper.RANDOM_BYTES).asReadOnlyBuffer();
     }
 
     /**
-     * Creates a {@link Flux} of {@code size} with repeated values of {@code byteBuffer}.
+     * Creates a {@link Flux} of {@code size} with repeated values of {@code array}.
      *
-     * @param byteBuffer the byteBuffer to create Flux from.
+     * @param array the array to create Flux from.
      * @param size the size of the flux to create.
      * @return The created {@link Flux}
      */
-    @SuppressWarnings("cast")
-    public static Flux<ByteBuffer> createCircularByteBufferFlux(ByteBuffer byteBuffer, long size) {
-        int remaining = byteBuffer.remaining();
-
-        int quotient = (int) size / remaining;
-        int remainder = (int) size % remaining;
+    private static Flux<ByteBuffer> createCircularByteBufferFlux(byte[] array, long size) {
+        int quotient = (int) size / array.length;
+        int remainder = (int) size % array.length;
 
         return Flux.range(0, quotient)
-            .map(i -> byteBuffer.duplicate())
-            .concatWithValues((ByteBuffer) byteBuffer.duplicate().limit(remainder));
+            .map(i -> allocateByteBuffer(array, array.length))
+            .concatWithValues(allocateByteBuffer(array, remainder));
+    }
+
+    private static ByteBuffer allocateByteBuffer(byte[] array, int size) {
+        // ByteBuffer.allocate() should be used instead of ByteBuffer.wrap().  The former ensures each
+        // ByteBuffer holds its own copy of the data, which more closely simulates real-world usage.
+        ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+        byteBuffer.put(array, 0, size);
+        byteBuffer.rewind();
+        return byteBuffer;
     }
 
     /**
@@ -54,7 +58,7 @@ public class TestDataCreationHelper {
      * @return the {@link Flux} of {@code size}
      */
     public static Flux<ByteBuffer> createRandomByteBufferFlux(long size) {
-        return createCircularByteBufferFlux(RANDOM_BYTE_BUFFER, size);
+        return createCircularByteBufferFlux(RANDOM_BYTES, size);
     }
 
     /**

@@ -1,7 +1,22 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
+
+## 1.2.0-beta.1 (2021-04-09)
+### New Features
+- Added updateSyncToken() to be able to provide external synchronization tokens to both
+  `ConfigurationAsyncClient` and `ConfigurationClient` clients.
+- Added new `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting`
+  types to represent configuration settings that references KeyVault Secret reference and
+  feature flag respectively.
+- Added new convenience overload APIs that take `ConfigurationSetting`:
+  `addConfigurationSetting(ConfigurationSetting setting)`
+  `getConfigurationSetting(ConfigurationSetting setting)`
+  `setConfigurationSetting(ConfigurationSetting setting)`
+  `deleteConfigurationSetting(ConfigurationSetting setting)`
+  `setReadOnly(ConfigurationSetting setting, boolean isReadOnly)`
+- Added a new method that accepts `ClientOptions` in `ConfigurationClientBuilder`.
 
 ## 1.1.10 (2021-03-09)
 ### Dependency updates
@@ -82,12 +97,9 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 demonstrate the new API.
 
-## 1.0.0-preview.4 (2019-10-8)
-- Updated addSetting, getSetting, deleteSetting, setSetting to support conditional request.
-- Removed UpdateSetting.
-- Allowed user to define custom equality of configuration setting.
-- No public ConfigurationClientCredential.
-- Removed credential and CredentialPolicy package.
+## 1.0.0-preview.3 (2019-09-10)
+- Removed dependency on Netty.
+- Added logging when throwing `RutimeException`s.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
@@ -95,9 +107,12 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 demonstrate the new API.
 
-## 1.0.0-preview.3 (2019-09-10)
-- Removed dependency on Netty.
-- Added logging when throwing `RutimeException`s.
+## 1.0.0-preview.4 (2019-10-08)
+- Updated addSetting, getSetting, deleteSetting, setSetting to support conditional request.
+- Removed UpdateSetting.
+- Allowed user to define custom equality of configuration setting.
+- No public ConfigurationClientCredential.
+- Removed credential and CredentialPolicy package.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
