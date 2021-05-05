@@ -51,8 +51,7 @@ When doing read operations, users can specify a custom schema or allow the conne
 
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
-| `spark.cosmos.read.schemaConversionMode`     | `Relaxed`    | The schema conversion behavior (`Relaxed`, `Strict`). When reading json documents, if a document contains an attribute that does not map to the schema type, the user can decide whether to use a `null` value (Relaxed) or an exception (Strict).
-|
+| `spark.cosmos.read.schemaConversionMode`     | `Relaxed`    | The schema conversion behavior (`Relaxed`, `Strict`). When reading json documents, if a document contains an attribute that does not map to the schema type, the user can decide whether to use a `null` value (Relaxed) or an exception (Strict). |
 
 #### Partitioning Strategy Config
 
