@@ -3157,6 +3157,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -3527,6 +3528,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
     def "Query parquet output IA"() {
         setup:
         def outSer = new FileQueryParquetSerialization()

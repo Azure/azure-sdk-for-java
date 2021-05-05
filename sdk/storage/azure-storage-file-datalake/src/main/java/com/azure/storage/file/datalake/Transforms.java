@@ -25,7 +25,6 @@ import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
-import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
@@ -61,7 +60,6 @@ import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryHeaders;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
-import com.azure.storage.file.datalake.models.FileQueryParquetSerialization;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
@@ -446,15 +444,16 @@ class Transforms {
         } else if (ser instanceof FileQueryArrowSerialization) {
             FileQueryArrowSerialization arrSer = (FileQueryArrowSerialization) ser;
             return new BlobQueryArrowSerialization().setSchema(toBlobQueryArrowSchema(arrSer.getSchema()));
-        } else if (ser instanceof FileQueryParquetSerialization) {
-            return new BlobQueryParquetSerialization();
+            // TODO (gapra): uncomment when parquet is released
+        /*} else if (ser instanceof FileQueryParquetSerialization) {
+            return new BlobQueryParquetSerialization(); */
         } else {
             throw new IllegalArgumentException(
-                String.format("'serialization' must be one of %s, %s, %s or %s",
+                String.format("'serialization' must be one of %s, %s, or %s",
                     FileQueryJsonSerialization.class.getSimpleName(),
                     FileQueryDelimitedSerialization.class.getSimpleName(),
-                    FileQueryArrowSerialization.class.getSimpleName(),
-                    FileQueryParquetSerialization.class.getSimpleName()));
+                    FileQueryArrowSerialization.class.getSimpleName()
+                    /*FileQueryParquetSerialization.class.getSimpleName()*/));
         }
     }
 

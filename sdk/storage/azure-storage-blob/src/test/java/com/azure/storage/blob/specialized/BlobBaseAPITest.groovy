@@ -9,6 +9,7 @@ import reactor.core.Exceptions
 import spock.lang.Requires
 import spock.lang.Retry
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 import java.util.function.Consumer
 
@@ -292,6 +293,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -693,6 +695,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
     def "Query parquet output IA"() {
         setup:
         def outSer = new BlobQueryParquetSerialization()
