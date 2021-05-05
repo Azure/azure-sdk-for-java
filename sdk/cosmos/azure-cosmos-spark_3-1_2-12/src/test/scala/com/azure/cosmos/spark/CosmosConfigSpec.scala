@@ -197,11 +197,11 @@ class CosmosConfigSpec extends UnitSpec {
   it should "parse inference configuration" in {
     val customQuery = "select * from c"
     val userConfig = Map(
-      "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
-      "spark.cosmos.read.inferSchemaEnabled" -> "false",
-      "spark.cosmos.read.inferSchemaIncludeSystemProperties" -> "true",
-      "spark.cosmos.read.inferSchemaIncludeTimestamp" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> customQuery
+      "spark.cosmos.read.inferSchema.samplingSize" -> "50",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.inferSchema.includeSystemProperties" -> "true",
+      "spark.cosmos.read.inferSchema.includeTimestamp" -> "true",
+      "spark.cosmos.read.inferSchema.query" -> customQuery
     )
 
     val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
@@ -229,17 +229,19 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosWriteConfig.parseWriteConfig(userConfig)
 
     config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemOverwrite
-    config.maxRetryCount shouldEqual 3
+    config.maxRetryCount shouldEqual 10
     config.bulkEnabled shouldEqual true
-    config.maxConcurrencyOpt.isDefined shouldEqual false
+    config.pointMaxConcurrency.isDefined shouldEqual false
+    config.bulkMaxPendingOperations.isDefined shouldEqual false
+
   }
 
-  it should "parse write config" in {
+  it should "parse point write config" in {
     val userConfig = Map(
       "spark.cosmos.write.strategy" -> "ItemAppend",
       "spark.cosmos.write.maxRetryCount" -> "8",
-      "spark.cosmos.write.bulkEnabled" -> "false",
-      "spark.cosmos.write.maxConcurrency" -> "12"
+      "spark.cosmos.write.bulk.enabled" -> "false",
+      "spark.cosmos.write.point.maxConcurrency" -> "12"
     )
 
     val config = CosmosWriteConfig.parseWriteConfig(userConfig)
@@ -247,12 +249,28 @@ class CosmosConfigSpec extends UnitSpec {
     config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
     config.maxRetryCount shouldEqual 8
     config.bulkEnabled shouldEqual false
-    config.maxConcurrencyOpt.get shouldEqual 12
+    config.pointMaxConcurrency.get shouldEqual 12
+  }
+
+  it should "parse bulk write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemAppend",
+      "spark.cosmos.write.maxRetryCount" -> "8",
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "spark.cosmos.write.bulk.maxPendingOperations" -> "12"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig)
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
+    config.maxRetryCount shouldEqual 8
+    config.bulkEnabled shouldEqual true
+    config.bulkMaxPendingOperations.get shouldEqual 12
   }
 
   it should "parse partitioning config with custom Strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom",
+      "spark.cosmos.read.partitioning.strategy" -> "Custom",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 
@@ -264,7 +282,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "parse partitioning config with custom Strategy even with incorrect casing" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.STRATEGY" -> "CuSTom",
+      "spark.cosmos.read.partitioning.strategy" -> "CuSTom",
       "spark.cosmos.partitioning.tarGETedCount" -> "8"
     )
 
@@ -287,7 +305,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing custom partitioning strategy without  mandatory targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom"
+      "spark.cosmos.read.partitioning.strategy" -> "Custom"
     )
 
     try {
@@ -304,7 +322,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing invalid partitioning strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Whatever"
+      "spark.cosmos.read.partitioning.strategy" -> "Whatever"
     )
 
     try {
@@ -312,14 +330,14 @@ class CosmosConfigSpec extends UnitSpec {
       fail("missing targetedCount")
     } catch {
       case e: Exception => e.getMessage shouldEqual
-        "invalid configuration for spark.cosmos.partitioning.strategy:Whatever. " +
+        "invalid configuration for spark.cosmos.read.partitioning.strategy:Whatever. " +
           "Config description: The partitioning strategy used (Default, Custom, Restrictive or Aggressive)"
     }
   }
 
   it should "parse partitioning config with restrictive Strategy ignores targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "restrictive",
+      "spark.cosmos.read.partitioning.strategy" -> "restrictive",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 
@@ -346,7 +364,7 @@ class CosmosConfigSpec extends UnitSpec {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "FULLFidelity",
       "spark.cosmos.changeFeed.STARTfrom" -> "NOW",
-      "spark.cosmos.changeFeed.maxItemCountPerTriggerHint" -> "54"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
     )
 
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
@@ -361,7 +379,7 @@ class CosmosConfigSpec extends UnitSpec {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "incremental",
       "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
-      "spark.cosmos.changeFeed.maxItemCountPerTriggerHint" -> "54"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
     )
 
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
@@ -414,7 +432,7 @@ class CosmosConfigSpec extends UnitSpec {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "Incremental",
       "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
-      "spark.cosmos.changeFeed.maxItemCountPerTriggerHint" -> "54OOrMore"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54OOrMore"
     )
 
     try {
@@ -422,7 +440,7 @@ class CosmosConfigSpec extends UnitSpec {
       fail("incorrect mode")
     } catch {
       case e: Exception => e.getMessage shouldEqual
-        "invalid configuration for spark.cosmos.changeFeed.maxItemCountPerTriggerHint:54OOrMore. " +
+        "invalid configuration for spark.cosmos.changeFeed.itemCountPerTriggerHint:54OOrMore. " +
           "Config description: Approximate maximum number of items read from change feed for each trigger"
     }
   }

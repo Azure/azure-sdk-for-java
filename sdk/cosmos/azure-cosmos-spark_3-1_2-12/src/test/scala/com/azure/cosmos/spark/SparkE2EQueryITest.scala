@@ -22,7 +22,7 @@ class SparkE2EQueryITest
   //scalastyle:off magic.number
 
   // NOTE: due to some bug in the emulator, sub-range feed range doesn't work
-  // "spark.cosmos.partitioning.strategy" -> "Restrictive" is added to the query tests
+  // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
 
@@ -53,10 +53,10 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
-    val df = spark.read.format("cosmos.items").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.where("nestedObject.prop2 = '6'").collect()
     rowsArray should have size 1
 
@@ -89,7 +89,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // scalastyle:off underscore.import
@@ -106,7 +106,7 @@ class SparkE2EQueryITest
       StructField("isAlive", BooleanType)
     ))
 
-    val df = spark.read.schema(customSchema).format("cosmos.items").options(cfg).load()
+    val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.where("isAlive = 'true' and type = 'cat'").orderBy("age").collect()
     rowsArray should have size 20
 
@@ -138,13 +138,13 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaIncludeSystemProperties" -> "true",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.includeSystemProperties" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
     rowsArrayWithInference should have size 1
 
@@ -181,13 +181,13 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaIncludeTimestamp" -> "true",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.includeTimestamp" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
     rowsArrayWithInference should have size 1
 
@@ -224,12 +224,12 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
     rowsArrayWithInference should have size 1
 
@@ -266,13 +266,13 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 c.isAlive, c.type, c.age from c",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.isAlive, c.type, c.age from c",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'duck'").collect()
     rowsArrayWithInference should have size 1
 
@@ -302,13 +302,13 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaQuery" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts from c",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.query" -> "select TOP 1 c.type, c.age, c.isAlive, c._ts from c",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // Not passing schema, letting inference work
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'duck'").collect()
     rowsArrayWithInference should have size 1
 
@@ -355,13 +355,13 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.read.inferSchemaSamplingSize" -> samplingSize.toString,
-      "spark.cosmos.read.inferSchemaQuery" -> "SELECT * FROM c ORDER BY c._ts",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.samplingSize" -> samplingSize.toString,
+      "spark.cosmos.read.inferSchema.query" -> "SELECT * FROM c ORDER BY c._ts",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
-    val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
     val rows = dfWithInference.where("type = 'animal'").collect()
     rows should have size expectedResults
 
@@ -388,7 +388,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     // scalastyle:off underscore.import
@@ -402,7 +402,7 @@ class SparkE2EQueryITest
       StructField("id", StringType)
     ))
 
-    val df = spark.read.schema(customSchema).format("cosmos.items").options(cfg).load()
+    val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.collect()
 
     for (index <- 0 until rowsArray.length) {
@@ -447,10 +447,10 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
-    val df = spark.read.format("cosmos.items").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.where("nestedObject.prop2 = '6'").collect()
     rowsArray should have size 1
 

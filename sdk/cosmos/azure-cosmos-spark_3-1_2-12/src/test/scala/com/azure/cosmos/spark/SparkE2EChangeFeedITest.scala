@@ -40,7 +40,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false"
+      "spark.cosmos.read.inferSchema.enabled" -> "false"
     )
 
     val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
@@ -54,7 +54,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
       "spark.cosmos.changeFeed.mode" -> "Incremental"
     )
 
@@ -84,7 +84,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false"
+      "spark.cosmos.read.inferSchema.enabled" -> "false"
     )
 
     val customSchema = StructType(Array(
@@ -120,7 +120,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
       "spark.cosmos.changeFeed.mode" -> "FullFidelity",
       "spark.cosmos.changeFeed.startFrom" -> "NOW"
     )
@@ -149,9 +149,9 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false",
-      "spark.cosmos.read.startFrom" -> "Beginning",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.changeFeed.startFrom" -> "Beginning",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val writeCfg = Map(
@@ -160,7 +160,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> sinkContainerName,
       "spark.cosmos.write.strategy" -> "ItemOverwrite",
-      "spark.cosmos.write.bulkEnabled" -> "true"
+      "spark.cosmos.write.bulk.enabled" -> "true"
     )
 
     val testId = UUID.randomUUID().toString.replace("-", "")
@@ -183,7 +183,7 @@ class SparkE2EChangeFeedITest
         .load()
       val microBatchQuery = changeFeedDF
         .writeStream
-        .format("cosmos.items")
+        .format("cosmos.oltp")
         .queryName(testId)
         .options(writeCfg)
         .option("checkpointLocation", s"/tmp/$testId/")
@@ -199,13 +199,13 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> sinkContainerName,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false",
-      "spark.cosmos.partitioning.strategy" -> "Restrictive"
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
     val validationDF = spark
       .read
-      .format("cosmos.items")
+      .format("cosmos.oltp")
       .options(validationCfg)
       .load()
 

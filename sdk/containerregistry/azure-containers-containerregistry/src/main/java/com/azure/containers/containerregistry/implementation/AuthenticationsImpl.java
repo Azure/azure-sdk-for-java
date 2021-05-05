@@ -7,8 +7,8 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.implementation.models.AcrAccessToken;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.AcrRefreshToken;
-import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.FormParam;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -55,9 +55,9 @@ public final class AuthenticationsImpl {
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrRefreshToken>> exchangeAadAccessTokenForAcrRefreshToken(
                 @HostParam("url") String url,
-                @BodyParam("application/x-www-form-urlencoded") String grantType,
-                @BodyParam("application/x-www-form-urlencoded") String service,
-                @BodyParam("application/x-www-form-urlencoded") String accessToken,
+                @FormParam("grant_type") String grantType,
+                @FormParam("service") String service,
+                @FormParam("access_token") String accessToken,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -67,10 +67,10 @@ public final class AuthenticationsImpl {
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessToken(
                 @HostParam("url") String url,
-                @BodyParam("application/x-www-form-urlencoded") String grantType,
-                @BodyParam("application/x-www-form-urlencoded") String service,
-                @BodyParam("application/x-www-form-urlencoded") String scope,
-                @BodyParam("application/x-www-form-urlencoded") String refreshToken,
+                @FormParam("grant_type") String grantType,
+                @FormParam("service") String service,
+                @FormParam("scope") String scope,
+                @FormParam("refresh_token") String refreshToken,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -163,38 +163,6 @@ public final class AuthenticationsImpl {
                                 return Mono.empty();
                             }
                         });
-    }
-
-    /**
-     * Exchange AAD tokens for an ACR refresh Token.
-     *
-     * @param serviceParam Indicates the name of your Azure container registry.
-     * @param accessToken AAD access token, mandatory when grant_type is access_token_refresh_token or access_token.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcrRefreshToken exchangeAadAccessTokenForAcrRefreshToken(String serviceParam, String accessToken) {
-        return exchangeAadAccessTokenForAcrRefreshTokenAsync(serviceParam, accessToken).block();
-    }
-
-    /**
-     * Exchange AAD tokens for an ACR refresh Token.
-     *
-     * @param serviceParam Indicates the name of your Azure container registry.
-     * @param accessToken AAD access token, mandatory when grant_type is access_token_refresh_token or access_token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcrRefreshToken> exchangeAadAccessTokenForAcrRefreshTokenWithResponse(
-            String serviceParam, String accessToken, Context context) {
-        return exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(serviceParam, accessToken, context).block();
     }
 
     /**
@@ -293,43 +261,5 @@ public final class AuthenticationsImpl {
                                 return Mono.empty();
                             }
                         });
-    }
-
-    /**
-     * Exchange ACR Refresh token for an ACR Access Token.
-     *
-     * @param serviceParam Indicates the name of your Azure container registry.
-     * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
-     * @param refreshToken Must be a valid ACR refresh token.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcrAccessToken exchangeAcrRefreshTokenForAcrAccessToken(
-            String serviceParam, String scope, String refreshToken) {
-        return exchangeAcrRefreshTokenForAcrAccessTokenAsync(serviceParam, scope, refreshToken).block();
-    }
-
-    /**
-     * Exchange ACR Refresh token for an ACR Access Token.
-     *
-     * @param serviceParam Indicates the name of your Azure container registry.
-     * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
-     *     requests. You obtained this from the Www-Authenticate response header from the challenge.
-     * @param refreshToken Must be a valid ACR refresh token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AcrErrorsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcrAccessToken> exchangeAcrRefreshTokenForAcrAccessTokenWithResponse(
-            String serviceParam, String scope, String refreshToken, Context context) {
-        return exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceParam, scope, refreshToken, context)
-                .block();
     }
 }

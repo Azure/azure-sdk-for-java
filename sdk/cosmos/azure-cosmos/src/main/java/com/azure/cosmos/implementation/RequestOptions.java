@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -38,6 +39,7 @@ public class RequestOptions {
     private String filterPredicate;
     private String throughputControlGroupName;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -416,5 +418,13 @@ public class RequestOptions {
 
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
+    }
+
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return dedicatedGatewayRequestOptions;
+    }
+
+    public void setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
     }
 }

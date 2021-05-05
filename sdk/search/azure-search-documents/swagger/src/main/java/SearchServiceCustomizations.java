@@ -74,6 +74,7 @@ public class SearchServiceCustomizations extends Customization {
         customizePatternAnalyzer(publicCustomization.getClass("PatternAnalyzer"));
         customizeLuceneStandardAnalyzer(publicCustomization.getClass("LuceneStandardAnalyzer"));
         customizeStopAnalyzer(publicCustomization.getClass("StopAnalyzer"));
+        customizeSearchIndexerSkillset(publicCustomization.getClass("SearchIndexerSkillset"));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -193,6 +194,20 @@ public class SearchServiceCustomizations extends Customization {
             .setDescription("Constructor of {@link SynonymMap}.")
             .setParam("name", "The name of the synonym map.")
             .setParam("synonyms", "A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.");
+
+        classCustomization.addMethod(joinWithNewline(
+            "/**",
+            " * Creates a new instance of SynonymMap with synonyms read from the passed file.",
+            " *",
+            " * @param name The name of the synonym map.",
+            " * @param filePath The path to the file where the formatted synonyms are read.",
+            " * @return A SynonymMap.",
+            " * @throws java.io.UncheckedIOException If reading {@code filePath} fails.",
+            " */",
+            "public static SynonymMap createFromFile(String name, java.nio.file.Path filePath) {",
+            "    String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);",
+            "    return new SynonymMap(name, synonyms);",
+            "}"));
     }
 
     private void customizeSearchResourceEncryptionKey(ClassCustomization keyCustomization,
@@ -301,6 +316,35 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeStopAnalyzer(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
         addVarArgsOverload(classCustomization, "stopwords", "String");
+    }
+
+    private void customizeSearchIndexerSkillset(ClassCustomization classCustomization) {
+        JavadocCustomization originalConstructorJavadocs = classCustomization.getConstructor("SearchIndexerSkillset")
+            .replaceParameters("@JsonProperty(value = \"name\") String name, @JsonProperty(value = \"skills\") List<SearchIndexerSkill> skills")
+            .getJavadoc();
+
+        JavadocCustomization additionalConstructorJavadocs = classCustomization.addConstructor(joinWithNewline(
+            "public SearchIndexerSkillset(String name) {",
+            "    this(name, null);",
+            "}"))
+            .getJavadoc();
+
+        additionalConstructorJavadocs.setDescription(originalConstructorJavadocs.getDescription());
+        additionalConstructorJavadocs.setParam("name", originalConstructorJavadocs.getParams().get("name"));
+
+        classCustomization.addMethod(joinWithNewline(
+            "/**",
+            " * Sets the skills property: A list of skills in the skillset.",
+            " *",
+            " * @param skills the skills value to set.",
+            " * @return the SearchIndexerSkillset object itself.",
+            " */",
+            "public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {",
+            "    this.skills = skills;",
+            "    return this;",
+            "}"
+        ));
+        addVarArgsOverload(classCustomization, "skills", "SearchIndexerSkill");
     }
 
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,

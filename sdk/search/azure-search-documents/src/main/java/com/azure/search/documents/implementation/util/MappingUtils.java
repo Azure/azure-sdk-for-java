@@ -13,7 +13,6 @@ import com.azure.search.documents.implementation.converters.IndexDocumentsResult
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexerSkillsetConverter;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
@@ -107,25 +106,17 @@ public class MappingUtils {
         return new SimpleResponse<>(indexerResponse, SearchIndexerConverter.map(indexerResponse.getValue()));
     }
 
-    public static Response<SearchIndexerSkillset> mappingExternalSkillset(
-        Response<com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset> skillsetResponse) {
-        return new SimpleResponse<>(skillsetResponse,
-            SearchIndexerSkillsetConverter.map(skillsetResponse.getValue()));
-    }
-
     public static PagedResponse<SearchIndexerSkillset> mappingPagingSkillset(
         Response<ListSkillsetsResult> skillsetResponse) {
-        List<SearchIndexerSkillset> skillsets = skillsetResponse.getValue().getSkillsets().stream()
-            .map(SearchIndexerSkillsetConverter::map).collect(toList());
         return new PagedResponseBase<HttpHeaders, SearchIndexerSkillset>(
             skillsetResponse.getRequest(), skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(),
-            skillsets, null, null);
+            skillsetResponse.getValue().getSkillsets(), null, null);
     }
 
     public static PagedResponse<String> mappingPagingSkillsetNames(
         Response<ListSkillsetsResult> skillsetResponse) {
         List<String> skillsetNames = skillsetResponse.getValue().getSkillsets().stream()
-            .map(SearchIndexerSkillsetConverter::map).map(SearchIndexerSkillset::getName).collect(toList());
+            .map(SearchIndexerSkillset::getName).collect(toList());
         return new PagedResponseBase<HttpHeaders, String>(
             skillsetResponse.getRequest(), skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(),
             skillsetNames, null, null);

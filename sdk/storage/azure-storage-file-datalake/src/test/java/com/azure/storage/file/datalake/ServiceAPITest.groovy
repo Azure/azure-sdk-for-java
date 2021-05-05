@@ -34,11 +34,11 @@ class ServiceAPITest extends APISpec {
     def "List file systems"() {
         when:
         def response =
-            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName), null)
+            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(namer.getResourcePrefix()), null)
 
         then:
         for (FileSystemItem c : response) {
-            assert c.getName().startsWith(fileSystemPrefix)
+            assert c.getName().startsWith(namer.getResourcePrefix())
             assert c.getProperties().getLastModified() != null
             assert c.getProperties().getETag() != null
             assert c.getProperties().getLeaseStatus() != null
@@ -76,16 +76,14 @@ class ServiceAPITest extends APISpec {
         setup:
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
-        fsc = primaryDataLakeServiceClient.createFileSystemWithResponse("aaa" + generateFileSystemName(), metadata, null, null).getValue()
+        def fileSystemName = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.createFileSystemWithResponse(fileSystemName, metadata, null, null).getValue()
 
         expect:
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
             .setDetails(new FileSystemListDetails().setRetrieveMetadata(true))
-            .setPrefix("aaa" + fileSystemPrefix), null)
+            .setPrefix(fileSystemName), null)
             .iterator().next().getMetadata() == metadata
-
-        // File system with prefix "aaa" will not be cleaned up by normal test cleanup.
-        fsc.deleteWithResponse(null, null, null).getStatusCode() == 202
     }
 
     def "List file systems maxResults"() {
@@ -432,7 +430,7 @@ class ServiceAPITest extends APISpec {
 //        def oldName = generateFileSystemName()
 //        def newName = generateFileSystemName()
 //        primaryDataLakeServiceClient.createFileSystem(oldName)
-//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
 //        def serviceClient = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
 //
 //        when:

@@ -1,6 +1,12 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
+
+- Updated `api-version` to `2019-09-01`
+- Soft-delete protection in `Vault` is enabled by default. A soft-deleted `Vault` can be purged via `Vaults.purgeDeleted`.
+- Supported `enableRoleBasedAccessControl` for `Vault`
+
+## 2.4.0 (2021-04-28)
 
 - Supported Private Link in `Vault`
 

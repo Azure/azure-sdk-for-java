@@ -31,7 +31,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val maxConcurrency = cosmosWriteConfig.maxConcurrencyOpt
+  private val maxConcurrency = cosmosWriteConfig.pointMaxConcurrency
     .getOrElse(SparkUtils.getNumberOfHostCPUCores * MaxNumberOfThreadsPerCPUCore)
 
   // TODO: moderakh do perf tuning on the maxConcurrency and also the thread pool config

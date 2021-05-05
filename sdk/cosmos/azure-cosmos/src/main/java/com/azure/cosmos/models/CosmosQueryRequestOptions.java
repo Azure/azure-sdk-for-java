@@ -35,6 +35,7 @@ public class CosmosQueryRequestOptions {
     private FeedRange feedRange;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
 
     /**
      * Instantiates a new query request options.
@@ -64,6 +65,7 @@ public class CosmosQueryRequestOptions {
         this.emptyPagesAllowed = options.emptyPagesAllowed;
         this.throughputControlGroupName = options.throughputControlGroupName;
         this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+        this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -430,6 +432,26 @@ public class CosmosQueryRequestOptions {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
+        return this;
+    }
+
+    /**
+     * Gets the Dedicated Gateway Request Options
+     * @return the Dedicated Gateway Request Options
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return this.dedicatedGatewayRequestOptions;
+    }
+
+    /**
+     * Sets the Dedicated Gateway Request Options
+     * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
+     * @return the CosmosQueryRequestOptions
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
         return this;
     }
 
