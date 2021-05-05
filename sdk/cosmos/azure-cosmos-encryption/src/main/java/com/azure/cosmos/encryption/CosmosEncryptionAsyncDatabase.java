@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
  */
 public class CosmosEncryptionAsyncDatabase {
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
-    private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+    private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
 
     CosmosEncryptionAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase,
                                   CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {

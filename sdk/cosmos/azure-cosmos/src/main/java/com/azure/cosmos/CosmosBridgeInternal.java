@@ -33,6 +33,11 @@ public final class CosmosBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosAsyncClient getCosmosAsyncClient(CosmosClient client) {
+        return client.asyncClient();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncClient client) {
         return client.getDocClientWrapper();
     }

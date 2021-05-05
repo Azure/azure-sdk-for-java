@@ -45,9 +45,9 @@ public class CosmosEncryptionAsyncContainer {
     private final Scheduler encryptionScheduler;
     private final CosmosResponseFactory responseFactory = new CosmosResponseFactory();
     private final CosmosAsyncContainer container;
-    private EncryptionProcessor encryptionProcessor;
+    private final EncryptionProcessor encryptionProcessor;
 
-    private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+    private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
@@ -232,7 +232,7 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Query for items in the current container using a string.
+     * Query for items in the current container using a {@link SqlQuerySpec}.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
@@ -260,7 +260,7 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Query for items in the current container using a string.
+     * Query for items in the current container using a {@link SqlQuerySpecWithEncryption}.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
