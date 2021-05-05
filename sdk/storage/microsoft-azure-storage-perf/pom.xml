@@ -14,7 +14,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>microsoft-azure-storage-perf</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:microsoft-azure-storage-perf;current} -->
 
   <dependencies>
     <dependency>
@@ -64,14 +64,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
-      </plugin>
+
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -81,8 +74,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-storage:[8.6.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-storage-file-share;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-storage-file-share;external_dependency} -->
+                <include>com.microsoft.azure:azure-storage:[8.6.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-storage;current} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
