@@ -1519,7 +1519,7 @@ public class ShareFileAsyncClient {
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
-        return chunkedSource.flatMapSequential(stagingArea::write)
+        return chunkedSource.flatMapSequential(stagingArea::write, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
