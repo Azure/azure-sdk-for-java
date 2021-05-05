@@ -6,6 +6,7 @@ package com.azure.cosmos.spark.diagnostics
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal
 import com.azure.cosmos.implementation.spark.{OperationContext, OperationListener}
 import com.azure.cosmos.implementation.{HttpConstants, OperationType, RxDocumentServiceRequest, RxDocumentServiceResponse}
+import org.apache.spark.sql.connector.read.Batch
 
 // scalastyle:off multiple.string.literals
 private[spark] class SimpleOperationListener extends OperationListener with BasicLoggingTrait {
@@ -56,6 +57,10 @@ private[spark] class SimpleOperationListener extends OperationListener with Basi
     if (req.isReadOnlyRequest) {
       sb.append(", continuationToken:").append(headers.get(HttpConstants.HttpHeaders.CONTINUATION))
       sb.append(", correlationActivityId:").append(headers.get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID))
+    }
+
+    if (req.getOperationType == OperationType.Batch) {
+      sb.append(", items:").append(req.getNumberOfItemsInBatchRequest);
     }
     sb.append("}")
   }
