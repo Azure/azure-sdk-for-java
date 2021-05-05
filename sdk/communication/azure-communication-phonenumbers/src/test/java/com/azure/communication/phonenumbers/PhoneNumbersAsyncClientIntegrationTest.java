@@ -2,16 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
-import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
-import com.azure.communication.phonenumbers.models.PhoneNumberType;
-import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
-import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
-import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
+import com.azure.communication.phonenumbers.models.*;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -158,11 +149,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .flatMap(responseAcquiredPhone -> {
                     PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
                     capabilities.setCalling(responseAcquiredPhone.getValue().getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND);
-                    capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND);
+                    capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND_OUTBOUND);
                     return beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", capabilities)
                         .last()
                         .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasedPhoneNumber> result) -> {
                             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
+                            assertEquals(PhoneNumberOperationStatus.SUCCEEDED, result.getValue().getStatus());
                             return result.getFinalResult();
                         });
 
