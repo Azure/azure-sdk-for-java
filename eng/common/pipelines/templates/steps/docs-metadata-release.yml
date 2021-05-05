@@ -59,6 +59,7 @@ parameters:
     default: false
   - name: SparseCheckoutPaths
     type: object
+    default: null
 
 steps:
 - pwsh: |
