@@ -276,6 +276,7 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue())
     }
 
+    @Requires( { playbackMode() } )
     def "Set and get properties premium"() {
         given:
         def originalProperties = premiumFileServiceClient.getProperties()
