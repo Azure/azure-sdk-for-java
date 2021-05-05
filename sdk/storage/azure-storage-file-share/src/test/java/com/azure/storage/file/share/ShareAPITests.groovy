@@ -321,6 +321,7 @@ class ShareAPITests extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() })
     def "Get properties premium"() {
         given:
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol)
@@ -354,6 +355,7 @@ class ShareAPITests extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() })
     def "Set premium properties"() {
         setup:
         def premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(),
