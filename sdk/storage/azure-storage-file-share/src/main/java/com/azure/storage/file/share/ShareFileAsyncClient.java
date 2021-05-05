@@ -1360,7 +1360,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadRange#ShareFileUploadRangeOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -1386,7 +1386,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadRangeWithResponse#ShareFileUploadRangeOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -1433,7 +1433,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadBufferedRange#ShareFileUploadBufferedRangeOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRange#ShareFileUploadBufferedRangeOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -1457,7 +1457,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
