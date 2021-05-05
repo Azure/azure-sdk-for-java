@@ -59,7 +59,7 @@ parameters:
     default: false
   - name: SparseCheckoutPaths
     type: object
-    default: null
+    default: false
 
 steps:
 - pwsh: |
@@ -79,6 +79,8 @@ steps:
     ignoreLASTEXITCODE: false
 
 - ${{ if parameters.SparseCheckoutPaths }}:
+  - pwsh: |
+      echo bbpfoo
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
     parameters:
       SkipDefaultCheckout: true
