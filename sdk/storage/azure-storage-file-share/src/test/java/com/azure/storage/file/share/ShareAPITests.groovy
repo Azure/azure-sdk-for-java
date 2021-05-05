@@ -44,8 +44,8 @@ class ShareAPITests extends APISpec {
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
+        shareName = namer.getRandomName(60)
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
         primaryShareClient = primaryFileServiceClient.getShareClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes> of(NtfsFileAttributes.NORMAL))
@@ -71,7 +71,7 @@ class ShareAPITests extends APISpec {
         when:
         ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot()
         expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot()
-        ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+        ShareClient newShareClient = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient()
         def shareURL = newShareClient.getShareUrl()
 
@@ -116,7 +116,7 @@ class ShareAPITests extends APISpec {
 
     def "Exists error"() {
         setup:
-        primaryShareClient = shareBuilderHelper(interceptorManager, shareName)
+        primaryShareClient = shareBuilderHelper(shareName)
             .sasToken("sig=dummyToken").buildClient()
 
         when:
@@ -166,7 +166,7 @@ class ShareAPITests extends APISpec {
     def "Create snapshot"() {
         given:
         primaryShareClient.create()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = namer.getRandomName(60)
 
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
@@ -190,7 +190,7 @@ class ShareAPITests extends APISpec {
     def "Create snapshot metadata"() {
         given:
         primaryShareClient.create()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = namer.getRandomName(60)
 
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)
@@ -380,8 +380,8 @@ class ShareAPITests extends APISpec {
         def identifier = new ShareSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                .setStartsOn(namer.getUtcNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(namer.getUtcNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
                     .plusDays(1))
                 .setPermissions("r"))
 
@@ -400,14 +400,14 @@ class ShareAPITests extends APISpec {
         def identifier = new ShareSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(1))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(1))
                 .setPermissions("r"))
         def identifier2 = new ShareSignedIdentifier()
             .setId("0001")
             .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(2))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(2))
                 .setPermissions("w"))
         def ids = [identifier, identifier2] as List
 
@@ -463,8 +463,8 @@ class ShareAPITests extends APISpec {
         def identifier = new ShareSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                .setStartsOn(namer.getUtcNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(namer.getUtcNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
                     .plusDays(1))
                 .setPermissions("r"))
 
@@ -532,7 +532,7 @@ class ShareAPITests extends APISpec {
     def "Set properties access tier"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
+        def time = namer.getUtcNow().truncatedTo(ChronoUnit.SECONDS)
 
         when:
         def getAccessTierBeforeResponse = primaryShareClient.getProperties()
@@ -708,8 +708,8 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         def filePermissionKey = primaryShareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
@@ -770,8 +770,8 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
         def filePermissionKey = primaryShareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
 
         expect:
@@ -800,8 +800,8 @@ class ShareAPITests extends APISpec {
     def "Create file maxOverload"() {
         given:
         primaryShareClient.create()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties, filePermission, testMetadata, null, null), 201)
@@ -945,7 +945,7 @@ class ShareAPITests extends APISpec {
             1, 1), ZoneOffset.UTC).toString()
 
         when:
-        def shareSnapshotClient = shareBuilderHelper(interceptorManager, shareName).snapshot(snapshot).buildClient()
+        def shareSnapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildClient()
 
         then:
         snapshot == shareSnapshotClient.getSnapshotId()
@@ -961,7 +961,7 @@ class ShareAPITests extends APISpec {
         given:
         primaryShareClient.create()
 
-        def shareClient = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+        def shareClient = shareBuilderHelper(primaryShareClient.getShareName())
             .addPolicy(getPerCallVersionPolicy()).buildClient()
 
         when:
