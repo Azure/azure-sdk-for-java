@@ -1416,7 +1416,7 @@ public class ShareFileAsyncClient {
 
         Flux<ByteBuffer> data = options.getDataFlux() == null
             ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), (int)FILE_DEFAULT_BLOCK_SIZE, true)
+                options.getDataStream(), options.getLength(), (int) FILE_DEFAULT_BLOCK_SIZE, true)
             : options.getDataFlux();
 
         return azureFileStorageClient.getFiles()
