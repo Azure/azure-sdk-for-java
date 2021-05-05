@@ -20,14 +20,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -439,29 +438,29 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
 
-        final Set<Long> actualMessages = new HashSet<>();
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        final AtomicInteger messageId = new AtomicInteger();
+        final AtomicLong actualCount = new AtomicLong();
+
         final int maxMessages = 2;
-
-        sendMessage(message);
-        sendMessage(message);
-
+        for(int i = 0; i< maxMessages; ++i) {
+            ServiceBusMessage message = getMessage(""+i, isSessionEnabled);
+            sendMessage(message);
+        }
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
+
         // Act
-        IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
-        messages.forEach(receivedMessage -> actualMessages.add(receivedMessage.getSequenceNumber()));
 
-        // maxMessages are not always guaranteed, Sometime at random, we get less than asked for.
+        // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
-
-        if (actualMessages.size() < maxMessages) {
-            messages = receiver.peekMessages(maxMessages);
-            messages.forEach(receivedMessage -> actualMessages.add(receivedMessage.getSequenceNumber()));
+        for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
+            receiver.peekMessages(maxMessages).stream().forEach(receivedMessage -> {
+                actualCount.addAndGet(1);
+                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId());
+            });
         }
 
         // Assert
-        assertEquals(maxMessages, actualMessages.size());
+        assertEquals(maxMessages, actualCount.get());
     }
 
     /**

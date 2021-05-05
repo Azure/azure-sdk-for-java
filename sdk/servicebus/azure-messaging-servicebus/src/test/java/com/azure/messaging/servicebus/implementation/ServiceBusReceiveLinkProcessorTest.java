@@ -231,7 +231,7 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies that we can get subsequent AMQP links when the first one is closed.
      */
     @Test
-    void newLinkOnClose() {
+    void newLinkOnClose() throws InterruptedException {
         // Arrange
         final Duration shortWait = Duration.ofSeconds(5);
         final Message message3 = mock(Message.class);
@@ -282,6 +282,8 @@ class ServiceBusReceiveLinkProcessorTest {
             .thenAwait(shortWait)
             .expectComplete()
             .verify(shortWait);
+
+        TimeUnit.SECONDS.sleep(1);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -526,9 +528,10 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     @Test
-    void receivesUntilFirstLinkClosed() {
+    void receivesUntilFirstLinkClosed() throws InterruptedException {
         // Arrange
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+
         final Duration shortWait = Duration.ofSeconds(5);
 
         when(link1.getCredits()).thenReturn(0);
@@ -538,17 +541,16 @@ class ServiceBusReceiveLinkProcessorTest {
         StepVerifier.create(processor)
             .then(() -> {
                 endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                messagePublisher.next(message1, message2);
+                messagePublisher.next(message1);
             })
             .expectNext(message1)
+            .then(() -> messagePublisher.next(message2))
             .expectNext(message2)
-            .then(() -> {
-                endpointProcessor.complete();
-                messagePublisher.complete();
-            })
-            .thenAwait(shortWait)
+            .then(() -> endpointProcessor.complete())
             .expectComplete()
             .verify(shortWait);
+
+        TimeUnit.SECONDS.sleep(1);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());

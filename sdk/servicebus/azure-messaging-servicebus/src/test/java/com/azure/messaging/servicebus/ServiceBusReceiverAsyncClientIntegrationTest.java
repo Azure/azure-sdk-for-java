@@ -32,13 +32,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -555,37 +554,37 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
-        final Set<Long> actualMessages = new HashSet<>();
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, false);
+        AtomicInteger messageId = new AtomicInteger();
+        final AtomicLong actualCount = new AtomicLong();
         final int maxMessages = 2;
         final int fromSequenceNumber = 1;
 
-        Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
-
-        // Assert & Act
-        StepVerifier.create(receiver.peekMessages(maxMessages, fromSequenceNumber))
-            .expectNextCount(maxMessages)
-            .verifyComplete();
-
-        receiver.peekMessages(maxMessages).toStream().forEach(receivedMessage ->
-            actualMessages.add(receivedMessage.getSequenceNumber()));
-
-        // maxMessages are not always guaranteed, Sometime at random, we get less than asked for.
-        // https://github.com/Azure/azure-sdk-for-java/issues/21168
-
-        if (actualMessages.size() < maxMessages) {
-            receiver.peekMessages(maxMessages).toStream().forEach(receivedMessage ->
-                actualMessages.add(receivedMessage.getSequenceNumber()));
+        for (int i = 0; i < maxMessages; ++i) {
+            ServiceBusMessage message = getMessage("" + i, isSessionEnabled);
+            Mono.when(sendMessage(message)).block(TIMEOUT);
         }
 
-        assertEquals(maxMessages, actualMessages.size());
+        // Assert & Act
+
+        // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
+        // https://github.com/Azure/azure-sdk-for-java/issues/21168
+        for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
+            System.out.println(" !!! Making  a call to peek .....");
+            receiver.peekMessages(maxMessages, fromSequenceNumber).toStream().forEach(receivedMessage -> {
+                actualCount.addAndGet(1);
+                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId());
+            });
+        }
+
+        assertEquals(maxMessages, actualCount.get());
 
         StepVerifier.create(receiver.receiveMessages().take(maxMessages))
             .assertNext(receivedMessage -> {
+                System.out.println("!!!! delete  Received " + receivedMessage.getMessageId());
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
             .assertNext(receivedMessage -> {
+                System.out.println("!!!!  delete Received " + receivedMessage.getMessageId());
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
             .expectComplete()
