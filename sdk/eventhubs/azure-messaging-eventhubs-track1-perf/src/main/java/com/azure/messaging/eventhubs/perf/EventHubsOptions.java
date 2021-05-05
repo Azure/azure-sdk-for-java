@@ -13,12 +13,26 @@ import com.microsoft.azure.eventhubs.TransportType;
  * Set of options for running event hubs performance tests.
  */
 public class EventHubsOptions extends PerfStressOptions {
-    @Parameter(names = { "--transportType" }, description = "TransportType for the connection",
+    private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    private static final String AZURE_EVENTHUBS_EVENTHUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
+
+    @Parameter(names = {"--transportType"}, description = "TransportType for the connection",
         converter = TransportTypeConverter.class)
     private TransportType transportType;
 
-    @Parameter(names = { "--batchSize" }, description = "The number of messages in EventDataBatch.")
-    private int messagesInBatch;
+    @Parameter(names = {"-cs", "--connectionString"}, description = "Connection string for Event Hubs namespace.")
+    private String connectionString;
+
+    @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.")
+    private String eventHubName;
+
+    /**
+     * Creates an instance with the default options.
+     */
+    public EventHubsOptions() {
+        super();
+        this.transportType = TransportType.AMQP;
+    }
 
     /**
      * Gets the transport type used for creating event hubs client.
@@ -30,12 +44,31 @@ public class EventHubsOptions extends PerfStressOptions {
     }
 
     /**
-     * Gets the number of messages to put in an EventDataBatch.
+     * Gets the number of events to send in a single iteration.
      *
-     * @return The number of messages to put inside a batch.
+     * @return The number of events to send in a single iteration.
      */
-    public int getMessagesInBatch() {
-        return messagesInBatch;
+    @Override
+    public int getCount() {
+        return super.getCount();
+    }
+
+    /**
+     * Gets the Event Hubs namespace connection string.
+     *
+     * @return the Event Hubs namespace connection string.
+     */
+    public String getConnectionString() {
+        return connectionString != null ? connectionString : System.getenv(AZURE_EVENTHUBS_CONNECTION_STRING);
+    }
+
+    /**
+     * Gets the name of the Event Hub.
+     *
+     * @return The name of the Event Hub.
+     */
+    public String getEventHubName() {
+        return eventHubName != null ? eventHubName : System.getenv(AZURE_EVENTHUBS_EVENTHUB_NAME);
     }
 
     static class TransportTypeConverter implements IStringConverter<TransportType> {
