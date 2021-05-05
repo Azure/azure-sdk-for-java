@@ -1107,7 +1107,7 @@ class FileAPITest extends APISpec {
 
     def "Download to file exists"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -1128,7 +1128,7 @@ class FileAPITest extends APISpec {
 
     def "Download to file exists succeeds"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -1147,7 +1147,7 @@ class FileAPITest extends APISpec {
 
     def "Download to file does not exist"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -1166,7 +1166,7 @@ class FileAPITest extends APISpec {
 
     def "Download file does not exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -1189,7 +1189,7 @@ class FileAPITest extends APISpec {
 
     def "Download file exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -1217,7 +1217,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(fileSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1259,7 +1259,7 @@ class FileAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         fileClient.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1300,7 +1300,7 @@ class FileAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         fileAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1333,7 +1333,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1366,7 +1366,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1387,7 +1387,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1445,7 +1445,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1483,7 +1483,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(Constants.MB)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
         expect:
@@ -1546,7 +1546,7 @@ class FileAPITest extends APISpec {
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -3669,7 +3669,7 @@ class FileAPITest extends APISpec {
 
     def "Schedule deletion time"() {
         given:
-        OffsetDateTime now = getUTCNow()
+        OffsetDateTime now = namer.getUtcNow()
         def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(now.plusDays(1))
         def fileClient = fsc.getFileClient(generatePathName())
         fileClient.create()
@@ -3684,7 +3684,7 @@ class FileAPITest extends APISpec {
 
     def "Schedule deletion error"() {
         given:
-        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(getUTCNow().plusDays(1))
+        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(namer.getUtcNow().plusDays(1))
         def fileClient = fsc.getFileClient(generatePathName())
 
         when:
