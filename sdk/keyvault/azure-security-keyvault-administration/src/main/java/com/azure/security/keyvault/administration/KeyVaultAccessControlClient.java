@@ -88,8 +88,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The created {@link KeyVaultRoleDefinition}.
      *
-     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
-     * are {@code null}.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition setRoleDefinition(KeyVaultRoleScope roleScope) {
@@ -111,22 +110,6 @@ public final class KeyVaultAccessControlClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
         return asyncClient.setRoleDefinition(roleScope, roleDefinitionName).block();
-    }
-
-    /**
-     * Creates or updates a {@link KeyVaultRoleDefinition}.
-     *
-     * @param options Object representing the configurable options to create or update a
-     * {@link KeyVaultRoleDefinition role definition}.
-     *
-     * @return The created or updated {@link KeyVaultRoleDefinition}.
-     *
-     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
-     * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleDefinition setRoleDefinition(SetKeyVaultRoleDefinitionOptions options) {
-        return asyncClient.setRoleDefinition(options).block();
     }
 
     /**

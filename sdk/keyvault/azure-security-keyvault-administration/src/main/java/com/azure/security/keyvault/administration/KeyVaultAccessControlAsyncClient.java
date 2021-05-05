@@ -233,12 +233,11 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleDefinition}.
      *
-     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
-     * are {@code null}.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultRoleDefinition> setRoleDefinition(KeyVaultRoleScope roleScope) {
-        return setRoleDefinition(new SetKeyVaultRoleDefinitionOptions(roleScope, UUID.randomUUID().toString()));
+        return setRoleDefinition(roleScope, UUID.randomUUID().toString());
     }
 
     /**
@@ -255,23 +254,8 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultRoleDefinition> setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        return setRoleDefinition(new SetKeyVaultRoleDefinitionOptions(roleScope, roleDefinitionName));
-    }
-
-    /**
-     * Creates or updates a {@link KeyVaultRoleDefinition}.
-     *
-     * @param options Object representing the configurable options to create or update a
-     * {@link KeyVaultRoleDefinition role definition}.
-     *
-     * @return A {@link Mono} containing the created or updated {@link KeyVaultRoleDefinition}.
-     *
-     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
-     * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultRoleDefinition> setRoleDefinition(SetKeyVaultRoleDefinitionOptions options) {
-        return setRoleDefinitionWithResponse(options).flatMap(FluxUtil::toMono);
+        return setRoleDefinitionWithResponse(new SetKeyVaultRoleDefinitionOptions(roleScope, roleDefinitionName))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
