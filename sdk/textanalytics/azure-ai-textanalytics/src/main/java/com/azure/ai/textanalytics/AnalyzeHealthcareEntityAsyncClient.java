@@ -84,7 +84,9 @@ class AnalyzeHealthcareEntityAsyncClient {
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        getNonNullStringIndexType(options.getStringIndexType()),
+                        null, // TODO: issue for disableServiceLog
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -118,7 +120,9 @@ class AnalyzeHealthcareEntityAsyncClient {
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        getNonNullStringIndexType(options.getStringIndexType()),
+                        null, // TODO: issue for disableServiceLog
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =

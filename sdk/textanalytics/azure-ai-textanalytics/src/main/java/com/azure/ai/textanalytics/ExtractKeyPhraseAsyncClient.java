@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -186,6 +185,7 @@ class ExtractKeyPhraseAsyncClient {
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
+            null, // TODO: issue for disableServiceLog
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document with count - {}",
                 getDocumentCount(documents)))

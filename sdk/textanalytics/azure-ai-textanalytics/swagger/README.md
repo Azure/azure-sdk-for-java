@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: ./v3.1-preview.4.json
+input-file: ./v3.1-preview.5.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true

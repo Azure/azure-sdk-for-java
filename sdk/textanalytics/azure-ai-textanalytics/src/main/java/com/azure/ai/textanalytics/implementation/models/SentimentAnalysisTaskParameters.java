@@ -7,9 +7,9 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EntityLinkingTaskParameters model. */
+/** The SentimentAnalysisTaskParameters model. */
 @Fluent
-public final class EntityLinkingTaskParameters {
+public final class SentimentAnalysisTaskParameters {
     /*
      * The model-version property.
      */
@@ -21,6 +21,12 @@ public final class EntityLinkingTaskParameters {
      */
     @JsonProperty(value = "loggingOptOut")
     private Boolean loggingOptOut;
+
+    /*
+     * The opinionMining property.
+     */
+    @JsonProperty(value = "opinionMining")
+    private Boolean opinionMining;
 
     /*
      * The stringIndexType property.
@@ -41,9 +47,9 @@ public final class EntityLinkingTaskParameters {
      * Set the modelVersion property: The model-version property.
      *
      * @param modelVersion the modelVersion value to set.
-     * @return the EntityLinkingTaskParameters object itself.
+     * @return the SentimentAnalysisTaskParameters object itself.
      */
-    public EntityLinkingTaskParameters setModelVersion(String modelVersion) {
+    public SentimentAnalysisTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -61,10 +67,30 @@ public final class EntityLinkingTaskParameters {
      * Set the loggingOptOut property: The loggingOptOut property.
      *
      * @param loggingOptOut the loggingOptOut value to set.
-     * @return the EntityLinkingTaskParameters object itself.
+     * @return the SentimentAnalysisTaskParameters object itself.
      */
-    public EntityLinkingTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+    public SentimentAnalysisTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         this.loggingOptOut = loggingOptOut;
+        return this;
+    }
+
+    /**
+     * Get the opinionMining property: The opinionMining property.
+     *
+     * @return the opinionMining value.
+     */
+    public Boolean isOpinionMining() {
+        return this.opinionMining;
+    }
+
+    /**
+     * Set the opinionMining property: The opinionMining property.
+     *
+     * @param opinionMining the opinionMining value to set.
+     * @return the SentimentAnalysisTaskParameters object itself.
+     */
+    public SentimentAnalysisTaskParameters setOpinionMining(Boolean opinionMining) {
+        this.opinionMining = opinionMining;
         return this;
     }
 
@@ -81,9 +107,9 @@ public final class EntityLinkingTaskParameters {
      * Set the stringIndexType property: The stringIndexType property.
      *
      * @param stringIndexType the stringIndexType value to set.
-     * @return the EntityLinkingTaskParameters object itself.
+     * @return the SentimentAnalysisTaskParameters object itself.
      */
-    public EntityLinkingTaskParameters setStringIndexType(StringIndexType stringIndexType) {
+    public SentimentAnalysisTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
     }

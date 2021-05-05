@@ -213,7 +213,9 @@ class RecognizePiiEntityAsyncClient {
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(), options.isIncludeStatistics(),
+            options.getModelVersion(),
+            options.isIncludeStatistics(),
+            null, // TODO: issue for disableServiceLog
             options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
             getNonNullStringIndexType(options.getStringIndexType()),
             toCategoriesFilter(options.getCategoriesFilter()),

@@ -216,7 +216,10 @@ class AnalyzeSentimentAsyncClient {
         options = options == null ? new AnalyzeSentimentOptions() : options;
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(), options.isIncludeStatistics(), options.isIncludeOpinionMining(),
+            options.getModelVersion(),
+            options.isIncludeStatistics(),
+            null, // TODO: issue for disableServiceLog
+            options.isIncludeOpinionMining(),
             getNonNullStringIndexType(options.getStringIndexType()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
