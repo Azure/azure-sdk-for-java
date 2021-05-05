@@ -3,13 +3,17 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
+import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
-import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.TaskContext
 
+import java.util.UUID
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
 import java.util.concurrent.{Callable, CompletableFuture, ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit}
 import scala.collection.concurrent.TrieMap
@@ -118,7 +122,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
-        container.createItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
+        container.createItem(objectNode, partitionKeyValue, options).block()
         return
       } catch {
         case e: CosmosException if Exceptions.isResourceExistsException(e) =>
@@ -136,6 +140,28 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     assert(exceptionOpt.isDefined)
     throw exceptionOpt.get
   }
+  val options = new CosmosItemRequestOptions()
+  initializeDiagnosticsIfConfigured()
+
+  private def initializeDiagnosticsIfConfigured(): Unit = {
+    if (diagnosticsConfig.mode.isDefined) {
+      val taskContext = TaskContext.get
+      assert(taskContext != null)
+
+      val diagnosticsContext: DiagnosticsContext = new DiagnosticsContext(UUID.randomUUID().toString, "test")
+
+      val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+        taskContext.stageId(),
+        taskContext.partitionId(),
+        "Point Write")
+
+      val listener: OperationListener =
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getOperationListener().get
+
+      val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
+      options.setOperationContextAndListenerTuple(operationContextAndListenerTuple)
+    }
+  }
 
   private def upsertWithRetry(partitionKeyValue: PartitionKey,
                               objectNode: ObjectNode): Unit = {
@@ -145,7 +171,8 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
-        container.upsertItem(objectNode, partitionKeyValue, new CosmosItemRequestOptions()).block()
+
+        container.upsertItem(objectNode, partitionKeyValue, options).block()
         return
       } catch {
         case e: CosmosException if Exceptions.canBeTransientFailure(e) =>

@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.spark.diagnostics
 
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal
 import com.azure.cosmos.implementation.spark.{OperationContext, OperationListener}
-import com.azure.cosmos.implementation.{HttpConstants, RxDocumentServiceRequest, RxDocumentServiceResponse}
+import com.azure.cosmos.implementation.{HttpConstants, OperationType, RxDocumentServiceRequest, RxDocumentServiceResponse}
 
 // scalastyle:off multiple.string.literals
 private[spark] class SimpleOperationListener extends OperationListener with BasicLoggingTrait {
@@ -25,15 +26,16 @@ private[spark] class SimpleOperationListener extends OperationListener with Basi
     sb.append("request{")
     sb.append("operationType:").append(request.getOperationType)
     sb.append(", resourceType:").append(request.getResourceType)
-    sb.append(", partitionKeyRangeIdentity:").append(request.getPartitionKeyRangeIdentity)
-    sb.append(", partitionKeyInternal:").append(request.getPartitionKeyInternal)
-    sb.append(", feedRange:").append(request.getFeedRange)
-    sb.append(", effectiveRange:").append(request.getEffectiveRange)
+    sb.append(", partitionKey:").append(safePartitionKeyInternalToJson(request.getPartitionKeyInternal))
     sb.append(", resourceAddress:").append(request.getResourceAddress)
     sb.append(", ")
-    requestHeadersDump(sb, request.getHeaders)
+    requestHeadersDump(sb, request)
     sb.append("}")
     sb.toString()
+  }
+
+  private def safePartitionKeyInternalToJson(partitionKeyInternal: PartitionKeyInternal) = {
+    if (partitionKeyInternal == null) "null" else partitionKeyInternal.toJson
   }
 
   private def toString(response: RxDocumentServiceResponse): String = {
@@ -41,25 +43,33 @@ private[spark] class SimpleOperationListener extends OperationListener with Basi
     sb.append("response{")
     sb.append("statusCode:").append(response.getStatusCode)
     sb.append(", ")
-    responseHeadersDump(sb, response.getResponseHeaders)
+    responseHeadersDump(sb, response)
     sb.append("}")
 
     sb.toString()
   }
 
-  private def requestHeadersDump(sb: StringBuilder, headers: java.util.Map[String, String]): Unit = {
+  private def requestHeadersDump(sb: StringBuilder, req: RxDocumentServiceRequest): Unit = {
+    val headers = req.getHeaders
     sb.append("headers{")
-    sb.append("continuationToken:").append(headers.get(HttpConstants.HttpHeaders.CONTINUATION))
-    sb.append(", activityId:").append(headers.get(HttpConstants.HttpHeaders.ACTIVITY_ID))
-    sb.append(", correlationActivityId:").append(headers.get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID))
+    sb.append("activityId:").append(req.getActivityId)
+    if (req.isReadOnlyRequest) {
+      sb.append(", continuationToken:").append(headers.get(HttpConstants.HttpHeaders.CONTINUATION))
+      sb.append(", correlationActivityId:").append(headers.get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID))
+    }
     sb.append("}")
   }
 
-  private def responseHeadersDump(sb: StringBuilder, headers: java.util.Map[String, String]): Unit = {
+  private def responseHeadersDump(sb: StringBuilder, resp: RxDocumentServiceResponse): Unit = {
+    val headers = resp.getResponseHeaders
     sb.append("headers{")
-    sb.append("continuationToken:").append(headers.get(HttpConstants.HttpHeaders.CONTINUATION))
-    sb.append(", activityId:").append(headers.get(HttpConstants.HttpHeaders.ACTIVITY_ID))
-    sb.append(", itemCount:").append(headers.get(HttpConstants.HttpHeaders.ITEM_COUNT))
+    sb.append("activityId:").append(headers.get(HttpConstants.HttpHeaders.ACTIVITY_ID))
+
+    val itemCount = headers.get(HttpConstants.HttpHeaders.ITEM_COUNT)
+    if (itemCount != null) {
+      sb.append(", itemCount:").append(itemCount)
+      sb.append(", continuationToken:").append(headers.get(HttpConstants.HttpHeaders.CONTINUATION))
+    }
     sb.append("}")
   }
 }

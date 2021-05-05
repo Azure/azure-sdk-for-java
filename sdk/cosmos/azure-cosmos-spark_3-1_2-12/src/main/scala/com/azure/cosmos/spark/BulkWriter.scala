@@ -3,11 +3,13 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
+import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.azure.cosmos.spark.BulkWriter.{MaxNumberOfThreadsPerCPUCore, emitFailureHandler}
-import com.azure.cosmos.spark.diagnostics.LoggerHelper
-import com.azure.cosmos.{BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.azure.cosmos.{BulkItemRequestOptions, BulkOperations, BulkProcessingOptions, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.TaskContext
 import reactor.core.Disposable
 import reactor.core.publisher.Sinks
 import reactor.core.publisher.Sinks.{EmitFailureHandler, EmitResult}
@@ -15,6 +17,7 @@ import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
 
+import java.util.UUID
 import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
@@ -62,9 +65,32 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
 
+  private val bulkOptions = new BulkProcessingOptions[Object]()
+  initializeDiagnosticsIfConfigured()
+
+  private def initializeDiagnosticsIfConfigured(): Unit = {
+    if (diagnosticsConfig.mode.isDefined) {
+      val taskContext = TaskContext.get
+      assert(taskContext != null)
+
+      val diagnosticsContext: DiagnosticsContext = new DiagnosticsContext(UUID.randomUUID().toString, "test")
+
+      val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+        taskContext.stageId(),
+        taskContext.partitionId(),
+        "Bulk Write")
+
+      val listener: OperationListener =
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getOperationListener().get
+
+      val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
+      bulkOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple)
+    }
+  }
+
   private val subscriptionDisposable: Disposable = {
     val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
-      container.processBulkOperations[Object](bulkInputEmitter.asFlux()).asScala
+      container.processBulkOperations[Object](bulkInputEmitter.asFlux(), bulkOptions).asScala
 
     bulkOperationResponseFlux.subscribe(
       resp => {

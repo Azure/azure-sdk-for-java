@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
@@ -20,6 +21,7 @@ public final class BulkProcessingOptions<TContext> {
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
     private Duration maxMicroBatchInterval = Duration.ofMillis(BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final TContext batchContext;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
 
     public BulkProcessingOptions(TContext batchContext) {
         this.batchContext = batchContext;
@@ -97,5 +99,15 @@ public final class BulkProcessingOptions<TContext> {
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TContext getBatchContext() {
         return batchContext;
+    }
+
+    // TODO moderakh hide
+    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
+    // TODO moderakh hide
+    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 }

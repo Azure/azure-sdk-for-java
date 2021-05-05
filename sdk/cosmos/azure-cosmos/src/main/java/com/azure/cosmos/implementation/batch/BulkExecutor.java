@@ -15,7 +15,9 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +65,7 @@ public final class BulkExecutor<TContext> {
 
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
+    private final OperationContextAndListenerTuple operationListener;
     private final ThrottlingRetryOptions throttlingRetryOptions;
     private final Flux<CosmosItemOperation> inputOperations;
 
@@ -98,6 +101,7 @@ public final class BulkExecutor<TContext> {
         maxMicroBatchConcurrency = bulkOptions.getMaxMicroBatchConcurrency();
         maxMicroBatchInterval = bulkOptions.getMaxMicroBatchInterval();
         batchContext = bulkOptions.getBatchContext();
+        operationListener = bulkOptions.getOperationContextAndListenerTuple();
 
         // Initialize sink for handling gone error.
         mainSourceCompleted = new AtomicBoolean(false);
@@ -291,8 +295,10 @@ public final class BulkExecutor<TContext> {
 
     private Mono<TransactionalBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
 
+        RequestOptions options = new RequestOptions();
+        options.setOperationContextAndListenerTuple(operationListener);
         return this.docClientWrapper.executeBatchRequest(
-            BridgeInternal.getLink(this.container), serverRequest, null, false);
+            BridgeInternal.getLink(this.container), serverRequest, options, false);
     }
 
     private void completeAllSinks() {

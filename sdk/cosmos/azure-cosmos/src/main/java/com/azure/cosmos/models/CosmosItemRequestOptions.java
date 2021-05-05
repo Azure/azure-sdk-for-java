@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private String sessionToken;
@@ -78,6 +80,16 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
+    // TODO moderakh hide
+    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    // TODO moderakh hide
+    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+    
     /**
      * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
@@ -284,6 +296,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         return requestOptions;
     }
 
