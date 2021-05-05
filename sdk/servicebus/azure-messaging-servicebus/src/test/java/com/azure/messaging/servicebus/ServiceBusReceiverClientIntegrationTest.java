@@ -20,10 +20,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -436,6 +439,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
 
+        final Set<Long> actualMessages = new HashSet<>();
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final int maxMessages = 2;
@@ -445,7 +449,16 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
         // Act
-        final IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.peekMessages(maxMessages);
+        messages.forEach(receivedMessage -> actualMessages.add(receivedMessage.getSequenceNumber()));
+
+        // maxMessages are not always guaranteed, Sometime at random, we get less than asked for.
+        // https://github.com/Azure/azure-sdk-for-java/issues/21168
+
+        if (actualMessages.size() < maxMessages) {
+            messages = receiver.peekMessages(maxMessages);
+            messages.forEach(receivedMessage -> actualMessages.add(receivedMessage.getSequenceNumber()));
+        }
 
         // Assert
         assertEquals(maxMessages, (int) messages.stream().count());
@@ -565,7 +578,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void receiveAndRenewLock(MessagingEntityType entityType) {
+    void receiveAndRenewLock(MessagingEntityType entityType) throws InterruptedException {
         // Arrange
         setSender(entityType, 0, false);
 
@@ -592,6 +605,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         try {
+            TimeUnit.SECONDS.sleep(5); // Let some lock duration expire.
             OffsetDateTime lockedUntil = receiver.renewMessageLock(receivedMessage);
             assertTrue(lockedUntil.isAfter(initialLock),
                 String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",

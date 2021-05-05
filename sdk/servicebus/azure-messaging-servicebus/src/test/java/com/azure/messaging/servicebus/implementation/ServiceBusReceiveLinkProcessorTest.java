@@ -233,6 +233,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnClose() {
         // Arrange
+        final Duration shortWait = Duration.ofSeconds(5);
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
 
@@ -278,7 +279,9 @@ class ServiceBusReceiveLinkProcessorTest {
             .then(() -> {
                 processor.cancel();
             })
-            .verifyComplete();
+            .thenAwait(shortWait)
+            .expectComplete()
+            .verify(shortWait);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -526,6 +529,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void receivesUntilFirstLinkClosed() {
         // Arrange
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
+        final Duration shortWait = Duration.ofSeconds(5);
 
         when(link1.getCredits()).thenReturn(0);
         when(link1.closeAsync()).thenReturn(Mono.empty());
@@ -542,8 +546,9 @@ class ServiceBusReceiveLinkProcessorTest {
                 endpointProcessor.complete();
                 messagePublisher.complete();
             })
+            .thenAwait(shortWait)
             .expectComplete()
-            .verify();
+            .verify(shortWait);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());

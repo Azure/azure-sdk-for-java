@@ -32,8 +32,10 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -553,6 +555,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
+        final Set<Long> actualMessages = new HashSet<>();
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
         final int maxMessages = 2;
@@ -565,14 +568,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .expectNextCount(maxMessages)
             .verifyComplete();
 
-        long actualCount = receiver.peekMessages(maxMessages, fromSequenceNumber).toStream().count();
+        receiver.peekMessages(maxMessages).toStream().forEach(receivedMessage ->
+            actualMessages.add(receivedMessage.getSequenceNumber()));
 
-        // 'peekMessages' API returns maxMessages but it can be less as well by design.
-        if (actualCount < maxMessages) {
-            actualCount += receiver.peekMessages(maxMessages).toStream().count();
+        // maxMessages are not always guaranteed, Sometime at random, we get less than asked for.
+        // https://github.com/Azure/azure-sdk-for-java/issues/21168
+
+        if (actualMessages.size() < maxMessages) {
+            receiver.peekMessages(maxMessages).toStream().forEach(receivedMessage ->
+                actualMessages.add(receivedMessage.getSequenceNumber()));
         }
 
-        assertEquals(maxMessages, actualCount);
+        assertEquals(maxMessages, actualMessages.size());
 
         StepVerifier.create(receiver.receiveMessages().take(maxMessages))
             .assertNext(receivedMessage -> {
