@@ -15,13 +15,13 @@ public final class TagAttributesBase {
     /*
      * Tag name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Tag digest
      */
-    @JsonProperty(value = "digest", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
@@ -39,7 +39,7 @@ public final class TagAttributesBase {
     /*
      * Writeable properties of the resource
      */
-    @JsonProperty(value = "changeableAttributes", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "changeableAttributes", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private ContentProperties writeableProperties;
 
     /**
