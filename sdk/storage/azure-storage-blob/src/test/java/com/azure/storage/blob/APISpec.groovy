@@ -280,12 +280,13 @@ class APISpec extends StorageSpec {
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
+
+        builder.addPolicy(getRecordPolicy())
 
         if (credential != null) {
             builder.credential(credential)
@@ -365,12 +366,13 @@ class APISpec extends StorageSpec {
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
+
+        builder.addPolicy(getRecordPolicy())
 
         return builder.credential(credential).buildClient()
     }
@@ -378,12 +380,13 @@ class APISpec extends StorageSpec {
     BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
+
+        builder.addPolicy(getRecordPolicy())
 
         return builder.credential(credential).buildAsyncClient()
     }
@@ -415,12 +418,13 @@ class APISpec extends StorageSpec {
 
         SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
+
+        builder.addPolicy(getRecordPolicy())
 
         return builder.credential(credential)
     }
