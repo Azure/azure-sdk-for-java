@@ -24,6 +24,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.ResourceLock
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -67,6 +68,7 @@ class ServiceAPITest extends APISpec {
             received.getStaticWebsite().getErrorDocument404Path() == sent.getStaticWebsite().getErrorDocument404Path()
     }
 
+    @ResourceLock("ServiceProperties")
     def "Set get properties"() {
         when:
         def retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true)
@@ -107,7 +109,7 @@ class ServiceAPITest extends APISpec {
     }
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
-
+    @ResourceLock("ServiceProperties")
     def "Set props min"() {
         setup:
         def retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true)
@@ -139,6 +141,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.setPropertiesWithResponse(sentProperties, null, null).getStatusCode() == 202
     }
 
+    @ResourceLock("ServiceProperties")
     def "Set props cors check"() {
         setup:
         def serviceProperties = primaryDataLakeServiceClient.getProperties()
@@ -156,6 +159,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
     }
 
+    @ResourceLock("ServiceProperties")
     def "Set props static website"() {
         setup:
         def serviceProperties = primaryDataLakeServiceClient.getProperties()
@@ -179,6 +183,7 @@ class ServiceAPITest extends APISpec {
         staticWebsite.getDefaultIndexDocumentPath() == defaultIndexDocumentPath
     }
 
+    @ResourceLock("ServiceProperties")
     def "Set props error"() {
         when:
         getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
@@ -188,11 +193,13 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @ResourceLock("ServiceProperties")
     def "Get props min"() {
         expect:
         primaryDataLakeServiceClient.getPropertiesWithResponse(null, null).getStatusCode() == 200
     }
 
+    @ResourceLock("ServiceProperties")
     def "Get props error"() {
         when:
         getServiceClient(primaryCredential, "https://error.blob.core.windows.net")

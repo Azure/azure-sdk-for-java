@@ -17,6 +17,7 @@ import com.azure.storage.file.datalake.models.PathDeletedItem
 import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathItem
 import com.azure.storage.file.datalake.models.PublicAccessType
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -971,7 +972,7 @@ class FileSystemAPITest extends APISpec {
         }
     }
     // TODO (gapra): Add more get paths tests (Github issue created)
-
+    @ResourceLock("ServiceProperties")
     def "List deleted paths"() {
         setup:
         enableSoftDelete()
@@ -995,6 +996,7 @@ class FileSystemAPITest extends APISpec {
         disableSoftDelete()
     }
 
+    @ResourceLock("ServiceProperties")
     def "List deleted paths path"() {
         setup:
         enableSoftDelete()
@@ -1021,6 +1023,7 @@ class FileSystemAPITest extends APISpec {
         disableSoftDelete()
     }
 
+    @ResourceLock("ServiceProperties")
     def "List deleted paths options maxResults by page"() {
         setup:
         enableSoftDelete()
@@ -1051,6 +1054,7 @@ class FileSystemAPITest extends APISpec {
         disableSoftDelete()
     }
 
+    @ResourceLock("ServiceProperties")
     def "List deleted paths error"() {
         setup:
         enableSoftDelete()
@@ -1067,6 +1071,7 @@ class FileSystemAPITest extends APISpec {
         disableSoftDelete()
     }
 
+    @ResourceLock("ServiceProperties")
     def "Restore path"() {
         setup:
         enableSoftDelete()
@@ -1104,6 +1109,7 @@ class FileSystemAPITest extends APISpec {
         disableSoftDelete()
     }
 
+    @ResourceLock("ServiceProperties")
     @Unroll
     def "Restore path special characters"() {
         setup:
@@ -1148,6 +1154,7 @@ class FileSystemAPITest extends APISpec {
         "directory"                                               | _
     }
 
+    @ResourceLock("ServiceProperties")
     def "Restore path error"() {
         setup:
         enableSoftDelete()
