@@ -461,7 +461,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
 
         // Assert
-        assertEquals(maxMessages, (int) messages.stream().count());
+        assertEquals(maxMessages, actualMessages.size());
     }
 
     /**
