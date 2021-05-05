@@ -18,8 +18,8 @@ parameters:
   GHTeamReviewersVariable: '' # externally set, as eng-common does not have the identity-resolver. Run as pre-step
   OnboardingBranch: ''
   CloseAfterOpenForTesting: false
-  Paths:
-    - '/*'
+  SkipPackageJson: false
+  SparseCheckoutPaths: []
 
 steps:
 - pwsh: |
@@ -32,14 +32,20 @@ steps:
     }
   displayName: Enable Long Paths if Necessary
 
-- template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-  parameters:
-    SkipDefaultCheckout: true
-    Repositories:
-      - Name: ${{ parameters.TargetDocRepoOwner }}/${{ parameters.TargetDocRepoName }}
-        Commitish: master
-        WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
-    Paths: ${{ parameters.Paths }}
+- ${{ if not(parameters.SparseCheckoutPaths) }}:
+  - pwsh: |
+      git clone https://github.com/${{ parameters.TargetDocRepoOwner }}/${{ parameters.TargetDocRepoName }} ${{ parameters.WorkingDirectory }}/repo
+    displayName: Clone Documentation Repository
+    ignoreLASTEXITCODE: false
+
+- ${{ if parameters.SparseCheckoutPaths }}:
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      SkipDefaultCheckout: true
+      Repositories:
+        - Name: ${{ parameters.TargetDocRepoOwner }}/${{ parameters.TargetDocRepoName }}
+          WorkingDirectory: ${{ parameters.WorkingDirectory }}/repo
+      Paths: ${{ parameters.SparseCheckoutPaths }}
 
 - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
   parameters:

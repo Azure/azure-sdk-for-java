@@ -31,6 +31,12 @@ steps:
       displayName: Init sparse checkout ${{ repo.Name }}
       workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
 
-    - pwsh: git checkout ${{ repo.Commitish }}
-      displayName: Sparse checkout at ${{ repo.Commitish }}
+    - pwsh: |
+        $commitish = '${{ repo.Commitish }}'
+        if (!$commitish) {
+          $commitish = (git remote show Source | Out-String) -replace "(?ms).*HEAD branch: (\w+).*", '$1'
+          Write-Host "No commitish specified. Checkout default branch `"$commitish`"."
+        }
+        git checkout $commitish
+      displayName: Sparse checkout at ${{ coalesce(repo.Commitish, 'default branch') }}
       workingDirectory: ${{ coalesce(repo.WorkingDirectory, format('{0}/{1}', '$(System.DefaultWorkingDirectory)', repo.Name)) }}
