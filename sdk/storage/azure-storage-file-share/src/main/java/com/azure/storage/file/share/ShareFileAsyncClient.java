@@ -1519,6 +1519,12 @@ public class ShareFileAsyncClient {
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
+        /*
+         Write to the staging area and upload the output.
+         maxConcurrency = 1 when writing means only 1 BufferAggregator will be accumulating at a time.
+         parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
+         only concurrency + 1 chunks at a time.
+         */
         return chunkedSource.flatMapSequential(stagingArea::write, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
