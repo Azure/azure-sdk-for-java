@@ -51,7 +51,7 @@ class FileAPITests extends APISpec {
     def dataLength = defaultData.available()
     static Map<String, String> testMetadata
     static ShareFileHttpHeaders httpHeaders
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
