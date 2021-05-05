@@ -224,7 +224,7 @@ stages:
                           CIConfigs: $(CIConfigs)
                           CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
                           SkipPackageJson: ${{artifact.skipUpdatePackageJson}}
-                          Paths:
+                          SparseCheckoutPaths:
                             - docs-ref-services
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
