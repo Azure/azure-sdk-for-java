@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share.models;
 
-import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 

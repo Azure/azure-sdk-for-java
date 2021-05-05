@@ -10,6 +10,9 @@ import reactor.core.publisher.Flux;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+/**
+ * Extended options that may be passed when uploading a file range.
+ */
 public class ShareFileUploadBufferedRangeOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
