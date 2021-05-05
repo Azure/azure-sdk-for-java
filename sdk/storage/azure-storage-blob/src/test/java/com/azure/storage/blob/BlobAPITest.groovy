@@ -692,7 +692,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file exists"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -711,7 +711,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file exists succeeds"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -728,7 +728,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file does not exist"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -745,7 +745,7 @@ class BlobAPITest extends APISpec {
 
     def "Download file does not exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -766,7 +766,7 @@ class BlobAPITest extends APISpec {
 
     def "Download file exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -792,7 +792,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -839,7 +839,7 @@ class BlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         blobClient.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -885,7 +885,7 @@ class BlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -921,7 +921,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -959,7 +959,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -981,7 +981,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1003,7 +1003,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1040,7 +1040,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1077,7 +1077,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(Constants.MB)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
         expect:
@@ -1141,7 +1141,7 @@ class BlobAPITest extends APISpec {
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1197,7 +1197,7 @@ class BlobAPITest extends APISpec {
     def "Download to file blockSize"() {
         def file = getRandomFile(sizeOfData)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
