@@ -135,7 +135,6 @@ class APISpec extends StorageSpec {
     def cleanup() {
         def cleanupClient = getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
             .buildClient()
 
         def options = new ListFileSystemsOptions().setPrefix(namer.getResourcePrefix())
