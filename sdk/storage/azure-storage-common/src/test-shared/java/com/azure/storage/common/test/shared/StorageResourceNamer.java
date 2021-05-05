@@ -45,6 +45,10 @@ public class StorageResourceNamer {
         return testResourceNamer.randomUuid();
     }
 
+    public String recordValueFromConfig(String value) {
+        return testResourceNamer.recordValueFromConfig(value);
+    }
+
     private static String getCrc32(String input) {
         CRC32 crc32 = new CRC32();
         crc32.update(input.getBytes(StandardCharsets.UTF_8));
