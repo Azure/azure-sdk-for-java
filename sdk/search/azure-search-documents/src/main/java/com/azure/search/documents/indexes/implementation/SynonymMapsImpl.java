@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.SynonymMap;
+import com.azure.search.documents.indexes.models.SynonymMap;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

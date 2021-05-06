@@ -122,6 +122,9 @@
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
 
+        <!-- Translation -->
+        <module>sdk/translation/azure-ai-documenttranslator</module>
+
         <!-- Web Pub Sub -->
         <module>sdk/webpubsub/azure-messaging-webpubsub</module>
       </modules>
@@ -246,6 +249,10 @@
                   <group>
                     <title>Azure Digital Twins</title>
                     <packages>com.azure.digitaltwins.core*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Document Translator</title>
+                    <packages>com.azure.ai.documenttranslator*</packages>
                   </group>
                   <group>
                     <title>Azure IoT Models Repository</title>
@@ -585,6 +592,7 @@
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
                     -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/translation/azure-ai-documenttranslator/src/samples/java
                     -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
                   </additionalOptions>
                   <aggregate>true</aggregate>
@@ -720,6 +728,7 @@
         <module>sdk/logic</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
+        <module>sdk/managedapplications</module>
         <module>sdk/mariadb</module>
         <module>sdk/marketplaceordering</module>
         <module>sdk/mediaservices</module>
@@ -762,6 +771,8 @@
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
         <module>sdk/timeseriesinsights</module>
+        <module>sdk/translation</module>
+        <module>sdk/videoanalyzer</module>
         <module>sdk/vmwarecloudsimple</module>
         <module>sdk/webpubsub</module>
       </modules>

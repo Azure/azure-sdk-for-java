@@ -14,7 +14,8 @@ const specs = {
   'eventhubs': 'eventhub',
   'loganalytics': 'operationalinsights',
   'kusto': 'azure-kusto',
-  'servicemap': 'service-map'
+  'servicemap': 'service-map',
+  'managedapplications': 'resources'
 };
 const groupUrl = 'https://repo1.maven.org/maven2/com/azure/resourcemanager/';
 const artiRegEx = />(azure-resourcemanager-.+)\/</g;

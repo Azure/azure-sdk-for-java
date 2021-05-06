@@ -176,7 +176,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,7 +191,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,7 +206,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -221,7 +221,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,7 +237,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -252,7 +252,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,7 +267,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -283,7 +283,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,7 +298,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -312,7 +312,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -326,7 +326,7 @@ public interface ContainerGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

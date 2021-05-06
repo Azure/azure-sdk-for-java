@@ -115,11 +115,11 @@
 ## 4.0.3 (2020-05-06)
 - Update azure-core dependency to version 1.5.0.
 
-## 4.0.2 (2020-04-07)
-- Update azure-core dependency to version 1.4.0.
-
 ## 4.1.0-beta.2 (2020-04-09)
 - Added `retryPolicy` setter in `CertificateClientBuilder`
+- Update azure-core dependency to version 1.4.0.
+
+## 4.0.2 (2020-04-07)
 - Update azure-core dependency to version 1.4.0.
 
 ## 4.0.1 (2020-03-25)

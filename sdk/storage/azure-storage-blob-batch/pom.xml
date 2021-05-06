@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.9.0-beta.4</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+  <version>12.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
 
   <name>Microsoft Azure client library for Blob Storage batching</name>
   <description>This module contains client library for Microsoft Azure Blob Storage batching.</description>
@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.11.0-beta.4</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -78,6 +78,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <classifier>tests</classifier>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
@@ -93,7 +101,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.3</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -105,7 +113,7 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>1.3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <version>2.0-M4-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -195,6 +203,11 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -273,6 +286,9 @@
                 --add-reads com.azure.storage.common=ALL-UNNAMED
                 --add-reads com.azure.storage.blob=ALL-UNNAMED
               </argLine>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

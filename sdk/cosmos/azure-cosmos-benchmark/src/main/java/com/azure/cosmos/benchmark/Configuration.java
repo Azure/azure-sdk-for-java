@@ -166,6 +166,9 @@ public class Configuration {
     @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
     private String testScenario = "GET";
 
+    @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
+    private boolean accountNameInGraphiteReporter = false;
+
     public enum Environment {
         Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
         Staging; // This is the CTL environment where the worload runs as a long running job
@@ -281,6 +284,10 @@ public class Configuration {
 
     public boolean isSync() {
         return useSync;
+    }
+
+    public boolean isAccountNameInGraphiteReporter() {
+        return accountNameInGraphiteReporter;
     }
 
     public Duration getMaxRunningTimeDuration() {

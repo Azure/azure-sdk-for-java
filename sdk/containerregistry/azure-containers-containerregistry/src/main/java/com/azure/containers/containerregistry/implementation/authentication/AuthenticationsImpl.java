@@ -67,9 +67,9 @@ public final class AuthenticationsImpl {
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrRefreshToken>> exchangeAadAccessTokenForAcrRefreshToken(
                 @HostParam("url") String url,
-                @FormParam("application/x-www-form-urlencoded") String grantType,
-                @FormParam("application/x-www-form-urlencoded") String service,
-                @FormParam("application/x-www-form-urlencoded") String accessToken,
+                @FormParam(value = "grant_type", encoded = true) String grantType,
+                @FormParam(value = "service", encoded = true) String service,
+                @FormParam(value = "access_token", encoded = true) String accessToken,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -78,10 +78,10 @@ public final class AuthenticationsImpl {
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessToken(
                 @HostParam("url") String url,
-                @FormParam("application/x-www-form-urlencoded") String grantType,
-                @FormParam("application/x-www-form-urlencoded") String service,
-                @FormParam("application/x-www-form-urlencoded") String scope,
-                @FormParam("application/x-www-form-urlencoded") String refreshToken,
+                @FormParam(value = "grant_type") String grantType,
+                @FormParam(value = "service") String service,
+                @FormParam(value = "scope") String scope,
+                @FormParam(value = "refresh_token") String refreshToken,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -146,8 +146,7 @@ public final class AuthenticationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(
-            String serviceParam, String scope, String refreshToken) {
-        final String grantType = "refresh_token";
+            String serviceParam, String scope, String grantType, String refreshToken) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -170,8 +169,8 @@ public final class AuthenticationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     // Used/
     public Mono<AcrAccessToken> exchangeAcrRefreshTokenForAcrAccessTokenAsync(
-            String serviceParam, String scope, String refreshToken) {
-        return exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceParam, scope, refreshToken)
+            String serviceParam, String scope, String grantType, String refreshToken) {
+        return exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceParam, scope, grantType, refreshToken)
                 .flatMap(
                         (Response<AcrAccessToken> res) -> {
                             if (res.getValue() != null) {

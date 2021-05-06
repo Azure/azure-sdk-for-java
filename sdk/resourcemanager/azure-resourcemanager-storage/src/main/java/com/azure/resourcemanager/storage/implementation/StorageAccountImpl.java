@@ -291,7 +291,6 @@ class StorageAccountImpl
             .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
     }
 
-
     @Override
     public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
         approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();

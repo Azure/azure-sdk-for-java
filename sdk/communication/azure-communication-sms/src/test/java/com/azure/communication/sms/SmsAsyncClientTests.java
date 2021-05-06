@@ -150,10 +150,8 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response)
-            .expectError().verify();
-        // TODO: re-enable this when service change is made
-        //.expectErrorMatches(exception ->
-        //        ((HttpResponseException) exception).getResponse().getStatusCode() == 401).verify();
+        .expectErrorMatches(exception ->
+               ((HttpResponseException) exception).getResponse().getStatusCode() == 401).verify();
     }
 
     @ParameterizedTest

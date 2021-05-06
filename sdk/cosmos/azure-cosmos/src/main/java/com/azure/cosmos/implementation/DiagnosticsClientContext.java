@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -49,6 +50,7 @@ public interface DiagnosticsClientContext {
             generator.writeStartObject();
             try {
                 generator.writeNumberField("id", clientContext.getConfig().getClientId());
+                generator.writeStringField("connectionMode", clientContext.getConfig().getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientContext.getConfig().getActiveClientsCount());
                 generator.writeObjectFieldStart("connCfg");
                 try {
@@ -84,6 +86,7 @@ public interface DiagnosticsClientContext {
         private HttpClientConfig httpClientConfig;
         private RntbdTransportClient.Options options;
         private String rntbdConfigAsString;
+        private ConnectionMode connectionMode;
 
         public void withActiveClientCounter(AtomicInteger activeClientsCnt) {
             this.activeClientsCnt = activeClientsCnt;
@@ -128,6 +131,14 @@ public interface DiagnosticsClientContext {
             return this;
         }
 
+        public DiagnosticsClientConfig withConnectionMode(ConnectionMode connectionMode) {
+            this.connectionMode = connectionMode;
+            return this;
+        }
+
+        public ConnectionMode getConnectionMode() {
+            return connectionMode;
+        }
 
         public String consistencyRelatedConfig() {
             if (consistencyRelatedConfigAsString == null) {
