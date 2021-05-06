@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 
 public class NetworkSampleTests extends SamplesTestBase {
 
@@ -106,7 +107,7 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManagePrivateLink() throws JSchException, UnsupportedEncodingException {
+    public void testManagePrivateLink() throws JSchException, UnsupportedEncodingException, MalformedURLException {
         Assertions.assertTrue(ManagePrivateLink.runSample(azureResourceManager));
     }
 }

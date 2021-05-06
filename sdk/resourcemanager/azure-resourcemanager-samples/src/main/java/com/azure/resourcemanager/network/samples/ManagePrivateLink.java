@@ -28,6 +28,8 @@ import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.jcraft.jsch.JSchException;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -44,7 +46,7 @@ public class ManagePrivateLink {
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager) throws JSchException, UnsupportedEncodingException {
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws JSchException, UnsupportedEncodingException, MalformedURLException {
         final boolean validateOnVirtualMachine = true;
 
         final Region region = Region.US_EAST;
@@ -60,6 +62,7 @@ public class ManagePrivateLink {
         final String pdzcName = Utils.randomResourceName(azureResourceManager, "pdzcName", 20);
         final String peName2 = Utils.randomResourceName(azureResourceManager, "pe", 10);
         final String pecName2 = Utils.randomResourceName(azureResourceManager, "pec", 10);
+        final String pdzcName2 = Utils.randomResourceName(azureResourceManager, "pdzcName", 20);
 
         final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 10);
         final String publicSshKey = SSHShell.generateSSHKeys(null, null).getSshPublicKey(); // use your public SSH key
@@ -70,15 +73,15 @@ public class ManagePrivateLink {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_RAGRS)
-                .withAccessFromIpAddressRange(vnAddressSpace)
+                .withAccessFromSelectedNetworks()
                 .create();
 
             Utils.print(storageAccount);
 
-            String saDomainName = storageAccount.endPoints().primary().blob();
+            String saDomainName = new URL(storageAccount.endPoints().primary().blob()).getHost();
             System.out.println("Domain Name for Storage Account Blob: " + saDomainName);
 
-            String saDomainNameSecondary = storageAccount.endPoints().secondary().blob();
+            String saDomainNameSecondary = new URL(storageAccount.endPoints().secondary().blob()).getHost();
             System.out.println("Domain Name for Storage Account Blob Secondary: " + saDomainNameSecondary);
 
             List<PrivateLinkResource> privateLinkResources = storageAccount.listPrivateLinkResources().stream().collect(Collectors.toList());
@@ -195,6 +198,11 @@ public class ManagePrivateLink {
             // private dns zone group on private endpoint
             PrivateDnsZoneGroup privateDnsZoneGroup = privateEndpoint.privateDnsZoneGroups().define(pdzgName)
                 .withPrivateDnsZoneConfigure(pdzcName, privateDnsZone.id())
+                .create();
+
+            System.out.println("Creating private dns zone group...");
+            PrivateDnsZoneGroup privateDnsZoneGroup2 = privateEndpoint2.privateDnsZoneGroups().define(pdzgName)
+                .withPrivateDnsZoneConfigure(pdzcName2, privateDnsZone.id())
                 .create();
 
             if (validateOnVirtualMachine) {
