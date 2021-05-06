@@ -204,8 +204,19 @@ public class ServiceBusProcessorTest {
                 new ServiceBusMessageContext(serviceBusReceivedMessage);
             messageList.add(serviceBusMessageContext);
         }
-        Flux<ServiceBusMessageContext> messageFlux = Flux.concat(Flux.just(messageList.get(0),
-            messageList.get(1)), Flux.error(new IllegalStateException("error")));
+        final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
+            (state, sink) -> {
+                ServiceBusReceivedMessage serviceBusReceivedMessage =
+                    new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                serviceBusReceivedMessage.setMessageId(String.valueOf(state));
+                ServiceBusMessageContext serviceBusMessageContext =
+                    new ServiceBusMessageContext(serviceBusReceivedMessage);
+                sink.next(serviceBusMessageContext);
+                if (state == 2) {
+                    throw new IllegalStateException("error");
+                }
+                return state + 1;
+            });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
 
@@ -241,20 +252,18 @@ public class ServiceBusProcessorTest {
     @Test
     public void testUserMessageHandlerError() throws InterruptedException {
         final int numberOfEvents = 5;
-        final Flux<ServiceBusMessageContext> messageFlux =
-            Flux.create(emitter -> {
-                emitter.onRequest(request -> {
-                    for (int i = 0; i < numberOfEvents; i++) {
-                        ServiceBusReceivedMessage serviceBusReceivedMessage =
-                            new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
-                        serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-                        ServiceBusMessageContext serviceBusMessageContext =
-                            new ServiceBusMessageContext(serviceBusReceivedMessage);
-                        emitter.next(serviceBusMessageContext);
-                    }
-
-                    emitter.complete();
-                });
+        final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
+            (state, sink) -> {
+                ServiceBusReceivedMessage serviceBusReceivedMessage =
+                    new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                serviceBusReceivedMessage.setMessageId(String.valueOf(state));
+                ServiceBusMessageContext serviceBusMessageContext =
+                    new ServiceBusMessageContext(serviceBusReceivedMessage);
+                sink.next(serviceBusMessageContext);
+                if (state == numberOfEvents) {
+                    sink.complete();
+                }
+                return state + 1;
             });
 
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
@@ -295,19 +304,19 @@ public class ServiceBusProcessorTest {
     @Test
     public void testUserMessageHandlerErrorWithAutoCompleteDisabled() throws InterruptedException {
 
-        Flux<ServiceBusMessageContext> messageFlux =
-            Flux.create(emitter -> {
-                emitter.onRequest(request -> {
-                    for (int i = 0; i < 5; i++) {
-                        ServiceBusReceivedMessage serviceBusReceivedMessage =
-                            new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
-                        serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-                        ServiceBusMessageContext serviceBusMessageContext =
-                            new ServiceBusMessageContext(serviceBusReceivedMessage);
-                        emitter.next(serviceBusMessageContext);
-                    }
-                });
-            });
+        final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
+            (state, sink) -> {
+                ServiceBusReceivedMessage serviceBusReceivedMessage =
+                    new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                serviceBusReceivedMessage.setMessageId(String.valueOf(state));
+                ServiceBusMessageContext serviceBusMessageContext =
+                    new ServiceBusMessageContext(serviceBusReceivedMessage);
+                sink.next(serviceBusMessageContext);
+                if (state == 5) {
+                    sink.complete();
+                }
+                return state + 1;
+            }).publish().autoConnect().cast(ServiceBusMessageContext.class);
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);

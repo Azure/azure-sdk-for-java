@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -52,14 +52,15 @@ public class ReplicatedResourceClientTest {
                 transportClient, serviceConfigReader, authorizationTokenProvider, enableReadRequestsFallback, false);
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class).build();
         RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document));
+        request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
 
-        Mockito.when(addressResolver.resolveAsync(Matchers.any(), Matchers.anyBoolean()))
+        Mockito.when(addressResolver.resolveAsync(ArgumentMatchers.any(), ArgumentMatchers.anyBoolean()))
                 .thenReturn(Mono.error(new GoneException()));
         Mono<StoreResponse> response = resourceClient.invokeAsync(request, null);
 
         validateFailure(response, validator, TIMEOUT);
         //method will fail 6 time (first try , and 5 retries within 30 sec(1,2,4,8,15 wait))
-        Mockito.verify(addressResolver, Mockito.times(6)).resolveAsync(Matchers.any(), Matchers.anyBoolean());
+        Mockito.verify(addressResolver, Mockito.times(6)).resolveAsync(ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
     }
 
     public static void validateFailure(Mono<StoreResponse> single, FailureValidator validator, long timeout) {

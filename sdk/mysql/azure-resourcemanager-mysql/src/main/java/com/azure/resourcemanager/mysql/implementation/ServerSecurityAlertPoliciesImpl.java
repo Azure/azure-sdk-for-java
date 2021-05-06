@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.ServerSecurityAlertPoliciesClient;
 import com.azure.resourcemanager.mysql.fluent.models.ServerSecurityAlertPolicyInner;
 import com.azure.resourcemanager.mysql.models.SecurityAlertPolicyName;
@@ -21,9 +21,10 @@ public final class ServerSecurityAlertPoliciesImpl implements ServerSecurityAler
 
     private final ServerSecurityAlertPoliciesClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public ServerSecurityAlertPoliciesImpl(ServerSecurityAlertPoliciesClient innerClient, MySqlManager serviceManager) {
+    public ServerSecurityAlertPoliciesImpl(
+        ServerSecurityAlertPoliciesClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -52,6 +53,19 @@ public final class ServerSecurityAlertPoliciesImpl implements ServerSecurityAler
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<ServerSecurityAlertPolicy> listByServer(String resourceGroupName, String serverName) {
+        PagedIterable<ServerSecurityAlertPolicyInner> inner =
+            this.serviceClient().listByServer(resourceGroupName, serverName);
+        return Utils.mapPage(inner, inner1 -> new ServerSecurityAlertPolicyImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ServerSecurityAlertPolicy> listByServer(
+        String resourceGroupName, String serverName, Context context) {
+        PagedIterable<ServerSecurityAlertPolicyInner> inner =
+            this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        return Utils.mapPage(inner, inner1 -> new ServerSecurityAlertPolicyImpl(inner1, this.manager()));
     }
 
     public ServerSecurityAlertPolicy getById(String id) {
@@ -118,7 +132,7 @@ public final class ServerSecurityAlertPoliciesImpl implements ServerSecurityAler
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 

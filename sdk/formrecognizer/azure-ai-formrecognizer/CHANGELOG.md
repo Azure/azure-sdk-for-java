@@ -1,11 +1,30 @@
 # Release History
 
-## 3.1.0-beta.3 (Unreleased)
+## 3.1.0-beta.4 (Unreleased)
+### Breaking Changes
+- Renamed `ReadingOrder` model to `FormReadingOrder`.
+- Renamed the method names and the method parameters, using `identity` to replace `id` keyword in the identity documents recognition API.
+  For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
+- The model `TextAppearance` now includes the properties `styleName` and `styleConfidence` that were part of the `TextStyle` object.
+- Removed the model `TextStyle`.
+- Removed `V2_1_PREVIEW_1` and `V2_1_PREVIEW_2` but only support latest service beta API version `V2_1_PREVIEW_3`.
+
+### New features
+- Added `clientOptions` method to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
+- Added `getDefaultLogOptions` method to the `FormRecognizerClientBuilder`.
+- We are able to support multiple service API versions now: `V2_0` and `V2_1_PREVIEW_3`.
+
+## 3.0.7 (2021-04-07)
+### Dependency updates
+- Update dependency version, `azure-core` to `1.15.0`, `azure-core-http-netty` to `1.9.1` and `azure-identity` to `1.2.5`.
+
+## 3.1.0-beta.3 (2021-04-06)
 - Defaults to the latest supported API version, which currently is `2.1-preview.3`.
 - Added property `Pages` to `RecognizeReceiptsOptions`, `RecognizeInvoicesOptions`, `RecognizeBusinessCardsOptions`
   and `RecognizeCustomFormOptions` to specify the page numbers to analyze.
 - Added support for `FormContentType` `image/bmp` when analyzing custom forms.
 - Added support for pre-built ID documents recognition.
+- Added property `ReadingOrder` to `RecognizeContentOptions` to specify the order in which recognized text lines are returned.
 
 ## 3.0.6 (2021-03-10)
 ### Dependency updates

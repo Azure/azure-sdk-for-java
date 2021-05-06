@@ -1,10 +1,39 @@
 ## Release History
 
-## 4.0.0-beta.2 (Unreleased)
+### 4.0.0-beta.4 (Unreleased)
 
-## 4.0.0-beta.1 (2021-03-22)
+### 4.0.0-beta.3 (2021-05-05)
+* Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.3` Release.
+#### Configuration Renames
+* Renamed data source name "cosmos.items" to "cosmos.oltp".
+* Renamed data source name "cosmos.changeFeed" to "cosmos.oltp.changeFeed".
+* Configuration renamed. See [Configuration-Reference](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md) for more details.
+
+#### Key Bug Fixes
+* Added validation for all config-settings with a name starting with "spark.cosmos."
+* Fixed a bug in bulk write causing hang.
+
+### 4.0.0-beta.2 (2021-04-19)
+* Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.2` Release.
+
+#### New Features
+* The beta-2 is feature-complete now
+* Spark structured streaming (micro batches) for consuming change feed
+* Spark structured streaming (micro batches) support added for writes (TableCapability.STREAMING_WRITE)
+* Allowing configuration of "Cosmos views" in the Spark catalog to enable direct queries against Spark catalog
+
+#### Key Bug Fixes
+* Perf validation and optimizations (resulting in significant better throughput for read code path)
+* Row conversion: Allow configuration of behavior on schema mismatch - error vs. null
+* Row conversion: Supporting InternalRow type to avoid failures when using nested StructType of InternalRow (not Row)
+
+#### Known limitations
+* No support for continuous processing (change feed) yet. (will be added after GA)
+* No perf tests / optimizations have been done yet - we will iterate on perf in the next preview releases. So usage should be limited to non-production environments with this preview.
+
+### 4.0.0-beta.1 (2021-03-22)
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.1` Release.
-### Features
+#### Features
 * Supports Spark 3.1.1 and Scala 2.12.
 * Integrated against Spark3 DataSourceV2 API.
 * Devloped ground up using Cosmos DB Java V4 SDK.
@@ -23,10 +52,10 @@
 * Automated CI testing on DataBricks and Cosmos DB live endpoint.
 * Automated CI Testing on Cosmos DB Emulator.
 
-### Known limitations
+#### Known limitations
 * Spark structured streaming (micro batches) for consuming change feed has been implemented but not tested end-to-end fully so is considered experimental at this point.
 * No support for continuous processing (change feed) yet.
 * No perf tests / optimizations have been done yet - we will iterate on perf in the next preview releases. So usage should be limited to non-production environments with this preview.
 
-## 4.0.0-alpha.1 (2021-03-17)
+### 4.0.0-alpha.1 (2021-03-17)
 * Cosmos DB Spark 3.1.1 Connector Test Release.

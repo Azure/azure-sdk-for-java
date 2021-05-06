@@ -1,7 +1,16 @@
 # Release History
 
-## 4.2.0-beta.5 (Unreleased)
+## 4.2.0-beta.6 (Unreleased)
 
+
+## 4.2.0-beta.5 (2021-04-09)
+
+### New features
+- Added support for service version `7.2`.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+
+### Breaking Changes
+- Changed `KeyVaultCertificateIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
 
 ## 4.2.0-beta.4 (2021-03-12)
 
@@ -106,11 +115,11 @@
 ## 4.0.3 (2020-05-06)
 - Update azure-core dependency to version 1.5.0.
 
-## 4.0.2 (2020-04-07)
-- Update azure-core dependency to version 1.4.0.
-
 ## 4.1.0-beta.2 (2020-04-09)
 - Added `retryPolicy` setter in `CertificateClientBuilder`
+- Update azure-core dependency to version 1.4.0.
+
+## 4.0.2 (2020-04-07)
 - Update azure-core dependency to version 1.4.0.
 
 ## 4.0.1 (2020-03-25)

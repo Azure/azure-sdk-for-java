@@ -415,33 +415,38 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
+
         if (!interceptorManager.isPlaybackMode()) {
             return;
         }
 
         listDeletedKeysRunner((keys) -> {
-
             List<DeletedKey> deletedKeys = new ArrayList<>();
+
             for (CreateKeyOptions key : keys.values()) {
                 StepVerifier.create(client.createKey(key))
                     .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
+
             sleepInRecordMode(10000);
 
             for (CreateKeyOptions key : keys.values()) {
                 PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
-
                 AsyncPollResponse<DeletedKey, Void> response = poller.blockLast();
+
                 assertNotNull(response.getValue());
             }
 
             sleepInRecordMode(90000);
+
             DeletedKey deletedKey = client.listDeletedKeys().map(actualKey -> {
                 deletedKeys.add(actualKey);
                 assertNotNull(actualKey.getDeletedOn());
                 assertNotNull(actualKey.getRecoveryId());
+
                 return actualKey;
             }).blockLast();
+
             assertNotNull(deletedKey);
         });
     }
@@ -512,43 +517,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     assertEquals(createRsaKeyOptions.getPublicExponent(), wrappedArray.getInt());
                 })
                 .verifyComplete());
-    }
-
-    /**
-     * Tests that a key can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyAsyncClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            StepVerifier.create(client.createKey(createKeyOptions))
-                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
-                .verifyComplete();
-
-            StepVerifier.create(client.exportKey(createKeyOptions.getName(), "testEnvironment"))
-                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
-                .verifyComplete();
-        });
-    }
-
-    /**
-     * Tests that a specific key version can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyAsyncClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            StepVerifier.create(client.createKey(createKeyOptions))
-                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
-                .consumeNextWith(originalKey -> client.exportKey(createKeyOptions.getName(),
-                    originalKey.getProperties().getVersion(), "testEnvironment"))
-                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
-                .verifyComplete();
-        });
     }
 
     private void pollOnKeyDeletion(String keyName) {

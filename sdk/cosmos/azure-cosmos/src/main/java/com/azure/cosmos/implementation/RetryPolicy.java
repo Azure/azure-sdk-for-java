@@ -31,4 +31,9 @@ public class RetryPolicy implements IRetryPolicyFactory {
 
         return clientRetryPolicy;
     }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return null;
+    }
 }

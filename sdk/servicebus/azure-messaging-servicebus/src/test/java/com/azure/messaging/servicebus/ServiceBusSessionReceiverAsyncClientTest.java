@@ -50,6 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -110,6 +111,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink.getHostname()).thenReturn(NAMESPACE);
         when(amqpReceiveLink.getEntityPath()).thenReturn(ENTITY_PATH);
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
@@ -217,6 +219,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
         when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Session 2's messages
         final ServiceBusReceiveLink amqpReceiveLink2 = mock(ServiceBusReceiveLink.class);
@@ -239,6 +242,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
         when(amqpReceiveLink2.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
         when(amqpReceiveLink2.updateDisposition(lockToken2, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final AtomicInteger count = new AtomicInteger();
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),

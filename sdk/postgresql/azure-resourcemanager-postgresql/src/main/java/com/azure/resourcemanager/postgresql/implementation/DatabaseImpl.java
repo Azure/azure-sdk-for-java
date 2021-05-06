@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.postgresql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.postgresql.models.Database;
 
 public final class DatabaseImpl implements Database, Database.Definition, Database.Update {
     private DatabaseInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -38,7 +37,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 
@@ -72,7 +71,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this;
     }
 
-    DatabaseImpl(String name, PostgreSqlManager serviceManager) {
+    DatabaseImpl(String name, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = new DatabaseInner();
         this.serviceManager = serviceManager;
         this.databaseName = name;
@@ -100,7 +99,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this;
     }
 
-    DatabaseImpl(DatabaseInner innerObject, PostgreSqlManager serviceManager) {
+    DatabaseImpl(DatabaseInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
