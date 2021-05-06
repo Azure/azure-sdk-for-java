@@ -14,10 +14,24 @@ import org.apache.http.ssl.PrivateKeyStrategy;
 import org.apache.http.ssl.SSLContexts;
 import org.junit.jupiter.api.Test;
 
-import javax.net.ssl.*;
-import java.io.*;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLServerSocket;
+import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.net.Socket;
-import java.security.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Security;
+import java.security.KeyStore;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.AccessController;
+import java.security.ProviderException;
+import java.security.PrivilegedAction;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -31,13 +45,12 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JREKeystoreTest {
-    private static final String fileSep = File.separator;
-    private static final String defaultStorePath = PrivilegedActionImpl.privilegedGetProperty("java.home", "") + fileSep + "lib" + fileSep + "security";
-    private static final String defaultStore = defaultStorePath + fileSep + "cacerts";
-    private static final String jsseDefaultStore = defaultStorePath + fileSep + "jssecacerts";
-    private PrivateKeyStrategyImpl aliasStrategy = new PrivateKeyStrategyImpl();
-    private static final String keyStorePassword = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
-    private static final String trustStorePassword = PrivilegedActionImpl.privilegedGetProperty("javax.net.ssl.trustStorePassword", "changeit");
+    private static final String javaHome =  privilegedGetProperty("java.home", "");
+    private static final Path storePath= Paths.get(javaHome).resolve("lib").resolve("security");
+    private static final Path defaultStore = storePath.resolve("cacerts");
+    private static final Path jsseDefaultStore = storePath.resolve("jssecacerts");
+    private static final String keyStorePassword = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
+    private static final String trustStorePassword = privilegedGetProperty("javax.net.ssl.trustStorePassword", "changeit");
     private static final String keyPassword = keyStorePassword;
     private static final Logger logger = Logger.getLogger(JREKeystoreTest.class.getName());
     private static String privateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/QWKhTKDVdZW0" +
@@ -91,18 +104,18 @@ public class JREKeystoreTest {
     public void testLocalKeystore() throws Exception {
         Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        try (final FileInputStream inStream = new FileInputStream(getKeyStoreFile())) {
+        try (final InputStream inStream = Files.newInputStream(getKeyStoreFile())) {
             keyStore.load(inStream, keyStorePassword.toCharArray());
         }
-        keyStore.setEntry(aliasStrategy.chooseAlias(null, null), new KeyStore.PrivateKeyEntry(getKey(), getCertChain()), new KeyStore.PasswordProtection(keyPassword.toCharArray()));
+        setEntry(keyStore);
 
         /*
          * Setup server side.
          */
         int randomPort = ThreadLocalRandom.current().nextInt(49452, 52570);
-        logger.log(Level.INFO, "The port used is " + randomPort);
+        logger.log(Level.FINE, "The port used is " + randomPort);
         SSLContext sslContext = SSLContexts.custom()
-            .loadKeyMaterial(keyStore, keyPassword.toCharArray(), aliasStrategy)
+            .loadKeyMaterial(keyStore, keyPassword.toCharArray(), getKeyStrategy())
             .build();
         SSLServerSocketFactory factory = sslContext.getServerSocketFactory();
         SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(randomPort);
@@ -125,13 +138,12 @@ public class JREKeystoreTest {
         /*
          * Setup client side
          */
-
         KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 
-        try (final FileInputStream inStream = new FileInputStream(getTrustStoreFile())) {
+        try (final InputStream inStream = Files.newInputStream(getTrustStoreFile())) {
             trustStore.load(inStream, trustStorePassword.toCharArray());
         }
-        trustStore.setEntry(aliasStrategy.chooseAlias(null, null), new KeyStore.PrivateKeyEntry(getKey(), getCertChain()), new KeyStore.PasswordProtection(keyPassword.toCharArray()));
+        setEntry(trustStore);
         SSLContext clientSSLContext = SSLContexts.custom()
             .loadTrustMaterial(trustStore, null)
             .build();
@@ -169,6 +181,10 @@ public class JREKeystoreTest {
         assertEquals("Success", result);
     }
 
+    private void setEntry(KeyStore ks) throws Exception{
+        ks.setEntry(getKeyStrategy().chooseAlias(null, null), new KeyStore.PrivateKeyEntry(getKey(), getCertChain()), new KeyStore.PasswordProtection(keyPassword.toCharArray()));
+    }
+
     private static PrivateKey getKey() throws Exception {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
@@ -187,74 +203,50 @@ public class JREKeystoreTest {
         }
     }
 
-    private File getKeyStoreFile() {
-        String storePropName = PrivilegedActionImpl.privilegedGetProperty(
-            "javax.net.ssl.keyStore", jsseDefaultStore);
+    private Path getKeyStoreFile() {
+        String storePropName = privilegedGetProperty(
+            "javax.net.ssl.keyStore", "");
+        return getStoreFile(storePropName);
+    }
 
-        String[] fileNames =
-            new String[]{storePropName, defaultStore};
-        for (String fileName : fileNames) {
-            File f = new File(fileName);
-            if (f.isFile() && f.canRead()) {
-                return f;
+    private Path getTrustStoreFile() {
+        String storePropName = privilegedGetProperty(
+            "javax.net.ssl.trustStore", "");
+        return getStoreFile(storePropName);
+    }
+
+    private Path getStoreFile(String storePropName){
+        Path storeProp;
+        if (storePropName.isEmpty()){
+            storeProp = jsseDefaultStore;
+        }else {
+            storeProp = Paths.get(storePropName);
+        }
+
+        Path[] fileNames =
+            new Path[]{storeProp, defaultStore};
+        for (Path fileName : fileNames) {
+            if (Files.exists(fileName) && Files.isReadable(fileName)){
+                return fileName;
             }
         }
         return null;
     }
 
-    private File getTrustStoreFile() {
-        String storePropName = PrivilegedActionImpl.privilegedGetProperty(
-            "javax.net.ssl.trustStore", jsseDefaultStore);
-        String[] fileNames =
-            new String[]{storePropName, defaultStore};
-        for (String fileName : fileNames) {
-            File f = new File(fileName);
-            if (f.isFile() && f.canRead()) {
-                return f;
-            }
-
-
-        }
-        return null;
+    private static PrivateKeyStrategy getKeyStrategy(){
+        return (map, socket) -> "a-humble-key-entry-alias";
     }
 
-    private static class PrivateKeyStrategyImpl implements PrivateKeyStrategy {
-        @Override
-        public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-            return "a-humble-key-entry-alias";
-        }
-
-    }
-
-    private static class PrivilegedActionImpl implements PrivilegedAction<String> {
-
-        private static String privilegedGetProperty(String theProp, String defaultVal) {
-            if (System.getSecurityManager() == null) {
-                String value = System.getProperty(theProp);
-                return (value == null || value.isEmpty()) ? defaultVal : value;
-            } else {
-                return AccessController.doPrivileged(
-                    new PrivilegedActionImpl(theProp, defaultVal));
-            }
-        }
-
-        private String theProp;
-        private String defaultVal;
-
-        private PrivilegedActionImpl(String theProp) {
-            this.theProp = theProp;
-
-        }
-
-        private PrivilegedActionImpl(String theProp, String defaultVal) {
-            this.theProp = theProp;
-            this.defaultVal = defaultVal;
-
-        }
-
-        public String run() {
+    private static String  privilegedGetProperty(String theProp, String defaultVal){
+        if (System.getSecurityManager() == null) {
             String value = System.getProperty(theProp);
             return (value == null || value.isEmpty()) ? defaultVal : value;
+        } else {
+            return AccessController.doPrivileged(
+                (PrivilegedAction<String>) () -> {
+                    String value = System.getProperty(theProp);
+                    return (value == null || value.isEmpty()) ? defaultVal : value;
+                });
         }
     }
 
