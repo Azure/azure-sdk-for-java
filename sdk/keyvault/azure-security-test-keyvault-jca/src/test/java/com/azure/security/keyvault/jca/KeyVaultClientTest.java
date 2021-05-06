@@ -14,27 +14,14 @@ public class KeyVaultClientTest {
     private KeyVaultClient keyVaultClient;
     private String certificateName;
 
-    String getEnvValue(String key) {
-        String value = System.getenv(key);
-        System.out.println("*****************************logStart");
-        System.out.println("Original: " + key + " = " + value);
-        String preValue = value.toLowerCase().substring(0, value.length() / 2);
-        System.out.println("preValue" + key + " = " + preValue);
-        String postValue = value.toLowerCase().substring(value.length() / 2, value.length() - 1);
-        System.out.println("postValue" + key + " = " + postValue);
-        System.out.println(key + "‘s length = " + value.length());
-        System.out.println("*****************************logEnd");
-        return value;
-    }
-
     @BeforeEach
     public void setEnvironmentProperty() {
         keyVaultClient = new KeyVaultClient(
-            getEnvValue("AZURE_KEYVAULT_URI"),
-            getEnvValue("AZURE_KEYVAULT_TENANT_ID"),
-            getEnvValue("AZURE_KEYVAULT_CLIENT_ID"),
-            getEnvValue("AZURE_KEYVAULT_CLIENT_SECRET"));
-        certificateName = getEnvValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
+        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test

@@ -43,14 +43,6 @@ public class ServerSocketTest {
                 .map(System::getenv)
                 .filter(StringUtils::hasText)
                 .ifPresent(value -> {
-                    System.out.println("*****************************logStart**************************");
-                    System.out.println("Original: " + key + " = " + value);
-                    String preValue = value.toLowerCase().substring(0, value.length() / 2);
-                    System.out.println("preValue" + key + " = " + preValue);
-                    String postValue = value.toLowerCase().substring(value.length() / 2, value.length() - 1);
-                    System.out.println("postValue" + key + " = " + postValue);
-                    System.out.println(key + "‘s length = " + value.length());
-
                     if (key.equals("AZURE_KEYVAULT_URI")) {
                         System.getProperties().put(
                             key.toLowerCase().replaceAll("_", "."), value);
@@ -59,17 +51,6 @@ public class ServerSocketTest {
                         StringBuilder sb = new StringBuilder(key.toLowerCase().replaceAll("_", "."));
                         System.getProperties().put(sb.replace(index, index + 1, "-").toString(), value);
                     }
-                    if (System.getProperty("azure.keyvault.client-id") != null) {
-                        String property = System.getProperty("azure.keyvault.client-id");
-                        System.out.println("Original property : " + key + " = " + property);
-                        String propertyPreValue = property.toLowerCase().substring(0, property.length() / 2);
-                        System.out.println("property preValue" + key + " = " + propertyPreValue);
-                        String propertyPostValue = property.toLowerCase().substring(property.length() / 2,
-                            property.length() - 1);
-                        System.out.println("property postValue" + key + " = " + propertyPostValue);
-                    }
-
-                    System.out.println("*****************************logEnd**************************");
                 });
     }
 

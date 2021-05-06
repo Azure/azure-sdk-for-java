@@ -15,7 +15,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class KeyVaultKeyStoreTest {
 
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStoreTest.class.getName());
 
     /**
      * Stores the CER test certificate (which is valid til 2120).
@@ -61,14 +59,6 @@ public class KeyVaultKeyStoreTest {
                 .map(System::getenv)
                 .filter(StringUtils::hasText)
                 .ifPresent(value -> {
-                    System.out.println("*****************************logStart**************************");
-                    System.out.println("Original: " + key + " = " + value);
-                    String preValue = value.toLowerCase().substring(0, value.length() / 2);
-                    System.out.println("preValue" + key + " = " + preValue);
-                    String postValue = value.toLowerCase().substring(value.length() / 2, value.length() - 1);
-                    System.out.println("postValue" + key + " = " + postValue);
-                    System.out.println(key + "‘s length = " + value.length());
-
                     if (key.equals("AZURE_KEYVAULT_URI")) {
                         System.getProperties().put(
                             key.toLowerCase().replaceAll("_", "."), value);
@@ -77,28 +67,6 @@ public class KeyVaultKeyStoreTest {
                         StringBuilder sb = new StringBuilder(key.toLowerCase().replaceAll("_", "."));
                         System.getProperties().put(sb.replace(index, index + 1, "-").toString(), value);
                     }
-                    if (System.getProperty("azure.keyvault.client-id") != null) {
-                        String property = System.getProperty("azure.keyvault.client-id");
-                        System.out.println("Original property : " + key + " = " + property);
-                        String propertyPreValue = property.toLowerCase().substring(0, property.length() / 2);
-                        System.out.println("property preValue" + key + " = " + propertyPreValue);
-                        String propertyPostValue = property.toLowerCase().substring(property.length() / 2,
-                            property.length() - 1);
-                        System.out.println("property postValue" + key + " = " + propertyPostValue);
-                    }
-                    if (System.getenv("CERTIFICATE_SCRIPT_CONTENT") != null) {
-                        String certificate_script_content = System.getenv("CERTIFICATE_SCRIPT_CONTENT");
-                        System.out.println("Original certificate_script_content = " + certificate_script_content);
-                        String propertyPreValue = certificate_script_content.toLowerCase().substring(0,
-                            certificate_script_content.length() / 2);
-                        System.out.println("property certificate_script_content = " + propertyPreValue);
-                        String propertyPostValue =
-                            certificate_script_content.toLowerCase().substring(certificate_script_content.length() / 2,
-                                certificate_script_content.length() - 1);
-                        System.out.println("property postValue propertyPostValue = " + propertyPostValue);
-                    }
-
-                    System.out.println("*****************************logEnd**************************");
                 });
     }
 
@@ -144,10 +112,6 @@ public class KeyVaultKeyStoreTest {
         assertNotNull(keystore.engineGetCertificateChain(certificateName));
     }
 
-    @Test
-    public void testEngineIsCertificateEntry() {
-        assertTrue(keystore.engineIsCertificateEntry(certificateName));
-    }
 
     @Test
     public void testEngineSetCertificateEntry() {
@@ -171,10 +135,6 @@ public class KeyVaultKeyStoreTest {
         assertNotNull(keystore.engineGetKey(certificateName, null));
     }
 
-    @Test
-    public void testEngineIsKeyEntry() {
-        assertTrue(keystore.engineIsKeyEntry(certificateName));
-    }
 
     @Test
     public void testEngineSetKeyEntry() {
@@ -193,10 +153,6 @@ public class KeyVaultKeyStoreTest {
         assertTrue(keystore.engineAliases().hasMoreElements());
     }
 
-    @Test
-    public void testEngineContainsAlias() {
-        assertTrue(keystore.engineContainsAlias(certificateName));
-    }
 
     @Test
     public void testEngineGetCreationDate() {

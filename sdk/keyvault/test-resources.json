@@ -324,10 +324,6 @@
     "AZURE_KEYVAULT_CERTIFICATE_NAME": {
       "type": "string",
       "value": "[parameters('certificateName')]"
-    },
-    "CERTIFICATE_SCRIPT_CONTENT": {
-      "type": "string",
-      "value": "[reference('createAddCertificate').outputs.certThumbprint]"
     }
   }
 }
