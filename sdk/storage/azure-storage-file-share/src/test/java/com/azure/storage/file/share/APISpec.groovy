@@ -3,26 +3,20 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.policy.RequestRetryOptions
-import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
@@ -34,30 +28,21 @@ import com.azure.storage.file.share.specialized.ShareLeaseClient
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.Duration
-import java.time.OffsetDateTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.function.BiFunction
 import java.util.function.Function
 
-class APISpec extends Specification {
+class APISpec extends StorageSpec {
     // Field common used for all APIs.
     static ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable share names for recording tests requiring multiple shares.
 
-    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     URL testFolder = getClass().getClassLoader().getResource("testfiles")
-    InterceptorManager interceptorManager
-    TestResourceNamer testResourceName
-    // Prefixes for paths and shares
-    String sharePrefix = "jts" // java test share
-
-    String pathPrefix = "javapath"
 
     public static final String defaultEndpointTemplate = "https://%s.file.core.windows.net/"
 
@@ -73,10 +58,6 @@ class APISpec extends Specification {
     ShareServiceClient premiumFileServiceClient
     ShareServiceAsyncClient premiumFileServiceAsyncClient
 
-    // Test name for test method name.
-    String methodName
-
-    static TestMode testMode = getTestMode()
     String connectionString
 
     /*
@@ -97,14 +78,7 @@ class APISpec extends Specification {
     def setup() {
         premiumCredential = getCredential(PREMIUM_STORAGE)
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        String testName = reformat(specificationContext.currentIteration.getName())
-        String className = specificationContext.getCurrentSpec().getName()
-        methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, testMode)
-        testResourceName = new TestResourceNamer(methodName, testMode,
-            interceptorManager.getRecordedData())
-        if (getTestMode() != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
@@ -115,38 +89,39 @@ class APISpec extends Specification {
 
         premiumFileServiceClient = setClient(premiumCredential)
         premiumFileServiceAsyncClient = setAsyncClient(premiumCredential)
-
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, testName)
     }
 
     /**
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        interceptorManager.close()
-        if (getTestMode() != TestMode.PLAYBACK) {
-            def cleanupFileServiceClient = new ShareServiceClientBuilder()
-                .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
-                .connectionString(connectionString)
-                .buildClient()
-            for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()), null, Context.NONE)) {
-                def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
+        def cleanupFileServiceClient = new ShareServiceClientBuilder()
+            .connectionString(connectionString)
+            .addPolicy(getRecordPolicy())
+            .httpClient(getHttpClient())
+            .buildClient()
+        for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
+            def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
 
-                if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                    createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
-                }
-
-                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
+            if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
             }
+
+            shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
         }
+    }
+
+    // TODO (kasobol-msft) remove this after migration
+    @Override
+    protected shouldUseThisToRecord() {
+        return true
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -162,45 +137,20 @@ class APISpec extends Specification {
         return new StorageSharedKeyCredential(accountName, accountKey)
     }
 
-    /**
-     * Test mode is initialized whenever test is executed. Helper method which is used to determine what to do under
-     * certain test mode.
-     * @return The TestMode:
-     * <ul>
-     *     <li>Record</li>
-     *     <li>Playback: (default if no test mode setup)</li>
-     * </ul>
-     */
-    static def getTestMode() {
-        def azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode)
-                return TestMode.PLAYBACK
-            }
-        }
-
-        logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE)
-        return TestMode.PLAYBACK
-    }
-
     static boolean liveMode() {
-        return testMode != TestMode.PLAYBACK
+        return ENVIRONMENT.testMode != TestMode.PLAYBACK
     }
 
     def generateShareName() {
-        generateResourceName(sharePrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
     def generatePathName() {
-        generateResourceName(pathPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
-    private String generateResourceName(String prefix, int entityNo) {
-        return testResourceName.randomName(prefix + methodName + entityNo, 63)
+    private String generateResourceName(int entityNo) {
+        return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
     ShareServiceAsyncClient setAsyncClient(StorageSharedKeyCredential credential) {
@@ -241,21 +191,12 @@ class APISpec extends Specification {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
-    def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
+    def fileServiceBuilderHelper() {
         ShareServiceClientBuilder shareServiceClientBuilder = new ShareServiceClientBuilder();
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                shareServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-            }
-            return shareServiceClientBuilder
-                .connectionString(connectionString)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .httpClient(getHttpClient())
-        } else {
-            return shareServiceClientBuilder
-                .connectionString(connectionString)
-                .httpClient(interceptorManager.getPlaybackClient())
-        }
+        shareServiceClientBuilder.addPolicy(getRecordPolicy())
+        return shareServiceClientBuilder
+            .connectionString(connectionString)
+            .httpClient(getHttpClient())
     }
 
     ShareServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -263,15 +204,12 @@ class APISpec extends Specification {
         ShareServiceClientBuilder builder = new ShareServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         if (credential != null) {
             builder.credential(credential)
@@ -284,71 +222,45 @@ class APISpec extends Specification {
         ShareClientBuilder builder = new ShareClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         return builder
     }
 
-    def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName) {
-        return shareBuilderHelper(interceptorManager, shareName, null)
+    def shareBuilderHelper(final String shareName) {
+        return shareBuilderHelper(shareName, null)
     }
 
-    def shareBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String snapshot) {
+    def shareBuilderHelper(final String shareName, final String snapshot) {
         ShareClientBuilder builder = new ShareClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-            }
-            return builder.connectionString(connectionString)
-                .shareName(shareName)
-                .snapshot(snapshot)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .httpClient(getHttpClient())
-        } else {
-            return builder
-                .connectionString(connectionString)
-                .snapshot(snapshot)
-                .shareName(shareName)
-                .httpClient(interceptorManager.getPlaybackClient())
-        }
+        builder.addPolicy(getRecordPolicy())
+        return builder.connectionString(connectionString)
+            .shareName(shareName)
+            .snapshot(snapshot)
+            .httpClient(getHttpClient())
     }
 
-    def directoryBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String directoryPath) {
+    def directoryBuilderHelper(final String shareName, final String directoryPath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-            }
-            return builder.connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(directoryPath)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .httpClient(getHttpClient())
-        } else {
-            return builder.connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(directoryPath)
-                .httpClient(interceptorManager.getPlaybackClient())
-        }
+        builder.addPolicy(getRecordPolicy())
+        return builder.connectionString(connectionString)
+            .shareName(shareName)
+            .resourcePath(directoryPath)
+            .httpClient(getHttpClient())
     }
 
     ShareDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
+
         if (credential != null) {
             builder.credential(credential)
         }
@@ -356,74 +268,32 @@ class APISpec extends Specification {
         return builder.buildDirectoryClient()
     }
 
-    def fileBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String filePath) {
+    def fileBuilderHelper(final String shareName, final String filePath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-            }
-            return builder
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(filePath)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .httpClient(getHttpClient())
-        } else {
-            return builder
-                .connectionString(connectionString)
-                .shareName(shareName)
-                .resourcePath(filePath)
-                .httpClient(interceptorManager.getPlaybackClient())
-        }
+        builder.addPolicy(getRecordPolicy())
+        return builder
+            .connectionString(connectionString)
+            .shareName(shareName)
+            .resourcePath(filePath)
+            .httpClient(getHttpClient())
     }
 
     ShareFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
+
         if (credential != null) {
             builder.credential(credential)
         }
 
         return builder.buildFileClient()
-    }
-
-    private def reformat(String text) {
-        def fullName = text.split(" ").collect { it.capitalize() }.join("")
-        def matcher = (fullName =~ /(.*)(\[)(.*)(\])/)
-
-        if (!matcher.find()) {
-            return fullName
-        }
-        return matcher[0][1] + matcher[0][3]
-    }
-
-    HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else {
-            return interceptorManager.getPlaybackClient()
-        }
-    }
-
-    OffsetDateTime getUTCNow() {
-        return testResourceName.now()
     }
 
     InputStream getInputStream(byte[] data) {
@@ -500,12 +370,8 @@ class APISpec extends Specification {
         }
     }
 
-    String getRandomUUID() {
-        return testResourceName.randomUuid()
-    }
-
     void sleepIfLive(long milliseconds) {
-        if (testMode == TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -514,13 +380,13 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live or record mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     /**
@@ -549,22 +415,8 @@ class APISpec extends Specification {
         }
     }
 
-    static TestMode setupTestMode() {
-        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (testMode != null) {
-            try {
-                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ignore) {
-                return TestMode.PLAYBACK
-            }
-        }
-
-        return TestMode.PLAYBACK
-    }
-
     static boolean playbackMode() {
-        return setupTestMode() == TestMode.PLAYBACK
+        return ENVIRONMENT.testMode == TestMode.PLAYBACK
     }
 
     def getPerCallVersionPolicy() {

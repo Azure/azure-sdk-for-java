@@ -15,7 +15,7 @@ public final class DeleteRepositoryResult {
      * SHA of the deleted image
      */
     @JsonProperty(value = "manifestsDeleted", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> deletedRegistryArtifactDigests;
+    private List<String> deletedManifests;
 
     /*
      * Tag of the deleted image
@@ -24,12 +24,12 @@ public final class DeleteRepositoryResult {
     private List<String> deletedTags;
 
     /**
-     * Get the deletedRegistryArtifactDigests property: SHA of the deleted image.
+     * Get the deletedManifests property: SHA of the deleted image.
      *
-     * @return the deletedRegistryArtifactDigests value.
+     * @return the deletedManifests value.
      */
-    public List<String> getDeletedRegistryArtifactDigests() {
-        return this.deletedRegistryArtifactDigests;
+    public List<String> getDeletedManifests() {
+        return this.deletedManifests;
     }
 
     /**

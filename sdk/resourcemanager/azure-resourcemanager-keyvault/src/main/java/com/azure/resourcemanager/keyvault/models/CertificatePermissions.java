@@ -10,6 +10,9 @@ import java.util.Collection;
 
 /** Defines values for CertificatePermissions. */
 public final class CertificatePermissions extends ExpandableStringEnum<CertificatePermissions> {
+    /** Static value all for CertificatePermissions. */
+    public static final CertificatePermissions ALL = fromString("all");
+
     /** Static value get for CertificatePermissions. */
     public static final CertificatePermissions GET = fromString("get");
 

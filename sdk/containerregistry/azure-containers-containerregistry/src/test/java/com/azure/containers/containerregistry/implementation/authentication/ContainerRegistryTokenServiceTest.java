@@ -44,7 +44,7 @@ public class ContainerRegistryTokenServiceTest {
         TokenServiceImpl impl = mock(TokenServiceImpl.class);
         AccessToken refreshToken = new AccessToken(REFRESHTOKEN, OffsetDateTime.now().plusMinutes(30));
         AccessToken accessToken = new AccessToken(ACCESSTOKEN, OffsetDateTime.now().plusMinutes(30));
-        when(impl.getAcrAccessTokenAsync(anyString(), anyString(), anyString())).thenReturn(Mono.just(accessToken));
+        when(impl.getAcrAccessTokenAsync(anyString(), anyString(), anyString(), anyString())).thenReturn(Mono.just(accessToken));
         when(impl.getAcrRefreshTokenAsync(anyString(), anyString())).thenReturn(Mono.just(refreshToken));
 
         TokenCredential tokenCredential = mock(TokenCredential.class);

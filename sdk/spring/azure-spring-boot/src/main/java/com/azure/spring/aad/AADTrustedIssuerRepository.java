@@ -44,7 +44,7 @@ public class AADTrustedIssuerRepository {
     }
 
     public void addB2CIssuer(String baseUri) {
-        Assert.notNull(baseUri, "tenantName cannot be null.");
+        Assert.notNull(baseUri, "baseUri cannot be null.");
         trustedIssuers.add(String.format(resolveBaseUri(baseUri) + "/%s/v2.0/", tenantId));
     }
 
