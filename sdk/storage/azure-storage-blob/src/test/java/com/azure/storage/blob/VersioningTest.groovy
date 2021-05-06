@@ -150,7 +150,7 @@ class VersioningTest extends APISpec {
         def permission = new BlobSasPermission()
             .setDeleteVersionPermission(true)
         def sasToken = blobClient.getVersionClient(blobItemV1.getVersionId())
-            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission))
+            .generateSas(new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission))
 
         def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
@@ -172,7 +172,7 @@ class VersioningTest extends APISpec {
         def permission = new BlobSasPermission()
             .setDeleteVersionPermission(true)
         def sasToken = blobContainerClient
-            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission))
+            .generateSas(new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission))
 
         def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
@@ -194,7 +194,7 @@ class VersioningTest extends APISpec {
         def permission = new AccountSasPermission()
            .setDeleteVersionPermission(true)
         def sasToken = versionedBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
-            getUTCNow().plusDays(1), permission, new AccountSasService().setBlobAccess(true),
+            namer.getUtcNow().plusDays(1), permission, new AccountSasService().setBlobAccess(true),
             new AccountSasResourceType().setObject(true)
         ))
 

@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.credential.AzureSasCredential
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
@@ -16,7 +15,6 @@ import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobSignedIdentifier
@@ -37,11 +35,13 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@ResourceLock("ServiceProperties")
 class ServiceAPITest extends APISpec {
 
     BlobServiceClient anonymousClient;
@@ -90,7 +90,7 @@ class ServiceAPITest extends APISpec {
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
                 .setPermissions("racwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))))
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))))
         cc.getBlobClient(blobName).upload(BinaryData.fromBytes("test".getBytes()))
         def sas = cc.generateSas(new BlobServiceSasSignatureValues(identifier))
         if (unsanitize) {
@@ -136,8 +136,8 @@ class ServiceAPITest extends APISpec {
     }
 
     BlobContainerClientBuilder optionalRecordingPolicy(BlobContainerClientBuilder builder) {
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
+            builder.addPolicy(getRecordPolicy())
         }
         return builder
     }
@@ -145,11 +145,11 @@ class ServiceAPITest extends APISpec {
     def "List containers"() {
         when:
         def response =
-            primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setPrefix(containerPrefix + testName), null)
+            primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix()), null)
 
         then:
         for (BlobContainerItem c : response) {
-            c.getName().startsWith(containerPrefix)
+            c.getName().startsWith(namer.getResourcePrefix())
             c.getProperties().getLastModified() != null
             c.getProperties().getETag() != null
             c.getProperties().getLeaseStatus() != null
@@ -194,55 +194,47 @@ class ServiceAPITest extends APISpec {
         setup:
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
-        cc = primaryBlobServiceClient.createBlobContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
+        def containerName = generateContainerName()
+        cc = primaryBlobServiceClient.createBlobContainerWithResponse(containerName, metadata, null, null).getValue()
 
         expect:
         primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
             .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
-            .setPrefix("aaa" + containerPrefix), null)
+            .setPrefix(containerName), null)
             .iterator().next().getMetadata() == metadata
-
-        // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cc.deleteWithResponse(null, null, null).getStatusCode() == 202
     }
 
     def "List containers maxResults"() {
         setup:
         def NUM_CONTAINERS = 5
         def PAGE_RESULTS = 3
-        def containerName = generateContainerName()
-        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
-
+        def containerNamePrefix = namer.getRandomName(50)
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
         }
 
         expect:
         primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
-            .setPrefix(containerPrefix)
+            .setPrefix(containerNamePrefix)
             .setMaxResultsPerPage(PAGE_RESULTS), null)
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
-
-        cleanup:
-        containers.each { container -> container.delete() }
     }
 
     def "List containers maxResults by page"() {
         setup:
         def NUM_CONTAINERS = 5
         def PAGE_RESULTS = 3
-        def containerName = generateContainerName()
-        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+        def containerNamePrefix = namer.getRandomName(50)
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
         }
 
         expect:
         for (def page : primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
-            .setPrefix(containerPrefix), null)
+            .setPrefix(containerNamePrefix), null)
             .iterableByPage(PAGE_RESULTS)) {
             assert page.getValue().size() <= PAGE_RESULTS
         }
@@ -255,19 +247,18 @@ class ServiceAPITest extends APISpec {
     def "List deleted"() {
         given:
         def NUM_CONTAINERS = 5
-        def containerName = generateContainerName()
-        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+        def containerNamePrefix = namer.getRandomName(50)
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
         }
         containers.each { container -> container.delete() }
 
         when:
         def listResult = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
-            .setPrefix(containerPrefix)
+            .setPrefix(containerNamePrefix)
             .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null)
 
@@ -281,19 +272,18 @@ class ServiceAPITest extends APISpec {
     def "List with all details"() {
         given:
         def NUM_CONTAINERS = 5
-        def containerName = generateContainerName()
-        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+        def containerNamePrefix = namer.getRandomName(50)
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
         }
         containers.each { container -> container.delete() }
 
         when:
         def listResult = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
-                .setPrefix(containerPrefix)
+                .setPrefix(containerNamePrefix)
                 .setDetails(new BlobContainerListDetails()
                     .setRetrieveDeleted(true)
                     .setRetrieveMetadata(true)),
@@ -1100,7 +1090,7 @@ class ServiceAPITest extends APISpec {
 //        def oldName = generateContainerName()
 //        def newName = generateContainerName()
 //        primaryBlobServiceClient.createBlobContainer(oldName)
-//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
 //        def serviceClient = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
 //
 //        when:

@@ -1,6 +1,9 @@
 # Release History
-## 5.1.0-beta.7 (Unreleased)
 
+## 5.1.0-beta.7 (Unreleased)
+### Breaking changes
+- Removed `batch` keyword from the model names, `AnalyzeBatchActionsResult`, `AnalyzeBatchActionsOperationDetail`, 
+  `AnalyzeBatchActionOptions` and the related method names, such as renamed `beginAnalyzeBatchActions` to `beginAnalyzeActions`.
 
 ## 5.1.0-beta.6 (2021-04-06)
 ### Breaking changes
@@ -134,7 +137,7 @@ regions and in Standard tier.
 ### Dependency updates 
 - Update dependency version, `azure-core` to 1.10.0 and `azure-core-http-netty` to 1.6.3. 
 
-## 5.1.0-beta.2 (2020-10-06) 
+## 5.1.0-beta.2 (2020-10-06)
 ### Breaking changes 
 - Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`,  
 `OpinionSentiment`, and `PiiEntity` because the length information can be accessed from the text property itself 
@@ -143,7 +146,7 @@ using the string's length property.
 ### Dependency updates 
 - Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2. 
  
-## 5.1.0-beta.1 (2020-09-17) 
+## 5.1.0-beta.1 (2020-09-17)
 - Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment` 
   - `length` is the number of characters in the text of these models 
   - `offset` is the offset of the text from the start of the document 
