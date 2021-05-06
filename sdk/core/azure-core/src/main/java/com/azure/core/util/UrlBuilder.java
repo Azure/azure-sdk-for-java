@@ -158,7 +158,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setQuery(String query) {
-    	// reset the query
+        // reset the query
         this.query.clear();
         if (query != null && !query.isEmpty()) {
             with(query, UrlTokenizerState.QUERY);
@@ -179,21 +179,21 @@ public final class UrlBuilder {
      * Returns the query string currently configured in this UrlBuilder instance.
      * @return A String containing the currently configured query string.
      */
-	public String getQueryString() {
+    public String getQueryString() {
         if (query.isEmpty()) {
             return "";
         }
 
         StringBuilder queryBuilder = new StringBuilder("?");
         for (Map.Entry<String, List<String>> entry : query.entrySet()) {
-        	for (String queryValue : entry.getValue()) {
+            for (String queryValue : entry.getValue()) {
                 if (queryBuilder.length() > 1) {
                     queryBuilder.append("&");
                 }
                 queryBuilder.append(entry.getKey());
                 queryBuilder.append("=");
                 queryBuilder.append(queryValue);
-        	}
+            }
         }
 
         return queryBuilder.toString();
