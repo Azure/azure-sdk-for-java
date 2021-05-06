@@ -18,6 +18,7 @@ import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
@@ -475,6 +476,29 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             validateContentResultData(formPages, false);
             assertEquals(3, formPages.size());
         }, MULTIPAGE_INVOICE_PDF);
+    }
+
+    /**
+     * Verifies layout data for a document using source as input stream data.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeContentAppearance(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
+                client.beginRecognizeContent(data,
+                    dataLength,
+                    new RecognizeContentOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG)
+                        .setPollInterval(durationTestMode),
+                    Context.NONE);
+            syncPoller.waitForCompletion();
+            List<FormPage> formPages = syncPoller.getFinalResult();
+            validateContentResultData(formPages, false);
+            assertEquals(TextStyleName.OTHER,
+                formPages.get(0).getLines().get(0).getAppearance().getStyleName());
+        }, FORM_JPG);
     }
 
     // Content - URL
