@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -437,13 +438,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
-
+        final byte[] payload = "peek-message".getBytes(Charset.defaultCharset());
         final AtomicInteger messageId = new AtomicInteger();
         final AtomicLong actualCount = new AtomicLong();
 
         final int maxMessages = 2;
         for (int i = 0; i < maxMessages; ++i) {
-            ServiceBusMessage message = getMessage("" + i, isSessionEnabled);
+            ServiceBusMessage message = getMessage(payload, "" + i, isSessionEnabled);
             sendMessage(message);
         }
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
@@ -453,9 +454,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
         for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
+            int finalI = i;
             receiver.peekMessages(maxMessages).stream().forEach(receivedMessage -> {
                 actualCount.addAndGet(1);
-                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId());
+                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
+                    String.format("Message id did not match. Payload: [%s], try [%s].",
+                        receivedMessage.getBody().toString(), finalI);
             });
         }
 
