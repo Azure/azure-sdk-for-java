@@ -17,10 +17,8 @@ import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Requires
 import spock.lang.Unroll
 
-import java.time.Duration
 import java.util.concurrent.TimeoutException
 
 class DownloadResponseTest extends APISpec {
