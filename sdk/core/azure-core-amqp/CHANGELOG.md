@@ -142,7 +142,7 @@
 - Fixes AMQP link handlers not to close associated sessions when they are closed.
 - Move to use Schedulers.single() because pushing to Qpid's reactor is not thread-safe.
 
-## 1.0.0-beta.8 (12-03-2019)
+## 1.0.0-beta.8 (2019-12-03)
 
 - Changed preview to beta.
 - Fixes authorization when using client credentials.
@@ -165,6 +165,7 @@
 - Updated CBS -> Cbs.
 - Added `AmqpEndpointStateUtil`.
 - Closed ReactorReceiver on errors or closures in link.
+
 
 ## 1.0.0-preview.7 (2019-11-04)
 

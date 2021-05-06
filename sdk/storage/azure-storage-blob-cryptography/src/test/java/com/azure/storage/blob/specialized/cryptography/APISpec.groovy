@@ -2,20 +2,15 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
-import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
@@ -29,11 +24,11 @@ import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.StorageSpec
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
-import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
@@ -41,7 +36,7 @@ import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
-class APISpec extends Specification {
+class APISpec extends StorageSpec {
 
     /*
     The values below are used to create data-driven tests for access conditions.
@@ -57,10 +52,6 @@ class APISpec extends Specification {
     static final String receivedEtag = "received"
 
     static final String garbageEtag = "garbage"
-
-    String containerPrefix = "jtc" // java test container
-
-    String blobPrefix = "javablob"
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
@@ -80,18 +71,12 @@ class APISpec extends Specification {
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
     static String connectionString
-    static TestMode testMode
     private boolean recordLiveMode
 
-    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
     static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
-
-    TestResourceNamer resourceNamer
-    def InterceptorManager interceptorManager
-    protected String testName
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
@@ -115,7 +100,6 @@ class APISpec extends Specification {
     protected KB = 1024
 
     def setupSpec() {
-        testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
@@ -123,49 +107,26 @@ class APISpec extends Specification {
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        int iterationIndex = fullTestName.lastIndexOf("[")
-        int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
-        this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
-
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
         connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
     }
 
-    static TestMode setupTestMode() {
-        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (testMode != null) {
-            try {
-                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ignore) {
-                return TestMode.PLAYBACK
-            }
-        }
-
-        return TestMode.PLAYBACK
-    }
-
-    def cleanup() {
-        interceptorManager.close()
+    // TODO (kasobol-msft) remove this after migration
+    @Override
+    protected shouldUseThisToRecord() {
+        return true
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.LIVE
+        return ENVIRONMENT.testMode == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -189,7 +150,7 @@ class APISpec extends Specification {
     }
 
     byte[] getRandomByteArray(int size) {
-        long seed = UUID.fromString(resourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        long seed = UUID.fromString(namer.getRandomUuid()).getMostSignificantBits() & Long.MAX_VALUE
         Random rand = new Random(seed)
         byte[] data = new byte[size]
         rand.nextBytes(data)
@@ -212,21 +173,6 @@ class APISpec extends Specification {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
 
-    HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else {
-            return interceptorManager.getPlaybackClient()
-        }
-    }
-
     EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
                                                          AsyncKeyEncryptionKeyResolver keyResolver,
                                                          StorageSharedKeyCredential credential, String endpoint,
@@ -244,9 +190,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         if (credential != null) {
             builder.credential(credential)
@@ -266,9 +210,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         if (credential != null) {
             builder.credential(credential)
@@ -288,9 +230,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         if (credential != null) {
             builder.credential(credential)
@@ -300,15 +240,15 @@ class APISpec extends Specification {
     }
 
     def generateContainerName() {
-        generateResourceName(containerPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
-    def String generateResourceName(String prefix, int entityNo) {
-        return resourceNamer.randomName(prefix + testName + entityNo, 63)
+    private String generateResourceName(int entityNo) {
+        return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
     def generateBlobName() {
-        generateResourceName(blobPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,

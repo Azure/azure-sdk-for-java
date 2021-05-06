@@ -22,16 +22,17 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.StorageSpec
+import org.spockframework.runtime.model.IterationInfo
 import spock.lang.Requires
 import spock.lang.Shared
-import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
-class APISpec extends Specification {
+class APISpec extends StorageSpec {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
 
@@ -68,7 +69,6 @@ class APISpec extends Specification {
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential versionedCredential
-    static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
@@ -80,58 +80,55 @@ class APISpec extends Specification {
     protected String testName
 
     def setupSpec() {
-        testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         versionedCredential = getCredential(VERSIONED_STORAGE)
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String fullTestName = getFullTestName(specificationContext.getCurrentIteration())
         String className = specificationContext.getCurrentSpec().getName()
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+        this.interceptorManager = new InterceptorManager(className + fullTestName, ENVIRONMENT.testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
         versionedBlobServiceClient = setClient(versionedCredential)
     }
 
+    private def getFullTestName(IterationInfo iterationInfo) {
+        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.toLowerCase() }.join("")
+
+        if (iterationInfo.getDataValues().length == 0) {
+            return fullName
+        }
+        def prefix = fullName
+        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
+
+        return prefix + suffix
+    }
+
     def cleanup() {
         interceptorManager.close()
     }
 
-    static TestMode setupTestMode() {
-        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (testMode != null) {
-            try {
-                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ignore) {
-                return TestMode.PLAYBACK
-            }
-        }
-
-        return TestMode.PLAYBACK
-    }
-
     static boolean liveMode() {
-        return setupTestMode() == TestMode.LIVE
+        return ENVIRONMENT.testMode == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -160,8 +157,8 @@ class APISpec extends Specification {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
 
-        if (testMode != TestMode.PLAYBACK) {
-            if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+            if (ENVIRONMENT.testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
 
@@ -202,7 +199,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -222,7 +219,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -231,7 +228,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {

@@ -1,6 +1,10 @@
 # Release History
 
 ## 3.1.0-beta.4 (Unreleased)
+### Breaking Changes
+- Renamed `ReadingOrder` model to `FormReadingOrder`.
+- Renamed the method names and the method parameters, using `identity` to replace `id` keyword in the identity documents recognition API.
+  For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
 
 ## 3.0.7 (2021-04-07)
 ### Dependency updates
