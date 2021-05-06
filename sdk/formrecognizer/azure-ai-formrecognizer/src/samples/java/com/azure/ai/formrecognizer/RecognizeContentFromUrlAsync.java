@@ -73,8 +73,8 @@ public class RecognizeContentFromUrlAsync {
                         System.out.printf(
                             "Line %s consists of %d words and has a text style %s with a confidence score of %.2f.%n",
                             formLine.getText(), formLine.getWords().size(),
-                            formLine.getAppearance().getStyle().getName(),
-                            formLine.getAppearance().getStyle().getConfidence());
+                            formLine.getAppearance().getStyleName(),
+                            formLine.getAppearance().getStyleConfidence());
                     }
                 });
             }

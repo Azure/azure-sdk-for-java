@@ -515,7 +515,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             List<FormPage> formPages = syncPoller.getFinalResult();
             validateContentResultData(formPages, false);
             assertEquals(TextStyleName.OTHER,
-                formPages.get(0).getLines().get(0).getAppearance().getStyle().getName());
+                formPages.get(0).getLines().get(0).getAppearance().getStyleName());
         }, FORM_JPG);
     }
 
