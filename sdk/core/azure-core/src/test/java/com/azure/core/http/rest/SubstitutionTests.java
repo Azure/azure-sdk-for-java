@@ -10,9 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SubstitutionTests {
     @Test
     public void constructor() {
-        final Substitution s = new Substitution("A", 2, true);
+        final Substitution s = new Substitution("A", 2, true, true);
         assertEquals("A", s.getUrlParameterName());
         assertEquals(2, s.getMethodParameterIndex());
         assertEquals(true, s.shouldEncode());
+        assertEquals(true, s.shouldDoMultipleQueryParams());
     }
 }

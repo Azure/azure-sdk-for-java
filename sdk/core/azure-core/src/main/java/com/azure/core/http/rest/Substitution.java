@@ -12,6 +12,7 @@ class Substitution {
     private final String urlParameterName;
     private final int methodParameterIndex;
     private final boolean shouldEncode;
+    private final boolean multipleParams;
 
     /**
      * Create a new Substitution.
@@ -22,10 +23,11 @@ class Substitution {
      * @param shouldEncode Whether or not the value from the method's argument should be encoded
      *                     when the substitution is taking place.
      */
-    Substitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
+    Substitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode, boolean multipleParams) {
         this.urlParameterName = urlParameterName;
         this.methodParameterIndex = methodParameterIndex;
         this.shouldEncode = shouldEncode;
+        this.multipleParams = multipleParams;
     }
 
     /**
@@ -52,5 +54,15 @@ class Substitution {
      */
     public boolean shouldEncode() {
         return shouldEncode;
+    }
+
+    /**
+     * Get whether or not the value from the method argument needs to be sent as string in case the
+     * values are a list or as multiple query parameters.
+     * @return  Whether or not this query parameter list values should be sent as individual query
+     * params or as a single Json.
+     */
+    public boolean shouldDoMultipleQueryParams() {
+        return multipleParams;
     }
 }

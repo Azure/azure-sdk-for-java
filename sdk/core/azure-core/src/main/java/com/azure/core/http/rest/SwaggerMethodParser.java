@@ -185,18 +185,19 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 if (annotationType.equals(HostParam.class)) {
                     final HostParam hostParamAnnotation = (HostParam) annotation;
                     hostSubstitutions.add(new Substitution(hostParamAnnotation.value(), parameterIndex,
-                        !hostParamAnnotation.encoded()));
+                        !hostParamAnnotation.encoded(), false));
                 } else if (annotationType.equals(PathParam.class)) {
                     final PathParam pathParamAnnotation = (PathParam) annotation;
                     pathSubstitutions.add(new Substitution(pathParamAnnotation.value(), parameterIndex,
-                        !pathParamAnnotation.encoded()));
+                        !pathParamAnnotation.encoded(), false));
                 } else if (annotationType.equals(QueryParam.class)) {
                     final QueryParam queryParamAnnotation = (QueryParam) annotation;
                     querySubstitutions.add(new Substitution(queryParamAnnotation.value(), parameterIndex,
-                        !queryParamAnnotation.encoded()));
+                        !queryParamAnnotation.encoded(), queryParamAnnotation.multipleQueryParams()));
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
-                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex, false));
+                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex,
+                    		false, false));
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
@@ -205,7 +206,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else if (annotationType.equals(FormParam.class)) {
                     final FormParam formParamAnnotation = (FormParam) annotation;
                     formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex,
-                        !formParamAnnotation.encoded()));
+                        !formParamAnnotation.encoded(), false));
                     bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
                     bodyJavaType = String.class;
                 }
@@ -273,7 +274,8 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters' values
      * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
      */
-    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
+    @SuppressWarnings("unchecked")
+	public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
         if (swaggerMethodArguments == null) {
             return;
         }
@@ -282,12 +284,20 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             final int parameterIndex = substitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
-                String parameterValue = serialize(serializer, methodArgument);
-                if (parameterValue != null) {
-                    if (substitution.shouldEncode()) {
-                        parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
+                List<Object> methodArguments = new ArrayList<Object>();
+                if (methodArgument instanceof List && substitution.shouldDoMultipleQueryParams()) {
+                	methodArguments.addAll((List<Object>)methodArgument);
+                } else {
+                	methodArguments.add(methodArgument);
+                }
+                for (Object methodArgumentUnconverted : methodArguments) {
+                    String parameterValue = serialize(serializer, methodArgumentUnconverted);
+                    if (parameterValue != null) {
+                        if (substitution.shouldEncode()) {
+                            parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
+                        }
+                        urlBuilder.setQueryParameter(substitution.getUrlParameterName(), parameterValue);
                     }
-                    urlBuilder.setQueryParameter(substitution.getUrlParameterName(), parameterValue);
                 }
             }
         }

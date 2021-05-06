@@ -89,7 +89,7 @@ public class HttpLoggingPolicyTests {
     }
 
     /**
-     * Tests that a query string will be properly redacted before it is logged.
+     * Tests that a query string will not be  redacted before it is logged.
      */
     @ParameterizedTest
     @MethodSource("redactQueryParametersSupplier")
@@ -105,8 +105,8 @@ public class HttpLoggingPolicyTests {
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
             .verifyComplete();
-
-        assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
+        String result = convertOutputStreamToString(logCaptureStream);
+        assertTrue(result.contains(expectedQueryString));
     }
 
     private static Stream<Arguments> redactQueryParametersSupplier() {
