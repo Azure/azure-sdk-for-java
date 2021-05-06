@@ -32,25 +32,6 @@ class APISpec extends StorageSpec {
     QueueServiceClient primaryQueueServiceClient
     QueueServiceAsyncClient primaryQueueServiceAsyncClient
 
-    static def PRIMARY_STORAGE = "AZURE_STORAGE_QUEUE_"
-    protected static StorageSharedKeyCredential primaryCredential
-
-    // Test name for test method name.
-    String connectionString
-
-    /**
-     * Setup the QueueServiceClient and QueueClient common used for the API tests.
-     */
-    def setup() {
-        primaryCredential = getCredential(PRIMARY_STORAGE)
-        if (env.testMode != TestMode.PLAYBACK) {
-            connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
-        } else {
-            connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
-                "EndpointSuffix=core.windows.net"
-        }
-    }
-
     /**
      * Clean up the test queues and messages for the account.
      */
@@ -58,7 +39,7 @@ class APISpec extends StorageSpec {
         if (env.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
-                .connectionString(connectionString)
+                .connectionString(env.queueAccount.connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()),
                 null, Context.NONE).each {
@@ -67,30 +48,10 @@ class APISpec extends StorageSpec {
         }
     }
 
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
-        if (env.testMode != TestMode.PLAYBACK) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            accountName = "azstoragesdkaccount"
-            accountKey = "astorageaccountkey"
-        }
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
-
     def queueServiceBuilderHelper() {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
         return builder
-            .connectionString(connectionString)
+            .connectionString(env.queueAccount.connectionString)
             .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
     }
@@ -99,7 +60,7 @@ class APISpec extends StorageSpec {
         def queueName = namer.getRandomName(60)
         QueueClientBuilder builder = new QueueClientBuilder()
         return builder
-            .connectionString(connectionString)
+            .connectionString(env.queueAccount.connectionString)
             .queueName(queueName)
             .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
