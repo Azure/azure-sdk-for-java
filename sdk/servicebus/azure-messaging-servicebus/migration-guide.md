@@ -416,7 +416,7 @@ Here is an example of how a 'ServiceBusReceiverClient' can be created.
 
 ```java
 String SHARED_ACCESS_SIGNATURE_TOKEN = "<Shared Access Signatures for specific Resource>";
-String connectionString = "Endpoint=sb://namespace_DNS_Name;SharedAccessSignature=" + SHARED_ACCESS_SIGNATURE_TOKEN;
+String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessSignature=" + SHARED_ACCESS_SIGNATURE_TOKEN;
 
 ServiceBusClientBuilder builder = new ServiceBusClientBuilder().connectionString(connectionString);
 
