@@ -37,6 +37,13 @@ import java.util.stream.Collectors;
 
 /**
  * Azure network sample for managing private link.
+ * <p>
+ * - Create Storage Account with read-access geo-redundant storage
+ * - Create Virtual Network
+ * - Create Private Endpoints for both primrary and secondary blob endpoint
+ * - Create Private DNS Zone
+ * - Create Private DNS Zone Group on the Private Endpoints
+ * - (Optional) Create Virtual Machine in the Virtual Network to test DNS configure
  */
 public class ManagePrivateLink {
 
@@ -73,7 +80,7 @@ public class ManagePrivateLink {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_RAGRS)
-                .withAccessFromSelectedNetworks()
+                .withAccessFromSelectedNetworks()   // deny access (except for private link)
                 .create();
 
             Utils.print(storageAccount);
@@ -108,7 +115,7 @@ public class ManagePrivateLink {
                 .withAddressSpace(vnAddressSpace)
                 .defineSubnet(subnetName)
                     .withAddressPrefix(vnAddressSpace)
-                    .disableNetworkPoliciesOnPrivateEndpoint()
+                    .disableNetworkPoliciesOnPrivateEndpoint()  // disable network policies on private endpoint
                     .attach()
                 .create();
 
@@ -120,7 +127,7 @@ public class ManagePrivateLink {
                 .withSubnetId(network.subnets().get(subnetName).id())
                 .definePrivateLinkServiceConnection(pecName)
                     .withResourceId(storageAccount.id())
-                    .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
+                    .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)   // primary blob
                     .attach()
                 .create();
 
@@ -138,7 +145,7 @@ public class ManagePrivateLink {
                 .withSubnetId(network.subnets().get(subnetName).id())
                 .definePrivateLinkServiceConnection(pecName2)
                     .withResourceId(storageAccount.id())
-                    .withSubResource(PrivateLinkSubResourceName.fromString("blob_secondary"))
+                    .withSubResource(PrivateLinkSubResourceName.fromString("blob_secondary"))   // secondary blob
                     .attach()
                 .create();
 
