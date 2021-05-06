@@ -311,7 +311,7 @@ class LeaseAPITest extends APISpec {
     def "Break file lease"() {
         setup:
         def fc = createPathClient()
-        def leaseClient = createLeaseClient(fc, getRandomUUID())
+        def leaseClient = createLeaseClient(fc, namer.getRandomUuid())
 
         when:
         leaseClient.acquireLease(leaseTime)
@@ -403,11 +403,11 @@ class LeaseAPITest extends APISpec {
     def "Change file lease"() {
         setup:
         def fc = createPathClient()
-        def leaseClient = createLeaseClient(fc, getRandomUUID())
+        def leaseClient = createLeaseClient(fc, namer.getRandomUuid())
         leaseClient.acquireLease(15)
 
         when:
-        def newLeaseId = getRandomUUID()
+        def newLeaseId = namer.getRandomUuid()
         def changeLeaseResponse = leaseClient.changeLeaseWithResponse(newLeaseId, null, null, null)
 
         then:
@@ -425,7 +425,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
 
         expect:
-        createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null, null).getStatusCode() == 200
+        createLeaseClient(fc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -441,7 +441,7 @@ class LeaseAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
 
         expect:
-        createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
+        createLeaseClient(fc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null).getStatusCode() == 200
 
         where:
         modified        | unmodified      | match                | noneMatch
@@ -465,7 +465,7 @@ class LeaseAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
 
         when:
-        createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
+        createLeaseClient(fc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -755,7 +755,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Break file system lease"() {
         setup:
-        def leaseClient = createLeaseClient(fsc, getRandomUUID())
+        def leaseClient = createLeaseClient(fsc, namer.getRandomUuid())
         leaseClient.acquireLease(leaseTime)
 
         def breakLeaseResponse = leaseClient.breakLeaseWithResponse(breakPeriod, null, null, null)
@@ -854,7 +854,7 @@ class LeaseAPITest extends APISpec {
         def leaseClient = createLeaseClient(fsc, leaseID)
 
         when:
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(getRandomUUID(), null, null, null)
+        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(namer.getRandomUuid(), null, null, null)
         def newLeaseId = changeLeaseResponse.getValue()
 
         then:
@@ -870,7 +870,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
 
         expect:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null, null).getStatusCode() == 200
+        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -880,7 +880,7 @@ class LeaseAPITest extends APISpec {
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
+        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null).getStatusCode() == 200
 
         where:
         modified        | unmodified
@@ -896,7 +896,7 @@ class LeaseAPITest extends APISpec {
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
+        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null)
 
         then:
         thrown(DataLakeStorageException)

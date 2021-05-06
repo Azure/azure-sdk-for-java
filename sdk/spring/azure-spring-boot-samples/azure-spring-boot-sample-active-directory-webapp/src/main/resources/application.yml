@@ -1,3 +1,6 @@
+# WebapiA is an optional client, we can access obo resource servers.
+# We can also access a custom server according to the webapiA client.
+
 azure:
   activedirectory:
     client-id: <client-id>

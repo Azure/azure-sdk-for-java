@@ -29,7 +29,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-sdk-for-js/blob/1998b841dcfa3fd17f0d8e0a4973ea61a25d2ecb/sdk/containerregistry/container-registry/swagger/containerregistry.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/40e8bf1504ed672e86027b240dddd9ca94a15d4c/specification/containerregistry/data-plane/Azure.ContainerRegistry/preview/2019-08-15-preview/containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
@@ -40,7 +40,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ContentProperties,DeleteRepositoryResult,RegistryArtifactOrderBy,TagOrderBy,RepositoryProperties
+custom-types: ContentProperties,DeleteRepositoryResult,ManifestOrderBy,TagOrderBy,RepositoryProperties,ArtifactArchitecture,ArtifactOperatingSystem
 custom-types-subpackage: models
 ```
 
@@ -116,6 +116,24 @@ directive:
   transform: >
     $["properties"]["imageName"].readOnly = true;
     $["properties"]["tag"].readOnly = true;
+```
+
+### Set modelAsString flag for the enum values of TagOrderBy
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TagOrderBy
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+```
+
+### Set modelAsString flag for the enum values of ManifestOrderBy
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ManifestOrderBy
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
 ```
 
 
