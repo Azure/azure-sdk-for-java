@@ -23,6 +23,7 @@ import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
+import com.azure.storage.common.test.shared.TestAccount
 import org.spockframework.runtime.model.IterationInfo
 import spock.lang.Requires
 import spock.lang.Shared
@@ -40,11 +41,6 @@ class APISpec extends StorageSpec {
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
-    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
-
-    protected static StorageSharedKeyCredential primaryCredential
-
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
 
@@ -52,7 +48,6 @@ class APISpec extends StorageSpec {
     String containerName
 
     def setupSpec() {
-        primaryCredential = getCredential(PRIMARY_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
@@ -64,8 +59,8 @@ class APISpec extends StorageSpec {
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
 
-        primaryBlobServiceClient = setClient(primaryCredential)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
+        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
 
         containerName = generateContainerName()
     }
@@ -87,26 +82,6 @@ class APISpec extends StorageSpec {
         return env.testMode == TestMode.PLAYBACK
     }
 
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
-        if (env.testMode == TestMode.RECORD || env.testMode == TestMode.LIVE) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            accountName = "azstoragesdkaccount"
-            accountKey = "astorageaccountkey"
-        }
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
-
     def generateContainerName() {
         generateResourceName(entityNo++)
     }
@@ -119,9 +94,9 @@ class APISpec extends StorageSpec {
         return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
-    BlobServiceClient setClient(StorageSharedKeyCredential credential) {
+    BlobServiceClient setClient(TestAccount account) {
         try {
-            return getServiceClient(credential)
+            return getServiceClient(account)
         } catch (Exception ignore) {
             return null
         }
@@ -131,8 +106,8 @@ class APISpec extends StorageSpec {
         return getServiceClient(null, endpoint, null)
     }
 
-    BlobServiceClient getServiceClient(StorageSharedKeyCredential credential) {
-        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    BlobServiceClient getServiceClient(TestAccount account) {
+        return getServiceClient(account.credential, account.blobEndpoint, null)
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
@@ -148,8 +123,8 @@ class APISpec extends StorageSpec {
         return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
     }
 
-    BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
-        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
+    BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
+        return getServiceClientBuilder(account.credential, account.blobEndpoint)
             .buildAsyncClient()
     }
 
