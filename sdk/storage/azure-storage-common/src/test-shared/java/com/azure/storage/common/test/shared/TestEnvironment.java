@@ -58,15 +58,15 @@ public class TestEnvironment {
     private static TestAccount readTestAccountFromEnvironment(String prefix, TestMode testMode) {
         String name = "azstoragesdkaccount";
         String key = "astorageaccountkey";
-        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
-            "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;"
+            + "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
         if (testMode != TestMode.PLAYBACK) {
             name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
             key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
             connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
             if (connectionString == null || connectionString.trim().isEmpty()) {
-                connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;" +
-                    "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
+                connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;"
+                    + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
             }
         }
         String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
