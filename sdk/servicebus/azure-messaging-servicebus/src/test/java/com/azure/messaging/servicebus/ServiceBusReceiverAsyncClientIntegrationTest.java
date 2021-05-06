@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -558,9 +559,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final AtomicLong actualCount = new AtomicLong();
         final int maxMessages = 2;
         final int fromSequenceNumber = 1;
-
+        final byte[] content = "peek-message-from-sequence".getBytes(Charset.defaultCharset());
         for (int i = 0; i < maxMessages; ++i) {
-            ServiceBusMessage message = getMessage("" + i, isSessionEnabled);
+            ServiceBusMessage message = getMessage(content, "" + i, isSessionEnabled);
             Mono.when(sendMessage(message)).block(TIMEOUT);
         }
 
@@ -571,7 +572,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
             receiver.peekMessages(maxMessages, fromSequenceNumber).toStream().forEach(receivedMessage -> {
                 actualCount.addAndGet(1);
-                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId());
+                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
+                    "Message id did not match. Message payload:" + receivedMessage.getBody().toString());
             });
         }
 

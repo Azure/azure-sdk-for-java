@@ -353,10 +353,14 @@ public abstract class IntegrationTestBase extends TestBase {
         Mono.when(closeableMonos).block(TIMEOUT);
     }
 
-    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+    protected ServiceBusMessage getMessage(byte[] content, String messageId, boolean isSessionEnabled) {
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(content, messageId);
         logger.verbose("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
+    }
+
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
+        return getMessage(CONTENTS_BYTES, messageId, isSessionEnabled);
     }
 
     protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {

@@ -283,7 +283,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .expectComplete()
             .verify(shortWait);
 
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(3);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -550,7 +550,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .expectComplete()
             .verify(shortWait);
 
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(3);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
