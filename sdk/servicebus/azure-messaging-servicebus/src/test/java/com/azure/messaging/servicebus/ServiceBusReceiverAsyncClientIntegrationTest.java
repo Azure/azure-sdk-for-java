@@ -554,7 +554,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
-        AtomicInteger messageId = new AtomicInteger();
+        final AtomicInteger messageId = new AtomicInteger();
         final AtomicLong actualCount = new AtomicLong();
         final int maxMessages = 2;
         final int fromSequenceNumber = 1;
@@ -569,7 +569,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
         for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
-            System.out.println(" !!! Making  a call to peek .....");
             receiver.peekMessages(maxMessages, fromSequenceNumber).toStream().forEach(receivedMessage -> {
                 actualCount.addAndGet(1);
                 assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId());
@@ -580,11 +579,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiver.receiveMessages().take(maxMessages))
             .assertNext(receivedMessage -> {
-                System.out.println("!!!! delete  Received " + receivedMessage.getMessageId());
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
             .assertNext(receivedMessage -> {
-                System.out.println("!!!!  delete Received " + receivedMessage.getMessageId());
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
             })
             .expectComplete()
