@@ -12,7 +12,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
-import com.azure.storage.file.share.models.ShareFileUploadBufferedRangeOptions;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -332,13 +332,13 @@ public class ShareFileAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using
-     * {@link ShareFileAsyncClient#uploadBufferedRange(ShareFileUploadBufferedRangeOptions)}
+     * {@link ShareFileAsyncClient#uploadBufferedRange(ShareFileUploadOptions)}
      */
     public void uploadBufferedRange() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRange#ShareFileUploadBufferedRangeOptions
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        shareFileAsyncClient.uploadBufferedRange(new ShareFileUploadBufferedRangeOptions(
+        shareFileAsyncClient.uploadBufferedRange(new ShareFileUploadOptions(
             Flux.just(defaultData))).subscribe(
                 response -> { },
                 error -> System.err.print(error.toString()),
@@ -348,13 +348,13 @@ public class ShareFileAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using
-     * {@link ShareFileAsyncClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions)}
+     * {@link ShareFileAsyncClient#uploadBufferedRangeWithResponse(ShareFileUploadOptions)}
      */
     public void uploadBufferedRangeWithResponse() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        shareFileAsyncClient.uploadBufferedRangeWithResponse(new ShareFileUploadBufferedRangeOptions(
+        shareFileAsyncClient.uploadBufferedRangeWithResponse(new ShareFileUploadOptions(
             Flux.just(defaultData))).subscribe(
                 response -> { },
                 error -> System.err.print(error.toString()),

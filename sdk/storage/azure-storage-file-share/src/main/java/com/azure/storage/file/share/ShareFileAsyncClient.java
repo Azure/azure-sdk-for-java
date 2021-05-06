@@ -64,7 +64,7 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
-import com.azure.storage.file.share.models.ShareFileUploadBufferedRangeOptions;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -1262,10 +1262,8 @@ public class ShareFileAsyncClient {
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
      *
-     * @deprecated Deprecated in favor of
-     * {@link ShareFileAsyncClient#uploadRange(ShareFileUploadRangeOptions)} and
-     * {@link ShareFileAsyncClient#uploadBufferedRange(ShareFileUploadBufferedRangeOptions)}.
-     * The former emulates this method while the latter buffers and uploads in parallel.
+     * @deprecated Use {@link ShareFileAsyncClient#uploadRange(Flux, long)} instead. Or consider
+     * {@link ShareFileAsyncClient#upload(Flux, ParallelTransferOptions)} for a more capable upload method.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1300,10 +1298,9 @@ public class ShareFileAsyncClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      *
-     * @deprecated Deprecated in favor of
-     * {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} and
-     * {@link ShareFileAsyncClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions)}.
-     * The former emulates this method while the latter buffers and uploads in parallel.
+     * @deprecated Use {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} instead. Or
+     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for a more capable upload
+     * method.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1335,10 +1332,9 @@ public class ShareFileAsyncClient {
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      *
-     * @deprecated Deprecated in favor of
-     * {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} and
-     * {@link ShareFileAsyncClient#uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions)}.
-     * The former emulates this method while the latter buffers and uploads in parallel.
+     * @deprecated Use {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} instead. Or
+     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for a more capable upload
+     * method.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1350,80 +1346,6 @@ public class ShareFileAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
-     * in-place write on the specified file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Upload data "default" to the file in Storage File Service. </p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
-     *
-     * @param options Argument collection for the upload operation.
-     * @return The {@link ShareFileUploadInfo file upload info}
-     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
-     * status code 413 (Request Entity Too Large)
-     */
-    public Mono<ShareFileUploadInfo> uploadRange(ShareFileUploadRangeOptions options) {
-        try {
-            return uploadRangeWithResponse(options).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
-     * in-place write on the specified file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Upload data "default" to the file in Storage File Service. </p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
-     *
-     * @param options Argument collection for the upload operation.
-     * @return The {@link ShareFileUploadInfo file upload info}
-     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
-     * status code 413 (Request Entity Too Large)
-     */
-    public Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options) {
-        try {
-            return withContext(context -> uploadRangeWithResponse(options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * One-shot upload range.
-     */
-    Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options, Context context) {
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
-        long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
-        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
-        context = context == null ? Context.NONE : context;
-
-        Flux<ByteBuffer> data = options.getDataFlux() == null
-            ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), (int) FILE_DEFAULT_BLOCK_SIZE, true)
-            : options.getDataFlux();
-
-        return azureFileStorageClient.getFiles()
-            .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), data, null, null, requestConditions.getLeaseId(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::uploadResponse);
     }
 
     /**
@@ -1439,12 +1361,14 @@ public class ShareFileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
-     * @param options Argument collection for the upload operation.
+     * @param data The data which will upload to the storage file.
+     * @param transferOptions {@link ParallelTransferOptions} to use to upload data.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
-    public Mono<ShareFileUploadInfo> uploadBufferedRange(ShareFileUploadBufferedRangeOptions options) {
+    public Mono<ShareFileUploadInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions transferOptions) {
         try {
-            return uploadBufferedRangeWithResponse(options).flatMap(FluxUtil::toMono);
+            return uploadWithResponse(new ShareFileUploadOptions(data).setParallelTransferOptions(transferOptions))
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1466,15 +1390,15 @@ public class ShareFileAsyncClient {
      * @param options Argument collection for the upload operation.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
-    public Mono<Response<ShareFileUploadInfo>> uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions options) {
+    public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options) {
         try {
-            return withContext(context -> uploadBufferedRangeWithResponse(options, context));
+            return withContext(context -> uploadWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareFileUploadInfo>> uploadBufferedRangeWithResponse(ShareFileUploadBufferedRangeOptions options, Context context) {
+    Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options, Context context) {
         try {
             StorageImplUtils.assertNotNull("options", options);
             ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
@@ -1556,6 +1480,81 @@ public class ShareFileAsyncClient {
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency())
             .last();
+    }
+
+    /**
+     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
+     * in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions}
+     *
+     * <p>This method does a single Put Range operation. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param data The data which will upload to the storage file.
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     */
+    public Mono<ShareFileUploadInfo> uploadRange(Flux<ByteBuffer> data, long length) {
+        try {
+            return uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
+     * in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions}
+     *
+     * <p>This method does a single Put Range operation. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options Argument collection for the upload operation.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     */
+    public Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options) {
+        try {
+            return withContext(context -> uploadRangeWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * One-shot upload range.
+     */
+    Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options, Context context) {
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
+        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
+        context = context == null ? Context.NONE : context;
+
+        Flux<ByteBuffer> data = options.getDataFlux() == null
+            ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(), (int) FILE_DEFAULT_BLOCK_SIZE, true)
+            : options.getDataFlux();
+
+        return azureFileStorageClient.getFiles()
+            .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
+                options.getLength(), data, null, null, requestConditions.getLeaseId(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(this::uploadResponse);
     }
 
     /**

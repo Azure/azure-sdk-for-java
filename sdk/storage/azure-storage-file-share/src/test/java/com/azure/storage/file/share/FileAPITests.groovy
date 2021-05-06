@@ -14,7 +14,7 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
-import com.azure.storage.file.share.models.ShareFileUploadBufferedRangeOptions
+import com.azure.storage.file.share.models.ShareFileUploadOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
@@ -277,7 +277,7 @@ class FileAPITests extends APISpec {
         def data = new ByteArrayInputStream(getRandomBuffer(length));
 
         when:
-        primaryFileClient.uploadBufferedRange(new ShareFileUploadBufferedRangeOptions(data, length))
+        primaryFileClient.upload(data, length, null)
 
         then:
         notThrown(Exception)

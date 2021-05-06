@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
 /**
  * Extended options that may be passed when uploading a file range.
  */
-public class ShareFileUploadBufferedRangeOptions {
+public class ShareFileUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
     private final long length;
@@ -29,7 +29,7 @@ public class ShareFileUploadBufferedRangeOptions {
      * expected to produce the same values across subscriptions.
      * data provided in the {@link InputStream}.
      */
-    public ShareFileUploadBufferedRangeOptions(Flux<ByteBuffer> dataFlux) {
+    public ShareFileUploadOptions(Flux<ByteBuffer> dataFlux) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         this.dataFlux = dataFlux;
         this.dataStream = null;
@@ -45,7 +45,7 @@ public class ShareFileUploadBufferedRangeOptions {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
-    public ShareFileUploadBufferedRangeOptions(InputStream dataStream, long length) {
+    public ShareFileUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
@@ -96,7 +96,7 @@ public class ShareFileUploadBufferedRangeOptions {
      * @param offset {@link Long} position to write at.
      * @return The updated options.
      */
-    public ShareFileUploadBufferedRangeOptions setOffset(Long offset) {
+    public ShareFileUploadOptions setOffset(Long offset) {
         this.offset = offset;
         return this;
     }
@@ -116,7 +116,7 @@ public class ShareFileUploadBufferedRangeOptions {
      * @param parallelTransferOptions {@link ParallelTransferOptions}
      * @return The updated options.
      */
-    public ShareFileUploadBufferedRangeOptions setParallelTransferOptions(ParallelTransferOptions parallelTransferOptions) {
+    public ShareFileUploadOptions setParallelTransferOptions(ParallelTransferOptions parallelTransferOptions) {
         this.parallelTransferOptions = parallelTransferOptions;
         return this;
     }
@@ -136,7 +136,7 @@ public class ShareFileUploadBufferedRangeOptions {
      * @param requestConditions {@link ShareRequestConditions}
      * @return The updated options.
      */
-    public ShareFileUploadBufferedRangeOptions setRequestConditions(ShareRequestConditions requestConditions) {
+    public ShareFileUploadOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
     }
