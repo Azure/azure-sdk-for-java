@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JREKeystoreTest {
+public class KeyVaultTrustManagerFactoryProviderTest {
     private static final String javaHome =  privilegedGetProperty("java.home", "");
     private static final Path storePath= Paths.get(javaHome).resolve("lib").resolve("security");
     private static final Path defaultStore = storePath.resolve("cacerts");
@@ -50,7 +50,7 @@ public class JREKeystoreTest {
     private static final String keyStorePassword = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
     private static final String trustStorePassword = privilegedGetProperty("javax.net.ssl.trustStorePassword", "changeit");
     private static final String keyPassword = keyStorePassword;
-    private static final Logger logger = Logger.getLogger(JREKeystoreTest.class.getName());
+    private static final Logger logger = Logger.getLogger(KeyVaultTrustManagerFactoryProviderTest.class.getName());
     private static String privateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/QWKhTKDVdZW0" +
             "rdC8OLD/3oCrkS4UMh3jh81g8vjOetuO8pki94Aj+vfvhIdSqB8ddhh8LdilAWp9" +
             "e03TLpgXf9DlVTVrkt7Yr7t1+V3YvSQonIf1RODSpLumHZY7VvIB2Hu9rDAxPGd4" +
