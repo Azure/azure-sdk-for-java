@@ -182,7 +182,6 @@ class DownloadResponseTest extends APISpec {
     }
 
     @Unroll
-    @Requires( { playbackMode() }) // https://github.com/reactor/reactor-core/issues/1098
     def "Timeout"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT,
@@ -190,11 +189,13 @@ class DownloadResponseTest extends APISpec {
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
-        expect:
-        StepVerifier.withVirtualTime({ flux.setOptions(options).getter(info)
-            .flatMapMany({ it.getValue() }) })
+        when:
+        def bufferMono = flux.setOptions(options).getter(info)
+            .flatMapMany({ it.getValue() })
+
+        then:
+        StepVerifier.create(bufferMono)
             .expectSubscription()
-            .thenAwait(Duration.ofSeconds((retryCount + 1) * 61))
             .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
 
         where:
