@@ -1,6 +1,6 @@
 ## Generate autorest code
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/5dd8170e61fb5e5285e1b878b6cea8a631296022/specification/purview/data-plane/Azure.Purview.Catalog/preview/2020-12-01-preview/purviewcatalog.json?token=AARWQPMRW7FUMJDR5FMOEKTAOXWC6
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/ddd2e1ea15930bfeb888e5ae1e1f5fc60eef25f9/specification/purview/data-plane/Azure.Purview.Catalog/preview/2020-12-01-preview/purviewcatalog.json?token=AARWQPKZZCMADP6RWOZGUGLATRCCO
 java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.catalog

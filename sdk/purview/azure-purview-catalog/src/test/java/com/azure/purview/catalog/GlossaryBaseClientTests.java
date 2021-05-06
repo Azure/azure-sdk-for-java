@@ -1,5 +1,7 @@
 package com.azure.purview.catalog;
 
+import com.azure.analytics.purview.catalog.GlossaryBaseClient;
+import com.azure.analytics.purview.catalog.PurviewCatalogServiceRestAPIDocumentBuilder;
 import com.azure.core.experimental.http.DynamicResponse;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -11,13 +13,13 @@ import javax.json.JsonReader;
 import java.io.StringReader;
 import java.util.stream.Collectors;
 
-public class GlossaryRestClientTests {
+public class GlossaryBaseClientTests {
     @Test
     public void testGetGlossaries() {
-        GlossaryRestClient client = new PurviewCatalogServiceRestAPIDocumentBuilder()
-            .accountName(System.getenv("ACCOUNT_NAME"))
+        GlossaryBaseClient client = new PurviewCatalogServiceRestAPIDocumentBuilder()
+            .endpoint(System.getenv("ATLAS_ENDPOINT"))
             .credential(new EnvironmentCredentialBuilder().build())
-            .buildGlossaryRestClient();
+            .buildGlossaryBaseClient();
 
         DynamicResponse res = client.getGlossaries().send();
         if (res.getStatusCode() / 100 != 2) {

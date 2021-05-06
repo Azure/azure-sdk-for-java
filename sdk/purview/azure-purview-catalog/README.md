@@ -1,6 +1,12 @@
 # Azure Document Translation client library for Java
 
-Microsoft Azure Cognitive Services Document Translation API enables you to translate documents in batch.
+Azure Purview Catalog is a fully managed cloud service whose users can discover the data sources they need and understand the data sources they find. At the same time, Data Catalog helps organizations get more value from their existing investments.
+
+- Search for data using technical or business terms
+- Browse associated technical, business, semantic, and operational metadata
+- Identify the sensitivity level of data.
+
+**Please rely heavily on the [service's documentation][catalog_product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -10,17 +16,17 @@ Microsoft Azure Cognitive Services Document Translation API enables you to trans
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-- An existing Cognitive Services.
+- An existing Azure Purview account.
 
-For more information about creating the resource or how to get the location and sku information see [here][cognitive_resource_cli].
+For more information about creating the account see [here][create_azure_purview_account].
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-translator;current})
+[//]: # ({x-version-update-start;com.azure:azure-analytics-purview-catalog;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-ai-translator</artifactId>
+  <artifactId>azure-analytics-purview-catalog</artifactId>
   <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -28,17 +34,9 @@ For more information about creating the resource or how to get the location and 
 
 
 ### Authenticate the client
-In order to interact with the Document Translation service, you'll need to create an instance of the [`BatchDocumentTranslationClient`][batch_document_translation_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
+In order to interact with the Azure Purview service, your client must present an Azure Active Directory bearer token to the service.
 
-#### Get API Key
-
-You can obtain the endpoint and API key from the resource information in the [Azure Portal][azure_portal].
-
-Alternatively, you can use the [Azure CLI][azure_cli] snippet below to get the API key from the Anomaly Detector resource.
-
-```bash
-az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
-```
+The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Create AnomalyDetectorClient with Azure Active Directory Credential
 
@@ -141,5 +139,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-anomalydetector
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/translatortext/azure-ai-translator/src/samples/README.md
+[low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Low-Level-Client
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fanomalydetector%2Fazure-ai-anomalydetector%2FREADME.png)

@@ -33,16 +33,6 @@ In order to interact with the Azure Purview service, your client must present an
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 
-#### Get API Key
-
-You can obtain the endpoint and API key from the resource information in the [Azure Portal][azure_portal].
-
-Alternatively, you can use the [Azure CLI][azure_cli] snippet below to get the API key from the Anomaly Detector resource.
-
-```bash
-az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
-```
-
 #### Create AnomalyDetectorClient with Azure Active Directory Credential
 
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order to use this type of authentication.
