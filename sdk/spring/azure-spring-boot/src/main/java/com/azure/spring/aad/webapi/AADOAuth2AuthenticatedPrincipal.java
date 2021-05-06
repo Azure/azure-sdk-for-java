@@ -2,18 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
-
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTClaimsSet.Builder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+import org.springframework.util.Assert;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.util.Assert;
+
+import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
 
 /**
  * entity class of AADOAuth2AuthenticatedPrincipal
@@ -32,18 +33,22 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
 
     private final String tokenValue;
 
+    private final String name;
+
     private JWTClaimsSet jwtClaimsSet;
 
     public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers,
                                            Map<String, Object> attributes,
                                            Collection<GrantedAuthority> authorities,
-                                           String tokenValue) {
+                                           String tokenValue,
+                                           String principalClaimName) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;
         this.tokenValue = tokenValue;
         this.attributes = Collections.unmodifiableMap(attributes);
         this.authorities = authorities == null ? NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
+        this.name = (String) this.attributes.get(principalClaimName);
         toJwtClaimsSet(attributes);
     }
 
@@ -67,7 +72,7 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
 
     @Override
     public String getName() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("name");
+        return this.name;
     }
 
     public String getTokenValue() {

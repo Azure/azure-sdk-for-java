@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.SelectVideoTrackById")
 @JsonFlatten
 @Fluent
-public class SelectVideoTrackById extends TrackDescriptor {
+public class SelectVideoTrackById extends VideoTrackDescriptor {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SelectVideoTrackById.class);
 
     /*

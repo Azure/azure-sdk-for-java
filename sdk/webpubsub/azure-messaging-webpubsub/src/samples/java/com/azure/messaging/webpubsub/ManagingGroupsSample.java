@@ -19,7 +19,6 @@ public class ManagingGroupsSample {
 
         // adding and removing users
         adminGroup.addUser("jogiles");
-        adminGroup.checkUserExists("jogiles");
         adminGroup.removeUser("another_user");
 
         // adding and removing specific connections

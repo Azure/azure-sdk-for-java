@@ -4,6 +4,8 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
+import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
+import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
@@ -16,6 +18,8 @@ import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PhoneNumberError;
+import com.azure.communication.phonenumbers.models.PhoneNumberErrorResponseException;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -69,7 +73,8 @@ public final class PhoneNumbersAsyncClient {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
-        return client.getByNumberAsync(phoneNumber);
+        return client.getByNumberAsync(phoneNumber)
+            .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
     /**
@@ -84,7 +89,8 @@ public final class PhoneNumbersAsyncClient {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
-        return client.getByNumberWithResponseAsync(phoneNumber);
+        return client.getByNumberWithResponseAsync(phoneNumber)
+            .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
     /**
@@ -178,11 +184,12 @@ public final class PhoneNumbersAsyncClient {
                     contextValue = context;
                 }
                 return client.searchAvailablePhoneNumbersWithResponseAsync(countryCode, searchRequest, contextValue)
-                .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
-                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    pollingContext.setData("searchId", response.getDeserializedHeaders().getSearchId());
-                    return getOperation(pollingContext.getData("operationId"));
-                });
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                    .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
+                        pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
+                        pollingContext.setData("searchId", response.getDeserializedHeaders().getSearchId());
+                        return getOperation(pollingContext.getData("operationId"));
+                    });
             });
         };
     }
@@ -191,19 +198,20 @@ public final class PhoneNumbersAsyncClient {
         pollOperation() {
         return (pollingContext) -> {
             return getOperation(pollingContext.getData("operationId"))
-            .flatMap(operation -> {
-                if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.SUCCEEDED.toString())) {
-                    return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, operation));
-                } else if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.FAILED.toString())) {
-                    return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.FAILED, operation));
-                } else if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.NOT_STARTED.toString())) {
-                    return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.NOT_STARTED, operation));
-                }
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, operation));
-            });
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                .flatMap(operation -> {
+                    if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.SUCCEEDED.toString())) {
+                        return Mono.just(new PollResponse<>(
+                            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, operation));
+                    } else if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.FAILED.toString())) {
+                        return Mono.just(new PollResponse<>(
+                            LongRunningOperationStatus.FAILED, operation));
+                    } else if (operation.getStatus().toString().equalsIgnoreCase(PhoneNumberOperationStatus.NOT_STARTED.toString())) {
+                        return Mono.just(new PollResponse<>(
+                            LongRunningOperationStatus.NOT_STARTED, operation));
+                    }
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, operation));
+                });
         };
     }
 
@@ -218,7 +226,8 @@ public final class PhoneNumbersAsyncClient {
             String operationId = firstResponse.getValue().getId();
             if (!CoreUtils.isNullOrEmpty(operationId)) {
                 logger.info("Cancelling search available phone numbers operation for operation id: {}", operationId);
-                return client.cancelOperationAsync(operationId).thenReturn(firstResponse.getValue());
+                return client.cancelOperationAsync(operationId).thenReturn(firstResponse.getValue())
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
             }
             return Mono.empty();
         };
@@ -227,7 +236,8 @@ public final class PhoneNumbersAsyncClient {
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberSearchResult>>
         searchAvailableNumbersFetchFinalResultOperation() {
         return (pollingContext) -> {
-            return client.getSearchResultAsync(pollingContext.getData("searchId"));
+            return client.getSearchResultAsync(pollingContext.getData("searchId"))
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         };
     }
 
@@ -265,10 +275,11 @@ public final class PhoneNumbersAsyncClient {
                     contextValue = context;
                 }
                 return client.purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId), contextValue)
-                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
-                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return getOperation(pollingContext.getData("operationId"));
-                });
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                    .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
+                        pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
+                        return getOperation(pollingContext.getData("operationId"));
+                    });
             });
         };
     }
@@ -310,10 +321,11 @@ public final class PhoneNumbersAsyncClient {
                     contextValue = context;
                 }
                 return client.releasePhoneNumberWithResponseAsync(phoneNumber, contextValue)
-                .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
-                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return getOperation(pollingContext.getData("operationId"));
-                });
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                    .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
+                        pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
+                        return getOperation(pollingContext.getData("operationId"));
+                    });
             });
         };
     }
@@ -359,10 +371,11 @@ public final class PhoneNumbersAsyncClient {
                     contextValue = context;
                 }
                 return client.updateCapabilitiesWithResponseAsync(phoneNumber, capabilitiesUpdateRequest, contextValue)
-                .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
-                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                    return getOperation(pollingContext.getData("operationId"));
-                });
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                    .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
+                        pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
+                        return getOperation(pollingContext.getData("operationId"));
+                    });
             });
         };
     }
@@ -370,12 +383,14 @@ public final class PhoneNumbersAsyncClient {
     private Function<PollingContext<PhoneNumberOperation>, Mono<PurchasedPhoneNumber>>
         updateNumberCapabilitiesFetchFinalResultOperation(String phoneNumber) {
         return (pollingContext) -> {
-            return client.getByNumberAsync(phoneNumber);
+            return client.getByNumberAsync(phoneNumber)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         };
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {
         return client.getOperationAsync(operationId)
+            .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
             .flatMap((PhoneNumberRawOperation rawOperation) -> {
                 if (rawOperation.getError() != null) {
                     return monoError(logger, new RuntimeException(rawOperation.getError().getMessage()));
@@ -389,5 +404,13 @@ public final class PhoneNumbersAsyncClient {
                     rawOperation.getLastActionDateTime());
                 return Mono.just(operation);
             });
+    }
+
+    private PhoneNumberErrorResponseException translateException(CommunicationErrorResponseException exception) {
+        PhoneNumberError error = null;
+        if (exception.getValue() != null) {
+            error = PhoneNumberErrorConverter.convert(exception.getValue().getError());
+        }
+        return new PhoneNumberErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
 }

@@ -32,11 +32,17 @@ class LeaseAPITest extends APISpec {
         def bc = createBlobClient()
         def leaseClient = createLeaseClient(bc, proposedID)
 
+        expect:
+        if (proposedID != null) {
+            assert leaseClient.getLeaseId() == proposedID
+        }
+
         when:
         def leaseId = leaseClient.acquireLease(leaseTime)
 
         then:
         leaseId != null
+        leaseClient.getLeaseId() == leaseId
 
         when:
         def response = bc.getPropertiesWithResponse(null, null, null)
@@ -152,15 +158,18 @@ class LeaseAPITest extends APISpec {
         setup:
         def bc = createBlobClient()
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
+        def leaseClient = createLeaseClient(bc, leaseID)
 
+        when:
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRecord(16000)
-        def renewLeaseResponse = createLeaseClient(bc, leaseID).renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null)
+        def renewLeaseResponse = leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null)
 
-        expect:
+        then:
         bc.getProperties().getLeaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.getHeaders())
         renewLeaseResponse.getValue() != null
+        renewLeaseResponse.getValue() == leaseClient.getLeaseId()
     }
 
     def "Renew blob lease min"() {
@@ -336,7 +345,7 @@ class LeaseAPITest extends APISpec {
     def "Break blob lease"() {
         setup:
         def bc = createBlobClient()
-        def leaseClient = createLeaseClient(bc, getRandomUUID())
+        def leaseClient = createLeaseClient(bc, namer.getRandomUuid())
 
         when:
         leaseClient.acquireLease(leaseTime)
@@ -435,12 +444,21 @@ class LeaseAPITest extends APISpec {
     def "Change blob lease"() {
         setup:
         def bc = createBlobClient()
-        def leaseClient = createLeaseClient(bc, getRandomUUID())
+        def leaseClient = createLeaseClient(bc, namer.getRandomUuid())
         leaseClient.acquireLease(15)
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()), null, null)
+
+        when:
+        def newLeaseId = namer.getRandomUuid()
+        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(newLeaseId), null, null)
+
+        then:
+        changeLeaseResponse.getValue() == newLeaseId
+        changeLeaseResponse.getValue() == leaseClient.getLeaseId()
+
+        when:
         def leaseClient2 = createLeaseClient(bc, changeLeaseResponse.getValue())
 
-        expect:
+        then:
         leaseClient2.releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null).getStatusCode() == 200
         validateBasicHeaders(changeLeaseResponse.getHeaders())
     }
@@ -451,7 +469,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         expect:
-        createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()), null, null).getStatusCode() == 200
+        createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()), null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -471,7 +489,7 @@ class LeaseAPITest extends APISpec {
             .setTagsConditions(tags)
 
         expect:
-        createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()).setRequestConditions(mac), null, null).getStatusCode() == 200
+        createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()).setRequestConditions(mac), null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch    | tags
@@ -497,7 +515,7 @@ class LeaseAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()).setRequestConditions(mac), null, null)
+        createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()).setRequestConditions(mac), null, null)
 
         then:
         thrown(BlobStorageException)
@@ -526,7 +544,13 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Acquire container lease"() {
         setup:
-        def leaseResponse = createLeaseClient(cc, proposedID).acquireLeaseWithResponse(new BlobAcquireLeaseOptions(leaseTime), null, null)
+        def leaseClient = createLeaseClient(cc, proposedID)
+
+        when:
+        def leaseResponse = leaseClient.acquireLeaseWithResponse(new BlobAcquireLeaseOptions(leaseTime), null, null)
+
+        then:
+        leaseResponse.getValue() == leaseClient.getLeaseId()
 
         when:
         def properties = cc.getProperties()
@@ -619,12 +643,15 @@ class LeaseAPITest extends APISpec {
     def "Renew container lease"() {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
+        def leaseClient = createLeaseClient(cc, leaseID)
 
+        when:
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRecord(16000)
-        def renewLeaseResponse = createLeaseClient(cc, leaseID).renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null)
+        def renewLeaseResponse = leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null)
 
-        expect:
+        then:
+        renewLeaseResponse.getValue() == leaseClient.getLeaseId()
         cc.getProperties().getLeaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.getHeaders())
     }
@@ -783,7 +810,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Break container lease"() {
         setup:
-        def leaseClient = createLeaseClient(cc, getRandomUUID())
+        def leaseClient = createLeaseClient(cc, namer.getRandomUuid())
         leaseClient.acquireLease(leaseTime)
 
         def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null)
@@ -880,12 +907,21 @@ class LeaseAPITest extends APISpec {
         setup:
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
         def leaseClient = createLeaseClient(cc, leaseID)
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()), null, null)
-        leaseID = changeLeaseResponse.getValue()
 
         expect:
-        createLeaseClient(cc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null).getStatusCode() == 200
+        leaseClient.getLeaseId() == leaseID
+
+        when:
+        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()), null, null)
+
+        then:
         validateBasicHeaders(changeLeaseResponse.getHeaders())
+        def newLeaseId = changeLeaseResponse.getValue()
+        newLeaseId == leaseClient.getLeaseId()
+        newLeaseId != leaseID
+
+        expect:
+        createLeaseClient(cc, newLeaseId).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null).getStatusCode() == 200
     }
 
     def "Change container lease min"() {
@@ -893,7 +929,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupContainerLeaseCondition(cc, receivedLeaseID)
 
         expect:
-        createLeaseClient(cc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()), null, null).getStatusCode() == 200
+        createLeaseClient(cc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()), null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -903,7 +939,7 @@ class LeaseAPITest extends APISpec {
         def mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
-        createLeaseClient(cc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()).setRequestConditions(mac), null, null).getStatusCode() == 200
+        createLeaseClient(cc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()).setRequestConditions(mac), null, null).getStatusCode() == 200
 
         where:
         modified | unmodified
@@ -919,7 +955,7 @@ class LeaseAPITest extends APISpec {
         def mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
-        createLeaseClient(cc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(getRandomUUID()).setRequestConditions(mac), null, null)
+        createLeaseClient(cc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()).setRequestConditions(mac), null, null)
 
         then:
         thrown(BlobStorageException)

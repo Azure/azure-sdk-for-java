@@ -92,10 +92,10 @@ public class ReadmeSamples {
 
     public void createCustomEventPublisherAsyncClient() {
         // For custom event
-        EventGridPublisherClient<BinaryData> customEventAsyncClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherAsyncClient<BinaryData> customEventAsyncClient = new EventGridPublisherClientBuilder()
             .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
-            .buildCustomEventPublisherClient();
+            .buildCustomEventPublisherAsyncClient();
     }
 
     public void createPublisherClientWithSas() {

@@ -34,7 +34,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * Must be a valid ACR refresh token
      */
     @JsonProperty(value = "refresh_token", required = true)
-    private String refreshToken;
+    private String acrRefreshToken;
 
     /** Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class. */
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {
@@ -105,23 +105,23 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     }
 
     /**
-     * Get the refreshToken property: Must be a valid ACR refresh token.
+     * Get the acrRefreshToken property: Must be a valid ACR refresh token.
      *
-     * @return the refreshToken value.
+     * @return the acrRefreshToken value.
      */
-    public String getRefreshToken() {
-        return this.refreshToken;
+    public String getAcrRefreshToken() {
+        return this.acrRefreshToken;
     }
 
     /**
-     * Set the refreshToken property: Must be a valid ACR refresh token.
+     * Set the acrRefreshToken property: Must be a valid ACR refresh token.
      *
-     * @param refreshToken the refreshToken value to set.
+     * @param acrRefreshToken the acrRefreshToken value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setRefreshToken(
-            String refreshToken) {
-        this.refreshToken = refreshToken;
+    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setAcrRefreshToken(
+            String acrRefreshToken) {
+        this.acrRefreshToken = acrRefreshToken;
         return this;
     }
 }

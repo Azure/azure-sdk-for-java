@@ -83,6 +83,7 @@ public class HttpConstants {
         public static final String IS_QUERY_PLAN_REQUEST = "x-ms-cosmos-is-query-plan-request";
         public static final String SUPPORTED_QUERY_FEATURES = "x-ms-cosmos-supported-query-features";
         public static final String QUERY_VERSION = "x-ms-cosmos-query-version";
+        public static final String CORRELATED_ACTIVITY_ID = "x-ms-cosmos-correlated-activityid";
 
         // Our custom DocDB headers
         public static final String CONTINUATION = "x-ms-continuation";
@@ -254,6 +255,16 @@ public class HttpConstants {
         public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
         public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
         public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
+
+        // Client telemetry header
+        public static final String DATABASE_ACCOUNT_NAME = "x-ms-databaseaccount-name";
+        public static final String ENVIRONMENT_NAME = "x-ms-environment-name";
+
+        // Backend request duration header
+        public static final String BACKEND_REQUEST_DURATION_MILLISECONDS = "x-ms-request-duration-ms";
+
+        // Dedicated Gateway Headers
+        public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
     }
 
     public static class A_IMHeaderValues {

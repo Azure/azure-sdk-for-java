@@ -27,7 +27,7 @@ A `web application` is any web based application that allows user to login, wher
 
 ### Accessing a web application
 
-This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in an user with a Microsoft account. 
+This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in a user with a Microsoft account. 
 
 **System diagram**:
 
@@ -40,14 +40,14 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     ![web-application-set-redirect-uri-1.png](resource/web-application-set-redirect-uri-1.png)
     ![web-application-set-redirect-uri-2.png](resource/web-application-set-redirect-uri-2.png)
 
-* Step 2: Add the following dependencies in you pom.xml.
+* Step 2: Add the following dependencies in your pom.xml.
 
     [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
     ```xml
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -107,7 +107,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -161,7 +161,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -223,7 +223,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.3.0</version>
+        <version>3.5.0-beta.1</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -254,7 +254,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
 
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L59-L63 --> 
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L64-L68 --> 
     ```java
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     @GetMapping("call-graph")
@@ -280,6 +280,7 @@ This starter provides following properties:
 | **azure.activedirectory**.post-logout-redirect-uri                      | Redirect uri for posting log-out.                            |
 | **azure.activedirectory**.tenant-id                                     | Azure Tenant ID.                                             |
 | **azure.activedirectory**.user-group.allowed-groups                     | Expected user groups that an authority will be granted to if found in the response from the MemeberOf Graph API Call. |
+| **azure.activedirectory**.user-name-attribute                           | Decide which claim to be principal's name. |
 
 Here are some examples about how to use these properties:
 
@@ -325,7 +326,7 @@ Here are some examples about how to use these properties:
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L26 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L40 -->
     ```java
     @Controller
     public class RoleController {
@@ -341,6 +342,20 @@ Here are some examples about how to use these properties:
         @PreAuthorize("hasRole('ROLE_group2')")
         public String group2() {
             return "group2 message";
+        }
+    
+        @GetMapping("group1Id")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_<group1-id>')")
+        public String group1Id() {
+            return "group1Id message";
+        }
+    
+        @GetMapping("group2Id")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_<group2-id>')")
+        public String group2Id() {
+            return "group2Id message";
         }
     }
     ```
@@ -380,13 +395,56 @@ Here are some examples about how to use these properties:
     After the scopes have been consented, AAD server will remember that this user has already granted 
     the permission to the web application. So incremental consent will not happen anymore after user 
     consented.
+  
+#### Property example 4: [Client credential flow] in resource server visiting resource servers.
+
+* Step 1: Add property in application.yml
+    ```yaml
+    azure:
+      activedirectory:
+        authorization-clients:
+          webapiC:                          # When authorization-grant-type is null, on behalf of flow is used by default
+            authorization-grant-type: client_credentials
+            scopes:
+                - <Web-API-C-app-id-url>/.default
+    ```
+
+* Step 2: Write Java code:
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L134-L146 -->
+    ```java
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
+    @GetMapping("webapiA/webapiC")
+    public String callClientCredential() {
+        String body = webClient
+            .get()
+            .uri(CUSTOM_LOCAL_READ_ENDPOINT)
+            .attributes(clientRegistrationId("webapiC"))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+        LOGGER.info("Response from Client Credential: {}", body);
+        return "client Credential response " + (null != body ? "success." : "failed.");
+    }
+    ```
 
 ### Advanced features
 
 #### Support access control by id token in web application 
 
 This starter supports creating `GrantedAuthority` from id_token's `roles` claim to allow using `id_token` for authorization in web application. Developers can use the
-`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+`appRoles` feature of Azure Active Directory to create `roles` claim and implement access control. 
+
+Note:
+ - The `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+ - When using `appRoles` as `roles` claim, please avoid configuring group attribute as `roles` at the same time. The latter will override the claim to contain group information instead of `appRoles`. Below configuration in manifest should be avoided:
+    ```
+    "optionalClaims": {
+        "idtoken": [{
+            "name": "groups",
+            "additionalProperties": ["emit_as_roles"]
+        }]
+    }
+    ```
 
 Follow the guide to [add app roles in your application and assign to users or groups](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
@@ -484,30 +542,32 @@ In [Resource server visiting other resource server] scenario(For better descript
       
 * Step 5: Write your Java code:  	
     - webapp :
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebapiController.java#L34-L38 -->    
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/WebApiController.java#L34-L38 -->    
     ```java
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
-    public String callWebapiAServer(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiA) {
-        return callWebapiAEndpoint(webapiA);
+    public String callWebApi(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiAClient) {
+        return callWebApiAEndpoint(webapiAClient);
     }
     ```
     - webapiA:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L70-L75 -->    
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo/src/main/java/com/azure/spring/sample/aad/controller/SampleController.java#L76-L81 -->    
     ```java
-    @GetMapping("/webapiA/webapiB")
-    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
-    public String callWebapiBServer(@RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiB) {
-        return callWebapiBEndpoint(webapiB);
+    @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
+    @GetMapping("webapiA/webapiB")
+    public String callCustom(
+        @RegisteredOAuth2AuthorizedClient("webapiB") OAuth2AuthorizedClient webapiBClient) {
+        return callWebApiBEndpoint(webapiBClient);
     }
     ```
     - webapiB:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->      
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/src/main/java/com/azure/spring/sample/aad/controller/HomeController.java#L16-L21 -->      
     ```java
     @GetMapping("/webapiB")
-    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('SCOPE_WebApiB.ExampleScope')")
     public String file() {
-        return "Response from webapiB.";
+        return "Response from WebApiB.";
     }
     ```  
 ## Examples

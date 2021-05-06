@@ -5,7 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.spark.OperationContext;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +73,36 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+        }
+    }
+
+    public static final class CosmosQueryRequestOptionsHelper {
+        private static CosmosQueryRequestOptionsAccessor accessor;
+
+        private CosmosQueryRequestOptionsHelper() {}
+        static {
+            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+        }
+
+        public static void setCosmosQueryRequestOptionsAccessor(final CosmosQueryRequestOptionsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosQueryRequestOptionsAccessor getCosmosQueryRequestOptionsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosQueryRequestOptionsAccessor {
+            void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
+            OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
         }
     }
 
