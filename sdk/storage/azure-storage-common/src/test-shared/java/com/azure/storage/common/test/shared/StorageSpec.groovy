@@ -13,28 +13,18 @@ import spock.lang.Specification
 class StorageSpec extends Specification {
     protected static final TestEnvironment ENVIRONMENT = new TestEnvironment();
 
-    private String testName
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
 
     def setup() {
-        testName = getTestName()
-        if (shouldUseThisToRecord()) {
-            interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-            namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
-        }
+        def testName = getTestName()
+        interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
+        namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
         System.out.printf("========================= %s =========================%n", testName)
     }
 
     def cleanup() {
-        if (shouldUseThisToRecord()) {
-            interceptorManager.close()
-        }
-    }
-
-    // TODO (kasobol-msft) Remove this when all modules are migrated.
-    protected shouldUseThisToRecord() {
-        return false
+        interceptorManager.close()
     }
 
     protected StorageResourceNamer getNamer() {

@@ -167,12 +167,6 @@ class APISpec extends StorageSpec {
         cc.create()
     }
 
-    // TODO (kasobol-msft) remove this after migration.
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
     def cleanup() {
         def cleanupClient = getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
