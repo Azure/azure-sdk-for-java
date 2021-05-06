@@ -57,11 +57,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     EncryptedBlobClient ebc // encrypted client for download
 
     String keyId
-
-    @Shared
     FakeKey fakeKey
-
-    @Shared
     def fakeKeyResolver
 
 
@@ -854,7 +850,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download to file exists"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -873,7 +869,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download to file exists succeeds"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -890,7 +886,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download to file does not exist"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -907,7 +903,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download file does not exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -928,7 +924,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download file exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -954,7 +950,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(fileSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1001,7 +997,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         encryptedBlobClient.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1049,7 +1045,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         encryptedBlobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1085,7 +1081,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1123,7 +1119,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1145,7 +1141,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1167,7 +1163,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1204,7 +1200,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1241,7 +1237,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(Constants.MB)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
         expect:
@@ -1303,7 +1299,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }

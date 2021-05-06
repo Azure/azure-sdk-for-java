@@ -17,8 +17,7 @@
 - Upgraded `msal4j` dependency to 1.9.1
 - Upgraded `msal4j-persistence-extension` to 1.1.0
 
-
-## 1.3.0-beta.1 (2020-02-10)
+## 1.3.0-beta.1 (2021-02-10)
 
 ### New Features
 - Added the support to consume claims from `TokenRequestContext` send it as part of authentication request.
@@ -183,7 +182,7 @@
 ## 1.0.2 (2020-01-07)
 - Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
 
-## 1.0.0 (2019-10-25) - November 2019 SDK Release
+## 1.0.0 (2019-10-25)
 **Breaking changes**
 
 - The `getToken(TokenRequest tokenRequest)` methods on all the credentials are changed to `getToken(TokenRequestContext tokenRequestContext)`. 

@@ -4,61 +4,104 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
+import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBase {
-    private ContainerRegistryClient client;
     private String recordFileName;
+    private ContainerRegistryAsyncClient registryAsyncClient;
+    private ContainerRegistryClient registryClient;
+
+    private ContainerRepositoryAsync asyncClient;
+    private ContainerRepository client;
+
+    private ContainerRepositoryAsync getContainerRepositoryAsync() {
+        return getContainerRegistryBuilder(new LocalHttpClient(recordFileName))
+            .buildAsyncClient()
+            .getRepository(ALPINE_REPOSITORY_NAME);
+    }
+
+    private ContainerRepository getContainerRepository() {
+        return getContainerRegistryBuilder(new LocalHttpClient(recordFileName))
+            .buildClient()
+            .getRepository(ALPINE_REPOSITORY_NAME);
+    }
+
+    private ContainerRegistryAsyncClient getContainerRegistryAsyncClient() {
+        HttpClient client = new LocalHttpClient(recordFileName);
+        return getContainerRegistryBuilder(client).buildAsyncClient();
+    }
+
+    private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient client) {
+        return getContainerRegistryBuilder(client).buildAsyncClient();
+    }
 
     private ContainerRegistryClient getContainerRegistryClient() {
-        return getContainerRegistryBuilder(new LocalHttpClient(recordFileName)).buildClient();
+        HttpClient client = new LocalHttpClient(recordFileName);
+        return getContainerRegistryBuilder(client).buildClient();
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        TestUtils.importImage(ImplUtils.getTestMode(), ALPINE_REPOSITORY_NAME, Arrays.asList("latest"));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void deleteRepository(HttpClient httpClient) {
+        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+
+        StepVerifier.create(registryAsyncClient.deleteRepository(ALPINE_REPOSITORY_NAME))
+            .assertNext(res -> validateDeletedRepositoryResponse(res))
+            .verifyComplete();
     }
 
     @Test
-    public void listRepositoriesSyncAndAsync() {
-        recordFileName = "ContainerRegistryClientAsyncIntegrationTests.listRepositories[1].json";
-        client = getContainerRegistryClient();
+    public void deleteRepositoryFromMethod() {
+        recordFileName = "ContainerRegistryClientTest.deleteRepository[1].json";
+        registryAsyncClient = getContainerRegistryAsyncClient();
+        registryClient = getContainerRegistryClient();
 
-        List<String> repositories = client.listRepositories().stream().collect(Collectors.toList());
-        repositories.containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME));
-    }
+        StepVerifier.create(registryAsyncClient.deleteRepository(ALPINE_REPOSITORY_NAME))
+            .assertNext(res -> validateDeletedRepositoryResponse(res))
+            .verifyComplete();
 
-    @Test
-    public void listRepositoriesWithPageSize() {
-        recordFileName = "ContainerRegistryClientAsyncIntegrationTests.listRepositoriesWithPageSize[1].json";
-        client = getContainerRegistryClient();
+        DeleteRepositoryResult result = registryClient.deleteRepository(ALPINE_REPOSITORY_NAME);
+        validateDeletedRepositoryResponse(result);
 
-        ArrayList<String> repositories = new ArrayList<>();
-        client.listRepositories().iterableByPage(PAGESIZE_2).forEach(res -> res.getValue().forEach(repo -> repositories.add(repo)));
-        repositories.containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME));
-    }
+        Response<DeleteRepositoryResult> response = registryClient.deleteRepositoryWithResponse(ALPINE_REPOSITORY_NAME, Context.NONE);
+        validateDeletedRepositoryResponse(response);
 
-    @Test
-    public void listRepositoriesWithInvalidPageSize() {
-        client = getContainerRegistryClient();
+        asyncClient = getContainerRepositoryAsync();
+        client = getContainerRepository();
+        StepVerifier.create(asyncClient.deleteWithResponse())
+            .assertNext(res -> validateDeletedRepositoryResponse(res))
+            .verifyComplete();
 
-        ArrayList<String> repositories = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class, () -> client.listRepositories().iterableByPage(-1).forEach(res -> res.getValue().forEach(repo -> repositories.add(repo))));
-    }
+        StepVerifier.create(asyncClient.delete())
+            .assertNext(res -> validateDeletedRepositoryResponse(res))
+            .verifyComplete();
 
-    @Test
-    public void deleteRepositoryThrows() {
-        recordFileName = "ContainerRegistryClientAsyncIntegrationTests.deleteRepositoryWithResponseThrows[1].json";
-        client = getContainerRegistryClient();
+        result = client.delete();
+        validateDeletedRepositoryResponse(result);
 
-        assertThrows(NullPointerException.class, () -> client.deleteRepository(null));
-        assertThrows(ResourceNotFoundException.class, () -> client.deleteRepository("missingRepo"));
-        assertThrows(NullPointerException.class, () -> client.deleteRepositoryWithResponse(null, Context.NONE));
-        assertThrows(ResourceNotFoundException.class, () -> client.deleteRepositoryWithResponse("missingRepo", Context.NONE));
+        response = client.deleteWithResponse(Context.NONE);
+        validateDeletedRepositoryResponse(response);
     }
 }

@@ -3,16 +3,10 @@
 
 package com.azure.storage.blob.nio
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
-import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -28,11 +22,9 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
+import com.azure.storage.common.test.shared.StorageSpec
 import spock.lang.Requires
 import spock.lang.Shared
-import spock.lang.Specification
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
@@ -46,17 +38,14 @@ import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
-class APISpec extends Specification {
+class APISpec extends StorageSpec {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     // both sync and async clients point to same container
-    @Shared
     BlobContainerClient cc
-
-    @Shared
     BlobContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.
@@ -73,31 +62,19 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
-
-    // Prefixes for blobs and containers
-    String containerPrefix = "jtc" // java test container
-
-    String blobPrefix = "javablob"
-
     public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net"
 
-    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
     static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
-    static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
 
-    InterceptorManager interceptorManager
     boolean recordLiveMode
-    protected TestResourceNamer resourceNamer
-    protected String testName
     String containerName
 
 
@@ -115,30 +92,18 @@ class APISpec extends Specification {
     static final int MB = 1024 * KB
 
     def setupSpec() {
-        testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", testMode))
+        System.out.println(String.format("--------%s---------", ENVIRONMENT.testMode))
     }
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        int iterationIndex = fullTestName.lastIndexOf("[")
-        int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
-        this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
-
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
+        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
@@ -150,40 +115,26 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
-        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+        def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
         for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
             BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
             containerClient.delete()
         }
-
-        interceptorManager.close()
     }
 
-    static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
-        return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
-    }
-
-    static TestMode setupTestMode() {
-        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
-
-        if (testMode != null) {
-            try {
-                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
-            } catch (IllegalArgumentException ignore) {
-                return TestMode.PLAYBACK
-            }
-        }
-
-        return TestMode.PLAYBACK
+    // TODO (kasobol-msft) remove this after migration
+    @Override
+    protected shouldUseThisToRecord() {
+        return true
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.LIVE
+        return ENVIRONMENT.testMode == TestMode.LIVE
     }
 
     String getAccountKey(String accountType) {
-        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
             return "astorageaccountkey"
@@ -191,7 +142,7 @@ class APISpec extends Specification {
     }
 
     String getAccountName(String accountType) {
-        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
+        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
         } else {
             return "azstoragesdkaccount"
@@ -258,9 +209,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         if (credential != null) {
             builder.credential(credential)
@@ -278,9 +227,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         return builder
     }
@@ -291,9 +238,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         builder.credential(credential).buildAsyncClient()
     }
@@ -309,9 +254,7 @@ class APISpec extends Specification {
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         return builder.sasToken(sasToken).buildClient()
     }
@@ -325,9 +268,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         return builder.credential(credential).buildClient()
     }
@@ -338,9 +279,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         return builder.credential(credential).buildClient()
     }
@@ -354,26 +293,9 @@ class APISpec extends Specification {
             builder.sasToken(sasToken)
         }
 
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         return builder.buildClient()
-    }
-
-    HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else {
-            return interceptorManager.getPlaybackClient()
-        }
     }
 
     Map<String, Object> initializeConfigMap(HttpPipelinePolicy... policies) {
@@ -383,9 +305,7 @@ class APISpec extends Specification {
         for (HttpPipelinePolicy policy : policies) {
             policyList.push(policy)
         }
-        if (testMode == TestMode.RECORD) {
-            policyList.push(interceptorManager.getRecordPolicy())
-        }
+        policyList.push(getRecordPolicy())
         config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] = policyList as HttpPipelinePolicy[]
         return config as Map<String, Object>
     }
@@ -395,27 +315,15 @@ class APISpec extends Specification {
     }
 
     def generateContainerName() {
-        generateResourceName(containerPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
     def generateBlobName() {
-        generateResourceName(blobPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
-    private String generateResourceName(String prefix, int entityNo) {
-        return resourceNamer.randomName(prefix + testName + entityNo, 63)
-    }
-
-    String getConfigValue(String value) {
-        return resourceNamer.recordValueFromConfig(value)
-    }
-
-    String getRandomUUID() {
-        return resourceNamer.randomUuid()
-    }
-
-    String getBlockID() {
-        return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
+    private String generateResourceName(int entityNo) {
+        return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
     def createFS(Map<String,Object> config) {
@@ -425,12 +333,8 @@ class APISpec extends Specification {
         return new AzureFileSystem(new AzureFileSystemProvider(), getAccountUri(), config)
     }
 
-    OffsetDateTime getUTCNow() {
-        return resourceNamer.now()
-    }
-
     byte[] getRandomByteArray(int size) {
-        long seed = UUID.fromString(resourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        long seed = UUID.fromString(namer.getRandomUuid()).getMostSignificantBits() & Long.MAX_VALUE
         Random rand = new Random(seed)
         byte[] data = new byte[size]
         rand.nextBytes(data)
@@ -514,7 +418,7 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode != TestMode.PLAYBACK) {
+        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }

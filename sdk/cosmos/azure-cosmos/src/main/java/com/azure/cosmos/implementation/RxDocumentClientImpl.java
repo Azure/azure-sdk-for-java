@@ -76,6 +76,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -337,6 +338,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             }
 
+            this.diagnosticsClientConfig.withConnectionMode(this.getConnectionPolicy().getConnectionMode());
             this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(this.connectionPolicy.isMultipleWriteRegionsEnabled());
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
@@ -1213,6 +1215,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options.isScriptLoggingEnabled()) {
             headers.put(HttpConstants.HttpHeaders.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
+        }
+
+        if (options.getDedicatedGatewayRequestOptions() != null &&
+            options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(options.getDedicatedGatewayRequestOptions())));
         }
 
         return headers;
