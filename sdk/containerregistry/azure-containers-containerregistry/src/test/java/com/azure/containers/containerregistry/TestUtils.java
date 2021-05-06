@@ -18,7 +18,6 @@ import com.azure.resourcemanager.containerregistry.models.ImportMode;
 import com.azure.resourcemanager.containerregistry.models.ImportSource;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Iterator;
 import java.util.List;
@@ -26,29 +25,67 @@ import java.util.stream.Collectors;
 
 public class TestUtils {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+    private static final Configuration CONFIGURATION;
+    public static final String ALPINE_REPOSITORY_NAME;
+    public static final String HELLO_WORLD_REPOSITORY_NAME;
+    public static final String HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
+    public static final String LATEST_TAG_NAME;
+    public static final String V1_TAG_NAME;
+    public static final String V2_TAG_NAME;
+    public static final String V4_TAG_NAME;
+    public static final String V3_TAG_NAME;
+    public static final String TAG_TO_DELETE;
+    public static final String TAG_TO_UPDATE;
+    public static final String TAG_UNKNOWN;
+    public static final String DIGEST_UNKNOWN;
+    public static final int  PAGESIZE_2;
+    public static final int  PAGESIZE_1;
+    public static final String ARM64_ARCHITECTURE;
+    public static final String LINUX_OPERATING_SYSTEM;
+    public static final String AMD64_ARCHITECTURE;
+    public static final String WINDOWS_OPERATING_SYSTEM;
+    public static final String REGISTRY_NAME;
+    public static final String RESOURCE_GROUP;
+    public static final String SUBSCRIPTION_ID;
+    public static final String REGISTRY_URI;
+    public static final String REGISTRY_ENDPOINT;
+    public static final String ANONYMOUS_REGISTRY_ENDPOINT;
+    public static final long SLEEP_TIME_IN_MILLISECONDS;
+    public static final String ANONYMOUS_REGISTRY_NAME;
+    public static final String LOGIN_SERVER_SUFFIX;
+    public static final String REGISTRY_ENDPOINT_PLAYBACK;
 
-    private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration().clone();
-
-    public static final String ALPINE_REPOSITORY_NAME = "library/alpine";
-    public static final String HELLO_WORLD_REPOSITORY_NAME = "library/hello-world";
-    public static final String HELLO_WORLD_SEATTLE_REPOSITORY_NAME = "library/hello-seattle";
-    public static final String LATEST_TAG_NAME = "latest";
-    public static final String V1_TAG_NAME = "v1";
-    public static final String TAG_TO_DELETE = "test-delete-image-by-tag";
-    public static final String TAG_TO_UPDATE = "test-update-properties";
-    public static final String TAG_UNKNOWN = "unknowntag";
-    public static final String DIGEST_UNKNOWN = "unknown:digest";
-    public static final int  PAGESIZE_2 = 2;
-    public static final String ARM64_ARCHITECTURE = "arm64";
-    public static final String LINUX_OPERATING_SYSTEM = "linux";
-    public static final String AMD64_ARCHITECTURE = "amd64";
-    public static final String WINDOWS_OPERATING_SYSTEM = "windows";
-    public static final String PROPERTY_CONTAINER_REGISTRY_NAME = "CONTAINERREGISTRY_REGISTRY_NAME";
-    public static final String PROPERTY_CONTAINER_REGISTRY_RESOURCEGROUP = "CONTAINERREGISTRY_RESOURCE_GROUP";
-    public static final String PROPERTY_CONTAINERREGISTRY_SUBSCRIPTION_ID = "CONTAINERREGISTRY_SUBSCRIPTION_ID";
-    public static final String REGISTRY_URI = "registry.hub.docker.com";
-
-    public static final long SLEEP_TIME_IN_MILLISECONDS = 7000;
+    static {
+        CONFIGURATION = Configuration.getGlobalConfiguration().clone();
+        ALPINE_REPOSITORY_NAME = "library/alpine";
+        HELLO_WORLD_REPOSITORY_NAME = "library/hello-world";
+        HELLO_WORLD_SEATTLE_REPOSITORY_NAME = "library/hello-seattle";
+        LATEST_TAG_NAME = "latest";
+        V1_TAG_NAME = "v1";
+        V2_TAG_NAME = "v2";
+        V4_TAG_NAME = "v4";
+        V3_TAG_NAME = "v3";
+        TAG_TO_DELETE = "v4";
+        TAG_TO_UPDATE = "test-update-properties";
+        TAG_UNKNOWN = "unknowntag";
+        DIGEST_UNKNOWN = "unknown:digest";
+        PAGESIZE_2 = 2;
+        PAGESIZE_1 = 1;
+        ARM64_ARCHITECTURE = "arm64";
+        LINUX_OPERATING_SYSTEM = "linux";
+        AMD64_ARCHITECTURE = "amd64";
+        WINDOWS_OPERATING_SYSTEM = "windows";
+        RESOURCE_GROUP = CONFIGURATION.get("CONTAINERREGISTRY_RESOURCE_GROUP");
+        SUBSCRIPTION_ID = CONFIGURATION.get("CONTAINERREGISTRY_SUBSCRIPTION_ID");
+        REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_REGISTRY_NAME");
+        REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ENDPOINT");
+        REGISTRY_URI = "registry.hub.docker.com";
+        SLEEP_TIME_IN_MILLISECONDS = 5000;
+        ANONYMOUS_REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_NAME");
+        ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
+        LOGIN_SERVER_SUFFIX = "azurecr.io";
+        REGISTRY_ENDPOINT_PLAYBACK = "https://playbackregistry.azurecr.io";
+    }
 
     static class FakeCredentials implements TokenCredential {
         @Override
@@ -82,39 +119,40 @@ public class TestUtils {
     }
 
     static void importImage(TestMode mode, String repository, List<String> tags) {
+        if (mode == TestMode.PLAYBACK) {
+            return;
+        }
+
         importImageAsync(mode, repository, tags).block();
+        try {
+            Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     static Mono<Void> importImageAsync(TestMode mode, String repository, List<String> tags) {
+        return importImageAsync(mode, REGISTRY_NAME, repository, tags);
+    }
+
+    static Mono<Void> importImageAsync(TestMode mode, String registryName, String repository, List<String> tags) {
         if (mode == TestMode.PLAYBACK) {
             return Mono.empty();
         }
 
         TokenCredential credential = getCredential(mode);
 
-        String registryName = CONFIGURATION.get(PROPERTY_CONTAINER_REGISTRY_NAME);
-        String resourceGroupName = CONFIGURATION.get(PROPERTY_CONTAINER_REGISTRY_RESOURCEGROUP);
-        String subscriptionId = CONFIGURATION.get(PROPERTY_CONTAINERREGISTRY_SUBSCRIPTION_ID);
-
         tags = tags.stream().map(tag -> String.format("%1$s:%2$s", repository, tag)).collect(Collectors.toList());
 
         ContainerRegistryManager manager = ContainerRegistryManager.authenticate(credential, new AzureProfile(AzureEnvironment.AZURE));
 
         return manager.serviceClient().getRegistries().importImageAsync(
-            resourceGroupName,
+            RESOURCE_GROUP,
             registryName,
             new ImportImageParameters()
                 .withMode(ImportMode.FORCE)
                 .withSource(new ImportSource().withSourceImage(repository)
                     .withRegistryUri(REGISTRY_URI))
                 .withTargetTags(tags));
-    }
-
-    static Mono<Long> monoDelay(TestMode testMode) {
-        return monoDelay(testMode, SLEEP_TIME_IN_MILLISECONDS);
-    }
-
-    static Mono<Long> monoDelay(TestMode testMode, long delayInMs) {
-        return Mono.defer(() -> testMode == TestMode.PLAYBACK ? Mono.delay(Duration.ZERO) : Mono.delay(Duration.ofMillis(delayInMs)));
     }
 }

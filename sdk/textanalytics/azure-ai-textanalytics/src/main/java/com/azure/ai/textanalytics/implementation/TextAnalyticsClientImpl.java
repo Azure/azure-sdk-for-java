@@ -55,6 +55,18 @@ public final class TextAnalyticsClientImpl {
     /** The proxy service used to perform REST calls. */
     private final TextAnalyticsClientService service;
 
+    /** Client Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Client Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://westus.api.cognitive.microsoft.com).
@@ -98,15 +110,17 @@ public final class TextAnalyticsClientImpl {
     /**
      * Initializes an instance of TextAnalyticsClient client.
      *
+     * @param apiVersion Client Api Version.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
-    TextAnalyticsClientImpl(String endpoint) {
+    TextAnalyticsClientImpl(String apiVersion, String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
+                apiVersion,
                 endpoint);
     }
 
@@ -114,11 +128,12 @@ public final class TextAnalyticsClientImpl {
      * Initializes an instance of TextAnalyticsClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param apiVersion Client Api Version.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
-    TextAnalyticsClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    TextAnalyticsClientImpl(HttpPipeline httpPipeline, String apiVersion, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion, endpoint);
     }
 
     /**
@@ -126,12 +141,15 @@ public final class TextAnalyticsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param apiVersion Client Api Version.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
-    TextAnalyticsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    TextAnalyticsClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+        this.apiVersion = apiVersion;
         this.endpoint = endpoint;
         this.service =
                 RestProxy.create(TextAnalyticsClientService.class, this.httpPipeline, this.getSerializerAdapter());
@@ -141,23 +159,31 @@ public final class TextAnalyticsClientImpl {
      * The interface defining all the services for TextAnalyticsClient to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{Endpoint}/text/analytics/v3.1-preview.4")
+    @Host("{Endpoint}/text/analytics/{ApiVersion}")
     @ServiceInterface(name = "TextAnalyticsClient")
     private interface TextAnalyticsClientService {
         @Post("/analyze")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeResponse> analyze(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") AnalyzeBatchInput body,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/analyze/jobs/{jobId}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeJobState>> analyzeStatus(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("$top") Integer top,
@@ -167,9 +193,13 @@ public final class TextAnalyticsClientImpl {
 
         @Get("/entities/health/jobs/{jobId}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<HealthcareJobState>> healthStatus(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("jobId") UUID jobId,
                 @QueryParam("$top") Integer top,
                 @QueryParam("$skip") Integer skip,
@@ -179,18 +209,26 @@ public final class TextAnalyticsClientImpl {
 
         @Delete("/entities/health/jobs/{jobId}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<CancelHealthJobResponse> cancelHealthJob(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("jobId") UUID jobId,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/entities/health/jobs")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<HealthResponse> health(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
@@ -199,9 +237,13 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/entities/recognition/general")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EntitiesResult>> entitiesRecognitionGeneral(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
@@ -211,9 +253,13 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/entities/recognition/pii")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PiiResult>> entitiesRecognitionPii(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("domain") String domain,
@@ -225,9 +271,13 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/entities/linking")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<EntityLinkingResult>> entitiesLinking(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
@@ -237,9 +287,13 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/keyPhrases")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<KeyPhraseResult>> keyPhrases(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @BodyParam("application/json") MultiLanguageBatchInput input,
@@ -248,9 +302,13 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/languages")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<LanguageResult>> languages(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @BodyParam("application/json") LanguageBatchInput input,
@@ -259,9 +317,13 @@ public final class TextAnalyticsClientImpl {
 
         @Post("/sentiment")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ErrorResponseException.class,
+                code = {400, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SentimentResponse>> sentiment(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
                 @QueryParam("showStats") Boolean showStats,
                 @QueryParam("opinionMining") Boolean opinionMining,
@@ -278,13 +340,14 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResponse> analyzeWithResponseAsync(AnalyzeBatchInput body, Context context) {
         final String accept = "application/json, text/json";
-        return service.analyze(this.getEndpoint(), body, accept, context);
+        return service.analyze(this.getEndpoint(), this.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -300,6 +363,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of an analysis job.
      */
@@ -307,7 +371,8 @@ public final class TextAnalyticsClientImpl {
     public Mono<Response<AnalyzeJobState>> analyzeStatusWithResponseAsync(
             String jobId, Boolean showStats, Integer top, Integer skip, Context context) {
         final String accept = "application/json, text/json";
-        return service.analyzeStatus(this.getEndpoint(), jobId, showStats, top, skip, accept, context);
+        return service.analyzeStatus(
+                this.getEndpoint(), this.getApiVersion(), jobId, showStats, top, skip, accept, context);
     }
 
     /**
@@ -322,6 +387,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the healthcare prediction job specified by the jobId.
      */
@@ -329,7 +395,8 @@ public final class TextAnalyticsClientImpl {
     public Mono<Response<HealthcareJobState>> healthStatusWithResponseAsync(
             UUID jobId, Integer top, Integer skip, Boolean showStats, Context context) {
         final String accept = "application/json, text/json";
-        return service.healthStatus(this.getEndpoint(), jobId, top, skip, showStats, accept, context);
+        return service.healthStatus(
+                this.getEndpoint(), this.getApiVersion(), jobId, top, skip, showStats, accept, context);
     }
 
     /**
@@ -339,13 +406,14 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CancelHealthJobResponse> cancelHealthJobWithResponseAsync(UUID jobId, Context context) {
         final String accept = "application/json, text/json";
-        return service.cancelHealthJob(this.getEndpoint(), jobId, accept, context);
+        return service.cancelHealthJob(this.getEndpoint(), this.getApiVersion(), jobId, accept, context);
     }
 
     /**
@@ -361,6 +429,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -368,7 +437,8 @@ public final class TextAnalyticsClientImpl {
     public Mono<HealthResponse> healthWithResponseAsync(
             MultiLanguageBatchInput input, String modelVersion, StringIndexType stringIndexType, Context context) {
         final String accept = "application/json, text/json";
-        return service.health(this.getEndpoint(), modelVersion, stringIndexType, input, accept, context);
+        return service.health(
+                this.getEndpoint(), this.getApiVersion(), modelVersion, stringIndexType, input, accept, context);
     }
 
     /**
@@ -387,6 +457,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -399,7 +470,14 @@ public final class TextAnalyticsClientImpl {
             Context context) {
         final String accept = "application/json, text/json";
         return service.entitiesRecognitionGeneral(
-                this.getEndpoint(), modelVersion, showStats, stringIndexType, input, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                stringIndexType,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -421,6 +499,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -438,6 +517,7 @@ public final class TextAnalyticsClientImpl {
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(piiCategories, CollectionFormat.CSV);
         return service.entitiesRecognitionPii(
                 this.getEndpoint(),
+                this.getApiVersion(),
                 modelVersion,
                 showStats,
                 domain,
@@ -463,6 +543,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -475,7 +556,14 @@ public final class TextAnalyticsClientImpl {
             Context context) {
         final String accept = "application/json, text/json";
         return service.entitiesLinking(
-                this.getEndpoint(), modelVersion, showStats, stringIndexType, input, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                stringIndexType,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -490,6 +578,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -497,7 +586,8 @@ public final class TextAnalyticsClientImpl {
     public Mono<Response<KeyPhraseResult>> keyPhrasesWithResponseAsync(
             MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         final String accept = "application/json, text/json";
-        return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, accept, context);
+        return service.keyPhrases(
+                this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, input, accept, context);
     }
 
     /**
@@ -512,6 +602,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -519,7 +610,8 @@ public final class TextAnalyticsClientImpl {
     public Mono<Response<LanguageResult>> languagesWithResponseAsync(
             LanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         final String accept = "application/json, text/json";
-        return service.languages(this.getEndpoint(), modelVersion, showStats, input, accept, context);
+        return service.languages(
+                this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, input, accept, context);
     }
 
     /**
@@ -538,6 +630,7 @@ public final class TextAnalyticsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -551,6 +644,14 @@ public final class TextAnalyticsClientImpl {
             Context context) {
         final String accept = "application/json, text/json";
         return service.sentiment(
-                this.getEndpoint(), modelVersion, showStats, opinionMining, stringIndexType, input, accept, context);
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                opinionMining,
+                stringIndexType,
+                input,
+                accept,
+                context);
     }
 }
