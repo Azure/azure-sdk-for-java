@@ -9,16 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.monitor.query.models.LogsQueryBatch;
-import com.azure.monitor.query.models.LogsQueryBatchResultCollection;
-import com.azure.monitor.query.models.LogsQueryOptions;
-import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.QueryTimeSpan;
-import com.azure.monitor.query.rest.AzureMonitorQueryRestClient;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -26,71 +20,15 @@ import java.util.List;
 /**
  *
  */
-@ServiceClient(builder = AzureMonitorQueryClientBuilder.class)
-public final class AzureMonitorQueryClient {
-    private final AzureMonitorQueryAsyncClient asyncClient;
+@ServiceClient(builder = MetricsClientBuilder.class)
+public final class MetricsClient {
+    private final MetricsAsyncClient asyncClient;
 
-    AzureMonitorQueryClient(AzureMonitorQueryAsyncClient asyncClient) {
+    MetricsClient(MetricsAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 
-    /*
-    LOGS
-     */
 
-
-    /**
-     * @return
-     */
-    public AzureMonitorQueryRestClient getRestClient() {
-        return new AzureMonitorQueryRestClient();
-    }
-
-    /**
-     * @param workspaceId
-     * @param query
-     * @param timeSpan
-     *
-     * @return
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogsQueryResult queryLogs(String workspaceId, String query, QueryTimeSpan timeSpan) {
-        return asyncClient.queryLogs(workspaceId, query, timeSpan).block();
-    }
-
-    /**
-     * @param options
-     * @param context
-     *
-     * @return
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsQueryResult> queryLogsWithResponse(LogsQueryOptions options, Context context) {
-        return asyncClient.queryLogsWithResponse(options, context).block();
-    }
-
-    /**
-     * @param workspaceId
-     * @param queries
-     * @param timeSpan
-     *
-     * @return
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogsQueryBatchResultCollection queryLogsBatch(String workspaceId, List<String> queries, QueryTimeSpan timeSpan) {
-        return asyncClient.queryLogsBatch(workspaceId, queries, timeSpan).block();
-    }
-
-    /**
-     * @param logsQueryBatch
-     * @param context
-     *
-     * @return
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsQueryBatchResultCollection> queryLogsBatchWithResponse(LogsQueryBatch logsQueryBatch, Context context) {
-        return asyncClient.queryLogsBatchWithResponse(logsQueryBatch, context).block();
-    }
 
     /**
      * @param resourceUri
@@ -100,7 +38,7 @@ public final class AzureMonitorQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsQueryResult queryMetrics(String resourceUri, List<String> metricsNames) {
-        return queryMetricsWithResponse(resourceUri, metricsNames, null, Context.NONE).getValue();
+        return queryMetricsWithResponse(resourceUri, metricsNames, new MetricsQueryOptions(), Context.NONE).getValue();
     }
 
     /**
@@ -162,7 +100,7 @@ public final class AzureMonitorQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedIterable<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace,
-                                                           Context context) {
+                                                                 Context context) {
         return new PagedIterable<>(asyncClient.listMetricsDefinition(resourceUri, metricsNamespace, context));
     }
 }

@@ -30,7 +30,7 @@ public class LogsQueryBatchSample {
             .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
             .build();
 
-        AzureMonitorQueryClient azureLogQueryClient = new AzureMonitorQueryClientBuilder()
+        LogsClient logsClient = new LogsClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
@@ -38,7 +38,7 @@ public class LogsQueryBatchSample {
             .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null)
             .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
 
-        LogsQueryBatchResultCollection batchResultCollection = azureLogQueryClient
+        LogsQueryBatchResultCollection batchResultCollection = logsClient
             .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
 
         List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();

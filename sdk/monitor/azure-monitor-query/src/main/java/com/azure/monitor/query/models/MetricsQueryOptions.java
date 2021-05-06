@@ -6,6 +6,7 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.time.Duration;
 public final class MetricsQueryOptions {
     private String timespan;
     private Duration interval;
-    private String aggregation;
+    private List<AggregationType> aggregation;
     private Integer top;
     private String orderby;
     private String filter;
@@ -57,16 +58,14 @@ public final class MetricsQueryOptions {
     /**
      * @return
      */
-    public String getAggregation() {
+    public List<AggregationType> getAggregation() {
         return aggregation;
     }
 
     /**
      * @param aggregation
-     *
-     * @return
      */
-    public MetricsQueryOptions setAggregation(String aggregation) {
+    public MetricsQueryOptions setAggregation(List<AggregationType> aggregation) {
         this.aggregation = aggregation;
         return this;
     }

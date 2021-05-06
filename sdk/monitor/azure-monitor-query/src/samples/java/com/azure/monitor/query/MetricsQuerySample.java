@@ -8,6 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.Metrics;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
@@ -30,11 +31,11 @@ public class MetricsQuerySample {
             .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
             .build();
 
-        AzureMonitorQueryClient azureMonitorQueryClient = new AzureMonitorQueryClientBuilder()
+        MetricsClient metricsClient = new MetricsClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        Response<MetricsQueryResult> metricsResponse = azureMonitorQueryClient
+        Response<MetricsQueryResult> metricsResponse = metricsClient
             .queryMetricsWithResponse(
                 "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/"
                     + "Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
@@ -44,7 +45,7 @@ public class MetricsQuerySample {
                     .setTimespan(Duration.ofDays(30).toString())
                     .setInterval(Duration.ofHours(1))
                     .setTop(100)
-                    .setAggregation("1,2,3,4,5"),
+                    .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();

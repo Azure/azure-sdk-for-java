@@ -13,10 +13,10 @@ import java.time.OffsetDateTime;
  */
 @Immutable
 public final class QueryTimeSpan {
-    private Duration queryDuration;
-    private Duration endDuration;
-    private OffsetDateTime startTime;
-    private OffsetDateTime endTime;
+    private final Duration queryDuration;
+    private final Duration endDuration;
+    private final OffsetDateTime startTime;
+    private final OffsetDateTime endTime;
 
     /**
      * @param duration

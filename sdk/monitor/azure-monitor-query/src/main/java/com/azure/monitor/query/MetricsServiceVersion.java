@@ -8,7 +8,7 @@ import com.azure.core.util.ServiceVersion;
 /**
  *
  */
-public enum AzureMonitorServiceVersion implements ServiceVersion {
+public enum MetricsServiceVersion implements ServiceVersion {
     V_1("v1");
 
     String version;
@@ -16,14 +16,14 @@ public enum AzureMonitorServiceVersion implements ServiceVersion {
     /**
      * @param version
      */
-    AzureMonitorServiceVersion(String version) {
+    MetricsServiceVersion(String version) {
         this.version = version;
     }
 
     /**
      * @return
      */
-    public static AzureMonitorServiceVersion getLatest() {
+    public static MetricsServiceVersion getLatest() {
         return V_1;
     }
 

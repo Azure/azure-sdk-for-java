@@ -113,15 +113,4 @@ public final class MetricNamespace {
         this.properties = properties;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getProperties() != null) {
-            getProperties().validate();
-        }
-    }
 }

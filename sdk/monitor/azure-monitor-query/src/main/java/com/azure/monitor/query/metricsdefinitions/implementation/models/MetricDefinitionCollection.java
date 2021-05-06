@@ -37,17 +37,4 @@ public final class MetricDefinitionCollection {
     public List<MetricDefinition> getValue() {
         return this.value;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getValue() == null) {
-            throw new IllegalArgumentException("Missing required property value in model MetricDefinitionCollection");
-        } else {
-            getValue().forEach(e -> e.validate());
-        }
-    }
 }

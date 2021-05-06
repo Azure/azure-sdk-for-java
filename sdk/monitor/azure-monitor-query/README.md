@@ -35,117 +35,141 @@ This client library provides access to query metrics and logs collected by Azure
 
 [//]: # ({x-version-update-end})
 
-### Create Azure Monitor query client
+### Create Logs query client
 
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L41-L43 -->
 ```java
-AzureMonitorQueryClient queryClient=new AzureMonitorQueryClientBuilder()
+LogsClient logsClient = new LogsClientBuilder()
     .credential(tokenCredential)
     .buildClient();
 ```
 
-### Create Azure Monitor query async client
+### Create Logs query async client
 
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L45-L47 -->
 ```java
-AzureMonitorQueryAsyncClient queryClient=new AzureMonitorQueryClientBuilder()
+LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
     .credential(tokenCredential)
     .buildAsyncClient();
 ```
 
 ### Get logs for a query
 
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L75-L84 -->
 ```java
-LogsQueryResult queryResults=queryClient.queryLogs("{workspace-id}","{kusto-query}",
+LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
     new QueryTimeSpan(Duration.ofDays(2)));
-    System.out.println("Number of tables = "+queryResults.getLogsTables().size());
+System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
 // Sample to iterate over all cells in the table
-    for(LogsTable table:queryResults.getLogsTables()){
-    for(LogsTableCell tableCell:table.getAllTableCells()){
-    System.out.println("Column = "+tableCell.getColumnName()+"; value = "+tableCell.getRowValue());
+for (LogsTable table : queryResults.getLogsTables()) {
+    for (LogsTableCell tableCell : table.getAllTableCells()) {
+        System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getRowValue());
     }
-    }
+}
 ```
 
 ### Get logs for a batch of queries
 
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L117 -->
 ```java
-LogsQueryBatch logsQueryBatch=new LogsQueryBatch()
-    .addQuery("{workspace-id}","{query-1}",new QueryTimeSpan(Duration.ofDays(2)))
-    .addQuery("{workspace-id}","{query-2}",new QueryTimeSpan(Duration.ofDays(30)));
+LogsQueryBatch logsQueryBatch = new LogsQueryBatch()
+    .addQuery("{workspace-id}", "{query-1}", new QueryTimeSpan(Duration.ofDays(2)))
+    .addQuery("{workspace-id}", "{query-2}", new QueryTimeSpan(Duration.ofDays(30)));
 
-    LogsQueryBatchResultCollection batchResultCollection=azureLogQueryClient
-    .queryLogsBatchWithResponse(logsQueryBatch,Context.NONE).getValue();
+LogsQueryBatchResultCollection batchResultCollection = logsClient
+    .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
 
-    List<LogsQueryBatchResult> responses=batchResultCollection.getBatchResults();
+List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();
 
-    for(LogsQueryBatchResult response:responses){
-    LogsQueryResult queryResult=response.getQueryResult();
+for (LogsQueryBatchResult response : responses) {
+    LogsQueryResult queryResult = response.getQueryResult();
 
     // Sample to iterate by row
-    for(LogsTable table:queryResult.getLogsTables()){
-    for(LogsTableRow row:table.getTableRows()){
-    System.out.println("Row index "+row.getRowIndex());
-    row.getTableRow()
-    .forEach(cell->System.out.println("Column = "+cell.getColumnName()+"; value = "+cell.getRowValue()));
+    for (LogsTable table : queryResult.getLogsTables()) {
+        for (LogsTableRow row : table.getTableRows()) {
+            System.out.println("Row index " + row.getRowIndex());
+            row.getTableRow()
+                .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
+        }
     }
-    }
-    }
+}
 ```
 
 ### Get logs for a query with server timeout
 
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L132-L148 -->
 ```java
 // set request options: server timeout, rendering, statistics
-LogsQueryOptions options=new LogsQueryOptions("{workspace-id}",
-    "{query}",new QueryTimeSpan(Duration.ofDays(2)))
-    .setServerTimeout(Duration.ofSeconds(30));
+LogsQueryOptions options = new LogsQueryOptions("{workspace-id}",
+    "{query}", new QueryTimeSpan(Duration.ofDays(2)))
+    .setServerTimeout(Duration.ofMinutes(10));
 
 // make service call with these request options set as filter header
-    Response<LogsQueryResult> response=azureMonitorQueryClient.queryLogsWithResponse(options,Context.NONE);
-    LogsQueryResult logsQueryResult=response.getValue();
+Response<LogsQueryResult> response = logsClient.queryLogsWithResponse(options, Context.NONE);
+LogsQueryResult logsQueryResult = response.getValue();
 
 // Sample to iterate by row
-    for(LogsTable table:logsQueryResult.getLogsTables()){
-    for(LogsTableRow row:table.getTableRows()){
-    System.out.println("Row index "+row.getRowIndex());
-    row.getTableRow()
-    .forEach(cell->System.out.println("Column = "+cell.getColumnName()+"; value = "+cell.getRowValue()));
+for (LogsTable table : logsQueryResult.getLogsTables()) {
+    for (LogsTableRow row : table.getTableRows()) {
+        System.out.println("Row index " + row.getRowIndex());
+        row.getTableRow()
+            .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
     }
-    }
+}
+```
+
+### Create Metrics query client
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
+```java
+MetricsClient metricsClient = new MetricsClientBuilder()
+    .credential(tokenCredential)
+    .buildClient();
+```
+
+### Create Metrics query async client
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L60-L62 -->
+```java
+MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
+    .credential(tokenCredential)
+    .buildAsyncClient();
 ```
 
 ### Get metrics
 
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L161-L188 -->
 ```java
-Response<MetricsQueryResult> metricsResponse=azureMonitorQueryClient
+Response<MetricsQueryResult> metricsResponse = metricsClient
     .queryMetricsWithResponse(
-    "{resource-id}",
-    Arrays.asList("SuccessfulCalls"),
-    new MetricsQueryOptions()
-    .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-    .setTimespan(Duration.ofDays(30).toString())
-    .setInterval(Duration.ofHours(1))
-    .setTop(100)
-    .setAggregation("1,2,3,4,5"),
-    Context.NONE);
+        "{resource-id}",
+        Arrays.asList("SuccessfulCalls"),
+        new MetricsQueryOptions()
+            .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
+            .setTimespan(Duration.ofDays(30).toString())
+            .setInterval(Duration.ofHours(1))
+            .setTop(100)
+            .setAggregation("1,2,3,4,5"),
+        Context.NONE);
 
-    MetricsQueryResult metricsQueryResult=metricsResponse.getValue();
-    List<Metrics> metrics=metricsQueryResult.getMetrics();
-    metrics.stream()
-    .forEach(metric->{
-    System.out.println(metric.getMetricsName());
-    System.out.println(metric.getId());
-    System.out.println(metric.getType());
-    System.out.println(metric.getUnit());
-    System.out.println(metric.getTimeSeries().size());
-    System.out.println(metric.getTimeSeries().get(0).getData().size());
-    metric.getTimeSeries()
-    .stream()
-    .flatMap(ts->ts.getData().stream())
-    .forEach(mv->System.out.println(mv.getTimeStamp().toString()+"; Count = "+mv.getCount()+
-    "; Average = "+mv.getAverage()+"; Maximum  "+mv.getMaximum()+"; Minimum = "+mv.getMinimum()));
+MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
+List<Metrics> metrics = metricsQueryResult.getMetrics();
+metrics.stream()
+    .forEach(metric -> {
+        System.out.println(metric.getMetricsName());
+        System.out.println(metric.getId());
+        System.out.println(metric.getType());
+        System.out.println(metric.getUnit());
+        System.out.println(metric.getTimeSeries().size());
+        System.out.println(metric.getTimeSeries().get(0).getData().size());
+        metric.getTimeSeries()
+            .stream()
+            .flatMap(ts -> ts.getData().stream())
+            .forEach(mv -> System.out.println(mv.getTimeStamp().toString() + "; Count = " + mv.getCount() +
+                "; Average = " + mv.getAverage() + "; Maximum  " + mv.getMaximum() + "; Minimum = " + mv.getMinimum()));
     });
-    }
 ```
 
 ## Key concepts

@@ -25,18 +25,18 @@ public class LogsQuerySample {
             .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
             .build();
 
-        AzureMonitorQueryClient queryClient = new AzureMonitorQueryClientBuilder()
+        LogsClient logsClient = new LogsClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        LogsQueryResult queryResults = queryClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
+        LogsQueryResult queryResults = logsClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
             null);
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
         // Sample to iterate over all cells in the table
         for (LogsTable table : queryResults.getLogsTables()) {
             for (LogsTableCell tableCell : table.getAllTableCells()) {
-                System.out.println("Column = " + tableCell.getColumnName()+ "; value = " + tableCell.getRowValue());
+                System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getRowValue());
             }
         }
 

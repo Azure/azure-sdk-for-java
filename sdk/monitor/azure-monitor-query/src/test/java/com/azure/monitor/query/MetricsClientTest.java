@@ -5,7 +5,6 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -13,10 +12,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.query.models.LogsQueryBatch;
-import com.azure.monitor.query.models.LogsQueryBatchResult;
-import com.azure.monitor.query.models.LogsQueryBatchResultCollection;
-import com.azure.monitor.query.models.LogsQueryResult;
+import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.Metrics;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
@@ -33,23 +29,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Unit tests for {@link AzureMonitorQueryClient}
+ * Unit tests for {@link MetricsClient}.
  */
-public class AzureMonitorQueryClientTest extends TestBase {
+public class MetricsClientTest extends TestBase {
 
-    private AzureMonitorQueryClient client;
+    private MetricsClient client;
 
     @BeforeEach
     public void setup() {
-        AzureMonitorQueryClientBuilder clientBuilder = new AzureMonitorQueryClientBuilder();
+        MetricsClientBuilder clientBuilder = new MetricsClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
-                .credential(new TokenCredential() {
-                    @Override
-                    public Mono<AccessToken> getToken(TokenRequestContext request) {
-                        return Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1)));
-                    }
-                })
+                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
@@ -70,36 +61,6 @@ public class AzureMonitorQueryClientTest extends TestBase {
     }
 
     @Test
-    public void testLogsQuery() {
-        LogsQueryResult queryResults = client.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests", null);
-        assertEquals(1, queryResults.getLogsTables().size());
-        assertEquals(1148, queryResults.getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(28, queryResults.getLogsTables().get(0).getTableRows().size());
-    }
-
-    @Test
-    public  void testLogsQueryBatch() {
-        LogsQueryBatch logsQueryBatch = new LogsQueryBatch()
-            .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null)
-            .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
-
-        LogsQueryBatchResultCollection batchResultCollection = client
-            .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
-
-        List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();
-
-        assertEquals(2, responses.size());
-
-        assertEquals(1, responses.get(0).getQueryResult().getLogsTables().size());
-        assertEquals(82, responses.get(0).getQueryResult().getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(2, responses.get(0).getQueryResult().getLogsTables().get(0).getTableRows().size());
-
-        assertEquals(1, responses.get(1).getQueryResult().getLogsTables().size());
-        assertEquals(123, responses.get(1).getQueryResult().getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(3, responses.get(1).getQueryResult().getLogsTables().get(0).getTableRows().size());
-    }
-
-    @Test
     public void testMetricsQuery() {
         Response<MetricsQueryResult> metricsResponse = client
             .queryMetricsWithResponse(
@@ -111,7 +72,8 @@ public class AzureMonitorQueryClientTest extends TestBase {
                     .setTimespan(Duration.ofDays(30).toString())
                     .setInterval(Duration.ofHours(1))
                     .setTop(100)
-                    .setAggregation("1,2,3,4,5"),
+                    .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT,
+                        AggregationType.MINIMUM, AggregationType.MAXIMUM, AggregationType.TOTAL)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();

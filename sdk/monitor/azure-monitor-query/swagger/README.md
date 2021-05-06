@@ -12,7 +12,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.log
 generate-client-interfaces: false
 sync-methods: all
-client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
@@ -35,7 +34,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.metrics
 generate-client-interfaces: false
 sync-methods: all
-client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
@@ -63,7 +61,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.metricsnamespaces
 generate-client-interfaces: false
 sync-methods: all
-client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
@@ -87,7 +84,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.metricsdefinitions
 generate-client-interfaces: false
 sync-methods: all
-client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true

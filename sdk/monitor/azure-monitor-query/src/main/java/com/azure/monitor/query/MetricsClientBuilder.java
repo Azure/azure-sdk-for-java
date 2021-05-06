@@ -12,7 +12,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.monitor.query.log.implementation.AzureLogAnalyticsImplBuilder;
 import com.azure.monitor.query.metrics.implementation.MonitorManagementClientImplBuilder;
 import com.azure.monitor.query.metricsdefinitions.implementation.MetricsDefinitionsClientImplBuilder;
 import com.azure.monitor.query.metricsnamespaces.implementation.MetricsNamespacesClientImplBuilder;
@@ -20,39 +19,27 @@ import com.azure.monitor.query.metricsnamespaces.implementation.MetricsNamespace
 /**
  *
  */
-@ServiceClientBuilder(serviceClients = {AzureMonitorQueryClient.class, AzureMonitorQueryAsyncClient.class})
-public final class AzureMonitorQueryClientBuilder {
+@ServiceClientBuilder(serviceClients = {MetricsClient.class, MetricsAsyncClient.class})
+public final class MetricsClientBuilder {
 
-    private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
     private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
         new MetricsDefinitionsClientImplBuilder();
     private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder =
         new MetricsNamespacesClientImplBuilder();
     private ClientOptions clientOptions;
-    private AzureMonitorServiceVersion serviceVersion;
-
-    /**
-     * Sets the log query endpoint.
-     * @param logEndpoint the host value.
-     *
-     * @return the AzureMonitorQueryClientBuilder.
-     */
-    public AzureMonitorQueryClientBuilder logsEndpoint(String logEndpoint) {
-        innerLogBuilder.host(logEndpoint);
-        return this;
-    }
+    private MetricsServiceVersion serviceVersion;
 
     /**
      * Sets the metrics query endpoint.
-     * @param metricsEndpoint the host value.
+     * @param endpoint the host value.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder metricsEndpoint(String metricsEndpoint) {
-        innerMetricsBuilder.host(metricsEndpoint);
-        innerMetricsDefinitionsBuilder.host(metricsEndpoint);
-        innerMetricsNamespaceBuilder.host(metricsEndpoint);
+    public MetricsClientBuilder endpoint(String endpoint) {
+        innerMetricsBuilder.host(endpoint);
+        innerMetricsDefinitionsBuilder.host(endpoint);
+        innerMetricsNamespaceBuilder.host(endpoint);
         return this;
     }
 
@@ -60,10 +47,9 @@ public final class AzureMonitorQueryClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * @param pipeline the pipeline value.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder pipeline(HttpPipeline pipeline) {
-        innerLogBuilder.pipeline(pipeline);
+    public MetricsClientBuilder pipeline(HttpPipeline pipeline) {
         innerMetricsBuilder.pipeline(pipeline);
         innerMetricsDefinitionsBuilder.pipeline(pipeline);
         innerMetricsNamespaceBuilder.pipeline(pipeline);
@@ -74,10 +60,9 @@ public final class AzureMonitorQueryClientBuilder {
      * Sets The HTTP client used to send the request.
      * @param httpClient the httpClient value.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder httpClient(HttpClient httpClient) {
-        innerLogBuilder.httpClient(httpClient);
+    public MetricsClientBuilder httpClient(HttpClient httpClient) {
         innerMetricsBuilder.httpClient(httpClient);
         innerMetricsDefinitionsBuilder.httpClient(httpClient);
         innerMetricsNamespaceBuilder.httpClient(httpClient);
@@ -88,10 +73,9 @@ public final class AzureMonitorQueryClientBuilder {
      * Sets The configuration store that is used during construction of the service client.
      * @param configuration the configuration value.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder configuration(Configuration configuration) {
-        innerLogBuilder.configuration(configuration);
+    public MetricsClientBuilder configuration(Configuration configuration) {
         innerMetricsBuilder.configuration(configuration);
         innerMetricsDefinitionsBuilder.configuration(configuration);
         innerMetricsNamespaceBuilder.configuration(configuration);
@@ -102,10 +86,9 @@ public final class AzureMonitorQueryClientBuilder {
      * Sets The logging configuration for HTTP requests and responses.
      * @param httpLogOptions the httpLogOptions value.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        innerLogBuilder.httpLogOptions(httpLogOptions);
+    public MetricsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerMetricsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsDefinitionsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsNamespaceBuilder.httpLogOptions(httpLogOptions);
@@ -116,10 +99,9 @@ public final class AzureMonitorQueryClientBuilder {
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * @param retryPolicy the retryPolicy value.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        innerLogBuilder.retryPolicy(retryPolicy);
+    public MetricsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         innerMetricsBuilder.retryPolicy(retryPolicy);
         innerMetricsDefinitionsBuilder.retryPolicy(retryPolicy);
         innerMetricsNamespaceBuilder.retryPolicy(retryPolicy);
@@ -130,10 +112,9 @@ public final class AzureMonitorQueryClientBuilder {
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        innerLogBuilder.addPolicy(customPolicy);
+    public MetricsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerMetricsBuilder.addPolicy(customPolicy);
         innerMetricsDefinitionsBuilder.addPolicy(customPolicy);
         innerMetricsNamespaceBuilder.addPolicy(customPolicy);
@@ -144,10 +125,9 @@ public final class AzureMonitorQueryClientBuilder {
      * Sets The TokenCredential used for authentication.
      * @param tokenCredential the tokenCredential value.
      *
-     * @return the AzureMonitorQueryClientBuilder.
+     * @return the MetricsClientBuilder.
      */
-    public AzureMonitorQueryClientBuilder credential(TokenCredential tokenCredential) {
-        innerLogBuilder.credential(tokenCredential);
+    public MetricsClientBuilder credential(TokenCredential tokenCredential) {
         innerMetricsBuilder.credential(tokenCredential);
         innerMetricsDefinitionsBuilder.credential(tokenCredential);
         innerMetricsNamespaceBuilder.credential(tokenCredential);
@@ -159,7 +139,7 @@ public final class AzureMonitorQueryClientBuilder {
      *
      * @return
      */
-    public AzureMonitorQueryClientBuilder clientOptions(ClientOptions clientOptions) {
+    public MetricsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -169,7 +149,7 @@ public final class AzureMonitorQueryClientBuilder {
      *
      * @return
      */
-    public AzureMonitorQueryClientBuilder serviceVersion(AzureMonitorServiceVersion serviceVersion) {
+    public MetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -177,15 +157,15 @@ public final class AzureMonitorQueryClientBuilder {
     /**
      * @return
      */
-    public AzureMonitorQueryClient buildClient() {
-        return new AzureMonitorQueryClient(buildAsyncClient());
+    public MetricsClient buildClient() {
+        return new MetricsClient(buildAsyncClient());
     }
 
     /**
      * @return
      */
-    public AzureMonitorQueryAsyncClient buildAsyncClient() {
-        return new AzureMonitorQueryAsyncClient(innerLogBuilder.buildClient(), innerMetricsBuilder.buildClient(),
+    public MetricsAsyncClient buildAsyncClient() {
+        return new MetricsAsyncClient(innerMetricsBuilder.buildClient(),
             innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
     }
 

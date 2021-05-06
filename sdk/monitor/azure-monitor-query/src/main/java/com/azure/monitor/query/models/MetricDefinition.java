@@ -276,21 +276,4 @@ public final class MetricDefinition {
         this.dimensions = dimensions;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() != null) {
-            getName().validate();
-        }
-        if (getMetricAvailabilities() != null) {
-            getMetricAvailabilities().forEach(e -> e.validate());
-        }
-        if (getDimensions() != null) {
-            getDimensions().forEach(e -> e.validate());
-        }
-    }
 }
