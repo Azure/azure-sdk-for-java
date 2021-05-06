@@ -132,6 +132,7 @@ public final class FormRecognizerClientBuilder {
         }
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
                                                                .endpoint(endpoint)
+                                                               .apiVersion(serviceVersion.getVersion())
                                                                .pipeline(pipeline)
                                                                .buildClient();
 

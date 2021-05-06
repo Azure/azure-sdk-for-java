@@ -36,7 +36,7 @@ class AzureFileSystemTest extends APISpec {
         } else {
             config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL] = new AzureSasCredential(
                 primaryBlobServiceClient.generateAccountSas(
-                    new AccountSasSignatureValues(getUTCNow().plusDays(2),
+                    new AccountSasSignatureValues(namer.getUtcNow().plusDays(2),
                         AccountSasPermission.parse("rwcdl"), new AccountSasService().setBlobAccess(true),
                         new AccountSasResourceType().setContainer(true))))
         }

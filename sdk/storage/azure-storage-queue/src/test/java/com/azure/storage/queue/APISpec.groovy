@@ -3,19 +3,14 @@
 
 package com.azure.storage.queue
 
-import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger
@@ -24,7 +19,6 @@ import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.queue.models.QueuesSegmentOptions
-import org.spockframework.runtime.model.IterationInfo
 import reactor.core.publisher.Mono
 
 import java.time.Duration
@@ -33,8 +27,6 @@ import java.time.OffsetDateTime
 class APISpec extends StorageSpec {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
-    InterceptorManager interceptorManager
-    TestResourceNamer testResourceName
 
     // Clients for API tests
     QueueServiceClient primaryQueueServiceClient
@@ -44,7 +36,6 @@ class APISpec extends StorageSpec {
     protected static StorageSharedKeyCredential primaryCredential
 
     // Test name for test method name.
-    String methodName
     String connectionString
 
     /**
@@ -52,38 +43,34 @@ class APISpec extends StorageSpec {
      */
     def setup() {
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        String testName = getFullTestName(specificationContext.currentIteration)
-        String className = specificationContext.getCurrentSpec().getName()
-        methodName = className + testName
-        logger.info("Test Mode: {}, Name: {}", ENVIRONMENT.testMode, methodName)
-        interceptorManager = new InterceptorManager(methodName, ENVIRONMENT.testMode)
-        testResourceName = new TestResourceNamer(methodName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_QUEUE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;" +
                 "EndpointSuffix=core.windows.net"
         }
-
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, testName)
     }
 
     /**
      * Clean up the test queues and messages for the account.
      */
     def cleanup() {
-        interceptorManager.close()
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
                 .buildClient()
-            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName.toLowerCase()),
+            cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()),
                 null, Context.NONE).each {
                 queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName())
             }
         }
+    }
+
+    // TODO (kasobol-msft) remove this when all modules are migrated
+    @Override
+    protected shouldUseThisToRecord() {
+        return true
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
@@ -106,25 +93,21 @@ class APISpec extends StorageSpec {
         return new StorageSharedKeyCredential(accountName, accountKey)
     }
 
-    def queueServiceBuilderHelper(final InterceptorManager interceptorManager) {
+    def queueServiceBuilderHelper() {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
         return builder
             .connectionString(connectionString)
+            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
     }
 
-    def queueBuilderHelper(final InterceptorManager interceptorManager) {
-        def queueName = testResourceName.randomName("queue", 16)
+    def queueBuilderHelper() {
+        def queueName = namer.getRandomName(60)
         QueueClientBuilder builder = new QueueClientBuilder()
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
         return builder
             .connectionString(connectionString)
             .queueName(queueName)
+            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
     }
 
@@ -139,9 +122,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder.addPolicy(getRecordPolicy())
 
         if (credential != null) {
             builder.credential(credential)
@@ -154,45 +135,9 @@ class APISpec extends StorageSpec {
         QueueClientBuilder builder = new QueueClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .addPolicy(getRecordPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
-
         return builder
-    }
-
-    private def getFullTestName(IterationInfo iterationInfo) {
-        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.capitalize() }.join("")
-
-        if (iterationInfo.getDataValues().length == 0) {
-            return fullName
-        }
-        def prefix = fullName
-        def suffix = iterationInfo.getIterationIndex()
-
-        return prefix + suffix
-    }
-
-
-    OffsetDateTime getUTCNow() {
-        return testResourceName.now()
-    }
-
-    HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else {
-            return interceptorManager.getPlaybackClient()
-        }
     }
 
     def sleepIfLive(long milliseconds) {
@@ -201,10 +146,6 @@ class APISpec extends StorageSpec {
         }
 
         sleep(milliseconds)
-    }
-
-    boolean liveMode() {
-        return ENVIRONMENT.testMode == TestMode.RECORD
     }
 
     def getMessageUpdateDelay(long liveTestDurationInMillis) {
