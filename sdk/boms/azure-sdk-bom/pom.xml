@@ -58,6 +58,36 @@
 
       <dependency>
         <groupId>com.azure</groupId>
+        <artifactId>azure-communication-chat</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-communication-common</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-communication-identity</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-communication-phonenumbers</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-communication-sms</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
         <artifactId>azure-core</artifactId>
         <version>1.15.0</version>
       </dependency>
