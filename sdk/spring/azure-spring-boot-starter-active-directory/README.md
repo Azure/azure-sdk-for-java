@@ -27,7 +27,7 @@ A `web application` is any web based application that allows user to login, wher
 
 ### Accessing a web application
 
-This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in an user with a Microsoft account. 
+This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in a user with a Microsoft account. 
 
 **System diagram**:
 
@@ -40,7 +40,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     ![web-application-set-redirect-uri-1.png](resource/web-application-set-redirect-uri-1.png)
     ![web-application-set-redirect-uri-2.png](resource/web-application-set-redirect-uri-2.png)
 
-* Step 2: Add the following dependencies in you pom.xml.
+* Step 2: Add the following dependencies in your pom.xml.
 
     [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
     ```xml
@@ -326,7 +326,7 @@ Here are some examples about how to use these properties:
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L26 -->
+    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/src/main/java/com/azure/spring/sample/aad/controller/RoleController.java#L11-L40 -->
     ```java
     @Controller
     public class RoleController {
@@ -342,6 +342,20 @@ Here are some examples about how to use these properties:
         @PreAuthorize("hasRole('ROLE_group2')")
         public String group2() {
             return "group2 message";
+        }
+    
+        @GetMapping("group1Id")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_<group1-id>')")
+        public String group1Id() {
+            return "group1Id message";
+        }
+    
+        @GetMapping("group2Id")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_<group2-id>')")
+        public String group2Id() {
+            return "group2Id message";
         }
     }
     ```

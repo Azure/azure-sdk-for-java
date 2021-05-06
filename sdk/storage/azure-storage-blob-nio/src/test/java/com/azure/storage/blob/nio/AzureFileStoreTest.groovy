@@ -11,7 +11,6 @@ import java.nio.file.attribute.FileStoreAttributeView
 import java.nio.file.attribute.PosixFileAttributeView
 
 class AzureFileStoreTest extends APISpec {
-    @Shared
     AzureFileSystem fs
 
     // Just need one fs instance for creating the stores.

@@ -1,47 +1,87 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetmetadataleaseerror723598bdd1c8760?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/a2cfebf8a2cfebf8cdb085742af4c9f1a1c74c70a4?restype=share",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c47fbaec-4a7e-4dfe-9187-3c2b8f84bcb4"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fce76652-3db9-4e54-9dca-8842039523bb"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D86726E5D94532",
-      "Last-Modified" : "Fri, 02 Oct 2020 23:00:03 GMT",
+      "eTag" : "0x8D9100505A467AE",
+      "Last-Modified" : "Wed, 05 May 2021 20:33:20 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "99657531-c01a-0021-0d0f-99b5f9000000",
-      "Date" : "Fri, 02 Oct 2020 23:00:02 GMT",
-      "x-ms-client-request-id" : "c47fbaec-4a7e-4dfe-9187-3c2b8f84bcb4"
+      "x-ms-request-id" : "e19d45cc-701a-000e-7ded-41e301000000",
+      "x-ms-client-request-id" : "fce76652-3db9-4e54-9dca-8842039523bb",
+      "Date" : "Wed, 05 May 2021 20:33:20 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetmetadataleaseerror723598bdd1c8760?restype=share&comp=metadata",
+    "Uri" : "https://REDACTED.file.core.windows.net/a2cfebf8a2cfebf8cdb085742af4c9f1a1c74c70a4?restype=share&comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "47426095-4ac8-46cc-b58c-a7d75880cdfd"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f417aacb-2611-46fc-b1ec-af8bc6d5eccc"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "content-length" : "252",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
       "retry-after" : "0",
-      "Content-Length" : "252",
       "StatusCode" : "412",
-      "x-ms-request-id" : "99657533-c01a-0021-0e0f-99b5f9000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:99657533-c01a-0021-0e0f-99b5f9000000\nTime:2020-10-02T23:00:03.6395448Z</Message></Error>",
-      "Date" : "Fri, 02 Oct 2020 23:00:02 GMT",
-      "x-ms-client-request-id" : "47426095-4ac8-46cc-b58c-a7d75880cdfd",
+      "x-ms-request-id" : "dae481a3-a01a-0040-05ed-41cd89000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:dae481a3-a01a-0040-05ed-41cd89000000\nTime:2021-05-05T20:33:20.7056917Z</Message></Error>",
+      "x-ms-client-request-id" : "f417aacb-2611-46fc-b1ec-af8bc6d5eccc",
+      "Date" : "Wed, 05 May 2021 20:33:19 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=a2cfebf8&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e22a4371-0b71-4102-8210-696ce18d75a3"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dae481a4-a01a-0040-06ed-41cd89000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>a2cfebf8</Prefix><Shares><Share><Name>a2cfebf8a2cfebf8cdb085742af4c9f1a1c74c70a4</Name><Properties><Last-Modified>Wed, 05 May 2021 20:33:20 GMT</Last-Modified><Etag>\"0x8D9100505A467AE\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>1</Quota><AccessTier>TransactionOptimized</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:33:20 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "e22a4371-0b71-4102-8210-696ce18d75a3",
+      "Date" : "Wed, 05 May 2021 20:33:20 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/a2cfebf8a2cfebf8cdb085742af4c9f1a1c74c70a4?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e8f3246-a214-4e77-8633-8ecff0dfeec1"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "4e125b06-201a-002c-3ced-41261e000000",
+      "x-ms-client-request-id" : "0e8f3246-a214-4e77-8633-8ecff0dfeec1",
+      "Date" : "Wed, 05 May 2021 20:33:20 GMT"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareapitestssetmetadataleaseerror723598bdd1c8760" ]
+  "variables" : [ "a2cfebf8a2cfebf8cdb085742af4c9f1a1c74c70a4" ]
 }
