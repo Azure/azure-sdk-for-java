@@ -459,7 +459,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 actualCount.addAndGet(1);
                 assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
                     String.format("Message id did not match. Payload: [%s], try [%s].",
-                        receivedMessage.getBody().toString(), finalI);
+                        receivedMessage.getBody().toString(), finalI));
             });
         }
 
