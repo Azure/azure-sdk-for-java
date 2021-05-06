@@ -78,7 +78,7 @@ class APISpec extends StorageSpec {
     def setup() {
         premiumCredential = getCredential(PREMIUM_STORAGE)
         primaryCredential = getCredential(PRIMARY_STORAGE)
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
         } else {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
@@ -115,7 +115,7 @@ class APISpec extends StorageSpec {
         String accountName
         String accountKey
 
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -132,7 +132,7 @@ class APISpec extends StorageSpec {
     }
 
     static boolean liveMode() {
-        return ENVIRONMENT.testMode != TestMode.PLAYBACK
+        return env.testMode != TestMode.PLAYBACK
     }
 
     def generateShareName() {
@@ -365,7 +365,7 @@ class APISpec extends StorageSpec {
     }
 
     void sleepIfLive(long milliseconds) {
-        if (ENVIRONMENT.testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -374,13 +374,13 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live or record mode
     def sleepIfRecord(long milliseconds) {
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     /**
@@ -410,7 +410,7 @@ class APISpec extends StorageSpec {
     }
 
     static boolean playbackMode() {
-        return ENVIRONMENT.testMode == TestMode.PLAYBACK
+        return env.testMode == TestMode.PLAYBACK
     }
 
     def getPerCallVersionPolicy() {

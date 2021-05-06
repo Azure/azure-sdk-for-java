@@ -11,7 +11,7 @@ import com.azure.core.test.TestMode
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
-    protected static final TestEnvironment ENVIRONMENT = new TestEnvironment();
+    private static final TestEnvironment ENVIRONMENT = new TestEnvironment();
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
@@ -25,6 +25,10 @@ class StorageSpec extends Specification {
 
     def cleanup() {
         interceptorManager.close()
+    }
+
+    protected static TestEnvironment getEnv() {
+        return ENVIRONMENT
     }
 
     protected StorageResourceNamer getNamer() {

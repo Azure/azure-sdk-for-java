@@ -365,7 +365,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(primaryCredential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
 
         when:
         def range = new BlobRange(2, 5L)
@@ -829,8 +829,8 @@ class BlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildClient()
 
         def blobClient = blobServiceClient.createBlobContainer(containerName)
@@ -876,8 +876,8 @@ class BlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceAsyncClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildAsyncClient()
 
         def blobAsyncClient = blobServiceAsyncClient.createBlobContainer(containerName).block()
@@ -2940,7 +2940,7 @@ class BlobAPITest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         bcCopy.copyFromUrlWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)
 
@@ -3082,7 +3082,7 @@ class BlobAPITest extends APISpec {
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
      def "Per call policy"() {
-         bc = getBlobClient(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+         bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
 
          when:
          def response = bc.getPropertiesWithResponse(null, null, null)

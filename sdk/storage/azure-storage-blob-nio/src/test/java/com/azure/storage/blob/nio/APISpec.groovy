@@ -98,7 +98,7 @@ class APISpec extends StorageSpec {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", ENVIRONMENT.testMode))
+        System.out.println(String.format("--------%s---------", env.testMode))
     }
 
     def setup() {
@@ -124,11 +124,11 @@ class APISpec extends StorageSpec {
     }
 
     static boolean liveMode() {
-        return ENVIRONMENT.testMode == TestMode.LIVE
+        return env.testMode == TestMode.LIVE
     }
 
     String getAccountKey(String accountType) {
-        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
+        if (env.testMode == TestMode.RECORD || env.testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
             return "astorageaccountkey"
@@ -136,7 +136,7 @@ class APISpec extends StorageSpec {
     }
 
     String getAccountName(String accountType) {
-        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
+        if (env.testMode == TestMode.RECORD || env.testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
         } else {
             return "azstoragesdkaccount"
@@ -412,7 +412,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
