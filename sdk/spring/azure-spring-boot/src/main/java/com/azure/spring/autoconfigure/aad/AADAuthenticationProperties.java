@@ -403,6 +403,7 @@ public class AADAuthenticationProperties implements InitializingBean {
         if (!StringUtils.hasText(tenantId)) {
             tenantId = "common";
         }
+
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
             throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
                 + "azure.activedirectory.user-group.allowed-groups/allowed-group-names should be empty. "
