@@ -231,7 +231,8 @@ public class ServiceBusProcessorTest {
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.get().await(20, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
-        Assertions.assertTrue(!assertionFailed.get() && success, "Failed to receive all expected messages");
+        Assertions.assertTrue(!assertionFailed.get(), "Message id did not match.");
+        Assertions.assertTrue(success, "Failed to receive all expected messages");
     }
 
     /**

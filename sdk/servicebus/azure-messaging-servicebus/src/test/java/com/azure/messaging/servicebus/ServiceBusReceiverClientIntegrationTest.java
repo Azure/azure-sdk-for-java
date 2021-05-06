@@ -442,8 +442,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final AtomicLong actualCount = new AtomicLong();
 
         final int maxMessages = 2;
-        for(int i = 0; i< maxMessages; ++i) {
-            ServiceBusMessage message = getMessage(""+i, isSessionEnabled);
+        for (int i = 0; i < maxMessages; ++i) {
+            ServiceBusMessage message = getMessage("" + i, isSessionEnabled);
             sendMessage(message);
         }
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
