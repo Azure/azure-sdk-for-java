@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  * - Create Private DNS Zone Group on the Private Endpoints
  * - (Optional) Create Virtual Machine in the Virtual Network to test DNS configure
  */
-public class ManagePrivateLink {
+public final class ManagePrivateLink {
 
     /**
      * Main function which runs the actual sample.
