@@ -21,6 +21,8 @@ public class TestEnvironment {
     private final TestAccount premiumAccount;
     private final TestAccount versionedAccount;
     private final TestAccount dataLakeAccount;
+    private final TestAccount fileAccount;
+    private final TestAccount premiumFileAccount;
 
     public TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
@@ -31,6 +33,8 @@ public class TestEnvironment {
         this.premiumAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_", this.testMode);
         this.versionedAccount = readTestAccountFromEnvironment("VERSIONED_STORAGE_", this.testMode);
         this.dataLakeAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_", this.testMode);
+        this.fileAccount = readTestAccountFromEnvironment("AZURE_STORAGE_FILE_", this.testMode);
+        this.premiumFileAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_FILE_", this.testMode);
     }
 
     private static TestMode readTestModeFromEnvironment() {
@@ -52,9 +56,16 @@ public class TestEnvironment {
     private static TestAccount readTestAccountFromEnvironment(String prefix, TestMode testMode) {
         String name = "azstoragesdkaccount";
         String key = "astorageaccountkey";
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
+            "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
         if (testMode != TestMode.PLAYBACK) {
             name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
             key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
+            connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
+            if (connectionString == null || connectionString.isBlank()) {
+                connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;" +
+                    "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
+            }
         }
         String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
         String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net", name);
@@ -62,7 +73,7 @@ public class TestEnvironment {
         String queueEndpoint = String.format("https://%s.queue.core.windows.net", name);
         String fileEndpoint = String.format("https://%s.file.core.windows.net", name);
 
-        return new TestAccount(name, key, blobEndpoint, blobEndpointSecondary,
+        return new TestAccount(name, key, connectionString, blobEndpoint, blobEndpointSecondary,
             dataLakeEndpoint, queueEndpoint, fileEndpoint);
     }
 
@@ -96,5 +107,13 @@ public class TestEnvironment {
 
     public TestAccount getDataLakeAccount() {
         return dataLakeAccount;
+    }
+
+    public TestAccount getFileAccount() {
+        return fileAccount;
+    }
+
+    public TestAccount getPremiumFileAccount() {
+        return premiumFileAccount;
     }
 }

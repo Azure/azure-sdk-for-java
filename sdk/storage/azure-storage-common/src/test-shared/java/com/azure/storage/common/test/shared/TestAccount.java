@@ -8,16 +8,19 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 public class TestAccount {
     private final String name;
     private final String key;
+    private final String connectionString;
     private final String blobEndpoint;
     private final String blobEndpointSecondary;
     private final String dataLakeEndpoint;
     private final String queueEndpoint;
     private final String fileEndpoint;
 
-    public TestAccount(String name, String key, String blobEndpoint, String blobEndpointSecondary,
+    public TestAccount(String name, String key, String connectionString,
+                       String blobEndpoint, String blobEndpointSecondary,
                        String dataLakeEndpoint, String queueEndpoint, String fileEndpoint) {
         this.name = name;
         this.key = key;
+        this.connectionString = connectionString;
         this.blobEndpoint = blobEndpoint;
         this.blobEndpointSecondary = blobEndpointSecondary;
         this.dataLakeEndpoint = dataLakeEndpoint;
@@ -55,5 +58,9 @@ public class TestAccount {
 
     public String getDataLakeEndpoint() {
         return dataLakeEndpoint;
+    }
+
+    public String getConnectionString() {
+        return connectionString;
     }
 }
