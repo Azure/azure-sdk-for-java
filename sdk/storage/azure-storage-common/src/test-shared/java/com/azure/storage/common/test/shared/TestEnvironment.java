@@ -54,10 +54,10 @@ public class TestEnvironment {
             name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
             key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
         }
-        String blobEndpoint = String.format("https://%s.blob.core.windows.net/", name);
-        String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net/", name);
-        String queueEndpoint = String.format("https://%s.queue.core.windows.net/", name);
-        String fileEndpoint = String.format("https://%s.file.core.windows.net/", name);
+        String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
+        String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net", name);
+        String queueEndpoint = String.format("https://%s.queue.core.windows.net", name);
+        String fileEndpoint = String.format("https://%s.file.core.windows.net", name);
 
         return new TestAccount(name, key, blobEndpoint, blobEndpointSecondary, queueEndpoint, fileEndpoint);
     }
