@@ -293,7 +293,7 @@ between clients which can be achieved by sharing the top level builder as shown 
 }
 ```
 ### When to use 'ServiceBusProcessorClient'.
- When to use  'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 
+ When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 
  is built using 'ServiceBusReceiverAsyncClient', it provides a convenient way of receiving messages with default 
  auto complete and auto renew of message locks in 'PEEK_LOCK' mode. The processor is appropriate where the 
  applications have not made complete move to async receiver client and want to process message in synchronous mode. 
