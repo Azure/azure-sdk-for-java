@@ -64,7 +64,7 @@ public class TestEnvironment {
             name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
             key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
             connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
-            if (connectionString == null || connectionString.isBlank()) {
+            if (connectionString == null || connectionString.trim().isEmpty()) {
                 connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;" +
                     "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
             }
