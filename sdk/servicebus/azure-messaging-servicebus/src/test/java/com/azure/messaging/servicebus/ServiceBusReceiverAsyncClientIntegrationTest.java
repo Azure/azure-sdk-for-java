@@ -33,8 +33,10 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -558,10 +560,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final AtomicInteger messageId = new AtomicInteger();
         final AtomicLong actualCount = new AtomicLong();
         final int maxMessages = 2;
-        final int fromSequenceNumber = 1;
+        final AtomicLong fromSequenceNumber = new AtomicLong();
+        fromSequenceNumber.set(1);
+
         final byte[] content = "peek-message-from-sequence".getBytes(Charset.defaultCharset());
         for (int i = 0; i < maxMessages; ++i) {
-            ServiceBusMessage message = getMessage(content, "" + i, isSessionEnabled);
+            ServiceBusMessage message = getMessage(content, String.valueOf(i), isSessionEnabled);
             Mono.when(sendMessage(message)).block(TIMEOUT);
         }
 
@@ -570,10 +574,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
         for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
-            receiver.peekMessages(maxMessages, fromSequenceNumber).toStream().forEach(receivedMessage -> {
+            receiver.peekMessages(maxMessages, fromSequenceNumber.get()).toStream().forEach(receivedMessage -> {
+                Long previousSequenceNumber = fromSequenceNumber.get();
+                fromSequenceNumber.set(receivedMessage.getSequenceNumber() + 1);
                 actualCount.addAndGet(1);
                 assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
-                    "Message id did not match. Message payload:" + receivedMessage.getBody().toString());
+                    String.format("Message id did not match. Message payload: [%s], peek from Sequence Number [%s], "
+                        + " received message Sequence Number [%s]", receivedMessage.getBody().toString(),
+                        previousSequenceNumber, receivedMessage.getSequenceNumber()));
             });
         }
 

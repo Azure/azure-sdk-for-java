@@ -211,9 +211,10 @@ public class ServiceBusProcessorTest {
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
                 ServiceBusMessageContext serviceBusMessageContext =
                     new ServiceBusMessageContext(serviceBusReceivedMessage);
-                sink.next(serviceBusMessageContext);
                 if (state == 2) {
                     throw new IllegalStateException("error");
+                } else {
+                    sink.next(serviceBusMessageContext);
                 }
                 return state + 1;
             });
