@@ -1356,7 +1356,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRange#ShareFileUploadBufferedRangeOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.upload#Flux-ParallelTransferOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -1382,7 +1382,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadBufferedRangeWithResponse#ShareFileUploadBufferedRangeOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -1490,7 +1490,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#Flux-long}
      *
      * <p>This method does a single Put Range operation. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>

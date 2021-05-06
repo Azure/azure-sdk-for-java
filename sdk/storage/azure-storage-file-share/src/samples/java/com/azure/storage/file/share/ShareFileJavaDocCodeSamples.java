@@ -348,11 +348,11 @@ public class ShareFileJavaDocCodeSamples {
     public void uploadBufferedRange() {
         ShareFileClient shareFileClient = createClientWithSASToken();
         byte[] data = "default".getBytes(StandardCharsets.UTF_8);
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.upload#InputStream-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.upload#InputStream-long-ParallelTransferOptions
         InputStream uploadData = new ByteArrayInputStream(data);
         ShareFileUploadInfo response = shareFileClient.upload(uploadData, data.length, null);
         System.out.println("Complete uploading the data with eTag: " + response.getETag());
-        // END: com.azure.storage.file.share.ShareFileClient.upload#InputStream-Duration-Context
+        // END: com.azure.storage.file.share.ShareFileClient.upload#InputStream-long-ParallelTransferOptions
     }
 
     /**
