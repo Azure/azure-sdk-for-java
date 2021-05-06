@@ -118,28 +118,6 @@ public final class MediaservicesImpl implements Mediaservices {
         return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
-    public MediaService getBySubscription(String accountName) {
-        MediaServiceInner inner = this.serviceClient().getBySubscription(accountName);
-        if (inner != null) {
-            return new MediaServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<MediaService> getBySubscriptionWithResponse(String accountName, Context context) {
-        Response<MediaServiceInner> inner = this.serviceClient().getBySubscriptionWithResponse(accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new MediaServiceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public MediaService getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

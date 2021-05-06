@@ -71,7 +71,7 @@ spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.{};".format(cosmosDatabas
 Create a Cosmos DB container:
 ```python
 # create a cosmos container using catalog api
-spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.items TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(cosmosDatabaseName, cosmosContainerName))
+spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.oltp TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(cosmosDatabaseName, cosmosContainerName))
 ```
 Cosmos Catalog API for creating container supports setting throughput and partition-key-path for the container to be created.
 
@@ -79,13 +79,13 @@ see [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/co
 
 ### Ingest Data to Cosmos DB
 
-The name of the Cosmos DB Data Source is "cosmos.items". following shows how you can write a memory dataframe consisting of two items to Cosmos DB.
+The name of the Cosmos DB Data Source is "cosmos.oltp". following shows how you can write a memory dataframe consisting of two items to Cosmos DB.
 ```python
 # Ingest data to Cosmos DB
 spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "Schrodinger cat", 2, False)))\
   .toDF("id","name","age","isAlive") \
    .write\
-   .format("cosmos.items")\
+   .format("cosmos.oltp")\
    .options(**cfg)\
    .mode("APPEND")\
    .save()
@@ -101,7 +101,7 @@ see [Write Configuration](https://github.com/Azure/azure-sdk-for-java/blob/maste
 # Query data from Cosmos DB
 from pyspark.sql.functions import col
 
-df = spark.read.format("cosmos.items").options(**cfg)\
+df = spark.read.format("cosmos.oltp").options(**cfg)\
  .option("spark.cosmos.read.inferSchema.enabled", "true")\
  .load()
 
@@ -121,7 +121,7 @@ see [Schema Inference Configuration](https://github.com/Azure/azure-sdk-for-java
 
 ```python
 # Show the inferred schema from Cosmos DB
-df = spark.read.format("cosmos.items").options(**cfg)\
+df = spark.read.format("cosmos.oltp").options(**cfg)\
  .option("spark.cosmos.read.inferSchema.enabled", "true")\
  .load()
  

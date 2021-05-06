@@ -261,7 +261,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vmencryptst19286e/providers/Microsoft.KeyVault/vaults/vault39197c47fb?api-version=2018-02-14",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vmencryptst19286e/providers/Microsoft.KeyVault/vaults/vault39197c47fb?api-version=2019-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1f5c2f16-741d-458b-a7ea-8c18e40ed378",
@@ -291,7 +291,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vmencryptst19286e/providers/Microsoft.KeyVault/vaults/vault39197c47fb?api-version=2018-02-14",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vmencryptst19286e/providers/Microsoft.KeyVault/vaults/vault39197c47fb?api-version=2019-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8d41f54c-9dfa-4502-bf24-5f54a619b125"

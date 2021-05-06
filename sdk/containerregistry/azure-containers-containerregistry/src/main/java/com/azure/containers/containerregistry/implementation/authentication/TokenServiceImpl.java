@@ -42,8 +42,8 @@ public class TokenServiceImpl {
      * @param serviceName The name of the service.
      *
      */
-    public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName) {
-        return this.authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenAsync(serviceName, scope, acrRefreshToken)
+    public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName, String grantType) {
+        return this.authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenAsync(serviceName, scope, grantType, acrRefreshToken)
             .map(token -> {
                 String accessToken = token.getAccessToken();
                 OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(accessToken);

@@ -3,22 +3,25 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
+import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.RegistryArtifactProperties;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
-import com.azure.containers.containerregistry.models.TagProperties;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -26,22 +29,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.TestUtils.AMD64_ARCHITECTURE;
-import static com.azure.containers.containerregistry.TestUtils.ARM64_ARCHITECTURE;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.LINUX_OPERATING_SYSTEM;
-import static com.azure.containers.containerregistry.TestUtils.SLEEP_TIME_IN_MILLISECONDS;
+import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
+import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.WINDOWS_OPERATING_SYSTEM;
 import static com.azure.containers.containerregistry.TestUtils.getCredential;
+import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerRegistryClientsTestBase extends TestBase {
-
-    private static final String AZURE_CONTAINERREGISTRY_ENDPOINT = "CONTAINERREGISTRY_ENDPOINT";
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile("(\".*_token\":\"(.*)\".*)");
@@ -59,41 +60,43 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         .setCanWrite(true);
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
+        TokenCredential credential = getCredential(getTestMode());
+        return getContainerRegistryBuilder(httpClient, credential);
+    }
+
+    ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential, String endpoint) {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(getEndpoint(endpoint))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(getCredential(getTestMode()));
+            .credential(credential);
 
+        // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         return builder;
     }
 
-    List<String> getChildArtifacts(ContainerRepositoryClient client) {
-        ArrayList<RegistryArtifactProperties> artifacts = new ArrayList<>();
-        client.listRegistryArtifacts().forEach(repo -> artifacts.add(repo));
-
-        return getChildArtifacts(artifacts);
+    ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential) {
+        return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    List<String> getChildArtifacts(Collection<RegistryArtifactProperties> artifacts) {
-        return artifacts.stream().filter(artifact -> {
-            ContentProperties props = artifact.getWriteableProperties();
-            return props.isCanDelete() && props.isCanWrite() && artifact.getCpuArchitecture() != null;
-        }).map(s -> s.getDigest()).collect(Collectors.toList());
+    List<String> getChildArtifacts(Collection<ArtifactManifestProperties> artifacts) {
+        return artifacts.stream()
+            .filter(artifact -> artifact.getArchitecture() != null)
+            .map(s -> s.getDigest()).collect(Collectors.toList());
     }
 
-    String getChildArtifactDigest(Collection<RegistryArtifactProperties> artifacts) {
+    String getChildArtifactDigest(Collection<ArtifactManifestProperties> artifacts) {
         return getChildArtifacts(artifacts).get(0);
     }
 
     void validateDeletedRepositoryResponse(DeleteRepositoryResult response) {
         assertNotNull(response);
         assertNotNull(response.getDeletedTags());
-        assertNotNull(response.getDeletedRegistryArtifactDigests());
+        assertNotNull(response.getDeletedManifests());
     }
 
     void validateDeletedRepositoryResponse(Response<DeleteRepositoryResult> response) {
@@ -102,7 +105,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         DeleteRepositoryResult result = response.getValue();
         assertNotNull(result);
         assertNotNull(result.getDeletedTags());
-        assertNotNull(result.getDeletedRegistryArtifactDigests());
+        assertNotNull(result.getDeletedManifests());
     }
 
     void validateProperties(RepositoryProperties properties) {
@@ -111,7 +114,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(properties.getCreatedOn());
         assertNotNull(properties.getLastUpdatedOn());
         assertNotNull(properties.getTagCount());
-        assertNotNull(properties.getRegistryArtifactCount());
+        assertNotNull(properties.getManifestCount());
         assertNotNull(properties.getWriteableProperties());
     }
 
@@ -120,7 +123,8 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         validateProperties(response.getValue());
     }
 
-    void validateListArtifacts(Collection<RegistryArtifactProperties> artifacts) {
+    void validateListArtifacts(Collection<ArtifactManifestProperties> artifacts) {
+        assertTrue(artifacts.size() > 0);
         artifacts.forEach(props -> {
             assertNotNull(props.getDigest());
             assertNotNull(props.getCreatedOn());
@@ -129,18 +133,55 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         });
 
         assertTrue(artifacts.stream().anyMatch(prop -> prop.getTags() != null));
-        assertTrue(artifacts.stream().anyMatch(a -> ARM64_ARCHITECTURE.equals(a.getCpuArchitecture())
-            && LINUX_OPERATING_SYSTEM.equals(a.getOperatingSystem())));
-        assertTrue(artifacts.stream().anyMatch(a -> AMD64_ARCHITECTURE.equals(a.getCpuArchitecture())
-            && WINDOWS_OPERATING_SYSTEM.equals(a.getOperatingSystem())));
+        assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.AMD64.equals(a.getArchitecture())
+            && ArtifactOperatingSystem.WINDOWS.equals(a.getOperatingSystem())));
+        assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.ARM.equals(a.getArchitecture())
+            && ArtifactOperatingSystem.LINUX.equals(a.getOperatingSystem())));
     }
 
-    void validateArtifactProperties(Response<RegistryArtifactProperties> response, boolean hasTag, boolean isChild) {
+    boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList) {
+        return validateListArtifactsByPage(pagedResList, false);
+    }
+
+    boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList, boolean isOrdered) {
+        List<ArtifactManifestProperties> props = new ArrayList<>();
+        pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
+        List<OffsetDateTime> lastUpdatedOn = props.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
+
+        validateListArtifacts(props);
+        return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
+            && (!isOrdered || isSorted(lastUpdatedOn));
+    }
+
+    boolean validateListTags(Collection<PagedResponse<ArtifactTagProperties>> pagedResList, boolean isOrdered) {
+        List<ArtifactTagProperties> props = new ArrayList<>();
+        pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
+        List<OffsetDateTime> lastUpdatedOn = props.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
+
+        return validateListTags(props)
+            && pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
+            && (!isOrdered || isSorted(lastUpdatedOn));
+    }
+
+    boolean validateRepositories(Collection<String> repositories) {
+        assertNotNull(repositories);
+        return repositories.containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME));
+    }
+
+    boolean validateRepositoriesByPage(Collection<PagedResponse<String>> pagedResList) {
+        List<String> props = new ArrayList<>();
+        pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
+
+        return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_1)
+            && validateRepositories(props);
+    }
+
+    void validateManifestProperties(Response<ArtifactManifestProperties> response, boolean hasTag, boolean isChild) {
         validateResponse(response);
-        validateArtifactProperties(response.getValue(), hasTag, isChild);
+        validateManifestProperties(response.getValue(), hasTag, isChild);
     }
 
-    void validateArtifactProperties(RegistryArtifactProperties props, boolean hasTag, boolean isChild) {
+    void validateManifestProperties(ArtifactManifestProperties props, boolean hasTag, boolean isChild) {
         assertNotNull(props);
         assertNotNull(props.getWriteableProperties());
         assertNotNull(props.getDigest());
@@ -149,20 +190,21 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(props.getSize());
 
         if (isChild) {
-            assertNotNull(props.getCpuArchitecture());
+            assertNotNull(props.getArchitecture());
             assertNotNull(props.getOperatingSystem());
         } else {
             assertNotNull(props.getTags());
-            assertNotNull(props.getRegistryArtifacts());
-            props.getRegistryArtifacts().stream().forEach(prop -> {
+            assertNotNull(props.getManifests());
+            props.getManifests().stream().forEach(prop -> {
                 assertNotNull(prop.getDigest());
-                assertNotNull(prop.getCpuArchitecture());
+                assertNotNull(prop.getArchitecture());
                 assertNotNull(prop.getOperatingSystem());
             });
         }
     }
 
-    void validateListTags(Collection<TagProperties> tags) {
+    boolean validateListTags(Collection<ArtifactTagProperties> tags) {
+        assertTrue(tags.size() > 0);
         tags.forEach(props -> {
             assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepository());
             assertNotNull(props.getName());
@@ -172,11 +214,11 @@ public class ContainerRegistryClientsTestBase extends TestBase {
             assertNotNull(props.getLastUpdatedOn());
         });
 
-        tags.stream().anyMatch(tag -> V1_TAG_NAME.equals(tag.getName()));
-        tags.stream().anyMatch(tag -> LATEST_TAG_NAME.equals(tag.getName()));
+        return tags.stream().anyMatch(tag -> V1_TAG_NAME.equals(tag.getName()))
+            && tags.stream().anyMatch(tag -> LATEST_TAG_NAME.equals(tag.getName()));
     }
 
-    void validateTagProperties(TagProperties props, String tagName) {
+    void validateTagProperties(ArtifactTagProperties props, String tagName) {
         assertNotNull(props);
         assertNotNull(props.getLastUpdatedOn());
         assertNotNull(props.getWriteableProperties());
@@ -194,7 +236,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(response.getValue());
     }
 
-    void validateTagProperties(Response<TagProperties> response, String tagName) {
+    void validateTagProperties(Response<ArtifactTagProperties> response, String tagName) {
         validateResponse(response);
         validateTagProperties(response.getValue(), tagName);
     }
@@ -207,32 +249,9 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertEquals(true, properties.isCanWrite(), "canWrite incorrect");
     }
 
-    void importImage(String repositoryName, List<String> tags) {
-        TestUtils.importImage(getTestMode(), repositoryName, tags);
-    }
-
-    Mono<Void> importImageAsync(String repositoryName, List<String> tags) {
-        return TestUtils.importImageAsync(getTestMode(), repositoryName, tags);
-    }
-
-    ContainerRepositoryClientBuilder getContainerRepositoryBuilder(String repositoryName, HttpClient httpClient) {
-        List<Function<String, String>> redactors = new ArrayList<>();
-        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-
-        ContainerRepositoryClientBuilder builder = new ContainerRepositoryClientBuilder()
-            .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
-            .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .repository(repositoryName)
-            .credential(getCredential(getTestMode()));
-
-        return builder;
-    }
-
-    protected String getEndpoint() {
-        return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get(AZURE_CONTAINERREGISTRY_ENDPOINT);
+    protected String getEndpoint(String endpoint) {
+        return interceptorManager.isPlaybackMode() ? REGISTRY_ENDPOINT_PLAYBACK
+            : endpoint;
     }
 
     private String redact(String content, Matcher matcher, String replacement) {
@@ -246,24 +265,5 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         }
 
         return content;
-    }
-
-    void testDelay() {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // The service has a cache of 6 seconds, so we need to wait until we run this.
-            try {
-                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
-    Mono<Long> monoDelay() {
-        return monoDelay(SLEEP_TIME_IN_MILLISECONDS);
-    }
-
-    Mono<Long> monoDelay(long delayInMs) {
-        return TestUtils.monoDelay(getTestMode());
     }
 }
