@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * This is a temporary class to support ARM Challenge based authentication. It will
  * move to azure-resource-manager package.
  */
-public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationChallengePolicy {
+public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationChallengePolicy {
     private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN =
         Pattern.compile("(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?");
     private static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
@@ -41,32 +41,32 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
     private static final String ARM_SCOPES_KEY = "ARMScopes";
 
     /**
-     * Creates ARMChallengeAuthenticationPolicy.
+     * Creates ArmChallengeAuthenticationPolicy.
      *
      * @param credential the token credential to authenticate the request
      * @param environment the environment with endpoints for authentication
      * @param scopes the scopes used in credential, using default scopes when empty
      */
-    public ARMChallengeAuthenticationPolicy(TokenCredential credential,
+    public ArmChallengeAuthenticationPolicy(TokenCredential credential,
                                             AzureEnvironment environment, String... scopes) {
-        super(credential);
+        super(credential, scopes);
         this.scopes = scopes;
         this.environment = environment;
     }
 
 
     @Override
-    public Mono<Void> onBeforeRequest(HttpPipelineCallContext context) {
+    public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
             String[] scopes = this.scopes;
             scopes = getScopes(context, scopes);
             context.setData(ARM_SCOPES_KEY, scopes);
-            return authorizeRequest(context, new TokenRequestContext().addScopes(scopes));
+            return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes));
         });
     }
 
     @Override
-    public Mono<Boolean> onChallenge(HttpPipelineCallContext context, HttpResponse response) {
+    public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
             if (!(response.getStatusCode() == 401 && authHeader != null)) {
@@ -92,7 +92,7 @@ public class ARMChallengeAuthenticationPolicy extends BearerTokenAuthenticationC
                         // If scopes wasn't configured in On Before logic or at constructor level,
                         // then this method will retrieve it again.
                         scopes = getScopes(context, scopes);
-                        return authorizeRequest(context, new TokenRequestContext()
+                        return setAuthorizationHeader(context, new TokenRequestContext()
                             .addScopes(scopes).setClaims(claims))
                             .flatMap(b -> Mono.just(true));
                     }
