@@ -20,6 +20,7 @@ public class TestEnvironment {
     private final TestAccount managedDiskAccount;
     private final TestAccount premiumAccount;
     private final TestAccount versionedAccount;
+    private final TestAccount dataLakeAccount;
 
     public TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
@@ -29,6 +30,7 @@ public class TestEnvironment {
         this.managedDiskAccount = readTestAccountFromEnvironment("MANAGED_DISK_STORAGE_", this.testMode);
         this.premiumAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_", this.testMode);
         this.versionedAccount = readTestAccountFromEnvironment("VERSIONED_STORAGE_", this.testMode);
+        this.dataLakeAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_", this.testMode);
     }
 
     private static TestMode readTestModeFromEnvironment() {
@@ -56,10 +58,12 @@ public class TestEnvironment {
         }
         String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
         String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net", name);
+        String dataLakeEndpoint = String.format("https://%s.dfs.core.windows.net", name);
         String queueEndpoint = String.format("https://%s.queue.core.windows.net", name);
         String fileEndpoint = String.format("https://%s.file.core.windows.net", name);
 
-        return new TestAccount(name, key, blobEndpoint, blobEndpointSecondary, queueEndpoint, fileEndpoint);
+        return new TestAccount(name, key, blobEndpoint, blobEndpointSecondary,
+            dataLakeEndpoint, queueEndpoint, fileEndpoint);
     }
 
     public TestMode getTestMode() {
@@ -88,5 +92,9 @@ public class TestEnvironment {
 
     public TestAccount getManagedDiskAccount() {
         return managedDiskAccount;
+    }
+
+    public TestAccount getDataLakeAccount() {
+        return dataLakeAccount;
     }
 }

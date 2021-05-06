@@ -10,15 +10,17 @@ public class TestAccount {
     private final String key;
     private final String blobEndpoint;
     private final String blobEndpointSecondary;
+    private final String dataLakeEndpoint;
     private final String queueEndpoint;
     private final String fileEndpoint;
 
     public TestAccount(String name, String key, String blobEndpoint, String blobEndpointSecondary,
-                       String queueEndpoint, String fileEndpoint) {
+                       String dataLakeEndpoint, String queueEndpoint, String fileEndpoint) {
         this.name = name;
         this.key = key;
         this.blobEndpoint = blobEndpoint;
         this.blobEndpointSecondary = blobEndpointSecondary;
+        this.dataLakeEndpoint = dataLakeEndpoint;
         this.queueEndpoint = queueEndpoint;
         this.fileEndpoint = fileEndpoint;
     }
@@ -49,5 +51,9 @@ public class TestAccount {
 
     public StorageSharedKeyCredential getCredential() {
         return new StorageSharedKeyCredential(name, key);
+    }
+
+    public String getDataLakeEndpoint() {
+        return dataLakeEndpoint;
     }
 }
