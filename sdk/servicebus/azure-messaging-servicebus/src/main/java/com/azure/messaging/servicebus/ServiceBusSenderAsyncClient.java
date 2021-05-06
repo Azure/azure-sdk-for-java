@@ -660,9 +660,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             final Context finalSharedContext = sharedContext.get().equals(Context.NONE)
                 ? Context.NONE
                 : sharedContext.get()
-                .addData(ENTITY_PATH_KEY, entityName)
-                .addData(HOST_NAME_KEY, connectionProcessor.getFullyQualifiedNamespace())
-                .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
+                    .addData(ENTITY_PATH_KEY, entityName)
+                    .addData(HOST_NAME_KEY, connectionProcessor.getFullyQualifiedNamespace())
+                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             // Start send span and store updated context
             parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
         }
