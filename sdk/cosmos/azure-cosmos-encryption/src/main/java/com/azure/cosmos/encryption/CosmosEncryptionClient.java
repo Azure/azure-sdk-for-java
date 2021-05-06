@@ -73,6 +73,19 @@ public class CosmosEncryptionClient {
     }
 
     /**
+     * Gets a database with Encryption capabilities
+     *
+     * @param cosmosDatabase original database
+     * @return database with encryption capabilities
+     */
+    public CosmosEncryptionDatabase getCosmosEncryptionDatabase(CosmosDatabase cosmosDatabase) {
+        CosmosAsyncDatabase asyncDatabase = this.cosmosAsyncClient.getDatabase(cosmosDatabase.getId());
+        CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = new CosmosEncryptionAsyncDatabase(asyncDatabase
+            , this.getCosmosEncryptionAsyncClient());
+        return new CosmosEncryptionDatabase(cosmosDatabase, cosmosEncryptionAsyncDatabase);
+    }
+
+    /**
      * Block cosmos clientEncryptionPolicy response
      *
      * @param clientEncryptionPolicyMono the clientEncryptionPolicy mono.
