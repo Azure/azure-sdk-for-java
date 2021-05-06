@@ -114,16 +114,16 @@ public class JavaLibrary {
 
             codeWriter.addNewLine();
 
-            codeWriter.writeLine("package " + this.libraryNamespace);
+            codeWriter.writeLine("package " + this.libraryNamespace + ";");
 
             codeWriter.addNewLine();
 
             for (String importStatement : this.systemNamespaces) {
-                codeWriter.writeLine("import " + importStatement);
+                codeWriter.writeLine("import " + importStatement + ";");
             }
 
             for (String importStatement : this.otherNamespaces) {
-                codeWriter.writeLine("import " + importStatement);
+                codeWriter.writeLine("import " + importStatement + ";");
             }
 
             codeWriter.addNewLine();

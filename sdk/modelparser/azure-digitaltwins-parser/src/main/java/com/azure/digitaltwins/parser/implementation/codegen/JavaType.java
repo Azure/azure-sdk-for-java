@@ -26,6 +26,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
     private final List<JavaEnum> enums;
     private final List<JavaProperty> properties;
     private final List<JavaMethod> methods;
+    private final List<JavaScope> scopes;
 
     /**
      * Initializes a new instance of the {@link JavaType} class.
@@ -51,6 +52,7 @@ public class JavaType extends JavaDeclaration implements JavaFile {
         this.enums = new ArrayList<>();
         this.properties = new ArrayList<>();
         this.methods = new ArrayList<>();
+        this.scopes = new ArrayList<>();
     }
 
     /**
@@ -162,6 +164,17 @@ public class JavaType extends JavaDeclaration implements JavaFile {
     }
 
     /**
+     * Adds a java static declaration to the class.
+     *
+     * @return The added {@link JavaStatic} object itself.
+     */
+    public JavaScope staticDeclaration() {
+        JavaStatic javaStatic = new JavaStatic();
+        this.scopes.add(javaStatic);
+        return javaStatic;
+    }
+
+    /**
      * Determine whether a field with the given name is present on the class.
      *
      * @param name The name of the field to check for.
@@ -217,6 +230,10 @@ public class JavaType extends JavaDeclaration implements JavaFile {
         }
 
         codeWriter.addNewLine();
+
+        for (JavaScope javaScope : this.scopes) {
+            javaScope.generateCode(codeWriter);
+        }
 
         this.constructors.sort(Comparator.comparing(JavaConstructor::getName));
         for (JavaConstructor javaConstructor : this.constructors) {
