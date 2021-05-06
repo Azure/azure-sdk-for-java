@@ -209,7 +209,8 @@ public final class FormTrainingClientBuilder {
     }
 
     /**
-     * Gets the default Azure Form Training client headers and query parameters allow list.
+     * Gets the default Azure Form Training client headers and query parameters that are logged by default if
+     * HTTP logging is enabled.
      *
      * @return The default {@link HttpLogOptions} allow list.
      */
