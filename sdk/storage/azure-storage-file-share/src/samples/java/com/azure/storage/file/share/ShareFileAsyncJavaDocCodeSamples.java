@@ -303,14 +303,14 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void uploadRange() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#Flux-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         shareFileAsyncClient.uploadRange(Flux.just(defaultData), defaultData.remaining()).subscribe(
                 response -> { },
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#ShareFileUploadRangeOptions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#Flux-long
     }
 
     /**
@@ -350,7 +350,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
      */
     public void uploadBufferedRangeWithResponse() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadBufferedRangeOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         shareFileAsyncClient.uploadWithResponse(new ShareFileUploadOptions(
             Flux.just(defaultData))).subscribe(
@@ -358,7 +358,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadBufferedRangeOptions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions
     }
 
     /**
