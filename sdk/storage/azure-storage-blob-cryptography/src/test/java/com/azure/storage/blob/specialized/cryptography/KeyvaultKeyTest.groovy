@@ -53,13 +53,12 @@ class KeyvaultKeyTest extends APISpec {
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()
 
-        cc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        cc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        bec = getEncryptedClientBuilder(akek, null, primaryCredential,
+        bec = getEncryptedClientBuilder(akek, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
