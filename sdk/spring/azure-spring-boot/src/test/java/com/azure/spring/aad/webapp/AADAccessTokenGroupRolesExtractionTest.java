@@ -36,7 +36,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
         when(properties.allowedGroupNamesConfigured()).thenReturn(true);
         when(properties.allowedGroupIdsConfigured()).thenReturn(true);
         when(properties.getUserGroup()).thenReturn(userGroup);
-        when(properties.getUserGroup().getEnableFullList()).thenReturn(false);
         when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
         when(accessToken.getTokenValue()).thenReturn("fake-access-token");
         when(graphClient.getGroupsFromGraph(accessToken.getTokenValue())).thenReturn(groups);
@@ -86,7 +85,25 @@ public class AADAccessTokenGroupRolesExtractionTest {
     @Test
     public void testEnableFullList() {
         when(properties.getUserGroup().getEnableFullList()).thenReturn(true);
+        Set<String> groupIds = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupIds).hasSize(4);
+    }
+
+    @Test
+    public void testDisableFullList() {
+        when(properties.getUserGroup().getEnableFullList()).thenReturn(false);
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        when(userGroup.getAllowedGroupIds()).thenReturn(allowedGroupIds);
+        List<String> allowedGroupNames = new ArrayList<>();
+        allowedGroupNames.add("group1");
+        when(userGroup.getAllowedGroupNames()).thenReturn(allowedGroupNames);
+
         Set<String> groupsName = userService.extractGroupRolesFromAccessToken(accessToken);
-        assertThat(groupsName).hasSize(4);
+        assertThat(groupsName).contains("ROLE_group1");
+        assertThat(groupsName).doesNotContain("ROLE_group5");
+        assertThat(groupsName).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        assertThat(groupsName).doesNotContain("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194abaaa");
+        assertThat(groupsName).hasSize(2);
     }
 }
