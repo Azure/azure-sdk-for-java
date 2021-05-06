@@ -1,25 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestsgetsubdirectoryclient58546beafbb?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/d67b88ebd67b88eb85a97043b56e841b257640f8a5?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "fc07362b-1af1-4d6f-af8c-0f651e1639eb"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae458a41-a134-4b82-8b19-97d1662f1493"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911BF1D258B",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:29:02 GMT",
+      "eTag" : "0x8D910031A908EB3",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:36 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "172f8931-101a-0047-70fa-aaf960000000",
-      "Date" : "Wed, 04 Dec 2019 23:29:01 GMT",
-      "x-ms-client-request-id" : "fc07362b-1af1-4d6f-af8c-0f651e1639eb"
+      "x-ms-request-id" : "c7637724-b01a-0011-75eb-415005000000",
+      "x-ms-client-request-id" : "ae458a41-a134-4b82-8b19-97d1662f1493",
+      "Date" : "Wed, 05 May 2021 20:19:36 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=d67b88eb&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0f7ca5e6-977e-4c03-8e1f-8de819caf484"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "082d0f1f-e01a-001c-3ceb-4198d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>d67b88eb</Prefix><Shares><Share><Name>d67b88ebd67b88eb85a97043b56e841b257640f8a5</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:36 GMT</Last-Modified><Etag>\"0x8D910031A908EB3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>5120</Quota><AccessTier>TransactionOptimized</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:19:36 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "0f7ca5e6-977e-4c03-8e1f-8de819caf484",
+      "Date" : "Wed, 05 May 2021 20:19:36 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/d67b88ebd67b88eb85a97043b56e841b257640f8a5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2a93b864-6573-4158-91ed-17ed4aafcb20"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bc98deef-201a-0013-32eb-41eebd000000",
+      "x-ms-client-request-id" : "2a93b864-6573-4158-91ed-17ed4aafcb20",
+      "Date" : "Wed, 05 May 2021 20:19:37 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestsgetsubdirectoryclient58546beafbb", "directoryasyncapitestsgetsubdirectoryclient29875d2afc9" ]
+  "variables" : [ "d67b88ebd67b88eb85a97043b56e841b257640f8a5", "d67b88ebd67b88eb85a68783feec10c2a79046428b" ]
 }

@@ -18,11 +18,14 @@
     }
   ],
   "x-ms-parameterized-host": {
-    "hostTemplate": "{endpoint}/formrecognizer/v2.1-preview.3",
+    "hostTemplate": "{endpoint}/formrecognizer/{ApiVersion}",
     "useSchemePrefix": false,
     "parameters": [
       {
         "$ref": "#/parameters/Endpoint"
+      },
+      {
+        "$ref": "#/parameters/ApiVersion"
       }
     ]
   },
@@ -2204,6 +2207,13 @@
     }
   },
   "parameters": {
+    "ApiVersion": {
+      "name": "ApiVersion",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "Client Api Version."
+    },
     "Endpoint": {
       "name": "endpoint",
       "description": "Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).",

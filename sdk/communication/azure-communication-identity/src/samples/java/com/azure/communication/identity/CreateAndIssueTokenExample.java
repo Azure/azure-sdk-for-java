@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CreateAndIssueTokenExample {
     public static void main(String[] args) {
-        String connectionString = System.getenv("COMMUNICATION_CONNECTION_STRING");
+        String connectionString = System.getenv("COMMUNICATION_SAMPLES_CONNECTION_STRING");
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .connectionString(connectionString)
             .buildClient();
