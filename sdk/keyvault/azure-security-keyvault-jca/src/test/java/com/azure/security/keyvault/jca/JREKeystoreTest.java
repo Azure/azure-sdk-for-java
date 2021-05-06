@@ -239,13 +239,13 @@ public class JREKeystoreTest {
 
     private static String  privilegedGetProperty(String theProp, String defaultVal){
         if (System.getSecurityManager() == null) {
-            String value = System.getProperty(theProp);
-            return (value == null || value.isEmpty()) ? defaultVal : value;
+            String value = System.getProperty(theProp, "");
+            return (value.isEmpty()) ? defaultVal : value;
         } else {
             return AccessController.doPrivileged(
                 (PrivilegedAction<String>) () -> {
-                    String value = System.getProperty(theProp);
-                    return (value == null || value.isEmpty()) ? defaultVal : value;
+                    String value = System.getProperty(theProp, "");
+                    return (value.isEmpty()) ? defaultVal : value;
                 });
         }
     }
