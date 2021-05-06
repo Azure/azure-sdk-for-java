@@ -13,7 +13,7 @@ private object CosmosConstants {
   val userAgentSuffix = s" SparkConnector/$currentVersion"
 
   object Names {
-    val ItemsDataSourceShortName = "cosmos.items"
+    val ItemsDataSourceShortName = "cosmos.oltp"
     val ChangeFeedDataSourceShortName = "cosmos.changeFeed"
   }
 

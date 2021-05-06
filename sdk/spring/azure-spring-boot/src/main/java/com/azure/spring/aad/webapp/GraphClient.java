@@ -21,13 +21,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
 /**
- * GraphClient is used to access graph server.
- * Mainly used to get groups information of a user.
+ * GraphClient is used to access graph server. Mainly used to get groups information of a user.
  */
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
@@ -54,8 +54,13 @@ public class GraphClient {
             memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
-                       .map(Membership::getDisplayName)
-                       .forEach(groups::add);
+                       .map(membership -> {
+                           if (properties.getUserGroup().getEnableFullList()) {
+                               return Arrays.asList(membership.getObjectID());
+                           } else {
+                               return Arrays.asList(membership.getDisplayName(), membership.getObjectID());
+                           }
+                       }).forEach(groups::addAll);
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
                                            .orElse(null);

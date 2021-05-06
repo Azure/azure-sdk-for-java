@@ -5,6 +5,8 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.implementation.models.ManifestAttributesManifestReferences;
+import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -32,6 +34,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 
 import java.util.ArrayList;
@@ -41,11 +44,12 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
  */
-public final class Utils {
+final class Utils {
     private static final String CONTINUATIONLINK_HEADER_NAME;
     private static final Pattern CONTINUATIONLINK_PATTERN;
     private static final String CLIENT_NAME;
@@ -108,6 +112,55 @@ public final class Utils {
             continuationLink,
             null
         );
+    }
+
+    /**
+     * We want both the list artifacts call and the get artifact call share the same model.
+     * which the swagger does not.
+     * As a result we need to ensure that the we can map one implementation to the other.
+     * Also, we want to customize the type of one of the fields to ensure minimum models are exposed.
+     * @param propsImpl implementation model for this type.
+     * @return public model for propsImpl
+     */
+    static ArtifactManifestProperties mapProperties(com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties propsImpl, String repositoryName) {
+        if (propsImpl == null) {
+            return null;
+        }
+
+        List<ArtifactManifestProperties> registryArtifacts = getRegistryArtifacts(propsImpl.getReferences(), repositoryName);
+
+        return new ArtifactManifestProperties(
+            propsImpl.getRepositoryName(),
+            propsImpl.getDigest(),
+            propsImpl.getWriteableProperties(),
+            registryArtifacts,
+            propsImpl.getArchitecture(),
+            propsImpl.getOperatingSystem(),
+            propsImpl.getCreatedOn(),
+            propsImpl.getLastUpdatedOn(),
+            propsImpl.getTags(),
+            propsImpl.getSize());
+    }
+
+
+    static List<ArtifactManifestProperties> getRegistryArtifacts(List<ManifestAttributesManifestReferences> artifacts, String repositoryName) {
+        if (artifacts == null) {
+            return null;
+        }
+
+        return artifacts.stream()
+            .map(artifact -> new ArtifactManifestProperties(
+                repositoryName,
+                artifact.getDigest(),
+                null,
+                null,
+                artifact.getArchitecture(),
+                artifact.getOperatingSystem(),
+                null,
+                null,
+                null,
+                null
+            )).collect(Collectors.toList());
     }
 
     /**
@@ -183,7 +236,8 @@ public final class Utils {
         List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
-        String endpoint) {
+        String endpoint,
+        ClientLogger logger) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -206,22 +260,24 @@ public final class Utils {
         // However since ACR uses the rest endpoints of the service in the credential policy,
         // we want to be able to use the same pipeline (minus the credential policy) to have uniformity in the policy
         // pipelines across all ACR endpoints.
-        if (credential != null) {
-            ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
-            credentialPolicies.add(loggingPolicy);
-
-            ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
-                credential,
-                endpoint,
-                new HttpPipelineBuilder()
-                    .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
-                    .httpClient(httpClient)
-                    .build(),
-                JacksonAdapter.createDefaultSerializerAdapter());
-
-            ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
-            policies.add(credentialsPolicy);
+        if (credential == null) {
+            logger.verbose("Credentials are null, enabling anonymous access");
         }
+
+        ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
+        credentialPolicies.add(loggingPolicy);
+
+        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
+            credential,
+            endpoint,
+            new HttpPipelineBuilder()
+                .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build(),
+            JacksonAdapter.createDefaultSerializerAdapter());
+
+        ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
+        policies.add(credentialsPolicy);
 
         policies.add(loggingPolicy);
         HttpPipeline httpPipeline =

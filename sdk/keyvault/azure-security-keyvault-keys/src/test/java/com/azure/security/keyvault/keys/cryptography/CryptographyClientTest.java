@@ -96,7 +96,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     @Test
-    public void encryptDecryptRsa() throws Exception {
+    public void encryptDecryptRsaLocal() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
             CryptographyClient cryptoClient = initializeCryptographyClient(key);
@@ -149,7 +149,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     @Test
-    public void wrapUnwrapRsa() throws Exception {
+    public void wrapUnwrapRsaLocal() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair, Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
             CryptographyClient cryptoClient = initializeCryptographyClient(key);
@@ -246,7 +246,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     @Test
-    public void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    public void signVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
         curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
         curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
@@ -281,32 +281,32 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     @Test
-    public void encryptDecryptLocalAes128Cbc() throws NoSuchAlgorithmException {
+    public void encryptDecryptAes128CbcLocal() throws NoSuchAlgorithmException {
         encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBC);
     }
 
     @Test
-    public void encryptDecryptLocalAes192Cbc() throws NoSuchAlgorithmException {
+    public void encryptDecryptAes192CbcLocal() throws NoSuchAlgorithmException {
         encryptDecryptAesCbc(256, EncryptionAlgorithm.A192CBC);
     }
 
     @Test
-    public void encryptDecryptLocalAes256Cbc() throws NoSuchAlgorithmException {
+    public void encryptDecryptAes256CbcLocal() throws NoSuchAlgorithmException {
         encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBC);
     }
 
     @Test
-    public void encryptDecryptLocalAes128CbcPad() throws NoSuchAlgorithmException {
+    public void encryptDecryptAes128CbcPadLocal() throws NoSuchAlgorithmException {
         encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBCPAD);
     }
 
     @Test
-    public void encryptDecryptLocalAes192CbcPad() throws NoSuchAlgorithmException {
+    public void encryptDecryptAes192CbcPadLocal() throws NoSuchAlgorithmException {
         encryptDecryptAesCbc(192, EncryptionAlgorithm.A192CBCPAD);
     }
 
     @Test
-    public void encryptDecryptLocalAes256CbcPad() throws NoSuchAlgorithmException {
+    public void encryptDecryptAes256CbcPadLocal() throws NoSuchAlgorithmException {
         encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBCPAD);
     }
 }

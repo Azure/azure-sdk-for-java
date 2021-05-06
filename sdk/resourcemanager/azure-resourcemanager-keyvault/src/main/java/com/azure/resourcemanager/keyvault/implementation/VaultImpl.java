@@ -162,6 +162,14 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     }
 
     @Override
+    public boolean roleBasedAccessControlEnabled() {
+        if (innerModel().properties() == null) {
+            return false;
+        }
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().properties().enableRbacAuthorization());
+    }
+
+    @Override
     public boolean enabledForDeployment() {
         if (innerModel().properties() == null) {
             return false;
@@ -227,6 +235,18 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     @Override
     public AccessPolicyImpl defineAccessPolicy() {
         return new AccessPolicyImpl(new AccessPolicyEntry(), this);
+    }
+
+    @Override
+    public VaultImpl enableRoleBasedAccessControl() {
+        innerModel().properties().withEnableRbacAuthorization(true);
+        return this;
+    }
+
+    @Override
+    public VaultImpl disableRoleBasedAccessControl() {
+        innerModel().properties().withEnableRbacAuthorization(false);
+        return this;
     }
 
     @Override

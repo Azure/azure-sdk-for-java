@@ -56,7 +56,6 @@ public final class AccessTokenCache {
      * @return The Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        Objects.requireNonNull(tokenRequestContext, "The token request context cannot be null.");
         return Mono.defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
@@ -66,6 +65,10 @@ public final class AccessTokenCache {
                                                                 boolean checkToForceFetchToken) {
         return () -> {
             try {
+                if (tokenRequestContext == null) {
+                    return Mono.error(logger.logExceptionAsError(
+                        new IllegalArgumentException("The token request context input cannot be null.")));
+                }
                 if (wip.compareAndSet(null, Sinks.one())) {
                     final Sinks.One<AccessToken> sinksOne = wip.get();
                     OffsetDateTime now = OffsetDateTime.now();
