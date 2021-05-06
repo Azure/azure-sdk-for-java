@@ -122,6 +122,11 @@
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
 
+        <!-- Translation -->
+        <module>sdk/translation/azure-ai-documenttranslator</module>
+
+        <!-- Web Pub Sub -->
+        <module>sdk/webpubsub/azure-messaging-webpubsub</module>
       </modules>
 
       <distributionManagement>
@@ -244,6 +249,10 @@
                   <group>
                     <title>Azure Digital Twins</title>
                     <packages>com.azure.digitaltwins.core*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Document Translator</title>
+                    <packages>com.azure.ai.documenttranslator*</packages>
                   </group>
                   <group>
                     <title>Azure IoT Models Repository</title>
@@ -583,6 +592,8 @@
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
                     -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/translation/azure-ai-documenttranslator/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
                   </additionalOptions>
                   <aggregate>true</aggregate>
                   <doclint>all</doclint>
@@ -660,6 +671,7 @@
         <module>sdk/anomalydetector</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
+        <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
         <module>sdk/authorization</module>
         <module>sdk/automation</module>
@@ -686,8 +698,11 @@
         <module>sdk/databricks</module>
         <module>sdk/datadog</module>
         <module>sdk/datafactory</module>
+        <module>sdk/datalakeanalytics</module>
+        <module>sdk/datalakestore</module>
         <module>sdk/datamigration</module>
         <module>sdk/delegatednetwork</module>
+        <module>sdk/deploymentmanager</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
@@ -703,15 +718,19 @@
         <module>sdk/hybridcompute</module>
         <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
+        <module>sdk/iotcentral</module>
         <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
         <module>sdk/kubernetesconfiguration</module>
         <module>sdk/kusto</module>
+        <module>sdk/labservices</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
+        <module>sdk/managedapplications</module>
         <module>sdk/mariadb</module>
+        <module>sdk/marketplaceordering</module>
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
         <module>sdk/mixedreality</module>
@@ -719,8 +738,12 @@
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
+        <module>sdk/notificationhubs</module>
+        <module>sdk/operationsmanagement</module>
         <module>sdk/peering</module>
+        <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
+        <module>sdk/powerbidedicated</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/redisenterprise</module>
@@ -739,10 +762,19 @@
         <module>sdk/sqlvirtualmachine</module>
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
+        <module>sdk/storageimportexport</module>
+        <module>sdk/streamanalytics</module>
+        <module>sdk/subscription</module>
+        <module>sdk/support</module>
         <module>sdk/synapse</module>
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
+        <module>sdk/timeseriesinsights</module>
+        <module>sdk/translation</module>
+        <module>sdk/videoanalyzer</module>
+        <module>sdk/vmwarecloudsimple</module>
+        <module>sdk/webpubsub</module>
       </modules>
     </profile>
   </profiles>

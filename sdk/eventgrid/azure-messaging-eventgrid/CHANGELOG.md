@@ -3,13 +3,13 @@
 ## 4.3.0-beta.1 (Unreleased)
 
 
-## 4.2.0 (2020-04-07)
+## 4.2.0 (2021-04-07)
 
 ### Dependency Updates
 - Update `azure-core` dependency to `1.15.0`.
 - Update `azure-core-http-netty` dependency to `1.9.1`.
 
-## 4.1.0 (2020-03-25)
+## 4.1.0 (2021-03-25)
 ### New Features
 - Added new system event model class `AcsRecordingFileStatusUpdatedEventData`.
 - Added new attribute `transactionId` to `AcsChatEventInThreadBaseProperties`.
@@ -20,7 +20,7 @@
 - Added `COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD` to `SystemEventNames` and deprecated `COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD`.
 - Added `COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER` to `SystemEventNames` and deprecated `COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER`.
 
-## 4.0.0 (2020-03-11)
+## 4.0.0 (2021-03-11)
 ### New Features
 - added `sendEvent` to `EventGridPublisherClient` and `EventGridPublisherAsyncClient` to send a single event.
 
@@ -42,7 +42,7 @@
 - Update `azure-core` dependency to `1.14.0`.
 - Update `azure-core-http-netty` dependency to `1.9.0`.
 
-## 2.0.0-beta.4 (2020-02-10)
+## 2.0.0-beta.4 (2021-02-10)
 ### Breaking changes
 - `CloudEvent` constructor now accepts parameter "data". Removed `setData()`.
 - `CloudEvent.parse()` and `EventGridEvent.parse()` are renamed to `fromString()`.
@@ -65,7 +65,7 @@
 ## 2.0.0-beta.2 (2020-09-24)
 Added system event classes for Azure Communication Services under package `com.azure.messaging.eventgrid.systemevents`.
 
-## 2.0.0-beta.1 (2020-09-09): 
+## 2.0.0-beta.1 (2020-09-09)
 
 Initial preview of the Event Grid library with an effort to create a Java idiomatic
 set of libraries that are consistent across multiple services as well as different languages.
@@ -76,3 +76,4 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
+

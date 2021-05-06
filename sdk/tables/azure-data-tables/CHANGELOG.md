@@ -2,6 +2,10 @@
 
 ## 12.0.0-beta.7 (Unreleased)
 
+### Bug Fixes
+
+- Merge operations no longer fail for Cosmos table endpoints.
+- Fixed issue with `TablesJacksonSerializer` where it could not handle HTTP responses with empty bodies.
 
 ## 12.0.0-beta.6 (2021-04-07)
 

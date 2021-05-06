@@ -20,8 +20,8 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
       "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true",
-      "spark.cosmos.throughputControlEnabled" -> "true",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.throughputControl.enabled" -> "true",
       "spark.cosmos.throughputControl.name" -> "sparkTest",
       "spark.cosmos.throughputControl.targetThroughput" -> "6",
       "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
@@ -43,7 +43,7 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
       ("Quark", "Quark", "Red", 1.0 / 2)
     ).toDF("particle name", "id", "color", "spin")
 
-    df.write.format("cosmos.items").mode("Append").options(cfg).save()
-    spark.read.format("cosmos.items").options(cfg).load()
+    df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+    spark.read.format("cosmos.oltp").options(cfg).load()
   }
 }

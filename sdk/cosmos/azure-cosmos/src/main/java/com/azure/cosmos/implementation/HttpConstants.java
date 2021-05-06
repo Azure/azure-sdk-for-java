@@ -258,9 +258,13 @@ public class HttpConstants {
 
         // Client telemetry header
         public static final String DATABASE_ACCOUNT_NAME = "x-ms-databaseaccount-name";
+        public static final String ENVIRONMENT_NAME = "x-ms-environment-name";
 
         // Backend request duration header
         public static final String BACKEND_REQUEST_DURATION_MILLISECONDS = "x-ms-request-duration-ms";
+
+        // Dedicated Gateway Headers
+        public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
     }
 
     public static class A_IMHeaderValues {

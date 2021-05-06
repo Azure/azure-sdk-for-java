@@ -40,6 +40,11 @@
       <artifactId>azure-core</artifactId>
       <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.12</version>  <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+    </dependency>
      <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
@@ -73,7 +78,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.3</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -91,7 +96,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.3.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;dependency} -->
+      <version>2.4.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

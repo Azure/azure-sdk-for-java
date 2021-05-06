@@ -14,7 +14,7 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-    <version>3.0.0-beta.5</version>
+    <version>3.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -274,7 +274,7 @@ To configure Spring Cloud Gateway for outbound SSL, add the following configurat
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
-    jca: 
+    jca:
       overrideTrustManagerFactory: true
 ```
 

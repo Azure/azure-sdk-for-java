@@ -7,7 +7,7 @@ Azure Key Vault. It is built on four principles:
 3. Must not introduce any class loader hierarchy conflicts with Java app code dependencies.
 4. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][certificates_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][jca_samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

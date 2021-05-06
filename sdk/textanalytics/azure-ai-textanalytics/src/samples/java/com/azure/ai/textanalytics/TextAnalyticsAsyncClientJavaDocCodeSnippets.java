@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -934,27 +934,27 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions
     }
 
-    // Analyze batch actions
+    // Analyze actions
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeBatchActions(Iterable, TextAnalyticsActions, String, AnalyzeBatchActionsOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeActions(Iterable, TextAnalyticsActions, String, AnalyzeActionsOptions)}
      */
-    public void analyzeBatchActionsWithLanguage() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-String-AnalyzeBatchActionsOptions
+    public void analyzeActionsWithLanguage() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions
         List<String> documents = Arrays.asList(
             "Elon Musk is the CEO of SpaceX and Tesla.",
             "1", "My SSN is 859-98-0987"
         );
-        textAnalyticsAsyncClient.beginAnalyzeBatchActions(documents,
+        textAnalyticsAsyncClient.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                 .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
                 .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
             "en",
-            new AnalyzeBatchActionsOptions().setIncludeStatistics(false))
+            new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(
-                analyzeBatchActionsResultPagedFlux -> analyzeBatchActionsResultPagedFlux.subscribe(
-                    analyzeBatchActionsResult -> {
-                        analyzeBatchActionsResult.getRecognizeEntitiesActionResults().forEach(
+                analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.subscribe(
+                    analyzeActionsResult -> {
+                        analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getResult().forEach(
@@ -966,7 +966,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                                 entity.getConfidenceScore())));
                                 }
                             });
-                        analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(
+                        analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getResult().forEach(extractKeyPhraseResult -> {
@@ -977,28 +977,28 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 }
                             });
                     }));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-String-AnalyzeBatchActionsOptions
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions
     }
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeBatchActions(Iterable, TextAnalyticsActions, AnalyzeBatchActionsOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeActions(Iterable, TextAnalyticsActions, AnalyzeActionsOptions)}
      */
-    public void analyzeBatchActionsMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-AnalyzeBatchActionsOptions
+    public void analyzeActionsMaxOverload() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-AnalyzeActionsOptions
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en"),
             new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
         );
-        textAnalyticsAsyncClient.beginAnalyzeBatchActions(documents,
+        textAnalyticsAsyncClient.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                 .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
                 .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
-            new AnalyzeBatchActionsOptions().setIncludeStatistics(false))
+            new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(
-                analyzeBatchActionsResultPagedFlux -> analyzeBatchActionsResultPagedFlux.subscribe(
-                    analyzeBatchActionsResult -> {
+                analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.subscribe(
+                    analyzeActionsResult -> {
                         System.out.println("Entities recognition action results:");
-                        analyzeBatchActionsResult.getRecognizeEntitiesActionResults().forEach(
+                        analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getResult().forEach(
@@ -1011,7 +1011,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 }
                             });
                         System.out.println("Key phrases extraction action results:");
-                        analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(
+                        analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
                                     actionResult.getResult().forEach(extractKeyPhraseResult -> {
@@ -1022,6 +1022,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 }
                             });
                     }));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-AnalyzeBatchActionsOptions
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-AnalyzeActionsOptions
     }
 }

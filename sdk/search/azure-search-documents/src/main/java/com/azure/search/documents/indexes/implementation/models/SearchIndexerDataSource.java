@@ -11,6 +11,7 @@ import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a datasource definition, which can be used to configure an indexer. */

@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -205,6 +205,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-        <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
+        <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     </properties>
 </project>

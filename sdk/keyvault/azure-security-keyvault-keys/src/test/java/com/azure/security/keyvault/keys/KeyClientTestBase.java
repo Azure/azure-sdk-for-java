@@ -385,6 +385,7 @@ public abstract class KeyClientTestBase extends TestBase {
         assertEquals(expected.getKeyType(), actual.getKey().getKeyType());
         assertEquals(expected.getExpiresOn(), actual.getProperties().getExpiresOn());
         assertEquals(expected.getNotBefore(), actual.getProperties().getNotBefore());
+        assertEquals(expected.getTags(), actual.getProperties().getTags());
     }
 
     public String getEndpoint() {

@@ -4,7 +4,7 @@
 package com.azure.spring.test.eventhubs.stream.binder.health;
 
 import com.azure.spring.test.AppRunner;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,11 +30,12 @@ public class EventHubBinderHealthIT {
     @Test
     public void testSpringBootActuatorHealth() {
         LOGGER.info("testSpringBootActuatorHealth begin.");
+        String resourceName = "test-eventhub-health";
         try (AppRunner app = new AppRunner(Application.class)) {
 
-            app.property("spring.cloud.azure.eventhub.checkpoint-container", "container-name");
-            app.property("spring.cloud.stream.bindings.consume-in-0.destination", "event-hub-name");
-            app.property("spring.cloud.stream.bindings.supply-out-0.destination", "event-hub-name");
+            app.property("spring.cloud.azure.eventhub.checkpoint-container", resourceName);
+            app.property("spring.cloud.stream.bindings.consume-in-0.destination", resourceName);
+            app.property("spring.cloud.stream.bindings.supply-out-0.destination", resourceName);
 
             app.property("management.endpoint.health.show-details", "always");
             app.property("management.endpoints.web.exposure.include", "*");
@@ -52,6 +56,18 @@ public class EventHubBinderHealthIT {
     public static class Application {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
+
+        @Bean
+        public Sinks.One<Message<String>> one() {
+            return Sinks.one();
+        }
+
+        @Bean
+        public Supplier<Mono<Message<String>>> supply(Sinks.One<Message<String>> one) {
+            return () -> one.asMono()
+                            .doOnNext(m -> LOGGER.info("Sending message {}", m))
+                            .doOnError(t -> LOGGER.error("Error encountered", t));
+        }
 
         @Bean
         public Consumer<Message<String>> consume() {
