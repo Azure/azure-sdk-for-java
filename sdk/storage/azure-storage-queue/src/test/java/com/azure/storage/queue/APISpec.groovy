@@ -67,12 +67,6 @@ class APISpec extends StorageSpec {
         }
     }
 
-    // TODO (kasobol-msft) remove this when all modules are migrated
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey

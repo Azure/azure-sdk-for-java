@@ -70,12 +70,6 @@ class APISpec extends StorageSpec {
         containerName = generateContainerName()
     }
 
-    // TODO (kasobol-msft) remove this
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
     def cleanup() {
         def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
         for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {

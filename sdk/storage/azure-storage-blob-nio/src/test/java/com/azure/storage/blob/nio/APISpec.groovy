@@ -123,12 +123,6 @@ class APISpec extends StorageSpec {
         }
     }
 
-    // TODO (kasobol-msft) remove this after migration
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
     static boolean liveMode() {
         return ENVIRONMENT.testMode == TestMode.LIVE
     }

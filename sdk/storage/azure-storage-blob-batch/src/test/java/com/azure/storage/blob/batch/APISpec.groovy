@@ -84,12 +84,6 @@ class APISpec extends StorageSpec {
         versionedBlobServiceClient = setClient(versionedCredential)
     }
 
-    // TODO (kasobol-msft) remove this.
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
