@@ -1,18 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.perf;
+package com.azure.storage.file.datalake.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import com.azure.storage.blob.perf.core.BlobTestBase;
+import com.azure.storage.file.datalake.perf.core.FileTestBase;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
+public class UploadFromFileDatalakeTest extends FileTestBase<PerfStressOptions> {
 
     private static final Path TEMP_FILE;
     private static final String TEMP_FILE_PATH;
@@ -26,7 +26,7 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
         }
     }
 
-    public UploadFromFileTest(PerfStressOptions options) {
+    public UploadFromFileDatalakeTest(PerfStressOptions options) {
         super(options);
     }
 
@@ -58,11 +58,11 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        blobClient.uploadFromFile(TEMP_FILE_PATH, true);
+        dataLakeFileClient.uploadFromFile(TEMP_FILE_PATH, true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadFromFile(TEMP_FILE_PATH, true);
+        return dataLakeFileAsyncClient.uploadFromFile(TEMP_FILE_PATH, true);
     }
 }

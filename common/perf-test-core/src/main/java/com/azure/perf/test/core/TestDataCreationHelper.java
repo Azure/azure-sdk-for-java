@@ -7,6 +7,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Random;
@@ -94,6 +95,28 @@ public class TestDataCreationHelper {
     }
 
     /**
+     * Writes the data from InputStream into the OutputStream.
+     *
+     * @param inputStream stream to read from.
+     * @param outputStream stream to write into.
+     * @param bufferSize number of bytes to read in a single read.
+     * @throws IOException If an IO error occurs.
+     * @return the number of bytes transferred.
+     */
+    public static long copyStream(InputStream inputStream, OutputStream outputStream, int bufferSize) throws IOException {
+        long transferred = 0;
+        byte[] buffer = new byte[bufferSize];
+        int read;
+        while ((read = inputStream.read(buffer, 0, bufferSize)) >= 0) {
+            outputStream.write(buffer, 0, read);
+            transferred += read;
+
+        }
+        return transferred;
+    }
+
+
+    /**
      * Generate random string of given {@code targetLength length}. The string will only have lower case alphabets.
      *
      * @param targetLength of the string to be generated.
@@ -111,52 +134,17 @@ public class TestDataCreationHelper {
         return generatedString;
     }
 
-    private static final class RepeatingInputStream extends InputStream {
-        private final int size;
-
-        private int mark = 0;
-        private int pos = 0;
-
-        private RepeatingInputStream(int size) {
-            this.size = size;
-        }
-
-        @Override
-        public synchronized int read() {
-            return (pos < size) ? (RANDOM_BYTES[pos++ % RANDOM_BYTES_LENGTH] & 0xFF) : -1;
-        }
-
-        @Override
-        public synchronized int read(byte[] b) {
-            return read(b, 0, b.length);
-        }
-
-        @Override
-        public synchronized int read(byte[] b, int off, int len) {
-            if (pos >= size) {
-                return -1;
-            }
-
-            int readCount = Math.min(len, RANDOM_BYTES_LENGTH);
-            System.arraycopy(RANDOM_BYTES, 0, b, off, len);
-            pos += readCount;
-
-            return readCount;
-        }
-
-        @Override
-        public synchronized void reset() {
-            this.pos = this.mark;
-        }
-
-        @Override
-        public synchronized void mark(int readlimit) {
-            this.mark = readlimit;
-        }
-
-        @Override
-        public boolean markSupported() {
-            return true;
-        }
+    /**
+     * Writes contents of the specified size to the specified file path.
+     *
+     * @param filePath the path of the file to write to contents to
+     * @param size the size of the contents to write to the file.
+     * @param bufferSize the size of the buffer to use to write to the file.
+     * @throws IOException when an error occurs when writing to the file.
+     */
+    public static void writeToFile(String filePath, long size, int bufferSize) throws IOException {
+        InputStream inputStream = createRandomInputStream(size);
+        OutputStream outputStream = new FileOutputStream(filePath);
+        copyStream(inputStream, outputStream, bufferSize);
     }
 }

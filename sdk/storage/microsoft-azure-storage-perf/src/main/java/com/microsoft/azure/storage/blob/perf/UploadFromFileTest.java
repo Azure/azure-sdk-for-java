@@ -1,16 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.perf;
-
-import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.perf.test.core.TestDataCreationHelper;
-import com.azure.storage.blob.perf.core.BlobTestBase;
-import reactor.core.publisher.Mono;
+package com.microsoft.azure.storage.blob.perf;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.TestDataCreationHelper;
+import com.microsoft.azure.storage.StorageException;
+
+import com.microsoft.azure.storage.blob.perf.core.BlobTestBase;
+import reactor.core.publisher.Mono;
 
 public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
@@ -58,11 +60,15 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        blobClient.uploadFromFile(TEMP_FILE_PATH, true);
+        try {
+            cloudBlockBlob.uploadFromFile(TEMP_FILE_PATH);
+        } catch (StorageException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadFromFile(TEMP_FILE_PATH, true);
+        throw new UnsupportedOperationException();
     }
 }

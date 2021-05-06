@@ -1,19 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.perf;
+package com.azure.storage.file.share.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import com.azure.storage.blob.perf.core.BlobTestBase;
+import com.azure.storage.file.share.perf.core.FileTestBase;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
-
+public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
     private static final Path TEMP_FILE;
     private static final String TEMP_FILE_PATH;
 
@@ -26,7 +25,7 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
         }
     }
 
-    public UploadFromFileTest(PerfStressOptions options) {
+    public UploadFromFileShareTest(PerfStressOptions options) {
         super(options);
     }
 
@@ -58,11 +57,17 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        blobClient.uploadFromFile(TEMP_FILE_PATH, true);
+        shareFileClient.uploadFromFile(TEMP_FILE_PATH);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadFromFile(TEMP_FILE_PATH, true);
+        return shareFileAsyncClient.uploadFromFile(TEMP_FILE_PATH);
+    }
+
+    @Override
+    public Mono<Void> setupAsync() {
+        return super.setupAsync().then(Mono.defer(() -> shareFileAsyncClient
+            .create(options.getSize() + DEFAULT_BUFFER_SIZE))).then();
     }
 }
