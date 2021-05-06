@@ -550,7 +550,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .expectComplete()
             .verify(shortWait);
 
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(shortWait.getSeconds());
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
