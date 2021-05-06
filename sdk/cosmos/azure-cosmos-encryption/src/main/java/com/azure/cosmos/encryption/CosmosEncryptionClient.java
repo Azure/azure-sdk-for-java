@@ -8,13 +8,9 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 /**
  * CosmosClient with encryption support.
@@ -54,10 +50,6 @@ public class CosmosEncryptionClient {
         return new CosmosEncryptionClient(cosmosClient, encryptionKeyStoreProvider);
     }
 
-    CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
-        return cosmosEncryptionAsyncClient;
-    }
-
     /**
      * Gets a database with Encryption capabilities
      *
@@ -85,22 +77,7 @@ public class CosmosEncryptionClient {
         return new CosmosEncryptionDatabase(cosmosDatabase, cosmosEncryptionAsyncDatabase);
     }
 
-    /**
-     * Block cosmos clientEncryptionPolicy response
-     *
-     * @param clientEncryptionPolicyMono the clientEncryptionPolicy mono.
-     * @return the cosmos clientEncryptionPolicy response.
-     */
-     ClientEncryptionPolicy blockClientEncryptionPolicyResponse(Mono<ClientEncryptionPolicy> clientEncryptionPolicyMono) {
-        try {
-            return clientEncryptionPolicyMono.block();
-        } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw ex;
-            }
-        }
+    CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
+        return cosmosEncryptionAsyncClient;
     }
 }

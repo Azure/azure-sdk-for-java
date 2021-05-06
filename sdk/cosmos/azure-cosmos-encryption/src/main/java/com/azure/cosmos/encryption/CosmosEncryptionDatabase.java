@@ -118,7 +118,7 @@ public class CosmosEncryptionDatabase {
      * @param cosmosClientEncryptionKeyResponseMono the clientEncryptionKey mono.
      * @return the cosmos clientEncryptionKey response.
      */
-    CosmosClientEncryptionKeyResponse blockClientEncryptionKeyResponse(Mono<CosmosClientEncryptionKeyResponse> cosmosClientEncryptionKeyResponseMono) {
+    private CosmosClientEncryptionKeyResponse blockClientEncryptionKeyResponse(Mono<CosmosClientEncryptionKeyResponse> cosmosClientEncryptionKeyResponseMono) {
         try {
             return cosmosClientEncryptionKeyResponseMono.block();
         } catch (Exception ex) {
