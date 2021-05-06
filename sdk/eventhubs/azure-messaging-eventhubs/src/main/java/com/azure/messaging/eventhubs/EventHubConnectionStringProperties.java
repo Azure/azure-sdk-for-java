@@ -9,7 +9,7 @@ import com.azure.core.credential.TokenCredential;
 import java.net.URI;
 
 /**
- * A utility class that parses a connection string into sections. A Event Hub connection string is a set of key value
+ * A utility class that parses a connection string into sections. An Event Hubs connection string is a set of key-value
  * pairs separated by semi-colon. A typical example is
  * {@code "Endpoint=sb://foo.EventHub.windows.net/;SharedAccessKeyName=someKeyName;SharedAccessKey=someKeyValue"}.
  *
@@ -23,27 +23,25 @@ import java.net.URI;
  * </ul>
  *
  * <p>
- * When you have a EventHub connection string, you can use {@link EventHubClientBuilder#connectionString(String)}
- * to build a client. If you'd like to use a {@link TokenCredential} to access a Event Hub, you can use this utility
- * class to take the fully qualified namespace and optionally the entity path (queue/topic name) from the connection
+ * When you have an Event Hubs connection string, you can use {@link EventHubClientBuilder#connectionString(String)}
+ * to build a client. If you'd like to use a {@link TokenCredential} to access an Event Hub, you can use this utility
+ * class to get the fully qualified namespace and entity path from the connection
  * string and then use {@link EventHubClientBuilder#credential(String, String, TokenCredential)}.
  * </p>
  *
- * @see EventHubClientBuilder#connectionString(String)
+ * @see EventHubClientBuilder#connectionString(String, String)
  */
 public final class EventHubConnectionStringProperties {
     private final URI endpoint;
     private final String entityPath;
     private final String sharedAccessKeyName;
     private final String sharedAccessKey;
-    private final String sharedAccessSignature;
 
     private EventHubConnectionStringProperties(ConnectionStringProperties properties) {
         this.endpoint = properties.getEndpoint();
         this.entityPath = properties.getEntityPath();
         this.sharedAccessKeyName = properties.getSharedAccessKeyName();
         this.sharedAccessKey = properties.getSharedAccessKey();
-        this.sharedAccessSignature = properties.getSharedAccessSignature();
     }
     /**
      * Parse a Event Hub connection string into an instance of this class.
@@ -82,7 +80,7 @@ public final class EventHubConnectionStringProperties {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return this.endpoint.getHost();
+        return endpoint.getHost();
     }
 
     /**
@@ -92,7 +90,7 @@ public final class EventHubConnectionStringProperties {
      *     "SharedAccessKeyName".
      */
     public String getSharedAccessKeyName() {
-        return this.sharedAccessKeyName;
+        return sharedAccessKeyName;
     }
 
     /**
@@ -102,16 +100,7 @@ public final class EventHubConnectionStringProperties {
      *     "SharedAccessSignature".
      */
     public String getSharedAccessKey() {
-        return this.sharedAccessKey;
+        return sharedAccessKey;
     }
 
-    /**
-     * Gets the "SharedAccessSignature" section of the connection string.
-     *
-     * @return The shared access signature, or {@code null} if the connection string doesn't have a
-     *     "SharedAccessSignature".
-     */
-    public String getSharedAccessSignature() {
-        return this.sharedAccessSignature;
-    }
 }
