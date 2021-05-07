@@ -193,7 +193,7 @@ public class ServiceBusProcessorTest {
      * @throws InterruptedException If the test is interrupted.
      */
     @Test
-    public void testErrorRecovery() throws InterruptedException {
+    public void testErrorRecovery() {
         List<ServiceBusMessageContext> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -234,7 +234,6 @@ public class ServiceBusProcessorTest {
             },
             error -> { /* ignored */ },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
-        Thread.sleep(1000);
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.get().await(20, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
