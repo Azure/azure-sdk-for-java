@@ -104,16 +104,16 @@ public final class PurviewScanningClientBuilder {
     /*
      * The serializer to serialize an object into a string
      */
-    private ObjectSerializer objectSerializer;
+    private ObjectSerializer serializer;
 
     /**
      * Sets The serializer to serialize an object into a string.
      *
-     * @param objectSerializer the objectSerializer value.
+     * @param serializer the serializer value.
      * @return the PurviewScanningClientBuilder.
      */
-    public PurviewScanningClientBuilder objectSerializer(ObjectSerializer objectSerializer) {
-        this.objectSerializer = objectSerializer;
+    public PurviewScanningClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 
@@ -255,11 +255,11 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
         KeyVaultConnectionsBaseClient client =
-                new KeyVaultConnectionsBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+                new KeyVaultConnectionsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -275,11 +275,11 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
         ClassificationRulesBaseClient client =
-                new ClassificationRulesBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+                new ClassificationRulesBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -295,10 +295,10 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        DataSourcesBaseClient client = new DataSourcesBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        DataSourcesBaseClient client = new DataSourcesBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -314,10 +314,10 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        FiltersBaseClient client = new FiltersBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        FiltersBaseClient client = new FiltersBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -333,10 +333,10 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        ScansBaseClient client = new ScansBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        ScansBaseClient client = new ScansBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -352,10 +352,10 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        ScanResultBaseClient client = new ScanResultBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        ScanResultBaseClient client = new ScanResultBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -371,10 +371,10 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        ScanRulesetsBaseClient client = new ScanRulesetsBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        ScanRulesetsBaseClient client = new ScanRulesetsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -390,11 +390,11 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
         SystemScanRulesetsBaseClient client =
-                new SystemScanRulesetsBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+                new SystemScanRulesetsBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -410,10 +410,10 @@ public final class PurviewScanningClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        TriggersBaseClient client = new TriggersBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        TriggersBaseClient client = new TriggersBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 }

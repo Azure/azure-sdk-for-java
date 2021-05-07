@@ -100,16 +100,16 @@ public final class PurviewCatalogClientBuilder {
     /*
      * The serializer to serialize an object into a string
      */
-    private ObjectSerializer objectSerializer;
+    private ObjectSerializer serializer;
 
     /**
      * Sets The serializer to serialize an object into a string.
      *
-     * @param objectSerializer the objectSerializer value.
+     * @param serializer the serializer value.
      * @return the PurviewCatalogClientBuilder.
      */
-    public PurviewCatalogClientBuilder objectSerializer(ObjectSerializer objectSerializer) {
-        this.objectSerializer = objectSerializer;
+    public PurviewCatalogClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 
@@ -251,11 +251,10 @@ public final class PurviewCatalogClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        PurviewCatalogBaseClient client =
-                new PurviewCatalogBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        PurviewCatalogBaseClient client = new PurviewCatalogBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -271,10 +270,10 @@ public final class PurviewCatalogClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        EntityBaseClient client = new EntityBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        EntityBaseClient client = new EntityBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -290,10 +289,10 @@ public final class PurviewCatalogClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        GlossaryBaseClient client = new GlossaryBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        GlossaryBaseClient client = new GlossaryBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -309,10 +308,10 @@ public final class PurviewCatalogClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        RelationshipBaseClient client = new RelationshipBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        RelationshipBaseClient client = new RelationshipBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 
@@ -328,10 +327,10 @@ public final class PurviewCatalogClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        TypesBaseClient client = new TypesBaseClient(endpoint, apiVersion, pipeline, objectSerializer);
+        TypesBaseClient client = new TypesBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 }
