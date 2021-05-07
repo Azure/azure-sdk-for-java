@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
@@ -56,6 +57,7 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleScope roleScope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -73,6 +75,7 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleScope roleScope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -88,6 +91,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The created {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -104,6 +108,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The created or updated {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
      * are {@code null}.
      */
@@ -121,6 +126,7 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created or updated
      * {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
      * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
      */
@@ -138,7 +144,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The retrieved {@link KeyVaultRoleDefinition}.
      *
-     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
      * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
@@ -157,7 +163,7 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * retrieved {@link KeyVaultRoleDefinition}.
      *
-     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
      * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
@@ -177,7 +183,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The deleted {@link KeyVaultRoleDefinition}.
      *
-     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
      * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
@@ -196,7 +202,7 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the deleted
      * {@link KeyVaultRoleDefinition}.
      *
-     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
      * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
@@ -217,6 +223,7 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope roleScope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -234,6 +241,7 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link PagedIterable} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope roleScope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -250,8 +258,10 @@ public final class KeyVaultAccessControlClient {
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
      *
-     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName},
-     * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId}
+     * are invalid.
+     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleDefinitionId} or
+     * {@link String principalId} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
@@ -270,6 +280,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The created {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
+     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName} or
      * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
@@ -292,6 +304,8 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
+     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName} or
      * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
@@ -312,6 +326,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -329,6 +345,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -346,6 +364,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -363,6 +383,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */

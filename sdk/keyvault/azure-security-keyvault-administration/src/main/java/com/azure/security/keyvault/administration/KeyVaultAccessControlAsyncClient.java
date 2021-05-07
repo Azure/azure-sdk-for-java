@@ -18,6 +18,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
+import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.DataAction;
 import com.azure.security.keyvault.administration.implementation.models.Permission;
@@ -31,6 +32,7 @@ import com.azure.security.keyvault.administration.implementation.models.RoleDefi
 import com.azure.security.keyvault.administration.implementation.models.RoleScope;
 import com.azure.security.keyvault.administration.implementation.models.RoleType;
 import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
+import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
@@ -135,6 +137,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleScope role scope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -154,6 +157,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleDefinition role definitions} for the given
      * {@link KeyVaultRoleScope role scope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     PagedFlux<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope, Context context) {
@@ -173,6 +177,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleDefinition role definitions}
      * for the given {@link KeyVaultRoleScope role scope} from the first page of results.
      *
+     * @throws KeyVaultAdministrationException If the given {@code vaultUrl} or {@code roleScope} are invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsFirstPage(String vaultUrl,
@@ -191,6 +196,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnError(error ->
                     logger.warning(String.format("Failed to list role definitions for roleScope - %s", roleScope),
                         error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -208,6 +214,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleDefinition role definitions}
      * for the given {@link KeyVaultRoleScope role scope} from the next page of results.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code continuationToken} is invalid.
      */
     Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsNextPage(String continuationToken, Context context) {
         try {
@@ -220,6 +228,7 @@ public final class KeyVaultAccessControlAsyncClient {
                     logger.verbose("Listed next role definitions page - Page {}", continuationToken))
                 .doOnError(error ->
                     logger.warning("Failed to list next role definitions page - Page {}", continuationToken, error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -234,6 +243,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -250,6 +260,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
      * are {@code null}.
      */
@@ -268,6 +279,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * created or updated {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
      * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
      */
@@ -288,6 +300,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * created or updated {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
      * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
      */
@@ -351,6 +364,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnSuccess(response -> logger.verbose("Created role assignment - {}", response.getValue().getName()))
                 .doOnError(error ->
                     logger.warning("Failed to create role assignment - {}", options.getRoleDefinitionName(), error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -365,6 +379,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -382,6 +398,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -401,6 +419,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -422,6 +442,7 @@ public final class KeyVaultAccessControlAsyncClient {
                     logger.verbose("Retrieved role assignment - {}", response.getValue().getName()))
                 .doOnError(error ->
                     logger.warning("Failed to retrieved role assignment - {}", roleDefinitionName, error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -437,6 +458,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
 8     * @return A {@link Mono} containing the deleted {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -454,6 +477,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the deleted
      * {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -473,6 +498,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the deleted
      * {@link KeyVaultRoleDefinition}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -493,6 +520,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnRequest(ignored -> logger.verbose("Deleting role assignment - {}", roleDefinitionName))
                 .doOnSuccess(response -> logger.verbose("Deleted role assignment - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to delete role assignment - {}", roleDefinitionName, error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -508,6 +536,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope role scope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -527,6 +556,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope role scope}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     PagedFlux<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope, Context context) {
@@ -546,6 +576,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleAssignment role assignments}
      * in the given {@link KeyVaultRoleScope role scope} from the first page of results.
      *
+     * @throws KeyVaultAdministrationException If the given {@code vaultUrl} or {@code roleScope} are invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
      */
     Mono<PagedResponse<KeyVaultRoleAssignment>> listRoleAssignmentsFirstPage(String vaultUrl,
@@ -564,6 +595,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnError(error ->
                     logger.warning(String.format("Failed to list role assignments for roleScope - %s", roleScope),
                         error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -580,6 +612,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleAssignment role assignments}
      * for the given {@link KeyVaultRoleScope role scope} from the first page of results.
+     *
+     * @throws KeyVaultAdministrationException If the given {@code continuationToken} is invalid.
      */
     Mono<PagedResponse<KeyVaultRoleAssignment>> listRoleAssignmentsNextPage(String continuationToken, Context context) {
         try {
@@ -592,6 +626,7 @@ public final class KeyVaultAccessControlAsyncClient {
                     logger.verbose("Listed next role assignments page - Page {}", continuationToken))
                 .doOnError(error -> logger.warning("Failed to list next role assignments page - Page {}",
                     continuationToken, error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentsPagedResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -607,6 +642,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId}
+     * are invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
      * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
@@ -626,6 +663,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
+     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
      * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
@@ -647,6 +686,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
+     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
      * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
@@ -671,6 +712,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
+     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
      * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
@@ -706,6 +749,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnRequest(ignored -> logger.verbose("Creating role assignment - {}", roleAssignmentName))
                 .doOnSuccess(response -> logger.verbose("Created role assignment - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to create role assignment - {}", roleAssignmentName, error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -720,6 +764,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -737,6 +783,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -756,6 +804,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -777,6 +827,7 @@ public final class KeyVaultAccessControlAsyncClient {
                     logger.verbose("Retrieved role assignment - {}", response.getValue().getName()))
                 .doOnError(error ->
                     logger.warning("Failed to retrieved role assignment - {}", roleAssignmentName, error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -791,6 +842,8 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing the {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -808,6 +861,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -827,6 +882,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultRoleAssignment}.
      *
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -847,6 +904,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnRequest(ignored -> logger.verbose("Deleting role assignment - {}", roleAssignmentName))
                 .doOnSuccess(response -> logger.verbose("Deleted role assignment - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to delete role assignment - {}", roleAssignmentName, error))
+                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
             return monoError(logger, e);
