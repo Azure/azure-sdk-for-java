@@ -41,6 +41,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 @Immutable
 public class EventHubSharedKeyCredential implements TokenCredential {
+
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);

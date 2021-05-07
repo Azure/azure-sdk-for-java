@@ -18,6 +18,23 @@ import java.util.regex.Pattern;
 public final class ValidationUtil {
     private static Pattern tenantIdentifierCharPattern = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-|.)+$");
 
+    public static void validateForSharedAccessKey(String className, Map<String, Object> parameters) {
+        ClientLogger logger = new ClientLogger(className);
+        List<String> missing = new ArrayList<>();
+        if (parameters.get("sharedAccessSignature") == null) {
+            parameters.remove("sharedAccessSignature");
+            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+                if (entry.getValue() == null) {
+                    missing.add(entry.getKey());
+                }
+            }
+            if (missing.size() > 0) {
+                throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
+                    + String.join(", ", missing) + " properties in " + className));
+            }
+        }
+    }
+
     public static void validate(String className, Map<String, Object> parameters) {
         ClientLogger logger = new ClientLogger(className);
         List<String> missing = new ArrayList<>();

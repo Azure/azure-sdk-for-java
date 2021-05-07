@@ -1,12 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.identity;
 
 import com.azure.identity.implementation.util.ValidationUtil;
-
 import javax.crypto.spec.SecretKeySpec;
 import java.util.HashMap;
+import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Fluent credential builder for instantiating a {@link EventHubSharedKeyCredential}.
+ *
+ * @see EventHubSharedKeyCredential
+ */
 public class EventHubSharedKeyCredentialBuilder extends AadCredentialBuilderBase<EventHubSharedKeyCredentialBuilder> {
 
     private static final String HASH_ALGORITHM = "HMACSHA256";
@@ -33,7 +40,7 @@ public class EventHubSharedKeyCredentialBuilder extends AadCredentialBuilderBase
      * @return the ServiceBusSharedKeyCredentialBuilder itself
      */
     public EventHubSharedKeyCredentialBuilder sharedAccessKey(String sharedAccessKey) {
-        this.secretKeySpec = new SecretKeySpec(sharedAccessKey.getBytes(UTF_8),HASH_ALGORITHM);
+        this.secretKeySpec = new SecretKeySpec(sharedAccessKey.getBytes(UTF_8), HASH_ALGORITHM);
         return this;
     }
 
@@ -54,16 +61,11 @@ public class EventHubSharedKeyCredentialBuilder extends AadCredentialBuilderBase
      * @return a {@link EventHubSharedKeyCredential} with the current configurations.
      */
     public EventHubSharedKeyCredential build() {
-        if (sharedAccessSignature == null) {
-            ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("sharedAccessPolicy", sharedAccessPolicy);
-                put("sharedAccessKey", secretKeySpec);
-            }});
-        } else {
-            ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("sharedAccessSignature", sharedAccessSignature);
-            }});
-        }
+        Map<String, Object> validationMap = new HashMap<String, Object>();
+        validationMap.put("sharedAccessPolicy", sharedAccessPolicy);
+        validationMap.put("sharedAccessKey", secretKeySpec);
+        validationMap.put("sharedAccessSignature", sharedAccessSignature);
+        ValidationUtil.validateForSharedAccessKey(getClass().getSimpleName(), validationMap);
         return new EventHubSharedKeyCredential(sharedAccessPolicy, secretKeySpec, sharedAccessSignature);
     }
 }
