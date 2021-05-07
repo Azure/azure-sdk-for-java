@@ -22,9 +22,7 @@ stages:
           - $(sub-config-communication-services-cloud-test-resources-common)
           - $(sub-config-communication-services-cloud-test-resources-java)
       Int:
-        SubscriptionConfiguration:
-          - $(sub-config-communication-int-test-resources-common)
-          - $(sub-config-communication-int-test-resources-java)
+        SubscriptionConfiguration: $(sub-config-communication-int-test-resources)
     Clouds: Int
     Artifacts:
       - name: azure-communication-chat
