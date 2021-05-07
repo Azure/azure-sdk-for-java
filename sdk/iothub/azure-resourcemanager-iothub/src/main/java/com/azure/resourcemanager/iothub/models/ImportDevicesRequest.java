@@ -46,6 +46,12 @@ public final class ImportDevicesRequest {
     @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
 
+    /*
+     * Managed identity properties of storage endpoint for import devices.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedIdentity identity;
+
     /**
      * Get the inputBlobContainerUri property: The input blob container URI.
      *
@@ -149,6 +155,26 @@ public final class ImportDevicesRequest {
     }
 
     /**
+     * Get the identity property: Managed identity properties of storage endpoint for import devices.
+     *
+     * @return the identity value.
+     */
+    public ManagedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity properties of storage endpoint for import devices.
+     *
+     * @param identity the identity value to set.
+     * @return the ImportDevicesRequest object itself.
+     */
+    public ImportDevicesRequest withIdentity(ManagedIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -165,6 +191,9 @@ public final class ImportDevicesRequest {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property outputBlobContainerUri in model ImportDevicesRequest"));
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

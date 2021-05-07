@@ -41,6 +41,12 @@ public final class ExportDevicesRequest {
     @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
 
+    /*
+     * Managed identity properties of storage endpoint for export devices.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedIdentity identity;
+
     /**
      * Get the exportBlobContainerUri property: The export blob container URI.
      *
@@ -126,6 +132,26 @@ public final class ExportDevicesRequest {
     }
 
     /**
+     * Get the identity property: Managed identity properties of storage endpoint for export devices.
+     *
+     * @return the identity value.
+     */
+    public ManagedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity properties of storage endpoint for export devices.
+     *
+     * @param identity the identity value to set.
+     * @return the ExportDevicesRequest object itself.
+     */
+    public ExportDevicesRequest withIdentity(ManagedIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -136,6 +162,9 @@ public final class ExportDevicesRequest {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property exportBlobContainerUri in model ExportDevicesRequest"));
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }
