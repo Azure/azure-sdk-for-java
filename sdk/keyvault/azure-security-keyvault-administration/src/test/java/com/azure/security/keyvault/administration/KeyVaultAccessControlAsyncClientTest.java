@@ -13,7 +13,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionP
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
-import com.azure.security.keyvault.administration.options.SetKeyVaultRoleDefinitionOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
