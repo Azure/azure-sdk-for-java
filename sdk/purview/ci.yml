@@ -27,9 +27,9 @@ extends:
   parameters:
     ServiceDirectory: purview
     Artifacts:
-      - name: azure-purview-catalog
+      - name: azure-analytics-purview-catalog
         groupId: com.azure
-        safeName: azurepurviewcatalog
-      - name: azure-purview-scanning
+        safeName: azureanalyticspurviewcatalog
+      - name: azure-analytics-purview-scanning
         groupId: com.azure
-        safeName: azurepurviewscanning
+        safeName: azureanalyticspurviewscanning

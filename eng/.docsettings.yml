@@ -180,6 +180,8 @@ known_content_issues:
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/translation/azure-ai-documenttranslator/swagger/README.md', '#3113']
   - ['sdk/webpubsub/azure-messaging-webpubsub/swagger/README.md', '#3113']
+  - ['sdk/purview/azure-analytics-purview-catalog/swagger/README.md', '#3113']
+  - ['sdk/purview/azure-analytics-purview-scanning/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

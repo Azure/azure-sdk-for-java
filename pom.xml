@@ -127,6 +127,10 @@
 
         <!-- Web Pub Sub -->
         <module>sdk/webpubsub/azure-messaging-webpubsub</module>
+
+        <!-- Purview -->
+        <module>sdk/purview/azure-analytics-purview-catalog</module>
+        <module>sdk/purview/azure-analytics-purview-scanning</module>
       </modules>
 
       <distributionManagement>
@@ -277,6 +281,14 @@
                   <group>
                     <title>Azure Container Registry</title>
                     <packages>com.azure.containers.containerregistry*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Purview Catalog</title>
+                    <packages>com.azure.analytics.purview.catalog*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Purview Scanning</title>
+                    <packages>com.azure.analytics.purview.scanning*</packages>
                   </group>
                   <group>
                     <title>Azure Quantum Jobs</title>
@@ -594,6 +606,8 @@
                     -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
                     -snippetpath ${project.basedir}/sdk/translation/azure-ai-documenttranslator/src/samples/java
                     -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                   </additionalOptions>
                   <aggregate>true</aggregate>
                   <doclint>all</doclint>
@@ -753,6 +767,7 @@
         <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/resourcemover</module>
+        <module>sdk/purview</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/servicebus</module>

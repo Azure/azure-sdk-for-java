@@ -12,20 +12,20 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-purview-catalog</module>
-        <module>azure-purview-scanning</module>
+        <module>azure-analytics-purview-catalog</module>
+        <module>azure-analytics-purview-scanning</module>
       </modules>
 
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-purview-catalog</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-purview-catalog;current} -->
+          <artifactId>azure-analytics-purview-catalog</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-purview-catalog;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-purview-scanning</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-purview-scanning;current} -->
+          <artifactId>azure-analytics-purview-scanning</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-purview-scanning;current} -->
         </dependency>
       </dependencies>
 
@@ -57,7 +57,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-ai-anomalydetector</module>
+        <module>azure-analytics-purview-catalog</module>
+        <module>azure-analytics-purview-scanning</module>
       </modules>
     </profile>
   </profiles>
