@@ -1,6 +1,12 @@
 # Azure Purview Scanning client library for Java
 
-Microsoft Azure Cognitive Services Purview Scanning API enables you to scan your data in your Purview scannings.
+Azure Purview Scanning is a fully managed cloud service whose users can scan your data into your data estate (also known as your **catalog**). Scanning is a process by which the catalog connects directly to a data source on a user-specified schedule.
+
+- Scan your data into your catalog
+- Examine your data
+- Extract schemas from your data
+
+**Please rely heavily on the [service's documentation][product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -51,12 +57,13 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/scanning/ReadmeSamples.java#L20-L23 -->
+<!-- embedme ./src/samples/java/com/azure/analytics/purview/scanning/ReadmeSamples.java#L22-L25 -->
 ```java
 SystemScanRulesetsBaseClient client = new PurviewScanningClientBuilder()
     .endpoint(System.getenv("<account-name>.scanning.purview.azure.com"))
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildSystemScanRulesetsBaseClient();```
+    .buildSystemScanRulesetsBaseClient();
+```
 
 ## Key concepts
 
@@ -83,11 +90,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [samples]: src/samples/java/com/azure/analytics/purview/scanning
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translatortext/azure-ai-translator/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translatortext/azure-ai-translator/src/samples/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-scanning/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-scanning/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
-[api_reference_doc]: https://aka.ms/azsdk/net/docs/ref/translator
-[product_documentation]: https://docs.microsoft.com/en-us/azure/cognitive-services/translator/
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java
+[product_documentation]: https://azure.microsoft.com/services/purview/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md#defaultazurecredential
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

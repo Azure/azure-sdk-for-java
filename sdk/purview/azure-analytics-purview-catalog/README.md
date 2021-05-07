@@ -6,7 +6,7 @@ Azure Purview Catalog is a fully managed cloud service whose users can discover 
 - Browse associated technical, business, semantic, and operational metadata
 - Identify the sensitivity level of data.
 
-**Please rely heavily on the [service's documentation][catalog_product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
+**Please rely heavily on the [service's documentation][product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -89,11 +89,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [samples]: src/samples/java/com/azure/analytics/purview/catalog
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translatortext/azure-ai-translator/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translatortext/azure-ai-translator/src/samples/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
-[api_reference_doc]: https://aka.ms/azsdk/net/docs/ref/translator
-[product_documentation]: https://docs.microsoft.com/en-us/azure/cognitive-services/translator/
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java
+[product_documentation]: https://azure.microsoft.com/services/purview/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md#defaultazurecredential
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
