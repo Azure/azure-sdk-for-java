@@ -1802,6 +1802,16 @@ public final class EntityBaseClient {
                 .setHttpMethod(HttpMethod.GET);
     }
 
+    /**
+     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
+     *
+     * @return a DynamicRequest where customizations can be made before sent to the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DynamicRequest invoke() {
+        return new DynamicRequest(serializer, httpPipeline);
+    }
+
     private String serializeIterable(Iterable<?> iterable, CollectionFormat format) {
         if (iterable == null) {
             return null;
