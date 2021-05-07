@@ -16,7 +16,6 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.springframework.util.StringUtils;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -28,7 +27,8 @@ import java.net.Socket;
 import java.security.KeyStore;
 import java.security.Security;
 import java.security.cert.X509Certificate;
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,20 +38,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
 public class ServerSocketTest {
 
-    public static void putEnvironmentPropertyToSystemProperty(String key) {
-        Optional.of(key)
-                .map(System::getenv)
-                .filter(StringUtils::hasText)
-                .ifPresent(value -> {
-                    if (key.equals("AZURE_KEYVAULT_URI")) {
-                        System.getProperties().put(
-                            key.toLowerCase().replaceAll("_", "."), value);
-                    } else {
-                        int index = key.lastIndexOf("_");
-                        StringBuilder sb = new StringBuilder(key.toLowerCase().replaceAll("_", "."));
-                        System.getProperties().put(sb.replace(index, index + 1, "-").toString(), value);
-                    }
-                });
+    public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
+        key.forEach(
+            environmentPropertyKey -> {
+                String value = System.getenv(environmentPropertyKey);
+                if (value != null) {
+                    String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
+                        "azure.keyvault.").replaceAll("_", "-");
+                    System.getProperties().put(systemPropertyKey, value);
+                }
+            }
+        );
     }
 
     /**
@@ -76,11 +73,13 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT_ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_SECRET");
+        putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "azure.keyvault.aad-authentication-url",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
@@ -183,11 +182,13 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT_ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_SECRET");
+        putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "azure.keyvault.aad-authentication-url",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),

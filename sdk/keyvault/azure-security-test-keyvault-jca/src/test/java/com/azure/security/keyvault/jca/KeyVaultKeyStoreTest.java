@@ -6,15 +6,15 @@ package com.azure.security.keyvault.jca;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Base64;
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,20 +54,17 @@ public class KeyVaultKeyStoreTest {
 
     private String certificateName;
 
-    public static void putEnvironmentPropertyToSystemProperty(String key) {
-        Optional.of(key)
-                .map(System::getenv)
-                .filter(StringUtils::hasText)
-                .ifPresent(value -> {
-                    if (key.equals("AZURE_KEYVAULT_URI")) {
-                        System.getProperties().put(
-                            key.toLowerCase().replaceAll("_", "."), value);
-                    } else {
-                        int index = key.lastIndexOf("_");
-                        StringBuilder sb = new StringBuilder(key.toLowerCase().replaceAll("_", "."));
-                        System.getProperties().put(sb.replace(index, index + 1, "-").toString(), value);
-                    }
-                });
+    public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
+        key.forEach(
+            environmentPropertyKey -> {
+                String value = System.getenv(environmentPropertyKey);
+                if (value != null) {
+                    String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
+                        "azure.keyvault.").replaceAll("_", "-");
+                    System.getProperties().put(systemPropertyKey, value);
+                }
+            }
+        );
     }
 
     @BeforeEach
@@ -78,11 +75,13 @@ public class KeyVaultKeyStoreTest {
             System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_URI");
-        putEnvironmentPropertyToSystemProperty("azure.keyvault.aad-authentication-url");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_TENANT_ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_ID");
-        putEnvironmentPropertyToSystemProperty("AZURE_KEYVAULT_CLIENT_SECRET");
+        putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "azure.keyvault.aad-authentication-url",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
         keystore = new KeyVaultKeyStore();
         keystore.engineLoad(parameter);
     }
