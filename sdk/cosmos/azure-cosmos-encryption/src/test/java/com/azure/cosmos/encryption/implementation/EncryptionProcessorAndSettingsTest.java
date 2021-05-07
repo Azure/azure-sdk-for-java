@@ -201,18 +201,4 @@ public class EncryptionProcessorAndSettingsTest {
         return new CosmosClientEncryptionKeyProperties("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, key, metadata);
     }
-
-    private static TokenCredential getTokenCredential(Properties properties) {
-        String clientId = "4b890807-1d72-4369-a21c-238ad285e3ed";
-        String tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
-        String clientSecret = "xNto~R28uF_6~F3E8ZW6ftE22p.lCrmf56";
-        ClientSecretCredential credentials = new ClientSecretCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .clientSecret(clientSecret)
-            .build();
-
-        // TODO: implement certificate base sample
-        return credentials;
-    }
 }

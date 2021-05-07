@@ -60,9 +60,6 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
-        CloudConfig:
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          Cloud: Public
         AdditionalParameters:
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
