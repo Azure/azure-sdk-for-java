@@ -524,7 +524,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def blobName = generateBlobName()
         def containerName = cc.getBlobContainerName()
 
-        CloudStorageAccount v8Account = CloudStorageAccount.parse(connectionString)
+        CloudStorageAccount v8Account = CloudStorageAccount.parse(env.primaryAccount.connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
         CloudBlobContainer container = blobClient.getContainerReference(containerName)
         CloudBlockBlob v8EncryptBlob = container.getBlockBlobReference(blobName)
@@ -565,7 +565,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
                 .blobName(blobName)
                 .buildEncryptedBlobAsyncClient()
 
-        CloudStorageAccount v8Account = CloudStorageAccount.parse(connectionString)
+        CloudStorageAccount v8Account = CloudStorageAccount.parse(env.primaryAccount.connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
         CloudBlobContainer container = blobClient.getContainerReference(containerName)
         container.createIfNotExists()

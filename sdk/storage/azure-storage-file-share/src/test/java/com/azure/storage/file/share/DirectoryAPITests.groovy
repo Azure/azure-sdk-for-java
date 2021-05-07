@@ -37,7 +37,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -49,7 +49,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -64,7 +64,7 @@ class DirectoryAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, directoryPath, shareSnapshotInfo.getSnapshot())
-        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString), snapshotEndpoint)
+        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getDirectoryUrl() == snapshotEndpoint

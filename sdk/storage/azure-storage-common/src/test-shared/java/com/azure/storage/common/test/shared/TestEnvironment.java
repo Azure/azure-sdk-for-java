@@ -16,27 +16,21 @@ public class TestEnvironment {
 
     private final TestAccount primaryAccount;
     private final TestAccount secondaryAccount;
-    private final TestAccount blobAccount;
     private final TestAccount managedDiskAccount;
     private final TestAccount premiumAccount;
     private final TestAccount versionedAccount;
     private final TestAccount dataLakeAccount;
-    private final TestAccount fileAccount;
     private final TestAccount premiumFileAccount;
-    private final TestAccount queueAccount;
 
     public TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
         this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
         this.secondaryAccount = readTestAccountFromEnvironment("SECONDARY_STORAGE_", this.testMode);
-        this.blobAccount = readTestAccountFromEnvironment("BLOB_STORAGE_", this.testMode);
         this.managedDiskAccount = readTestAccountFromEnvironment("MANAGED_DISK_STORAGE_", this.testMode);
         this.premiumAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_", this.testMode);
         this.versionedAccount = readTestAccountFromEnvironment("VERSIONED_STORAGE_", this.testMode);
         this.dataLakeAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_", this.testMode);
-        this.fileAccount = readTestAccountFromEnvironment("AZURE_STORAGE_FILE_", this.testMode);
         this.premiumFileAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_FILE_", this.testMode);
-        this.queueAccount = readTestAccountFromEnvironment("AZURE_STORAGE_QUEUE_", this.testMode);
     }
 
     private static TestMode readTestModeFromEnvironment() {
@@ -99,10 +93,6 @@ public class TestEnvironment {
         return versionedAccount;
     }
 
-    public TestAccount getBlobAccount() {
-        return blobAccount;
-    }
-
     public TestAccount getManagedDiskAccount() {
         return managedDiskAccount;
     }
@@ -111,15 +101,7 @@ public class TestEnvironment {
         return dataLakeAccount;
     }
 
-    public TestAccount getFileAccount() {
-        return fileAccount;
-    }
-
     public TestAccount getPremiumFileAccount() {
         return premiumFileAccount;
-    }
-
-    public TestAccount getQueueAccount() {
-        return queueAccount;
     }
 }

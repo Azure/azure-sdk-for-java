@@ -68,7 +68,7 @@ class FileAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -80,7 +80,7 @@ class FileAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -95,7 +95,7 @@ class FileAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, filePath, shareSnapshotInfo.getSnapshot())
-        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString), snapshotEndpoint)
+        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getFileUrl() == snapshotEndpoint
@@ -281,7 +281,7 @@ class FileAPITests extends APISpec {
     def "Upload data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            env.fileAccount.credential,
+            env.primaryAccount.credential,
             primaryFileClient.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -418,7 +418,7 @@ class FileAPITests extends APISpec {
     def "Download file buffer copy"() {
         setup:
         def shareServiceClient = new ShareServiceClientBuilder()
-            .connectionString(env.fileAccount.connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .buildClient()
 
         def fileClient = shareServiceClient.getShareClient(shareName)
@@ -509,7 +509,7 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))

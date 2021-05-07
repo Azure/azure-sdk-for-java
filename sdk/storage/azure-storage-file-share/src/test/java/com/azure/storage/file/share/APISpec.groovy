@@ -64,8 +64,8 @@ class APISpec extends StorageSpec {
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
-        primaryFileServiceClient = setClient(env.fileAccount)
-        primaryFileServiceAsyncClient = setAsyncClient(env.fileAccount)
+        primaryFileServiceClient = setClient(env.primaryAccount)
+        primaryFileServiceAsyncClient = setAsyncClient(env.primaryAccount)
 
         premiumFileServiceClient = setClient(env.premiumFileAccount)
         premiumFileServiceAsyncClient = setAsyncClient(env.premiumFileAccount)
@@ -76,7 +76,7 @@ class APISpec extends StorageSpec {
      */
     def cleanup() {
         def cleanupFileServiceClient = new ShareServiceClientBuilder()
-            .connectionString(env.fileAccount.connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
             .buildClient()
@@ -145,7 +145,7 @@ class APISpec extends StorageSpec {
         ShareServiceClientBuilder shareServiceClientBuilder = new ShareServiceClientBuilder();
         shareServiceClientBuilder.addPolicy(getRecordPolicy())
         return shareServiceClientBuilder
-            .connectionString(env.fileAccount.connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .httpClient(getHttpClient())
     }
 
@@ -185,7 +185,7 @@ class APISpec extends StorageSpec {
     def shareBuilderHelper(final String shareName, final String snapshot) {
         ShareClientBuilder builder = new ShareClientBuilder()
         builder.addPolicy(getRecordPolicy())
-        return builder.connectionString(env.fileAccount.connectionString)
+        return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .snapshot(snapshot)
             .httpClient(getHttpClient())
@@ -194,7 +194,7 @@ class APISpec extends StorageSpec {
     def directoryBuilderHelper(final String shareName, final String directoryPath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
         builder.addPolicy(getRecordPolicy())
-        return builder.connectionString(env.fileAccount.connectionString)
+        return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(directoryPath)
             .httpClient(getHttpClient())
@@ -222,7 +222,7 @@ class APISpec extends StorageSpec {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
         builder.addPolicy(getRecordPolicy())
         return builder
-            .connectionString(env.fileAccount.connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(filePath)
             .httpClient(getHttpClient())

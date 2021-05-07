@@ -39,7 +39,7 @@ class APISpec extends StorageSpec {
         if (env.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
                 .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
-                .connectionString(env.queueAccount.connectionString)
+                .connectionString(env.primaryAccount.connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()),
                 null, Context.NONE).each {
@@ -51,7 +51,7 @@ class APISpec extends StorageSpec {
     def queueServiceBuilderHelper() {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
         return builder
-            .connectionString(env.queueAccount.connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
     }
@@ -60,7 +60,7 @@ class APISpec extends StorageSpec {
         def queueName = namer.getRandomName(60)
         QueueClientBuilder builder = new QueueClientBuilder()
         return builder
-            .connectionString(env.queueAccount.connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .queueName(queueName)
             .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
