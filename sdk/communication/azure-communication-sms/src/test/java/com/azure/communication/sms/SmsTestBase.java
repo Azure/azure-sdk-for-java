@@ -50,7 +50,7 @@ public class SmsTestBase extends TestBase {
         .get("TEST_PACKAGES_ENABLED", "all");
 
     private static final String SKIP_SMS_TEST = Configuration.getGlobalConfiguration()
-        .get("PHONE_NUMBER_SKIP_INT_SMS_TEST", "False");
+        .get("SKIP_INT_SMS_TEST", "False");
 
     protected static final String MESSAGE = "Hello";
 
