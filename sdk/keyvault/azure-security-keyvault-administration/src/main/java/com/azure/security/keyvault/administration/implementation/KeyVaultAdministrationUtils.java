@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.security.keyvault.administration.implementation.models.Error;
@@ -7,7 +10,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultAdministrationE
 /**
  * A class containing utility methods for the Azure Security Key Vault Administration library.
  */
-public class KeyVaultAdministrationUtils {
+public final class KeyVaultAdministrationUtils {
     private KeyVaultAdministrationUtils() {
         throw new UnsupportedOperationException("Cannot instantiate KeyVaultAdministrationUtils");
     }

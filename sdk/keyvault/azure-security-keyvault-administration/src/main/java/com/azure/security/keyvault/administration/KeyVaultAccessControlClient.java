@@ -122,6 +122,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @param options Object representing the configurable options to create or update a
      * {@link KeyVaultRoleDefinition role definition}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created or updated
      * {@link KeyVaultRoleDefinition}.
@@ -159,6 +160,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * retrieved {@link KeyVaultRoleDefinition}.
@@ -198,6 +200,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the deleted
      * {@link KeyVaultRoleDefinition}.

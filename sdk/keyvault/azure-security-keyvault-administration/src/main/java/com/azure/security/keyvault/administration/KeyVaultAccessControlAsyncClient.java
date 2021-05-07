@@ -456,7 +456,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * only supports '/'.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
      *
-8     * @return A {@link Mono} containing the deleted {@link KeyVaultRoleDefinition}.
+     * @return A {@link Mono} containing the deleted {@link KeyVaultRoleDefinition}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
      * be found or if the given {@code roleScope} is invalid.
