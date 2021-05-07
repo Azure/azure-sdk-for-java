@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public final class KeyVaultRoleDefinition {
     private final String id;
     private final String name;
-    private final KeyVaultRoleType type;
+    private final KeyVaultRoleDefinitionType roleDefinitionType;
     private final KeyVaultRoleDefinitionProperties properties;
 
     /**
@@ -20,15 +20,15 @@ public final class KeyVaultRoleDefinition {
      *
      * @param id The ID for this {@link KeyVaultRoleDefinition role definition}.
      * @param name The name for this {@link KeyVaultRoleDefinition role definition}.
-     * @param type The type for this {@link KeyVaultRoleDefinition role definition}.
+     * @param roleDefinitionType The roleDefinitionType for this {@link KeyVaultRoleDefinition role definition}.
      * @param properties {@link KeyVaultRoleDefinitionProperties properties} of this {@link KeyVaultRoleDefinition
      * role definition}.
      */
-    public KeyVaultRoleDefinition(String id, String name, KeyVaultRoleType type,
+    public KeyVaultRoleDefinition(String id, String name, KeyVaultRoleDefinitionType roleDefinitionType,
                                   KeyVaultRoleDefinitionProperties properties) {
         this.id = id;
         this.name = name;
-        this.type = type;
+        this.roleDefinitionType = roleDefinitionType;
         this.properties = properties;
     }
 
@@ -51,18 +51,18 @@ public final class KeyVaultRoleDefinition {
     }
 
     /**
-     * Get the {@link KeyVaultRoleDefinition role definition} type.
+     * Get the {@link KeyVaultRoleDefinitionType role definition type}.
      *
-     * @return The {@link KeyVaultRoleDefinition role definition} type.
+     * @return The {@link KeyVaultRoleDefinitionType role definition type}.
      */
-    public KeyVaultRoleType getType() {
-        return type;
+    public KeyVaultRoleDefinitionType getRoleDefinitionType() {
+        return roleDefinitionType;
     }
 
     /**
-     * Get the {@link KeyVaultRoleDefinition role definition} {@link KeyVaultRoleDefinitionProperties properties}.
+     * Get the {@link KeyVaultRoleDefinitionProperties role definition properties}.
      *
-     * @return The {@link KeyVaultRoleDefinition role definition} {@link KeyVaultRoleDefinitionProperties properties}.
+     * @return The {@link KeyVaultRoleDefinitionProperties role definition properties}.
      */
     public KeyVaultRoleDefinitionProperties getProperties() {
         return properties;

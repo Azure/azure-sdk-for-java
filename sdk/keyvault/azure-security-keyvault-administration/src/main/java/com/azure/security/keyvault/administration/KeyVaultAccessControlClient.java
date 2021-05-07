@@ -131,6 +131,84 @@ public final class KeyVaultAccessControlClient {
     }
 
     /**
+     * Gets a {@link KeyVaultRoleDefinition}.
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
+     * @param roleDefinitionName The name used of the {@link KeyVaultRoleDefinition}.
+     *
+     * @return The retrieved {@link KeyVaultRoleDefinition}.
+     *
+     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultRoleDefinition getRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
+        return asyncClient.getRoleDefinition(roleScope, roleDefinitionName).block();
+    }
+
+    /**
+     * Gets a {@link KeyVaultRoleDefinition}.
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the
+     * retrieved {@link KeyVaultRoleDefinition}.
+     *
+     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultRoleDefinition> getRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
+                                                                          String roleDefinitionName, Context context) {
+        return asyncClient.getRoleDefinitionWithResponse(roleScope, roleDefinitionName, context).block();
+    }
+
+    /**
+     * Deletes a {@link KeyVaultRoleDefinition}.
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}. Managed HSM
+     * only supports '/'.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     *
+     * @return The deleted {@link KeyVaultRoleDefinition}.
+     *
+     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultRoleDefinition deleteRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
+        return asyncClient.deleteRoleDefinition(roleScope, roleDefinitionName).block();
+    }
+
+    /**
+     * Deletes a {@link KeyVaultRoleDefinition}.
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the deleted
+     * {@link KeyVaultRoleDefinition}.
+     *
+     * @throws KeyVaultErrorException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
+     * be found or if the given {@code roleScope} is invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultRoleDefinition> deleteRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
+                                                                             String roleDefinitionName,
+                                                                             Context context) {
+        return asyncClient.deleteRoleDefinitionWithResponse(roleScope, roleDefinitionName, context).block();
+    }
+
+    /**
      * Get all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
      * {@link KeyVaultRoleScope role scope} and above.
      *

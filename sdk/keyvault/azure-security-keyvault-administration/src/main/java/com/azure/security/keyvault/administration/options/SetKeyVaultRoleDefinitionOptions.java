@@ -68,9 +68,13 @@ public class SetKeyVaultRoleDefinitionOptions {
      * Set the role name.
      *
      * @param roleName The role name to set.
+     *
+     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
      */
-    public void setRoleName(String roleName) {
+    public SetKeyVaultRoleDefinitionOptions setRoleName(String roleName) {
         this.roleName = roleName;
+
+        return this;
     }
 
     /**
@@ -86,9 +90,13 @@ public class SetKeyVaultRoleDefinitionOptions {
      * Set the role description.
      *
      * @param description The role description to set.
+     *
+     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
      */
-    public void setDescription(String description) {
+    public SetKeyVaultRoleDefinitionOptions setDescription(String description) {
         this.description = description;
+
+        return this;
     }
 
     /**
@@ -104,9 +112,13 @@ public class SetKeyVaultRoleDefinitionOptions {
      * Set the {@link KeyVaultRoleType role type}.
      *
      * @param roleType The {@link KeyVaultRoleType role type} to set.
+     *
+     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
      */
-    public void setRoleType(KeyVaultRoleType roleType) {
+    public SetKeyVaultRoleDefinitionOptions setRoleType(KeyVaultRoleType roleType) {
         this.roleType = roleType;
+
+        return this;
     }
 
     /**
@@ -123,9 +135,13 @@ public class SetKeyVaultRoleDefinitionOptions {
      *
      * @param permissions The {@link KeyVaultRoleDefinition role definition}'s {@link KeyVaultPermission permissions}
      * to set.
+     *
+     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
      */
-    public void setPermissions(List<KeyVaultPermission> permissions) {
+    public SetKeyVaultRoleDefinitionOptions setPermissions(List<KeyVaultPermission> permissions) {
         this.permissions = permissions;
+
+        return this;
     }
 
     /**
@@ -141,8 +157,12 @@ public class SetKeyVaultRoleDefinitionOptions {
      * Set the {@link KeyVaultRoleDefinition role definition}'s assignable scopes.
      *
      * @param assignableScopes The {@link KeyVaultRoleDefinition role definition}'s assignable scopes to set.
+     *
+     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
      */
-    public void setAssignableScopes(List<KeyVaultRoleScope> assignableScopes) {
+    public SetKeyVaultRoleDefinitionOptions setAssignableScopes(List<KeyVaultRoleScope> assignableScopes) {
         this.assignableScopes = assignableScopes;
+
+        return this;
     }
 }

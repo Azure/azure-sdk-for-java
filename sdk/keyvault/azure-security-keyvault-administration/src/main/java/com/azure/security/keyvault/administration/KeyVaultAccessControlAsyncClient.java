@@ -36,6 +36,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionProperties;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 import com.azure.security.keyvault.administration.options.SetKeyVaultRoleDefinitionOptions;
@@ -302,25 +303,40 @@ public final class KeyVaultAccessControlAsyncClient {
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'options.getRoleDefinitionName()'"));
 
+        RoleType roleType =
+            (options.getRoleType() == null) ? null : RoleType.fromString(options.getRoleType().toString());
+
+        List<RoleScope> assignableScopes = null;
+
+        if (options.getAssignableScopes() != null) {
+            assignableScopes = options.getAssignableScopes().stream()
+                .map(keyVaultRoleScope -> RoleScope.fromString(keyVaultRoleScope.toString()))
+                .collect(Collectors.toList());
+        }
+
+        List<Permission> permissions = null;
+
+        if (options.getPermissions() != null) {
+            permissions = options.getPermissions().stream()
+                .map(keyVaultPermission -> new Permission()
+                    .setActions(keyVaultPermission.getAllowedActions())
+                    .setNotActions(keyVaultPermission.getNotActions())
+                    .setDataActions(keyVaultPermission.getAllowedDataActions().stream()
+                        .map(allowedDataAction -> DataAction.fromString(allowedDataAction.toString()))
+                        .collect(Collectors.toList()))
+                    .setNotDataActions(keyVaultPermission.getNotDataActions().stream()
+                        .map(notDataAction -> DataAction.fromString(notDataAction.toString()))
+                        .collect(Collectors.toList())))
+                .collect(Collectors.toList());
+        }
+
         RoleDefinitionProperties roleDefinitionProperties =
             new RoleDefinitionProperties()
                 .setRoleName(options.getRoleDefinitionName())
-                .setRoleType(RoleType.fromString(options.getRoleType().toString()))
-                .setAssignableScopes(options.getAssignableScopes().stream()
-                    .map(keyVaultRoleScope -> RoleScope.fromString(keyVaultRoleScope.toString()))
-                    .collect(Collectors.toList()))
+                .setRoleType(roleType)
+                .setAssignableScopes(assignableScopes)
                 .setDescription(options.getDescription())
-                .setPermissions(options.getPermissions().stream()
-                    .map(keyVaultPermission -> new Permission()
-                        .setActions(keyVaultPermission.getAllowedActions())
-                        .setNotActions(keyVaultPermission.getNotActions())
-                        .setDataActions(keyVaultPermission.getAllowedDataActions().stream()
-                            .map(allowedDataAction -> DataAction.fromString(allowedDataAction.toString()))
-                            .collect(Collectors.toList()))
-                        .setNotDataActions(keyVaultPermission.getNotDataActions().stream()
-                            .map(notDataAction -> DataAction.fromString(notDataAction.toString()))
-                            .collect(Collectors.toList())))
-                    .collect(Collectors.toList()));
+                .setPermissions(permissions);
         RoleDefinitionCreateParameters parameters =
             new RoleDefinitionCreateParameters()
                 .setProperties(roleDefinitionProperties);
@@ -419,7 +435,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * only supports '/'.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
      *
-     * @return A {@link Mono} containing the {@link KeyVaultRoleDefinition}.
+8     * @return A {@link Mono} containing the deleted {@link KeyVaultRoleDefinition}.
      *
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
@@ -435,7 +451,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the deleted
      * {@link KeyVaultRoleDefinition}.
      *
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
@@ -454,7 +470,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the deleted
      * {@link KeyVaultRoleDefinition}.
      *
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
@@ -871,7 +887,7 @@ public final class KeyVaultAccessControlAsyncClient {
         }
 
         return new KeyVaultRoleDefinition(roleDefinition.getId(), roleDefinition.getName(),
-            KeyVaultRoleType.fromString(roleDefinition.getType().toString()),
+            KeyVaultRoleDefinitionType.fromString(roleDefinition.getType().toString()),
             new KeyVaultRoleDefinitionProperties(roleDefinition.getRoleName(), roleDefinition.getDescription(),
                 KeyVaultRoleType.fromString(roleDefinition.getRoleType().toString()), keyVaultPermissions,
                 roleDefinition.getAssignableScopes().stream()
