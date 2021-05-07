@@ -1048,7 +1048,8 @@ public class ShareFileClient {
      * @return The {@link ShareFileUploadInfo file upload info}
      */
     public ShareFileUploadInfo upload(InputStream data, long length, ParallelTransferOptions transferOptions) {
-        return uploadWithResponse(new ShareFileUploadOptions(data, length), null, Context.NONE).getValue();
+        return uploadWithResponse(new ShareFileUploadOptions(data, length).setParallelTransferOptions(transferOptions),
+            null, Context.NONE).getValue();
     }
 
     /**

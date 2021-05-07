@@ -6,6 +6,7 @@ package com.azure.storage.file.share
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
+import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
@@ -382,7 +383,47 @@ class FileAPITests extends APISpec {
 
     }
 
+    @Unroll
+    def "Buffered upload various partitions"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length))
 
+        when:
+        primaryFileClient.upload(data, length, new ParallelTransferOptions()
+            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength))
+
+        then:
+        notThrown(Exception)
+
+        where:
+        length            | uploadChunkLength
+        1024              | null
+        1024              | 1024
+        1024              | 256
+        4 * Constants.MB  | null
+        4 * Constants.MB  | 1024
+        20 * Constants.MB | null
+        20 * Constants.MB | 4 * Constants.MB
+    }
+
+    @Unroll
+    def "Buffered upload error partition too big"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length))
+
+        when:
+        primaryFileClient.upload(data, length, new ParallelTransferOptions()
+            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength))
+
+        then:
+        thrown(Exception)
+
+        where:
+        length            | uploadChunkLength
+        20 * Constants.MB | 20 * Constants.MB
+    }
 
     def "Upload data error"() {
         when:
