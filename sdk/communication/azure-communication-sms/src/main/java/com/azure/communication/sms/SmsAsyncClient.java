@@ -18,10 +18,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import java.time.Instant;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -153,7 +155,11 @@ public final class SmsAsyncClient {
         SendMessageRequest request = new SendMessageRequest();
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
         for (String s : smsRecipient) {
-            recipients.add(new SmsRecipient().setTo(s));
+            SmsRecipient recipient = new SmsRecipient();
+            recipient.setTo(s);
+            recipient.setRepeatabilityRequestId(UUID.randomUUID().toString());
+            recipient.setRepeatabilityFirstSent(Instant.now().toString());
+            recipients.add(recipient);
         }
         request.setFrom(from)
             .setSmsRecipients(recipients)
