@@ -1,6 +1,6 @@
 ## Generate autorest code
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f26f6b7fa8a774c505b138d34b861b3d9bd7d07c/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/0.1-preview/confidentialledger.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2020-12-01-preview/confidentialledger.json
 java: true
 output-folder: ../
 namespace: com.azure.data.confidentialledger
