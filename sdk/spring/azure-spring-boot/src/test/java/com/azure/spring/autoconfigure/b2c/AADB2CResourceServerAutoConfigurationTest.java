@@ -28,8 +28,6 @@ import static org.mockito.Mockito.verify;
 
 public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfiguration {
 
-    private final WebApplicationContextRunner notAvailableContextRunner;
-
     private final WebApplicationContextRunner resourceServerContextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
         .withConfiguration(AutoConfigurations.of(WebResourceServerApp.class,
@@ -38,12 +36,6 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
 
     public AADB2CResourceServerAutoConfigurationTest() {
         contextRunner = new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class,
-                AADB2CResourceServerAutoConfiguration.class))
-            .withPropertyValues(getB2CResourceServerProperties());
-
-        notAvailableContextRunner = new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(new ClassPathResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME)))
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class,
                 AADB2CResourceServerAutoConfiguration.class))
             .withPropertyValues(getB2CResourceServerProperties());
@@ -127,12 +119,12 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
                 spy(AADB2CConditions.ClientRegistrationCondition.class);
             beanUtils.when(() -> BeanUtils.instantiateClass(AADB2CConditions.ClientRegistrationCondition.class))
                      .thenReturn(clientRegistrationCondition);
-            this.contextRunner.withPropertyValues(getAuthorizationClientPropertyValues())
-                              .run(c -> {
-                                  Assertions.assertTrue(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
-                                  verify(clientRegistrationCondition, atLeastOnce())
-                                      .getMatchOutcome(any(), any());
-                              });
+            this.contextRunner
+                .withPropertyValues(getAuthorizationClientPropertyValues())
+                .run(c -> {
+                    Assertions.assertTrue(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
+                    verify(clientRegistrationCondition, atLeastOnce()).getMatchOutcome(any(), any());
+                });
         }
     }
 
@@ -143,12 +135,16 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
                 mock(AADB2CConditions.ClientRegistrationCondition.class);
             beanUtils.when(() -> BeanUtils.instantiateClass(AADB2CConditions.ClientRegistrationCondition.class))
                      .thenReturn(clientRegistrationCondition);
-            this.notAvailableContextRunner.withPropertyValues(getAuthorizationClientPropertyValues())
-                                          .run(c -> {
-                                              Assertions.assertFalse(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
-                                              verify(clientRegistrationCondition, never())
-                                                  .getMatchOutcome(any(), any());
-                                          });
+            new WebApplicationContextRunner()
+                .withClassLoader(new FilteredClassLoader(new ClassPathResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME)))
+                .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class,
+                    AADB2CResourceServerAutoConfiguration.class))
+                .withPropertyValues(getB2CResourceServerProperties())
+                .withPropertyValues(getAuthorizationClientPropertyValues())
+                .run(c -> {
+                    Assertions.assertFalse(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
+                    verify(clientRegistrationCondition, never()).getMatchOutcome(any(), any());
+                });
         }
     }
 }

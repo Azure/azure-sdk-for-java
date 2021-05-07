@@ -29,18 +29,10 @@ import static org.mockito.Mockito.verify;
 
 public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfiguration {
 
-    private final WebApplicationContextRunner notAvailableContextRunner;
-
     public AADB2CAutoConfigurationTest() {
         contextRunner = new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class, AADB2CAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withPropertyValues(getWebappCommonPropertyValues());
-
-        notAvailableContextRunner = new WebApplicationContextRunner() //spy(WebApplicationContextRunner.class)
-            .withClassLoader(new FilteredClassLoader(new ClassPathResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME)))
-            .withConfiguration(AutoConfigurations.of(WebResourceServerApp.class,
-                AADB2CResourceServerAutoConfiguration.class))
             .withPropertyValues(getWebappCommonPropertyValues());
     }
 
@@ -122,11 +114,12 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
                      .thenReturn(userFlowCondition);
             beanUtils.when(() -> BeanUtils.instantiateClass(AADB2CConditions.ClientRegistrationCondition.class))
                      .thenReturn(clientRegistrationCondition);
-            this.contextRunner.run(c -> {
-                Assertions.assertTrue(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
-                verify(userFlowCondition, atLeastOnce()).getMatchOutcome(any(), any());
-                verify(clientRegistrationCondition, atLeastOnce()).getMatchOutcome(any(), any());
-            });
+            this.contextRunner
+                .run(c -> {
+                    Assertions.assertTrue(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
+                    verify(userFlowCondition, atLeastOnce()).getMatchOutcome(any(), any());
+                    verify(clientRegistrationCondition, atLeastOnce()).getMatchOutcome(any(), any());
+                });
         }
     }
 
@@ -140,11 +133,16 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
                      .thenReturn(userFlowCondition);
             beanUtils.when(() -> BeanUtils.instantiateClass(AADB2CConditions.ClientRegistrationCondition.class))
                      .thenReturn(clientRegistrationCondition);
-            this.notAvailableContextRunner.run(c -> {
-                Assertions.assertFalse(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
-                verify(userFlowCondition, never()).getMatchOutcome(any(), any());
-                verify(clientRegistrationCondition, never()).getMatchOutcome(any(), any());
-            });
+            new WebApplicationContextRunner()
+                .withClassLoader(new FilteredClassLoader(new ClassPathResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME)))
+                .withConfiguration(AutoConfigurations.of(WebResourceServerApp.class,
+                    AADB2CResourceServerAutoConfiguration.class))
+                .withPropertyValues(getWebappCommonPropertyValues())
+                .run(c -> {
+                    Assertions.assertFalse(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
+                    verify(userFlowCondition, never()).getMatchOutcome(any(), any());
+                    verify(clientRegistrationCondition, never()).getMatchOutcome(any(), any());
+                });
         }
     }
 }
