@@ -13,13 +13,14 @@ import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
-import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
 import com.azure.storage.file.datalake.models.LeaseStateType
@@ -462,6 +463,20 @@ class APISpec extends StorageSpec {
         } else {
             return leaseID
         }
+    }
+
+    def enableSoftDelete() {
+        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
+            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(true).setDays(2)))
+
+        sleepIfRecord(30000)
+    }
+
+    def disableSoftDelete() {
+        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
+            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(false)))
+
+        sleepIfRecord(30000)
     }
 
     /**

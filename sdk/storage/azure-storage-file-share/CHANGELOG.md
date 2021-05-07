@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.10.0-beta.1 (Unreleased)
-
+- Added support for the 2020-08-04 service version.
+- Added back ability to create a ShareLeaseClient for a Share or Share Snapshot.
 
 ## 12.9.0 (2021-04-29)
 - ShareLeaseClient now updates it's leaseID through a lease change.
