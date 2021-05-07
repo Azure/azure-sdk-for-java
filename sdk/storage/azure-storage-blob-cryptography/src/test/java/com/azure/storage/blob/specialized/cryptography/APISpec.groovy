@@ -112,12 +112,6 @@ class APISpec extends StorageSpec {
         connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
     }
 
-    // TODO (kasobol-msft) remove this after migration
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
     static boolean liveMode() {
         return ENVIRONMENT.testMode == TestMode.LIVE
     }
