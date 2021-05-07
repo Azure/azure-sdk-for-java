@@ -186,7 +186,7 @@ class ServiceAPITest extends APISpec {
     @ResourceLock("ServiceProperties")
     def "Set props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(env.dataLakeAccount.credential, "https://error.blob.core.windows.net")
             .setProperties(new DataLakeServiceProperties())
 
         then:
@@ -202,7 +202,7 @@ class ServiceAPITest extends APISpec {
     @ResourceLock("ServiceProperties")
     def "Get props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(env.dataLakeAccount.credential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
