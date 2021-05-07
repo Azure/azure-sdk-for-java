@@ -372,6 +372,7 @@ class ServiceBusReceiveLinkProcessorTest {
      */
     @Test
     void noSubscribers() {
+        Thread.sleep(1000);
         // Arrange
         final Subscription subscription = mock(Subscription.class);
 
