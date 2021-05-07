@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Objects;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
@@ -56,12 +57,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the list of aliases.
      */
-    private static List<String> aliases;
+    private List<String> aliases;
 
     /**
      * Stores the certificates by alias.
      */
-    private static final HashMap<String, Certificate> CERTIFICATES = new HashMap<>();
+    private static final Map<String, Certificate> CERTIFICATES = new HashMap<>();
 
     /**
      * Stores the certificate keys by alias.
@@ -111,14 +112,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         KeyVaultKeyStore.keyVaultClient = keyVaultClient;
     }
 
-    private static void setAliases(List<String> aliases) {
-        KeyVaultKeyStore.aliases = aliases;
-    }
-
     /**
      * refresh certificate and KeyVaultTrustManager trustManager
      */
     public static void refreshCertificate() {
+
+        List<String> aliases = keyVaultClient.getAliases();
         Optional.ofNullable(aliases)
                 .orElse(Collections.emptyList())
                 .forEach(alias -> {
@@ -134,7 +133,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Enumeration<String> engineAliases() {
         if (aliases == null) {
-            setAliases(keyVaultClient.getAliases());
+            aliases = keyVaultClient.getAliases();
         }
         return Collections.enumeration(aliases);
     }
@@ -166,7 +165,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             if (certificate != null) {
                 CERTIFICATES.put(alias, certificate);
                 if (aliases == null) {
-                    setAliases(keyVaultClient.getAliases());
+                    aliases = keyVaultClient.getAliases();
                 }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
@@ -181,7 +180,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String alias = null;
         if (cert != null) {
             if (aliases == null) {
-                setAliases(keyVaultClient.getAliases());
+                aliases = keyVaultClient.getAliases();
             }
             for (String candidateAlias : aliases) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
@@ -199,7 +198,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (alias == null && cert != null && refresh) {
             refreshCertificate();
             if (aliases == null) {
-                setAliases(keyVaultClient.getAliases());
+                aliases = keyVaultClient.getAliases();
             }
             for (String candidateAlias : aliases) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
@@ -243,7 +242,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             if (key != null) {
                 CERTIFICATE_KEYS.put(alias, key);
                 if (aliases == null) {
-                    setAliases(keyVaultClient.getAliases());
+                    aliases = keyVaultClient.getAliases();
                 }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
@@ -256,7 +255,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         if (aliases == null) {
-            setAliases(keyVaultClient.getAliases());
+            aliases = keyVaultClient.getAliases();
         }
         return aliases.contains(alias);
     }
@@ -296,7 +295,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (aliases == null) {
-            setAliases(keyVaultClient.getAliases());
+            aliases = keyVaultClient.getAliases();
         }
         if (!aliases.contains(alias)) {
             aliases.add(alias);

@@ -7,8 +7,9 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
@@ -16,14 +17,14 @@ import static java.util.logging.Level.WARNING;
 /**
  * Class to provide functions for keyVault certificates
  */
-public class KeyVaultCertificateFunctions {
+public class KeyVaultCertificateTools {
 
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificateFunctions.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificateTools.class.getName());
 
-    private static Timer timer;
+    private static ScheduledExecutorService timer;
 
     /**
      * auto refresh certificate by user set Interval time
@@ -35,21 +36,17 @@ public class KeyVaultCertificateFunctions {
             synchronized (KeyVaultKeyStore.class) {
                 if (timer != null) {
                     try {
-                        timer.cancel();
-                        timer.purge();
+                        timer.shutdown();
                     } catch (RuntimeException runtimeException) {
                         LOGGER.log(WARNING, "Error of terminating Timer", runtimeException);
                     }
                 }
-                timer = new Timer(true);
-                final TimerTask task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        KeyVaultKeyStore.refreshCertificate();
-                        KeyVaultTrustManager.refreshTrustManagerByKeyStore();
-                    }
-                };
-                timer.scheduleAtFixedRate(task, refreshInterval, refreshInterval);
+                timer = Executors.newSingleThreadScheduledExecutor();
+
+                timer.schedule(() -> {
+                    KeyVaultKeyStore.refreshCertificate();
+                    KeyVaultTrustManager.refreshTrustManagerByKeyStore();
+                }, refreshInterval, TimeUnit.MILLISECONDS);
             }
         }
     }

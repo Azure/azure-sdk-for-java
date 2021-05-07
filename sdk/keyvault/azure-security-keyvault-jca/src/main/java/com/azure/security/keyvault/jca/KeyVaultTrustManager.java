@@ -80,8 +80,8 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             TrustManagerFactory factory = TrustManagerFactory.getInstance("PKIX", "SunJSSE");
             factory.init(keyStore);
             trustManager = (X509TrustManager) factory.getTrustManagers()[0];
-        } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException e) {
-            e.printStackTrace();
+        } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException ex) {
+            LOGGER.log(WARNING, "Unable to get the keyvault keystore.", ex);
         }
 
     }

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Disabled
-public class KeyVaultCertificationFunctionTest {
+public class KeyVaultCertificationToolTest {
 
     /**
      * Stores the CER test certificate (which is valid til 2120).
@@ -49,7 +49,7 @@ public class KeyVaultCertificationFunctionTest {
     @Test
     public void testGetKeyStore() throws Exception {
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        KeyStore keyStore = KeyVaultCertificateFunctions.getKeyStore();
+        KeyStore keyStore = KeyVaultCertificateTools.getKeyStore();
         assertNotNull(keyStore.getCertificate("myalias"));
         assertTrue(keyStore.containsAlias("myalias"));
         X509Certificate certificate;
@@ -69,7 +69,7 @@ public class KeyVaultCertificationFunctionTest {
     @Test
     public void testRefreshKeyStore() throws Exception {
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        KeyStore keyStore = KeyVaultCertificateFunctions.getKeyStore();
+        KeyStore keyStore = KeyVaultCertificateTools.getKeyStore();
         X509Certificate certificate;
         try {
             byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
@@ -88,7 +88,7 @@ public class KeyVaultCertificationFunctionTest {
     @Test
     public void testStartRefreshKeyStore() throws Exception {
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        KeyStore keyStore = KeyVaultCertificateFunctions.getKeyStore();
+        KeyStore keyStore = KeyVaultCertificateTools.getKeyStore();
         X509Certificate certificate;
         try {
             byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
@@ -100,7 +100,7 @@ public class KeyVaultCertificationFunctionTest {
         assertNotNull(keyStore.getCertificate("myalias"));
         keyStore.deleteEntry("myalias");
         keyStore.setCertificateEntry("myalias", certificate);
-        KeyVaultCertificateFunctions.startRefresh(30000);
+        KeyVaultCertificateTools.startRefresh(30000);
         Thread.sleep(60000);
         assertNull(keyStore.getCertificateAlias(certificate));
     }
