@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad;
+package com.azure.spring.autoconfigure.b2c;
 
 
+import com.azure.spring.aad.AADJwtDecoderProviderConfiguration;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
@@ -25,9 +26,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Selecting key candidates for processing a signed JWT which provides access to the JWT claims set in addition to the
  * JWS header.
  */
-public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
+public class AADB2CIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
-    private final AADTrustedIssuerRepository trustedIssuers;
+    private final AADB2CTrustedIssuerRepository trustedIssuers;
 
     private final int connectTimeout;
 
@@ -37,8 +38,8 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
-    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuers, int connectTimeout,
-                                   int readTimeout, int sizeLimit) {
+    public AADB2CIssuerJWSKeySelector(AADB2CTrustedIssuerRepository trustedIssuers, int connectTimeout,
+                                      int readTimeout, int sizeLimit) {
         this.trustedIssuers = trustedIssuers;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
@@ -57,8 +58,10 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     }
 
     private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
-        Map<String, Object> configurationForOidcIssuerLocation = AADJwtDecoderProviderConfiguration
-            .getConfigurationForOidcIssuerLocation(trustedIssuers.getWellKnownBaseUri(issuer));
+        Map<String, Object> configurationForOidcIssuerLocation =
+            AADJwtDecoderProviderConfiguration.getConfigurationForOidcIssuerLocation(
+                trustedIssuers.getSpecialWellKnownIssMap().get(issuer) == null ? issuer
+                    : trustedIssuers.getSpecialWellKnownIssMap().get(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
         DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
             sizeLimit);

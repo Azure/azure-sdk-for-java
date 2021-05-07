@@ -44,6 +44,15 @@ public class AADResourceServerConfiguration {
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
 
+    @Autowired
+    private AADTrustedIssuerRepository aadTrustedIssuerRepository;
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AADTrustedIssuerRepository trustedIssuerRepository() {
+        return new AADTrustedIssuerRepository(aadAuthenticationProperties.getTenantId());
+    }
+
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
@@ -64,16 +73,16 @@ public class AADResourceServerConfiguration {
     public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
+        if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId())) {
+        if (StringUtils.hasText(aadAuthenticationProperties.getClientId())) {
             validAudiences.add(aadAuthenticationProperties.getClientId());
         }
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtIssuerValidator());
+        validators.add(new AADJwtIssuerValidator(aadTrustedIssuerRepository));
         validators.add(new JwtTimestampValidator());
         return validators;
     }

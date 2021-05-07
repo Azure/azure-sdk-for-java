@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.aad.AADIssuerJWSKeySelector;
-import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -11,6 +9,7 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -50,17 +49,20 @@ public class AADB2CResourceServerAutoConfiguration {
         this.properties = properties;
     }
 
+    @Autowired
+    private AADB2CTrustedIssuerRepository aadb2CTrustedIssuerRepository;
+
     @Bean
     @ConditionalOnMissingBean
-    public AADTrustedIssuerRepository trustedIssuerRepository() {
-        return new AADTrustedIssuerRepository(properties.getTenantId());
+    public AADB2CTrustedIssuerRepository trustedIssuerRepository() {
+        return new AADB2CTrustedIssuerRepository(properties);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
-        AADTrustedIssuerRepository trustedIssuerRepository) {
-        return new AADIssuerJWSKeySelector(trustedIssuerRepository, properties.getJwtConnectTimeout(),
+        AADB2CTrustedIssuerRepository aadb2CTrustedIssuerRepository) {
+        return new AADB2CIssuerJWSKeySelector(aadb2CTrustedIssuerRepository, properties.getJwtConnectTimeout(),
             properties.getJwtReadTimeout(), properties.getJwtSizeLimit());
     }
 
@@ -88,6 +90,7 @@ public class AADB2CResourceServerAutoConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
+        validators.add(new AADJwtIssuerValidator(aadb2CTrustedIssuerRepository));
         validators.add(new JwtTimestampValidator());
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return decoder;

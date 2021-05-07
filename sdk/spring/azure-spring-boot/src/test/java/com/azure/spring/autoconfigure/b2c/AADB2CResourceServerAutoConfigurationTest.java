@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.aad.AADIssuerJWSKeySelector;
-import com.azure.spring.aad.AADTrustedIssuerRepository;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
+import com.nimbusds.jwt.proc.JWTProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -13,6 +15,9 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestConfiguration {
 
@@ -31,9 +36,12 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
 
     private String[] getB2CResourceServerProperties() {
         return new String[] {
+            String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
             String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
             String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
-            String.format("%s=%s", AADB2CConstants.APP_ID_URI, AADB2CConstants.TEST_APP_ID_URI)
+            String.format("%s=%s", AADB2CConstants.APP_ID_URI, AADB2CConstants.TEST_APP_ID_URI),
+            String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS, AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN,
+                AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
         };
     }
 
@@ -59,8 +67,8 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
     private ContextConsumer<ApplicationContext> b2CResourceServerBean() {
         return (c) -> {
             final JwtDecoder jwtDecoder = c.getBean(JwtDecoder.class);
-            final AADIssuerJWSKeySelector jwsKeySelector = c.getBean(AADIssuerJWSKeySelector.class);
-            final AADTrustedIssuerRepository issuerRepository = c.getBean(AADTrustedIssuerRepository.class);
+            final AADB2CIssuerJWSKeySelector jwsKeySelector = c.getBean(AADB2CIssuerJWSKeySelector.class);
+            final AADB2CTrustedIssuerRepository issuerRepository = c.getBean(AADB2CTrustedIssuerRepository.class);
             Assertions.assertNotNull(jwtDecoder);
             Assertions.assertNotNull(jwsKeySelector);
             Assertions.assertNotNull(issuerRepository);
@@ -98,5 +106,55 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
     @Test
     public void testB2COnlyResourceServerBean() {
         this.resourceServerContextRunner.run(b2CResourceServerBean());
+    }
+
+    @Test
+    public void testExistAADB2CTrustedIssuerRepositoryBean() {
+        this.contextRunner
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withUserConfiguration(AADB2CResourceServerAutoConfiguration.class)
+            .run(context -> {
+                final AADB2CTrustedIssuerRepository aadb2CTrustedIssuerRepository =
+                    context.getBean(AADB2CTrustedIssuerRepository.class);
+                assertThat(aadb2CTrustedIssuerRepository).isNotNull();
+                assertThat(aadb2CTrustedIssuerRepository).isExactlyInstanceOf(AADB2CTrustedIssuerRepository.class);
+            });
+    }
+
+    @Test
+    public void testExistjwtProcessorBean() {
+        this.contextRunner
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withUserConfiguration(AADB2CResourceServerAutoConfiguration.class)
+            .run(context -> {
+                JWTProcessor<SecurityContext> jwtProcessor = context.getBean(JWTProcessor.class);
+                assertThat(jwtProcessor).isNotNull();
+                assertThat(jwtProcessor).isExactlyInstanceOf(DefaultJWTProcessor.class);
+            });
+    }
+
+    @Test
+    public void testExistJwtDecoderBean() {
+        this.contextRunner
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withUserConfiguration(AADB2CResourceServerAutoConfiguration.class)
+            .run(context -> {
+                final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                assertThat(jwtDecoder).isNotNull();
+                assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
+            });
+    }
+
+    @Test
+    public void testExistJWTClaimsSetAwareJWSKeySelectorBean() {
+        this.contextRunner
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withUserConfiguration(AADB2CResourceServerAutoConfiguration.class)
+            .run(context -> {
+                final JWTClaimsSetAwareJWSKeySelector jwsKeySelector =
+                    context.getBean(JWTClaimsSetAwareJWSKeySelector.class);
+                assertThat(jwsKeySelector).isNotNull();
+                assertThat(jwsKeySelector).isExactlyInstanceOf(AADB2CIssuerJWSKeySelector.class);
+            });
     }
 }

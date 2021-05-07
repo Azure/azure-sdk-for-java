@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi.validator;
 
+import com.azure.spring.aad.webapi.AADTrustedIssuerRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import org.junit.Test;
@@ -16,13 +17,14 @@ public class AADJwtIssuerValidatorTest {
 
     final AADAuthenticationProperties aadAuthenticationProperties = mock(AADAuthenticationProperties.class);
     final Jwt jwt = mock(Jwt.class);
+    AADTrustedIssuerRepository aadTrustedIssuerRepository = new AADTrustedIssuerRepository("fake-tenant-id");
 
     @Test
     public void testIssuerSuccessVerify() {
         when(aadAuthenticationProperties.getTenantId()).thenReturn("fake-tenant-id");
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
 
-        AADJwtIssuerValidator validator = new AADJwtIssuerValidator();
+        AADJwtIssuerValidator validator = new AADJwtIssuerValidator(aadTrustedIssuerRepository);
         OAuth2TokenValidatorResult result = validator.validate(jwt);
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isEmpty();
@@ -33,7 +35,7 @@ public class AADJwtIssuerValidatorTest {
         when(aadAuthenticationProperties.getTenantId()).thenReturn("common");
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
 
-        AADJwtIssuerValidator validator = new AADJwtIssuerValidator();
+        AADJwtIssuerValidator validator = new AADJwtIssuerValidator(aadTrustedIssuerRepository);
         OAuth2TokenValidatorResult result = validator.validate(jwt);
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isNotEmpty();

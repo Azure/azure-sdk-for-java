@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi.validator;
 
+import com.azure.spring.aad.webapi.AADTrustedIssuerRepository;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
@@ -14,16 +15,15 @@ import java.util.function.Predicate;
  * Validates the "iss" claim in a {@link Jwt}, that is matches a configured value
  */
 public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
-    private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
-    private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
-    private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
     private final AADJwtClaimValidator<String> validator;
+    private AADTrustedIssuerRepository trustedIssuerRepository;
 
     /**
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public AADJwtIssuerValidator() {
+    public AADJwtIssuerValidator(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
+        this.trustedIssuerRepository = aadTrustedIssuerRepository;
         this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, validIssuer());
     }
 
@@ -32,9 +32,7 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
             if (iss == null) {
                 return false;
             }
-            return iss.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-                || iss.startsWith(STS_WINDOWS_ISSUER)
-                || iss.startsWith(STS_CHINA_CLOUD_API_ISSUER);
+            return trustedIssuerRepository.getTrustedIssuers().contains(iss);
         };
     }
 
