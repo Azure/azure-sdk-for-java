@@ -1,11 +1,11 @@
-# Azure Video Analyzer Edge client library for Java 
+# Azure Video Analyzer Edge client library for Java
 
-Azure Video Analytics on IoT Edge provides a platform to build intelligent video applications that span the edge and the cloud. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services in the cloud or the edge. It is designed to be an extensible platform, enabling you to connect different video analysis edge modules (such as Cognitive services containers, custom edge modules built by you with open-source machine learning models or custom models trained with your own data) to it and use them to analyze live video without worrying about the complexity of building and running a live video pipeline.
+Azure Video Analyzer on IoT Edge provides a platform to build intelligent video applications that span the edge and the cloud. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services in the cloud or the edge. It is designed to be an extensible platform, enabling you to connect different video analysis edge modules (such as Cognitive services containers, custom edge modules built by you with open-source machine learning models or custom models trained with your own data) to it and use them to analyze live video without worrying about the complexity of building and running a live video pipeline.
 
-Use the client library for Azure Video Analytics to:
+Use the client library for Video Analyzer on IoT Edge to:
 
 - Simplify interactions with the [Microsoft Azure IoT SDKs](https://github.com/azure/azure-iot-sdks)
-- Programatically construct media graph topologies and instances
+- Programmatically construct pipeline topologies and live pipelines
 
 [Product documentation][doc_product] | [Direct methods][doc_direct_methods] | [Source code][source]
 
@@ -13,13 +13,14 @@ Use the client library for Azure Video Analytics to:
 
 ### Install the package
 
-Install the Live Video Analytics client library for Java with Maven
+Install the Live Video Analytics client library for Java with [Maven](maven_source):
 
 ### Prerequisites
 
-- A Java Development Kit, version 8 or later.
-- You need an active [Azure subscription][azure_sub], and a [IoT device connection string][iot_device_connection_string] to use this package.
+- A [Java Development Kit](jdk8), version 8 or later.
+- You need an active [Azure subscription][azure_sub] and a [IoT device connection string][iot_device_connection_string] to use this package.
 - To interact with Azure IoT Hub you will need to add their dependency to your `pom.xml`
+
  ```xml
 <dependency>
   <groupId>com.microsoft.azure.sdk.iot</groupId>
@@ -27,22 +28,22 @@ Install the Live Video Analytics client library for Java with Maven
   <version>1.28.0</version> <!-- {x-version-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
 </dependency>
 ```
-  
-- You will need to use the version of the SDK that corresponds to the version of the LVA Edge module you are using.
 
-  | SDK     | LVA Edge Module |
-    | ------- | --------------- |
+- You will need to use the version of the SDK that corresponds to the version of the Video Analyzer Edge module you are using.
+
+  | SDK     | Video Analyzer Edge Module |
+      | ------- | --------------- |
   | 1.0.0b1 | 1.0             |
 
 ### Creating a pipeline topology and making requests
 
-Please visit the [Examples](#examples) for starter code
+Please visit the [Examples](#examples) for starter code.
 
 ## Key concepts
 
 ### Pipeline Topology vs Pipeline Instance
 
-A _pipeline topology_ is a blueprint or template of a graph. It defines the parameters of the graph using placeholders as values for them. A _live instance_ references a pipeline topology and specifies the parameters. This way you are able to have multiple graph instances referencing the same topology but with different values for parameters. For more information please visit [Pipeline topologies and instances][doc_media_pipeline]
+A _pipeline topology_ is a blueprint or template for instantiating live pipelines. It defines the parameters of the pipeline using placeholders as values for them. A _live pipeline_ references a pipeline topology and specifies the parameters. This way you are able to have multiple live pipelines referencing the same topology but with different values for parameters. For more information please visit [pipeline topologies and live pipelines][doc_pipelines].
 
 ## Examples
 
@@ -50,7 +51,7 @@ A _pipeline topology_ is a blueprint or template of a graph. It defines the para
 
 To create a pipeline topology you need to define parameters, sources, and sinks.
 
-```
+```java
 private static PipelineTopology buildPipeLineTopology() {
         IotHubMessageSource msgSource = new IotHubMessageSource("iotMsgSource")
             .setHubInputName("${hubSourceInput}");
@@ -101,11 +102,11 @@ private static PipelineTopology buildPipeLineTopology() {
     }
 ```
 
-### Creating a live pipeline instance
+### Creating a live pipeline
 
 To create a live pipeline instance, you need to have an existing pipeline topology.
 
-```
+```java
 private static LivePipeline buildLivePipeline() {
     ParameterDefinition hubParam = new ParameterDefinition("hubSinkOutputName")
         .setValue("testHubOutput");
@@ -130,7 +131,7 @@ private static LivePipeline buildLivePipeline() {
 
 ### Invoking a pipeline method request
 
-```
+```java
 private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String methodName, String payload) throws IOException, IotHubException {
     MethodResult result = null;
     try {
@@ -182,11 +183,16 @@ additional questions or comments.
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+
 [package]: TODO://link-to-published-package
-[source]: TODO://link-to-source-repo
-[doc_direct_methods]: https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/direct-methods
-[doc_product]: https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/
+
+[source]: https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/videoanalyzer/
+
+[doc_direct_methods]: TODO
+[doc_product]: TODO
+[doc_pipeline]: TODO
+[iot_device_connection_string]: TODO
+
 [iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
-[iot_device_connection_string]: https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/get-started-detect-motion-emit-events-quickstart
-[github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
+[github-page-issues]: https://github.com/Azure/azure-sdk-for-python/issues
