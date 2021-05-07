@@ -465,20 +465,6 @@ class APISpec extends StorageSpec {
         }
     }
 
-    def enableSoftDelete() {
-        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
-            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(true).setDays(2)))
-
-        sleepIfRecord(30000)
-    }
-
-    def disableSoftDelete() {
-        primaryDataLakeServiceClient.setProperties(new DataLakeServiceProperties()
-            .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(false)))
-
-        sleepIfRecord(30000)
-    }
-
     /**
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
