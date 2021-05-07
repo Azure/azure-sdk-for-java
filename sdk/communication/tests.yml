@@ -22,7 +22,7 @@ stages:
           - $(sub-config-communication-services-cloud-test-resources-common)
           - $(sub-config-communication-services-cloud-test-resources-java)
       Int:
-        SubscriptionConfiguration:
+        SubscriptionConfigurations:
           - $(sub-config-communication-int-test-resources-common)
           - $(sub-config-communication-int-test-resources-java)
     Clouds: Int
