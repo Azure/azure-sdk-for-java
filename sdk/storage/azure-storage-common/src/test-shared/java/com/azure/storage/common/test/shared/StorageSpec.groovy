@@ -11,30 +11,24 @@ import com.azure.core.test.TestMode
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
-    protected static final TestEnvironment ENVIRONMENT = new TestEnvironment();
+    private static final TestEnvironment ENVIRONMENT = new TestEnvironment();
 
-    private String testName
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
 
     def setup() {
-        testName = getTestName()
-        if (shouldUseThisToRecord()) {
-            interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-            namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
-        }
+        def testName = getTestName()
+        interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
+        namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
         System.out.printf("========================= %s =========================%n", testName)
     }
 
     def cleanup() {
-        if (shouldUseThisToRecord()) {
-            interceptorManager.close()
-        }
+        interceptorManager.close()
     }
 
-    // TODO (kasobol-msft) Remove this when all modules are migrated.
-    protected shouldUseThisToRecord() {
-        return false
+    protected static TestEnvironment getEnv() {
+        return ENVIRONMENT
     }
 
     protected StorageResourceNamer getNamer() {

@@ -2,6 +2,11 @@
 
 ## 1.0.3-beta.1 (Unreleased)
 
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to more recent releases.
+- Updated non-Azure SDK dependency versions to align with the versions Azure SDK uses.
+
 ## 1.0.2 (2021-02-25)
 
 ### Dependency Updates

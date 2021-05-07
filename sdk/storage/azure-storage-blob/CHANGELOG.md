@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.12.0-beta.1 (Unreleased)
-
+- Added support for the 2020-08-04 service version.
 
 ## 12.11.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 

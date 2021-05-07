@@ -242,7 +242,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
             this.resource = "filesystem";
         }
         if (version == null) {
-            this.version = "2020-02-10";
+            this.version = "2020-06-12";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

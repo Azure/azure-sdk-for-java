@@ -35,7 +35,7 @@ class CPKNTest extends APISpec {
 
         builder = getContainerClientBuilder(cc.getBlobContainerUrl())
             .addPolicy(getRecordPolicy())
-            .credential(primaryCredential)
+            .credential(env.primaryAccount.credential)
 
         cpknContainer = builder.encryptionScope(es).buildClient()
 
@@ -150,7 +150,7 @@ class CPKNTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         def response = cpknAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
@@ -201,7 +201,7 @@ class CPKNTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
 
         def response = cpknPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),

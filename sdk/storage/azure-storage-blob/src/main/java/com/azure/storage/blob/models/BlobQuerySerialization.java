@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.storage.blob.models;
-
+// TODO (gapra): add parquet to inputs when parquet is released
 /**
  * Defines the input and output serialization for a blob quick query request.
  * either {@link BlobQueryJsonSerialization}, {@link BlobQueryDelimitedSerialization}, or

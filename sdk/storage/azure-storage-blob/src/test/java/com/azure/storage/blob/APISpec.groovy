@@ -36,6 +36,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.test.shared.StorageSpec
+import com.azure.storage.common.test.shared.TestAccount
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -106,60 +107,36 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
-
-    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
-    static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
-    static def BLOB_STORAGE = "BLOB_STORAGE_"
-    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
-    /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
-     acquire so we do not run them in the nightly live run tests. */
-    static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
-    static def VERSIONED_STORAGE = "VERSIONED_STORAGE_"
-
-    protected static StorageSharedKeyCredential primaryCredential
-    static StorageSharedKeyCredential alternateCredential
-    static StorageSharedKeyCredential blobCredential
-    static StorageSharedKeyCredential premiumCredential
-    static StorageSharedKeyCredential managedDiskCredential
-    static StorageSharedKeyCredential versionedCredential
-
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
-    BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
     BlobServiceClient managedDiskServiceClient
     BlobServiceClient versionedBlobServiceClient
+    BlobServiceClient softDeleteServiceClient
 
     boolean recordLiveMode
     String containerName
 
     def setupSpec() {
-        primaryCredential = getCredential(PRIMARY_STORAGE)
-        alternateCredential = getCredential(SECONDARY_STORAGE)
-        blobCredential = getCredential(BLOB_STORAGE)
-        premiumCredential = getCredential(PREMIUM_STORAGE)
-        managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
-        versionedCredential = getCredential(VERSIONED_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", ENVIRONMENT.testMode))
+        System.out.println(String.format("--------%s---------", env.testMode))
     }
 
     def setup() {
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
 
-        primaryBlobServiceClient = setClient(primaryCredential)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
-        alternateBlobServiceClient = setClient(alternateCredential)
-        blobServiceClient = setClient(blobCredential)
-        premiumBlobServiceClient = setClient(premiumCredential)
-        managedDiskServiceClient = setClient(managedDiskCredential)
-        versionedBlobServiceClient = setClient(versionedCredential)
+        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
+        alternateBlobServiceClient = setClient(env.secondaryAccount)
+        premiumBlobServiceClient = setClient(env.premiumAccount)
+        managedDiskServiceClient = setClient(env.managedDiskAccount)
+        versionedBlobServiceClient = setClient(env.versionedAccount)
+        softDeleteServiceClient = setClient(env.softDeleteAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -167,15 +144,9 @@ class APISpec extends StorageSpec {
         cc.create()
     }
 
-    // TODO (kasobol-msft) remove this after migration.
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
     def cleanup() {
-        def cleanupClient = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
+        def cleanupClient = getServiceClientBuilder(env.primaryAccount.credential,
+            env.primaryAccount.blobEndpoint, null)
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
             .buildClient()
 
@@ -196,36 +167,16 @@ class APISpec extends StorageSpec {
     }
 
     static boolean liveMode() {
-        return ENVIRONMENT.testMode == TestMode.LIVE
+        return env.testMode == TestMode.LIVE
     }
 
     static boolean playbackMode() {
-        return ENVIRONMENT.testMode == TestMode.PLAYBACK
+        return env.testMode == TestMode.PLAYBACK
     }
 
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
-        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            accountName = "azstoragesdkaccount"
-            accountKey = "astorageaccountkey"
-        }
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
-
-    BlobServiceClient setClient(StorageSharedKeyCredential credential) {
+    BlobServiceClient setClient(TestAccount account) {
         try {
-            return getServiceClient(credential)
+            return getServiceClient(account.credential, account.blobEndpoint)
         } catch (Exception ignore) {
             return null
         }
@@ -233,29 +184,25 @@ class APISpec extends StorageSpec {
 
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .endpoint(env.primaryAccount.blobEndpoint)
             .httpClient(getHttpClient())
 
         return setOauthCredentials(builder).buildClient()
     }
 
     def setOauthCredentials(BlobServiceClientBuilder builder) {
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             builder.addPolicy(getRecordPolicy())
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build())
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(primaryCredential)
+            return builder.credential(env.primaryAccount.credential)
         }
     }
 
     BlobServiceClient getServiceClient(String endpoint) {
         return getServiceClient(null, endpoint, null)
-    }
-
-    BlobServiceClient getServiceClient(StorageSharedKeyCredential credential) {
-        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
@@ -271,8 +218,8 @@ class APISpec extends StorageSpec {
         return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
     }
 
-    BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
-        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
+    BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
+        return getServiceClientBuilder(account.credential, account.blobEndpoint)
             .buildAsyncClient()
     }
 
@@ -319,8 +266,8 @@ class APISpec extends StorageSpec {
     BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
         int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 20)
         retryTimeout = Math.max(60, retryTimeout)
-        return getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        return getServiceClientBuilder(env.primaryAccount.credential,
+            env.primaryAccount.blobEndpoint)
         .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
             .buildAsyncClient()
     }
@@ -766,23 +713,9 @@ class APISpec extends StorageSpec {
             response.getValue().getContentType() == contentType
     }
 
-    def enableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2)))
-
-        sleepIfRecord(30000)
-    }
-
-    def disableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(false)))
-
-        sleepIfRecord(30000)
-    }
-
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -891,7 +824,7 @@ class APISpec extends StorageSpec {
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {
