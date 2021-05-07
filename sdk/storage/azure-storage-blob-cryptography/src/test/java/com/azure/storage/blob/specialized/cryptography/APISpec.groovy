@@ -67,8 +67,6 @@ class APISpec extends StorageSpec {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
 
-    // TODO (kasobol-msft) get rid of this.
-    static String connectionString
     private boolean recordLiveMode
 
     // Fields used for conveniently creating blobs with data.
@@ -93,7 +91,6 @@ class APISpec extends StorageSpec {
     def setup() {
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
-        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
     }
 
     static boolean liveMode() {

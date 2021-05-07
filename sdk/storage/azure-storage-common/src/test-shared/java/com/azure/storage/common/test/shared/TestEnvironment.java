@@ -23,7 +23,6 @@ public class TestEnvironment {
     private final TestAccount dataLakeAccount;
     private final TestAccount fileAccount;
     private final TestAccount premiumFileAccount;
-    private final TestAccount queueAccount;
 
     public TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
@@ -36,7 +35,6 @@ public class TestEnvironment {
         this.dataLakeAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_", this.testMode);
         this.fileAccount = readTestAccountFromEnvironment("AZURE_STORAGE_FILE_", this.testMode);
         this.premiumFileAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_FILE_", this.testMode);
-        this.queueAccount = readTestAccountFromEnvironment("AZURE_STORAGE_QUEUE_", this.testMode);
     }
 
     private static TestMode readTestModeFromEnvironment() {
@@ -117,9 +115,5 @@ public class TestEnvironment {
 
     public TestAccount getPremiumFileAccount() {
         return premiumFileAccount;
-    }
-
-    public TestAccount getQueueAccount() {
-        return queueAccount;
     }
 }

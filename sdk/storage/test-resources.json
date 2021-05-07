@@ -472,18 +472,6 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumFileAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "AZURE_STORAGE_QUEUE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('primaryAccountName')]"
-        },
-        "AZURE_STORAGE_QUEUE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "AZURE_STORAGE_QUEUE_ENDPOINT": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
-        },
         "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
             "type": "string",
             "value": "[variables('dataLakeAccountName')]"
@@ -492,16 +480,7 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-
-        "AZURE_STORAGE_BLOB_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
-        },
         "AZURE_STORAGE_FILE_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
-        },
-        "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
         },
