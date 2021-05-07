@@ -231,9 +231,9 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies that we can get subsequent AMQP links when the first one is closed.
      */
     @Test
-    void newLinkOnClose() throws InterruptedException {
+    void newLinkOnClose() {
         // Arrange
-        final Duration shortWait = Duration.ofSeconds(5);
+        final int count = 4;
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
 
@@ -262,7 +262,7 @@ class ServiceBusReceiveLinkProcessorTest {
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
         // Act & Assert
-        StepVerifier.create(processor)
+        StepVerifier.create(processor.take(count))
             .then(() -> messagePublisher.next(message1))
             .expectNext(message1)
             .then(() -> {
@@ -279,11 +279,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .then(() -> {
                 processor.cancel();
             })
-            .thenAwait(shortWait)
-            .expectComplete()
-            .verify(shortWait);
-
-        TimeUnit.SECONDS.sleep(shortWait.getSeconds());
+            .verifyComplete();
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
