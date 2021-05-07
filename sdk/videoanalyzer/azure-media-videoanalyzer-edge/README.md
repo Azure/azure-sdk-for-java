@@ -17,7 +17,7 @@ Install the Live Video Analytics client library for Java with [Maven](maven_sour
 
 ### Prerequisites
 
-- A [Java Development Kit](jdk8), version 8 or later.
+- A Java Development Kit, version 8 or later.
 - You need an active [Azure subscription][azure_sub] and a [IoT device connection string][iot_device_connection_string] to use this package.
 - To interact with Azure IoT Hub you will need to add their dependency to your `pom.xml`
 
@@ -183,15 +183,16 @@ additional questions or comments.
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[maven_source]: TODO://link-to-maven-source
 
 [package]: TODO://link-to-published-package
 
 [source]: https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/videoanalyzer/
 
-[doc_direct_methods]: TODO
-[doc_product]: TODO
-[doc_pipeline]: TODO
-[iot_device_connection_string]: TODO
+[doc_direct_methods]: TODO://link
+[doc_product]: TODO://link
+[doc_pipeline]: TODO://link
+[iot_device_connection_string]: TODO://link
 
 [iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
