@@ -21,6 +21,8 @@ public class TestEnvironment {
     private final TestAccount versionedAccount;
     private final TestAccount dataLakeAccount;
     private final TestAccount premiumFileAccount;
+    private final TestAccount softDeleteAccount;
+    private final TestAccount dataLakeSoftDeleteAccount;
 
     public TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
@@ -31,6 +33,8 @@ public class TestEnvironment {
         this.versionedAccount = readTestAccountFromEnvironment("VERSIONED_STORAGE_", this.testMode);
         this.dataLakeAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_", this.testMode);
         this.premiumFileAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_FILE_", this.testMode);
+        this.softDeleteAccount = readTestAccountFromEnvironment("SOFT_DELETE_STORAGE_", this.testMode);
+        this.dataLakeSoftDeleteAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_SOFT_DELETE_", this.testMode);
     }
 
     private static TestMode readTestModeFromEnvironment() {
@@ -103,5 +107,13 @@ public class TestEnvironment {
 
     public TestAccount getPremiumFileAccount() {
         return premiumFileAccount;
+    }
+
+    public TestAccount getSoftDeleteAccount() {
+        return softDeleteAccount;
+    }
+
+    public TestAccount getDataLakeSoftDeleteAccount() {
+        return dataLakeSoftDeleteAccount;
     }
 }

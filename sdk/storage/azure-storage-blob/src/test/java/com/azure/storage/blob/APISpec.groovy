@@ -113,6 +113,7 @@ class APISpec extends StorageSpec {
     BlobServiceClient premiumBlobServiceClient
     BlobServiceClient managedDiskServiceClient
     BlobServiceClient versionedBlobServiceClient
+    BlobServiceClient softDeleteServiceClient
 
     boolean recordLiveMode
     String containerName
@@ -135,6 +136,7 @@ class APISpec extends StorageSpec {
         premiumBlobServiceClient = setClient(env.premiumAccount)
         managedDiskServiceClient = setClient(env.managedDiskAccount)
         versionedBlobServiceClient = setClient(env.versionedAccount)
+        softDeleteServiceClient = setClient(env.softDeleteAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -709,20 +711,6 @@ class APISpec extends StorageSpec {
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMd5() == contentMD5 &&
             response.getValue().getContentType() == contentType
-    }
-
-    def enableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2)))
-
-        sleepIfRecord(30000)
-    }
-
-    def disableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(false)))
-
-        sleepIfRecord(30000)
     }
 
     // Only sleep if test is running in live mode
