@@ -194,7 +194,7 @@ public class ServiceBusProcessorTest {
      */
     @Test
     public void testErrorRecovery() throws InterruptedException {
-
+        Thread.sleep(1000);
         List<ServiceBusMessageContext> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -204,6 +204,7 @@ public class ServiceBusProcessorTest {
                 new ServiceBusMessageContext(serviceBusReceivedMessage);
             messageList.add(serviceBusMessageContext);
         }
+        Thread.sleep(1000);
         final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
             (state, sink) -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -217,13 +218,13 @@ public class ServiceBusProcessorTest {
                 }
                 return state + 1;
             });
-
+        Thread.sleep(1000);
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
-
+        Thread.sleep(1000);
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(4));
-
+        Thread.sleep(1000);
         AtomicBoolean assertionFailed = new AtomicBoolean();
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
             messageContext -> {
@@ -238,7 +239,7 @@ public class ServiceBusProcessorTest {
             },
             error -> { /* ignored */ },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
-
+        Thread.sleep(1000);
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.get().await(20, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
