@@ -464,6 +464,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeContentWithSelectionMarks(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizeContentAppearance(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     // Content - URL
 
     @Test
@@ -730,12 +733,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 });
             } else if (ID.equals(prebuiltType)) {
                 assertTrue(actualForm.getFormType().startsWith("prebuilt:idDocument"));
-                ID_DOCUMENT_FIELDS.forEach(idDocumentField -> {
+                ID_DOCUMENT_FIELDS.forEach(identityDocumentField -> {
                     final Map<String, FormField> actualRecognizedDocumentFields = actualForm.getFields();
-                    Map<String, FieldValue> expectedIDDocumentFields = rawDocumentResult.getFields();
+                    Map<String, FieldValue> expectedIdentityDocumentFields = rawDocumentResult.getFields();
 
-                    validateFieldValueTransforms(expectedIDDocumentFields.get(idDocumentField),
-                        actualRecognizedDocumentFields.get(idDocumentField),
+                    validateFieldValueTransforms(expectedIdentityDocumentFields.get(identityDocumentField),
+                        actualRecognizedDocumentFields.get(identityDocumentField),
                         rawReadResults,
                         includeFieldElements);
                 });

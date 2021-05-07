@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.spark.BulkWriter.MaxNumberOfThreadsPerCPUCore
+import com.azure.cosmos.spark.BulkWriter.DefaultMaxPendingOperationPerCore
 import com.azure.cosmos.{BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.Disposable
@@ -34,8 +34,8 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   // TODO: moderakh this requires tuning.
   // TODO: moderakh should we do a max on the max memory to ensure we don't run out of memory?
-  private val maxConcurrency = writeConfig.maxConcurrencyOpt
-    .getOrElse(SparkUtils.getNumberOfHostCPUCores * MaxNumberOfThreadsPerCPUCore)
+  private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
+    .getOrElse(SparkUtils.getNumberOfHostCPUCores * DefaultMaxPendingOperationPerCore)
 
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
@@ -57,7 +57,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   // TODO: moderakh once that is added in the core SDK, drop activeOperations and rely on the core SDK
   // context passing for bulk
   private val activeOperations = new TrieMap[CosmosItemOperation, OperationContext]()
-  private val semaphore = new Semaphore(maxConcurrency)
+  private val semaphore = new Semaphore(maxPendingOperations)
 
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
@@ -220,7 +220,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
         assume(activeTasks.get() == 0)
         assume(activeOperations.isEmpty)
-        assume(semaphore.availablePermits() == maxConcurrency)
+        assume(semaphore.availablePermits() == maxPendingOperations)
 
         logInfo(s"flushAndClose completed with no error. " +
           s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, totalScheduled=${totalScheduledMetrics}")
@@ -286,7 +286,7 @@ private object BulkWriter {
   // hence we want 2MB/ 1KB items per partition to be buffered
   // 2 * 1024 * 167 items should get buffered on a 16 CPU core VM
   // so per CPU core we want (2 * 1024 * 167 / 16) max items to be buffered
-  val MaxNumberOfThreadsPerCPUCore = 2 * 1024 * 167 / 16
+  val DefaultMaxPendingOperationPerCore = 2 * 1024 * 167 / 16
 
   val emitFailureHandler: EmitFailureHandler =
         (signalType, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false

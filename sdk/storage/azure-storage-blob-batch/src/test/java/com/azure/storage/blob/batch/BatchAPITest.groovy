@@ -225,7 +225,7 @@ class BatchAPITest extends APISpec {
         thrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
@@ -258,7 +258,7 @@ class BatchAPITest extends APISpec {
         notThrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
@@ -380,7 +380,7 @@ class BatchAPITest extends APISpec {
         thrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202
@@ -413,7 +413,7 @@ class BatchAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202
@@ -719,7 +719,7 @@ class BatchAPITest extends APISpec {
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
@@ -761,7 +761,7 @@ class BatchAPITest extends APISpec {
         def permissions = new AccountSasPermission() // No delete permission
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
@@ -955,12 +955,9 @@ class BatchAPITest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-        def sasValues = new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        def sasValues = new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
             .setCacheControl("cache")
             .setContentDisposition("disposition")
             .setContentEncoding("encoding")
@@ -1001,12 +998,9 @@ class BatchAPITest extends APISpec {
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
-        def sasValues = new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        def sasValues = new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
             .setCacheControl("cache")
             .setContentDisposition("disposition")
             .setContentEncoding("encoding")

@@ -209,6 +209,7 @@ public final class TextAnalyticsClientBuilder {
 
         final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
             .pipeline(pipeline)
             .buildClient();
 

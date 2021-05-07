@@ -20,7 +20,7 @@ public final class TagList {
     /*
      * List of tag attribute details
      */
-    @JsonProperty(value = "tags")
+    @JsonProperty(value = "tags", required = true)
     private List<TagAttributesBase> tagAttributeBases;
 
     /*

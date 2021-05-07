@@ -51,7 +51,7 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "false"
+      "spark.cosmos.read.inferSchema.enabled" -> "false"
     )
 
     val writeCfg = Map(
@@ -60,19 +60,19 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> targetContainer.getId,
       "spark.cosmos.write.strategy" -> "ItemOverwrite",
-      "spark.cosmos.write.bulkEnabled" -> "true",
+      "spark.cosmos.write.bulk.enabled" -> "true",
       "checkpointLocation" -> ("/tmp/" + testId + "/")
     )
 
     val changeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 
     val microBatchQuery = changeFeedDF
       .writeStream
-      .format("cosmos.items")
+      .format("cosmos.oltp")
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -107,14 +107,14 @@ class SparkE2EStructuredStreamingITest
 
     val secondChangeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 
     // new query reusing the same query name - so continuing where the first one left off
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
-      .format("cosmos.items")
+      .format("cosmos.oltp")
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
