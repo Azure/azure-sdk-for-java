@@ -47,7 +47,7 @@ class FileServiceAPITests extends APISpec {
 
     def "Get file service URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl()
@@ -380,7 +380,7 @@ class FileServiceAPITests extends APISpec {
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def serviceClient = getServiceClient(env.fileAccount.credential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
+        def serviceClient = getServiceClient(env.primaryAccount.credential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
 
         when:
         def response = serviceClient.getPropertiesWithResponse(null, null)

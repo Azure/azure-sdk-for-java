@@ -41,7 +41,7 @@ class ShareAsyncAPITests extends APISpec {
 
     def "Get share URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName)
         when:
         def shareURL = primaryShareAsyncClient.getShareUrl()
@@ -112,7 +112,7 @@ class ShareAsyncAPITests extends APISpec {
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.fileAccount.connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
@@ -138,7 +138,7 @@ class ShareAsyncAPITests extends APISpec {
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.fileAccount.connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())

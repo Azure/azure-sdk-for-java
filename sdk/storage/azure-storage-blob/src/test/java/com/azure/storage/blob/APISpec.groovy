@@ -110,7 +110,6 @@ class APISpec extends StorageSpec {
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
-    BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
     BlobServiceClient managedDiskServiceClient
     BlobServiceClient versionedBlobServiceClient
@@ -133,7 +132,6 @@ class APISpec extends StorageSpec {
         primaryBlobServiceClient = setClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
         alternateBlobServiceClient = setClient(env.secondaryAccount)
-        blobServiceClient = setClient(env.blobAccount)
         premiumBlobServiceClient = setClient(env.premiumAccount)
         managedDiskServiceClient = setClient(env.managedDiskAccount)
         versionedBlobServiceClient = setClient(env.versionedAccount)
