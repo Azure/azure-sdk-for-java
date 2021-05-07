@@ -1045,14 +1045,14 @@ class FileSystemAPITest extends APISpec {
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(1))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(1))
                 .setPermissions("r"))
         def identifier2 = new DataLakeSignedIdentifier()
             .setId("0001")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(2))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(2))
                 .setPermissions("w"))
         def ids = [identifier, identifier2] as List
 
@@ -1145,8 +1145,8 @@ class FileSystemAPITest extends APISpec {
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(1))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(1))
                 .setPermissions("r"))
         def ids = [identifier] as List
         fsc.setAccessPolicy(PublicAccessType.BLOB, ids)
@@ -1268,7 +1268,7 @@ class FileSystemAPITest extends APISpec {
 //    def "Rename sas"() {
 //        setup:
 //        def newName = generateFileSystemName()
-//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
 //        def sasClient = getFileSystemClient(sas, fsc.getFileSystemUrl())
 //
 //        when:

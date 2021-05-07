@@ -86,6 +86,12 @@
       <artifactId>spring-security-oauth2-jose</artifactId>
       <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-resource-server</artifactId>
+      <version>5.4.6</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -107,6 +113,7 @@
                 <include>org.springframework.security:spring-security-oauth2-client:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-core:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-core;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework.security:spring-security-web:[5.4.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
               </includes>
             </bannedDependencies>

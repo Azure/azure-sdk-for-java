@@ -66,13 +66,13 @@ class SparkE2EStructuredStreamingITest
 
     val changeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 
     val microBatchQuery = changeFeedDF
       .writeStream
-      .format("cosmos.items")
+      .format("cosmos.oltp")
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -107,14 +107,14 @@ class SparkE2EStructuredStreamingITest
 
     val secondChangeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 
     // new query reusing the same query name - so continuing where the first one left off
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
-      .format("cosmos.items")
+      .format("cosmos.oltp")
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")

@@ -1,6 +1,17 @@
 # Release History
 
 ## 3.1.0-beta.4 (Unreleased)
+### Breaking Changes
+- Renamed `ReadingOrder` model to `FormReadingOrder`.
+- Renamed the method names and the method parameters, using `identity` to replace `id` keyword in the identity documents recognition API.
+  For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
+- The model `TextAppearance` now includes the properties `styleName` and `styleConfidence` that were part of the `TextStyle` object.
+- Removed the model `TextStyle`.
+- Removed `V2_1_PREVIEW_1` and `V2_1_PREVIEW_2` but only support latest service beta API version `V2_1_PREVIEW_3`.
+
+### New features
+- Added `clientOptions()` and `getDefaultLogOptions()` methods to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
+- We are able to support multiple service API versions now: `V2_0` and `V2_1_PREVIEW_3`.
 
 ## 3.0.7 (2021-04-07)
 ### Dependency updates

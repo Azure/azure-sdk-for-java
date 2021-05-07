@@ -6,6 +6,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -54,7 +55,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "KeyVaultManagementCl")
     private interface PrivateLinkResourcesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}/privateLinkResources")
@@ -66,6 +67,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -101,6 +103,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -111,8 +114,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                             resourceGroupName,
                             vaultName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -148,6 +152,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByVault(
@@ -156,6 +161,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 resourceGroupName,
                 vaultName,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 

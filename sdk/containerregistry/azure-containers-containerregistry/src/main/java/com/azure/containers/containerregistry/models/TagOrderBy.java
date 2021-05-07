@@ -10,6 +10,9 @@ import java.util.Collection;
 
 /** Defines values for TagOrderBy. */
 public final class TagOrderBy extends ExpandableStringEnum<TagOrderBy> {
+    /** Static value none for TagOrderBy. */
+    public static final TagOrderBy NONE = fromString("none");
+
     /** Static value timedesc for TagOrderBy. */
     public static final TagOrderBy LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
 

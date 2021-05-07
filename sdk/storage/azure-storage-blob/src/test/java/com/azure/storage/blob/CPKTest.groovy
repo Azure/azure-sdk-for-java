@@ -28,12 +28,9 @@ class CPKTest extends APISpec {
         def builder = new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
+            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
             .credential(primaryCredential)
-
-        if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
 
         cpkContainer = builder.buildClient()
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
