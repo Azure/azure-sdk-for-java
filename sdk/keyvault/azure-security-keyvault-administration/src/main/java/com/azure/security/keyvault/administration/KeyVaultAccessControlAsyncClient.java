@@ -317,9 +317,6 @@ public final class KeyVaultAccessControlAsyncClient {
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'options.getRoleDefinitionName()'"));
 
-            RoleType roleType =
-                (options.getRoleType() == null) ? null : RoleType.fromString(options.getRoleType().toString());
-
             List<RoleScope> assignableScopes = null;
 
             if (options.getAssignableScopes() != null) {
@@ -347,7 +344,7 @@ public final class KeyVaultAccessControlAsyncClient {
             RoleDefinitionProperties roleDefinitionProperties =
                 new RoleDefinitionProperties()
                     .setRoleName(options.getRoleDefinitionName())
-                    .setRoleType(roleType)
+                    .setRoleType(RoleType.CUSTOM_ROLE)
                     .setAssignableScopes(assignableScopes)
                     .setDescription(options.getDescription())
                     .setPermissions(permissions);

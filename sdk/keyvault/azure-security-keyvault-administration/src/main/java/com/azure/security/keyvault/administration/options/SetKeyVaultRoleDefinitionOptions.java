@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class SetKeyVaultRoleDefinitionOptions {
     private final String roleDefinitionName;
     private String roleName;
     private String description;
-    private KeyVaultRoleType roleType;
     private List<KeyVaultPermission> permissions;
     private List<KeyVaultRoleScope> assignableScopes;
 
@@ -94,28 +92,6 @@ public class SetKeyVaultRoleDefinitionOptions {
      */
     public SetKeyVaultRoleDefinitionOptions setDescription(String description) {
         this.description = description;
-
-        return this;
-    }
-
-    /**
-     * Get the {@link KeyVaultRoleType role type}.
-     *
-     * @return The {@link KeyVaultRoleType role type}.
-     */
-    public KeyVaultRoleType getRoleType() {
-        return roleType;
-    }
-
-    /**
-     * Set the {@link KeyVaultRoleType role type}.
-     *
-     * @param roleType The {@link KeyVaultRoleType role type} to set.
-     *
-     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
-     */
-    public SetKeyVaultRoleDefinitionOptions setRoleType(KeyVaultRoleType roleType) {
-        this.roleType = roleType;
 
         return this;
     }

@@ -131,13 +131,6 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
             assignableScopes.add(KeyVaultRoleScope.GLOBAL);
             assignableScopes.add(KeyVaultRoleScope.KEYS);
 
-            SetKeyVaultRoleDefinitionOptions roleDefinitionOptions =
-                new SetKeyVaultRoleDefinitionOptions(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
-                    .setRoleName("Test Role")
-                    .setRoleType(KeyVaultRoleType.CUSTOM_ROLE)
-                    .setDescription("A role made for testing")
-                    .setAssignableScopes(assignableScopes);
-
             // Create a role definition to retrieve.
             createdRoleDefinition = asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName).block();
 
