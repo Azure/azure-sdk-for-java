@@ -75,7 +75,7 @@ public interface CertificateDescription {
          * The stage of the CertificateDescription definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithCertificate, DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -91,17 +91,15 @@ public interface CertificateDescription {
              */
             CertificateDescription create(Context context);
         }
-        /** The stage of the CertificateDescription definition allowing to specify certificate. */
-        interface WithCertificate {
+        /** The stage of the CertificateDescription definition allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the certificate property: base-64 representation of the X509 leaf certificate .cer file or just
-             * .pem file content..
+             * Specifies the properties property: The description of an X509 CA Certificate..
              *
-             * @param certificate base-64 representation of the X509 leaf certificate .cer file or just .pem file
-             *     content.
+             * @param properties The description of an X509 CA Certificate.
              * @return the next definition stage.
              */
-            WithCreate withCertificate(String certificate);
+            WithCreate withProperties(CertificateProperties properties);
         }
         /** The stage of the CertificateDescription definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -124,7 +122,7 @@ public interface CertificateDescription {
     CertificateDescription.Update update();
 
     /** The template for CertificateDescription update. */
-    interface Update extends UpdateStages.WithCertificate, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithProperties, UpdateStages.WithifMatch {
         /**
          * Executes the update request.
          *
@@ -142,20 +140,18 @@ public interface CertificateDescription {
     }
     /** The CertificateDescription update stages. */
     interface UpdateStages {
-        /** The stage of the CertificateDescription update allowing to specify certificate. */
-        interface WithCertificate {
+        /** The stage of the CertificateDescription update allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the certificate property: base-64 representation of the X509 leaf certificate .cer file or just
-             * .pem file content..
+             * Specifies the properties property: The description of an X509 CA Certificate..
              *
-             * @param certificate base-64 representation of the X509 leaf certificate .cer file or just .pem file
-             *     content.
+             * @param properties The description of an X509 CA Certificate.
              * @return the next definition stage.
              */
-            Update withCertificate(String certificate);
+            Update withProperties(CertificateProperties properties);
         }
         /** The stage of the CertificateDescription update allowing to specify ifMatch. */
-        interface WithIfMatch {
+        interface WithifMatch {
             /**
              * Specifies the ifMatch property: ETag of the Certificate. Do not specify for creating a brand new
              * certificate. Required to update an existing certificate..
@@ -164,7 +160,7 @@ public interface CertificateDescription {
              *     update an existing certificate.
              * @return the next definition stage.
              */
-            Update withIfMatch(String ifMatch);
+            Update ifMatch(String ifMatch);
         }
     }
     /**

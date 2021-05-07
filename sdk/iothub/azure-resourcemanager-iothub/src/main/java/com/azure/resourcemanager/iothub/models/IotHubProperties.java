@@ -38,6 +38,12 @@ public final class IotHubProperties {
     private List<IpFilterRule> ipFilterRules;
 
     /*
+     * Network Rule Set Properties of IotHub
+     */
+    @JsonProperty(value = "networkRuleSets")
+    private NetworkRuleSetProperties networkRuleSets;
+
+    /*
      * Specifies the minimum TLS version to support for this hub. Can be set to
      * "1.2" to have clients that use a TLS version below 1.2 to be rejected.
      */
@@ -120,10 +126,22 @@ public final class IotHubProperties {
     private String comments;
 
     /*
+     * The device streams properties of iothub.
+     */
+    @JsonProperty(value = "deviceStreams")
+    private IotHubPropertiesDeviceStreams deviceStreams;
+
+    /*
      * The capabilities and features enabled for the IoT hub.
      */
     @JsonProperty(value = "features")
     private Capabilities features;
+
+    /*
+     * The encryption properties for the IoT hub.
+     */
+    @JsonProperty(value = "encryption")
+    private EncryptionPropertiesDescription encryption;
 
     /*
      * Primary and secondary location for iot hub
@@ -191,6 +209,26 @@ public final class IotHubProperties {
      */
     public IotHubProperties withIpFilterRules(List<IpFilterRule> ipFilterRules) {
         this.ipFilterRules = ipFilterRules;
+        return this;
+    }
+
+    /**
+     * Get the networkRuleSets property: Network Rule Set Properties of IotHub.
+     *
+     * @return the networkRuleSets value.
+     */
+    public NetworkRuleSetProperties networkRuleSets() {
+        return this.networkRuleSets;
+    }
+
+    /**
+     * Set the networkRuleSets property: Network Rule Set Properties of IotHub.
+     *
+     * @param networkRuleSets the networkRuleSets value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withNetworkRuleSets(NetworkRuleSetProperties networkRuleSets) {
+        this.networkRuleSets = networkRuleSets;
         return this;
     }
 
@@ -417,6 +455,26 @@ public final class IotHubProperties {
     }
 
     /**
+     * Get the deviceStreams property: The device streams properties of iothub.
+     *
+     * @return the deviceStreams value.
+     */
+    public IotHubPropertiesDeviceStreams deviceStreams() {
+        return this.deviceStreams;
+    }
+
+    /**
+     * Set the deviceStreams property: The device streams properties of iothub.
+     *
+     * @param deviceStreams the deviceStreams value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDeviceStreams(IotHubPropertiesDeviceStreams deviceStreams) {
+        this.deviceStreams = deviceStreams;
+        return this;
+    }
+
+    /**
      * Get the features property: The capabilities and features enabled for the IoT hub.
      *
      * @return the features value.
@@ -433,6 +491,26 @@ public final class IotHubProperties {
      */
     public IotHubProperties withFeatures(Capabilities features) {
         this.features = features;
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption properties for the IoT hub.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionPropertiesDescription encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption properties for the IoT hub.
+     *
+     * @param encryption the encryption value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withEncryption(EncryptionPropertiesDescription encryption) {
+        this.encryption = encryption;
         return this;
     }
 
@@ -456,6 +534,9 @@ public final class IotHubProperties {
         }
         if (ipFilterRules() != null) {
             ipFilterRules().forEach(e -> e.validate());
+        }
+        if (networkRuleSets() != null) {
+            networkRuleSets().validate();
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
@@ -495,6 +576,12 @@ public final class IotHubProperties {
         }
         if (cloudToDevice() != null) {
             cloudToDevice().validate();
+        }
+        if (deviceStreams() != null) {
+            deviceStreams().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
         if (locations() != null) {
             locations().forEach(e -> e.validate());
