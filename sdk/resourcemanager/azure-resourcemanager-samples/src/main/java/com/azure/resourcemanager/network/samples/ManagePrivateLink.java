@@ -207,10 +207,14 @@ public final class ManagePrivateLink {
                 .withPrivateDnsZoneConfigure(pdzcName, privateDnsZone.id())
                 .create();
 
+            System.out.println("Private DNS Zone Group Name: " + privateDnsZoneGroup.name());
+
             System.out.println("Creating private dns zone group...");
             PrivateDnsZoneGroup privateDnsZoneGroup2 = privateEndpoint2.privateDnsZoneGroups().define(pdzgName)
                 .withPrivateDnsZoneConfigure(pdzcName2, privateDnsZone.id())
                 .create();
+
+            System.out.println("Private DNS Zone Group Name: " + privateDnsZoneGroup2.name());
 
             if (validateOnVirtualMachine) {
                 // verify private endpoint works
