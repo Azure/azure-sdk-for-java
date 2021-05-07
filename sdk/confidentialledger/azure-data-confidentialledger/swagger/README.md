@@ -1,6 +1,9 @@
 ## Generate autorest code
 ``` yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2020-12-01-preview/confidentialledger.json
+input-file: 
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/0.1-preview/common.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/0.1-preview/confidentialledger.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/0.1-preview/identityservice.json
 java: true
 output-folder: ../
 namespace: com.azure.data.confidentialledger
@@ -10,4 +13,5 @@ license-header: MICROSOFT_MIT_SMALL
 low-level-client: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
+title: ConfidentialLedgerClient
 ```

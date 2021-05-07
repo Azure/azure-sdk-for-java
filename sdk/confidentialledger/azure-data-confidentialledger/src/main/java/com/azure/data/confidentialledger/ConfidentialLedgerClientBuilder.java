@@ -20,14 +20,16 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** A builder for creating a new instance of the ConfidentialLedger type. */
-@ServiceClientBuilder(serviceClients = {OperationsBaseClient.class, LedgerBaseClient.class})
-public final class ConfidentialLedgerBuilder {
+/** A builder for creating a new instance of the ConfidentialLedgerClient type. */
+@ServiceClientBuilder(
+        serviceClients = {ConfidentialLedgerBaseClient.class, ConfidentialLedgerIdentityServiceBaseClient.class})
+public final class ConfidentialLedgerClientBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
@@ -36,41 +38,25 @@ public final class ConfidentialLedgerBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
-    /** Create an instance of the ConfidentialLedgerBuilder. */
-    public ConfidentialLedgerBuilder() {
+    /** Create an instance of the ConfidentialLedgerClientBuilder. */
+    public ConfidentialLedgerClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
     /*
-     * The Azure subscription ID. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000)
+     * The Confidential Ledger URL, for example
+     * https://contoso.confidentialledger.azure.com
      */
-    private String subscriptionId;
+    private URL ledgerUri;
 
     /**
-     * Sets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      *
-     * @param subscriptionId the subscriptionId value.
-     * @return the ConfidentialLedgerBuilder.
+     * @param ledgerUri the ledgerUri value.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder subscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /*
-     * server parameter
-     */
-    private String host;
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the ConfidentialLedgerBuilder.
-     */
-    public ConfidentialLedgerBuilder host(String host) {
-        this.host = host;
+    public ConfidentialLedgerClientBuilder ledgerUri(URL ledgerUri) {
+        this.ledgerUri = ledgerUri;
         return this;
     }
 
@@ -83,10 +69,27 @@ public final class ConfidentialLedgerBuilder {
      * Sets Api Version.
      *
      * @param apiVersion the apiVersion value.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder apiVersion(String apiVersion) {
+    public ConfidentialLedgerClientBuilder apiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
+     * The Identity Service URL, for example
+     * https://identity.accledger.azure.com
+     */
+    private URL identityServiceUri;
+
+    /**
+     * Sets The Identity Service URL, for example https://identity.accledger.azure.com.
+     *
+     * @param identityServiceUri the identityServiceUri value.
+     * @return the ConfidentialLedgerClientBuilder.
+     */
+    public ConfidentialLedgerClientBuilder identityServiceUri(URL identityServiceUri) {
+        this.identityServiceUri = identityServiceUri;
         return this;
     }
 
@@ -99,9 +102,9 @@ public final class ConfidentialLedgerBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder pipeline(HttpPipeline pipeline) {
+    public ConfidentialLedgerClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -109,16 +112,16 @@ public final class ConfidentialLedgerBuilder {
     /*
      * The serializer to serialize an object into a string
      */
-    private ObjectSerializer objectSerializer;
+    private ObjectSerializer serializer;
 
     /**
      * Sets The serializer to serialize an object into a string.
      *
-     * @param objectSerializer the objectSerializer value.
-     * @return the ConfidentialLedgerBuilder.
+     * @param serializer the serializer value.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder objectSerializer(ObjectSerializer objectSerializer) {
-        this.objectSerializer = objectSerializer;
+    public ConfidentialLedgerClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 
@@ -131,9 +134,9 @@ public final class ConfidentialLedgerBuilder {
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder httpClient(HttpClient httpClient) {
+    public ConfidentialLedgerClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -148,9 +151,9 @@ public final class ConfidentialLedgerBuilder {
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder configuration(Configuration configuration) {
+    public ConfidentialLedgerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -164,9 +167,9 @@ public final class ConfidentialLedgerBuilder {
      * Sets The TokenCredential used for authentication.
      *
      * @param tokenCredential the tokenCredential value.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder credential(TokenCredential tokenCredential) {
+    public ConfidentialLedgerClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -180,9 +183,9 @@ public final class ConfidentialLedgerBuilder {
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public ConfidentialLedgerClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -197,9 +200,9 @@ public final class ConfidentialLedgerBuilder {
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public ConfidentialLedgerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -213,9 +216,9 @@ public final class ConfidentialLedgerBuilder {
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the ConfidentialLedgerBuilder.
+     * @return the ConfidentialLedgerClientBuilder.
      */
-    public ConfidentialLedgerBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public ConfidentialLedgerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -249,47 +252,43 @@ public final class ConfidentialLedgerBuilder {
     }
 
     /**
-     * Builds an instance of OperationsBaseClient low level client.
+     * Builds an instance of ConfidentialLedgerBaseClient low level client.
      *
-     * @return an instance of OperationsBaseClient.
+     * @return an instance of ConfidentialLedgerBaseClient.
      */
-    public OperationsBaseClient buildOperationsBaseClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
+    public ConfidentialLedgerBaseClient buildConfidentialLedgerBaseClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2020-12-01-preview";
+            this.apiVersion = "0.1-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        OperationsBaseClient client =
-                new OperationsBaseClient(subscriptionId, host, apiVersion, pipeline, objectSerializer);
+        ConfidentialLedgerBaseClient client =
+                new ConfidentialLedgerBaseClient(ledgerUri, apiVersion, identityServiceUri, pipeline, serializer);
         return client;
     }
 
     /**
-     * Builds an instance of LedgerBaseClient low level client.
+     * Builds an instance of ConfidentialLedgerIdentityServiceBaseClient low level client.
      *
-     * @return an instance of LedgerBaseClient.
+     * @return an instance of ConfidentialLedgerIdentityServiceBaseClient.
      */
-    public LedgerBaseClient buildLedgerBaseClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
+    public ConfidentialLedgerIdentityServiceBaseClient buildConfidentialLedgerIdentityServiceBaseClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2020-12-01-preview";
+            this.apiVersion = "0.1-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (objectSerializer == null) {
-            this.objectSerializer = JsonSerializerProviders.createInstance();
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
         }
-        LedgerBaseClient client = new LedgerBaseClient(subscriptionId, host, apiVersion, pipeline, objectSerializer);
+        ConfidentialLedgerIdentityServiceBaseClient client =
+                new ConfidentialLedgerIdentityServiceBaseClient(
+                        ledgerUri, apiVersion, identityServiceUri, pipeline, serializer);
         return client;
     }
 }
