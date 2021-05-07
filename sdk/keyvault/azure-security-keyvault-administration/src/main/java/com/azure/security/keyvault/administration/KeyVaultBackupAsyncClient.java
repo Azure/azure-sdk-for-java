@@ -153,12 +153,17 @@ public final class KeyVaultBackupAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken,
                                                                    Duration pollingInterval) {
-        Objects.requireNonNull(blobStorageUrl,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'blobStorageUrl'"));
-        Objects.requireNonNull(sasToken,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'sasToken'"));
+        if (blobStorageUrl == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'blobStorageUrl'")));
+        }
+
+        if (sasToken == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'sasToken'")));
+        }
 
         return new PollerFlux<>(pollingInterval,
             backupActivationOperation(blobStorageUrl, sasToken),
@@ -328,12 +333,17 @@ public final class KeyVaultBackupAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String backupFolderUrl, String sasToken,
                                                                    Duration pollingInterval) {
-        Objects.requireNonNull(backupFolderUrl,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'backupFolderUrl'"));
-        Objects.requireNonNull(sasToken,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'sasToken'"));
+        if (backupFolderUrl == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'backupFolderUrl'")));
+        }
+
+        if (sasToken == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'sasToken'")));
+        }
 
         return new PollerFlux<>(pollingInterval,
             restoreActivationOperation(backupFolderUrl, sasToken),
@@ -493,15 +503,23 @@ public final class KeyVaultBackupAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String backupFolderUrl,
                                                                             String sasToken, Duration pollingInterval) {
-        Objects.requireNonNull(keyName,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'keyName'"));
-        Objects.requireNonNull(backupFolderUrl,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'backupFolderUrl'"));
-        Objects.requireNonNull(sasToken,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'sasToken'"));
+        if (keyName == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'keyName'")));
+        }
+
+        if (backupFolderUrl == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'backupFolderUrl'")));
+        }
+
+        if (sasToken == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'sasToken'")));
+        }
 
         return new PollerFlux<>(pollingInterval,
             selectiveRestoreActivationOperation(keyName, backupFolderUrl, sasToken),
