@@ -14,7 +14,6 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Conditions for activating AAD B2C beans.
@@ -63,10 +62,10 @@ public final class AADB2CConditions {
         public ConditionOutcome getMatchOutcome(final ConditionContext context,
                                                 final AnnotatedTypeMetadata metadata) {
             ConditionMessage.Builder message = ConditionMessage.forCondition(
-                "AAD B2C OAuth2 Clients Configured Condition");
+                "AAD B2C OAuth 2.0 Clients Configured Condition");
             AADB2CProperties aadb2CProperties = getAADB2CProperties(context);
             if (aadb2CProperties == null) {
-                return ConditionOutcome.noMatch(message.notAvailable("registered clients"));
+                return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
             }
 
             if (CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())
@@ -75,15 +74,15 @@ public final class AADB2CConditions {
                                                        .items("user-flows", "authorization-clients"));
             }
 
-            StringBuffer details = new StringBuffer();
+            StringBuilder details = new StringBuilder();
             if (!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())) {
-                details.append(getConditionResult("user-flows: ", aadb2CProperties.getUserFlows()));
+                details.append(getConditionResult("user-flows", aadb2CProperties.getUserFlows()));
             }
             if (!CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients())) {
-                details.append(getConditionResult(" authorization-clients: ",
+                details.append(getConditionResult("authorization-clients",
                     aadb2CProperties.getAuthorizationClients()));
             }
-            return ConditionOutcome.match(message.foundExactly(details));
+            return ConditionOutcome.match(message.foundExactly(details.toString()));
         }
     }
 
@@ -99,15 +98,15 @@ public final class AADB2CConditions {
                 "AAD B2C User Flow Clients Configured Condition");
             AADB2CProperties aadb2CProperties = getAADB2CProperties(context);
             if (aadb2CProperties == null) {
-                return ConditionOutcome.noMatch(message.notAvailable("user flows"));
+                return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
             }
 
             if (CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())) {
-                return ConditionOutcome.noMatch(message.didNotFind(("user flows")).atAll());
+                return ConditionOutcome.noMatch(message.didNotFind("user flows").atAll());
             }
 
             return ConditionOutcome.match(message.foundExactly(
-                getConditionResult("registered clients: ", aadb2CProperties.getUserFlows())));
+                getConditionResult("user-flows", aadb2CProperties.getUserFlows())));
         }
     }
 
@@ -128,9 +127,7 @@ public final class AADB2CConditions {
      * @param map Map to concatenate
      * @return the concatenated string.
      */
-    private static String getConditionResult(String name, Map<String, ?> map) {
-        return name + map.entrySet().stream()
-                  .map(Map.Entry::getKey)
-                  .collect(Collectors.joining(", "));
+    public static String getConditionResult(String name, Map<String, ?> map) {
+        return name + ": " + String.join(", ", map.keySet()) + " ";
     }
 }
