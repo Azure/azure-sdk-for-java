@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iothub.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateDescriptionInner;
 import com.azure.resourcemanager.iothub.models.CertificateBodyDescription;
 import com.azure.resourcemanager.iothub.models.CertificateDescription;
@@ -15,7 +14,7 @@ public final class CertificateDescriptionImpl
     implements CertificateDescription, CertificateDescription.Definition, CertificateDescription.Update {
     private CertificateDescriptionInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -41,7 +40,7 @@ public final class CertificateDescriptionImpl
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 
@@ -97,7 +96,7 @@ public final class CertificateDescriptionImpl
         return this;
     }
 
-    CertificateDescriptionImpl(String name, IotHubManager serviceManager) {
+    CertificateDescriptionImpl(String name, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = new CertificateDescriptionInner();
         this.serviceManager = serviceManager;
         this.certificateName = name;
@@ -143,7 +142,8 @@ public final class CertificateDescriptionImpl
         return this;
     }
 
-    CertificateDescriptionImpl(CertificateDescriptionInner innerObject, IotHubManager serviceManager) {
+    CertificateDescriptionImpl(
+        CertificateDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -182,13 +182,13 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescriptionImpl withIfMatch(String ifMatch) {
-        if (isInCreateMode()) {
-            this.createIfMatch = ifMatch;
-            return this;
-        } else {
-            this.updateIfMatch = ifMatch;
-            return this;
-        }
+        this.createIfMatch = ifMatch;
+        return this;
+    }
+
+    public CertificateDescriptionImpl ifMatch(String ifMatch) {
+        this.updateIfMatch = ifMatch;
+        return this;
     }
 
     private boolean isInCreateMode() {
