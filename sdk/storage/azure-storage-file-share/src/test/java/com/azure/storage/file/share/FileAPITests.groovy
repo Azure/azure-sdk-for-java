@@ -15,6 +15,7 @@ import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareFileUploadOptions
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
@@ -254,6 +255,98 @@ class FileAPITests extends APISpec {
         data == stream.toByteArray()
     }
 
+    def "Parallel upload and download data"() {
+        given:
+        primaryFileClient.create(dataLength)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(defaultData, dataLength),
+            null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200)
+        headers.getContentLength() == (long) dataLength
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
+
+        data == stream.toByteArray()
+    }
+
+    def "Parallel upload and download data with args"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadWithResponse(
+            new ShareFileUploadOptions(defaultData, dataLength).setOffset(1), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, dataLength), true, null, null)
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 206)
+        downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
+
+        data == stream.toByteArray()
+    }
+
+    def "Upload range and download data"() {
+        given:
+        primaryFileClient.create(dataLength)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(defaultData, dataLength), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200)
+        headers.getContentLength() == (long) dataLength
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
+
+        data == stream.toByteArray()
+    }
+
+    def "Upload range and download data with args"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(defaultData, dataLength).setOffset(1), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, dataLength), true, null, null)
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 206)
+        downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
+
+        data == stream.toByteArray()
+    }
+
     def "Upload Range 4TB"() {
         given:
         def fileSize = 4 * Constants.TB
@@ -289,9 +382,29 @@ class FileAPITests extends APISpec {
 
     }
 
+
+
     def "Upload data error"() {
         when:
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Parallel upload data error"() {
+        when:
+        primaryFileClient.upload(defaultData, dataLength, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Upload range data error"() {
+        when:
+        primaryFileClient.uploadRange(defaultData, dataLength)
 
         then:
         def e = thrown(ShareStorageException)
@@ -390,6 +503,42 @@ class FileAPITests extends APISpec {
 
         when:
         primaryFileClient.uploadWithResponse(defaultData, size, 0, null, Context.NONE)
+
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+
+        where:
+        size | errMsg
+        6    | "more than"
+        8    | "less than"
+    }
+
+    @Unroll
+    def "Parallel upload data length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        primaryFileClient.upload(defaultData, size, null)
+
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+
+        where:
+        size | errMsg
+        6    | "more than"
+        8    | "less than"
+    }
+
+    @Unroll
+    def "Upload range length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        primaryFileClient.uploadRange(defaultData, size)
 
         then:
         def e = thrown(UnexpectedLengthException)

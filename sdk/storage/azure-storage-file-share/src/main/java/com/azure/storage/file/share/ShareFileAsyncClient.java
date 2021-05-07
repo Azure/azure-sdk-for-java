@@ -1436,10 +1436,6 @@ public class ShareFileAsyncClient {
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        /*
-        We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
-        others are being sent.
-         */
         BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
