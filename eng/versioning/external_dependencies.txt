@@ -67,7 +67,7 @@ javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 javax.websocket:javax.websocket-api;1.1
 mysql:mysql-connector-java;8.0.23
-net.minidev:json-smart;2.4.2
+net.minidev:json-smart;2.3
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.10.1
 org.apache.avro:avro-maven-plugin;1.10.1
@@ -217,7 +217,6 @@ com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
 com.nimbusds:nimbus-jose-jwt;8.20.2
-com.nimbusds:oauth2-oidc-sdk;8.36.1
 com.puppycrawl.tools:checkstyle;8.42
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
