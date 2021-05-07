@@ -71,7 +71,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.util.List<com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard> cards;
+   private java.util.List<com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard> cards;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -94,7 +94,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return cards;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -103,7 +103,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: cards = (java.util.List<com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard>)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
