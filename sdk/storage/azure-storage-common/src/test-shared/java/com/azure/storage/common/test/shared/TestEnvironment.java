@@ -14,8 +14,29 @@ public class TestEnvironment {
 
     private final TestMode testMode;
 
+    private final TestAccount primaryAccount;
+    private final TestAccount secondaryAccount;
+    private final TestAccount blobAccount;
+    private final TestAccount managedDiskAccount;
+    private final TestAccount premiumAccount;
+    private final TestAccount versionedAccount;
+    private final TestAccount dataLakeAccount;
+    private final TestAccount fileAccount;
+    private final TestAccount premiumFileAccount;
+    private final TestAccount queueAccount;
+
     public TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
+        this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
+        this.secondaryAccount = readTestAccountFromEnvironment("SECONDARY_STORAGE_", this.testMode);
+        this.blobAccount = readTestAccountFromEnvironment("BLOB_STORAGE_", this.testMode);
+        this.managedDiskAccount = readTestAccountFromEnvironment("MANAGED_DISK_STORAGE_", this.testMode);
+        this.premiumAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_", this.testMode);
+        this.versionedAccount = readTestAccountFromEnvironment("VERSIONED_STORAGE_", this.testMode);
+        this.dataLakeAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_", this.testMode);
+        this.fileAccount = readTestAccountFromEnvironment("AZURE_STORAGE_FILE_", this.testMode);
+        this.premiumFileAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_FILE_", this.testMode);
+        this.queueAccount = readTestAccountFromEnvironment("AZURE_STORAGE_QUEUE_", this.testMode);
     }
 
     private static TestMode readTestModeFromEnvironment() {
@@ -34,7 +55,71 @@ public class TestEnvironment {
         return TestMode.PLAYBACK;
     }
 
+    private static TestAccount readTestAccountFromEnvironment(String prefix, TestMode testMode) {
+        String name = "azstoragesdkaccount";
+        String key = "astorageaccountkey";
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;"
+            + "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
+        if (testMode != TestMode.PLAYBACK) {
+            name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
+            key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
+            connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
+            if (connectionString == null || connectionString.trim().isEmpty()) {
+                connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;"
+                    + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
+            }
+        }
+        String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
+        String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net", name);
+        String dataLakeEndpoint = String.format("https://%s.dfs.core.windows.net", name);
+        String queueEndpoint = String.format("https://%s.queue.core.windows.net", name);
+        String fileEndpoint = String.format("https://%s.file.core.windows.net", name);
+
+        return new TestAccount(name, key, connectionString, blobEndpoint, blobEndpointSecondary,
+            dataLakeEndpoint, queueEndpoint, fileEndpoint);
+    }
+
     public TestMode getTestMode() {
         return testMode;
+    }
+
+    public TestAccount getPrimaryAccount() {
+        return primaryAccount;
+    }
+
+    public TestAccount getSecondaryAccount() {
+        return secondaryAccount;
+    }
+
+    public TestAccount getPremiumAccount() {
+        return premiumAccount;
+    }
+
+    public TestAccount getVersionedAccount() {
+        return versionedAccount;
+    }
+
+    public TestAccount getBlobAccount() {
+        return blobAccount;
+    }
+
+    public TestAccount getManagedDiskAccount() {
+        return managedDiskAccount;
+    }
+
+    public TestAccount getDataLakeAccount() {
+        return dataLakeAccount;
+    }
+
+    public TestAccount getFileAccount() {
+        return fileAccount;
+    }
+
+    public TestAccount getPremiumFileAccount() {
+        return premiumFileAccount;
+    }
+
+    public TestAccount getQueueAccount() {
+        return queueAccount;
     }
 }

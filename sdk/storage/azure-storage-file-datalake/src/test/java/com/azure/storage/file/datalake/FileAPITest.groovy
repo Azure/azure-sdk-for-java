@@ -968,7 +968,7 @@ class FileAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def fileClient = getFileClient(primaryCredential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
 
         fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
         fc.flush(defaultDataSize)
@@ -1246,8 +1246,8 @@ class FileAPITest extends APISpec {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceClient = new DataLakeServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .credential(env.dataLakeAccount.credential)
             .buildClient()
 
         def fileClient = datalakeServiceClient.createFileSystem(fileSystemName)
@@ -1288,8 +1288,8 @@ class FileAPITest extends APISpec {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceAsyncClient = new DataLakeServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .credential(env.dataLakeAccount.credential)
             .buildAsyncClient()
 
         def fileAsyncClient = datalakeServiceAsyncClient.createFileSystem(fileSystemName).block()
@@ -1891,7 +1891,7 @@ class FileAPITest extends APISpec {
     def "Append data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2489,7 +2489,7 @@ class FileAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getFileAsyncClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2501,7 +2501,7 @@ class FileAPITest extends APISpec {
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         then:
-        def fcAsync = getFileAsyncClient(primaryCredential, fc.getFileUrl())
+        def fcAsync = getFileAsyncClient(env.dataLakeAccount.credential, fc.getFileUrl())
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fcAsync.read())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
@@ -2522,7 +2522,7 @@ class FileAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -3795,7 +3795,7 @@ class FileAPITest extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def fileClient = getFileClient(primaryCredential, fc.getFileUrl(), getPerCallVersionPolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = fileClient.getPropertiesWithResponse(null, null, null)

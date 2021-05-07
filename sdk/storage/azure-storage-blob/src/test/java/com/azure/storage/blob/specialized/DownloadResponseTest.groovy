@@ -58,7 +58,7 @@ class DownloadResponseTest extends APISpec {
                 })
             }
         }
-        def bsc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
+        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
         def cc = bsc.getBlobContainerClient(containerName)
         def bu = cc.getBlobClient(bu.getBlobName()).getBlockBlobClient()
 

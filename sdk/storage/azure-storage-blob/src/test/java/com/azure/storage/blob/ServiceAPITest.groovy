@@ -50,7 +50,7 @@ class ServiceAPITest extends APISpec {
         setup:
         // We shouldnt be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .endpoint(env.primaryAccount.blobEndpoint)
             .buildClient()
         def disabled = new BlobRetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
@@ -136,7 +136,7 @@ class ServiceAPITest extends APISpec {
     }
 
     BlobContainerClientBuilder optionalRecordingPolicy(BlobContainerClientBuilder builder) {
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
+        if (env.testMode == TestMode.RECORD) {
             builder.addPolicy(getRecordPolicy())
         }
         return builder
@@ -636,7 +636,7 @@ class ServiceAPITest extends APISpec {
 
     def "Set props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
             .setProperties(new BlobServiceProperties())
 
         then:
@@ -658,7 +658,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -725,8 +725,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        def secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
-        def serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
+        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
         def response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
@@ -739,8 +738,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats min"() {
         setup:
-        def secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
-        def serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
+        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
 
         expect:
         serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
@@ -783,7 +781,7 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         def badURL = new URL("http://fake.blobfake.core.windows.net")
-        def client = getServiceClientBuilder(primaryCredential, badURL.toString())
+        def client = getServiceClientBuilder(env.primaryAccount.credential, badURL.toString())
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100, 1000, null))
             .buildClient()
 
@@ -1021,9 +1019,7 @@ class ServiceAPITest extends APISpec {
 
     def "OAuth on secondary"() {
         setup:
-        def secondaryEndpoint = String.format(defaultEndpointTemplate,
-            primaryCredential.getAccountName() + "-secondary")
-        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, secondaryEndpoint)).buildClient()
+        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, env.primaryAccount.blobEndpointSecondary)).buildClient()
 
         when:
         serviceClient.getProperties()
@@ -1059,7 +1055,7 @@ class ServiceAPITest extends APISpec {
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def sc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
+        def sc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
 
         when:
         def response = sc.getPropertiesWithResponse(null, null)
