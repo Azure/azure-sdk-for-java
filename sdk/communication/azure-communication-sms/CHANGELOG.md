@@ -14,6 +14,7 @@ Updated `azure-communication-sms` version
 - Added support for tagging SMS messages.
 - Send method series in SmsClient are idempotent under retry policy.
 - Added `SmsOptions`
+- Added implementation of the repeteabilityRequestId.
 
 ### Breaking Change
 - Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> send(String from, String to, String message)`.
