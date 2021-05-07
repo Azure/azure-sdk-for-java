@@ -1,0 +1,89 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.farmbeats-dogfood.azure.net/farmers/iscai-farmer/farms/javafarm08094e?api-version=2021-03-31-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "57d187b2-e713-4d55-af90-bf88d7fff764",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "content-length" : "231",
+      "Server" : "nginx/1.19.1",
+      "api-supported-versions" : "2021-03-31-preview",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Fri, 07 May 2021 19:53:15 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "etag" : "0a00f9e6-0000-0700-0000-60959aab0000",
+      "location" : "http://iscai-sdk.farmbeats-dogfood.azure.net/farmers/iscai-farmer/farms/javafarm08094e",
+      "api-deprecated-versions" : "2020-12-31-preview",
+      "Body" : "{\"farmerId\":\"iscai-farmer\",\"id\":\"javafarm08094e\",\"eTag\":\"0a00f9e6-0000-0700-0000-60959aab0000\",\"createdDateTime\":\"2021-05-07T19:53:15Z\",\"modifiedDateTime\":\"2021-05-07T19:53:15Z\",\"name\":\"javafarm08094e\",\"description\":\"A test farm.\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats-dogfood.azure.net/farmers/iscai-farmer/farms/javafarm08094e?api-version=2021-03-31-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "11d7da68-5580-49af-b8dc-5433f4bbf186",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "231",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Server" : "nginx/1.19.1",
+      "api-supported-versions" : "2021-03-31-preview",
+      "Connection" : "keep-alive",
+      "etag" : "0a00f9e6-0000-0700-0000-60959aab0000",
+      "api-deprecated-versions" : "2020-12-31-preview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"farmerId\":\"iscai-farmer\",\"id\":\"javafarm08094e\",\"eTag\":\"0a00f9e6-0000-0700-0000-60959aab0000\",\"createdDateTime\":\"2021-05-07T19:53:15Z\",\"modifiedDateTime\":\"2021-05-07T19:53:15Z\",\"name\":\"javafarm08094e\",\"description\":\"A test farm.\"}",
+      "Date" : "Fri, 07 May 2021 19:54:21 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats-dogfood.azure.net/farmers/iscai-farmer/farms?api-version=2021-03-31-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "206d060f-5468-4327-ae9a-c285e56a8d12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "243",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Server" : "nginx/1.19.1",
+      "api-supported-versions" : "2021-03-31-preview",
+      "Connection" : "keep-alive",
+      "api-deprecated-versions" : "2020-12-31-preview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"farmerId\":\"iscai-farmer\",\"id\":\"javafarm08094e\",\"eTag\":\"0a00f9e6-0000-0700-0000-60959aab0000\",\"createdDateTime\":\"2021-05-07T19:53:15Z\",\"modifiedDateTime\":\"2021-05-07T19:53:15Z\",\"name\":\"javafarm08094e\",\"description\":\"A test farm.\"}]}",
+      "Date" : "Fri, 07 May 2021 19:54:23 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.farmbeats-dogfood.azure.net/farmers/iscai-farmer/farms/javafarm08094e?api-version=2021-03-31-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "14486603-950b-4627-a30f-f046d848f3f6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Server" : "nginx/1.19.1",
+      "api-supported-versions" : "2021-03-31-preview",
+      "Connection" : "keep-alive",
+      "api-deprecated-versions" : "2020-12-31-preview",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 07 May 2021 19:54:24 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javafarm08094e" ]
+}

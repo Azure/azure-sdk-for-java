@@ -1,7 +1,6 @@
-# Azure Confidential Ledger client library for Java
+# Azure FarmBeats client library for Java
 
-Azure Confidential Ledger provides a service for logging to an immutable, tamper-proof ledger. As part of the [Azure Confidential Computing][azure_confidential_computing]
-portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Microsoft Research's [Confidential Consortium Framework][ccf].
+# TODO: Add stuff
 
 **Please rely heavily on the javadocs and our [Low-Level client docs][low_level_client] to use this library**
 
@@ -13,16 +12,15 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-- A running instance of Azure Confidential Ledger.
-- A registered user in the Confidential Ledger, typically assigned during [ARM][azure_resource_manager] resource creation, with `Administrator` privileges.
+- A running instance of Azure FarmBeats.
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:azure-data-confidentialledger;current})
+[//]: # ({x-version-update-start;com.azure:azure-verticals-agrifood-farming;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-data-confidentialledger</artifactId>
+  <artifactId>azure-verticals-agrifood-farming</artifactId>
   <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -32,15 +30,11 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 
 #### Using Azure Active Directory
 
-In order to interact with the Azure Confidential Ledger service, your client must present an Azure Active Directory bearer token to the service.
+In order to interact with the Azure FarmBeats service, your client must present an Azure Active Directory bearer token to the service.
 
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
-#### Using a client certificate
-
-As an alternative to Azure Active Directory, clients may choose to use a client certificate to authenticate via mutual TLS. `CertificateCredential` may be used for this purpose.
-
-#### Create LedgerBaseClient with Azure Active Directory Credential
+#### Create FarmersBaseClient with Azure Active Directory Credential
 
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
@@ -58,41 +52,15 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/catalog/ReadmeSamples.java#L20-L23 -->
+<!-- embedme ./src/samples/java/com/azure/verticals/agrifood/farming/ReadmeSamples.java#L20-L23 -->
 ```java
-GlossaryBaseClient client = new PurviewCatalogClientBuilder()
-    .endpoint(System.getenv("<account-name>.catalog.purview.azure.com"))
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildGlossaryBaseClient();
+FarmersBaseClient client = new FarmBeatsClientBuilder()
+        .endpoint("https://<farmbeats resource name>.farmbeats-dogfood.azure.net")
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildFarmersBaseClient();
 ```
 
 ## Key concepts
-
-### Ledger entries and transactions
-
-Every write to Azure Confidential Ledger generates an immutable ledger entry in the service. Writes, also referred to as transactions, are uniquely identified by transaction ids that increment with each write. Once written, ledger entries may be retrieved at any time.
-
-### Receipts
-
-State changes to the Confidential Ledger are saved in a data structure called a Merkle tree. To cryptographically verify that writes were correctly saved, a Merkle proof, or receipt, can be retrieved for any transaction id.
-
-### Sub-ledgers
-
-While most use cases will involve one ledger, we provide the sub-ledger feature in case semantically or logically different groups of data need to be stored in the same Confidential Ledger.
-
-Ledger entries are retrieved by their sub-ledger identifier. The Confidential Ledger will always assume a constant, service-determined sub-ledger id for entries submitted without a sub-ledger specified.
-
-### Users
-
-Users are managed directly with the Confidential Ledger instead of through Azure. Users may be AAD-based, identified by their AAD object id, or certificate-based, identified by their PEM certificate fingerprint.
-
-### Confidential computing
-
-[Azure Confidential Computing][azure_confidential_computing] allows you to isolate and protect your data while it is being processed in the cloud. Azure Confidential Ledger runs on Azure Confidential Computing virtual machines, thus providing stronger data protection with encryption of data in use.
-
-### Confidential Consortium Framework
-
-Azure Confidential Ledger is built on Microsoft Research's open-source [Confidential Consortium Framework (CCF)][ccf]. Under CCF, applications are managed by a consortium of members with the ability to submit proposals to modify and govern application operation. In Azure Confidential Ledger, Microsoft Azure owns a member identity, allowing it to perform governance actions like replacing unhealthy nodes in the Confidential Ledger, or upgrading the enclave code.
 
 ## Examples
 More examples can be found in [samples][samples_code].
@@ -116,19 +84,16 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[ccf]: https://github.com/Microsoft/CCF
-[azure_confidential_computing]: https://azure.microsoft.com/solutions/confidential-compute
-[confidential_ledger_docs]: https://aka.ms/confidentialledger-servicedocs
-[samples]: src/samples/java/com/azure/data/confidentialledger
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/confidentialledger/azure-data-confidentialledger/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/confidentialledger/azure-data-confidentialledger/src/samples/
+[samples]: src/samples/java/com/azure/verticals/agrifood/farming
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
-[product_documentation]: https://aka.ms/confidentialledger-servicedocs
-[ledger_base_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/confidentialledger/azure-data-confidentialledger/src/main/java/com/azure/data/confidentialledger/LedgerBaseClient.java
+[product_documentation]: https://docs.microsoft.com/azure/industry/agriculture/overview-azure-farmbeats
+[ledger_base_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/farmbeats/azure-verticals-agrifood-farming/src/main/java/com/azure/verticals/agrifood/farming/LedgerBaseClient.java
 [azure_portal]: https://portal.azure.com
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[package]: https://mvnrepository.com/artifact/com.azure/azure-data-confidentialledger
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/confidentialledger/azure-data-confidentialledger/src/samples/README.md
+[package]: https://mvnrepository.com/artifact/com.azure/azure-verticals-agrifood-farming
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/README.md
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fconfidentialledger%2Fazure-data-confidentialledger%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ffarmbeats%2Fazure-verticals-agrifood-farming%2FREADME.png)
