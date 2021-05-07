@@ -23,4 +23,4 @@ This package is an internal package sending telemetry data for Azure Spring Clou
 ## Contributing
 
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/master/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-cloud-dependencies-bom
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies

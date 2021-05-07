@@ -263,4 +263,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/master/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom

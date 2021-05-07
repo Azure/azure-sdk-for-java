@@ -126,4 +126,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/master/AZURE_SPRING_BOMS_USAGE.md#adding-the-azure-spring-boot-bom-bom
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
