@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.training;
 
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
+import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -132,6 +133,7 @@ public final class FormTrainingClientBuilder {
         }
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
                                                                .endpoint(endpoint)
+                                                               .apiVersion(serviceVersion.getVersion())
                                                                .pipeline(pipeline)
                                                                .buildClient();
 
@@ -204,6 +206,16 @@ public final class FormTrainingClientBuilder {
     public FormTrainingClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
+    }
+
+    /**
+     * Gets the default Azure Form Training client headers and query parameters that are logged by default if
+     * HTTP logging is enabled.
+     *
+     * @return The default {@link HttpLogOptions} allow list.
+     */
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     }
 
     /**

@@ -22,7 +22,7 @@ Purchased phone numbers can come with many capabilities, depending on the countr
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 

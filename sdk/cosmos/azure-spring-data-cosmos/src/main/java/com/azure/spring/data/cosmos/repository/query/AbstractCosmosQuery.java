@@ -59,6 +59,8 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
             return new CosmosQueryExecution.DeleteExecution(operations);
         } else if (isPageQuery()) {
             return new CosmosQueryExecution.PagedExecution(operations, accessor.getPageable());
+        } else if (isSliceQuery()) {
+            return new CosmosQueryExecution.SliceExecution(operations, accessor.getPageable());
         } else if (isExistsQuery()) {
             return new CosmosQueryExecution.ExistsExecution(operations);
         } else if (isCollectionQuery()) {
@@ -89,6 +91,10 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
 
     protected boolean isCollectionQuery() {
         return method.isCollectionQuery();
+    }
+
+    protected boolean isSliceQuery() {
+        return method.isSliceQuery();
     }
 
 }

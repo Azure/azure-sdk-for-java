@@ -3,7 +3,7 @@
 
 package com.azure.core.experimental.implementation;
 
-import com.azure.core.experimental.http.policy.ARMChallengeAuthenticationPolicy;
+import com.azure.core.experimental.http.policy.ArmChallengeAuthenticationPolicy;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * An instance of this class describes an environment in Azure.
- * This is a temporary impl class to support {@link ARMChallengeAuthenticationPolicy} until it
+ * This is a temporary impl class to support {@link ArmChallengeAuthenticationPolicy} until it
  * moves to azure-resource-manager package.
  */
 public final class AzureEnvironment {
