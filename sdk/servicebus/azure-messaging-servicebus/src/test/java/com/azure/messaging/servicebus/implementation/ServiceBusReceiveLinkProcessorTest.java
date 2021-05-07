@@ -371,7 +371,7 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies that when there are no subscribers, one request is fetched up stream.
      */
     @Test
-    void noSubscribers()
+    void noSubscribers() {
         // Arrange
         final Subscription subscription = mock(Subscription.class);
 
