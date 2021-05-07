@@ -1263,7 +1263,8 @@ public class ShareFileAsyncClient {
      * @return A response that only contains headers and response status code
      *
      * @deprecated Use {@link ShareFileAsyncClient#uploadRange(Flux, long)} instead. Or consider
-     * {@link ShareFileAsyncClient#upload(Flux, ParallelTransferOptions)} for a more capable upload method.
+     * {@link ShareFileAsyncClient#upload(Flux, ParallelTransferOptions)} for an upload that can handle large amounts of
+     * data.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1299,8 +1300,8 @@ public class ShareFileAsyncClient {
      * status code 413 (Request Entity Too Large)
      *
      * @deprecated Use {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} instead. Or
-     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for a more capable upload
-     * method.
+     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for an upload that can handle
+     * large amounts of data.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1333,8 +1334,8 @@ public class ShareFileAsyncClient {
      * status code 413 (Request Entity Too Large)
      *
      * @deprecated Use {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} instead. Or
-     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for a more capable upload
-     * method.
+     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for an upload that can handle
+     * large amounts of data.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)

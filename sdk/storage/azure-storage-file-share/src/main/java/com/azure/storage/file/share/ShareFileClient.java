@@ -945,7 +945,8 @@ public class ShareFileClient {
      * status code 413 (Request Entity Too Large)
      *
      * @deprecated Use {@link ShareFileClient#uploadRange(InputStream, long)} instead. Or consider
-     * {@link ShareFileClient#upload(InputStream, long, ParallelTransferOptions)} for a more capable upload method.
+     * {@link ShareFileClient#upload(InputStream, long, ParallelTransferOptions)} for an upload that can handle
+     * large amounts of data.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -979,8 +980,8 @@ public class ShareFileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      *
      * @deprecated Use {@link ShareFileClient#uploadRangeWithResponse(ShareFileUploadRangeOptions, Duration, Context)}
-     * instead. Or consider {@link ShareFileClient#uploadWithResponse(ShareFileUploadOptions, Duration, Context)} for a
-     * more capable upload method.
+     * instead. Or consider {@link ShareFileClient#uploadWithResponse(ShareFileUploadOptions, Duration, Context)} for
+     * an upload that can handle large amounts of  data.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1016,8 +1017,8 @@ public class ShareFileClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      *
      * @deprecated Use {@link ShareFileClient#uploadRangeWithResponse(ShareFileUploadRangeOptions, Duration, Context)}
-     * instead. Or consider {@link ShareFileClient#uploadWithResponse(ShareFileUploadOptions, Duration, Context)} for a
-     * more capable upload method.
+     * instead. Or consider {@link ShareFileClient#uploadWithResponse(ShareFileUploadOptions, Duration, Context)} for
+     * an upload that can handle large amounts of data.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
