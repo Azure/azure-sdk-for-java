@@ -399,7 +399,7 @@ class ServiceAPITest extends APISpec {
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def serviceClient = getServiceClient(primaryCredential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
+        def serviceClient = getServiceClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null)

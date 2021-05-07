@@ -44,7 +44,7 @@ class SasClientTests extends APISpec {
 
     def setup() {
         blobName = generateBlobName()
-        sasClient = getBlobClient(primaryCredential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        sasClient = getBlobClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         sasClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
     }
 
@@ -661,7 +661,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
 
         when:
-        def bc = getBlobClient(primaryCredential, primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
+        def bc = getBlobClient(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
         def file = getRandomFile(256)
         bc.uploadFromFile(file.toPath().toString(), true)
 
@@ -873,7 +873,7 @@ class SasClientTests extends APISpec {
         p.setReadPermission(true)
         def v = new BlobServiceSasSignatureValues(e, p)
 
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.primaryAccount.name)
 
         v.setStartTime(startTime)
 
@@ -892,12 +892,12 @@ class SasClientTests extends APISpec {
 
         def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
 
-        def sasToken = implUtil.generateSas(primaryCredential, Context.NONE)
+        def sasToken = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
         then:
-        token.getSignature() == primaryCredential.computeHmac256(expected)
+        token.getSignature() == env.primaryAccount.credential.computeHmac256(expected)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -927,7 +927,7 @@ class SasClientTests extends APISpec {
         def p = new BlobSasPermission().setReadPermission(true)
         def v = new BlobServiceSasSignatureValues(e, p)
 
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.primaryAccount.name)
 
         v.setStartTime(startTime)
 
@@ -955,7 +955,7 @@ class SasClientTests extends APISpec {
 
         def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
 
-        def sasToken = implUtil.generateUserDelegationSas(key, primaryCredential.getAccountName(), Context.NONE)
+        def sasToken = implUtil.generateUserDelegationSas(key, env.primaryAccount.name, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
@@ -996,15 +996,15 @@ class SasClientTests extends APISpec {
 
         expectedStringToSign = String.format(expectedStringToSign,
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-            primaryCredential.getAccountName())
+            env.primaryAccount.name)
 
         when:
-        String token = implUtil.generateSas(primaryCredential, Context.NONE)
+        String token = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         def queryParams = new CommonSasQueryParameters(SasImplUtils.parseQueryString(token), true)
 
         then:
-        queryParams.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
+        queryParams.getSignature() == env.primaryAccount.credential.computeHmac256(expectedStringToSign)
         queryParams.getResource() == expectedResource
 
         where:
@@ -1034,12 +1034,12 @@ class SasClientTests extends APISpec {
 
         def implUtil = new AccountSasImplUtil(v)
 
-        def sasToken = implUtil.generateSas(primaryCredential, Context.NONE)
+        def sasToken = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
         then:
-        token.getSignature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.getAccountName()))
+        token.getSignature() == env.primaryAccount.credential.computeHmac256(String.format(expectedStringToSign, env.primaryAccount.name))
 
         where:
         startTime                                                 | ipRange          | protocol               || expectedStringToSign

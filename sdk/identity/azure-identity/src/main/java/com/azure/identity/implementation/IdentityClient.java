@@ -77,8 +77,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -264,9 +264,11 @@ public class IdentityClient {
                 publicClientApplicationBuilder.executorService(options.getExecutorService());
             }
 
-            Set<String> set = new HashSet<>(1);
-            set.add("CP1");
-            publicClientApplicationBuilder.clientCapabilities(set);
+            if (!options.isCp1Disabled()) {
+                Set<String> set = new HashSet<>(1);
+                set.add("CP1");
+                publicClientApplicationBuilder.clientCapabilities(set);
+            }
             return Mono.just(publicClientApplicationBuilder);
         }).flatMap(builder -> {
             TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();

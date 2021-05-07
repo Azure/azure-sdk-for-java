@@ -36,16 +36,16 @@ class LargeFileTest extends APISpec{
         fileName = generatePathName()
         fc = fsc.getFileClient(fileName)
         fcPayloadDropping = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new PayloadDroppingPolicy(),
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.dataLakeAccount.credential)
         )
         fcAsyncPayloadDropping = getFileAsyncClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new PayloadDroppingPolicy(),
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.dataLakeAccount.credential)
         )
 
         fc.create()
