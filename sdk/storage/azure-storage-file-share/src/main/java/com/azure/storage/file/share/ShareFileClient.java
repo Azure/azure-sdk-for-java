@@ -1043,6 +1043,7 @@ public class ShareFileClient {
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param transferOptions {@link ParallelTransferOptions} for file transfer.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
     public ShareFileUploadInfo upload(InputStream data, long length, ParallelTransferOptions transferOptions) {
