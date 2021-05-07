@@ -62,18 +62,6 @@ public final class ContainerRegistryImpl {
         return this.containerRegistries;
     }
 
-    /** The ContainerRegistryRepositoriesImpl object to access its operations. */
-    private final ContainerRegistryRepositoriesImpl containerRegistryRepositories;
-
-    /**
-     * Gets the ContainerRegistryRepositoriesImpl object to access its operations.
-     *
-     * @return the ContainerRegistryRepositoriesImpl object.
-     */
-    public ContainerRegistryRepositoriesImpl getContainerRegistryRepositories() {
-        return this.containerRegistryRepositories;
-    }
-
     /** The ContainerRegistryBlobsImpl object to access its operations. */
     private final ContainerRegistryBlobsImpl containerRegistryBlobs;
 
@@ -134,7 +122,6 @@ public final class ContainerRegistryImpl {
         this.serializerAdapter = serializerAdapter;
         this.url = url;
         this.containerRegistries = new ContainerRegistriesImpl(this);
-        this.containerRegistryRepositories = new ContainerRegistryRepositoriesImpl(this);
         this.containerRegistryBlobs = new ContainerRegistryBlobsImpl(this);
         this.authentications = new AuthenticationsImpl(this);
     }

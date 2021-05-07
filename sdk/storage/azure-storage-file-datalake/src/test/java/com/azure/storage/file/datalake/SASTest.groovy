@@ -47,8 +47,8 @@ class SASTest extends APISpec {
     }
 
     DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
-        return new DataLakeServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        return new DataLakeServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
             .setCacheControl("cache")
             .setContentDisposition("disposition")
@@ -67,10 +67,10 @@ class SASTest extends APISpec {
     }
 
     UserDelegationKey getUserDelegationInfo() {
-        def key = getOAuthServiceClient().getUserDelegationKey(getUTCNow().minusDays(1), getUTCNow().plusDays(1))
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def key = getOAuthServiceClient().getUserDelegationKey(namer.getUtcNow().minusDays(1), namer.getUtcNow().plusDays(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
         return key
     }
@@ -171,7 +171,7 @@ class SASTest extends APISpec {
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))
         fsc.setAccessPolicy(null, Arrays.asList(identifier))
 
         // Check containerSASPermissions
@@ -187,7 +187,7 @@ class SASTest extends APISpec {
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new DataLakeServiceSasSignatureValues(identifier.getId())
@@ -301,14 +301,14 @@ class SASTest extends APISpec {
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         when:
@@ -324,7 +324,7 @@ class SASTest extends APISpec {
 
     def "file user delegation saoid"() {
         setup:
-        def saoid = getRandomUUID()
+        def saoid = namer.getRandomUuid()
         def pathName = generatePathName()
 
         def permissions = new PathSasPermission()
@@ -338,12 +338,12 @@ class SASTest extends APISpec {
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         when:
@@ -382,7 +382,7 @@ class SASTest extends APISpec {
 
     def "file user delegation suoid"() {
         setup:
-        def suoid = getRandomUUID()
+        def suoid = namer.getRandomUuid()
         def pathName = generatePathName()
 
         def permissions = new PathSasPermission()
@@ -396,12 +396,12 @@ class SASTest extends APISpec {
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         when: "User is not authorized yet."
@@ -448,7 +448,7 @@ class SASTest extends APISpec {
 
         when: "Use random other suoid. User should not be authorized."
         sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
-            .setAgentObjectId(getRandomUUID())
+            .setAgentObjectId(namer.getRandomUuid())
         sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
 
         client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
@@ -464,17 +464,17 @@ class SASTest extends APISpec {
         def permissions = new FileSystemSasPermission()
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
-        def cid = getRandomUUID()
+        def cid = namer.getRandomUuid()
 
         when:
         def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
@@ -494,14 +494,14 @@ class SASTest extends APISpec {
         def permissions = new FileSystemSasPermission()
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         def cid = "invalidcid"
@@ -535,7 +535,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -562,7 +562,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -585,7 +585,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(false)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -608,7 +608,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -631,7 +631,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
@@ -802,13 +802,9 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
-        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (testMode == TestMode.RECORD) {
-            recordPolicy = interceptorManager.getRecordPolicy()
-        }
         def pathName = generatePathName()
         fsc.createDirectory(pathName)
 
@@ -816,7 +812,7 @@ class SASTest extends APISpec {
         new DataLakeFileSystemClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .sasToken(sas)
-            .addPolicy(recordPolicy)
+            .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
