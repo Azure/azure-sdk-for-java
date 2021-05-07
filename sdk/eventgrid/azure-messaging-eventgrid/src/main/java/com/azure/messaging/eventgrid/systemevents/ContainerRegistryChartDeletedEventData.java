@@ -5,7 +5,36 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import java.time.OffsetDateTime;
 
-/** The ContainerRegistryChartDeletedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event. */
 @Immutable
-public final class ContainerRegistryChartDeletedEventData extends ContainerRegistryArtifactEventData {}
+public final class ContainerRegistryChartDeletedEventData extends ContainerRegistryArtifactEventData {
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartDeletedEventData setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartDeletedEventData setTimestamp(OffsetDateTime timestamp) {
+        super.setTimestamp(timestamp);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartDeletedEventData setAction(String action) {
+        super.setAction(action);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartDeletedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
+        super.setTarget(target);
+        return this;
+    }
+}

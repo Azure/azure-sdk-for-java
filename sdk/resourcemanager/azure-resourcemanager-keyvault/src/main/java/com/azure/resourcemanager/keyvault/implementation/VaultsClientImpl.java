@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -80,7 +81,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     @Host("{$host}")
     @ServiceInterface(name = "KeyVaultManagementCl")
     private interface VaultsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}")
@@ -93,9 +94,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VaultCreateOrUpdateParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}")
@@ -108,9 +110,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VaultPatchParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}")
@@ -122,9 +125,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}")
@@ -136,9 +140,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
                 + "/{vaultName}/accessPolicies/{operationKind}")
@@ -152,9 +157,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VaultAccessPolicyParametersInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -164,9 +170,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/vaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -175,9 +182,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -185,9 +193,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults"
                 + "/{vaultName}")
@@ -199,9 +208,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults"
                 + "/{vaultName}/purge")
@@ -213,9 +223,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -225,9 +236,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -236,35 +248,48 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VaultCheckNameAvailabilityParameters vaultName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedVaultListResult>> listDeletedNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -272,7 +297,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -305,6 +330,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -316,8 +342,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -325,7 +352,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -359,6 +386,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -368,6 +396,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -376,7 +405,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -398,7 +427,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,7 +451,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -439,7 +468,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -457,7 +486,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -476,7 +505,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -496,7 +525,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -513,7 +542,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to create or update the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -531,7 +560,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -564,6 +593,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -575,8 +605,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -584,7 +615,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -618,6 +649,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -627,6 +659,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -635,7 +668,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -659,7 +692,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -675,7 +708,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
-     * @param parameters Parameters for creating or updating a vault.
+     * @param parameters Parameters to patch the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -719,6 +752,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -729,8 +763,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             vaultName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -765,6 +800,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -773,6 +809,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 vaultName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -852,6 +889,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -862,8 +900,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             vaultName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -899,6 +938,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -907,6 +947,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 vaultName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -971,7 +1012,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1010,6 +1051,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         VaultAccessPolicyParametersInner parameters = new VaultAccessPolicyParametersInner();
         parameters.withProperties(properties);
         return FluxUtil
@@ -1024,8 +1066,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1034,7 +1077,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1075,6 +1118,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         VaultAccessPolicyParametersInner parameters = new VaultAccessPolicyParametersInner();
         parameters.withProperties(properties);
         context = this.client.mergeContext(context);
@@ -1087,6 +1131,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1096,7 +1141,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1125,7 +1170,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1146,7 +1191,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the vault access policy.
+     * @param properties Properties of the access policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1193,6 +1238,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1203,6 +1249,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             top,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<VaultInner>>map(
                 res ->
@@ -1213,7 +1260,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1247,6 +1294,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -1255,6 +1303,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 top,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1327,6 +1376,22 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vaults.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName) {
+        final Integer top = null;
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription and within the specified
+     * resource group.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1337,22 +1402,6 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName, Integer top, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, context));
-    }
-
-    /**
-     * The List operation gets information about the vaults associated with the subscription and within the specified
-     * resource group.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vaults.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName) {
-        final Integer top = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top));
     }
 
     /**
@@ -1378,6 +1427,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1387,6 +1437,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             top,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<VaultInner>>map(
                 res ->
@@ -1397,7 +1448,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1424,10 +1475,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listBySubscription(
-                this.client.getEndpoint(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(),
+                top,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1488,6 +1545,19 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vaults.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VaultInner> listBySubscription() {
+        final Integer top = null;
+        return new PagedIterable<>(listBySubscriptionAsync(top));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     *
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1498,19 +1568,6 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultInner> listBySubscription(Integer top, Context context) {
         return new PagedIterable<>(listBySubscriptionAsync(top, context));
-    }
-
-    /**
-     * The List operation gets information about the vaults associated with the subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vaults.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VaultInner> listBySubscription() {
-        final Integer top = null;
-        return new PagedIterable<>(listBySubscriptionAsync(top));
     }
 
     /**
@@ -1534,6 +1591,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1542,6 +1600,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<DeletedVaultInner>>map(
                 res ->
@@ -1552,7 +1611,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1578,10 +1637,15 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listDeleted(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1677,6 +1741,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1687,8 +1752,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             location,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1723,6 +1789,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getDeleted(
@@ -1731,6 +1798,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 location,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1818,6 +1886,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1828,8 +1897,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             location,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1864,6 +1934,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .purgeDeleted(
@@ -1872,6 +1943,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 location,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -2032,6 +2104,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         }
         final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
         final String apiVersion = "2015-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2042,6 +2115,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             top,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<Resource>>map(
                 res ->
@@ -2052,7 +2126,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2081,9 +2155,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         }
         final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
         final String apiVersion = "2015-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), filter, top, apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), filter, top, apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2141,6 +2216,19 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vault resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Resource> list() {
+        final Integer top = null;
+        return new PagedIterable<>(listAsync(top));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     *
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2151,19 +2239,6 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Resource> list(Integer top, Context context) {
         return new PagedIterable<>(listAsync(top, context));
-    }
-
-    /**
-     * The List operation gets information about the vaults associated with the subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vault resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Resource> list() {
-        final Integer top = null;
-        return new PagedIterable<>(listAsync(top));
     }
 
     /**
@@ -2192,6 +2267,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         VaultCheckNameAvailabilityParameters vaultName = new VaultCheckNameAvailabilityParameters();
         vaultName.withName(name);
         return FluxUtil
@@ -2203,8 +2279,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             vaultName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2235,6 +2312,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         VaultCheckNameAvailabilityParameters vaultName = new VaultCheckNameAvailabilityParameters();
         vaultName.withName(name);
         context = this.client.mergeContext(context);
@@ -2244,6 +2322,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 vaultName,
+                accept,
                 context);
     }
 
@@ -2312,8 +2391,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<VaultInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2323,7 +2410,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2341,9 +2428,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2369,8 +2463,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySubscriptionNext(nextLink, context))
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<VaultInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2380,7 +2482,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2398,9 +2500,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionNext(nextLink, context)
+            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2426,8 +2535,15 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listDeletedNext(nextLink, context))
+            .withContext(context -> service.listDeletedNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DeletedVaultInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2437,7 +2553,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2455,9 +2571,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listDeletedNext(nextLink, context)
+            .listDeletedNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2483,8 +2606,15 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<Resource>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2494,7 +2624,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2512,9 +2642,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

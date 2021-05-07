@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
@@ -36,7 +37,6 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -160,7 +160,6 @@ public final class BridgeInternal {
         boolean useEtagAsContinuation,
         boolean isNoChangesResponse,
         CosmosDiagnostics cosmosDiagnostics) {
-
         FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
             results,
             headers,
@@ -552,9 +551,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordRetryContext(CosmosDiagnostics cosmosDiagnostics,
-                                          RxDocumentServiceRequest request) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordRetryContext(request);
+    public static void recordRetryContextEndTime(CosmosDiagnostics cosmosDiagnostics) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordRetryContextEndTime();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -797,8 +795,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ThroughputControlMode getThroughputControlMode(ThroughputControlGroup throughputControlGroup) {
-        return throughputControlGroup.getControlMode();
+    public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
+        return transactionalBatchResponse.getResponseLength();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -807,7 +805,16 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncContainer getTargetContainerFromThroughputControlGroup(ThroughputControlGroup controlGroup) {
-        return controlGroup.getTargetContainer();
+    public static CosmosAsyncContainer getControlContainerFromThroughputGlobalControlConfig(GlobalThroughputControlConfig globalControlConfig) {
+        return globalControlConfig.getControlContainer();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RetryContext getRetryContext(CosmosDiagnostics cosmosDiagnostics) {
+        if(cosmosDiagnostics != null && cosmosDiagnostics.clientSideRequestStatistics() != null) {
+            return cosmosDiagnostics.clientSideRequestStatistics().getRetryContext();
+        } else {
+            return null;
+        }
     }
 }

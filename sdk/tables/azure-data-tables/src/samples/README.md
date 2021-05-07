@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-tables
+  - azure-table-storage
 urlFragment: tables-samples
 ---
 

@@ -74,6 +74,12 @@ public class SnapshotUpdate {
     @JsonProperty(value = "properties.diskAccessId")
     private String diskAccessId;
 
+    /*
+     * Indicates the OS on a snapshot supports hibernation.
+     */
+    @JsonProperty(value = "properties.supportsHibernation")
+    private Boolean supportsHibernation;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -245,6 +251,26 @@ public class SnapshotUpdate {
      */
     public SnapshotUpdate withDiskAccessId(String diskAccessId) {
         this.diskAccessId = diskAccessId;
+        return this;
+    }
+
+    /**
+     * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
+     *
+     * @return the supportsHibernation value.
+     */
+    public Boolean supportsHibernation() {
+        return this.supportsHibernation;
+    }
+
+    /**
+     * Set the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
+     *
+     * @param supportsHibernation the supportsHibernation value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withSupportsHibernation(Boolean supportsHibernation) {
+        this.supportsHibernation = supportsHibernation;
         return this;
     }
 

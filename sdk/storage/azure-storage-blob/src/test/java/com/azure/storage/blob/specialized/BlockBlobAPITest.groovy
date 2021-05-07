@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
-import com.azure.core.http.RequestConditions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -50,7 +49,6 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
-import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
@@ -181,7 +179,7 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -820,32 +818,6 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Requires({ liveMode() })
-    def "Upload from file no overwrite interrupted"() {
-        setup:
-        def file = getRandomFile(257 * 1024 * 1024)
-        def smallFile = getRandomFile(50)
-        blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
-
-        expect:
-        /*
-         * When the upload begins trigger an upload to write the blob after waiting 500 milliseconds so that the upload
-         * fails when it attempts to put the block list.
-         */
-        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString())
-            .doOnSubscribe({
-                blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).delaySubscription(Duration.ofMillis(500)).subscribe()
-            }))
-            .verifyErrorSatisfies({
-                assert it instanceof BlobStorageException
-                assert ((BlobStorageException) it).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
-            })
-
-        cleanup:
-        file.delete()
-        smallFile.delete()
-    }
-
-    @Requires({ liveMode() })
     def "Upload from file overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -1180,7 +1152,7 @@ class BlockBlobAPITest extends APISpec {
     def "Upload retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -1231,7 +1203,6 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
-    @Ignore("Timeouts")
     def "Async buffered upload"() {
         setup:
         def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
@@ -1268,6 +1239,16 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
+    def "Async upload binary data"() {
+        when:
+        blobAsyncClient.upload(defaultBinaryData, true).block()
+
+        then:
+        StepVerifier.create(blockBlobAsyncClient.downloadContent())
+                .assertNext({ assert it.toBytes() == defaultBinaryData.toBytes() })
+                .verifyComplete()
+    }
+
     @Unroll
     @Requires({ liveMode() })
     def "Async buffered upload computeMd5"() {
@@ -1289,6 +1270,11 @@ class BlockBlobAPITest extends APISpec {
         Constants.KB | null                | null               | 1                  // Simple case where uploadFull is called.
         Constants.KB | Constants.KB        | 500 * Constants.KB | 1000               // uploadChunked 2 blocks staged
         Constants.KB | Constants.KB        | 5 * Constants.KB   | 1000               // uploadChunked 100 blocks staged
+    }
+
+    def "Async upload binary data with response"() {
+        expect:
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(defaultBinaryData)).block().getStatusCode() == 201
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1365,7 +1351,6 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
-    @Ignore("Timeouts")
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -1455,7 +1440,7 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getBlobAsyncClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             blobAsyncClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1491,7 +1476,7 @@ class BlockBlobAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1805,8 +1790,8 @@ class BlockBlobAPITest extends APISpec {
 
         // Build the pipeline
         blobAsyncClient = new BlobServiceClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(env.primaryAccount.credential)
+            .endpoint(env.primaryAccount.blobEndpoint)
             .httpClient(getHttpClient())
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
@@ -1830,6 +1815,12 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload default no overwrite"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(defaultFlux, null))
+            .verifyError(IllegalArgumentException)
+    }
+
+    def "Upload binary data no overwrite"() {
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(defaultBinaryData))
             .verifyError(IllegalArgumentException)
     }
 
@@ -1912,7 +1903,7 @@ class BlockBlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                   | "斑點"
+        "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 
@@ -1947,7 +1938,7 @@ class BlockBlobAPITest extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(primaryCredential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
             .buildBlockBlobClient()
 
         when:

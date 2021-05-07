@@ -10,11 +10,13 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
@@ -32,12 +34,11 @@ public class SpyClientUnderTestFactory {
 
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
-        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
-                            ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
-                            boolean contentResponseOnWriteEnabled) {
+        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+
             super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential,
-                  null, false, false,
-                  contentResponseOnWriteEnabled);
+                null, false, false,
+                contentResponseOnWriteEnabled, null);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -63,8 +64,8 @@ public class SpyClientUnderTestFactory {
                              ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
                              boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
-                  contentResponseOnWriteEnabled);
-            init();
+                contentResponseOnWriteEnabled);
+            init(null, null);
         }
 
         @Override
@@ -80,12 +81,12 @@ public class SpyClientUnderTestFactory {
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
-                    sessionContainer,
-                    consistencyLevel,
-                    queryCompatibilityMode,
-                    userAgentContainer,
-                    globalEndpointManager,
-                    rxClient);
+                sessionContainer,
+                consistencyLevel,
+                queryCompatibilityMode,
+                userAgentContainer,
+                globalEndpointManager,
+                rxClient);
             this.requests = Collections.synchronizedList(new ArrayList<>());
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
             this.initRequestCapture();
@@ -96,7 +97,7 @@ public class SpyClientUnderTestFactory {
             doAnswer(new Answer<Object>() {
                 @Override
                 public Object answer(InvocationOnMock invocationOnMock)  {
-                    RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
+                    RxDocumentServiceRequest req = invocationOnMock.getArgument(0, RxDocumentServiceRequest.class);
                     requests.add(req);
                     return ClientWithGatewaySpy.this.origRxGatewayStoreModel.processMessage(req);
                 }
@@ -121,38 +122,55 @@ public class SpyClientUnderTestFactory {
 
         HttpClient origHttpClient;
         HttpClient spyHttpClient;
-        List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
-                Collections.synchronizedList(new ArrayList<>());
+        List<Pair<HttpRequest, Future<HttpResponse>>> requestsResponsePairs =
+            Collections.synchronizedList(new ArrayList<>());
+
 
         ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
                         ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
                         boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
-                  contentResponseOnWriteEnabled);
-            init();
+                contentResponseOnWriteEnabled);
+            init(null, this::initHttpRequestCapture);
         }
 
-        public List<Pair<HttpRequest, Future<HttpHeaders>>> capturedRequestResponseHeaderPairs() {
+        private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
+            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (invocationOnMock.getArguments().length == 2) {
+                responseTimeout = invocationOnMock.getArgument(1, Duration.class);
+            }
+            CompletableFuture<HttpResponse> f = new CompletableFuture<>();
+            this.requestsResponsePairs.add(Pair.of(httpRequest, f));
+
+            return origHttpClient
+                .send(httpRequest, responseTimeout)
+                .doOnNext(httpResponse -> f.complete(httpResponse.buffer()))
+                .doOnError(f::completeExceptionally);
+        }
+
+        private HttpClient initHttpRequestCapture(HttpClient originalClient) {
+            HttpClient spyHttpClient = spy(originalClient);
+            doAnswer(this::captureHttpRequest)
+                .when(spyHttpClient)
+                .send(Mockito.any(HttpRequest.class));
+            doAnswer(this::captureHttpRequest)
+                .when(spyHttpClient)
+                .send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+
+            this.origHttpClient = originalClient;
+            this.spyHttpClient = spyHttpClient;
+
+            return spyHttpClient;
+        }
+
+        public List<Pair<HttpRequest, Future<HttpResponse>>> capturedRequestResponseHeaderPairs() {
             return requestsResponsePairs;
         }
 
         @Override
         public List<HttpRequest> getCapturedRequests() {
             return requestsResponsePairs.stream().map(Pair::getLeft).collect(Collectors.toList());
-        }
-
-        void initRequestCapture(HttpClient spyClient) {
-            doAnswer(invocationOnMock -> {
-                HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
-                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
-                CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
-                requestsResponsePairs.add(Pair.of(httpRequest, f));
-
-                return origHttpClient
-                        .send(httpRequest, responseTimeout)
-                        .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
-                        .doOnError(f::completeExceptionally);
-            }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
         }
 
         @Override
@@ -168,6 +186,10 @@ public class SpyClientUnderTestFactory {
             }
         }
 
+        public HttpClient getOrigHttpClient() {
+            return origHttpClient;
+        }
+
         public HttpClient getSpyHttpClient() {
             return spyHttpClient;
         }
@@ -178,15 +200,15 @@ public class SpyClientUnderTestFactory {
         HttpClient origHttpClient;
         HttpClient spyHttpClient;
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
-                Collections.synchronizedList(new ArrayList<>());
+            Collections.synchronizedList(new ArrayList<>());
 
         DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
                                    ConsistencyLevel consistencyLevel, AzureKeyCredential credential,
                                    boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS),
-                  credential, contentResponseOnWriteEnabled);
+                credential, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
-            init();
+            init(null, null);
 
             this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);
             this.spyHttpClient = spy(this.origHttpClient);
@@ -205,15 +227,15 @@ public class SpyClientUnderTestFactory {
 
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
-                HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
-                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
+                HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+                Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 
                 return origHttpClient
-                        .send(httpRequest, responseTimeout)
-                        .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
-                        .doOnError(f::completeExceptionally);
+                    .send(httpRequest, responseTimeout)
+                    .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
+                    .doOnError(f::completeExceptionally);
 
             }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
         }
@@ -248,7 +270,7 @@ public class SpyClientUnderTestFactory {
                                                                   AzureKeyCredential credential,
                                                                   boolean contentResponseOnWriteEnabled) {
         return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs,
-                                        credential, contentResponseOnWriteEnabled);
+            credential, contentResponseOnWriteEnabled);
     }
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
@@ -267,38 +289,13 @@ public class SpyClientUnderTestFactory {
                                                         AzureKeyCredential credential,
                                                         boolean contentResponseOnWriteEnabled) {
         return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs,
-                                   credential, contentResponseOnWriteEnabled) {
-
-            @Override
-            RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
-                                                     ConsistencyLevel consistencyLevel,
-                                                     QueryCompatibilityMode queryCompatibilityMode,
-                                                     UserAgentContainer userAgentContainer,
-                                                     GlobalEndpointManager globalEndpointManager,
-                                                     HttpClient rxClient) {
-
-                HttpClient spy = spy(rxClient);
-
-                this.origHttpClient = rxClient;
-                this.spyHttpClient = spy;
-
-                this.initRequestCapture(spyHttpClient);
-
-                return super.createRxGatewayProxy(
-                        sessionContainer,
-                        consistencyLevel,
-                        queryCompatibilityMode,
-                        userAgentContainer,
-                        globalEndpointManager,
-                        spy);
-            }
-        };
+            credential, contentResponseOnWriteEnabled);
     }
 
     public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(
         URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel,
         AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
         return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel,
-                                              credential, contentResponseOnWriteEnabled);
+            credential, contentResponseOnWriteEnabled);
     }
 }

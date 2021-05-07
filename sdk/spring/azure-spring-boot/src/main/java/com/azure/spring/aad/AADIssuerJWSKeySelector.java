@@ -66,7 +66,7 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
             JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
         } catch (Exception ex) {
-            throw new IllegalArgumentException("The issuer: '" + issuer + "' were unable to create a Key Source.", ex);
+            throw new IllegalArgumentException(ex.getMessage(), ex);
         }
     }
 

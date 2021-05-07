@@ -5,21 +5,32 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 
-function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
+function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
   $projectPath = Join-Path $pkgPath "pom.xml"
   if (Test-Path $projectPath)
   {
     $projectData = New-Object -TypeName XML
     $projectData.load($projectPath)
+
+    if ($projectData.project.psobject.properties.name -notcontains "artifactId" -or !$projectData.project.artifactId) {
+      Write-Host "$projectPath doesn't have a defined artifactId so skipping this pom."
+      return $null
+    }
+
+    if ($projectData.project.psobject.properties.name -notcontains "version" -or !$projectData.project.version) {
+      Write-Host "$projectPath doesn't have a defined version so skipping this pom."
+      return $null
+    }
+
+    if ($projectData.project.psobject.properties.name -notcontains "groupid" -or !$projectData.project.groupId) {
+      Write-Host "$projectPath doesn't have a defined groupId so skipping this pom."
+      return $null
+    }
+
     $projectPkgName = $projectData.project.artifactId
     $pkgVersion = $projectData.project.version
     $pkgGroup = $projectData.project.groupId
-
-    if ($pkgName -and ($projectPkgName -ne $pkgName))
-    {
-      return $null
-    }
 
     $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
     if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
@@ -243,19 +254,21 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 }
 
 # function is used to filter packages to submit to API view tool
-function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
+function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 {
-  Write-Host "Checking for source jar in artifact path $($artifactDir)"
   # Find all source jar files in given artifact directory
-  $files = Get-ChildItem "${artifactDir}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
+  # Filter for package in "com.azure*" groupid.
+  $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
+  Write-Host "Checking for source jar in artifact path $($artifactPath)"
+  $files = Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
   if (!$files)
   {
-    Write-Host "$($artifactDir) does not have any package"
+    Write-Host "$($artifactPath) does not have any package"
     return $null
   }
   elseif($files.Count -ne 1)
   {
-    Write-Host "$($artifactDir) should contain only one (1) published source jar package"
+    Write-Host "$($artifactPath) should contain only one (1) published source jar package"
     Write-Host "No of Packages $($files.Count)"
     return $null
   }

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
@@ -29,9 +30,8 @@ import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +40,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
@@ -89,10 +90,12 @@ public class CosmosTemplateIT {
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
     private static String containerName;
-    private static boolean initialized;
 
     private Person insertedPerson;
 
@@ -109,7 +112,7 @@ public class CosmosTemplateIT {
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
+        if (cosmosTemplate == null) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
@@ -123,23 +126,13 @@ public class CosmosTemplateIT {
                 null);
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
-            cosmosTemplate.createContainerIfNotExists(personInfo);
-            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class));
-            initialized = true;
         }
+
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
+                                                          GenIdEntity.class, AuditableEntity.class);
 
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
-    }
-
-    @After
-    public void cleanup() {
-        cosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class);
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     private void insertPerson(Person person) {
@@ -395,7 +388,7 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<Person> page2 = cosmosTemplate.findAll(page1.getPageable(), Person.class,
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class,
             containerName);
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
@@ -520,7 +513,7 @@ public class CosmosTemplateIT {
         assertThat(firstPageResults.get(1).getFirstName()).isEqualTo(FIRST_NAME);
         assertThat(firstPageResults.get(2).getFirstName()).isEqualTo(testPerson5.getFirstName());
 
-        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.getPageable(), Person.class,
+        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.nextPageable(), Person.class,
             containerName);
 
         assertThat(secondPage.getContent().size()).isEqualTo(2);
@@ -596,4 +589,24 @@ public class CosmosTemplateIT {
         assertNotNull(foundEntity.getLastModifiedByDate());
     }
 
+    @Test
+    public void testSliceQuery() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+
+        final Slice<Person> slice = cosmosTemplate.sliceQuery(query, Person.class, containerName);
+        assertThat(slice.getContent().size()).isEqualTo(1);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
 }

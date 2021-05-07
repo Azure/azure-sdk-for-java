@@ -1,6 +1,13 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
+
+
+## 2.4.0 (2021-04-28)
+
+- Updated parameter of `SupportsBatchCreation.create` from `List<Creatable<ResourceT>>` to `List<? extends Creatable<ResourceT>>`
+
+## 2.3.0 (2021-03-30)
 
 - Added client-side validation for `getByResourceGroup`, `listByResourceGroup`, `deleteByResourceGroup` methods.
 

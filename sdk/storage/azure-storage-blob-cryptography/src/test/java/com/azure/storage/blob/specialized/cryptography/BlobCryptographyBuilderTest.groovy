@@ -1,13 +1,8 @@
 package com.azure.storage.blob.specialized.cryptography
 
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpPipelinePosition
-import com.azure.core.http.HttpResponse
-import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
-import reactor.core.publisher.Mono
 
 class BlobCryptographyBuilderTest extends APISpec {
 
@@ -24,8 +19,7 @@ class BlobCryptographyBuilderTest extends APISpec {
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        def sc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        def sc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
         def containerName = generateContainerName()
         def blobName = generateBlobName()
@@ -42,8 +36,8 @@ class BlobCryptographyBuilderTest extends APISpec {
 
     def "Pipeline integrity"() {
         expect:
-        // Http pipeline of encrypted client additionally includes decryption policy
-        beac.getHttpPipeline().getPolicyCount() == bc.getHttpPipeline().getPolicyCount() + 1
+        // Http pipeline of encrypted client additionally includes decryption policy and blob user agent modification policy
+        beac.getHttpPipeline().getPolicyCount() == bc.getHttpPipeline().getPolicyCount() + 2
 
         beac.getBlobUrl() == bc.getBlobUrl()
 
@@ -68,22 +62,23 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "Http pipeline"() {
         when:
         def regularClient = cc.getBlobClient(generateBlobName())
-        def encryptedClient = getEncryptedClientBuilder(fakeKey, null, primaryCredential, cc.getBlobContainerUrl())
+        def encryptedClient = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .pipeline(regularClient.getHttpPipeline())
             .blobName(regularClient.getBlobName())
             .buildEncryptedBlobClient()
 
         then:
-        // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy
-        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 1
+        // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy and a blob user agent modification policy
+        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 2
         encryptedClient.getHttpPipeline().getPolicy(0) instanceof BlobDecryptionPolicy
+        encryptedClient.getHttpPipeline().getPolicy(2) instanceof BlobUserAgentModificationPolicy
     }
 
     def "Customer provided key"() {
         setup:
         cc.create()
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey())
-        def builder = getEncryptedClientBuilder(fakeKey, null, primaryCredential, cc.getBlobContainerUrl())
+        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
         def encryptedAsyncClient = builder.buildEncryptedBlobAsyncClient()
@@ -107,12 +102,12 @@ class BlobCryptographyBuilderTest extends APISpec {
         setup:
         cc.create()
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey())
-        def encryptedClientWithCpk = getEncryptedClientBuilder(fakeKey, null, primaryCredential, cc.getBlobContainerUrl())
+        def encryptedClientWithCpk = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient()
 
-        def encryptedClientNoCpk = getEncryptedClientBuilder(fakeKey, null, primaryCredential, encryptedClientWithCpk.getBlobUrl())
+        def encryptedClientNoCpk = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, encryptedClientWithCpk.getBlobUrl())
             .buildEncryptedBlobClient()
 
         when:

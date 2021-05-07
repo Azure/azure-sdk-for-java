@@ -517,7 +517,6 @@ public class EventHubClientBuilder {
      * <li>If no proxy is specified, the builder checks the {@link Configuration#getGlobalConfiguration() global
      * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
      * <li>If no timeout is specified, a {@link ClientConstants#OPERATION_TIMEOUT timeout of one minute} is used.</li>
-     * <li>If no scheduler is specified, an {@link Schedulers#elastic() elastic scheduler} is used.</li>
      * </ul>
      *
      * @return A new {@link EventHubAsyncClient} instance with all the configured options.
@@ -531,7 +530,7 @@ public class EventHubClientBuilder {
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.elastic();
+            scheduler = Schedulers.boundedElastic();
         }
 
         if (prefetchCount == null) {
@@ -621,16 +620,6 @@ public class EventHubClientBuilder {
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
-        final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-            connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-
-        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
-        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
-
         final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
             sink.onRequest(request -> {
 
@@ -645,9 +634,16 @@ public class EventHubClientBuilder {
                 final String connectionId = StringUtil.getRandomString("MF");
                 logger.info("connectionId[{}]: Emitting a single connection.", connectionId);
 
+                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                    ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+                final ReactorProvider provider = new ReactorProvider();
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider, messageSerializer,
-                    product, clientVersion);
+                    connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider,
+                    messageSerializer);
+
                 sink.next(connection);
             });
         });
@@ -688,18 +684,22 @@ public class EventHubClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
         final SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
         if (customEndpointAddress == null) {
             return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
-                retryOptions, proxyOptions, scheduler, options, verificationMode);
+                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion);
         } else {
             return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
-                retryOptions, proxyOptions, scheduler, options, verificationMode, customEndpointAddress.getHost(),
-                customEndpointAddress.getPort());
+                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion,
+                customEndpointAddress.getHost(), customEndpointAddress.getPort());
         }
     }
 

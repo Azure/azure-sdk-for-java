@@ -269,16 +269,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!--Checks for package naming and name length limit. Package names have to starting with either-->
     <!--'com.microsoft.azure' or 'com.azure', and then the extension names should only contains-->
-    <!--characters 'a' to 'z' with no more than 20 characters and  the package names should be no-->
+    <!--characters 'a' to 'z' with no more than 30 characters and  the package names should be no-->
     <!--more than 80 characters.-->
     <module name="PackageName">
-      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure)(\.[a-z]{1,20})*)+$"/>
+      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure)(\.[a-z]{1,30})*)+$"/>
     </module>
 
     <!-- Javadoc checks                                   -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html -->
     <module name="JavadocMethod">
-      <property name="scope" value="protected"/>
+      <property name="accessModifiers" value="public, protected"/>
     </module>
     <module name="MissingJavadocMethod"/>
     <module name="MissingJavadocType"/>

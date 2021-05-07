@@ -8,8 +8,12 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEventDataFormat;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -25,6 +29,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +58,7 @@ public class EventGridPublisherClientTests extends TestBase {
     // Event Grid access key for a topic accepting custom schema events
     private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
 
-    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com";
+    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com/api/events";
 
     private static final String DUMMY_KEY = "dummyKey";
 
@@ -86,16 +91,42 @@ public class EventGridPublisherClientTests extends TestBase {
 
         List<EventGridEvent> events = new ArrayList<>();
         events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
-            new HashMap<String, String>() {{
-                put("Field1", "Value1");
-                put("Field2", "Value2");
-                put("Field3", "Value3");
-            }},
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }),
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
+        StepVerifier.create(egClient.sendEventsWithResponse(events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
+
+        StepVerifier.create(egClient.sendEvents(events))
+            .verifyComplete();
+    }
+
+    @Test
+    public void publishEventGridEvent() {
+        EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
+            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .credential(getKey(EVENTGRID_KEY))
+            .buildEventGridEventPublisherAsyncClient();
+
+        EventGridEvent event = new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }),
+            "1.0")
+            .setEventTime(OffsetDateTime.now());
+        StepVerifier.create(egClient.sendEvent(event))
             .verifyComplete();
     }
 
@@ -114,11 +145,13 @@ public class EventGridPublisherClientTests extends TestBase {
 
         List<EventGridEvent> events = new ArrayList<>();
         events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
-            new HashMap<String, String>() {{
-                put("Field1", "Value1");
-                put("Field2", "Value2");
-                put("Field3", "Value3");
-            }},
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }),
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
@@ -136,16 +169,40 @@ public class EventGridPublisherClientTests extends TestBase {
 
         List<CloudEvent> events = new ArrayList<>();
         events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-            new HashMap<String, String>() {{
-                put("Field1", "Value1");
-                put("Field2", "Value2");
-                put("Field3", "Value3");
-            }})
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
         StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
+    }
+
+    @Test
+    public void publishCloudEvent() {
+        EventGridPublisherAsyncClient<CloudEvent> egClient = builder
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .credential(getKey(CLOUD_KEY))
+            .buildCloudEventPublisherAsyncClient();
+
+        CloudEvent event = new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
+            .setSubject("Test")
+            .setTime(OffsetDateTime.now());
+
+        StepVerifier.create(egClient.sendEvent(event))
             .verifyComplete();
     }
 
@@ -185,7 +242,7 @@ public class EventGridPublisherClientTests extends TestBase {
         List<CloudEvent> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-                new TestData().setName("Hello " + i))
+                BinaryData.fromObject(new TestData().setName("Hello " + i)), CloudEventDataFormat.JSON, null)
                 .setSubject("Test " + i)
             );
         }
@@ -198,22 +255,69 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishCustomEvents() {
-        EventGridPublisherAsyncClient<Object> egClient = builder
+        EventGridPublisherAsyncClient<BinaryData> egClient = builder
             .credential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
 
-        List<Object> events = new ArrayList<>();
+        List<BinaryData> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            events.add(new HashMap<String, String>() {{
+            events.add(BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("id", UUID.randomUUID().toString());
+                    put("time", OffsetDateTime.now().toString());
+                    put("subject", "Test");
+                    put("foo", "bar");
+                    put("type", "Microsoft.MockPublisher.TestEvent");
+                }
+            }));
+        }
+        StepVerifier.create(egClient.sendEventsWithResponse(events))
+            .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
+    }
+
+    @Test
+    public void publishCustomEventsWithSerializer() {
+        EventGridPublisherAsyncClient<BinaryData> egClient = builder
+            .credential(getKey(CUSTOM_KEY))
+            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .buildCustomEventPublisherAsyncClient();
+
+        List<BinaryData> events = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            events.add(BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("id", UUID.randomUUID().toString());
+                    put("time", OffsetDateTime.now().toString());
+                    put("subject", "Test");
+                    put("foo", "bar");
+                    put("type", "Microsoft.MockPublisher.TestEvent");
+                }
+            }, new JacksonJsonSerializerBuilder().build()));
+        }
+        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
+            .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
+    }
+
+    @Test
+    public void publishCustomEvent() {
+        EventGridPublisherAsyncClient<BinaryData> egClient = builder
+            .credential(getKey(CUSTOM_KEY))
+            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .buildCustomEventPublisherAsyncClient();
+
+        BinaryData event = BinaryData.fromObject(new HashMap<String, String>() {
+            {
                 put("id", UUID.randomUUID().toString());
                 put("time", OffsetDateTime.now().toString());
                 put("subject", "Test");
                 put("foo", "bar");
                 put("type", "Microsoft.MockPublisher.TestEvent");
-            }});
-        }
-        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE));
+            }
+        });
+        StepVerifier.create(egClient.sendEvent(event)).verifyComplete();
     }
 
     @Test
@@ -225,11 +329,13 @@ public class EventGridPublisherClientTests extends TestBase {
 
         List<EventGridEvent> events = new ArrayList<>();
         events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
-            new HashMap<String, String>() {{
-                put("Field1", "Value1");
-                put("Field2", "Value2");
-                put("Field3", "Value3");
-            }},
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }),
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
@@ -237,6 +343,27 @@ public class EventGridPublisherClientTests extends TestBase {
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void publishEventGridEventSync() {
+        EventGridPublisherClient<EventGridEvent> egClient = builder
+            .credential(getKey(EVENTGRID_KEY))
+            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .buildEventGridEventPublisherClient();
+
+        EventGridEvent event = new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }),
+            "1.0")
+            .setEventTime(OffsetDateTime.now());
+
+        egClient.sendEvent(event);
     }
 
     @Test
@@ -248,11 +375,13 @@ public class EventGridPublisherClientTests extends TestBase {
 
         List<CloudEvent> events = new ArrayList<>();
         events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-            new HashMap<String, String>() {{
-                put("Field1", "Value1");
-                put("Field2", "Value2");
-                put("Field3", "Value3");
-            }})
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
             .setId(UUID.randomUUID().toString())
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));
@@ -264,25 +393,66 @@ public class EventGridPublisherClientTests extends TestBase {
     }
 
     @Test
+    public void publishCloudEventSync() {
+        EventGridPublisherClient<CloudEvent> egClient = builder
+            .credential(getKey(CLOUD_KEY))
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .buildCloudEventPublisherClient();
+
+        CloudEvent event = new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
+            .setId(UUID.randomUUID().toString())
+            .setSubject("Test")
+            .setTime(OffsetDateTime.now());
+        egClient.sendEvent(event);
+    }
+
+    @Test
     public void publishCustomEventsSync() {
-        EventGridPublisherClient<Object> egClient = builder
+        EventGridPublisherClient<BinaryData> egClient = builder
             .credential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherClient();
 
-        List<Object> events = new ArrayList<>();
+        List<BinaryData> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            events.add(new HashMap<String, String>() {{
-                put("id", UUID.randomUUID().toString());
-                put("subject", "Test");
-                put("foo", "bar");
-                put("type", "Microsoft.MockPublisher.TestEvent");
-            }});
+            events.add(BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("id", UUID.randomUUID().toString());
+                    put("subject", "Test");
+                    put("foo", "bar");
+                    put("type", "Microsoft.MockPublisher.TestEvent");
+                }
+            }));
         }
         Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void publishCustomEventSync() {
+        EventGridPublisherClient<BinaryData> egClient = builder
+            .credential(getKey(CUSTOM_KEY))
+            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .buildCustomEventPublisherClient();
+
+        Map<String, String> event = new HashMap<String, String>() {
+                {
+                    put("id", UUID.randomUUID().toString());
+                    put("subject", "Test");
+                    put("foo", "bar");
+                    put("type", "Microsoft.MockPublisher.TestEvent");
+                }
+            };
+        egClient.sendEvent(BinaryData.fromObject(event));
     }
 
     private String getEndpoint(String liveEnvName) {

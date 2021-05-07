@@ -32,7 +32,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String ENV_ENDPOINT =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
     protected static final String COUNTRY_CODE =
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
     protected static final String AREA_CODE =
@@ -40,6 +40,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
     protected static final String PHONE_NUMBER =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
+
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
         new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -141,5 +144,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         }
 
         return content;
+    }
+
+    protected boolean shouldEnablePhoneNumbersTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|phonenumbers)");
     }
 }

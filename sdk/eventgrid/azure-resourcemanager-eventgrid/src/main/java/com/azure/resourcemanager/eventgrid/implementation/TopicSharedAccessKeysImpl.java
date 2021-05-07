@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicSharedAccessKeysInner;
 import com.azure.resourcemanager.eventgrid.models.TopicSharedAccessKeys;
 
 public final class TopicSharedAccessKeysImpl implements TopicSharedAccessKeys {
     private TopicSharedAccessKeysInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    TopicSharedAccessKeysImpl(TopicSharedAccessKeysInner innerObject, EventGridManager serviceManager) {
+    TopicSharedAccessKeysImpl(
+        TopicSharedAccessKeysInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,7 +30,7 @@ public final class TopicSharedAccessKeysImpl implements TopicSharedAccessKeys {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

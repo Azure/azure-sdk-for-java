@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.GoneException;
@@ -13,6 +15,7 @@ import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
@@ -154,7 +157,7 @@ public class ConsistencyWriterTest {
         assertThat(b.getNumberWaiting()).isEqualTo(1);
         b.await(1000, TimeUnit.MILLISECONDS);
         assertThat(invocationOnMocks).hasSize(1);
-        assertThat(invocationOnMocks.get(0).getArgumentAt(1, Boolean.class)).isTrue();
+        assertThat(invocationOnMocks.get(0).getArgument(1, Boolean.class)).isTrue();
     }
 
     @Test(groups = "unit")
@@ -180,8 +183,13 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
+        RetryContext retryContext = Mockito.mock(RetryContext.class);
+        ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
+        Mockito.doReturn(2).when(retryContext).getRetryCount();
 
-        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
@@ -197,8 +205,13 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(false).doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
+        RetryContext retryContext = Mockito.mock(RetryContext.class);
+        ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
+        Mockito.doReturn(2).when(retryContext).getRetryCount();
 
-        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);

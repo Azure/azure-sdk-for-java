@@ -168,6 +168,11 @@ final class GenericResourceImpl
         return this;
     }
 
+    public GenericResourceImpl withPlan(Plan plan) {
+        innerModel().withPlan(plan);
+        return this;
+    }
+
     @Override
     public GenericResourceImpl withoutPlan() {
         innerModel().withPlan(null);

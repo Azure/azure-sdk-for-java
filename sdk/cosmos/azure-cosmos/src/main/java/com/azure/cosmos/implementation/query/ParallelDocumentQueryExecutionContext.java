@@ -386,7 +386,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         logger.debug("ParallelQuery: flux mergeSequential" +
                          " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
         return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
-            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions));
+            .transformDeferred(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions));
     }
 
     @Override
@@ -412,7 +412,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 executeFunc,
                 targetRange,
                 collectionRid,
-                () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
+                createRetryPolicyFunc,
                 resourceType,
                 correlatedActivityId,
                 initialPageSize,

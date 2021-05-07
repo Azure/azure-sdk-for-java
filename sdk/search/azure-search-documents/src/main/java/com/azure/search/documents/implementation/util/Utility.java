@@ -40,6 +40,11 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +54,13 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class Utility {
     // Type reference that used across many places. Have one copy here to minimize the memory.
     public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
-        new TypeReference<Map<String, Object>>() {
-        };
+        new TypeReference<Map<String, Object>>() { };
 
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().set("return-client-request-id", "true");
+
+    private static final DecimalFormat COORDINATE_FORMATTER = new DecimalFormat();
 
     private static final JacksonAdapter DEFAULT_SERIALIZER_ADAPTER;
 
@@ -133,6 +139,7 @@ public final class Utility {
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
 
         return new HttpPipelineBuilder()
+            .clientOptions(buildClientOptions)
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
@@ -160,6 +167,18 @@ public final class Utility {
             .pipeline(httpPipeline)
             .serializerAdapter(adapter)
             .buildClient();
+    }
+
+    public static synchronized String formatCoordinate(double coordinate) {
+        return COORDINATE_FORMATTER.format(coordinate);
+    }
+
+    public static String readSynonymsFromFile(Path filePath) {
+        try {
+            return new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            throw new ClientLogger(Utility.class).logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     private Utility() {

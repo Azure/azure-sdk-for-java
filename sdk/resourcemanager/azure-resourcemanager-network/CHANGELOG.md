@@ -1,7 +1,16 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
+
+## 2.4.0 (2021-04-28)
+
+- Refreshed `api-version` `2020-08-01`
+- Supported configure `ApplicationSecurityGroup` for `NetworkInterface`
+
+## 2.3.0 (2021-03-30)
+
+- Supported `PrivateEndpoint` and `PrivateDnsZone`
 
 ## 2.2.0 (2021-02-24)
 

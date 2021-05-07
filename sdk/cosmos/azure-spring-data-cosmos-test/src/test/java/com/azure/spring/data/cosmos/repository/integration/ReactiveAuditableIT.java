@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AuditableIdGeneratedEntity;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
@@ -9,7 +11,8 @@ import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAuditableIdGeneratedRepository;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAuditableRepository;
-import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveAuditableIT {
 
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+
+    @Autowired
+    private ReactiveCosmosTemplate template;
     @Autowired
     private ReactiveAuditableRepository auditableRepository;
     @Autowired
@@ -37,9 +45,9 @@ public class ReactiveAuditableIT {
     @Autowired
     private StubAuditorProvider stubAuditorProvider;
 
-    @After
-    public void cleanup() {
-        this.auditableRepository.deleteAll().block();
+    @Before
+    public void setup() {
+        collectionManager.ensureContainersCreatedAndEmpty(template, AuditableEntity.class, AuditableIdGeneratedEntity.class);
     }
 
     @Test
@@ -122,4 +130,5 @@ public class ReactiveAuditableIT {
         assertThat(entity.getLastModifiedByDate()).isEqualTo(expectedModifiedTime);
         return true;
     }
+
 }

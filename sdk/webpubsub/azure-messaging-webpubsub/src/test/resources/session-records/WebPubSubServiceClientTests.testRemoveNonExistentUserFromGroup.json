@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.webpubsubdev.azure.com/api/hubs/test/users/testRemoveNonExistentUserFromGroup/groups/java?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Connection" : "keep-alive",
+      "Vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "User id not found.",
+      "Date" : "Wed, 21 Apr 2021 23:56:06 GMT",
+      "Content-Type" : "text/plain; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

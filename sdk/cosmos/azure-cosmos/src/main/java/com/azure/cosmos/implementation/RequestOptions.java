@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -34,7 +35,9 @@ public class RequestOptions {
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
     private Boolean contentResponseOnWriteEnabled;
+    private String filterPredicate;
     private String throughputControlGroupName;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -106,6 +109,25 @@ public class RequestOptions {
      */
     public void setIfNoneMatchETag(String ifNoneMatchETag) {
         this.ifNoneMatchETag = ifNoneMatchETag;
+    }
+
+    /**
+     * Gets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the FilterPredicate associated with the request.
+     */
+    public String getFilterPredicate() {
+        return this.filterPredicate;
+    }
+
+    /**
+     * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     *
+     * @param filterPredicate the filterPredicate associated with the request.
+     * @return the current request options
+     */
+    public void setFilterPredicate(String filterPredicate) {
+        this.filterPredicate = filterPredicate;
     }
 
     /**
@@ -386,5 +408,13 @@ public class RequestOptions {
 
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
+    }
+
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return dedicatedGatewayRequestOptions;
+    }
+
+    public void setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
     }
 }

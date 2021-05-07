@@ -34,8 +34,8 @@ public class RecognizeContentWithSelectionMarks {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/selectionMarkForm.pdf");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+            + "sample-forms/forms/selectionMarkForm.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
@@ -79,8 +79,8 @@ public class RecognizeContentWithSelectionMarks {
                     System.out.printf(
                         "Line %s consists of %d words and has a text style %s with a confidence score of %.2f.%n",
                         formLine.getText(), formLine.getWords().size(),
-                        formLine.getAppearance().getStyle().getName(),
-                        formLine.getAppearance().getStyle().getConfidence());
+                        formLine.getAppearance().getStyleName(),
+                        formLine.getAppearance().getStyleConfidence());
                 }
             });
         }

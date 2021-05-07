@@ -1,7 +1,17 @@
 # Release History
 
-## 12.9.0-beta.2 (Unreleased)
+## 12.10.0-beta.1 (Unreleased)
 
+
+## 12.9.0 (2021-04-29)
+- ShareLeaseClient now updates it's leaseID through a lease change.
+- Fixed a bug where working with a root directory client could improperly form requests and subdirectory clients
+
+## 12.9.0-beta.3 (2021-04-16)
+- Updated azure-storage-common dependencies.
+
+## 12.9.0-beta.2 (2021-03-29)
+- Updated azure-storage-common and azure-core dependencies.
 
 ## 12.9.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
@@ -42,7 +52,7 @@
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version
 
-## 12.6.0-beta.1 (2019-07-07)
+## 12.6.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support for restoring file share.
 
@@ -121,7 +131,7 @@ and
 - Renamed FileSasPermission getters to use has prefix
 - Changed return type for FileClient.downloadWithProperties from Response<Void> to FileDownloadResponse and FileAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<FileDownloadAsyncResponse>
 
-## 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's

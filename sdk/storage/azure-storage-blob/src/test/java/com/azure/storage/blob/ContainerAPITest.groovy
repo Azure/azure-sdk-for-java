@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.rest.PagedIterable
+import com.azure.core.http.rest.PagedResponse
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -33,6 +36,7 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.StorageImplUtils
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -336,14 +340,14 @@ class ContainerAPITest extends APISpec {
         def identifier = new BlobSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(1))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(1))
                 .setPermissions("r"))
         def identifier2 = new BlobSignedIdentifier()
             .setId("0001")
             .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(2))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(2))
                 .setPermissions("w"))
         def ids = [identifier, identifier2] as List
 
@@ -436,8 +440,8 @@ class ContainerAPITest extends APISpec {
         def identifier = new BlobSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(1))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(1))
                 .setPermissions("r"))
         def ids = [identifier] as List
         cc.setAccessPolicy(PublicAccessType.BLOB, ids)
@@ -574,7 +578,7 @@ class ContainerAPITest extends APISpec {
         bu.upload(defaultInputStream.get(), 7)
 
         when:
-        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         then:
         def blob = blobs.next()
@@ -615,7 +619,7 @@ class ContainerAPITest extends APISpec {
         bu.seal()
 
         when:
-        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         then:
         def blob = blobs.next()
@@ -658,7 +662,7 @@ class ContainerAPITest extends APISpec {
         bu.create(512)
 
         when:
-        def blobs = ccPremium.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = ccPremium.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         //ContainerListBlobFlatSegmentHeaders headers = response.headers()
         //List<BlobItem> blobs = responseiterator()()
@@ -855,6 +859,7 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
+    @ResourceLock("ServiceProperties")
     def "List blobs flat options deleted"() {
         setup:
         enableSoftDelete()
@@ -907,6 +912,27 @@ class ContainerAPITest extends APISpec {
         expect: "Get first page of blob listings (sync and async)"
         cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size() == PAGE_SIZE
         StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
+            .assertNext({ assert it.getValue().size() == PAGE_SIZE })
+            .verifyComplete()
+    }
+
+    def "List blobs flat options maxResults by page"() {
+        setup:
+        def PAGE_SIZE = 2
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        expect: "Get first page of blob listings (sync and async)"
+        for (def page : cc.listBlobs(options, null).iterableByPage(PAGE_SIZE)) {
+            assert page.value.size() <= PAGE_SIZE
+        }
+        StepVerifier.create(ccAsync.listBlobs(options).byPage(PAGE_SIZE).limitRequest(1))
             .assertNext({ assert it.getValue().size() == PAGE_SIZE })
             .verifyComplete()
     }
@@ -1236,6 +1262,7 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
+    @ResourceLock("ServiceProperties")
     def "List blobs hier options deleted"() {
         setup:
         enableSoftDelete()
@@ -1273,7 +1300,6 @@ class ContainerAPITest extends APISpec {
         !blobs.hasNext() // Normal
     }
 
-
     def "List blobs hier options maxResults"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
@@ -1289,6 +1315,26 @@ class ContainerAPITest extends APISpec {
         StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
             .assertNext({ assert it.getValue().size() == 1 })
             .verifyComplete()
+    }
+
+    def "List blobs hier options maxResults by page"() {
+        setup:
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveUncommittedBlobs(true))
+        def normalName = "a" + generateBlobName()
+        def copyName = "c" + generateBlobName()
+        def metadataName = "m" + generateBlobName()
+        def tagsName = "t" + generateBlobName()
+        def uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+
+        expect:
+        def pagedIterable = cc.listBlobsByHierarchy("", options, null);
+
+        def iterableByPage = pagedIterable.iterableByPage(1)
+        for (def page : iterableByPage) {
+            assert page.value.size() == 1
+        }
     }
 
     @Unroll
@@ -1440,7 +1486,7 @@ class ContainerAPITest extends APISpec {
         bu.seal()
 
         when:
-        def blobs = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+        def blobs = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
 
         then:
         def blob = blobs.next()
@@ -1596,8 +1642,8 @@ class ContainerAPITest extends APISpec {
         }
 
         AppendBlobClient bc = new BlobClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(env.primaryAccount.credential)
+            .endpoint(env.primaryAccount.blobEndpoint)
             .blobName("rootblob")
             .httpClient(getHttpClient())
             .pipeline(cc.getHttpPipeline())
@@ -1624,8 +1670,8 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc = new BlobContainerClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(env.primaryAccount.credential)
+            .endpoint(env.primaryAccount.blobEndpoint)
             .containerName(null)
             .pipeline(cc.getHttpPipeline())
             .buildClient()
@@ -1729,7 +1775,7 @@ class ContainerAPITest extends APISpec {
     def "Per call policy"() {
         setup:
         def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(primaryCredential)
+            .credential(env.primaryAccount.credential)
             .addPolicy(getPerCallVersionPolicy())
             .buildClient()
 
@@ -1758,7 +1804,7 @@ class ContainerAPITest extends APISpec {
 //    def "Rename sas"() {
 //        setup:
 //        def newName = generateContainerName()
-//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
 //        def sasClient = getContainerClient(sas, cc.getBlobContainerUrl())
 //
 //        when:

@@ -29,6 +29,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,10 +90,13 @@ implements IDocumentQueryExecutionContext<T> {
                                                                     SqlQuerySpec querySpec,
                                                                     PartitionKeyInternal partitionKeyInternal,
                                                                     PartitionKeyRange targetRange,
-                                                                    String collectionRid) {
+                                                                    String collectionRid,
+                                                                    String throughputControlGroup) {
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                 : this.createReadFeedDocumentServiceRequest(requestHeaders);
+        request.requestContext.resolvedCollectionRid = collectionRid;
+        request.throughputControlGroupName = throughputControlGroup;
 
         if (partitionKeyInternal != null) {
             request.setPartitionKeyInternal(partitionKeyInternal);
@@ -107,10 +111,13 @@ implements IDocumentQueryExecutionContext<T> {
                                                                     SqlQuerySpec querySpec,
                                                                     PartitionKeyInternal partitionKeyInternal,
                                                                     FeedRange feedRange,
-                                                                    String collectionRid) {
+                                                                    String collectionRid,
+                                                                    String throughputControlGroupName) {
         RxDocumentServiceRequest request = querySpec != null
                                                ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                                                : this.createReadFeedDocumentServiceRequest(requestHeaders);
+        request.requestContext.resolvedCollectionRid = collectionRid;
+        request.throughputControlGroupName = throughputControlGroupName;
 
         if (partitionKeyInternal != null) {
             feedRange = new FeedRangePartitionKeyImpl(partitionKeyInternal);
@@ -210,6 +217,12 @@ implements IDocumentQueryExecutionContext<T> {
 
         if(cosmosQueryRequestOptions.isQueryMetricsEnabled()){
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
+        }
+
+        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null &&
+            cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
         }
 
         return requestHeaders;

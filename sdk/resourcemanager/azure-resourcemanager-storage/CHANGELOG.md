@@ -1,7 +1,16 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
+
+## 2.4.0 (2021-04-28)
+
+- Supported Private Link in `StorageAccount`
+
+## 2.3.0 (2021-03-30)
+
+- Updated `api-version` to `2021-02-01`
+- Storage account default to Transport Layer Security (TLS) 1.2 for HTTPS
 
 ## 2.2.0 (2021-02-24)
 

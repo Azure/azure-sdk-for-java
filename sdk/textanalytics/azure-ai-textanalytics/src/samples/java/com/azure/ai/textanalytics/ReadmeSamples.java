@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -15,7 +15,6 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
@@ -29,14 +28,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -226,13 +223,15 @@ public class ReadmeSamples {
                             "\t\tEntity ID in data source: %s, data source: %s.%n",
                             healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                     }
-                    Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                        healthcareEntity.getRelatedEntities();
-                    if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                        relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                            "\t\tRelated entity: %s, relation type: %s.%n",
-                            relatedHealthcareEntity.getText(), entityRelationType));
-                    }
+                });
+                // Healthcare entity relation groups
+                healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                    System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                    entityRelation.getRoles().forEach(role -> {
+                        final HealthcareEntity entity = role.getEntity();
+                        System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                            entity.getText(), entity.getCategory(), role.getName());
+                    });
                 });
             }));
     }
@@ -240,7 +239,7 @@ public class ReadmeSamples {
     /**
      * Code snippet for executing actions in a batch of documents.
      */
-    public void analyzeBatchActions() {
+    public void analyzeActions() {
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
@@ -252,17 +251,17 @@ public class ReadmeSamples {
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
 
-        SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeBatchActions(documents,
+        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+            textAnalyticsClient.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
                     .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
-                new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
+                new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+        syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
             System.out.println("Key phrases extraction action results:");
-            analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
                     for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
@@ -274,7 +273,7 @@ public class ReadmeSamples {
                 }
             });
             System.out.println("PII entities recognition action results:");
-            analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
                     for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {

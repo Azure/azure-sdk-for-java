@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
@@ -27,9 +26,9 @@ public final class VolumesImpl implements Volumes {
 
     private final VolumesClient innerClient;
 
-    private final NetAppFilesManager serviceManager;
+    private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public VolumesImpl(VolumesClient innerClient, NetAppFilesManager serviceManager) {
+    public VolumesImpl(VolumesClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -341,7 +340,7 @@ public final class VolumesImpl implements Volumes {
         return this.innerClient;
     }
 
-    private NetAppFilesManager manager() {
+    private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
     }
 

@@ -37,7 +37,7 @@ To quickly create the needed Service Bus resources in Azure and to receive a con
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.2</version>
+    <version>7.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -86,7 +86,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -147,6 +147,7 @@ receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topi
  - [Settle messages](#settle-messages)
  - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics)
  - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
+ - [Sharing a connection between clients](#sharing-of-connection-between-clients)
 ### Send messages
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or a synchronous
@@ -273,6 +274,34 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .buildClient();
 ```
 
+### Sharing of connection between clients
+The creation of physical connection to Service Bus requires resources. An application should share the connection  
+between clients which can be achieved by sharing the top level builder as shown below.
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L247-L258 -->
+```java
+    ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
+        .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>");
+    // Create receiver and sender which will share the connection.
+    ServiceBusReceiverClient receiver = sharedConnectionBuilder
+        .receiver()
+        .queueName("<< QUEUE NAME >>")
+        .buildClient();
+    ServiceBusSenderClient sender = sharedConnectionBuilder
+        .sender()
+        .queueName("<< QUEUE NAME >>")
+        .buildClient();
+}
+```
+### When to use 'ServiceBusProcessorClient'.
+ When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 
+ is built using 'ServiceBusReceiverAsyncClient', it provides a convenient way of receiving messages with default 
+ auto complete and auto renew of message locks in 'PEEK_LOCK' mode. The processor is appropriate where the 
+ applications have not made complete move to async receiver client and want to process message in synchronous mode. 
+ The processor receives messages forever because it recovers from the network errors internally. 
+ 'ServiceBusProcessorClient:processMessage()' function call is made for each message. Alternatively, You can also use 
+ 'ServiceBusReceiverClient', it is a lower level client and provides a wider range of APIs. If async processing is  
+ suitable for your application, you can use 'ServiceBusReceiverAsyncClient'. 
+
 ## Troubleshooting
 
 ### Enable client logging
@@ -321,7 +350,7 @@ exception occurred and if possible, how to mitigate this exception. A list of al
 [OASIS AMQP Version 1.0 Transport Errors][oasis_amqp_v1_error].
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
-[Service Bus Messaging Exceptions][] guidance.
+[Service Bus Messaging Exceptions][servicebus_messaging_exceptions] guidance.
 
 ## Next steps
 

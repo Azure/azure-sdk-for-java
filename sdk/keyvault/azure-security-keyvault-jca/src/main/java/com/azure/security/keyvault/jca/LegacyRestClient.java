@@ -2,24 +2,36 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.io.entity.HttpEntities;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * The RestClient that uses the Apache HttpClient class.
  */
 class LegacyRestClient implements RestClient {
+    static final String USER_AGENT_KEY = "User-Agent";
+    static final String DEFAULT_USER_AGENT_VALUE_PREFIX = "az-se-kv-jca/";
+    static final String DEFAULT_VERSION = "unknown";
+    static final String VERSION = Optional.of(LegacyRestClient.class)
+                                          .map(Class::getPackage)
+                                          .map(Package::getImplementationVersion)
+                                          .orElse(DEFAULT_VERSION);
+    static final String USER_AGENT_VALUE = getUserAgentPrefix() + VERSION;
 
     /**
      * Constructor.
@@ -33,22 +45,10 @@ class LegacyRestClient implements RestClient {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(url);
             if (headers != null) {
-                headers.entrySet().forEach(entry -> {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    httpGet.addHeader(key, value);
-                });
+                headers.forEach(httpGet::addHeader);
             }
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = null;
-                if (status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-                    result1 = entity != null ? EntityUtils.toString(entity) : null;
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
+            httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            result = client.execute(httpGet, createResponseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -60,20 +60,37 @@ class LegacyRestClient implements RestClient {
         String result = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
-            httpPost.setEntity(HttpEntities.create(body, ContentType.create(contentType)));
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = null;
-                if (status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-                    result1 = entity != null ? EntityUtils.toString(entity) : null;
-                }
-                return result1;
-            };
-            result = client.execute(httpPost, responseHandler);
+            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            httpPost.setEntity(
+                new StringEntity(body, ContentType.create(contentType)));
+            result = client.execute(httpPost, createResponseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         return result;
+    }
+
+    static String getUserAgentPrefix() {
+        return Optional.of(LegacyRestClient.class)
+                       .map(Class::getClassLoader)
+                       .map(c -> c.getResourceAsStream("azure-security-keyvault-jca-user-agent-value-prefix.txt"))
+                       .map(InputStreamReader::new)
+                       .map(BufferedReader::new)
+                       .map(BufferedReader::lines)
+                       .orElseGet(Stream::empty)
+                       .findFirst()
+                       .orElse(DEFAULT_USER_AGENT_VALUE_PREFIX);
+    }
+
+    private ResponseHandler<String> createResponseHandler() {
+        return (HttpResponse response) -> {
+            int status = response.getStatusLine().getStatusCode();
+            String result = null;
+            if (status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                result = entity != null ? EntityUtils.toString(entity) : null;
+            }
+            return result;
+        };
     }
 }

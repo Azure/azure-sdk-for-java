@@ -7,13 +7,20 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Fault;
+import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,9 +35,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -42,15 +47,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class NettyAsyncHttpClientTests {
@@ -58,15 +65,17 @@ public class NettyAsyncHttpClientTests {
     private static final String LONG_BODY_PATH = "/long";
     private static final String ERROR_BODY_PATH = "/error";
     private static final String SHORT_POST_BODY_PATH = "/shortPost";
-    private static final String HTTP_HEADERS_PATH = "/httpHeaders";
+    static final String HTTP_HEADERS_PATH = "/httpHeaders";
     private static final String IO_EXCEPTION_PATH = "/ioException";
 
     static final String NO_DOUBLE_UA_PATH = "/noDoubleUA";
     static final String EXPECTED_HEADER = "userAgent";
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
 
-    private static final String SHORT_BODY = "hi there";
-    private static final String LONG_BODY = createLongBody();
+    private static final String PROXY_TO_ADDRESS = "/proxyToAddress";
+
+    private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] LONG_BODY = createLongBody();
 
     static final String TEST_HEADER = "testHeader";
 
@@ -74,7 +83,7 @@ public class NettyAsyncHttpClientTests {
 
     @BeforeAll
     public static void beforeClass() {
-        server = new WireMockServer(WireMockConfiguration.options()
+        server = new WireMockServer(wireMockConfig()
             .extensions(new NettyAsyncHttpClientResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
@@ -92,6 +101,9 @@ public class NettyAsyncHttpClientTests {
             .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
         server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+
+        server.stubFor(get(PROXY_TO_ADDRESS).willReturn(aResponse().withStatus(418).withBody("I'm a teapot")));
+
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
@@ -129,9 +141,8 @@ public class NettyAsyncHttpClientTests {
         HttpResponse response = getResponse(SHORT_BODY_PATH);
         // Subscription:1
         StepVerifier.create(response.getBodyAsByteArray())
-            .assertNext(bytes -> assertEquals(SHORT_BODY, new String(bytes, StandardCharsets.UTF_8)))
+            .assertNext(bytes -> assertArrayEquals(SHORT_BODY, bytes))
             .verifyComplete();
-
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
             .expectNextCount(0)
@@ -143,11 +154,11 @@ public class NettyAsyncHttpClientTests {
     }
 
     @Test
-    public void testDispose() throws InterruptedException {
+    public void testDispose() {
         NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
-        response.getBody().subscribe().dispose();
-        // Wait for scheduled connection disposal action to execute on netty event-loop
-        Thread.sleep(5000);
+        StepVerifier.create(response.getBody())
+            .thenCancel()
+            .verify();
         Assertions.assertTrue(response.internConnection().isDisposed());
     }
 
@@ -243,13 +254,13 @@ public class NettyAsyncHttpClientTests {
     public void testConcurrentRequests() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
-        int numberOfRequests = 100; // 100 = 1GB of data
+        int numberOfRequests = 100; // 100 = 100MB of data
         byte[] expectedDigest = digest();
 
         Mono<Long> numberOfBytesMono;
         numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
-            .runOn(Schedulers.newBoundedElastic(50, 100, "io"))
+            .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
                 .flatMapMany(response -> {
                     MessageDigest md = md5Digest();
@@ -262,7 +273,7 @@ public class NettyAsyncHttpClientTests {
             .reduce(0L, Long::sum);
 
         StepVerifier.create(numberOfBytesMono)
-            .expectNext((long) numberOfRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)
+            .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
     }
@@ -277,7 +288,7 @@ public class NettyAsyncHttpClientTests {
 
     private static byte[] digest() {
         MessageDigest md = md5Digest();
-        md.update(NettyAsyncHttpClientTests.LONG_BODY.getBytes(StandardCharsets.UTF_8));
+        md.update(NettyAsyncHttpClientTests.LONG_BODY);
         return md.digest();
     }
 
@@ -295,7 +306,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+        assertArrayEquals(LONG_BODY, delayWriteStream.aggregateBuffers());
     }
 
     /**
@@ -312,7 +323,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertNotEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+        assertFalse(Arrays.equals(LONG_BODY, delayWriteStream.aggregateBuffers()));
     }
 
     /**
@@ -328,7 +339,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
+        assertArrayEquals(LONG_BODY, delayWriteStream.aggregateBuffers());
     }
 
     @ParameterizedTest
@@ -386,6 +397,68 @@ public class NettyAsyncHttpClientTests {
             .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * This test validates that the eager retrying of Proxy Authentication (407) responses doesn't return to the
+     * HttpPipeline before connecting.
+     */
+    @Test
+    public void proxyAuthenticationErrorEagerlyRetries() {
+        // Create a Netty HttpClient to share backing resources that are warmed up before making a time based call.
+        reactor.netty.http.client.HttpClient warmedUpClient = reactor.netty.http.client.HttpClient.create();
+        StepVerifier.create(new NettyAsyncHttpClientBuilder(warmedUpClient).build()
+            .send(new HttpRequest(HttpMethod.GET, url(server, SHORT_BODY_PATH))))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
+            AtomicInteger responseHandleCount = new AtomicInteger();
+            RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(10)));
+            ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                .setCredentials("1", "1");
+
+            // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .policies(retryPolicy, (context, next) -> next.process()
+                    .doOnNext(ignored -> responseHandleCount.incrementAndGet()))
+                .httpClient(new NettyAsyncHttpClientBuilder(warmedUpClient).proxy(proxyOptions).build())
+                .build();
+
+            // Run a reactive request verifier where it is expected to complete successfully and captures the time
+            // taken. The time taken will then be used to strongly validate that we are not bubbling any ProxyConnect
+            // exceptions to the retry policy as that has a much longer retry delay.
+            Duration timeToHandleProxyConnectException = StepVerifier.create(
+                httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
+                    new Context("azure-eagerly-read-response", true)))
+                .assertNext(response -> assertEquals(418, response.getStatusCode()))
+                .expectComplete()
+                .verify();
+
+            assertEquals(1, responseHandleCount.get());
+            assertFalse(Duration.ofSeconds(10).minus(timeToHandleProxyConnectException).isNegative(),
+                () -> String.format("Took longer than ten seconds to retry a ProxyConnectException. Took %s.",
+                    timeToHandleProxyConnectException));
+        }
+    }
+
+    /**
+     * This test validates that if the eager retrying of Proxy Authentication (407) responses uses all retries returns
+     * the correct error.
+     */
+    @Test
+    public void failedProxyAuthenticationReturnsCorrectError() {
+        try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .httpClient(new NettyAsyncHttpClientBuilder()
+                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                        .setCredentials("2", "2"))
+                    .build())
+                .build();
+
+            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
+                .verifyError(ProxyConnectException.class);
+        }
+    }
+
     private static Stream<Arguments> requestHeaderSupplier() {
         return Stream.of(
             Arguments.of(null, NettyAsyncHttpClientResponseTransformer.NULL_REPLACEMENT),
@@ -412,47 +485,38 @@ public class NettyAsyncHttpClientTests {
         }
     }
 
-    private static String createLongBody() {
-        StringBuilder builder = new StringBuilder("abcdefghijk".length() * 1000000);
-        for (int i = 0; i < 1000000; i++) {
-            builder.append("abcdefghijk");
+    private static byte[] createLongBody() {
+        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
+        byte[] longBody = new byte[duplicateBytes.length * 100000];
+
+        for (int i = 0; i < 100000; i++) {
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
-        return builder.toString();
+        return longBody;
     }
 
-    private void checkBodyReceived(String expectedBody, String path) {
+    private void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, path)))
             .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
+            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }
 
     private static final class DelayWriteStream {
-        List<ByteBuffer> internalBuffers = new ArrayList<>();
+        private final List<ByteBuffer> internalBuffers = new ArrayList<>();
+        private final AtomicInteger totalStreamSize = new AtomicInteger();
 
         public void write(ByteBuffer buffer) {
+
             internalBuffers.add(buffer);
+            totalStreamSize.getAndAdd(buffer.remaining());
         }
 
-        public String aggregateAsString() {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-            for (ByteBuffer buffer : internalBuffers) {
-                int bufferSize = buffer.remaining();
-                int offset = buffer.position();
-
-                for (int i = 0; i < bufferSize; i++) {
-                    outputStream.write(buffer.get(i + offset));
-                }
-            }
-
-            try {
-                return outputStream.toString("UTF-8");
-            } catch (UnsupportedEncodingException ex) {
-                throw new RuntimeException(ex);
-            }
+        public byte[] aggregateBuffers() {
+            return FluxUtil.collectBytesInByteBufferStream(Flux.fromIterable(internalBuffers), totalStreamSize.get())
+                .block();
         }
     }
 }

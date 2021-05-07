@@ -54,7 +54,7 @@ public class HttpLogOptions {
      * Creates a new instance that does not log any information about HTTP requests or responses.
      */
     public HttpLogOptions() {
-        logLevel = HttpLogDetailLevel.NONE;
+        logLevel = HttpLogDetailLevel.ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
         allowedQueryParamNames = new HashSet<>();
         applicationId = null;

@@ -27,11 +27,28 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: MatrixConfigs
+  type: object
+  default:
+    - Name: Java_ci_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      NonSparseParameters: Agent
+      GenerateVMJobs: true
+- name: AdditionalMatrixConfigs
+  type: object
+  default: []
+- name: MatrixFilters
+  type: object
+  default: []
+- name: MatrixReplace
+  type: object
+  default: []
 
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
@@ -39,12 +56,34 @@ stages:
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        MatrixConfigs:
+          - ${{ each config in parameters.MatrixConfigs }}:
+            -  ${{ config }}
+          - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+            -  ${{ config }}
+        MatrixFilters:
+          - ${{ each filter in parameters.MatrixFilters }}:
+            - ${{ filter }}
+          # Skip TestFromSource jobs for SDKType data
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestFromSource=^(?!true).*
+        MatrixReplace:
+          # Temporarily replace macOS agents with ubuntu agents because of ongoing pool capacity issues
+          - Pool=Azure.Pipelines/azsdk-pool-mms-ubuntu-1804-general
+          - OsVmImage=macOS-10.15/MMSUbuntu18.04
+          - AZURE_TEST.*=.*/
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestGoals=.*/verify
+            - TestOptions=.*/-am
+          - ${{ each replacement in parameters.MatrixReplace }}:
+            - ${{ replacement }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
       parameters:
-        DependsOn: Build
+        DependsOn:
+          - Build
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
@@ -52,5 +91,5 @@ stages:
           TestPipeline: true
         ArtifactName: packages
         TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }} 
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 

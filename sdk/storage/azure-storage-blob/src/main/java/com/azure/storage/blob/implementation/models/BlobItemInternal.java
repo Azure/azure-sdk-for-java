@@ -9,74 +9,72 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
 
-/**
- * An Azure Storage blob.
- */
+/** An Azure Storage blob. */
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItemInternal {
     /*
-     * The name property.
+     * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
-     * The deleted property.
+     * The Deleted property.
      */
     @JsonProperty(value = "Deleted", required = true)
     private boolean deleted;
 
     /*
-     * The snapshot property.
+     * The Snapshot property.
      */
     @JsonProperty(value = "Snapshot", required = true)
     private String snapshot;
 
     /*
-     * The versionId property.
+     * The VersionId property.
      */
     @JsonProperty(value = "VersionId", required = true)
     private String versionId;
 
     /*
-     * The isCurrentVersion property.
+     * The IsCurrentVersion property.
      */
     @JsonProperty(value = "IsCurrentVersion")
     private Boolean isCurrentVersion;
 
     /*
-     * The properties property.
+     * Properties of a blob
      */
     @JsonProperty(value = "Properties", required = true)
     private BlobItemPropertiesInternal properties;
 
     /*
-     * The metadata property.
+     * Dictionary of <string>
      */
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
     /*
-     * The blobTags property.
+     * Blob tags
      */
     @JsonProperty(value = "Tags")
     private BlobTags blobTags;
 
     /*
-     * The objectReplicationMetadata property.
+     * Dictionary of <string>
      */
     @JsonProperty(value = "OrMetadata")
     private Map<String, String> objectReplicationMetadata;
 
     /*
-     * The isPrefix property.
+     * The IsPrefix property.
      */
     @JsonProperty(value = "IsPrefix")
     private Boolean isPrefix;
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The Name property.
      *
      * @return the name value.
      */
@@ -85,7 +83,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The Name property.
      *
      * @param name the name value to set.
      * @return the BlobItemInternal object itself.
@@ -96,7 +94,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the deleted property: The deleted property.
+     * Get the deleted property: The Deleted property.
      *
      * @return the deleted value.
      */
@@ -105,7 +103,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the deleted property: The deleted property.
+     * Set the deleted property: The Deleted property.
      *
      * @param deleted the deleted value to set.
      * @return the BlobItemInternal object itself.
@@ -116,7 +114,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the snapshot property: The snapshot property.
+     * Get the snapshot property: The Snapshot property.
      *
      * @return the snapshot value.
      */
@@ -125,7 +123,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the snapshot property: The snapshot property.
+     * Set the snapshot property: The Snapshot property.
      *
      * @param snapshot the snapshot value to set.
      * @return the BlobItemInternal object itself.
@@ -136,7 +134,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the versionId property: The versionId property.
+     * Get the versionId property: The VersionId property.
      *
      * @return the versionId value.
      */
@@ -145,7 +143,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the versionId property: The versionId property.
+     * Set the versionId property: The VersionId property.
      *
      * @param versionId the versionId value to set.
      * @return the BlobItemInternal object itself.
@@ -156,7 +154,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the isCurrentVersion property: The isCurrentVersion property.
+     * Get the isCurrentVersion property: The IsCurrentVersion property.
      *
      * @return the isCurrentVersion value.
      */
@@ -165,7 +163,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the isCurrentVersion property: The isCurrentVersion property.
+     * Set the isCurrentVersion property: The IsCurrentVersion property.
      *
      * @param isCurrentVersion the isCurrentVersion value to set.
      * @return the BlobItemInternal object itself.
@@ -176,7 +174,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: Properties of a blob.
      *
      * @return the properties value.
      */
@@ -185,7 +183,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: Properties of a blob.
      *
      * @param properties the properties value to set.
      * @return the BlobItemInternal object itself.
@@ -196,7 +194,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the metadata property: The metadata property.
+     * Get the metadata property: Dictionary of &lt;string&gt;.
      *
      * @return the metadata value.
      */
@@ -205,7 +203,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the metadata property: The metadata property.
+     * Set the metadata property: Dictionary of &lt;string&gt;.
      *
      * @param metadata the metadata value to set.
      * @return the BlobItemInternal object itself.
@@ -216,7 +214,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the blobTags property: The blobTags property.
+     * Get the blobTags property: Blob tags.
      *
      * @return the blobTags value.
      */
@@ -225,7 +223,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the blobTags property: The blobTags property.
+     * Set the blobTags property: Blob tags.
      *
      * @param blobTags the blobTags value to set.
      * @return the BlobItemInternal object itself.
@@ -236,8 +234,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the objectReplicationMetadata property: The
-     * objectReplicationMetadata property.
+     * Get the objectReplicationMetadata property: Dictionary of &lt;string&gt;.
      *
      * @return the objectReplicationMetadata value.
      */
@@ -246,11 +243,9 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the objectReplicationMetadata property: The
-     * objectReplicationMetadata property.
+     * Set the objectReplicationMetadata property: Dictionary of &lt;string&gt;.
      *
-     * @param objectReplicationMetadata the objectReplicationMetadata value to
-     * set.
+     * @param objectReplicationMetadata the objectReplicationMetadata value to set.
      * @return the BlobItemInternal object itself.
      */
     public BlobItemInternal setObjectReplicationMetadata(Map<String, String> objectReplicationMetadata) {
@@ -259,7 +254,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Get the isPrefix property: The isPrefix property.
+     * Get the isPrefix property: The IsPrefix property.
      *
      * @return the isPrefix value.
      */
@@ -268,7 +263,7 @@ public final class BlobItemInternal {
     }
 
     /**
-     * Set the isPrefix property: The isPrefix property.
+     * Set the isPrefix property: The IsPrefix property.
      *
      * @param isPrefix the isPrefix value to set.
      * @return the BlobItemInternal object itself.

@@ -11,6 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -26,7 +27,6 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -131,6 +131,13 @@ public final class AzureFileSystem extends FileSystem {
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
     static final String PATH_SEPARATOR = "/";
+
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-blob-nio.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
@@ -405,6 +412,10 @@ public final class AzureFileSystem extends FileSystem {
         builder.retryOptions(retryOptions);
 
         builder.httpClient((HttpClient) config.get(AZURE_STORAGE_HTTP_CLIENT));
+
+        // Add BlobUserAgentModificationPolicy
+        builder.addPolicy(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
+
         if (config.containsKey(AZURE_STORAGE_HTTP_POLICIES)) {
             for (HttpPipelinePolicy policy : (HttpPipelinePolicy[]) config.get(AZURE_STORAGE_HTTP_POLICIES)) {
                 builder.addPolicy(policy);

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.EmitterProcessor;
+import reactor.core.publisher.Sinks;
 
 /**
  * @author Warren Zhu
@@ -26,13 +26,13 @@ public class EventProducerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderApplication.class);
 
     @Autowired
-    private EmitterProcessor<Message<String>> emitterProcessor;
+    private Sinks.Many<Message<String>> many;
 
     @PostMapping("/messages")
     public ResponseEntity<String> sendMessage(@RequestParam String message) {
-        LOGGER.info("Going to add message {} to emitter", message);
-        emitterProcessor.onNext(MessageBuilder.withPayload(message).build());
-        return ResponseEntity.ok("Sent!");
+        LOGGER.info("Going to add message {} to sendMessage.", message);
+        many.emitNext(MessageBuilder.withPayload(message).build(), Sinks.EmitFailureHandler.FAIL_FAST);
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/")

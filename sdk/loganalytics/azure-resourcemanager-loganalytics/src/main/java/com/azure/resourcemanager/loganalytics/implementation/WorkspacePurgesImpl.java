@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.WorkspacePurgesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeResponseInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeStatusResponseInner;
@@ -16,6 +15,7 @@ import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBody;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeStatusResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurges;
+import com.azure.resourcemanager.loganalytics.models.WorkspacePurgesPurgeResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspacePurgesImpl implements WorkspacePurges {
@@ -23,9 +23,10 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
 
     private final WorkspacePurgesClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public WorkspacePurgesImpl(WorkspacePurgesClient innerClient, LogAnalyticsManager serviceManager) {
+    public WorkspacePurgesImpl(
+        WorkspacePurgesClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -41,7 +42,7 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
 
     public Response<WorkspacePurgeResponse> purgeWithResponse(
         String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context) {
-        Response<WorkspacePurgeResponseInner> inner =
+        WorkspacePurgesPurgeResponse inner =
             this.serviceClient().purgeWithResponse(resourceGroupName, workspaceName, body, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -83,7 +84,7 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

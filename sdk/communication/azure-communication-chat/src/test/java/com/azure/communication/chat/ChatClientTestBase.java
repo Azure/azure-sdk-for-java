@@ -5,7 +5,6 @@ package com.azure.communication.chat;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
@@ -47,6 +46,9 @@ public class ChatClientTestBase extends TestBase {
     protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
 
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("token");
@@ -58,6 +60,29 @@ public class ChatClientTestBase extends TestBase {
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
+
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new CommunicationTokenCredential(generateRawToken()));
+            return builder;
+        } else {
+            builder.credential(new CommunicationTokenCredential(token));
+        }
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+
+        return builder;
+    }
+
+    protected ChatThreadClientBuilder getChatThreadClientBuilder(String token, HttpClient httpClient) {
+        ChatThreadClientBuilder builder = new ChatThreadClientBuilder();
 
         builder
             .endpoint(ENDPOINT)
@@ -113,7 +138,7 @@ public class ChatClientTestBase extends TestBase {
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, ErrorException.class, expectedStatusCode);
+        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
@@ -188,6 +213,10 @@ public class ChatClientTestBase extends TestBase {
 
     protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+
+    protected boolean shouldEnableChatTests() {
+        return TEST_PACKAGES_ENABLED.matches("(all|chat)");
     }
 
     private String redact(String content, Matcher matcher, String replacement) {

@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-chat</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
 
   <name>Microsoft Azure client library for chat application</name>
   <description>
@@ -36,61 +36,62 @@
   </scm>
 
   <properties>
-    <jacoco.min.linecoverage>0.79</jacoco.min.linecoverage>
+    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.45</jacoco.min.branchcoverage>
+    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>8.19</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>8.20.2</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -121,6 +122,86 @@
           </rules>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <analysisConfiguration>
+            <revapi.ignore>
+              <item>
+                <code>java.method.added</code>
+                <class>com.azure.core.http.rest.PagedFlux</class>
+                <justification>Transitive from Core. Not our problem</justification>
+              </item>
+            </revapi.ignore>
+          </analysisConfiguration>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>java-lts</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>disable-coverage-if-identity</id>
+      <activation>
+        <property>
+          <name>env.TEST_PACKAGES_ENABLED</name>
+          <value>identity</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+     <profile>
+      <id>disable-coverage-if-phonenumbers</id>
+      <activation>
+        <property>
+          <name>env.TEST_PACKAGES_ENABLED</name>
+          <value>phonenumbers</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+    <profile>
+      <id>disable-coverage-if-sms</id>
+      <activation>
+        <property>
+          <name>env.TEST_PACKAGES_ENABLED</name>
+          <value>sms</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+  </profiles>
 </project>
