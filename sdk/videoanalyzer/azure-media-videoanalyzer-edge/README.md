@@ -13,7 +13,7 @@ Use the client library for Video Analyzer on IoT Edge to:
 
 ### Install the package
 
-Install the Live Video Analytics client library for Java with [Maven](maven_source):
+Install the Live Video Analytics client library for Java with Maven:
 
 ### Prerequisites
 
@@ -183,11 +183,10 @@ additional questions or comments.
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[maven_source]: TODO://link-to-maven-source
 
 [package]: TODO://link-to-published-package
 
-[source]: https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/videoanalyzer/
+[source]: TODO://link-to-published-source
 
 [doc_direct_methods]: TODO://link
 [doc_product]: TODO://link
