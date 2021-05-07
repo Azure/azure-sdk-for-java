@@ -859,26 +859,6 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
-    @ResourceLock("ServiceProperties")
-    def "List blobs flat options deleted"() {
-        setup:
-        enableSoftDelete()
-        def name = generateBlobName()
-        def bu = cc.getBlobClient(name).getAppendBlobClient()
-        bu.create()
-        bu.delete()
-
-        when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-        def blobs = cc.listBlobs(options, null).iterator()
-
-        then:
-        blobs.next().getName() == name
-        !blobs.hasNext()
-
-        disableSoftDelete() == null // Must produce a true value or test will fail.
-    }
-
     def "List blobs flat options prefix"() {
         setup:
         def options = new ListBlobsOptions().setPrefix("a")
@@ -1260,26 +1240,6 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).getName() == normalName
         blobs.get(4).getName() == uncommittedName
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
-    }
-
-    @ResourceLock("ServiceProperties")
-    def "List blobs hier options deleted"() {
-        setup:
-        enableSoftDelete()
-        def name = generateBlobName()
-        def bc = cc.getBlobClient(name).getAppendBlobClient()
-        bc.create()
-        bc.delete()
-
-        when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
-
-        then:
-        blobs.next().getName() == name
-        !blobs.hasNext()
-
-        disableSoftDelete() == null
     }
 
     def "List blobs hier options prefix"() {

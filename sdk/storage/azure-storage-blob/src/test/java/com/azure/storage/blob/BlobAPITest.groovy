@@ -2953,35 +2953,6 @@ class BlobAPITest extends APISpec {
         AccessTier.COOL | AccessTier.HOT
     }
 
-    @ResourceLock("ServiceProperties")
-    def "Undelete"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        when:
-        def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-        bc.getProperties()
-
-        then:
-        notThrown(BlobStorageException)
-        undeleteHeaders.getValue("x-ms-request-id") != null
-        undeleteHeaders.getValue("x-ms-version") != null
-        undeleteHeaders.getValue("Date") != null
-
-        disableSoftDelete() == null
-    }
-
-    @ResourceLock("ServiceProperties")
-    def "Undelete min"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        expect:
-        bc.undeleteWithResponse(null, null).getStatusCode() == 200
-    }
-
     def "Undelete error"() {
         bc = cc.getBlobClient(generateBlobName())
 
