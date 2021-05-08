@@ -4,6 +4,8 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,13 +43,13 @@ public final class ManifestAttributesBase {
      * CPU architecture
      */
     @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
-    private String cpuArchitecture;
+    private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
     @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
-    private String operatingSystem;
+    private ArtifactOperatingSystem operatingSystem;
 
     /*
      * List of manifest attributes details
@@ -104,12 +106,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Get the cpuArchitecture property: CPU architecture.
+     * Get the architecture property: CPU architecture.
      *
-     * @return the cpuArchitecture value.
+     * @return the architecture value.
      */
-    public String getCpuArchitecture() {
-        return this.cpuArchitecture;
+    public ArtifactArchitecture getArchitecture() {
+        return this.architecture;
     }
 
     /**
@@ -117,7 +119,7 @@ public final class ManifestAttributesBase {
      *
      * @return the operatingSystem value.
      */
-    public String getOperatingSystem() {
+    public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
     }
 

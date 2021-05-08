@@ -16,7 +16,7 @@ microservice using **Spring Cloud Stream** based on [Azure Service Bus Topic][az
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
-    <version>2.4.0</version>
+    <version>2.5.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

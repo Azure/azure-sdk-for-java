@@ -7,7 +7,9 @@ import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 import java.util.function.Consumer
 
@@ -86,6 +88,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5)
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -131,6 +134,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5)
     def "Query csv serialization separator"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -246,6 +250,7 @@ class BlobBaseAPITest extends APISpec {
 
     /* Note: Input delimited tested everywhere */
     @Unroll
+    @Retry(count = 5)
     def "Query Input json"() {
         setup:
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization()
@@ -287,6 +292,42 @@ class BlobBaseAPITest extends APISpec {
         1000      || _
     }
 
+    @Unroll
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    def "Query Input parquet"() {
+        setup:
+        String fileName = "parquet.parquet"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        BlobQueryParquetSerialization ser = new BlobQueryParquetSerialization()
+        bc.uploadFromFile(f.getAbsolutePath(), true)
+        byte[] expectedData = "0,mdifjt55.ea3,mdifjt55.ea3\n".getBytes()
+
+        def expression = "select * from blobstorage where id < 1;"
+
+        BlobQueryOptions optionsIs = new BlobQueryOptions(expression).setInputSerialization(ser)
+        OutputStream os = new ByteArrayOutputStream()
+        BlobQueryOptions optionsOs = new BlobQueryOptions(expression, os).setInputSerialization(ser)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(optionsIs).getValue()
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        queryData == expectedData
+
+        /* Output Stream. */
+        when:
+        bc.queryWithResponse(optionsOs, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        osData == expectedData
+    }
+
     def "Query Input csv Output json"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -326,6 +367,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
         BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
@@ -365,6 +407,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -401,6 +444,7 @@ class BlobBaseAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -645,6 +689,29 @@ class BlobBaseAPITest extends APISpec {
         when:
         options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
             .setInputSerialization(inSer)
+        bc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    def "Query parquet output IA"() {
+        setup:
+        def outSer = new BlobQueryParquetSerialization()
+        def expression = "SELECT * from BlobStorage"
+        BlobQueryOptions options = new BlobQueryOptions(expression)
+            .setOutputSerialization(outSer)
+
+        when:
+        InputStream stream = bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+            .setOutputSerialization(outSer)
         bc.queryWithResponse(options, null, null)
 
         then:

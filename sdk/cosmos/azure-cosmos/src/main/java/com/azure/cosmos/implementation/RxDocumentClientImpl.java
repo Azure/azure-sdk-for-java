@@ -76,6 +76,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -337,6 +338,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             }
 
+            this.diagnosticsClientConfig.withConnectionMode(this.getConnectionPolicy().getConnectionMode());
             this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(this.connectionPolicy.isMultipleWriteRegionsEnabled());
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
@@ -972,9 +974,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.DELETE)
             .flatMap(requestPopulated -> {
-                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                    documentClientRetryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated);
@@ -984,10 +985,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.GET)
             .flatMap(requestPopulated -> {
-                    if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                        documentClientRetryPolicy.updateEndTime();
-                        requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
-                    }
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
+                }
+
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated);
                 });
     }
@@ -1214,6 +1215,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options.isScriptLoggingEnabled()) {
             headers.put(HttpConstants.HttpHeaders.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
+        }
+
+        if (options.getDedicatedGatewayRequestOptions() != null &&
+            options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(options.getDedicatedGatewayRequestOptions())));
         }
 
         return headers;
@@ -1583,13 +1590,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionContainer.setSessionToken(request, response.getResponseHeaders());
     }
 
-    private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request, DocumentClientRetryPolicy retryPolicy) {
+    private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.POST)
             .flatMap(requestPopulated -> {
                 RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
-                if (requestPopulated.requestContext != null && retryPolicy.getRetryCount() > 0) {
-                    retryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(retryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return storeProxy.processMessage(requestPopulated);
@@ -1607,9 +1613,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // method
                 assert (headers != null);
                 headers.put(HttpConstants.HttpHeaders.IS_UPSERT, "true");
-                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                    documentClientRetryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated)
@@ -1624,9 +1629,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.PUT)
             .flatMap(requestPopulated -> {
-                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                    documentClientRetryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated);
@@ -1635,9 +1639,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         populateHeaders(request, RequestVerb.PATCH);
-        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-            documentClientRetryPolicy.updateEndTime();
-            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+        if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+            documentClientRetryPolicy.getRetryContext().updateEndTime();
         }
 
         return getStoreProxy(request).processMessage(request);
