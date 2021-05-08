@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A tenant id is used to construct the trusted issuer repository.
@@ -43,8 +44,7 @@ public class AADTrustedIssuerRepository {
     }
 
     private List<String> buildAADIssuers(String delimiter) {
-        return Arrays.asList(LOGIN_MICROSOFT_ONLINE_ISSUER, STS_WINDOWS_ISSUER, STS_CHINA_CLOUD_API_ISSUER)
-                     .stream()
+        return Stream.of(LOGIN_MICROSOFT_ONLINE_ISSUER, STS_WINDOWS_ISSUER, STS_CHINA_CLOUD_API_ISSUER)
                      .map(s -> s + tenantId + delimiter)
                      .collect(Collectors.toList());
     }
@@ -69,6 +69,7 @@ public class AADTrustedIssuerRepository {
      *
      * @param baseUri The base uri is the domain part of the endpoint.
      * @param userFlows The all user flows mapping which is created under b2c tenant.
+     * @deprecated Is not recommended in {@link AADTrustedIssuerRepository} add AAD B2C related content.
      */
     @Deprecated
     public void addB2CUserFlowIssuers(String baseUri, Map<String, String> userFlows) {
@@ -87,6 +88,7 @@ public class AADTrustedIssuerRepository {
      *
      * @param baseUri baseUri Base uri in the configuration file.
      * @return the parsed base uri.
+     * @throws RuntimeException thrown if the uri is not valid.
      */
     protected String resolveBaseUri(String baseUri) {
         Assert.notNull(baseUri, "baseUri cannot be null");

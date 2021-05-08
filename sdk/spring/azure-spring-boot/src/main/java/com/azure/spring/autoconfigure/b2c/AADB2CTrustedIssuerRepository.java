@@ -10,16 +10,16 @@ import java.util.Map;
 
 class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
 
-    private String baseUri;
+    private final String baseUri;
 
-    private Map<String, String> userFlows;
+    private final Map<String, String> userFlows;
 
     /**
      * Place a mapping that cannot access metadata through issuer splicing /.well-known/openid-configuration.
      */
-    private Map<String, String> specialWellKnownIssMap = new HashMap<>();
+    private final Map<String, String> specialWellKnownIssMap = new HashMap<>();
 
-    private AADB2CProperties aadb2CProperties;
+    private final AADB2CProperties aadb2CProperties;
 
     AADB2CTrustedIssuerRepository(AADB2CProperties aadb2CProperties) {
         super(aadb2CProperties.getTenantId());
