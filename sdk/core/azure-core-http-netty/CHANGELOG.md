@@ -1,5 +1,8 @@
 # Release History
 
+## 1.10.0-beta.1 (Unreleased)
+
+
 ## 1.9.2 (2021-05-07)
 
 ### Fixed
