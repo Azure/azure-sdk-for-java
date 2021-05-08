@@ -51,6 +51,10 @@
                 groupId: com.microsoft.azure                                                        # The associated group-id of the target Azure Spring library version.
                 artifactId: azure-spring-boot-bom                                                   # The associated artifact-id of the target Azure Spring library version.
                 version: 2.2.4                                                                      # The target version of Azure Spring library mapped with Spring Boot version range.
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-bom
+                version: 3.2.1
 - name: Azure Spring Cloud Dependencies
   content:
     - name: Azure Spring Cloud Dependencies
@@ -115,6 +119,10 @@
                 groupId: com.microsoft.azure
                 artifactId: azure-active-directory-spring-boot-starter
                 version: 2.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-active-directory
+                version: 3.2.0
 - name: Active Directory B2C
   content:
     - name: Active Directory B2C
@@ -140,6 +148,10 @@
                 groupId: com.microsoft.azure
                 artifactId: azure-active-directory-b2c-spring-boot-starter
                 version: 2.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-active-directory-b2c
+                version: 3.2.0
 - name: Cosmos DB
   content:
     - name: Spring Data Cosmos
@@ -168,6 +180,10 @@
                 groupId: com.microsoft.azure
                 artifactId: azure-cosmosdb-spring-boot-starter
                 version: 2.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-cosmos
+                version: 3.2.0
 - name: Key Vault
   content:
     - name: Key Vault - Certificates
@@ -199,6 +215,11 @@
           springProperties:
             starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+            mappings:
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-keyvault-certificates
+                version: 3.0.0-beta.4
     - name: Key Vault - Secrets
       description: Azure Key Vault Secrets allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the secrets and its versions.
       msdocs: https://docs.microsoft.com/azure/key-vault/secrets/about-secrets
@@ -225,6 +246,10 @@
                 groupId: com.microsoft.azure
                 artifactId: azure-keyvault-secrets-spring-boot-starter
                 version: 2.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-keyvault-secrets
+                version: 3.2.0
 - name: Storage
   content:
     - name: Storage - Blobs
@@ -253,6 +278,10 @@
                 groupId: com.microsoft.azure
                 artifactId: azure-storage-spring-boot-starter
                 version: 2.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-storage
+                version: 3.2.0
     - name: Storage - Queues
       description: Azure Queue Storage is a service for storing large numbers of messages. You access messages from anywhere in the world via authenticated calls using HTTP or HTTPS. A queue message can be up to 64 KB in size. A queue may contain millions of messages, up to the total capacity limit of a storage account. Queues are commonly used to create a backlog of work to process asynchronously.
       msdocs: https://docs.microsoft.com/azure/storage/queues/
@@ -279,6 +308,10 @@
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-storage-queue
                 version: 1.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-cloud-starter-storage-queue
+                version: 2.2.0
 - name: Service Bus
   content:
     - name: Service Bus
@@ -300,13 +333,17 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-topic/2.3.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
           springProperties:
-            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             bom: azure-spring-cloud-dependencies
+            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-azure-servicebus-topic-stream-binder
                 version: 1.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-cloud-stream-binder-servicebus-topic
+                version: 2.2.0
         - artifactId: azure-spring-cloud-stream-binder-servicebus-queue
           groupId: com.azure.spring
           versionGA: 2.4.0
@@ -319,13 +356,17 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-queue/2.3.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
           springProperties:
-            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
             bom: azure-spring-cloud-dependencies
+            compatibilityRange: "[2.4.0-M1,2.4.5]"
             mappings:
               - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-azure-servicebus-queue-stream-binder
                 version: 1.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-cloud-stream-binder-servicebus-queue
+                version: 2.2.0
         - artifactId: azure-spring-cloud-starter-servicebus
           groupId: com.azure.spring
           versionGA: 2.4.0
@@ -345,6 +386,10 @@
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-servicebus
                 version: 1.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-cloud-starter-servicebus
+                version: 2.2.0
     - name: Service Bus Jms
       description: Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and state. Data is transferred between different applications and services using messages.
       msdocs: https://docs.microsoft.com/azure/service-bus-messaging/how-to-use-java-message-service-20
@@ -371,6 +416,10 @@
                 groupId: com.microsoft.azure
                 artifactId: azure-servicebus-jms-spring-boot-starter
                 version: 2.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-servicebus-jms
+                version: 3.2.0
 - name: Event Hubs
   content:
     - name: Event Hubs
@@ -399,6 +448,10 @@
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-eventhubs
                 version: 1.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-cloud-starter-eventhubs
+                version: 2.2.0
         - artifactId: azure-spring-cloud-stream-binder-eventhubs
           groupId: com.azure.spring
           versionGA: 2.4.0
@@ -418,6 +471,10 @@
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-azure-eventhubs-stream-binder
                 version: 1.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-cloud-stream-binder-eventhubs
+                version: 2.2.0
     - name: Event Hubs - Kafka
       description: The Event Hubs for Apache Kafka feature provides a protocol head on top of Azure Event Hubs that is protocol compatible with Apache Kafka clients built for Apache Kafka server versions 1.0 and later and supports for both reading from and writing to Event Hubs, which are equivalent to Apache Kafka topics.
       msdocs: https://docs.microsoft.com/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview
@@ -441,3 +498,7 @@
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-starter-azure-eventhubs-kafka
                 version: 1.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-cloud-starter-eventhubs-kafka
+                version: 2.2.0
