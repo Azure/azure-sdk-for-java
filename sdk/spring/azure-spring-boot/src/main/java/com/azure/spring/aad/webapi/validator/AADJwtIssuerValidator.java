@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  */
 public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
     private final AADJwtClaimValidator<String> validator;
-    private AADTrustedIssuerRepository trustedIssuerRepository;
+    private final AADTrustedIssuerRepository trustedIssuerRepository;
 
     /**
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters

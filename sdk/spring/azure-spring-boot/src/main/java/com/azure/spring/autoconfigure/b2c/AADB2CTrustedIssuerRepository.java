@@ -21,7 +21,7 @@ class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
      */
     private final Map<String, String> specialWellKnownIssMap = new HashMap<>();
 
-    public AADB2CTrustedIssuerRepository(AADB2CProperties aadb2CProperties) {
+    AADB2CTrustedIssuerRepository(AADB2CProperties aadb2CProperties) {
         super(aadb2CProperties.getTenantId());
         this.aadb2CProperties = aadb2CProperties;
         this.resolvedBaseUri = resolveBaseUri(aadb2CProperties.getBaseUri());
