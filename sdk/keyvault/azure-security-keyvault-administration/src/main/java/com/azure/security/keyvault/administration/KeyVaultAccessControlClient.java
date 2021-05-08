@@ -14,7 +14,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import com.azure.security.keyvault.administration.options.SetKeyVaultRoleDefinitionOptions;
+import com.azure.security.keyvault.administration.options.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -129,10 +129,10 @@ public final class KeyVaultAccessControlClient {
      *
      * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
-     * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
+     * in the {@link SetRoleDefinitionOptions options} object are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultRoleDefinition> setRoleDefinitionWithResponse(SetKeyVaultRoleDefinitionOptions options,
+    public Response<KeyVaultRoleDefinition> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
                                                                           Context context) {
         return asyncClient.setRoleDefinitionWithResponse(options, context).block();
     }

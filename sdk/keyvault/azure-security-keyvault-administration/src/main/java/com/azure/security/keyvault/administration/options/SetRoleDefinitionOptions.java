@@ -14,7 +14,7 @@ import java.util.List;
  * Represents the configurable options to create or update a {@link KeyVaultRoleDefinition role definition}.
  */
 @Fluent
-public class SetKeyVaultRoleDefinitionOptions {
+public class SetRoleDefinitionOptions {
     private final KeyVaultRoleScope roleScope;
     private final String roleDefinitionName;
     private String roleName;
@@ -23,13 +23,13 @@ public class SetKeyVaultRoleDefinitionOptions {
     private List<KeyVaultRoleScope> assignableScopes;
 
     /**
-     * Creates an instance of {@link SetKeyVaultRoleDefinitionOptions}.
+     * Creates an instance of {@link SetRoleDefinitionOptions}.
      *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition} to create.
      * Managed HSM only supports '/'.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}. It can be any valid UUID.
      */
-    public SetKeyVaultRoleDefinitionOptions(KeyVaultRoleScope roleScope, String roleDefinitionName) {
+    public SetRoleDefinitionOptions(KeyVaultRoleScope roleScope, String roleDefinitionName) {
         this.roleScope = roleScope;
         this.roleDefinitionName = roleDefinitionName;
     }
@@ -66,9 +66,9 @@ public class SetKeyVaultRoleDefinitionOptions {
      *
      * @param roleName The role name to set.
      *
-     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
+     * @return The updated {@link SetRoleDefinitionOptions} object.
      */
-    public SetKeyVaultRoleDefinitionOptions setRoleName(String roleName) {
+    public SetRoleDefinitionOptions setRoleName(String roleName) {
         this.roleName = roleName;
 
         return this;
@@ -88,9 +88,9 @@ public class SetKeyVaultRoleDefinitionOptions {
      *
      * @param description The role description to set.
      *
-     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
+     * @return The updated {@link SetRoleDefinitionOptions} object.
      */
-    public SetKeyVaultRoleDefinitionOptions setDescription(String description) {
+    public SetRoleDefinitionOptions setDescription(String description) {
         this.description = description;
 
         return this;
@@ -111,9 +111,9 @@ public class SetKeyVaultRoleDefinitionOptions {
      * @param permissions The {@link KeyVaultRoleDefinition role definition}'s {@link KeyVaultPermission permissions}
      * to set.
      *
-     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
+     * @return The updated {@link SetRoleDefinitionOptions} object.
      */
-    public SetKeyVaultRoleDefinitionOptions setPermissions(List<KeyVaultPermission> permissions) {
+    public SetRoleDefinitionOptions setPermissions(List<KeyVaultPermission> permissions) {
         this.permissions = permissions;
 
         return this;
@@ -133,9 +133,9 @@ public class SetKeyVaultRoleDefinitionOptions {
      *
      * @param assignableScopes The {@link KeyVaultRoleDefinition role definition}'s assignable scopes to set.
      *
-     * @return The updated {@link SetKeyVaultRoleDefinitionOptions} object.
+     * @return The updated {@link SetRoleDefinitionOptions} object.
      */
-    public SetKeyVaultRoleDefinitionOptions setAssignableScopes(List<KeyVaultRoleScope> assignableScopes) {
+    public SetRoleDefinitionOptions setAssignableScopes(List<KeyVaultRoleScope> assignableScopes) {
         this.assignableScopes = assignableScopes;
 
         return this;

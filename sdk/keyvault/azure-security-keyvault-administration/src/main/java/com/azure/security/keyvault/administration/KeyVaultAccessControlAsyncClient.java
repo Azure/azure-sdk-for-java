@@ -41,7 +41,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionP
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
-import com.azure.security.keyvault.administration.options.SetKeyVaultRoleDefinitionOptions;
+import com.azure.security.keyvault.administration.options.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -266,7 +266,7 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultRoleDefinition> setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        return setRoleDefinitionWithResponse(new SetKeyVaultRoleDefinitionOptions(roleScope, roleDefinitionName))
+        return setRoleDefinitionWithResponse(new SetRoleDefinitionOptions(roleScope, roleDefinitionName))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -281,11 +281,11 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
-     * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
+     * in the {@link SetRoleDefinitionOptions options} object are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultRoleDefinition>> setRoleDefinitionWithResponse(
-        SetKeyVaultRoleDefinitionOptions options) {
+        SetRoleDefinitionOptions options) {
 
         return withContext(context -> setRoleDefinitionWithResponse(options, context));
     }
@@ -302,9 +302,9 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
-     * in the {@link SetKeyVaultRoleDefinitionOptions options} object are {@code null}.
+     * in the {@link SetRoleDefinitionOptions options} object are {@code null}.
      */
-    Mono<Response<KeyVaultRoleDefinition>> setRoleDefinitionWithResponse(SetKeyVaultRoleDefinitionOptions options,
+    Mono<Response<KeyVaultRoleDefinition>> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
                                                                          Context context) {
         try {
             Objects.requireNonNull(options,
