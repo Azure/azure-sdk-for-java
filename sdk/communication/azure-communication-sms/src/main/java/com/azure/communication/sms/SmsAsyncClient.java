@@ -19,11 +19,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.Instant;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -158,7 +158,8 @@ public final class SmsAsyncClient {
             SmsRecipient recipient = new SmsRecipient();
             recipient.setTo(s);
             recipient.setRepeatabilityRequestId(UUID.randomUUID().toString());
-            recipient.setRepeatabilityFirstSent(Instant.now().toString());
+            recipient.setRepeatabilityFirstSent(OffsetDateTime.now(ZoneOffset.UTC)
+                .format(DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)));
             recipients.add(recipient);
         }
         request.setFrom(from)

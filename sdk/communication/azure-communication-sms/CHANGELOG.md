@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.1.0-beta.1 (Unreleased)
-
+- Fixing bugs to support idempotency.
 
 ## 1.0.0 (2021-03-29)
 Updated `azure-communication-sms` version
@@ -14,7 +14,6 @@ Updated `azure-communication-sms` version
 - Added support for tagging SMS messages.
 - Send method series in SmsClient are idempotent under retry policy.
 - Added `SmsOptions`
-- Added implementation of the repeteabilityRequestId.
 
 ### Breaking Change
 - Updated `public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message)` to `public Mono<SendSmsResponse> send(String from, String to, String message)`.
