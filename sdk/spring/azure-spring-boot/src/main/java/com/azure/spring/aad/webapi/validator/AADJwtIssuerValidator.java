@@ -20,6 +20,8 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     /**
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
+     *
+     * @param aadTrustedIssuerRepository trusted issuer repository.
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public AADJwtIssuerValidator(AADTrustedIssuerRepository aadTrustedIssuerRepository) {

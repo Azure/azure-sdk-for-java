@@ -85,7 +85,8 @@ public class AADTrustedIssuerRepository {
     /**
      * Resolve the base uri to get scheme and host.
      *
-     * @param baseUri Base uri in the configuration file.
+     * @param baseUri baseUri Base uri in the configuration file.
+     * @return the parsed base uri.
      */
     protected String resolveBaseUri(String baseUri) {
         Assert.notNull(baseUri, "baseUri cannot be null");
