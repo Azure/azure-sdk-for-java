@@ -122,6 +122,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
     }
 
     @Test
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void testExistjwtProcessorBean() {
         this.contextRunner
             .withPropertyValues(getB2CResourceServerProperties())
@@ -146,6 +147,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
     }
 
     @Test
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void testExistJWTClaimsSetAwareJWSKeySelectorBean() {
         this.contextRunner
             .withPropertyValues(getB2CResourceServerProperties())
