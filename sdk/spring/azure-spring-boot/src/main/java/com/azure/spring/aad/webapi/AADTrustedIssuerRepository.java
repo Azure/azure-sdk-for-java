@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -80,7 +81,8 @@ public class AADTrustedIssuerRepository {
 
     @Deprecated
     private void createB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
-        trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId, userFlowName.toLowerCase()));
+        trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId,
+            userFlowName.toLowerCase(Locale.ROOT)));
     }
 
     /**

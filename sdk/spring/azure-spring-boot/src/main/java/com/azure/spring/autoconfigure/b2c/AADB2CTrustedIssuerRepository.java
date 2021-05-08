@@ -6,6 +6,7 @@ import com.azure.spring.aad.webapi.AADTrustedIssuerRepository;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
@@ -47,7 +48,8 @@ class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
     }
 
     private void createB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
-        trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId, userFlowName.toLowerCase()));
+        trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId,
+            userFlowName.toLowerCase(Locale.ROOT)));
     }
 
     public Map<String, String> getSpecialWellKnownIssMap() {
