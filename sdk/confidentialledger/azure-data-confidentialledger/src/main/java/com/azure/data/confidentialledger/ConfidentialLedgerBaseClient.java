@@ -66,7 +66,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getConstitution() {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/governance/constitution")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
@@ -95,7 +95,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getConsortiumMembers() {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/governance/members")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
@@ -127,7 +127,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getEnclaveQuotes() {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/enclaveQuotes")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
@@ -170,7 +170,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getLedgerEntries() {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/transactions")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
@@ -212,7 +212,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest postLedgerEntry() {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/transactions")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
@@ -252,7 +252,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getLedgerEntry(String transactionId) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/transactions/{transactionId}")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .setPathParam("transactionId", transactionId)
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
@@ -291,7 +291,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getReceipt(String transactionId) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/transactions/{transactionId}/receipt")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .setPathParam("transactionId", transactionId)
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
@@ -318,7 +318,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getTransactionStatus(String transactionId) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/transactions/{transactionId}/status")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .setPathParam("transactionId", transactionId)
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
@@ -353,7 +353,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getCurrentLedgerEntry() {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/transactions/current")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
@@ -370,7 +370,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest deleteUser(String userId) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/users/{userId}")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .setPathParam("userId", userId)
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
@@ -397,7 +397,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getUser(String userId) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/users/{userId}")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .setPathParam("userId", userId)
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
@@ -430,7 +430,7 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest createOrUpdateUser(String userId) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/app/users/{userId}")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .setPathParam("userId", userId)
                 .addQueryParam("api-version", apiVersion)
                 .addHeader("Accept", "application/json")
@@ -464,10 +464,20 @@ public final class ConfidentialLedgerBaseClient {
     public DynamicRequest getLedgerEntriesNext(String nextLink) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{ledgerUri}/{nextLink}")
-                .setPathParam("ledgerUri", ledgerUri)
+                .setPathParam("ledgerUri", ledgerUri.toString())
                 .setPathParam("nextLink", nextLink)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.GET);
+    }
+
+    /**
+     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
+     *
+     * @return a DynamicRequest where customizations can be made before sent to the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DynamicRequest invoke() {
+        return new DynamicRequest(serializer, httpPipeline);
     }
 }
