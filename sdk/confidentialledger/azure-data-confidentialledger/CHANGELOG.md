@@ -1,8 +1,5 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.1 (2021-05-11)
 
-
-## 1.0.0-beta.1 (2021-04-27)
-
-- Initial beta release for Document Translation client library.
+- Initial beta release for Confidential Ledger client library.
