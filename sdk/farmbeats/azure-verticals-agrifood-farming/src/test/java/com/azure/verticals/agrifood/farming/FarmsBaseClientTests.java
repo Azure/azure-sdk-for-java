@@ -4,7 +4,6 @@
 package com.azure.verticals.agrifood.farming;
 
 import com.azure.core.experimental.http.DynamicResponse;
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
 import javax.json.Json;
@@ -17,19 +16,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FarmsBaseClientTests extends FarmBeatsClientTestBase {
-    private FarmsBaseClient client;
+    private FarmsBaseClient farmsClient;
+    private FarmersBaseClient farmersClient;
 
     @Override
     protected void beforeTest() {
-        client = clientSetup(httpPipeline -> new FarmBeatsClientBuilder()
+        farmsClient = clientSetup(httpPipeline -> new FarmBeatsClientBuilder()
             .endpoint(getEndpoint())
             .pipeline(httpPipeline)
             .buildFarmsBaseClient());
+        farmersClient = clientSetup(httpPipeline -> new FarmBeatsClientBuilder()
+                .endpoint(getEndpoint())
+                .pipeline(httpPipeline)
+                .buildFarmersBaseClient());
     }
 
     @Test
     public void testCreateOrUpdate() {
-        String farmerId = Configuration.getGlobalConfiguration().get("FARMBEATS_FARMER_ID");
+        DynamicResponse res = farmersClient.list().send();
+        JsonReader jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
+        JsonObject result = jsonReader.readObject();
+        assertTrue(result.containsKey("value"));
+
+        JsonArray value = result.getJsonArray("value");
+        assertTrue(value.size() > 0);
+
+        String farmerId = value.get(0).asJsonObject().getString("id");
+
         String farmId = testResourceNamer.randomName("javafarm", 16);
 
         try {
@@ -37,32 +50,32 @@ public class FarmsBaseClientTests extends FarmBeatsClientTestBase {
                     .add("name", farmId)
                     .add("description", "A test farm.")
                     .build();
-            DynamicResponse res = client.createOrUpdate(farmerId, farmId)
+            res = farmsClient.createOrUpdate(farmerId, farmId)
                     .setBody(farm.toString()).send();
 
             assertEquals(201, res.getStatusCode());
 
             // GET
-            res = client.get(farmerId, farmId).send();
-            JsonReader jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
-            JsonObject result = jsonReader.readObject();
+            res = farmsClient.get(farmerId, farmId).send();
+            jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
+            result = jsonReader.readObject();
             assertEquals(farmerId, result.getString("farmerId"));
             assertEquals(farmId, result.getString("name"));
 
             // LIST
 
-            res = client.listByFarmerId(farmerId).send();
+            res = farmsClient.listByFarmerId(farmerId).send();
             assertEquals(200, res.getStatusCode());
 
             jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
             result = jsonReader.readObject();
             assertTrue(result.containsKey("value"));
 
-            JsonArray value = result.getJsonArray("value");
+            value = result.getJsonArray("value");
             assertTrue(value.size() > 0);
         } finally {
             try {
-                client.delete(farmerId, farmId).send();
+                farmsClient.delete(farmerId, farmId).send();
             } catch (Throwable t) {
                 // ignore
             }
