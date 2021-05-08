@@ -53,7 +53,8 @@ public class AADResourceServerConfiguration {
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
-     * @return JwtDecoder bean
+     * @param aadTrustedIssuerRepository aad trusted issuer repository.
+     * @return Get the jwtDecoder instance.
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
