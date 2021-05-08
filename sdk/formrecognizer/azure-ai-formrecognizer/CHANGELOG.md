@@ -10,8 +10,7 @@
 - Removed `V2_1_PREVIEW_1` and `V2_1_PREVIEW_2` but only support latest service beta API version `V2_1_PREVIEW_3`.
 
 ### New features
-- Added `clientOptions` method to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
-- Added `getDefaultLogOptions` method to the `FormRecognizerClientBuilder`.
+- Added `clientOptions()` and `getDefaultLogOptions()` methods to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
 - We are able to support multiple service API versions now: `V2_0` and `V2_1_PREVIEW_3`.
 
 ## 3.0.7 (2021-04-07)

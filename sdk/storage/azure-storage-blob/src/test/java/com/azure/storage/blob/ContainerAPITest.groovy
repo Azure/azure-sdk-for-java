@@ -859,26 +859,6 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
-    @ResourceLock("ServiceProperties")
-    def "List blobs flat options deleted"() {
-        setup:
-        enableSoftDelete()
-        def name = generateBlobName()
-        def bu = cc.getBlobClient(name).getAppendBlobClient()
-        bu.create()
-        bu.delete()
-
-        when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-        def blobs = cc.listBlobs(options, null).iterator()
-
-        then:
-        blobs.next().getName() == name
-        !blobs.hasNext()
-
-        disableSoftDelete() == null // Must produce a true value or test will fail.
-    }
-
     def "List blobs flat options prefix"() {
         setup:
         def options = new ListBlobsOptions().setPrefix("a")
@@ -1262,26 +1242,6 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 5 // Normal, copy, metadata, tags, uncommitted
     }
 
-    @ResourceLock("ServiceProperties")
-    def "List blobs hier options deleted"() {
-        setup:
-        enableSoftDelete()
-        def name = generateBlobName()
-        def bc = cc.getBlobClient(name).getAppendBlobClient()
-        bc.create()
-        bc.delete()
-
-        when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
-
-        then:
-        blobs.next().getName() == name
-        !blobs.hasNext()
-
-        disableSoftDelete() == null
-    }
-
     def "List blobs hier options prefix"() {
         setup:
         def options = new ListBlobsOptions().setPrefix("a")
@@ -1642,8 +1602,8 @@ class ContainerAPITest extends APISpec {
         }
 
         AppendBlobClient bc = new BlobClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(env.primaryAccount.credential)
+            .endpoint(env.primaryAccount.blobEndpoint)
             .blobName("rootblob")
             .httpClient(getHttpClient())
             .pipeline(cc.getHttpPipeline())
@@ -1670,8 +1630,8 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc = new BlobContainerClientBuilder()
-            .credential(primaryCredential)
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(env.primaryAccount.credential)
+            .endpoint(env.primaryAccount.blobEndpoint)
             .containerName(null)
             .pipeline(cc.getHttpPipeline())
             .buildClient()
@@ -1775,7 +1735,7 @@ class ContainerAPITest extends APISpec {
     def "Per call policy"() {
         setup:
         def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(primaryCredential)
+            .credential(env.primaryAccount.credential)
             .addPolicy(getPerCallVersionPolicy())
             .buildClient()
 

@@ -17,10 +17,8 @@ import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Requires
 import spock.lang.Unroll
 
-import java.time.Duration
 import java.util.concurrent.TimeoutException
 
 class DownloadResponseTest extends APISpec {
@@ -60,7 +58,7 @@ class DownloadResponseTest extends APISpec {
                 })
             }
         }
-        def bsc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
+        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
         def cc = bsc.getBlobContainerClient(containerName)
         def bu = cc.getBlobClient(bu.getBlobName()).getBlockBlobClient()
 
@@ -182,7 +180,6 @@ class DownloadResponseTest extends APISpec {
     }
 
     @Unroll
-    @Requires( { playbackMode() }) // https://github.com/reactor/reactor-core/issues/1098
     def "Timeout"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT,
@@ -190,11 +187,13 @@ class DownloadResponseTest extends APISpec {
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
-        expect:
-        StepVerifier.withVirtualTime({ flux.setOptions(options).getter(info)
-            .flatMapMany({ it.getValue() }) })
+        when:
+        def bufferMono = flux.setOptions(options).getter(info)
+            .flatMapMany({ it.getValue() })
+
+        then:
+        StepVerifier.create(bufferMono)
             .expectSubscription()
-            .thenAwait(Duration.ofSeconds((retryCount + 1) * 61))
             .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
 
         where:

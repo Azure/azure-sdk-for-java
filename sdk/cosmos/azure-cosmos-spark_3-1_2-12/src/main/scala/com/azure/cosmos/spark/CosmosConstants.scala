@@ -14,7 +14,7 @@ private object CosmosConstants {
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
-    val ChangeFeedDataSourceShortName = "cosmos.changeFeed"
+    val ChangeFeedDataSourceShortName = "cosmos.oltp.changeFeed"
   }
 
   object Properties {
