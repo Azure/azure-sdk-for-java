@@ -59,6 +59,10 @@ public class ClientLogger {
         logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     /**
      * Logs a message at {@code verbose} log level.
      *

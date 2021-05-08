@@ -12,6 +12,7 @@ module com.azure.core {
 
     requires transitive com.fasterxml.jackson.dataformat.xml;
     requires transitive com.fasterxml.jackson.datatype.jsr310;
+    requires transitive java.logging;
 
     // public API surface area
     exports com.azure.core.annotation;
@@ -28,6 +29,7 @@ module com.azure.core {
     exports com.azure.core.util.polling;
     exports com.azure.core.util.serializer;
     exports com.azure.core.util.tracing;
+    exports com.azure.core.handler;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;
@@ -38,6 +40,7 @@ module com.azure.core {
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
+    opens com.azure.core.handler to com.fasterxml.jackson.databind;
 
     // Service Provider Interfaces
     uses com.azure.core.http.HttpClientProvider;
