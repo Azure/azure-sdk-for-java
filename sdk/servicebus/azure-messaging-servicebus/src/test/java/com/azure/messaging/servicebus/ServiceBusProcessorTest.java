@@ -10,7 +10,6 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -193,7 +192,6 @@ public class ServiceBusProcessorTest {
      *
      * @throws InterruptedException If the test is interrupted.
      */
-    @Disabled("Fails on Ubuntu 18")
     @Test
     public void testErrorRecovery() throws InterruptedException {
         List<ServiceBusMessageContext> messageList = new ArrayList<>();
