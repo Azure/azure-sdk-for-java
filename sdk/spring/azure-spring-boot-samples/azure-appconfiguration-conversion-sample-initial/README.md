@@ -204,7 +204,7 @@ In this section, you clone a containerized Spring Boot application and test it l
     <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-        <version>1.2.8</version>
+        <version>1.2.8.1-beta.1</version>
     </dependency>
     ```
     [//]: # ({x-version-update-end})
