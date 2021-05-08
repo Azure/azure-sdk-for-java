@@ -28,7 +28,7 @@ public class WebController {
     @ResponseBody
     @GetMapping(value = { "/log" })
     @PreAuthorize("hasAuthority('SCOPE_Test.Log')")
-    public String sing() {
+    public String log() {
         return "Test log read success.";
     }
 }

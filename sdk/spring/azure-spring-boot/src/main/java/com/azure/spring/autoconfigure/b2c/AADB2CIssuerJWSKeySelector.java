@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AADB2CIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
-    private final AADB2CTrustedIssuerRepository trustedIssuers;
+    private final AADB2CTrustedIssuerRepository aadB2cTrustedIssuers;
 
     private final int connectTimeout;
 
@@ -40,7 +40,7 @@ public class AADB2CIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelect
 
     public AADB2CIssuerJWSKeySelector(AADB2CTrustedIssuerRepository trustedIssuers, int connectTimeout,
                                       int readTimeout, int sizeLimit) {
-        this.trustedIssuers = trustedIssuers;
+        this.aadB2cTrustedIssuers = trustedIssuers;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
         this.sizeLimit = sizeLimit;
@@ -50,7 +50,7 @@ public class AADB2CIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelect
     public List<? extends Key> selectKeys(JWSHeader header, JWTClaimsSet claimsSet, SecurityContext context)
         throws KeySourceException {
         String iss = (String) claimsSet.getClaim(AADTokenClaim.ISS);
-        if (trustedIssuers.getTrustedIssuers().contains(iss)) {
+        if (aadB2cTrustedIssuers.getTrustedIssuers().contains(iss)) {
             return selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
         }
         throw new IllegalArgumentException("The issuer: '" + iss + "' is not registered in trusted issuer repository,"
@@ -60,8 +60,8 @@ public class AADB2CIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelect
     private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
         Map<String, Object> configurationForOidcIssuerLocation =
             AADJwtDecoderProviderConfiguration.getConfigurationForOidcIssuerLocation(
-                trustedIssuers.getSpecialWellKnownIssMap().get(issuer) == null ? issuer
-                    : trustedIssuers.getSpecialWellKnownIssMap().get(issuer));
+                aadB2cTrustedIssuers.getSpecialWellKnownIssMap().get(issuer) == null ? issuer
+                    : aadB2cTrustedIssuers.getSpecialWellKnownIssMap().get(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
         DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
             sizeLimit);

@@ -9,7 +9,6 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -31,10 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebApiMode} condition,
- * configure the necessary beans for AAD B2C resource server beans,
- * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
+ * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebApiMode} condition, configure the
+ * necessary beans for AAD B2C resource server beans, and import {@link AADB2COAuth2ClientConfiguration} class for AAD
+ * B2C OAuth2 client support.
  */
 @Configuration
 @Conditional(AADB2CConditions.CommonCondition.class)
@@ -48,9 +46,6 @@ public class AADB2CResourceServerAutoConfiguration {
     public AADB2CResourceServerAutoConfiguration(@NonNull AADB2CProperties properties) {
         this.properties = properties;
     }
-
-    @Autowired
-    private AADB2CTrustedIssuerRepository aadb2CTrustedIssuerRepository;
 
     @Bean
     @ConditionalOnMissingBean
@@ -77,7 +72,8 @@ public class AADB2CResourceServerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor) {
+    public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
+                                 AADB2CTrustedIssuerRepository aadb2CTrustedIssuerRepository) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();

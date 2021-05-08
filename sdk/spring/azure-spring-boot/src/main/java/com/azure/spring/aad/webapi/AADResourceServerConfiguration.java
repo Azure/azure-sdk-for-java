@@ -44,9 +44,6 @@ public class AADResourceServerConfiguration {
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
 
-    @Autowired
-    private AADTrustedIssuerRepository aadTrustedIssuerRepository;
-
     @Bean
     @ConditionalOnMissingBean
     public AADTrustedIssuerRepository trustedIssuerRepository() {
@@ -60,17 +57,17 @@ public class AADResourceServerConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder() {
+    public JwtDecoder jwtDecoder(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
         AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(
             aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
-        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
+        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadTrustedIssuerRepository);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
     }
 
-    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
+    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {

@@ -15,20 +15,21 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class AADResourceServerConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
 
+    private AADTrustedIssuerRepository trustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
+
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri");
-            });
+            .run(context -> assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri"));
     }
 
     @Test
@@ -49,7 +50,7 @@ public class AADResourceServerConfigurationTest {
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(trustedIssuerRepository);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(2);
             });
@@ -63,7 +64,7 @@ public class AADResourceServerConfigurationTest {
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(trustedIssuerRepository);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
             });
