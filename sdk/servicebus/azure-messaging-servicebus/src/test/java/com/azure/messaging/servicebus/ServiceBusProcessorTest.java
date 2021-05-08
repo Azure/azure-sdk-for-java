@@ -193,7 +193,7 @@ public class ServiceBusProcessorTest {
      * @throws InterruptedException If the test is interrupted.
      */
     @Test
-    public void testErrorRecovery() {
+    public void testErrorRecovery() throws InterruptedException {
         List<ServiceBusMessageContext> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
