@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public final class KeyVaultRoleDefinition {
     private final String id;
     private final String name;
-    private final KeyVaultRoleDefinitionType roleDefinitionType;
+    private final KeyVaultRoleDefinitionType type;
     private final KeyVaultRoleDefinitionProperties properties;
 
     /**
@@ -20,15 +20,15 @@ public final class KeyVaultRoleDefinition {
      *
      * @param id The ID for this {@link KeyVaultRoleDefinition role definition}.
      * @param name The name for this {@link KeyVaultRoleDefinition role definition}.
-     * @param roleDefinitionType The roleDefinitionType for this {@link KeyVaultRoleDefinition role definition}.
+     * @param type The type of this {@link KeyVaultRoleDefinition role definition}.
      * @param properties {@link KeyVaultRoleDefinitionProperties properties} of this {@link KeyVaultRoleDefinition
      * role definition}.
      */
-    public KeyVaultRoleDefinition(String id, String name, KeyVaultRoleDefinitionType roleDefinitionType,
+    public KeyVaultRoleDefinition(String id, String name, KeyVaultRoleDefinitionType type,
                                   KeyVaultRoleDefinitionProperties properties) {
         this.id = id;
         this.name = name;
-        this.roleDefinitionType = roleDefinitionType;
+        this.type = type;
         this.properties = properties;
     }
 
@@ -55,8 +55,8 @@ public final class KeyVaultRoleDefinition {
      *
      * @return The {@link KeyVaultRoleDefinitionType role definition type}.
      */
-    public KeyVaultRoleDefinitionType getRoleDefinitionType() {
-        return roleDefinitionType;
+    public KeyVaultRoleDefinitionType getType() {
+        return type;
     }
 
     /**

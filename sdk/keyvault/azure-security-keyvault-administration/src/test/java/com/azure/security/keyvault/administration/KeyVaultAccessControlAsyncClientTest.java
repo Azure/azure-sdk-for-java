@@ -51,7 +51,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
             .subscribe(roleDefinition -> {
                 assertNotNull(roleDefinition.getId());
                 assertNotNull(roleDefinition.getName());
-                assertNotNull(roleDefinition.getRoleDefinitionType());
+                assertNotNull(roleDefinition.getType());
 
                 KeyVaultRoleDefinitionProperties properties = roleDefinition.getProperties();
 
@@ -89,7 +89,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 assertNotNull(roleDefinition.getId());
                 assertEquals(roleDefinitionName, roleDefinition.getName());
                 assertEquals(KeyVaultRoleDefinitionType.MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS,
-                    roleDefinition.getRoleDefinitionType());
+                    roleDefinition.getType());
 
                 KeyVaultRoleDefinitionProperties properties = roleDefinition.getProperties();
 
@@ -272,8 +272,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         // Create a role assignment.
         KeyVaultRoleDefinition finalRoleDefinition = roleDefinition;
 
-        asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName, roleDefinition.getId(), servicePrincipalId)
-            .subscribe(roleAssignment -> {
+        asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
+            roleAssignmentName).subscribe(roleAssignment -> {
                 assertNotNull(roleAssignment);
                 assertNotNull(roleAssignment.getId());
                 assertEquals(roleAssignmentName, roleAssignment.getName());
@@ -331,15 +331,15 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         try {
             // Create a role assignment.
             roleAssignment =
-                asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName, roleDefinition.getId(),
-                    servicePrincipalId).block();
+                asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
+                    roleAssignmentName).block();
 
             KeyVaultRoleDefinition finalRoleDefinition = roleDefinition;
 
             // Attempt to create a role assignment with the same roe scope, name, role definition ID and principal ID.
             assertThrows(KeyVaultAdministrationException.class,
-                () -> asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName,
-                    finalRoleDefinition.getId(), servicePrincipalId).block());
+                () -> asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, finalRoleDefinition.getId(),
+                    servicePrincipalId, roleAssignmentName).block());
         } finally {
             if (getTestMode() != TestMode.PLAYBACK && roleAssignment != null) {
                 // Clean up the role assignment.
@@ -387,8 +387,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         try {
             // Create a role assignment to retrieve.
             createdRoleAssignment =
-                asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName, roleDefinition.getId(),
-                    servicePrincipalId).block();
+                asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
+                    roleAssignmentName).block();
 
             assertNotNull(createdRoleAssignment);
 
@@ -443,8 +443,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         // Create a role assignment to delete.
         KeyVaultRoleAssignment createdRoleAssignment =
-            asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName, roleDefinition.getId(),
-                servicePrincipalId).block();
+            asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
+                roleAssignmentName).block();
 
         assertNotNull(createdRoleAssignment);
 

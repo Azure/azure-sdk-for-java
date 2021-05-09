@@ -7,8 +7,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents the configurable options to create or update a {@link KeyVaultRoleDefinition role definition}.
@@ -17,10 +19,21 @@ import java.util.List;
 public class SetRoleDefinitionOptions {
     private final KeyVaultRoleScope roleScope;
     private final String roleDefinitionName;
+    private final KeyVaultRoleType roleType;
     private String roleName;
     private String description;
     private List<KeyVaultPermission> permissions;
     private List<KeyVaultRoleScope> assignableScopes;
+
+    /**
+     * Creates an instance of {@link SetRoleDefinitionOptions} with an automatically generated name.
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition} to create.
+     * Managed HSM only supports '/'.
+     */
+    public SetRoleDefinitionOptions(KeyVaultRoleScope roleScope) {
+        this(roleScope, UUID.randomUUID().toString());
+    }
 
     /**
      * Creates an instance of {@link SetRoleDefinitionOptions}.
@@ -32,6 +45,7 @@ public class SetRoleDefinitionOptions {
     public SetRoleDefinitionOptions(KeyVaultRoleScope roleScope, String roleDefinitionName) {
         this.roleScope = roleScope;
         this.roleDefinitionName = roleDefinitionName;
+        this.roleType = KeyVaultRoleType.CUSTOM_ROLE;
     }
 
     /**
@@ -50,6 +64,15 @@ public class SetRoleDefinitionOptions {
      */
     public String getRoleDefinitionName() {
         return roleDefinitionName;
+    }
+
+    /**
+     * Get the role type.
+     *
+     * @return The role type.
+     */
+    public KeyVaultRoleType getRoleType() {
+        return roleType;
     }
 
     /**

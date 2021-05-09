@@ -269,7 +269,7 @@ public final class KeyVaultAccessControlClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
                                                        String principalId) {
-        return createRoleAssignmentWithResponse(roleScope, UUID.randomUUID().toString(), roleDefinitionId, principalId,
+        return createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId, UUID.randomUUID().toString(),
             Context.NONE).getValue();
     }
 
@@ -289,9 +289,9 @@ public final class KeyVaultAccessControlClient {
      * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName,
-                                                       String roleDefinitionId, String principalId) {
-        return createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId, principalId,
+    public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
+                                                       String principalId, String roleAssignmentName) {
+        return createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId, roleAssignmentName,
             Context.NONE).getValue();
     }
 
@@ -314,11 +314,12 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
-                                                                             String roleAssignmentName,
                                                                              String roleDefinitionId,
-                                                                             String principalId, Context context) {
-        return asyncClient.createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId,
-            principalId, context).block();
+                                                                             String principalId,
+                                                                             String roleAssignmentName,
+                                                                             Context context) {
+        return asyncClient.createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId,
+            roleAssignmentName, context).block();
     }
 
     /**

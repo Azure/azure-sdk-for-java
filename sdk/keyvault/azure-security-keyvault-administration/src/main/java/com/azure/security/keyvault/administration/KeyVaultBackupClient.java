@@ -76,7 +76,7 @@ public final class KeyVaultBackupClient {
     /**
      * Initiates a full restore of the Key Vault.
      *
-     * @param backupFolderUrl The URL for the Blob Storage resource where the backup is located, including the path to
+     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
      * backup operation. An example of such a URL may look like the following:
      * https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
@@ -84,18 +84,18 @@ public final class KeyVaultBackupClient {
      *
      * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
      *
-     * @throws KeyVaultAdministrationException If the given {@code backupFolderUrl} or {@code sasToken} are invalid.
-     * @throws NullPointerException If the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
+     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
+     * @throws NullPointerException If the {@code folderUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String backupFolderUrl, String sasToken) {
-        return asyncClient.beginRestore(backupFolderUrl, sasToken).getSyncPoller();
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String folderUrl, String sasToken) {
+        return asyncClient.beginRestore(folderUrl, sasToken).getSyncPoller();
     }
 
     /**
      * Initiates a full restore of the Key Vault.
      *
-     * @param backupFolderUrl The URL for the Blob Storage resource where the backup is located, including the path to
+     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
      * backup operation. An example of such a URL may look like the following:
      * https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
@@ -104,13 +104,13 @@ public final class KeyVaultBackupClient {
      *
      * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
      *
-     * @throws KeyVaultAdministrationException If the given {@code backupFolderUrl} or {@code sasToken} are invalid.
-     * @throws NullPointerException If the {@code backupFolderUrl} or {@code sasToken} are {@code null}.
+     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
+     * @throws NullPointerException If the {@code folderUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String backupFolderUrl, String sasToken,
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String folderUrl, String sasToken,
                                                                    Duration pollingInterval) {
-        return asyncClient.beginRestore(backupFolderUrl, sasToken, pollingInterval).getSyncPoller();
+        return asyncClient.beginRestore(folderUrl, sasToken, pollingInterval).getSyncPoller();
     }
 
     /**
@@ -118,7 +118,7 @@ public final class KeyVaultBackupClient {
      * storage backup folder.
      *
      * @param keyName The name of the key to be restored.
-     * @param backupFolderUrl The URL for the Blob Storage resource where the backup is located, including the path to
+     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
      * backup operation. An example of such a URL may look like the following:
      * https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
@@ -126,14 +126,14 @@ public final class KeyVaultBackupClient {
      *
      * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
      *
-     * @throws KeyVaultAdministrationException If the given {@code backupFolderUrl} or {@code sasToken} are invalid.
-     * @throws NullPointerException If the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
+     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
+     * @throws NullPointerException If the {@code keyName}, {@code folderUrl} or {@code sasToken} are {@code
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String backupFolderUrl,
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
                                                                             String sasToken) {
-        return asyncClient.beginSelectiveRestore(keyName, backupFolderUrl, sasToken).getSyncPoller();
+        return asyncClient.beginSelectiveRestore(keyName, folderUrl, sasToken).getSyncPoller();
     }
 
     /**
@@ -141,7 +141,7 @@ public final class KeyVaultBackupClient {
      * storage backup folder.
      *
      * @param keyName The name of the key to be restored.
-     * @param backupFolderUrl The URL for the Blob Storage resource where the backup is located, including the path to
+     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
      * backup operation. An example of such a URL may look like the following:
      * https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
@@ -150,13 +150,13 @@ public final class KeyVaultBackupClient {
      *
      * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
      *
-     * @throws KeyVaultAdministrationException If the given {@code backupFolderUrl} or {@code sasToken} are invalid.
-     * @throws NullPointerException If the {@code keyName}, {@code backupFolderUrl} or {@code sasToken} are {@code
+     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
+     * @throws NullPointerException If the {@code keyName}, {@code folderUrl} or {@code sasToken} are {@code
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String backupFolderUrl,
+    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
                                                                             String sasToken, Duration pollingInterval) {
-        return asyncClient.beginSelectiveRestore(keyName, backupFolderUrl, sasToken, pollingInterval).getSyncPoller();
+        return asyncClient.beginSelectiveRestore(keyName, folderUrl, sasToken, pollingInterval).getSyncPoller();
     }
 }

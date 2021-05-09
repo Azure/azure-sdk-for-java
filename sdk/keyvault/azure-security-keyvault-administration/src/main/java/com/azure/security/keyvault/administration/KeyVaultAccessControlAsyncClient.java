@@ -284,9 +284,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * in the {@link SetRoleDefinitionOptions options} object are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultRoleDefinition>> setRoleDefinitionWithResponse(
-        SetRoleDefinitionOptions options) {
-
+    public Mono<Response<KeyVaultRoleDefinition>> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options) {
         return withContext(context -> setRoleDefinitionWithResponse(options, context));
     }
 
@@ -330,9 +328,9 @@ public final class KeyVaultAccessControlAsyncClient {
             if (options.getPermissions() != null) {
                 permissions = options.getPermissions().stream()
                     .map(keyVaultPermission -> new Permission()
-                        .setActions(keyVaultPermission.getAllowedActions())
+                        .setActions(keyVaultPermission.getActions())
                         .setNotActions(keyVaultPermission.getNotActions())
-                        .setDataActions(keyVaultPermission.getAllowedDataActions().stream()
+                        .setDataActions(keyVaultPermission.getDataActions().stream()
                             .map(allowedDataAction -> DataAction.fromString(allowedDataAction.toString()))
                             .collect(Collectors.toList()))
                         .setNotDataActions(keyVaultPermission.getNotDataActions().stream()
@@ -344,7 +342,7 @@ public final class KeyVaultAccessControlAsyncClient {
             RoleDefinitionProperties roleDefinitionProperties =
                 new RoleDefinitionProperties()
                     .setRoleName(options.getRoleDefinitionName())
-                    .setRoleType(RoleType.CUSTOM_ROLE)
+                    .setRoleType(RoleType.fromString(options.getRoleType().toString()))
                     .setAssignableScopes(assignableScopes)
                     .setDescription(options.getDescription())
                     .setPermissions(permissions);
@@ -647,16 +645,16 @@ public final class KeyVaultAccessControlAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
                                                              String principalId) {
-        return createRoleAssignment(roleScope, UUID.randomUUID().toString(), roleDefinitionId, principalId);
+        return createRoleAssignment(roleScope, roleDefinitionId, principalId, UUID.randomUUID().toString());
     }
 
     /**
      * Creates a {@link KeyVaultRoleAssignment}.
      *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
-     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
+     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
      *
@@ -666,9 +664,9 @@ public final class KeyVaultAccessControlAsyncClient {
      * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName,
-                                                             String roleDefinitionId, String principalId) {
-        return createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId, principalId)
+    public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
+                                                             String principalId, String roleAssignmentName) {
+        return createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId, roleAssignmentName)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -690,11 +688,11 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
-                                                                                   String roleAssignmentName,
                                                                                    String roleDefinitionId,
-                                                                                   String principalId) {
+                                                                                   String principalId,
+                                                                                   String roleAssignmentName) {
         return withContext(context ->
-            createRoleAssignmentWithResponse(roleScope, roleAssignmentName, roleDefinitionId, principalId, context));
+            createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId, roleAssignmentName, context));
     }
 
     /**
@@ -715,9 +713,9 @@ public final class KeyVaultAccessControlAsyncClient {
      * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
     Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
+                                                                            String roleDefinitionId, String principalId,
                                                                             String roleAssignmentName,
-                                                                            String roleDefinitionId,
-                                                                            String principalId, Context context) {
+                                                                            Context context) {
         try {
             Objects.requireNonNull(roleScope,
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),

@@ -100,7 +100,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
                                            KeyVaultRoleDefinition roleDefinition2) {
         assertEquals(roleDefinition1.getId(), roleDefinition2.getId());
         assertEquals(roleDefinition1.getName(), roleDefinition2.getName());
-        assertEquals(roleDefinition1.getRoleDefinitionType(), roleDefinition2.getRoleDefinitionType());
+        assertEquals(roleDefinition1.getType(), roleDefinition2.getType());
 
         KeyVaultRoleDefinitionProperties properties1 = roleDefinition1.getProperties();
         KeyVaultRoleDefinitionProperties properties2 = roleDefinition2.getProperties();
