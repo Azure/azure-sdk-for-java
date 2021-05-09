@@ -1,7 +1,10 @@
 # Release History
 
-## 12.11.0-beta.4 (Unreleased)
+## 12.12.0-beta.1 (Unreleased)
+- Added support for the 2020-08-04 service version.
 
+## 12.11.0 (2021-04-29)
+- Fixed a bug where large files would hang when the upload method was called. 
 
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
@@ -14,16 +17,16 @@
 - Added upload and download methods on BlobClient and BlobAsyncClient that work with BinaryData.
 - Fixed a bug that ignored the page size when calling PagedIterable.byPage(pageSize)
 
-## 12.11.0-beta.1 (2021-02-10)
-- Added support for the 2020-06-12 service version. 
-- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
-- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
-- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
-
 ## 12.10.2 (2021-03-26)
 - Fixed a bug where BlobInputStream would not use request conditions when doing the initial getProperties call in openInputStream.
 
 ## 12.10.1 (2021-03-19)
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.11.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
 - Removed a deep copy in the general upload path to reduce memory consumption and increase perf
 - Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
 
@@ -192,7 +195,7 @@ and
 - Added support for blob names with special characters
 - Changed return type for BlobClient.downloadWithProperties from Response<Void> to BlobDownloadResponse and BlobAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<BlobDownloadAsyncResponse>
 
-## 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's

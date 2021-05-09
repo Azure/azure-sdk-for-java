@@ -1,6 +1,13 @@
 # Release History
 
-## 12.5.0-beta.4 (Unreleased)
+## 12.6.0-beta.1 (Unreleased)
+- Added support for the 2020-08-04 service version.
+- Added support to undelete a file or directory
+- Added support to list deletedPaths
+- Added support to get/set service properties
+
+## 12.5.0 (2021-04-29)
+- Fixed a bug where large files would hang when the upload method was called. 
 - DataLakeLeaseClient now remembers the Lease ID after a lease change.
 
 ## 12.5.0-beta.3 (2021-04-16)
@@ -10,12 +17,12 @@
 - Fixed a bug where files/directories in root directories could not be renamed.
 - Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
 
+## 12.4.1 (2021-03-19)
+- Updated `azure-storage-blob` version to `12.10.1` to pickup fixes for blob output stream.
+
 ## 12.5.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
 - Added support to undelete a file system. 
-
-## 12.4.1 (2021-03-19)
-- Updated `azure-storage-blob` version to `12.10.1` to pickup fixes for blob output stream.
 
 ## 12.4.0 (2021-01-14)
 - GA release
@@ -48,11 +55,11 @@
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
 
-## 12.2.0-beta.1 (2019-07-07)
+## 12.2.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support to query a file. 
 - Added support to increase the maximum size of data that can be sent via an append.
-- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data. 
+- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data.
 
 ## 12.1.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
@@ -132,3 +139,4 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+

@@ -14,11 +14,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
     BlobContainerClient cc
 
     String keyId
-
-    @Shared
     def fakeKey
-
-    @Shared
     def fakeKeyResolver
 
 
@@ -27,20 +23,19 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        cc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        cc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
         def blobName = generateBlobName()
 
-        beac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        beac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(blobName)
             .buildEncryptedBlobAsyncClient()
 
-        bec = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .buildEncryptedBlobClient()

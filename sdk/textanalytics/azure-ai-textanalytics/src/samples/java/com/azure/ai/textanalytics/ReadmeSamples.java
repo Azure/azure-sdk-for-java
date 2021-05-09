@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -239,7 +239,7 @@ public class ReadmeSamples {
     /**
      * Code snippet for executing actions in a batch of documents.
      */
-    public void analyzeBatchActions() {
+    public void analyzeActions() {
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
@@ -251,17 +251,17 @@ public class ReadmeSamples {
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
 
-        SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeBatchActions(documents,
+        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+            textAnalyticsClient.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
                     .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
-                new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
+                new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+        syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
             System.out.println("Key phrases extraction action results:");
-            analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
                     for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
@@ -273,7 +273,7 @@ public class ReadmeSamples {
                 }
             });
             System.out.println("PII entities recognition action results:");
-            analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
                     for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {

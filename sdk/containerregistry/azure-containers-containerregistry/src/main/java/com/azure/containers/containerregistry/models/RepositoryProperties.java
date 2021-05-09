@@ -33,7 +33,7 @@ public final class RepositoryProperties {
      * Number of the manifests
      */
     @JsonProperty(value = "manifestCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int registryArtifactCount;
+    private int manifestCount;
 
     /*
      * Number of the tags
@@ -75,12 +75,12 @@ public final class RepositoryProperties {
     }
 
     /**
-     * Get the registryArtifactCount property: Number of the manifests.
+     * Get the manifestCount property: Number of the manifests.
      *
-     * @return the registryArtifactCount value.
+     * @return the manifestCount value.
      */
-    public int getRegistryArtifactCount() {
-        return this.registryArtifactCount;
+    public int getManifestCount() {
+        return this.manifestCount;
     }
 
     /**
