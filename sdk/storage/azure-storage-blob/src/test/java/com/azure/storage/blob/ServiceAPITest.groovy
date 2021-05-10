@@ -925,7 +925,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = playbackMode() ? 0L : 30000L
+        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
         .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
@@ -955,7 +955,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = playbackMode() ? 0L : 30000L
+        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
