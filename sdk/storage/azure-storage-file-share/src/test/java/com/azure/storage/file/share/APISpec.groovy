@@ -8,15 +8,13 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
-import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
+import com.azure.storage.common.test.shared.TestAccount
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
@@ -44,21 +42,11 @@ class APISpec extends StorageSpec {
 
     URL testFolder = getClass().getClassLoader().getResource("testfiles")
 
-    public static final String defaultEndpointTemplate = "https://%s.file.core.windows.net/"
-
-    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_FILE_"
-    static StorageSharedKeyCredential premiumCredential
-
-    static def PRIMARY_STORAGE = "AZURE_STORAGE_FILE_"
-    protected static StorageSharedKeyCredential primaryCredential
-
     // Primary Clients used for API tests
     ShareServiceClient primaryFileServiceClient
     ShareServiceAsyncClient primaryFileServiceAsyncClient
     ShareServiceClient premiumFileServiceClient
     ShareServiceAsyncClient premiumFileServiceAsyncClient
-
-    String connectionString
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -76,19 +64,11 @@ class APISpec extends StorageSpec {
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
-        premiumCredential = getCredential(PREMIUM_STORAGE)
-        primaryCredential = getCredential(PRIMARY_STORAGE)
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_CONNECTION_STRING")
-        } else {
-            connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
-                "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
-        }
-        primaryFileServiceClient = setClient(primaryCredential)
-        primaryFileServiceAsyncClient = setAsyncClient(primaryCredential)
+        primaryFileServiceClient = setClient(env.primaryAccount)
+        primaryFileServiceAsyncClient = setAsyncClient(env.primaryAccount)
 
-        premiumFileServiceClient = setClient(premiumCredential)
-        premiumFileServiceAsyncClient = setAsyncClient(premiumCredential)
+        premiumFileServiceClient = setClient(env.premiumFileAccount)
+        premiumFileServiceAsyncClient = setAsyncClient(env.premiumFileAccount)
     }
 
     /**
@@ -96,7 +76,7 @@ class APISpec extends StorageSpec {
      */
     def cleanup() {
         def cleanupFileServiceClient = new ShareServiceClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .addPolicy(getRecordPolicy())
             .httpClient(getHttpClient())
             .buildClient()
@@ -111,34 +91,8 @@ class APISpec extends StorageSpec {
         }
     }
 
-    // TODO (kasobol-msft) remove this after migration
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            accountName = "azstoragesdkaccount"
-            accountKey = "astorageaccountkey"
-        }
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
-
     static boolean liveMode() {
-        return ENVIRONMENT.testMode != TestMode.PLAYBACK
+        return env.testMode != TestMode.PLAYBACK
     }
 
     def generateShareName() {
@@ -153,16 +107,16 @@ class APISpec extends StorageSpec {
         return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
-    ShareServiceAsyncClient setAsyncClient(StorageSharedKeyCredential credential) {
+    ShareServiceAsyncClient setAsyncClient(TestAccount account) {
         try {
-            return getServiceAsyncClient(credential)
+            return getServiceAsyncClient(account)
         } catch (Exception ignore) {
             return null
         }
     }
 
-    ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
-        return getServiceAsyncClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    ShareServiceAsyncClient getServiceAsyncClient(TestAccount account) {
+        return getServiceAsyncClient(account.credential, account.fileEndpoint, null)
     }
 
     ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
@@ -170,20 +124,16 @@ class APISpec extends StorageSpec {
         return getServiceClientBuilder(credential, endpoint, policies).buildAsyncClient()
     }
 
-    ShareServiceClient setClient(StorageSharedKeyCredential credential) {
+    ShareServiceClient setClient(TestAccount account) {
         try {
-            return getServiceClient(credential)
+            return getServiceClient(account)
         } catch (Exception ignore) {
             return null
         }
     }
 
-    ShareServiceClient getServiceClient(StorageSharedKeyCredential credential) {
-        // TODO : Remove this once its no longer preprod
-//        if (credential == premiumCredential) {
-//            return getServiceClient(credential, String.format("https://%s.file.preprod.core.windows.net/", credential.getAccountName()), null)
-//        }
-        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    ShareServiceClient getServiceClient(TestAccount account) {
+        return getServiceClient(account.credential, account.fileEndpoint, null)
     }
 
     ShareServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
@@ -195,7 +145,7 @@ class APISpec extends StorageSpec {
         ShareServiceClientBuilder shareServiceClientBuilder = new ShareServiceClientBuilder();
         shareServiceClientBuilder.addPolicy(getRecordPolicy())
         return shareServiceClientBuilder
-            .connectionString(connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .httpClient(getHttpClient())
     }
 
@@ -235,7 +185,7 @@ class APISpec extends StorageSpec {
     def shareBuilderHelper(final String shareName, final String snapshot) {
         ShareClientBuilder builder = new ShareClientBuilder()
         builder.addPolicy(getRecordPolicy())
-        return builder.connectionString(connectionString)
+        return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .snapshot(snapshot)
             .httpClient(getHttpClient())
@@ -244,7 +194,7 @@ class APISpec extends StorageSpec {
     def directoryBuilderHelper(final String shareName, final String directoryPath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
         builder.addPolicy(getRecordPolicy())
-        return builder.connectionString(connectionString)
+        return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(directoryPath)
             .httpClient(getHttpClient())
@@ -272,7 +222,7 @@ class APISpec extends StorageSpec {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
         builder.addPolicy(getRecordPolicy())
         return builder
-            .connectionString(connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(filePath)
             .httpClient(getHttpClient())
@@ -371,7 +321,7 @@ class APISpec extends StorageSpec {
     }
 
     void sleepIfLive(long milliseconds) {
-        if (ENVIRONMENT.testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -380,13 +330,13 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live or record mode
     def sleepIfRecord(long milliseconds) {
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (ENVIRONMENT.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     /**
@@ -416,7 +366,7 @@ class APISpec extends StorageSpec {
     }
 
     static boolean playbackMode() {
-        return ENVIRONMENT.testMode == TestMode.PLAYBACK
+        return env.testMode == TestMode.PLAYBACK
     }
 
     def getPerCallVersionPolicy() {

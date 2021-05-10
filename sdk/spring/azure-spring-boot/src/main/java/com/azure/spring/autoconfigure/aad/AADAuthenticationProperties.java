@@ -145,6 +145,11 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         private Set<String> allowedGroupIds = new HashSet<>();
 
+        /**
+         * enableFullList is used to control whether to list all group id, default is false
+         */
+        private Boolean enableFullList = false;
+
         public Set<String> getAllowedGroupIds() {
             return allowedGroupIds;
         }
@@ -159,6 +164,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         public void setAllowedGroupNames(List<String> allowedGroupNames) {
             this.allowedGroupNames = allowedGroupNames;
+        }
+
+        public Boolean getEnableFullList() {
+            return enableFullList;
+        }
+
+        public void setEnableFullList(Boolean enableFullList) {
+            this.enableFullList = enableFullList;
         }
 
         @Deprecated

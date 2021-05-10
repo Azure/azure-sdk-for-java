@@ -464,6 +464,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeContentWithSelectionMarks(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizeContentAppearance(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     // Content - URL
 
     @Test
