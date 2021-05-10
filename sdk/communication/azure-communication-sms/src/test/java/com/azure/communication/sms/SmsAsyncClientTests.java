@@ -13,13 +13,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.io.PipedOutputStream;
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -202,23 +198,17 @@ public class SmsAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void repeatability(HttpClient httpClient) {
-        PipedOutputStream osPipe = new PipedOutputStream();
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "sendTwoMessagesSync");
 
-        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE)
-        )
+        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE))
             .assertNext(requestResponse -> {
-                requestResponse.getRequest().getBody().map(bodyBuffer -> {
-                    String bodyRequest = new String(bodyBuffer.array());
-                    assertTrue(bodyRequest.contains("repeatabilityRequestId"));
-                    return null;
-                });
-            }
-            )
+                String bodyRequest = new String(requestResponse.getRequest().getBody().blockLast().array());
+                assertTrue(bodyRequest.contains("repeatabilityRequestId"));
+                assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
+            })
             .verifyComplete();
-
     }
 
     @ParameterizedTest
@@ -246,7 +236,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
         Mono<SmsSendResult> response = asyncClient.send(from, TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response).verifyError();
     }
-
 
     private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();

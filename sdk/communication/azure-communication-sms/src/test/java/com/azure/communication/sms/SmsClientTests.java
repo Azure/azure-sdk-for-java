@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import java.io.PipedOutputStream;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -169,16 +168,14 @@ public class SmsClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void repeatability(HttpClient httpClient) {
-        PipedOutputStream osPipe = new PipedOutputStream();
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         client = setupSyncClient(builder, "sendTwoMessagesSync");
-
         // Action & Assert
         Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
         String bodyRequest = new String(response.getRequest().getBody().blockLast().array());
         assertTrue(bodyRequest.contains("repeatabilityRequestId"));
-
+        assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
     }
 
     private SmsClient setupSyncClient(SmsClientBuilder builder, String testName) {
