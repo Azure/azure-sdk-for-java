@@ -121,6 +121,29 @@ class BlobCryptographyBuilderTest extends APISpec {
         e.getStatusCode() == 409
     }
 
+    def "Encryption scope"() {
+        setup:
+        def scope = "testscope1"
+        cc.create()
+        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            .encryptionScope(scope)
+            .blobName(generateBlobName())
+        def encryptedAsyncClient = builder.buildEncryptedBlobAsyncClient()
+        def encryptedClient = builder.buildEncryptedBlobClient()
+
+        when:
+        def uploadResponse = encryptedAsyncClient.uploadWithResponse(defaultFlux, null, null, null, null, null).block()
+
+        def downloadResult = new ByteArrayOutputStream()
+
+        encryptedClient.download(downloadResult)
+
+        then:
+        uploadResponse.getStatusCode() == 201
+        downloadResult.toByteArray() == defaultData.array()
+        encryptedClient.getProperties().getEncryptionScope() == scope
+    }
+
     def "Conflicting encryption info"() {
         when:
         new EncryptedBlobClientBuilder()
