@@ -7,7 +7,6 @@ public class Constants
 {
     public static final String ACCESS_KEY_NAME = "provisioningserviceowner";
 
-
     public static final String DEFAULT_LOCATION = "WestUS2";
 
     public static class DefaultSku
