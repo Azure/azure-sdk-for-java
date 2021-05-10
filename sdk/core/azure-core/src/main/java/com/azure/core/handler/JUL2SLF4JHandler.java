@@ -3,21 +3,14 @@
 
 package com.azure.core.handler;
 
-import com.azure.core.util.logging.ClientLogger;
-import org.slf4j.Marker;
-import org.slf4j.spi.LocationAwareLogger;
-
 import java.text.MessageFormat;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 import java.util.Arrays;
-import java.util.MissingResourceException;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Handler;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import java.util.MissingResourceException;
 
 /**
  * This is bridge/route all JUL log records to the SLF4J API.
@@ -26,12 +19,12 @@ import java.util.logging.Level;
  * as the sole JUL handler in the system.
  * Subsequently, the JUL2SLF4JHandler instance will redirect all JUL log records are redirected to
  * the SLF4J API based on the following mapping of levels:
- * FINEST : TRACE
- * FINER : DEBUG
- * FINE : DEBUG
- * INFO : INFO
- * WARNING : WARN
- * SEVERE : ERROR
+ * FINEST -&gt; TRACE
+ * FINER -&gt; DEBUG
+ * FINE -&gt; DEBUG
+ * INFO -&gt; INFO
+ * WARNING -&gt; WARN
+ * SEVERE -&gt; ERROR
  *
  * <p>Programmatic installation:</p>
  * Optionally remove existing handlers attached to j.u.l root logger
@@ -60,28 +53,27 @@ import java.util.logging.Level;
  * overhead for disabled log statements with the help of <a href="http://logback.qos.ch/manual/configuration.html#LevelChangePropagator">LevelChangePropagator</a>.
  *
  */
-public class JUL2SLF4JHandler extends Handler {
+public class JUL2SLF4JHandler extends java.util.logging.Handler {
 
-    private static final String FQCN = Logger.class.getName();
     private static final int TRACE_LEVEL_THRESHOLD;
     private static final int DEBUG_LEVEL_THRESHOLD;
     private static final int INFO_LEVEL_THRESHOLD;
     private static final int WARN_LEVEL_THRESHOLD;
 
-    private final ConcurrentHashMap<String, ClientLogger> concurrentHashMap = new ConcurrentHashMap<String, ClientLogger>();
+    private final Map<String, com.azure.core.util.logging.ClientLogger> clientLoggerMap = Collections.synchronizedMap(new HashMap<>());
 
     /**
      * Add JUL2SLF4JHandler to j.u.l's root logger, should be done once during the initialization phase of your application
      */
     public static void install() {
-        LogManager.getLogManager().getLogger("").addHandler(new JUL2SLF4JHandler());
+        java.util.logging.LogManager.getLogManager().getLogger("").addHandler(new JUL2SLF4JHandler());
     }
 
     /**
      * Get j.u.l's root logger
      */
-    private static Logger getRootLogger() {
-        return LogManager.getLogManager().getLogger("");
+    private static java.util.logging.Logger getRootLogger() {
+        return java.util.logging.LogManager.getLogManager().getLogger("");
     }
 
     /**
@@ -90,8 +82,8 @@ public class JUL2SLF4JHandler extends Handler {
      * @throws SecurityException it is an error.
      */
     public static void uninstall() throws SecurityException {
-        Logger rootLogger = getRootLogger();
-        Handler[] handlers = rootLogger.getHandlers();
+        java.util.logging.Logger rootLogger = getRootLogger();
+        java.util.logging.Handler[] handlers = rootLogger.getHandlers();
         Arrays.stream(handlers).parallel().forEach(handler -> {
             if (handler instanceof JUL2SLF4JHandler) {
                 rootLogger.removeHandler(handler);
@@ -106,9 +98,9 @@ public class JUL2SLF4JHandler extends Handler {
      * @throws SecurityException it is an error.
      */
     public static boolean isInstalled() throws SecurityException {
-        Logger rootLogger = getRootLogger();
-        Handler[] handlers = rootLogger.getHandlers();
-        Optional<Handler> optional =
+        java.util.logging.Logger rootLogger = getRootLogger();
+        java.util.logging.Handler[] handlers = rootLogger.getHandlers();
+        Optional<java.util.logging.Handler> optional =
             Arrays.stream(handlers).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
         if (optional.isPresent()) {
             return true;
@@ -120,102 +112,87 @@ public class JUL2SLF4JHandler extends Handler {
      * Remove any handler from j.u.l's root logger
      */
     public static void removeHandlersForRootLogger() {
-        Logger rootLogger = getRootLogger();
-        Handler[] handlers = rootLogger.getHandlers();
+        java.util.logging.Logger rootLogger = getRootLogger();
+        java.util.logging.Handler[] handlers = rootLogger.getHandlers();
         Arrays.stream(handlers).parallel().forEach(handler -> rootLogger.removeHandler(handler));
     }
 
+    /**
+     * Create an empty JUL2SLF4JHandler instance.
+     */
     public JUL2SLF4JHandler() {
     }
 
+    /**
+     * Close JUL2SLF4JHandler instance.
+     */
     public void close() {
     }
 
+    /**
+     * Clear JUL2SLF4JHandler instance.
+     */
     public void flush() {
     }
 
     /**
      * Redirect all JUL log records are redirected to the SLF4J
      *
-     * @param record The passed {@link LogRecord}
-     * @return The passed {@link ClientLogger}.
+     * @param loggerName the name of j.u.l logger instance
+     * @return The passed {@link com.azure.core.util.logging.ClientLogger}.
      */
-    protected ClientLogger getClientLogger(LogRecord record) {
-        String name = record.getLoggerName();
-        if (name == null) {
-            name = "unknown.jul.logger";
+    protected com.azure.core.util.logging.ClientLogger getClientLogger(String loggerName) {
+        if (loggerName == null) {
+            loggerName = "unknown.jul.logger";
         }
-        if (!concurrentHashMap.containsKey(name)) {
-            concurrentHashMap.put(name, new ClientLogger(name));
+        if (!clientLoggerMap.containsKey(loggerName)) {
+            com.azure.core.util.logging.ClientLogger logger = new com.azure.core.util.logging.ClientLogger(loggerName);
+            clientLoggerMap.put(loggerName, logger);
+            return logger;
         }
 
-        return concurrentHashMap.get(name);
+        return clientLoggerMap.get(loggerName);
     }
 
     /**
      * Output j.u.l logger by SLF4J
      *
-     * @param lal The passed {@link LocationAwareLogger}
-     * @param record The passed {@link LogRecord}
+     * @param logger The passed {@link com.azure.core.util.logging.ClientLogger}
+     * @param record The passed {@link java.util.logging.LogRecord}
      */
-    protected void callLocationAwareLogger(LocationAwareLogger lal, LogRecord record) {
-        int julLevelValue = record.getLevel().intValue();
-        byte slf4jLevel;
-        if (julLevelValue <= TRACE_LEVEL_THRESHOLD) {
-            slf4jLevel = 0;
-        } else if (julLevelValue <= DEBUG_LEVEL_THRESHOLD) {
-            slf4jLevel = 10;
-        } else if (julLevelValue <= INFO_LEVEL_THRESHOLD) {
-            slf4jLevel = 20;
-        } else if (julLevelValue <= WARN_LEVEL_THRESHOLD) {
-            slf4jLevel = 30;
-        } else {
-            slf4jLevel = 40;
-        }
-
-        String i18nMessage = this.getMessageI18N(record);
-        lal.log((Marker)null, FQCN, slf4jLevel, i18nMessage, redefineParameters(record), record.getThrown());
-    }
-
-    /**
-     * Output j.u.l logger by SLF4J
-     *
-     * @param clientLogger The passed {@link ClientLogger}
-     * @param record The passed {@link LogRecord}
-     */
-    protected void callPlainSLF4JLogger(ClientLogger clientLogger, LogRecord record) {
+    protected void callPlainSLF4JLogger(com.azure.core.util.logging.ClientLogger logger, java.util.logging.LogRecord record) {
         String i18nMessage = this.getMessageI18N(record);
         Object[] redefineParameters = redefineParameters(record);
         int julLevelValue = record.getLevel().intValue();
         if (julLevelValue <= TRACE_LEVEL_THRESHOLD) {
             if (redefineParameters != null && redefineParameters.length > 0) {
-                clientLogger.verbose(i18nMessage, redefineParameters);
+                logger.verbose(i18nMessage, redefineParameters);
             } else {
-                clientLogger.verbose(i18nMessage);
+                logger.verbose(i18nMessage);
             }
         } else if (julLevelValue <= DEBUG_LEVEL_THRESHOLD) {
             if (redefineParameters != null && redefineParameters.length > 0) {
-                clientLogger.verbose(i18nMessage, redefineParameters);
+                logger.verbose(i18nMessage, redefineParameters);
             } else {
-                clientLogger.verbose(i18nMessage);
+                logger.verbose(i18nMessage);
             }
         } else if (julLevelValue <= INFO_LEVEL_THRESHOLD) {
             if (redefineParameters != null && redefineParameters.length > 0) {
-                clientLogger.info(i18nMessage, redefineParameters);
+                logger.info(i18nMessage, redefineParameters);
             } else {
-                clientLogger.info(i18nMessage);
+                logger.info(i18nMessage);
             }
         } else if (julLevelValue <= WARN_LEVEL_THRESHOLD) {
             if (redefineParameters != null && redefineParameters.length > 0) {
-                clientLogger.warning(i18nMessage, redefineParameters);
+                logger.warning(i18nMessage, redefineParameters);
             } else {
-                clientLogger.warning(i18nMessage);
+                logger.warning(i18nMessage);
             }
         } else {
             if (redefineParameters != null && redefineParameters.length > 0) {
-                clientLogger.error(i18nMessage, redefineParameters);
+                logger.error(i18nMessage, redefineParameters);
             } else {
-                clientLogger.error(i18nMessage);
+                logger.error(i18nMessage);
             }
         }
 
@@ -224,10 +201,10 @@ public class JUL2SLF4JHandler extends Handler {
     /**
      * Redefine message parameters for SLF4J
      *
-     * @param record The passed {@link LogRecord}
+     * @param record The passed {@link java.util.logging.LogRecord}
      * @return Object array of message parameters
      */
-    private Object[] redefineParameters(LogRecord record) {
+    private Object[] redefineParameters(java.util.logging.LogRecord record) {
         Object[] originalParameters = record.getParameters();
         Throwable throwable = record.getThrown();
         if (throwable != null && throwable.getMessage() != null && !throwable.getMessage().isEmpty()) {
@@ -250,10 +227,10 @@ public class JUL2SLF4JHandler extends Handler {
     /**
      * Multi-language support
      *
-     * @param record The passed {@link LogRecord}
+     * @param record The passed {@link java.util.logging.LogRecord}
      * @return Multi-language support processing and formatted messages
      */
-    private String getMessageI18N(LogRecord record) {
+    private String getMessageI18N(java.util.logging.LogRecord record) {
         String message = record.getMessage();
         if (message == null) {
             return null;
@@ -282,29 +259,25 @@ public class JUL2SLF4JHandler extends Handler {
     /**
      * Publish log message
      *
-     * @param record The passed {@link LogRecord}
+     * @param record The passed {@link java.util.logging.LogRecord}
      */
-    public void publish(LogRecord record) {
+    @Override
+    public void publish(java.util.logging.LogRecord record) {
         if (record != null) {
-            ClientLogger clientLogger = this.getClientLogger(record);
+            com.azure.core.util.logging.ClientLogger logger = this.getClientLogger(record.getLoggerName());
             String message = record.getMessage();
             if (message == null) {
                 message = "";
             }
-
-            if (clientLogger.getLogger() instanceof LocationAwareLogger) {
-                this.callLocationAwareLogger((LocationAwareLogger)clientLogger.getLogger(), record);
-            } else {
-                this.callPlainSLF4JLogger(clientLogger, record);
-            }
+            this.callPlainSLF4JLogger(logger, record);
         }
     }
 
     static {
-        TRACE_LEVEL_THRESHOLD = Level.FINEST.intValue();
-        DEBUG_LEVEL_THRESHOLD = Level.FINE.intValue();
-        INFO_LEVEL_THRESHOLD = Level.INFO.intValue();
-        WARN_LEVEL_THRESHOLD = Level.WARNING.intValue();
+        TRACE_LEVEL_THRESHOLD = java.util.logging.Level.FINEST.intValue();
+        DEBUG_LEVEL_THRESHOLD = java.util.logging.Level.FINE.intValue();
+        INFO_LEVEL_THRESHOLD = java.util.logging.Level.INFO.intValue();
+        WARN_LEVEL_THRESHOLD = java.util.logging.Level.WARNING.intValue();
     }
 
 }

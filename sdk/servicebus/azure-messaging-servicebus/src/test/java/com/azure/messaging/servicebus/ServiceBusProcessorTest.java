@@ -194,7 +194,6 @@ public class ServiceBusProcessorTest {
      */
     @Test
     public void testErrorRecovery() throws InterruptedException {
-
         List<ServiceBusMessageContext> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -204,6 +203,7 @@ public class ServiceBusProcessorTest {
                 new ServiceBusMessageContext(serviceBusReceivedMessage);
             messageList.add(serviceBusMessageContext);
         }
+
         final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
             (state, sink) -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -219,11 +219,9 @@ public class ServiceBusProcessorTest {
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
-
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(4));
-
         AtomicBoolean assertionFailed = new AtomicBoolean();
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
             messageContext -> {
@@ -416,15 +414,16 @@ public class ServiceBusProcessorTest {
     private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getBuilder(
         Flux<ServiceBusMessageContext> messageFlux) {
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
-            mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
+        AtomicReference<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> receiverBuilder = new AtomicReference<>();
+        receiverBuilder.set(mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class));
 
-        ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
-        when(asyncClient.isConnectionClosed()).thenReturn(false);
-        doNothing().when(asyncClient).close();
-        return receiverBuilder;
+        AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
+        asyncClient.set(mock(ServiceBusReceiverAsyncClient.class));
+        when(receiverBuilder.get().buildAsyncClient()).thenReturn(asyncClient.get());
+        when(asyncClient.get().receiveMessagesWithContext()).thenReturn(messageFlux);
+        when(asyncClient.get().isConnectionClosed()).thenReturn(false);
+        doNothing().when(asyncClient.get()).close();
+        return receiverBuilder.get();
     }
 
     private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder getSessionBuilder(

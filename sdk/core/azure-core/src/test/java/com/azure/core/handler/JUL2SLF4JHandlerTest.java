@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class JUL2SLF4JHandlerTest {
 
-    private static final Configuration configuration = Configuration.getGlobalConfiguration();
+    private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration();
     private static Boolean isRootLogger = true;
 
     @Test
@@ -40,21 +40,21 @@ public class JUL2SLF4JHandlerTest {
 
         Logger julLogger = Logger.getLogger(JUL2SLF4JHandlerTest.class.getName());
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.VERBOSE.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.VERBOSE.getLogLevel()));
         testDebugWithoutParameters(julLogger);
         testDebugWithParameters1(julLogger);
         testDebugWithParameters2(julLogger);
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
         testInfoWithoutParameters(julLogger);
         testInfoWithParameters(julLogger);
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.WARNING.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING.getLogLevel()));
         testWarningWithoutParameters(julLogger);
         testWarningWithParameters1(julLogger);
         testWarningWithParameters2(julLogger);
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.ERROR.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.ERROR.getLogLevel()));
         testErrorWithoutParameters(julLogger);
         testErrorWithParameters1(julLogger);
         testErrorWithParameters2(julLogger);
@@ -75,21 +75,21 @@ public class JUL2SLF4JHandlerTest {
 
         isRootLogger = false;
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.VERBOSE.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.VERBOSE.getLogLevel()));
         testDebugWithoutParameters(julLogger);
         testDebugWithParameters1(julLogger);
         testDebugWithParameters2(julLogger);
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
         testInfoWithoutParameters(julLogger);
         testInfoWithParameters(julLogger);
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.WARNING.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING.getLogLevel()));
         testWarningWithoutParameters(julLogger);
         testWarningWithParameters1(julLogger);
         testWarningWithParameters2(julLogger);
 
-        configuration.put(PROPERTY_AZURE_LOG_LEVEL,String.valueOf(LogLevel.ERROR.getLogLevel()));
+        CONFIGURATION.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.ERROR.getLogLevel()));
         testErrorWithoutParameters(julLogger);
         testErrorWithParameters1(julLogger);
         testErrorWithParameters2(julLogger);
@@ -103,7 +103,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -116,7 +116,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setParameters(new Object[]{"Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4"});
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -128,7 +128,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -141,7 +141,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -155,7 +155,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -167,7 +167,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -180,7 +180,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -194,7 +194,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -206,7 +206,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -219,7 +219,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
@@ -233,7 +233,7 @@ public class JUL2SLF4JHandlerTest {
         infoLogRecord.setLoggerName(julLogger.getName());
         julLogger.log(infoLogRecord);
         if (isRootLogger) {
-            assertEquals(JUL2SLF4JHandler.isInstalled(),true);
+            assertEquals(JUL2SLF4JHandler.isInstalled(), true);
         } else {
             Optional<Handler> optionalHandler = Arrays.stream(julLogger.getHandlers()).filter(handler -> handler instanceof JUL2SLF4JHandler).findFirst();
             assertEquals(optionalHandler.isPresent(), true);
