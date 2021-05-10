@@ -6,6 +6,7 @@ package com.azure.storage.file.share
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
+import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
@@ -15,6 +16,8 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
+import com.azure.storage.file.share.models.ShareFileUploadOptions
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
@@ -254,6 +257,98 @@ class FileAPITests extends APISpec {
         data == stream.toByteArray()
     }
 
+    def "Parallel upload and download data"() {
+        given:
+        primaryFileClient.create(dataLength)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(defaultData, dataLength),
+            null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200)
+        headers.getContentLength() == (long) dataLength
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
+
+        data == stream.toByteArray()
+    }
+
+    def "Parallel upload and download data with args"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadWithResponse(
+            new ShareFileUploadOptions(defaultData, dataLength).setOffset(1), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, dataLength), true, null, null)
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 206)
+        downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
+
+        data == stream.toByteArray()
+    }
+
+    def "Upload range and download data"() {
+        given:
+        primaryFileClient.create(dataLength)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(defaultData, dataLength), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200)
+        headers.getContentLength() == (long) dataLength
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
+
+        data == stream.toByteArray()
+    }
+
+    def "Upload range and download data with args"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        def uploadResponse = primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(defaultData, dataLength).setOffset(1), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, dataLength), true, null, null)
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 206)
+        downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
+
+        data == stream.toByteArray()
+    }
+
     def "Upload Range 4TB"() {
         given:
         def fileSize = 4 * Constants.TB
@@ -270,9 +365,88 @@ class FileAPITests extends APISpec {
         downloadResponse.getDeserializedHeaders().getContentLength() == (long) dataLength
     }
 
+    @Unroll
+    def "Upload buffered range greater than max put range"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length));
+
+        when:
+        primaryFileClient.upload(data, length, null)
+
+        then:
+        notThrown(Exception)
+
+        where:
+        _ || length
+        _ || 4 * Constants.MB // max put range
+        _ || 5 * Constants.MB
+
+    }
+
+    @Unroll
+    def "Buffered upload various partitions"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length))
+
+        when:
+        primaryFileClient.upload(data, length, new ParallelTransferOptions()
+            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength))
+
+        then:
+        notThrown(Exception)
+
+        where:
+        length            | uploadChunkLength
+        1024              | null
+        1024              | 1024
+        1024              | 256
+        4 * Constants.MB  | null
+        4 * Constants.MB  | 1024
+        20 * Constants.MB | null
+        20 * Constants.MB | 4 * Constants.MB
+    }
+
+    @Unroll
+    def "Buffered upload error partition too big"() {
+        given:
+        primaryFileClient.create(length)
+        def data = new ByteArrayInputStream(getRandomBuffer(length))
+
+        when:
+        primaryFileClient.upload(data, length, new ParallelTransferOptions()
+            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength))
+
+        then:
+        thrown(Exception)
+
+        where:
+        length            | uploadChunkLength
+        20 * Constants.MB | 20 * Constants.MB
+    }
+
     def "Upload data error"() {
         when:
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Parallel upload data error"() {
+        when:
+        primaryFileClient.upload(defaultData, dataLength, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Upload range data error"() {
+        when:
+        primaryFileClient.uploadRange(defaultData, dataLength)
 
         then:
         def e = thrown(ShareStorageException)
@@ -371,6 +545,42 @@ class FileAPITests extends APISpec {
 
         when:
         primaryFileClient.uploadWithResponse(defaultData, size, 0, null, Context.NONE)
+
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+
+        where:
+        size | errMsg
+        6    | "more than"
+        8    | "less than"
+    }
+
+    @Unroll
+    def "Parallel upload data length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        primaryFileClient.upload(defaultData, size, null)
+
+        then:
+        def e = thrown(UnexpectedLengthException)
+        e.getMessage().contains(errMsg)
+
+        where:
+        size | errMsg
+        6    | "more than"
+        8    | "less than"
+    }
+
+    @Unroll
+    def "Upload range length mismatch"() {
+        given:
+        primaryFileClient.create(1024)
+
+        when:
+        primaryFileClient.uploadRange(defaultData, size)
 
         then:
         def e = thrown(UnexpectedLengthException)
