@@ -10,36 +10,20 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import java.security.KeyStore;
 import java.security.Security;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * The JUnit tests for the KeyVaultProvider class.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultJcaProviderTest {
-
-    public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
-        key.forEach(
-            environmentPropertyKey -> {
-                String value = System.getenv(environmentPropertyKey);
-                if (value != null) {
-                    String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
-                        "azure.keyvault.").replaceAll("_", "-");
-                    System.getProperties().put(systemPropertyKey, value);
-                }
-            }
-        );
-    }
-
 
     @BeforeEach
     public void setEnvironmentProperty() {
-        putEnvironmentPropertyToSystemProperty(
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
-                "azure.keyvault.aad-authentication-url",
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );

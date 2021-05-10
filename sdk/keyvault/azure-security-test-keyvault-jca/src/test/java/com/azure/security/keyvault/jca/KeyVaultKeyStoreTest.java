@@ -14,7 +14,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultKeyStoreTest {
 
 
@@ -54,19 +53,6 @@ public class KeyVaultKeyStoreTest {
 
     private String certificateName;
 
-    public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
-        key.forEach(
-            environmentPropertyKey -> {
-                String value = System.getenv(environmentPropertyKey);
-                if (value != null) {
-                    String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
-                        "azure.keyvault.").replaceAll("_", "-");
-                    System.getProperties().put(systemPropertyKey, value);
-                }
-            }
-        );
-    }
-
     @BeforeEach
     public void setEnvironmentProperty() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
@@ -75,10 +61,9 @@ public class KeyVaultKeyStoreTest {
             System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
-        putEnvironmentPropertyToSystemProperty(
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
-                "azure.keyvault.aad-authentication-url",
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
@@ -119,8 +104,8 @@ public class KeyVaultKeyStoreTest {
 
         try {
             byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            certificate = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(certificateBytes));
         } catch (CertificateException e) {
             throw new ProviderException(e);
         }

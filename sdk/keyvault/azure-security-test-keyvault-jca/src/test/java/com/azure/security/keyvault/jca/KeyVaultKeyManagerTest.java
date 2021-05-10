@@ -14,38 +14,23 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultKeyManagerTest {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyManagerTest.class.getName());
 
     private KeyVaultKeyManager manager;
     private String certificateName;
 
-    public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
-        key.forEach(
-            environmentPropertyKey -> {
-                String value = System.getenv(environmentPropertyKey);
-                if (value != null) {
-                    String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
-                        "azure.keyvault.").replaceAll("_", "-");
-                    System.getProperties().put(systemPropertyKey, value);
-                }
-            }
-        );
-    }
-
     @BeforeEach
     public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
-        putEnvironmentPropertyToSystemProperty(
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
-                "azure.keyvault.aad-authentication-url",
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );

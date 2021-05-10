@@ -28,28 +28,15 @@ import java.security.KeyStore;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The unit test validating the ServerSocket is created using a certificate from Azure Key Vault.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = ".*")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class ServerSocketTest {
 
-    public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
-        key.forEach(
-            environmentPropertyKey -> {
-                String value = System.getenv(environmentPropertyKey);
-                if (value != null) {
-                    String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
-                        "azure.keyvault.").replaceAll("_", "-");
-                    System.getProperties().put(systemPropertyKey, value);
-                }
-            }
-        );
-    }
 
     /**
      * Test SSLServerSocket without client trust.
@@ -73,10 +60,9 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        putEnvironmentPropertyToSystemProperty(
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
-                "azure.keyvault.aad-authentication-url",
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
@@ -182,10 +168,9 @@ public class ServerSocketTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        putEnvironmentPropertyToSystemProperty(
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
-                "azure.keyvault.aad-authentication-url",
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
