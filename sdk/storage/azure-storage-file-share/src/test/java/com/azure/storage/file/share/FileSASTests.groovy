@@ -454,11 +454,9 @@ class FileSASTests extends APISpec {
         primaryShareClient.createDirectory(pathName)
 
         when:
-        new ShareClientBuilder()
+        instrument new ShareClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .sasToken(sas)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -466,11 +464,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareClientBuilder()
+        instrument new ShareClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .credential(new AzureSasCredential(sas))
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -478,10 +474,8 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareClientBuilder()
+        instrument new ShareClientBuilder()
             .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -489,12 +483,10 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareFileClientBuilder()
+        instrument new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .resourcePath(pathName)
             .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
             .buildDirectoryClient()
             .getProperties()
 
@@ -502,12 +494,10 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareFileClientBuilder()
+        instrument new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .resourcePath(pathName)
             .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
             .buildDirectoryClient()
             .getProperties()
 
@@ -515,11 +505,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareFileClientBuilder()
+        instrument new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
             .resourcePath(pathName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
             .buildDirectoryClient()
             .getProperties()
 
@@ -527,11 +515,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareServiceClientBuilder()
+        instrument new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -539,11 +525,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareServiceClientBuilder()
+        instrument new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -551,10 +535,8 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareServiceClientBuilder()
+        instrument new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 

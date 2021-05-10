@@ -74,14 +74,14 @@ class APISpec extends StorageSpec {
      */
     def cleanup() {
         def cleanupFileServiceClient = instrument new ShareServiceClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
-            .buildClient()
-        for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
-            def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
+                .connectionString(env.primaryAccount.connectionString)
+                .buildClient()
+            for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
+                def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
 
-            if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
-            }
+                if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                }
 
             shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
         }
@@ -143,13 +143,12 @@ class APISpec extends StorageSpec {
                                                      HttpPipelinePolicy... policies) {
         ShareServiceClientBuilder builder = new ShareServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         if (credential != null) {
             builder.credential(credential)
@@ -172,33 +171,28 @@ class APISpec extends StorageSpec {
     }
 
     def shareBuilderHelper(final String shareName, final String snapshot) {
-        ShareClientBuilder builder = new ShareClientBuilder()
-        builder.addPolicy(getRecordPolicy())
+        ShareClientBuilder builder = instrument new ShareClientBuilder()
         return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .snapshot(snapshot)
-            .httpClient(getHttpClient())
     }
 
     def directoryBuilderHelper(final String shareName, final String directoryPath) {
-        ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        builder.addPolicy(getRecordPolicy())
+        ShareFileClientBuilder builder = instrument new ShareFileClientBuilder()
         return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(directoryPath)
-            .httpClient(getHttpClient())
     }
 
     ShareDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         if (credential != null) {
             builder.credential(credential)
@@ -208,25 +202,22 @@ class APISpec extends StorageSpec {
     }
 
     def fileBuilderHelper(final String shareName, final String filePath) {
-        ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        builder.addPolicy(getRecordPolicy())
+        ShareFileClientBuilder builder = instrument new ShareFileClientBuilder()
         return builder
             .connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(filePath)
-            .httpClient(getHttpClient())
     }
 
     ShareFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         if (credential != null) {
             builder.credential(credential)

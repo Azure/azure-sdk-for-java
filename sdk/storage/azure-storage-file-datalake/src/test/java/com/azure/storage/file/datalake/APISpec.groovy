@@ -139,10 +139,8 @@ class APISpec extends StorageSpec {
     def getOAuthServiceClient() {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(env.dataLakeAccount.dataLakeEndpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         if (env.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -333,14 +331,12 @@ class APISpec extends StorageSpec {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         return builder.credential(credential).buildDirectoryClient()
     }
@@ -349,10 +345,8 @@ class APISpec extends StorageSpec {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         return builder.sasToken(sasToken).buildDirectoryClient()
     }
@@ -364,10 +358,8 @@ class APISpec extends StorageSpec {
     DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         return builder
     }
