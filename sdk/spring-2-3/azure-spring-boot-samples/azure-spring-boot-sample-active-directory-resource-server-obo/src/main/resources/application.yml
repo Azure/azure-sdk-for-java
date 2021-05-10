@@ -1,0 +1,21 @@
+server:
+  port: 8081
+
+azure:
+  activedirectory:
+    client-id: 1f976c7e-3c69-4675-bf3f-5662ac499f0f
+    client-secret: ~4~_7Di_P7Cu4NXuo_i8rKggsQ65gyg31p
+    tenant-id: 1d1a06a9-b20a-4513-8a64-dab08d32c8b6
+    app-id-uri: api://web-api-a-2-3
+    authorization-clients:
+      graph:
+        scopes:
+          - https://graph.microsoft.com/User.Read
+      custom:
+        scopes:
+          - api://web-api-b-2-3/File.Read
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.azure: DEBUG
