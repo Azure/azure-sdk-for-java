@@ -130,13 +130,13 @@ class APISpec extends StorageSpec {
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
 
-        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        alternateBlobServiceClient = setClient(env.secondaryAccount)
-        premiumBlobServiceClient = setClient(env.premiumAccount)
-        managedDiskServiceClient = setClient(env.managedDiskAccount)
-        versionedBlobServiceClient = setClient(env.versionedAccount)
-        softDeleteServiceClient = setClient(env.softDeleteAccount)
+        alternateBlobServiceClient = getServiceClient(env.secondaryAccount)
+        premiumBlobServiceClient = getServiceClient(env.premiumAccount)
+        managedDiskServiceClient = getServiceClient(env.managedDiskAccount)
+        versionedBlobServiceClient = getServiceClient(env.versionedAccount)
+        softDeleteServiceClient = getServiceClient(env.softDeleteAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -174,14 +174,6 @@ class APISpec extends StorageSpec {
         return env.testMode == TestMode.PLAYBACK
     }
 
-    BlobServiceClient setClient(TestAccount account) {
-        try {
-            return getServiceClient(account.credential, account.blobEndpoint)
-        } catch (Exception ignore) {
-            return null
-        }
-    }
-
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(env.primaryAccount.blobEndpoint)
@@ -203,6 +195,10 @@ class APISpec extends StorageSpec {
 
     BlobServiceClient getServiceClient(String endpoint) {
         return getServiceClient(null, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(TestAccount account) {
+        return getServiceClient(account.credential, account.blobEndpoint)
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
