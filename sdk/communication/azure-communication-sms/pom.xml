@@ -64,6 +64,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>8.20.2</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
