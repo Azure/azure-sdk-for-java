@@ -2,6 +2,7 @@
 
 ## 12.12.0-beta.1 (Unreleased)
 - Added support for specifying an encryption scope.
+- Added support to get a blob client that uses an encryption scope and customer provided key. 
 
 ## 12.11.0 (2021-04-29)
 - GA release

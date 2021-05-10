@@ -269,4 +269,45 @@ class CPKTest extends APISpec {
     }
 
     //TODO add tests for copy blob CPK tests once generated code supports it
+
+    def "getCustomerProvidedKeyClient"() {
+        setup:
+        def newCpk = new CustomerProvidedKey(getRandomKey())
+
+        when: "AppendBlob"
+        def newCpkAppendBlob = cpkAppendBlob.getCustomerProvidedKeyClient(newCpk)
+
+        then:
+        newCpkAppendBlob instanceof AppendBlobClient
+        newCpkAppendBlob.getCustomerProvidedKey() != cpkAppendBlob.getCustomerProvidedKey()
+
+        when: "BlockBlob"
+        def newCpkBlockBlob = cpkBlockBlob.getCustomerProvidedKeyClient(newCpk)
+
+        then:
+        newCpkBlockBlob instanceof BlockBlobClient
+        newCpkBlockBlob.getCustomerProvidedKey() != cpkBlockBlob.getCustomerProvidedKey()
+
+        when: "PageBlob"
+        def newCpkPageBlob = cpkPageBlob.getCustomerProvidedKeyClient(newCpk)
+
+        then:
+        newCpkPageBlob instanceof PageBlobClient
+        newCpkPageBlob.getCustomerProvidedKey() != cpkPageBlob.getCustomerProvidedKey()
+
+        when: "BlobClientBase"
+        def newCpkBlobClientBase = cpkExistingBlob.getCustomerProvidedKeyClient(newCpk)
+
+        then:
+        newCpkBlobClientBase instanceof BlobClientBase
+        newCpkBlobClientBase.getCustomerProvidedKey() != cpkExistingBlob.getCustomerProvidedKey()
+
+        when: "BlobClient"
+        def cpkBlobClient = cpkContainer.getBlobClient(generateBlobName()) // Inherits container's CPK
+        def newCpkBlobClient = cpkBlobClient.getCustomerProvidedKeyClient(newCpk)
+
+        then:
+        newCpkBlobClient instanceof BlobClient
+        newCpkBlobClient.getCustomerProvidedKey() != cpkBlobClient.getCustomerProvidedKey()
+    }
 }
