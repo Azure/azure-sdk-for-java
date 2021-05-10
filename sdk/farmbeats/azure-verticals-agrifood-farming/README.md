@@ -1,6 +1,6 @@
 # Azure FarmBeats client library for Java
 
-# TODO: Add stuff
+Azure FarmBeats is a business-to-business offering available in Azure Marketplace. It enables aggregation of agriculture data sets across providers. Azure FarmBeats enables you to build artificial intelligence (AI) or machine learning (ML) models based on fused data sets. By using Azure FarmBeats, agriculture businesses can focus on core value-adds instead of the undifferentiated heavy lifting of data engineering.
 
 **Please rely heavily on the javadocs and our [Low-Level client docs][low_level_client] to use this library**
 
