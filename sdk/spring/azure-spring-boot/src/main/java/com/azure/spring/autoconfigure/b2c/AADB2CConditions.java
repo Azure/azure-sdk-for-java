@@ -127,7 +127,7 @@ public final class AADB2CConditions {
      * @param map Map to concatenate
      * @return the concatenated string.
      */
-    public static String getConditionResult(String name, Map<String, ?> map) {
+    private static String getConditionResult(String name, Map<String, ?> map) {
         return name + ": " + String.join(", ", map.keySet()) + " ";
     }
 }
