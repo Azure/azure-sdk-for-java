@@ -170,7 +170,7 @@ public class SmsClientTests extends SmsTestBase {
     public void repeatability(HttpClient httpClient) {
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        client = setupSyncClient(builder, "sendTwoMessagesSync");
+        client = setupSyncClient(builder, "repeatability");
         // Action & Assert
         Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
         String bodyRequest = new String(response.getRequest().getBody().blockLast().array());

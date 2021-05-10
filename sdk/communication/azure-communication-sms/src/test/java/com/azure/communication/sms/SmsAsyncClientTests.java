@@ -200,7 +200,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
     public void repeatability(HttpClient httpClient) {
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        asyncClient = setupAsyncClient(builder, "sendTwoMessagesSync");
+        asyncClient = setupAsyncClient(builder, "repeatability");
 
         StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE))
             .assertNext(requestResponse -> {
