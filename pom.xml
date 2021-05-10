@@ -81,6 +81,10 @@
         <!-- Models Repository -->
         <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
 
+        <!-- Purview -->
+        <module>sdk/purview/azure-analytics-purview-catalog</module>
+        <module>sdk/purview/azure-analytics-purview-scanning</module>
+
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
 
@@ -127,10 +131,6 @@
 
         <!-- Web Pub Sub -->
         <module>sdk/webpubsub/azure-messaging-webpubsub</module>
-
-        <!-- Purview -->
-        <module>sdk/purview/azure-analytics-purview-catalog</module>
-        <module>sdk/purview/azure-analytics-purview-scanning</module>
       </modules>
 
       <distributionManagement>
@@ -594,6 +594,8 @@
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                     -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
@@ -606,8 +608,6 @@
                     -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
                     -snippetpath ${project.basedir}/sdk/translation/azure-ai-documenttranslator/src/samples/java
                     -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                   </additionalOptions>
                   <aggregate>true</aggregate>
                   <doclint>all</doclint>
