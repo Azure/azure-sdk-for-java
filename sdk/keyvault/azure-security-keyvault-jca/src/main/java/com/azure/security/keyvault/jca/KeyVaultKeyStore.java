@@ -379,6 +379,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         private static final String keyStorePassword = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
         private static final String keyPassword = keyStorePassword;
 
+        private static KeyStore getDefault(){
+            KeyStore defaultKeyStore = null;
+            try{
+                defaultKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                loadKeyStore(defaultKeyStore);
+            } catch (KeyStoreException e) {
+                LOGGER.log(WARNING, "Unable to get the jre key store.", e);
+            }
+            return defaultKeyStore;
+        }
+
         private static void loadKeyStore(KeyStore ks){
             if (null != ks){
                 try (final InputStream inStream = Files.newInputStream(getKeyStoreFile())) {
@@ -387,17 +398,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     LOGGER.log(WARNING, "unable to load the jre key store", e);
                 }
             }
-        }
-
-        private static KeyStore getDefault(){
-            KeyStore defaultKeyStore = null;
-            try{
-                defaultKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                JREKeyStore.loadKeyStore(defaultKeyStore);
-            } catch (KeyStoreException e) {
-                LOGGER.log(WARNING, "Unable to get the jre key store.", e);
-            }
-            return defaultKeyStore;
         }
 
         private static Path getKeyStoreFile() {
@@ -437,7 +437,5 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             }
         }
     }
-
-
 
 }
