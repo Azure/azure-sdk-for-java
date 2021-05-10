@@ -80,8 +80,6 @@ class AnalyzeHealthcareEntityAsyncClient {
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: after poller has the poll interval, use it.
-                // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.healthWithResponseAsync(
@@ -116,8 +114,6 @@ class AnalyzeHealthcareEntityAsyncClient {
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: after poller has the poll interval, use it.
-                // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.healthWithResponseAsync(

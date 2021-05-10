@@ -36,7 +36,7 @@ class SparkE2EWriteITest extends IntegrationSpec with Spark with CosmosClient wi
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
         "spark.cosmos.write.strategy" -> itemWriteStrategy.toString,
-        "spark.cosmos.write.bulkEnabled" -> bulkEnabled.toString
+        "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString
       )
 
       val newSpark = getSpark()
@@ -52,7 +52,7 @@ class SparkE2EWriteITest extends IntegrationSpec with Spark with CosmosClient wi
         ("Quark", "Quark", "Red", 1.0 / 2)
       ).toDF("particle name", "id", "color", "spin")
 
-      df.write.format("cosmos.items").mode("Append").options(cfg).save()
+      df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
 
       val overwriteDf = Seq(
         ("Quark", "Quark", "green", "Yes"),
@@ -62,7 +62,7 @@ class SparkE2EWriteITest extends IntegrationSpec with Spark with CosmosClient wi
 
 
       try {
-        overwriteDf.write.format("cosmos.items").mode("Append").options(cfgOverwrite).save()
+        overwriteDf.write.format("cosmos.oltp").mode("Append").options(cfgOverwrite).save()
         hasId shouldBe true
       } catch {
         case e: Exception => {
@@ -151,7 +151,7 @@ class SparkE2EWriteITest extends IntegrationSpec with Spark with CosmosClient wi
       df.printSchema()
 
       try {
-        df.write.format("cosmos.items").mode(saveMode).options(cfg).save()
+        df.write.format("cosmos.oltp").mode(saveMode).options(cfg).save()
         if (!success) {
           fail("expected failure")
         }

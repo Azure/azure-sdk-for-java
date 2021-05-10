@@ -13,13 +13,25 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * The RestClient that uses the Apache HttpClient class.
  */
 class LegacyRestClient implements RestClient {
+    static final String USER_AGENT_KEY = "User-Agent";
+    static final String DEFAULT_USER_AGENT_VALUE_PREFIX = "az-se-kv-jca/";
+    static final String DEFAULT_VERSION = "unknown";
+    static final String VERSION = Optional.of(LegacyRestClient.class)
+                                          .map(Class::getPackage)
+                                          .map(Package::getImplementationVersion)
+                                          .orElse(DEFAULT_VERSION);
+    static final String USER_AGENT_VALUE = getUserAgentPrefix() + VERSION;
 
     /**
      * Constructor.
@@ -33,12 +45,9 @@ class LegacyRestClient implements RestClient {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(url);
             if (headers != null) {
-                headers.entrySet().forEach(entry -> {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    httpGet.addHeader(key, value);
-                });
+                headers.forEach(httpGet::addHeader);
             }
+            httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
             result = client.execute(httpGet, createResponseHandler());
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -51,6 +60,7 @@ class LegacyRestClient implements RestClient {
         String result = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
             httpPost.setEntity(
                 new StringEntity(body, ContentType.create(contentType)));
             result = client.execute(httpPost, createResponseHandler());
@@ -58,6 +68,18 @@ class LegacyRestClient implements RestClient {
             ioe.printStackTrace();
         }
         return result;
+    }
+
+    static String getUserAgentPrefix() {
+        return Optional.of(LegacyRestClient.class)
+                       .map(Class::getClassLoader)
+                       .map(c -> c.getResourceAsStream("azure-security-keyvault-jca-user-agent-value-prefix.txt"))
+                       .map(InputStreamReader::new)
+                       .map(BufferedReader::new)
+                       .map(BufferedReader::lines)
+                       .orElseGet(Stream::empty)
+                       .findFirst()
+                       .orElse(DEFAULT_USER_AGENT_VALUE_PREFIX);
     }
 
     private ResponseHandler<String> createResponseHandler() {

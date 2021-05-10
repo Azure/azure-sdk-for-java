@@ -38,8 +38,8 @@ class FileServiceAPITests extends APISpec {
     static def INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
+        shareName = namer.getRandomName(60)
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new ShareCorsRule())
         }
@@ -47,7 +47,7 @@ class FileServiceAPITests extends APISpec {
 
     def "Get file service URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl()
@@ -109,7 +109,7 @@ class FileServiceAPITests extends APISpec {
 
     def "Delete share does not exist"() {
         when:
-        primaryFileServiceClient.deleteShare(testResourceName.randomName(methodName, 60))
+        primaryFileServiceClient.deleteShare(namer.getRandomName(60))
 
         then:
         def e = thrown(ShareStorageException)
@@ -217,11 +217,11 @@ class FileServiceAPITests extends APISpec {
         def shareName = generateShareName()
         def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
 
-        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
+        def time = namer.getUtcNow().truncatedTo(ChronoUnit.SECONDS)
         share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED))
 
         when:
-        def shares = primaryFileServiceClient.listShares(null, null, null).iterator()
+        def shares = primaryFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, null).iterator()
 
         then:
         def item = shares.next()
@@ -380,7 +380,7 @@ class FileServiceAPITests extends APISpec {
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def serviceClient = getServiceClient(primaryCredential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
+        def serviceClient = getServiceClient(env.primaryAccount.credential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
 
         when:
         def response = serviceClient.getPropertiesWithResponse(null, null)

@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for an CertificateExpired event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateExpired event. */
 @Fluent
 public final class KeyVaultCertificateExpiredEventData {
     /*

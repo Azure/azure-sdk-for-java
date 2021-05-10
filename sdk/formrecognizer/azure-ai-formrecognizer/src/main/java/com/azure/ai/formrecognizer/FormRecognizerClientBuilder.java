@@ -3,39 +3,30 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.buildHttpPipeline;
 
 /**
  * This class provides a fluent builder API to help instantiation of {@link FormRecognizerClient FormRecognizerClients}
@@ -71,22 +62,12 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
-
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-    private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
-    private static final String ACCEPT_HEADER = "Accept";
-    private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-
     private final ClientLogger logger = new ClientLogger(FormRecognizerClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies;
-    private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
 
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
+
+    private ClientOptions clientOptions;
     private String endpoint;
     private AzureKeyCredential credential;
     private HttpClient httpClient;
@@ -96,23 +77,6 @@ public final class FormRecognizerClientBuilder {
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
-
-    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-    /**
-     * The constructor with defaults.
-     */
-    public FormRecognizerClientBuilder() {
-        policies = new ArrayList<>();
-        httpLogOptions = new HttpLogOptions();
-
-        Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-
-        headers = new HttpHeaders()
-            .set(ECHO_REQUEST_ID_HEADER, "true")
-            .set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
-    }
 
     /**
      * Creates a {@link FormRecognizerClient} based on options set in the builder. Every time
@@ -155,6 +119,7 @@ public final class FormRecognizerClientBuilder {
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
+
         // Service Version
         final FormRecognizerServiceVersion serviceVersion =
             version != null ? version : FormRecognizerServiceVersion.getLatest();
@@ -162,47 +127,16 @@ public final class FormRecognizerClientBuilder {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = getDefaultHttpPipeline(buildConfiguration);
+            pipeline = buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration,
+                retryPolicy, credential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient);
         }
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .pipeline(pipeline)
-            .buildClient();
+                                                               .endpoint(endpoint)
+                                                               .apiVersion(serviceVersion.getVersion())
+                                                               .pipeline(pipeline)
+                                                               .buildClient();
 
         return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
-    }
-
-    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersPolicy(headers));
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
-        policies.add(new AddDatePolicy());
-        // Authentications
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-        } else if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
-        }
-        policies.addAll(this.policies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
     }
 
     /**
@@ -274,6 +208,27 @@ public final class FormRecognizerClientBuilder {
     }
 
     /**
+     * Gets the default Azure Form Recognizer client headers and query parameters that are logged by default if
+     * HTTP logging is enabled.
+     *
+     * @return The default {@link HttpLogOptions} allow list.
+     */
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
+    }
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated FormRecognizerClientBuilder object.
+     */
+    public FormRecognizerClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
@@ -282,7 +237,13 @@ public final class FormRecognizerClientBuilder {
      * @throws NullPointerException If {@code policy} is null.
      */
     public FormRecognizerClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
         return this;
     }
 

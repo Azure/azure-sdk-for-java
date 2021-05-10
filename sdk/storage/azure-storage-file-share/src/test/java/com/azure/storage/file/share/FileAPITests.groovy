@@ -37,7 +37,7 @@ import static com.azure.storage.file.share.FileTestHelper.compareFiles
 import static com.azure.storage.file.share.FileTestHelper.createClearRanges
 import static com.azure.storage.file.share.FileTestHelper.createFileRanges
 import static com.azure.storage.file.share.FileTestHelper.createRandomFileWithLength
-import static com.azure.storage.file.share.FileTestHelper.deleteFilesIfExists
+import static com.azure.storage.file.share.FileTestHelper.deleteFileIfExists
 import static com.azure.storage.file.share.FileTestHelper.getRandomBuffer
 import static com.azure.storage.file.share.FileTestHelper.getRandomFile
 
@@ -51,15 +51,15 @@ class FileAPITests extends APISpec {
     def dataLength = defaultData.available()
     static Map<String, String> testMetadata
     static ShareFileHttpHeaders httpHeaders
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        filePath = testResourceName.randomName(methodName, 60)
-        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareName = namer.getRandomName(60)
+        filePath = namer.getRandomName(60)
+        shareClient = shareBuilderHelper(shareName).buildClient()
         shareClient.create()
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
+        primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en")
             .setContentType("application/octet-stream")
@@ -68,7 +68,7 @@ class FileAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -80,13 +80,13 @@ class FileAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
         expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot()
-        ShareFileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+        ShareFileClient newFileClient = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getFileClient(filePath)
         def fileURL = newFileClient.getFileUrl()
 
@@ -95,7 +95,7 @@ class FileAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, filePath, shareSnapshotInfo.getSnapshot())
-        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getFileUrl() == snapshotEndpoint
@@ -116,7 +116,7 @@ class FileAPITests extends APISpec {
 
     def "Exists error"() {
         setup:
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath)
+        primaryFileClient = fileBuilderHelper(shareName, filePath)
             .sasToken("sig=dummyToken").buildFileClient()
 
         when:
@@ -149,9 +149,9 @@ class FileAPITests extends APISpec {
     def "Create file with args fpk"() {
         when:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata, null, null)
 
@@ -171,8 +171,8 @@ class FileAPITests extends APISpec {
 
     def "Create file with args fp"() {
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
         def resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission, testMetadata, null, null)
         then:
         assertResponseStatusCode(resp, 201)
@@ -281,7 +281,7 @@ class FileAPITests extends APISpec {
     def "Upload data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             primaryFileClient.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -406,7 +406,7 @@ class FileAPITests extends APISpec {
         ex.getCause() instanceof NoSuchFileException
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        uploadFile.delete()
     }
 
     /*
@@ -418,7 +418,7 @@ class FileAPITests extends APISpec {
     def "Download file buffer copy"() {
         setup:
         def shareServiceClient = new ShareServiceClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .buildClient()
 
         def fileClient = shareServiceClient.getShareClient(shareName)
@@ -426,7 +426,7 @@ class FileAPITests extends APISpec {
 
         def file = getRandomFile(fileSize)
         fileClient.uploadFromFile(file.toPath().toString())
-        def outFile = new File(testResourceName.randomName(methodName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -454,7 +454,7 @@ class FileAPITests extends APISpec {
     def "Upload and download file exists"() {
         given:
         def data = "Download file exists"
-        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), namer.getResourcePrefix()))
 
         if (!downloadFile.exists()) {
             assert downloadFile.createNewFile()
@@ -471,13 +471,13 @@ class FileAPITests extends APISpec {
         ex.getCause() instanceof FileAlreadyExistsException
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        downloadFile.delete()
     }
 
     def "Upload and download to file does not exist"() {
         given:
         def data = "Download file does not exist"
-        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), methodName))
+        def downloadFile = new File(String.format("%s/%s.txt", testFolder.getPath(), namer.getResourcePrefix()))
 
         if (downloadFile.exists()) {
             assert downloadFile.delete()
@@ -495,13 +495,13 @@ class FileAPITests extends APISpec {
         scanner.close()
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), downloadFile.getName())
     }
 
     @Unroll
     def "Upload range from URL"() {
         given:
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath + pathSuffix).buildFileClient()
+        primaryFileClient = fileBuilderHelper(shareName, filePath + pathSuffix).buildFileClient()
         primaryFileClient.create(1024)
         def data = "The quick brown fox jumps over the lazy dog"
         def sourceOffset = 5
@@ -509,9 +509,9 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
-            .setExpiryTime(getUTCNow().plusDays(1))
+            .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
@@ -519,7 +519,7 @@ class FileAPITests extends APISpec {
             .encode()
 
         when:
-        ShareFileClient client = fileBuilderHelper(interceptorManager, shareName, "destination" + pathSuffix)
+        ShareFileClient client = fileBuilderHelper(shareName, "destination" + pathSuffix)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .buildFileClient()
 
@@ -543,7 +543,7 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Start copy"() {
         given:
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath + pathSuffix).buildFileClient()
+        primaryFileClient = fileBuilderHelper(shareName, filePath + pathSuffix).buildFileClient()
         primaryFileClient.create(1024)
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
@@ -571,9 +571,9 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
         def sourceURL = primaryFileClient.getFileUrl()
         def filePermissionKey = shareClient.createPermission(filePermission)
-        // We recreate file properties for each test since we need to store the times for the test with getUTCNow()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
         if (setFilePermissionKey) {
             smbProperties.setFilePermissionKey(filePermissionKey)
         }
@@ -639,8 +639,8 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
         def resp = primaryFileClient.getPropertiesWithResponse(null, null)
 
         then:
@@ -671,8 +671,8 @@ class FileAPITests extends APISpec {
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
         def filePermissionKey = shareClient.createPermission(filePermission)
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
 
         def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null, null, null)
@@ -694,8 +694,8 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
         when:
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
 
         def resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, filePermission, null, null)
         then:
@@ -753,7 +753,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -765,12 +765,12 @@ class FileAPITests extends APISpec {
         }
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
     def "List ranges with range"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -782,19 +782,19 @@ class FileAPITests extends APISpec {
         }
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
     def "List ranges snapshot"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
         def snapInfo = shareClient.createSnapshot()
 
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath)
+        primaryFileClient = fileBuilderHelper(shareName, filePath)
             .snapshot(snapInfo.getSnapshot())
             .buildFileClient()
 
@@ -805,17 +805,17 @@ class FileAPITests extends APISpec {
         }
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
     def "List ranges snapshot fail"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
 
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath)
+        primaryFileClient = fileBuilderHelper(shareName, filePath)
             .snapshot("2020-08-07T16:58:02.0000000Z")
             .buildFileClient()
 
@@ -829,7 +829,7 @@ class FileAPITests extends APISpec {
         def e = thrown(ShareStorageException)
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
     @Unroll
@@ -884,7 +884,7 @@ class FileAPITests extends APISpec {
 
     def "List ranges diff with range"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024 + dataLength)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -901,13 +901,12 @@ class FileAPITests extends APISpec {
         range.getEnd() == 1026
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
-    @Requires({ playbackMode() })
     def "List ranges diff lease"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024 + dataLength)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -925,12 +924,12 @@ class FileAPITests extends APISpec {
         range.getEnd() == 1030
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
     def "List ranges diff lease fail"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024 + dataLength)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -940,19 +939,18 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
 
         when:
-        primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(getRandomUUID())), null, null).getValue().getRanges().get(0)
+        primaryFileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(new ShareRequestConditions().setLeaseId(namer.getRandomUuid())), null, null).getValue().getRanges().get(0)
 
         then:
         thrown(ShareStorageException)
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
-    @Requires({ playbackMode() })
     def "List ranges diff fail"() {
         given:
-        def fileName = testResourceName.randomName("file", 60)
+        def fileName = namer.getRandomName(60)
         primaryFileClient.create(1024)
         def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
         primaryFileClient.uploadFromFile(uploadFile)
@@ -964,7 +962,7 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
 
         cleanup:
-        deleteFilesIfExists(testFolder.getPath())
+        deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
     def "List handles"() {
@@ -1026,7 +1024,7 @@ class FileAPITests extends APISpec {
             1, 1), ZoneOffset.UTC).toString()
 
         when:
-        def shareSnapshotClient = fileBuilderHelper(interceptorManager, shareName, filePath).snapshot(snapshot).buildFileClient()
+        def shareSnapshotClient = fileBuilderHelper(shareName, filePath).snapshot(snapshot).buildFileClient()
 
         then:
         snapshot == shareSnapshotClient.getShareSnapshotId()
@@ -1047,7 +1045,7 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.create(512)
 
-        def fileClient = fileBuilderHelper(interceptorManager, primaryFileClient.getShareName(), primaryFileClient.getFilePath())
+        def fileClient = fileBuilderHelper(primaryFileClient.getShareName(), primaryFileClient.getFilePath())
             .addPolicy(getPerCallVersionPolicy()).buildFileClient()
 
         when:

@@ -22,6 +22,9 @@ public final class ProviderOsTypeSelected extends ExpandableStringEnum<ProviderO
     /** Static value LinuxFunctions for ProviderOsTypeSelected. */
     public static final ProviderOsTypeSelected LINUX_FUNCTIONS = fromString("LinuxFunctions");
 
+    /** Static value All for ProviderOsTypeSelected. */
+    public static final ProviderOsTypeSelected ALL = fromString("All");
+
     /**
      * Creates or finds a ProviderOsTypeSelected from its string representation.
      *

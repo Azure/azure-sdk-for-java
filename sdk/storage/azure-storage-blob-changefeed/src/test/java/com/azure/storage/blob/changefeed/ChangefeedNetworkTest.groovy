@@ -91,7 +91,7 @@ class ChangefeedNetworkTest extends APISpec {
         /* Update and uncomment after recording. */
         OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 11, 23, 3, 10, 987532200, ZoneOffset.UTC)
 
-        Long pollInterval = testMode == TestMode.PLAYBACK ? 0 : 1000 * 60 * 3
+        Long pollInterval = env.testMode == TestMode.PLAYBACK ? 0 : 1000 * 60 * 3
 
         Set<String> eventIds1 = new HashSet<>()
         Set<String> eventIds2 = new HashSet<>()

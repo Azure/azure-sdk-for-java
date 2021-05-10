@@ -9,7 +9,6 @@ import com.azure.storage.common.policy.RetryPolicyType
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
-import java.time.Duration
 // Tests for package-private functionality.
 class RetryTest extends APISpec {
     static URL retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
@@ -20,9 +19,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS, retryTestOptions)
 
-        expect:
-        StepVerifier.withVirtualTime({ retryTestFactory.send(retryTestURL) })
-            .thenAwait(Duration.ofSeconds(60))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 200
                 assert retryTestFactory.getTryNumber() == 6
@@ -33,9 +34,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES, retryTestOptions)
 
-        expect:
-        StepVerifier.withVirtualTime({ retryTestFactory.send(retryTestURL) })
-            .thenAwait(Duration.ofSeconds(60))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 503
                 assert retryTestFactory.getTryNumber() == retryTestOptions.getMaxTries()
@@ -46,9 +49,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE, retryTestOptions)
 
-        expect:
-        StepVerifier.withVirtualTime({ retryTestFactory.send(retryTestURL) })
-            .thenAwait(Duration.ofSeconds(60))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 400
                 assert retryTestFactory.getTryNumber() == 1
@@ -59,9 +64,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE_SECONDARY, retryTestOptions)
 
-        expect:
-        StepVerifier.withVirtualTime({ retryTestFactory.send(retryTestURL) })
-            .thenAwait(Duration.ofSeconds(60))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 400
                 assert retryTestFactory.getTryNumber() == 2
@@ -72,9 +79,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NETWORK_ERROR, retryTestOptions)
 
-        expect:
-        StepVerifier.withVirtualTime({ retryTestFactory.send(retryTestURL) })
-            .thenAwait(Duration.ofSeconds(60))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 200
                 assert retryTestFactory.getTryNumber() == 3
@@ -85,9 +94,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_TRY_TIMEOUT, retryTestOptions)
 
-        expect:
-        StepVerifier.withVirtualTime({ retryTestFactory.send(retryTestURL) })
-            .thenAwait(Duration.ofSeconds(60))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 200
                 assert retryTestFactory.getTryNumber() == 3
@@ -98,8 +109,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING, retryTestOptions)
 
-        expect:
-        StepVerifier.create(retryTestFactory.send(retryTestURL))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 200
                 assert retryTestFactory.getTryNumber() == 6
@@ -110,8 +124,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING, retryTestOptions)
 
-        expect:
-        StepVerifier.create(retryTestFactory.send(retryTestURL))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .assertNext({
                 assert it.getStatusCode() == 200
                 assert retryTestFactory.getTryNumber() == 4
@@ -122,9 +139,11 @@ class RetryTest extends APISpec {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE, retryTestOptions)
 
-        expect:
-        StepVerifier.withVirtualTime({ retryTestFactory.send(retryTestURL) })
-            .thenAwait(Duration.ofSeconds(60))
+        when:
+        def responseMono = retryTestFactory.send(retryTestURL)
+
+        then:
+        StepVerifier.create(responseMono)
             .verifyErrorMatches({
                 it instanceof IllegalStateException
                 it.getMessage().startsWith("The request failed because")

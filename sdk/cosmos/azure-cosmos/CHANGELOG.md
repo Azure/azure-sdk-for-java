@@ -1,10 +1,14 @@
 ## Release History
 
-### 4.15.0-beta.2 (Unreleased)
+### 4.15.0-beta.3 (Unreleased)
+
+### 4.15.0-beta.2 (2021-04-26)
+#### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
 
 ### 4.15.0-beta.1 (2021-04-07)
 #### Key Bug Fixes
-* No changes from previous version, releasing for compatibility issues with cosmos encrytion modules.
+* No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
 
 ### 4.14.0 (2021-04-06)
 #### New Features
@@ -26,7 +30,8 @@
 * Query performance improvements.
 
 ### 4.13.0 (2021-03-11) 
-#### NOTE: THIS RELEASE UPDATES `reactor-core` and `reactor-netty` MAJOR VERSIONS TO `2020.0.4 (Europium)` RELEASE TRAIN
+> [!IMPORTANT] 
+> This release updates `reactor-core` and `reactor-netty` major versions to `2020.0.4 (Europium)` release train.
 #### New Features
 * Updated `reactor-core` version to 3.4.3.
 * Updated `reactor-netty` version to 1.0.4.
@@ -88,7 +93,9 @@
 #### Key Bug Fixes
 * Improved the 449 retry policy to force back-off on initial retry and start with shorter back-offs.
 
-### 4.7.0 (2020-10-17) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
+### 4.7.0 (2020-10-17) 
+> [!IMPORTANT] 
+> We strongly recommend our customers to use version 4.7.0 and above.
 #### New Features
 * Added Beta API for transactional batches.
 

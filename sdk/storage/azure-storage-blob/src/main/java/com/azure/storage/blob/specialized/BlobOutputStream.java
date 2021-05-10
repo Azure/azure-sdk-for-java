@@ -6,20 +6,20 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.implementation.util.StorageBlockingSink;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -197,10 +197,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
 
-        private FluxSink<ByteBuffer> sink;
-
         private final Lock lock;
         private final Condition transferComplete;
+        private final StorageBlockingSink sink;
 
         boolean complete;
 
@@ -214,16 +213,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             this.lock = new ReentrantLock();
             this.transferComplete = lock.newCondition();
+            this.sink = new StorageBlockingSink();
 
-            Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
+            Flux<ByteBuffer> body = this.sink.asFlux();
 
-            /* Subscribe by upload takes too long. We need to subscribe so that the sink is actually created. Since
-             this subscriber doesn't do anything and no data has started flowing, there are no drawbacks to this extra
-             subscribe. */
-            fbb.subscribe();
-
-            client.uploadWithResponse(new BlobParallelUploadOptions(fbb).
-                setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            client.uploadWithResponse(new BlobParallelUploadOptions(body)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
                 .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(e -> {
@@ -244,7 +239,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                         lock.unlock();
                     }
                 })
-                .subscriberContext(FluxUtil.toReactorContext(context))
+                .contextWrite(FluxUtil.toReactorContext(context))
                 .subscribe();
         }
 
@@ -254,13 +249,15 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             // Need to wait until the uploadTask completes
             lock.lock();
             try {
-                sink.complete(); /* Allow upload task to try to complete. */
+                sink.emitCompleteOrThrow(); /* Allow upload task to try to complete. */
 
                 while (!complete) {
                     transferComplete.await();
                 }
             } catch (InterruptedException e) {
-                this.lastError = new IOException(e.getMessage());
+                this.lastError = new IOException(e.getMessage()); // Should we just throw and not populate this since its recoverable?
+            } catch (Exception e) { // Catch any exceptions by the sink.
+                this.lastError = new IOException(e);
             } finally {
                 lock.unlock();
             }
@@ -277,7 +274,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
              */
             byte[] buffer = new byte[length];
             System.arraycopy(data, offset, buffer, 0, length);
-            sink.next(ByteBuffer.wrap(buffer));
+
+            try {
+                this.sink.emitNext(ByteBuffer.wrap(buffer));
+            } catch (Exception e) {
+                this.lastError = new IOException(e);
+            }
         }
 
         // Never called

@@ -46,6 +46,7 @@ import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 import spock.lang.Ignore
 
@@ -364,7 +365,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(primaryCredential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
 
         when:
         def range = new BlobRange(2, 5L)
@@ -691,7 +692,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file exists"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -710,7 +711,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file exists succeeds"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -727,7 +728,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file does not exist"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -744,7 +745,7 @@ class BlobAPITest extends APISpec {
 
     def "Download file does not exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -765,7 +766,7 @@ class BlobAPITest extends APISpec {
 
     def "Download file exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -791,7 +792,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -828,8 +829,8 @@ class BlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildClient()
 
         def blobClient = blobServiceClient.createBlobContainer(containerName)
@@ -838,7 +839,7 @@ class BlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         blobClient.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -875,8 +876,8 @@ class BlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceAsyncClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildAsyncClient()
 
         def blobAsyncClient = blobServiceAsyncClient.createBlobContainer(containerName).block()
@@ -884,7 +885,7 @@ class BlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -920,7 +921,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -958,7 +959,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -980,7 +981,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1002,7 +1003,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1039,7 +1040,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1076,7 +1077,7 @@ class BlobAPITest extends APISpec {
         setup:
         def file = getRandomFile(Constants.MB)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
         expect:
@@ -1140,7 +1141,7 @@ class BlobAPITest extends APISpec {
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1196,7 +1197,7 @@ class BlobAPITest extends APISpec {
     def "Download to file blockSize"() {
         def file = getRandomFile(sizeOfData)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -2676,7 +2677,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set tier block blob"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultData.remaining())
 
@@ -2732,7 +2733,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier min"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bu = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu.upload(defaultInputStream.get(), defaultData.remaining())
 
@@ -2748,7 +2749,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier inferred"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateBlobName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateBlobName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -2771,7 +2772,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set tier archive status"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateBlobName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateBlobName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -2840,7 +2841,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier error"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -2865,7 +2866,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
@@ -2882,7 +2883,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease fail"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -2895,7 +2896,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier tags"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
         def t = new HashMap<String, String>()
@@ -2914,7 +2915,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier tags fail"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -2939,7 +2940,7 @@ class BlobAPITest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         bcCopy.copyFromUrlWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)
 
@@ -2950,33 +2951,6 @@ class BlobAPITest extends APISpec {
         tier1           | tier2
         AccessTier.HOT  | AccessTier.COOL
         AccessTier.COOL | AccessTier.HOT
-    }
-
-    def "Undelete"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        when:
-        def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-        bc.getProperties()
-
-        then:
-        notThrown(BlobStorageException)
-        undeleteHeaders.getValue("x-ms-request-id") != null
-        undeleteHeaders.getValue("x-ms-version") != null
-        undeleteHeaders.getValue("Date") != null
-
-        disableSoftDelete() == null
-    }
-
-    def "Undelete min"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        expect:
-        bc.undeleteWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Undelete error"() {
@@ -3079,7 +3053,7 @@ class BlobAPITest extends APISpec {
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
      def "Per call policy"() {
-         bc = getBlobClient(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+         bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
 
          when:
          def response = bc.getPropertiesWithResponse(null, null, null)

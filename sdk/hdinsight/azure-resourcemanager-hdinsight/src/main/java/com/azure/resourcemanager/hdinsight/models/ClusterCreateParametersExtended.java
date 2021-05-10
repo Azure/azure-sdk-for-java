@@ -12,7 +12,7 @@ import java.util.Map;
 
 /** The CreateCluster request parameters. */
 @Fluent
-public final class ClusterCreateParametersExtended {
+public class ClusterCreateParametersExtended {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCreateParametersExtended.class);
 
     /*

@@ -572,12 +572,12 @@ class DirectoryAPITest extends APISpec {
     }
 
     def getSasDirectoryClient(DataLakeDirectoryClient directoryClient, String owner) {
-        def key = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusHours(1))
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def key = getOAuthServiceClient().getUserDelegationKey(null, namer.getUtcNow().plusHours(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
-        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(getUTCNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key)
+        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(namer.getUtcNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key)
         return getDirectoryClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath())
     }
 
@@ -597,7 +597,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -646,7 +646,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -703,7 +703,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -761,7 +761,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -846,7 +846,7 @@ class DirectoryAPITest extends APISpec {
             return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
         }
 
-        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
 
         when:
         def result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
@@ -994,7 +994,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1043,7 +1043,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1100,7 +1100,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1158,7 +1158,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1243,7 +1243,7 @@ class DirectoryAPITest extends APISpec {
             return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
         }
 
-        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
 
         when:
         def result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
@@ -1390,7 +1390,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1439,7 +1439,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1496,7 +1496,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1554,7 +1554,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1639,7 +1639,7 @@ class DirectoryAPITest extends APISpec {
             return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
         }
 
-        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
 
         when:
         def result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
@@ -2882,7 +2882,7 @@ class DirectoryAPITest extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def directoryClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), dc.getObjectPath(), getPerCallVersionPolicy())
+        def directoryClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), dc.getObjectPath(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = directoryClient.getPropertiesWithResponse(null, null, null)

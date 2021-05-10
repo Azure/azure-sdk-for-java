@@ -51,6 +51,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-resourcemanager-attestation</module>
         <module>azure-security-attestation</module>
       </modules>
     </profile>

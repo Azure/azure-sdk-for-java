@@ -161,9 +161,14 @@ public class ShareDirectoryAsyncClient {
      * @return a ShareDirectoryAsyncClient that interacts with the specified directory
      */
     public ShareDirectoryAsyncClient getSubdirectoryClient(String subdirectoryName) {
-        String directoryPath = this.directoryPath + "/" + subdirectoryName;
-        return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName,
-            serviceVersion);
+        StringBuilder directoryPathBuilder = new StringBuilder()
+            .append(this.directoryPath);
+        if (!this.directoryPath.isEmpty() && !this.directoryPath.endsWith("/")) {
+            directoryPathBuilder.append("/");
+        }
+        directoryPathBuilder.append(subdirectoryName);
+        return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPathBuilder.toString(),
+            snapshot, accountName, serviceVersion);
     }
 
     /**
