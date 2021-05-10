@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Locale;
 
-public class TestEnvironment {
+public final class TestEnvironment {
     private static final ClientLogger LOGGER = new ClientLogger(TestEnvironment.class);
 
     private static final TestEnvironment INSTANCE = new TestEnvironment();
