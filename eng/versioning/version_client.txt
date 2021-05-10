@@ -305,9 +305,6 @@ unreleased_com.azure:azure-core;1.16.0-beta.1
 beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.6
 
 # this section is to test azure module against spring boot 2.3.x version
-springboot_2_3_com.azure:azure-sdk-all;1.0.0;1.0.0
-springboot_2_3_com.azure:azure-sdk-parent;1.6.0;1.6.0
-springboot_2_3_com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 springboot_2_3_com.azure:azure-ai-anomalydetector;3.0.0-beta.1;3.0.0-beta.2
 springboot_2_3_com.azure:azure-ai-formrecognizer;3.0.5;3.1.0-beta.3
 springboot_2_3_com.azure:azure-ai-metricsadvisor;1.0.0-beta.3;1.0.0-beta.4
