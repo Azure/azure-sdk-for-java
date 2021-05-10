@@ -147,6 +147,7 @@ known_content_issues:
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']
+  - ['sdk/farmbeats/azure-verticals-agrifood-farming/swagger/README.md', '#3113']
   - ['sdk/formrecognizer/azure-ai-formrecognizer/swagger/README.md', '#3113']
   - ['sdk/metricsadvisor/azure-ai-metricsadvisor/swagger/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
@@ -180,7 +181,6 @@ known_content_issues:
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/translation/azure-ai-documenttranslator/swagger/README.md', '#3113']
   - ['sdk/webpubsub/azure-messaging-webpubsub/swagger/README.md', '#3113']
-  - ['sdk/farmbeats/azure-verticals-agrifood-farming/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
