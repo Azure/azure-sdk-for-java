@@ -26,12 +26,12 @@ import java.util.logging.Level;
  * as the sole JUL handler in the system.
  * Subsequently, the JUL2SLF4JHandler instance will redirect all JUL log records are redirected to
  * the SLF4J API based on the following mapping of levels:
- * FINEST -> TRACE
- * FINER -> DEBUG
- * FINE -> DEBUG
- * INFO -> INFO
- * WARNING -> WARN
- * SEVERE -> ERROR
+ * FINEST : TRACE
+ * FINER : DEBUG
+ * FINE : DEBUG
+ * INFO : INFO
+ * WARNING : WARN
+ * SEVERE : ERROR
  *
  * <p>Programmatic installation:</p>
  * Optionally remove existing handlers attached to j.u.l root logger
@@ -57,7 +57,7 @@ import java.util.logging.Level;
  * Consequently, j.u.l. to SLF4J translation can seriously increase the cost of disabled logging statements
  * (60 fold or 6000% increase) and measurably impact the performance of enabled log statements (20% overall increase).
  * Please note that as of logback-version 0.9.25, it is possible to completely eliminate the 60 fold translation
- * overhead for disabled log statements with the help of <a link="http://logback.qos.ch/manual/configuration.html#LevelChangePropagator">LevelChangePropagator</a>.
+ * overhead for disabled log statements with the help of <a href="http://logback.qos.ch/manual/configuration.html#LevelChangePropagator">LevelChangePropagator</a>.
  *
  */
 public class JUL2SLF4JHandler extends Handler {
@@ -86,6 +86,8 @@ public class JUL2SLF4JHandler extends Handler {
 
     /**
      * Remove JUL2SLF4JHandler from j.u.l's root logger
+     *
+     * @throws SecurityException it is an error.
      */
     public static void uninstall() throws SecurityException {
         Logger rootLogger = getRootLogger();
@@ -98,7 +100,10 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     * Is JUL2SLF4JHandler loaded into j.u.l's root logger
+     * Has been JUL2SLF4JHandler loaded into j.u.l's root logger
+     *
+     * @return Whether loaded the JUL2SLF4JHandler.
+     * @throws SecurityException it is an error.
      */
     public static boolean isInstalled() throws SecurityException {
         Logger rootLogger = getRootLogger();
@@ -130,7 +135,10 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     *  Redirect all JUL log records are redirected to the SLF4J
+     * Redirect all JUL log records are redirected to the SLF4J
+     *
+     * @param record The passed {@link LogRecord}
+     * @return The passed {@link ClientLogger}.
      */
     protected ClientLogger getClientLogger(LogRecord record) {
         String name = record.getLoggerName();
@@ -145,7 +153,10 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     *  Output j.u.l logger by SLF4J
+     * Output j.u.l logger by SLF4J
+     *
+     * @param lal The passed {@link LocationAwareLogger}
+     * @param record The passed {@link LogRecord}
      */
     protected void callLocationAwareLogger(LocationAwareLogger lal, LogRecord record) {
         int julLevelValue = record.getLevel().intValue();
@@ -167,7 +178,10 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     *  Output j.u.l logger by SLF4J
+     * Output j.u.l logger by SLF4J
+     *
+     * @param clientLogger The passed {@link ClientLogger}
+     * @param record The passed {@link LogRecord}
      */
     protected void callPlainSLF4JLogger(ClientLogger clientLogger, LogRecord record) {
         String i18nMessage = this.getMessageI18N(record);
@@ -208,7 +222,10 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     *  Redefine message parameters for SLF4J
+     * Redefine message parameters for SLF4J
+     *
+     * @param record The passed {@link LogRecord}
+     * @return Object array of message parameters
      */
     private Object[] redefineParameters(LogRecord record) {
         Object[] originalParameters = record.getParameters();
@@ -231,7 +248,10 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     *  Multi-language support
+     * Multi-language support
+     *
+     * @param record The passed {@link LogRecord}
+     * @return Multi-language support processing and formatted messages
      */
     private String getMessageI18N(LogRecord record) {
         String message = record.getMessage();
@@ -260,7 +280,9 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     *  Publish log message
+     * Publish log message
+     *
+     * @param record The passed {@link LogRecord}
      */
     public void publish(LogRecord record) {
         if (record != null) {

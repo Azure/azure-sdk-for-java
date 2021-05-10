@@ -16,6 +16,9 @@ import java.util.logging.Handler;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit tests for {@link JUL2SLF4JHandler}.
+ */
 public class JUL2SLF4JHandlerTest {
 
     private static final Configuration configuration = Configuration.getGlobalConfiguration();
@@ -28,6 +31,8 @@ public class JUL2SLF4JHandlerTest {
     }
 
     private void jul2slf4jTest4LogManager() {
+
+        JUL2SLF4JHandler.removeHandlersForRootLogger();
 
         JUL2SLF4JHandler.install();
 
@@ -59,6 +64,8 @@ public class JUL2SLF4JHandlerTest {
     }
 
     private void jul2slf4jTest4Logger() {
+
+        JUL2SLF4JHandler.removeHandlersForRootLogger();
 
         Logger julLogger = Logger.getLogger(JUL2SLF4JHandlerTest.class.getName());
         julLogger.setLevel(Level.ALL);
