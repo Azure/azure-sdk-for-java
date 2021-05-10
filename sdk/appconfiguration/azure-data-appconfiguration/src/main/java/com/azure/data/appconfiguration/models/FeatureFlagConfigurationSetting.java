@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration.models;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     public FeatureFlagConfigurationSetting(String featureId, boolean isEnabled) {
         this.featureId = featureId;
         this.isEnabled = isEnabled;
+        this.clientFilters = new ArrayList<>();
         super.setKey(KEY_PREFIX + featureId);
         super.setContentType(FEATURE_FLAG_CONTENT_TYPE);
     }
@@ -183,7 +185,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      *
      * @return the feature flag filters of this configuration setting.
      */
-    public Iterable<FeatureFlagFilter> getClientFilters() {
+    public List<FeatureFlagFilter> getClientFilters() {
         return Collections.unmodifiableList(clientFilters);
     }
 
