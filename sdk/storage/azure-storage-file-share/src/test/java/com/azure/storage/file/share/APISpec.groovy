@@ -35,8 +35,6 @@ import java.util.function.BiFunction
 import java.util.function.Function
 
 class APISpec extends StorageSpec {
-    // Field common used for all APIs.
-    static ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable share names for recording tests requiring multiple shares.
 
@@ -89,10 +87,6 @@ class APISpec extends StorageSpec {
 
             shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
         }
-    }
-
-    static boolean liveMode() {
-        return env.testMode != TestMode.PLAYBACK
     }
 
     def generateShareName() {
@@ -363,10 +357,6 @@ class APISpec extends StorageSpec {
         } else {
             return leaseID
         }
-    }
-
-    static boolean playbackMode() {
-        return env.testMode == TestMode.PLAYBACK
     }
 
     def getPerCallVersionPolicy() {

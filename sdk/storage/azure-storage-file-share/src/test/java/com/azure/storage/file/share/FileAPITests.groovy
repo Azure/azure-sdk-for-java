@@ -413,7 +413,7 @@ class FileAPITests extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file buffer copy"() {
         setup:

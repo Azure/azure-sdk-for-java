@@ -1041,7 +1041,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "OutputStream file system config"() {
         setup:
@@ -1379,7 +1379,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "ByteChannel file system config"() {
         setup:

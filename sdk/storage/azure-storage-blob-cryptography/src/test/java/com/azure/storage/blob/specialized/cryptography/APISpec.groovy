@@ -64,11 +64,6 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
-    private boolean recordLiveMode
-
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
 
@@ -87,15 +82,6 @@ class APISpec extends StorageSpec {
 
     @Shared
     protected KB = 1024
-
-    def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
-    }
-
-    static boolean liveMode() {
-        return env.testMode == TestMode.LIVE
-    }
 
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.

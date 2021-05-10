@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.http.rest.PagedIterable
 import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
@@ -495,7 +496,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
         def blobName = generatePathName()
-        def delay = playbackMode() ? 0L : 30000L
+        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getFileAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
@@ -525,7 +526,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
         def blobName = generatePathName()
-        def delay = playbackMode() ? 0L : 30000L
+        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getFileAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))

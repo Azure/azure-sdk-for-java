@@ -12,6 +12,8 @@ import java.util.Locale;
 public class TestEnvironment {
     private static final ClientLogger LOGGER = new ClientLogger(TestEnvironment.class);
 
+    private static final TestEnvironment INSTANCE = new TestEnvironment();
+
     private final TestMode testMode;
 
     private final TestAccount primaryAccount;
@@ -24,7 +26,7 @@ public class TestEnvironment {
     private final TestAccount softDeleteAccount;
     private final TestAccount dataLakeSoftDeleteAccount;
 
-    public TestEnvironment() {
+    private TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
         this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
         this.secondaryAccount = readTestAccountFromEnvironment("SECONDARY_STORAGE_", this.testMode);
@@ -35,6 +37,10 @@ public class TestEnvironment {
         this.premiumFileAccount = readTestAccountFromEnvironment("PREMIUM_STORAGE_FILE_", this.testMode);
         this.softDeleteAccount = readTestAccountFromEnvironment("SOFT_DELETE_STORAGE_", this.testMode);
         this.dataLakeSoftDeleteAccount = readTestAccountFromEnvironment("STORAGE_DATA_LAKE_SOFT_DELETE_", this.testMode);
+    }
+
+    public static TestEnvironment getInstance() {
+        return INSTANCE;
     }
 
     private static TestMode readTestModeFromEnvironment() {

@@ -52,7 +52,7 @@ class NioBlobOutputStreamTest extends APISpec {
         inputStream.read() == -1
     }
 
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("failing in ci")
     def "Write min error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
@@ -93,7 +93,7 @@ class NioBlobOutputStreamTest extends APISpec {
         compareInputStreams(inputStream, new ByteArrayInputStream(data), dataSize)
     }
 
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("Ci failures")
     def "Write array error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
@@ -153,7 +153,7 @@ class NioBlobOutputStreamTest extends APISpec {
         thrown(IndexOutOfBoundsException)
     }
 
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("failing in ci")
     def "Write offset len network error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
@@ -211,7 +211,7 @@ class NioBlobOutputStreamTest extends APISpec {
     }
 
     // Flush should at least check the stream state
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("failing in ci")
     def "Flush error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
