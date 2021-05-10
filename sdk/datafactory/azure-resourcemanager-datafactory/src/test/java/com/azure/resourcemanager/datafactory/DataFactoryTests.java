@@ -42,6 +42,7 @@ public class DataFactoryTests extends TestBase {
 
     private static final Region REGION = Region.US_WEST2;
     private static final String RESOURCE_GROUP = "rg" + randomPadding();
+    private static final String STORAGE_ACCOUNT = "sa" + randomPadding();
     private static final String DATA_FACTORY = "df" + randomPadding();
 
     @Test
@@ -60,20 +61,22 @@ public class DataFactoryTests extends TestBase {
             .create();
 
         try {
-            String storageAccountName = "sa" + randomPadding();
-            String containerName = "adf";
-            StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
+            // storage account
+            StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
                 .withRegion(REGION)
                 .withExistingResourceGroup(RESOURCE_GROUP)
                 .create();
-            String storageAccountKey = storageAccount.getKeys().iterator().next().value();
-            String connectionString = getStorageConnectionString(storageAccountName, storageAccountKey, storageManager.environment());
+            final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
+            final String connectionString = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
 
+            // container
+            final String containerName = "adf";
             storageManager.blobContainers().defineContainer(containerName)
-                .withExistingBlobService(RESOURCE_GROUP, storageAccountName)
+                .withExistingBlobService(RESOURCE_GROUP, STORAGE_ACCOUNT)
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 
+            // blob as input
             BlobClient blobClient = new BlobClientBuilder()
                 .connectionString(connectionString)
                 .containerName(containerName)
@@ -81,23 +84,27 @@ public class DataFactoryTests extends TestBase {
                 .buildClient();
             blobClient.upload(BinaryData.fromString("data"));
 
+            // data factory
             manager.factories().define(DATA_FACTORY)
                 .withRegion(REGION)
                 .withExistingResourceGroup(RESOURCE_GROUP)
                 .create();
 
-            Map<String, String> connectionStringProperty = new HashMap<>();
+            // linked service
+            final Map<String, String> connectionStringProperty = new HashMap<>();
             connectionStringProperty.put("type", "SecureString");
             connectionStringProperty.put("value", connectionString);
 
-            String linkedServiceName = "LinkedService";
+            final String linkedServiceName = "LinkedService";
             manager.linkedServices().define(linkedServiceName)
                 .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
                 .withProperties(new AzureStorageLinkedService()
                     .withConnectionString(connectionStringProperty))
                 .create();
 
-            manager.datasets().define("InputDataset")
+            // input dataset
+            final String inputDatasetName = "InputDataset";
+            manager.datasets().define(inputDatasetName)
                 .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
                 .withProperties(new AzureBlobDataset()
                     .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
@@ -106,7 +113,9 @@ public class DataFactoryTests extends TestBase {
                     .withFormat(new TextFormat()))
                 .create();
 
-            manager.datasets().define("OutputDataset")
+            // output dataset
+            final String outputDatasetName = "OutputDataset";
+            manager.datasets().define(outputDatasetName)
                 .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
                 .withProperties(new AzureBlobDataset()
                     .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
@@ -115,18 +124,21 @@ public class DataFactoryTests extends TestBase {
                     .withFormat(new TextFormat()))
                 .create();
 
+            // pipeline
             PipelineResource pipeline = manager.pipelines().define("CopyBlobPipeline")
                 .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
                 .withActivities(Collections.singletonList(new CopyActivity()
                     .withName("CopyBlob")
                     .withSource(new BlobSource())
                     .withSink(new BlobSink())
-                    .withInputs(Collections.singletonList(new DatasetReference().withReferenceName("InputDataset")))
-                    .withOutputs(Collections.singletonList(new DatasetReference().withReferenceName("OutputDataset")))))
+                    .withInputs(Collections.singletonList(new DatasetReference().withReferenceName(inputDatasetName)))
+                    .withOutputs(Collections.singletonList(new DatasetReference().withReferenceName(outputDatasetName)))))
                 .create();
 
+            // run pipeline
             CreateRunResponse createRun = pipeline.createRun();
 
+            // wait for completion
             PipelineRun pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
             String runStatus = pipelineRun.status();
             while ("InProgress".equals(runStatus)) {
