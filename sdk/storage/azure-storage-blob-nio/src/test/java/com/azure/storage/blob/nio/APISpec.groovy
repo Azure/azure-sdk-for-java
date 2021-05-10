@@ -66,7 +66,6 @@ class APISpec extends StorageSpec {
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
 
-    boolean recordLiveMode
     String containerName
 
 
@@ -92,9 +91,6 @@ class APISpec extends StorageSpec {
     }
 
     def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
-
         primaryBlobServiceClient = setClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
         alternateBlobServiceClient = setClient(env.secondaryAccount)
@@ -111,10 +107,6 @@ class APISpec extends StorageSpec {
 
             containerClient.delete()
         }
-    }
-
-    static boolean liveMode() {
-        return env.testMode == TestMode.LIVE
     }
 
     BlobServiceClient setClient(TestAccount account) {

@@ -56,9 +56,6 @@ import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends StorageSpec {
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     // both sync and async clients point to same container
@@ -115,7 +112,6 @@ class APISpec extends StorageSpec {
     BlobServiceClient versionedBlobServiceClient
     BlobServiceClient softDeleteServiceClient
 
-    boolean recordLiveMode
     String containerName
 
     def setupSpec() {
@@ -127,9 +123,6 @@ class APISpec extends StorageSpec {
     }
 
     def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
-
         primaryBlobServiceClient = getServiceClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
         alternateBlobServiceClient = getServiceClient(env.secondaryAccount)
@@ -164,14 +157,6 @@ class APISpec extends StorageSpec {
 
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
-    }
-
-    static boolean liveMode() {
-        return env.testMode == TestMode.LIVE
-    }
-
-    static boolean playbackMode() {
-        return env.testMode == TestMode.PLAYBACK
     }
 
     def getOAuthServiceClient() {

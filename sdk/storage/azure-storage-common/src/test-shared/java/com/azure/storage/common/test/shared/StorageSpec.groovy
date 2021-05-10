@@ -11,7 +11,7 @@ import com.azure.core.test.TestMode
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
-    private static final TestEnvironment ENVIRONMENT = new TestEnvironment()
+    private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
     private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
 
     private InterceptorManager interceptorManager
