@@ -49,14 +49,14 @@ class APISpec extends StorageSpec {
     }
 
     def queueServiceBuilderHelper() {
-        QueueServiceClientBuilder builder = instrument new QueueServiceClientBuilder()
+        QueueServiceClientBuilder builder = instrument(new QueueServiceClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
     }
 
     def queueBuilderHelper() {
         def queueName = namer.getRandomName(60)
-        QueueClientBuilder builder = instrument new QueueClientBuilder()
+        QueueClientBuilder builder = instrument(new QueueClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
             .queueName(queueName)
@@ -72,7 +72,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -82,7 +82,7 @@ class APISpec extends StorageSpec {
     }
 
     QueueClientBuilder getQueueClientBuilder(String endpoint) {
-        QueueClientBuilder builder = instrument new QueueClientBuilder()
+        QueueClientBuilder builder = instrument(new QueueClientBuilder())
             .endpoint(endpoint)
         return builder
     }

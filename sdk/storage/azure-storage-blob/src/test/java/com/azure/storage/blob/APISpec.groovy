@@ -163,7 +163,7 @@ class APISpec extends StorageSpec {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(env.primaryAccount.blobEndpoint)
 
-        instrument builder
+        instrument(builder)
 
         return setOauthCredentials(builder).buildClient()
     }
@@ -213,7 +213,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -260,7 +260,7 @@ class APISpec extends StorageSpec {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
 
-        instrument builder
+        instrument(builder)
 
         return builder
     }
@@ -270,7 +270,7 @@ class APISpec extends StorageSpec {
             .endpoint(endpoint)
             .blobName(blobName)
 
-        instrument builder
+        instrument(builder)
 
         builder.credential(credential).buildAsyncClient()
     }
@@ -285,7 +285,7 @@ class APISpec extends StorageSpec {
             .blobName(blobName)
             .snapshot(snapshotId)
 
-        instrument builder
+        instrument(builder)
 
         return builder.sasToken(sasToken).buildClient()
     }
@@ -298,7 +298,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         return builder.credential(credential).buildClient()
     }
@@ -311,7 +311,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         return builder.credential(credential).buildAsyncClient()
     }
@@ -321,7 +321,7 @@ class APISpec extends StorageSpec {
             .endpoint(endpoint)
             .blobName(blobName)
 
-        instrument builder
+        instrument(builder)
 
         return builder.credential(credential).buildClient()
     }
@@ -330,7 +330,7 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
 
-        instrument builder
+        instrument(builder)
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)
@@ -348,7 +348,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         return builder.credential(credential)
     }

@@ -357,9 +357,9 @@ class QueueSASTests extends APISpec {
         queueClient.create()
 
         when:
-        instrument new QueueClientBuilder()
+        instrument(new QueueClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas)
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -367,9 +367,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new QueueClientBuilder()
+        instrument(new QueueClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas))
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -377,8 +377,8 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new QueueClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas)
+        instrument(new QueueClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -386,9 +386,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new QueueServiceClientBuilder()
+        instrument(new QueueServiceClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas)
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -396,9 +396,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new QueueServiceClientBuilder()
+        instrument(new QueueServiceClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas))
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -406,8 +406,8 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new QueueServiceClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas)
+        instrument(new QueueServiceClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 

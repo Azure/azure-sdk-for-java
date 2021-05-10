@@ -130,7 +130,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -148,7 +148,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -171,7 +171,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)

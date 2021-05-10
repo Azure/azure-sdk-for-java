@@ -74,7 +74,7 @@ class APISpec extends StorageSpec {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(env.primaryAccount.blobEndpoint)
 
-        instrument builder
+        instrument(builder)
 
         if (env.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -112,7 +112,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -129,7 +129,7 @@ class APISpec extends StorageSpec {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
 
-        instrument builder
+        instrument(builder)
 
         return builder
     }

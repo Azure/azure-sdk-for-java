@@ -684,10 +684,10 @@ class SasClientTests extends APISpec {
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
         when:
-        instrument new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .sasToken(sas)
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -695,10 +695,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .credential(new AzureSasCredential(sas))
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -706,9 +706,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .blobName(blobName)
+            .blobName(blobName))
             .buildClient()
             .getProperties()
 
@@ -716,10 +716,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .sasToken(sas)
+            .sasToken(sas))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -727,10 +727,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .credential(new AzureSasCredential(sas))
+            .credential(new AzureSasCredential(sas)))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -738,9 +738,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .blobName(blobName)
+            .blobName(blobName))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -748,9 +748,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobContainerClientBuilder()
+        instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .sasToken(sas)
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -758,9 +758,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobContainerClientBuilder()
+        instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .credential(new AzureSasCredential(sas))
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -768,8 +768,8 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+        instrument(new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -777,9 +777,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobServiceClientBuilder()
+        instrument(new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .sasToken(sas)
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -787,9 +787,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobServiceClientBuilder()
+        instrument(new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .credential(new AzureSasCredential(sas))
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -797,8 +797,8 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        instrument new BlobServiceClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+        instrument(new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 

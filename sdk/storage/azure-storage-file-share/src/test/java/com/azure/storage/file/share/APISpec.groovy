@@ -73,8 +73,8 @@ class APISpec extends StorageSpec {
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        def cleanupFileServiceClient = instrument new ShareServiceClientBuilder()
-                .connectionString(env.primaryAccount.connectionString)
+        def cleanupFileServiceClient = instrument(new ShareServiceClientBuilder()
+                .connectionString(env.primaryAccount.connectionString))
                 .buildClient()
             for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
                 def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
@@ -134,7 +134,7 @@ class APISpec extends StorageSpec {
     }
 
     def fileServiceBuilderHelper() {
-        ShareServiceClientBuilder shareServiceClientBuilder = instrument new ShareServiceClientBuilder()
+        ShareServiceClientBuilder shareServiceClientBuilder = instrument(new ShareServiceClientBuilder())
         return shareServiceClientBuilder
             .connectionString(env.primaryAccount.connectionString)
     }
@@ -148,7 +148,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -161,7 +161,7 @@ class APISpec extends StorageSpec {
         ShareClientBuilder builder = new ShareClientBuilder()
             .endpoint(endpoint)
 
-        instrument builder
+        instrument(builder)
 
         return builder
     }
@@ -171,14 +171,14 @@ class APISpec extends StorageSpec {
     }
 
     def shareBuilderHelper(final String shareName, final String snapshot) {
-        ShareClientBuilder builder = instrument new ShareClientBuilder()
+        ShareClientBuilder builder = instrument(new ShareClientBuilder())
         return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .snapshot(snapshot)
     }
 
     def directoryBuilderHelper(final String shareName, final String directoryPath) {
-        ShareFileClientBuilder builder = instrument new ShareFileClientBuilder()
+        ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder())
         return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(directoryPath)
@@ -192,7 +192,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -202,7 +202,7 @@ class APISpec extends StorageSpec {
     }
 
     def fileBuilderHelper(final String shareName, final String filePath) {
-        ShareFileClientBuilder builder = instrument new ShareFileClientBuilder()
+        ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
@@ -217,7 +217,7 @@ class APISpec extends StorageSpec {
             builder.addPolicy(policy)
         }
 
-        instrument builder
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)

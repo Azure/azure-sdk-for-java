@@ -98,8 +98,8 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Endpoint with SAS built in"
-        instrument new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+        instrument(new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getBlobClient(blobName)
             .downloadContent()
@@ -117,9 +117,9 @@ class ServiceAPITest extends APISpec {
 
         when: "Connection string with SAS"
         def connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas
-        instrument new BlobContainerClientBuilder()
+        instrument(new BlobContainerClientBuilder()
             .connectionString(connectionString)
-            .containerName(cc.getBlobContainerName())
+            .containerName(cc.getBlobContainerName()))
             .buildClient()
             .getBlobClient(blobName)
             .downloadContent()

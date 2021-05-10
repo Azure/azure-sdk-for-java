@@ -29,7 +29,7 @@ class AzuriteTest extends APISpec {
             .endpoint(azuriteEndpoint)
             .credential(azuriteCredential)
 
-        instrument builder
+        instrument(builder)
 
         return builder.buildClient()
     }
