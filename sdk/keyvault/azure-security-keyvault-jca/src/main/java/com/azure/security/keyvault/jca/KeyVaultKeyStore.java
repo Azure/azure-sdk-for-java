@@ -84,7 +84,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the jre key store.
      */
-    private KeyStore jreKeyStore;
+    private KeyStore defaultKeyStore;
 
     /**
      * Constructor.
@@ -112,13 +112,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
-
-        try {
-            jreKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            JREKeyStore.loadKeyStore(jreKeyStore);
-        } catch (KeyStoreException e) {
-            LOGGER.log(WARNING, "Unable to get the jre key store.", e);
-        }
+        defaultKeyStore = JREKeyStore.getDefault();
     }
 
     @Override
@@ -393,6 +387,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     LOGGER.log(WARNING, "unable to load the jre key store", e);
                 }
             }
+        }
+
+        private static KeyStore getDefault(){
+            KeyStore defaultKeyStore = null;
+            try{
+                defaultKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                JREKeyStore.loadKeyStore(defaultKeyStore);
+            } catch (KeyStoreException e) {
+                LOGGER.log(WARNING, "Unable to get the jre key store.", e);
+            }
+            return defaultKeyStore;
         }
 
         private static Path getKeyStoreFile() {
