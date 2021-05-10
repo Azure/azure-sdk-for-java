@@ -177,9 +177,8 @@ class APISpec extends StorageSpec {
     BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         return builder
     }
@@ -214,13 +213,12 @@ class APISpec extends StorageSpec {
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         return builder.credential(credential).buildClient()
     }
@@ -229,9 +227,8 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         return builder.credential(credential).buildClient()
     }

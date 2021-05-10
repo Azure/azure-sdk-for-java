@@ -83,13 +83,10 @@ class APISpec extends StorageSpec {
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(env.primaryAccount.blobEndpoint)
-            .httpClient(getHttpClient())
 
-
+        instrument builder
 
         if (env.testMode != TestMode.PLAYBACK) {
-            builder.addPolicy(getRecordPolicy())
-
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {

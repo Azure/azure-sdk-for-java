@@ -158,14 +158,12 @@ class APISpec extends StorageSpec {
 
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         if (credential != null) {
             builder.credential(credential)

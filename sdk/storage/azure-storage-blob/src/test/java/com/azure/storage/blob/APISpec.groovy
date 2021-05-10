@@ -177,14 +177,14 @@ class APISpec extends StorageSpec {
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(env.primaryAccount.blobEndpoint)
-            .httpClient(getHttpClient())
+
+        instrument builder
 
         return setOauthCredentials(builder).buildClient()
     }
 
     def setOauthCredentials(BlobServiceClientBuilder builder) {
         if (env.testMode != TestMode.PLAYBACK) {
-            builder.addPolicy(getRecordPolicy())
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build())
         } else {
@@ -223,13 +223,12 @@ class APISpec extends StorageSpec {
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         if (credential != null) {
             builder.credential(credential)
@@ -275,8 +274,8 @@ class APISpec extends StorageSpec {
     BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument builder
 
         return builder
     }
@@ -285,8 +284,8 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument builder
 
         builder.credential(credential).buildAsyncClient()
     }
@@ -299,9 +298,9 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .addPolicy(getRecordPolicy())
             .snapshot(snapshotId)
-            .httpClient(getHttpClient())
+
+        instrument builder
 
         return builder.sasToken(sasToken).buildClient()
     }
@@ -323,13 +322,12 @@ class APISpec extends StorageSpec {
     BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument builder
 
         return builder.credential(credential).buildAsyncClient()
     }
@@ -338,8 +336,8 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument builder
 
         return builder.credential(credential).buildClient()
     }
@@ -347,8 +345,8 @@ class APISpec extends StorageSpec {
     BlobClient getBlobClient(String endpoint, String sasToken) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument builder
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)

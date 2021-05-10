@@ -49,11 +49,9 @@ class APISpec extends StorageSpec {
     }
 
     def queueServiceBuilderHelper() {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
+        QueueServiceClientBuilder builder = instrument new QueueServiceClientBuilder()
         return builder
             .connectionString(env.primaryAccount.connectionString)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
     }
 
     def queueBuilderHelper() {

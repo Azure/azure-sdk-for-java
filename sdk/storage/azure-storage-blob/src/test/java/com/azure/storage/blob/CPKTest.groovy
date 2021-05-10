@@ -25,11 +25,10 @@ class CPKTest extends APISpec {
 
     def setup() {
         key = new CustomerProvidedKey(getRandomKey())
-        def builder = new BlobContainerClientBuilder()
+        def builder = instrument new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
             .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
             .credential(env.primaryAccount.credential)
 
         cpkContainer = builder.buildClient()
