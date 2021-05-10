@@ -115,3 +115,68 @@ stages:
                 az logout
             condition: always()
             displayName: 'Delete On-demand test user'
+
+          - script: |
+              python --version
+              python -m pip install setuptools termcolor in_place
+              python sdk/spring/scripts/replace_util.py --module spring --log debug --color false
+            displayName: 'Run replace_util.py'
+          - task: Maven@3
+            displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+
+          - script: |
+                az cloud set --name AzureChinaCloud
+            condition: endsWith('${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}', 'cn')
+            displayName: 'Switch to Azure China Cloud'
+          - powershell: |
+                az login --allow-no-subscriptions --tenant ${{ parameters.EnvVars.AAD_TENANT_ID_1 }} --service-principal -u ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }} -p ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
+                az ad user create --user-principal-name "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "${{ parameters.EnvVars.AAD_USER_PASSWORD_ON_DEMAND }}" --force-change-password-next-login false
+            displayName: 'Create On-demand test user'
+
+          - task: Maven@3
+            displayName: 'Run tests again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: verify
+              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+            env:
+              AZURE_TEST_MODE: LIVE
+              AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
+              AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
+              AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
+              AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
+              AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
+              AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
+              AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
+              AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
+              AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
+              AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
+              AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
+              AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+              AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
+              AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
+              AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
+              AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
+              AAD_B2C_BASE_URI: "https://B2CITTest1.b2clogin.com/B2CITTest1.onmicrosoft.com"
+              AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
+              AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
+              AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
+              AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
+              AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
+              AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
+              AZURE_CLOUD_TYPE: "Global"
+
+          - powershell: |
+                az ad user delete --id "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}"
+                az logout
+            condition: always()
+            displayName: 'Delete On-demand test user'
