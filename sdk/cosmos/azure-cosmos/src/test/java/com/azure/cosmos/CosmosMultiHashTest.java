@@ -50,8 +50,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void before_CosmosItemTest() {
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosMultiHashTest() {
 
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
@@ -74,7 +74,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         createdMultiHashContainer = createdDatabase.getContainer(collectionName);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting cleanup....");
         //MultiHash Collection delete
@@ -83,7 +83,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         safeCloseSyncClient(client);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void itemCRUD() throws Exception {
 
         List<String> pkIds = new ArrayList<>();
@@ -136,7 +136,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             .isEqualTo(expectedId);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     private void validateDocCRUDandQuery() throws Exception {
 
         try {
