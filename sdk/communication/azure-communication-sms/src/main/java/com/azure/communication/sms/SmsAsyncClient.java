@@ -157,12 +157,13 @@ public final class SmsAsyncClient {
     private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message, SmsSendOptions options) {
         SendMessageRequest request = new SendMessageRequest();
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
+
         for (String s : smsRecipient) {
-            SmsRecipient recipient = new SmsRecipient();
-            recipient.setTo(s);
-            recipient.setRepeatabilityRequestId(UUID.randomUUID().toString());
-            recipient.setRepeatabilityFirstSent(OffsetDateTime.now(ZoneOffset.UTC)
-                .format(DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)));
+            SmsRecipient recipient = new SmsRecipient()
+                .setTo(s)
+                .setRepeatabilityRequestId(UUID.randomUUID().toString())
+                .setRepeatabilityFirstSent(OffsetDateTime.now(ZoneOffset.UTC)
+                    .format(DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)));
             recipients.add(recipient);
         }
         request.setFrom(from)
