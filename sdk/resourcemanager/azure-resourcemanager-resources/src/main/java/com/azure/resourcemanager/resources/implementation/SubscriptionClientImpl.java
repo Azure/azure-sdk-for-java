@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.OperationsClient;
+//import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
@@ -82,17 +82,17 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
+//    /** The OperationsClient object to access its operations. */
+//    private final OperationsClient operations;
+//
+//    /**
+//     * Gets the OperationsClient object to access its operations.
+//     *
+//     * @return the OperationsClient object.
+//     */
+//    public OperationsClient getOperations() {
+//        return this.operations;
+//    }
 
     /** The SubscriptionsClient object to access its operations. */
     private final SubscriptionsClient subscriptions;
@@ -151,7 +151,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.apiVersion = "2021-01-01";
-        this.operations = new OperationsClientImpl(this);
+//        this.operations = new OperationsClientImpl(this);
         this.subscriptions = new SubscriptionsClientImpl(this);
         this.tenants = new TenantsClientImpl(this);
         this.resourceNames = new ResourceNamesClientImpl(this);
