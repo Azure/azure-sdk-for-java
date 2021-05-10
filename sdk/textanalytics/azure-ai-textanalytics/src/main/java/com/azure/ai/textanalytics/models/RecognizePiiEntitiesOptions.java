@@ -47,6 +47,20 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs If a boolean value was specified in the request this field will contain
+     * logging information about the document payload.
+     *
+     * @return the {@link RecognizePiiEntitiesOptions} object itself.
+     */
+    @Override
+    public RecognizePiiEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
      * See https://aka.ms/tanerpii for more information.

@@ -181,11 +181,12 @@ class ExtractKeyPhraseAsyncClient {
      */
     private Mono<Response<ExtractKeyPhrasesResultCollection>> getExtractedKeyPhrasesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        options = options == null ? new TextAnalyticsRequestOptions() : options;
         return service.keyPhrasesWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            null, // TODO: issue for disableServiceLog
+            options.getModelVersion(),
+            options.isIncludeStatistics(),
+            options.isServiceLogsDisabled(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document with count - {}",
                 getDocumentCount(documents)))

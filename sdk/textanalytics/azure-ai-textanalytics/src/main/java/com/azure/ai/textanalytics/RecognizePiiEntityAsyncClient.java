@@ -215,7 +215,7 @@ class RecognizePiiEntityAsyncClient {
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),
             options.isIncludeStatistics(),
-            null, // TODO: issue for disableServiceLog
+            options.isServiceLogsDisabled(),
             options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
             getNonNullStringIndexType(options.getStringIndexType()),
             toCategoriesFilter(options.getCategoriesFilter()),

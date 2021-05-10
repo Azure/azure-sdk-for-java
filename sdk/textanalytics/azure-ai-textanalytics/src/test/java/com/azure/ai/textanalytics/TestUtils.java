@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
@@ -21,6 +22,7 @@ import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
@@ -979,6 +981,16 @@ final class TestUtils {
         return actionResult;
     }
 
+    static AnalyzeSentimentActionResult getExpectedAnalyzeSentimentActionResult(boolean isError,
+        OffsetDateTime completeAt, AnalyzeSentimentResultCollection resultCollection, TextAnalyticsError actionError) {
+        AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
+        AnalyzeSentimentActionResultPropertiesHelper.setResult(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
     /**
      * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
@@ -986,7 +998,8 @@ final class TestUtils {
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
-        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
+        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         AnalyzeActionsResultPropertiesHelper.setStatistics(analyzeActionsResult,
@@ -999,6 +1012,8 @@ final class TestUtils {
             extractKeyPhrasesActionResults);
         AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesActionResults(analyzeActionsResult,
             recognizeLinkedEntitiesActionResults);
+        AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentActionResults(analyzeActionsResult,
+            analyzeSentimentActionResults);
         return analyzeActionsResult;
     }
 
@@ -1070,6 +1085,7 @@ final class TestUtils {
                 false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
+            IterableStream.of(Collections.emptyList()),
             IterableStream.of(Collections.emptyList())
         ));
         // Second Page
@@ -1081,6 +1097,7 @@ final class TestUtils {
                 false, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
+            IterableStream.of(Collections.emptyList()),
             IterableStream.of(Collections.emptyList())
         ));
         return analyzeActionsResults;

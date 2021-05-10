@@ -39,4 +39,18 @@ public final class ExtractKeyPhrasesOptions extends TextAnalyticsRequestOptions 
         super.setIncludeStatistics(includeStatistics);
         return this;
     }
+
+    /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs If a boolean value was specified in the request this field will contain
+     * logging information about the document payload.
+     *
+     * @return the {@link ExtractKeyPhrasesOptions} object itself.
+     */
+    @Override
+    public ExtractKeyPhrasesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
 }

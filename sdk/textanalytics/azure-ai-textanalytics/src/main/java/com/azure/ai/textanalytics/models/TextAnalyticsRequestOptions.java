@@ -12,6 +12,7 @@ import com.azure.core.annotation.Fluent;
 public class TextAnalyticsRequestOptions {
     private String modelVersion;
     private boolean includeStatistics;
+    private boolean disableServiceLogs;
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -56,6 +57,28 @@ public class TextAnalyticsRequestOptions {
      */
     public TextAnalyticsRequestOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
+        return this;
+    }
+
+    /**
+     * Get the value of {@code disableServiceLogs}.
+     *
+     * @return The value of {@code disableServiceLogs}.
+     */
+    public boolean isServiceLogsDisabled() {
+        return disableServiceLogs;
+    }
+
+    /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs If a boolean value was specified in the request this field will contain
+     * logging information about the document payload.
+     *
+     * @return the {@link TextAnalyticsRequestOptions} object itself.
+     */
+    public TextAnalyticsRequestOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        this.disableServiceLogs = disableServiceLogs;
         return this;
     }
 }

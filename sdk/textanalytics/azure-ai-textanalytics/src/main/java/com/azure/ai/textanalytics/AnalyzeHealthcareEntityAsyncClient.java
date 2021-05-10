@@ -86,7 +86,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                         options.getModelVersion(),
                         getNonNullStringIndexType(options.getStringIndexType()),
-                        null, // TODO: issue for disableServiceLog
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -122,7 +122,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                         options.getModelVersion(),
                         getNonNullStringIndexType(options.getStringIndexType()),
-                        null, // TODO: issue for disableServiceLog
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -153,10 +153,11 @@ class AnalyzeHealthcareEntityAsyncClient {
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
-                final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
-                final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
-                final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStats, context)
+                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+                final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
+                final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+                final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStatsValue, context)
                            .map(this::toTextAnalyticsPagedResponse)
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } else {

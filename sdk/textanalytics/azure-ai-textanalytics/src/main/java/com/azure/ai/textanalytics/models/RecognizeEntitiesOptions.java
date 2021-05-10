@@ -43,6 +43,20 @@ public final class RecognizeEntitiesOptions extends TextAnalyticsRequestOptions 
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs If a boolean value was specified in the request this field will contain
+     * logging information about the document payload.
+     *
+     * @return the {@link RecognizeEntitiesOptions} object itself.
+     */
+    @Override
+    public RecognizeEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of {@code stringIndexType}.
      *
      * @return The value of {@code stringIndexType}.

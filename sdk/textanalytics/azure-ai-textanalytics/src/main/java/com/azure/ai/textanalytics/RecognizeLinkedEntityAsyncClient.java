@@ -137,7 +137,7 @@ class RecognizeLinkedEntityAsyncClient {
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),
             options.isIncludeStatistics(),
-            null, // TODO: issue for disableServiceLog
+            options.isServiceLogsDisabled(),
             getNonNullStringIndexType(options.getStringIndexType()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",

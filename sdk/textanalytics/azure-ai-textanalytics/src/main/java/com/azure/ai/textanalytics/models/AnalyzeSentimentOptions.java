@@ -50,6 +50,20 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs If a boolean value was specified in the request this field will contain
+     * logging information about the document payload.
+     *
+     * @return the {@link AnalyzeSentimentOptions} object itself.
+     */
+    @Override
+    public AnalyzeSentimentOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1-preview.1 and later.
