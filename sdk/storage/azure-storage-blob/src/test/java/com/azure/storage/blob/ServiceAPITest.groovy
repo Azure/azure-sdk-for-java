@@ -33,6 +33,7 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.ResourceLock
@@ -98,8 +99,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Endpoint with SAS built in"
-        optionalRecordingPolicy(new BlobContainerClientBuilder()
-            .httpClient(getHttpClient())
+        instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getBlobClient(blobName)
@@ -118,8 +118,7 @@ class ServiceAPITest extends APISpec {
 
         when: "Connection string with SAS"
         def connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas
-        optionalRecordingPolicy(new BlobContainerClientBuilder()
-            .httpClient(getHttpClient())
+        instrument(new BlobContainerClientBuilder()
             .connectionString(connectionString)
             .containerName(cc.getBlobContainerName()))
             .buildClient()
@@ -133,13 +132,6 @@ class ServiceAPITest extends APISpec {
         _ | unsanitize
         _ | true
         _ | false
-    }
-
-    BlobContainerClientBuilder optionalRecordingPolicy(BlobContainerClientBuilder builder) {
-        if (env.testMode == TestMode.RECORD) {
-            builder.addPolicy(getRecordPolicy())
-        }
-        return builder
     }
 
     def "List containers"() {
@@ -867,6 +859,7 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
+    @PlaybackOnly
     def "Restore Container into other container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())

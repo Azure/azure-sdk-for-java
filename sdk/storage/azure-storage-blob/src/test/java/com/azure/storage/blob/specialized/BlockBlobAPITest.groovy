@@ -1792,7 +1792,6 @@ class BlockBlobAPITest extends APISpec {
         blobAsyncClient = new BlobServiceClientBuilder()
             .credential(env.primaryAccount.credential)
             .endpoint(env.primaryAccount.blobEndpoint)
-            .httpClient(getHttpClient())
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())

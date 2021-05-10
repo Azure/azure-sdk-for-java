@@ -11,6 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging
 import com.azure.storage.file.datalake.models.DataLakeCorsRule
 import com.azure.storage.file.datalake.models.DataLakeMetrics
@@ -436,6 +437,7 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listPaths().first().getName() == blobName
     }
 
+    @PlaybackOnly
     def "Restore file system into other file system"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())

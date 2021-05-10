@@ -139,10 +139,8 @@ class APISpec extends StorageSpec {
     def getOAuthServiceClient() {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(env.dataLakeAccount.dataLakeEndpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (env.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -217,14 +215,12 @@ class APISpec extends StorageSpec {
                                                      HttpPipelinePolicy... policies) {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -280,14 +276,12 @@ class APISpec extends StorageSpec {
     DataLakeFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildFileClient()
     }
@@ -295,14 +289,12 @@ class APISpec extends StorageSpec {
     DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildFileAsyncClient()
     }
@@ -311,22 +303,16 @@ class APISpec extends StorageSpec {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildFileClient()
     }
 
     DataLakeFileClient getFileClient(String sasToken, String endpoint, String pathName) {
-        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
+        DataLakePathClientBuilder builder = instrument(new DataLakePathClientBuilder()
             .endpoint(endpoint)
-            .pathName(pathName)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-
-        builder.addPolicy(getRecordPolicy())
+            .pathName(pathName))
 
         return builder.sasToken(sasToken).buildFileClient()
     }
@@ -335,10 +321,8 @@ class APISpec extends StorageSpec {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildDirectoryClient()
     }
@@ -347,14 +331,12 @@ class APISpec extends StorageSpec {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildDirectoryClient()
     }
@@ -363,10 +345,8 @@ class APISpec extends StorageSpec {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
             .endpoint(endpoint)
             .pathName(pathName)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.sasToken(sasToken).buildDirectoryClient()
     }
@@ -378,10 +358,8 @@ class APISpec extends StorageSpec {
     DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder
     }

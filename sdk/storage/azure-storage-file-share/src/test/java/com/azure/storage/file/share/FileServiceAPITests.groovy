@@ -22,6 +22,7 @@ import com.azure.storage.file.share.models.SmbMultichannel
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -255,6 +256,7 @@ class FileServiceAPITests extends APISpec {
         }
     }
 
+    @ResourceLock("ServiceProperties")
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceClient.getProperties()
@@ -278,6 +280,7 @@ class FileServiceAPITests extends APISpec {
     }
 
     @PlaybackOnly
+    @ResourceLock("ServiceProperties")
     def "Set and get properties premium"() {
         given:
         def originalProperties = premiumFileServiceClient.getProperties()
