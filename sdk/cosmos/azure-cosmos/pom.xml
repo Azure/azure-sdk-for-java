@@ -45,7 +45,7 @@ Licensed under the MIT License.
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
-      <version>2.5</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
+      <version>2.8.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -124,7 +124,7 @@ Licensed under the MIT License.
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
-      <version>4.2</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
+      <version>4.4</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.hdrhistogram/HdrHistogram -->
     <dependency>
@@ -136,7 +136,7 @@ Licensed under the MIT License.
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
       <scope>test</scope>
-      <version>1.6</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
+      <version>1.9</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
 
     <dependency>
