@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import spock.lang.Ignore
 import spock.lang.Requires
 import spock.lang.Unroll

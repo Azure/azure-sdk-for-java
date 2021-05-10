@@ -4,6 +4,7 @@ import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import spock.lang.Requires
 import spock.lang.Shared
 
