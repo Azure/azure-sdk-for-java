@@ -28,12 +28,12 @@ public class PowershellManager {
     public static final Pattern PS_RESPONSE_PATTERN = Pattern.compile("\\s+$");
     private Process process;
     private PrintWriter commandWriter;
-    private boolean closed = false;
+    private boolean closed;
     private static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
-    private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "poweshell.exe";
+    private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
     private static final String LEGACY_LINUX_PS_EXECUTABLE = "powershell";
-    private int waitPause = 500;
+    private int waitPause = 1000;
     private long maxWait = 10000L;
     private final boolean legacyPowershell;
     private ExecutorService executorService;
@@ -71,10 +71,11 @@ public class PowershellManager {
                 this.commandWriter = new PrintWriter(
                     new OutputStreamWriter(new BufferedOutputStream(process.getOutputStream()), StandardCharsets.UTF_8),
                     true);
-                if (this.process.waitFor(5L, TimeUnit.SECONDS) && !this.process.isAlive()) {
+                if (this.process.waitFor(4L, TimeUnit.SECONDS) && !this.process.isAlive()) {
                     throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell."
                         + " Please make sure that it is installed in your system."));
                 }
+                this.closed = false;
             } catch (InterruptedException | IOException e) {
                 throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell. "
                     + "Please make sure that it is installed in your system", e));
@@ -86,7 +87,7 @@ public class PowershellManager {
     }
 
 
-    public Mono<String> executeCommand(String command) {
+    public Mono<String> runCommand(String command) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
             StandardCharsets.UTF_8));
         StringBuilder powerShellOutput = new StringBuilder();
@@ -98,7 +99,7 @@ public class PowershellManager {
                                 .flatMap(ignored -> Mono.just(PS_RESPONSE_PATTERN.matcher(powerShellOutput.toString())
                                         .replaceAll("")));
                     } else {
-                        return Mono.error(new RuntimeException("Error reading data from reader"));
+                        return Mono.error(new CredentialUnavailableException("Error reading data from reader"));
                     }
                 });
     }
@@ -120,28 +121,31 @@ public class PowershellManager {
                     return Mono.just(true);
                 }
             } catch (IOException e) {
-                return Mono.error(e);
+                return Mono.error(LOGGER.logExceptionAsError(
+                    new CredentialUnavailableException("Powershell reader not ready for reading", e)));
             }
         }).repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
 
     private Mono<Boolean> canRead(BufferedReader reader) {
         Supplier<Boolean> supplier = () -> {
-            int counter = 0;
+            int pause = 62;
+            int maxPause = Platform.isMac() ? this.waitPause : 500;
             while (true) {
                 try {
                     if (!reader.ready()) {
-                        if (counter > 3) {
+                        if (pause > maxPause) {
                             return false;
                         }
-                        counter++;
-                        Thread.sleep((long) this.waitPause);
+                        pause *= 2;
+                        Thread.sleep((long) pause);
                     } else {
                         break;
                     }
 
                 } catch (IOException | InterruptedException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Powershell reader not ready for reading"));
+                    throw LOGGER.logExceptionAsError(
+                        new CredentialUnavailableException("Powershell reader not ready for reading", e));
                 }
             }
             return true;
@@ -151,7 +155,7 @@ public class PowershellManager {
     }
 
     public Mono<Boolean> close() {
-        if (!this.closed) {
+        if (!this.closed && this.process != null) {
             Supplier<Boolean> supplier = () -> {
                 this.commandWriter.println("exit");
                 try {

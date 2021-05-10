@@ -471,19 +471,20 @@ public class IdentityClient {
 
         PowershellManager powershellManager = new PowershellManager(options.getUseLegacyPowerShell());
         return powershellManager.initSession()
-            .flatMap(manager -> manager.executeCommand("Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru")
+            .flatMap(manager -> manager.runCommand("Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru")
                 .flatMap(output -> {
                     if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not"
                         + " loaded because no valid module file was found in any module directory")) {
                         return Mono.error(new CredentialUnavailableException(
-                            "Az.Account module >= 2.2.0 is not installed."));
+                            "Az.Account module with version >= 2.2.0 is not installed. It needs to be installed to use"
+                        + "Azure PowerShell Credential."));
                     }
                     StringBuilder accessTokenCommand = new StringBuilder("Get-AzAccessToken -ResourceUrl ");
                     accessTokenCommand.append(ScopeUtil.scopesToResource(request.getScopes()));
                     accessTokenCommand.append(" | ConvertTo-Json");
-                    return manager.executeCommand(accessTokenCommand.toString())
+                    return manager.runCommand(accessTokenCommand.toString())
                         .flatMap(out -> {
-                            if (out.contains("Get-AzAccessToken: Run Connect-AzAccount to login.")) {
+                            if (out.contains("Run Connect-AzAccount to login")) {
                                 return Mono.error(new CredentialUnavailableException(
                                     "Run Connect-AzAccount to login to Azure account in PowerShell."));
                             }
@@ -497,8 +498,8 @@ public class IdentityClient {
                                 return Mono.just(new AccessToken(accessToken, expiresOn));
                             } catch (IOException e) {
                                 return Mono.error(logger
-                                    .logExceptionAsError(new RuntimeException("Encountered error when deserializing "
-                                        + "token response from Azure Power Shell.", e)));
+                                    .logExceptionAsError(new CredentialUnavailableException(
+                                        "Encountered error when deserializing response from Azure Power Shell.", e)));
                             }
                         });
                 })).doFinally(ignored -> powershellManager.close());
