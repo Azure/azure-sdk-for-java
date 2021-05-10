@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -20,6 +23,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -77,12 +82,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private KeyVaultClient keyVaultClient;
 
     /**
+     * Stores the jre key store.
+     */
+    private KeyStore jreKeyStore;
+
+    /**
      * Constructor.
      *
      * <p>
      * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>, 
-     * <code>azure.keyvault.aadAuthenticationUrl</code>, 
+     * <code>azure.keyvault.uri</code>,
+     * <code>azure.keyvault.aadAuthenticationUrl</code>,
      * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
      * <code>azure.keyvault.clientSecret</code> and
@@ -101,6 +111,13 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
+        }
+
+        try {
+            jreKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            JREKeyStore.loadKeyStore(jreKeyStore);
+        } catch (KeyStoreException e) {
+            LOGGER.log(WARNING, "Unable to get the jre key store.", e);
         }
     }
 
@@ -360,4 +377,62 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
         }
     }
+    private static class JREKeyStore{
+        private static final String javaHome =  privilegedGetProperty("java.home", "");
+        private static final Path storePath= Paths.get(javaHome).resolve("lib").resolve("security");
+        private static final Path defaultStore = storePath.resolve("cacerts");
+        private static final Path jsseDefaultStore = storePath.resolve("jssecacerts");
+        private static final String keyStorePassword = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
+        private static final String keyPassword = keyStorePassword;
+
+        private static void loadKeyStore(KeyStore ks){
+            if (null != ks){
+                try (final InputStream inStream = Files.newInputStream(getKeyStoreFile())) {
+                    ks.load(inStream, keyStorePassword.toCharArray());
+                }catch (IOException | NoSuchAlgorithmException | CertificateException e){
+                    LOGGER.log(WARNING, "unable to load the jre key store", e);
+                }
+            }
+        }
+
+        private static Path getKeyStoreFile() {
+            String storePropName = privilegedGetProperty(
+                "javax.net.ssl.keyStore", "");
+            return getStoreFile(storePropName);
+        }
+
+        private static Path getStoreFile(String storePropName){
+            Path storeProp;
+            if (storePropName.isEmpty()){
+                storeProp = jsseDefaultStore;
+            }else {
+                storeProp = Paths.get(storePropName);
+            }
+
+            Path[] fileNames =
+                new Path[]{storeProp, defaultStore};
+            for (Path fileName : fileNames) {
+                if (Files.exists(fileName) && Files.isReadable(fileName)){
+                    return fileName;
+                }
+            }
+            return null;
+        }
+
+        private static String  privilegedGetProperty(String theProp, String defaultVal){
+            if (System.getSecurityManager() == null) {
+                String value = System.getProperty(theProp, "");
+                return (value.isEmpty()) ? defaultVal : value;
+            } else {
+                return AccessController.doPrivileged(
+                    (PrivilegedAction<String>) () -> {
+                        String value = System.getProperty(theProp, "");
+                        return (value.isEmpty()) ? defaultVal : value;
+                    });
+            }
+        }
+    }
+
+
+
 }
