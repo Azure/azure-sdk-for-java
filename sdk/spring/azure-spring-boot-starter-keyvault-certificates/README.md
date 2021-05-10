@@ -286,7 +286,7 @@ To configure Spring Cloud Gateway for outbound SSL, add the following configurat
 azure:
   keyvault:
     uri: <the URI of the Azure Key Vault to use>
-    jca:
+    jca: 
       overrideTrustManagerFactory: true
 ```
 

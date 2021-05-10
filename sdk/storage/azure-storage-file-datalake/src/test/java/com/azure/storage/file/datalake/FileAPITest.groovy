@@ -10,6 +10,8 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.blob.models.BlockListType
+import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -19,6 +21,7 @@ import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
@@ -968,7 +971,7 @@ class FileAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def fileClient = getFileClient(primaryCredential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
 
         fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
         fc.flush(defaultDataSize)
@@ -1246,8 +1249,8 @@ class FileAPITest extends APISpec {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceClient = new DataLakeServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .credential(env.dataLakeAccount.credential)
             .buildClient()
 
         def fileClient = datalakeServiceClient.createFileSystem(fileSystemName)
@@ -1288,8 +1291,8 @@ class FileAPITest extends APISpec {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceAsyncClient = new DataLakeServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .credential(env.dataLakeAccount.credential)
             .buildAsyncClient()
 
         def fileAsyncClient = datalakeServiceAsyncClient.createFileSystem(fileSystemName).block()
@@ -1891,7 +1894,7 @@ class FileAPITest extends APISpec {
     def "Append data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2489,7 +2492,7 @@ class FileAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getFileAsyncClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2501,7 +2504,7 @@ class FileAPITest extends APISpec {
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         then:
-        def fcAsync = getFileAsyncClient(primaryCredential, fc.getFileUrl())
+        def fcAsync = getFileAsyncClient(env.dataLakeAccount.credential, fc.getFileUrl())
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fcAsync.read())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
@@ -2522,7 +2525,7 @@ class FileAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -3153,6 +3156,42 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
+    @Unroll
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    def "Query Input parquet"() {
+        setup:
+        String fileName = "parquet.parquet"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        FileQueryParquetSerialization ser = new FileQueryParquetSerialization()
+        fc.uploadFromFile(f.getAbsolutePath(), true)
+        byte[] expectedData = "0,mdifjt55.ea3,mdifjt55.ea3\n".getBytes()
+
+        def expression = "select * from blobstorage where id < 1;"
+
+        FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(ser)
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(ser)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue()
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        queryData == expectedData
+
+        /* Output Stream. */
+        when:
+        fc.queryWithResponse(optionsOs, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        osData == expectedData
+    }
+
     def "Query Input csv Output json"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3489,6 +3528,29 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    def "Query parquet output IA"() {
+        setup:
+        def outSer = new FileQueryParquetSerialization()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions(expression)
+            .setOutputSerialization(outSer)
+
+        when:
+        InputStream stream = fc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setOutputSerialization(outSer)
+        fc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
     def "Query error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -3795,7 +3857,7 @@ class FileAPITest extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def fileClient = getFileClient(primaryCredential, fc.getFileUrl(), getPerCallVersionPolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = fileClient.getPropertiesWithResponse(null, null, null)

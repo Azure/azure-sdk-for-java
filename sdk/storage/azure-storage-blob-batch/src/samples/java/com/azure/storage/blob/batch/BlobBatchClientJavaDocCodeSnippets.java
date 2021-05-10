@@ -22,7 +22,7 @@ import java.util.List;
  * Code snippets for {@link BlobBatchClient}
  */
 public class BlobBatchClientJavaDocCodeSnippets {
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_BLOB_ENDPOINT");
     private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     private BlobBatchClient batchClient = new BlobBatchClientBuilder(new BlobServiceClientBuilder()

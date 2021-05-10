@@ -165,7 +165,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new ShareServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -221,7 +221,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new ShareServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -274,7 +274,7 @@ class FileSASTests extends APISpec {
         OffsetDateTime expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasWithId = new ShareServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setShareName(primaryShareClient.getShareName())
@@ -325,7 +325,7 @@ class FileSASTests extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new AccountSasSignatureValues()
             .setServices(service.toString())
             .setResourceTypes(resourceType.toString())
@@ -368,7 +368,7 @@ class FileSASTests extends APISpec {
             .setResourceTypes(resourceType.toString())
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         def shareName = namer.getRandomName(60)
         def pathName = namer.getRandomName(60)

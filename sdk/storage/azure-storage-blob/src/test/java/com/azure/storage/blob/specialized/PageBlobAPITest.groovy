@@ -355,7 +355,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             bc.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getPageBlobClient()
@@ -1346,7 +1346,7 @@ class PageBlobAPITest extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
             .buildPageBlobClient()
 
         when:

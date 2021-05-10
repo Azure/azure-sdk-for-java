@@ -11,7 +11,6 @@ import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
