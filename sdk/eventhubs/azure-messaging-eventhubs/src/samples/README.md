@@ -5,7 +5,7 @@ languages:
 products:
   - azure
   - azure-event-hubs
-urlFragment: event-hubs-java
+urlFragment: eventhubs-samples
 ---
 
 # Azure Event Hubs client library samples for Java

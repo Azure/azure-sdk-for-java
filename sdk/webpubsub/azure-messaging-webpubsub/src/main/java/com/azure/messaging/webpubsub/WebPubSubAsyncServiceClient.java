@@ -123,7 +123,8 @@ public final class WebPubSubAsyncServiceClient {
         final String authToken = WebPubSubAuthenticationPolicy.getAuthenticationToken(
             audience, options, webPubSubAuthPolicy.getCredential());
 
-        final String clientEndpoint = endpoint.replaceAll("(http)|(https)", "ws");
+        // The endpoint should always be http or https and client endpoint should be ws or wss respectively.
+        final String clientEndpoint = endpoint.replaceFirst("http", "ws");
         final String clientUrl = clientEndpoint + "client/hubs/" + hub;
 
         final String url = clientUrl + "?access_token=" + authToken;
@@ -138,7 +139,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String}
+     * {@codesnippet com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.sendToAll#String}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -155,7 +156,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#String-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -174,12 +175,12 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse}
      *
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to a List and pass that in as the second argument:</p>
+     * excluded connection IDs to a List and pass that in as the third argument:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse.withexclusions}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -223,7 +224,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -240,7 +241,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -259,12 +260,12 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse.byte}
      *
      * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
      * add the excluded connection IDs to the end of the method call as var-args:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse.byte.withexclusion}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -626,7 +627,7 @@ public final class WebPubSubAsyncServiceClient {
 
     // package-private
     Mono<Response<Boolean>> checkUserExistsWithResponse(final String userId, final Context context) {
-        return webPubSubApis.checkUserExistenceWithResponseAsync(hub, userId, configureTracing(context))
+        return webPubSubApis.userExistsWithResponseAsync(hub, userId, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.verbose("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.verbose("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -659,7 +660,7 @@ public final class WebPubSubAsyncServiceClient {
 
     // package-private
     Mono<Response<Boolean>> checkGroupExistsWithResponse(final String group, final Context context) {
-        return webPubSubApis.checkGroupExistenceWithResponseAsync(hub, group, configureTracing(context))
+        return webPubSubApis.groupExistsWithResponseAsync(hub, group, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.verbose("Checking if group '{}' exists", group))
            .doOnSuccess(response -> logger.verbose("Checked if group '{}' exists, response: {}",
                group, response.getValue()))
@@ -728,7 +729,7 @@ public final class WebPubSubAsyncServiceClient {
 
     // package-private
     Mono<Response<Boolean>> checkConnectionExistsWithResponse(final String connectionId, final Context context) {
-        return webPubSubApis.checkConnectionExistenceWithResponseAsync(hub, connectionId, configureTracing(context))
+        return webPubSubApis.connectionExistsWithResponseAsync(hub, connectionId, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.verbose("Checking if connection '{}' exists", connectionId))
            .doOnSuccess(response -> logger.verbose("Checked if connection '{}' exists, response: {}",
                connectionId, response.getValue()))
@@ -741,12 +742,15 @@ public final class WebPubSubAsyncServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the
+     * specific permission.
      * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the connection
      *     has the specified permission.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkPermissionExists(final WebPubSubPermission permission, final String connectionId) {
-        return checkPermissionExistsWithResponse(permission, connectionId, null).map(Response::getValue);
+    public Mono<Boolean> checkPermissionExists(final WebPubSubPermission permission, final String connectionId,
+                                               final String targetName) {
+        return checkPermissionExistsWithResponse(permission, connectionId, targetName).map(Response::getValue);
     }
 
     /**
@@ -754,8 +758,8 @@ public final class WebPubSubAsyncServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
-     * @param targetName Optional. If not set, get the permission for all targets. If set, get the permission for the
-     *     specific target. The meaning of the target depends on the specific permission.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the
+     * specific permission.
      * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the connection
       *     has the specified permission, as well as status code and response headers representing the response from
      *      the service.

@@ -8,6 +8,8 @@ parameters:
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
     - spring/azure-spring-cloud-test-eventhubs
+    - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder
+    - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
   Artifacts:
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
@@ -51,6 +53,12 @@ parameters:
     - name: azure-spring-boot-test-storage
       groupId: com.azure.spring
       safeName: azurespringbootteststorage
+    - name: azure-spring-cloud-sample-eventhubs-binder
+      groupId: com.azure.spring
+      safeName: azurespringcloudsampleeventhubsbinder
+    - name: azure-spring-cloud-sample-eventhubs-kafka
+      groupId: com.azure.spring
+      safeName: azurespringcloudsampleeventhubskafka
   EnvVars:
     AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
     AAD_USER_NAME_1: $(java-spring-aad-user-name-1)

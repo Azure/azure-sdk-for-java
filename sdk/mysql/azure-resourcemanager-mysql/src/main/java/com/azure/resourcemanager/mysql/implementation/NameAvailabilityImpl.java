@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.mysql.models.NameAvailability;
 
 public final class NameAvailabilityImpl implements NameAvailability {
     private NameAvailabilityInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    NameAvailabilityImpl(NameAvailabilityInner innerObject, MySqlManager serviceManager) {
+    NameAvailabilityImpl(
+        NameAvailabilityInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,7 +34,7 @@ public final class NameAvailabilityImpl implements NameAvailability {
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

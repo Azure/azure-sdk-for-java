@@ -92,7 +92,7 @@ def set_dev_zero_version(build_type, build_qualifier):
 
             if hasattr(module, 'current'):
 
-                if 'dev' in module.current:
+                if 'alpha' in module.current:
                     newlines.append(module.string_for_version_file())
                     continue
 

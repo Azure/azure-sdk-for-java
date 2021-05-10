@@ -9,7 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RoleDefinition model. */
+/** Role definition. */
 @JsonFlatten
 @Fluent
 public class RoleDefinition {
@@ -29,7 +29,7 @@ public class RoleDefinition {
      * The role definition type.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
+    private RoleDefinitionType type;
 
     /*
      * The role name.
@@ -47,7 +47,7 @@ public class RoleDefinition {
      * The role type.
      */
     @JsonProperty(value = "properties.type")
-    private String roleType;
+    private RoleType roleType;
 
     /*
      * Role definition permissions.
@@ -59,7 +59,7 @@ public class RoleDefinition {
      * Role definition assignable scopes.
      */
     @JsonProperty(value = "properties.assignableScopes")
-    private List<String> assignableScopes;
+    private List<RoleScope> assignableScopes;
 
     /**
      * Get the id property: The role definition ID.
@@ -84,7 +84,7 @@ public class RoleDefinition {
      *
      * @return the type value.
      */
-    public String getType() {
+    public RoleDefinitionType getType() {
         return this.type;
     }
 
@@ -133,7 +133,7 @@ public class RoleDefinition {
      *
      * @return the roleType value.
      */
-    public String getRoleType() {
+    public RoleType getRoleType() {
         return this.roleType;
     }
 
@@ -143,7 +143,7 @@ public class RoleDefinition {
      * @param roleType the roleType value to set.
      * @return the RoleDefinition object itself.
      */
-    public RoleDefinition setRoleType(String roleType) {
+    public RoleDefinition setRoleType(RoleType roleType) {
         this.roleType = roleType;
         return this;
     }
@@ -173,7 +173,7 @@ public class RoleDefinition {
      *
      * @return the assignableScopes value.
      */
-    public List<String> getAssignableScopes() {
+    public List<RoleScope> getAssignableScopes() {
         return this.assignableScopes;
     }
 
@@ -183,7 +183,7 @@ public class RoleDefinition {
      * @param assignableScopes the assignableScopes value to set.
      * @return the RoleDefinition object itself.
      */
-    public RoleDefinition setAssignableScopes(List<String> assignableScopes) {
+    public RoleDefinition setAssignableScopes(List<RoleScope> assignableScopes) {
         this.assignableScopes = assignableScopes;
         return this;
     }

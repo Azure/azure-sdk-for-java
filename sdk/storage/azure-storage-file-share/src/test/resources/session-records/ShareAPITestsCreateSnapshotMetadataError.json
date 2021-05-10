@@ -1,47 +1,87 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatesnapshotmetadataerror3975165a6c5f?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/5a7322445a73224484274844ffd1e5c77e28488b86?restype=share",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4bffcda2-8a7b-4846-a8ab-2d2b4d22cf78"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c68cf8f5-3560-4d51-95fa-ffb8587a7a84"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8448C8900E4FD",
-      "Last-Modified" : "Wed, 19 Aug 2020 22:09:25 GMT",
+      "eTag" : "0x8D910031C1B27E3",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:39 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8c89f835-601a-0022-7d75-761fdd000000",
-      "Date" : "Wed, 19 Aug 2020 22:09:25 GMT",
-      "x-ms-client-request-id" : "4bffcda2-8a7b-4846-a8ab-2d2b4d22cf78"
+      "x-ms-request-id" : "c82a92da-701a-0053-24eb-41e985000000",
+      "x-ms-client-request-id" : "c68cf8f5-3560-4d51-95fa-ffb8587a7a84",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatesnapshotmetadataerror3975165a6c5f?restype=share&comp=snapshot",
+    "Uri" : "https://REDACTED.file.core.windows.net/5a7322445a73224484274844ffd1e5c77e28488b86?restype=share&comp=snapshot",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "29fc96ff-5181-4722-8529-98bfd723982b"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "434f376b-8e71-44b5-a1d5-95a0ccc6b251"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "content-length" : "278",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
-      "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "8c89f837-601a-0022-7e75-761fdd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:8c89f837-601a-0022-7e75-761fdd000000\nTime:2020-08-19T22:09:25.8203050Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 19 Aug 2020 22:09:25 GMT",
-      "x-ms-client-request-id" : "29fc96ff-5181-4722-8529-98bfd723982b",
+      "x-ms-request-id" : "9b3a8a8c-601a-005f-42eb-417e8d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:9b3a8a8c-601a-005f-42eb-417e8d000000\nTime:2021-05-05T20:19:39.4319945Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "x-ms-client-request-id" : "434f376b-8e71-44b5-a1d5-95a0ccc6b251",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=5a732244&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "29b8326c-3a3c-4944-8d87-fb8d0e867921"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "32e93867-a01a-001d-61eb-41c70d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>5a732244</Prefix><Shares><Share><Name>5a7322445a73224484274844ffd1e5c77e28488b86</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:39 GMT</Last-Modified><Etag>\"0x8D910031C1B27E3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>5120</Quota><AccessTier>TransactionOptimized</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:19:39 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "29b8326c-3a3c-4944-8d87-fb8d0e867921",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/5a7322445a73224484274844ffd1e5c77e28488b86?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6fd0fefd-1dd1-4cb5-b98d-26db34a9ce24"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "e8d81bfd-701a-0021-4eeb-41eeca000000",
+      "x-ms-client-request-id" : "6fd0fefd-1dd1-4cb5-b98d-26db34a9ce24",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesnapshotmetadataerror3975165a6c5f" ]
+  "variables" : [ "5a7322445a73224484274844ffd1e5c77e28488b86" ]
 }

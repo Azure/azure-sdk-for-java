@@ -97,9 +97,11 @@ import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAv
 import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
 import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
@@ -406,6 +408,8 @@ public final class SystemEventNames {
      */
     public static final String STORAGE_BLOB_RENAMED = "Microsoft.Storage.BlobRenamed";
 
+    public static final String STORAGE_BLOB_TIER_CHANGED = "Microsoft.Storage.BlobTierChanged";
+
     public static final String STORAGE_DIRECTORY_CREATED = "Microsoft.Storage.DirectoryCreated";
 
     public static final String STORAGE_DIRECTORY_DELETED = "Microsoft.Storage.DirectoryDeleted";
@@ -413,6 +417,8 @@ public final class SystemEventNames {
     public static final String STORAGE_DIRECTORY_RENAMED = "Microsoft.Storage.DirectoryRenamed";
 
     public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
+
+    public static final String STORAGE_ASYNC_OPERATION_INITIATED = "Microsoft.Storage.AsyncOperationInitiated";
 
     // Communication Services events.
     public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =
@@ -595,10 +601,12 @@ public final class SystemEventNames {
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
             put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
             put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
+            put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
             put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
             put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
             put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
             put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
+            put(STORAGE_ASYNC_OPERATION_INITIATED, StorageAsyncOperationInitiatedEventData.class);
 
             // Communication service events.
             put(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER, AcsChatMemberAddedToThreadWithUserEventData.class);

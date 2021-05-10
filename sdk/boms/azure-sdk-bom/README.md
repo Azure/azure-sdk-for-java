@@ -1,7 +1,7 @@
 # Azure BOM for client libraries
-The Azure BOM for client libraries provides a verified group of Azure client libraries that are known to share a common 
-dependency set and the dependencies they use. It provides a simple and elegant way to orchestrate using multiple Azure 
-client libraries and ensuring minimal dependency conflicts.
+The Azure BOM for client libraries provides a verified group of Azure client libraries that are known to share common 
+dependencies. It provides a simple and elegant way to orchestrate using multiple Azure client libraries while ensuring 
+minimal dependency conflicts.
 
 ## Table of contents
 - [Getting started](#getting-started)
@@ -22,7 +22,7 @@ result in all dependencies being included in your project.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-bom</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>

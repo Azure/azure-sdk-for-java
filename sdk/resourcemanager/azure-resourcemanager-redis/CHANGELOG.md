@@ -1,7 +1,11 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
+
+## 2.4.0 (2021-04-28)
+
+- Supported Private Link in `RedisCache`
 
 ## 2.3.0 (2021-03-30)
 

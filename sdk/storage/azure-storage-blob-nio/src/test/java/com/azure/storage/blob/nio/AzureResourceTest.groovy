@@ -10,6 +10,7 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import spock.lang.Unroll
 
 import java.nio.file.FileSystems
+import java.nio.file.Files
 import java.nio.file.attribute.FileAttribute
 import java.security.MessageDigest
 
@@ -102,6 +103,22 @@ class AzureResourceTest extends APISpec {
         DirectoryStatus.EMPTY           | false
         DirectoryStatus.NOT_EMPTY       | true
         DirectoryStatus.NOT_EMPTY       | false
+    }
+
+    @Unroll
+    def "Directory status files with same prefix"() {
+        setup:
+        def fs = createFS(config)
+        // Create two files with same prefix. Both paths should have DirectoryStatus.NOT_A_DIRECTORY
+        def pathName = generateBlobName()
+        def path1 = fs.getPath("/foo/bar/" + pathName + ".txt")
+        def path2 = fs.getPath("/foo/bar/" + pathName + ".txt.backup")
+        Files.createFile(path1)
+        Files.createFile(path2)
+
+        expect:
+        new AzureResource(path1).checkDirStatus() == DirectoryStatus.NOT_A_DIRECTORY
+        new AzureResource(path2).checkDirStatus() == DirectoryStatus.NOT_A_DIRECTORY
     }
 
     def "Parent dir exists false"() {

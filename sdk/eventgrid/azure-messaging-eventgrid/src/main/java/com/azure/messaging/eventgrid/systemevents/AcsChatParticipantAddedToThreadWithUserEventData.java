@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
- * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatParticipantAddedToThreadWithUser
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatParticipantAddedToThreadWithUser
  * event.
  */
 @Fluent

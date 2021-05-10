@@ -139,6 +139,8 @@ jobs:
       vmImage: MMSUbuntu18.04
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"
@@ -168,6 +170,10 @@ jobs:
           ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
             Directory: sdk/${{ parameters.ServiceDirectory }}
           CheckLinkGuidance: $true
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
       # Use BasePathLength of 38 instead of the default 49 as some GA'd files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml

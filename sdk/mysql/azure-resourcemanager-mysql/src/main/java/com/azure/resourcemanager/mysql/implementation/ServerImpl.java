@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mysql.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.ServerInner;
 import com.azure.resourcemanager.mysql.models.InfrastructureEncryption;
 import com.azure.resourcemanager.mysql.models.MinimalTlsVersionEnum;
@@ -30,7 +29,7 @@ import java.util.Map;
 public final class ServerImpl implements Server, Server.Definition, Server.Update {
     private ServerInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -142,7 +141,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 
@@ -177,7 +176,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this;
     }
 
-    ServerImpl(String name, MySqlManager serviceManager) {
+    ServerImpl(String name, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = new ServerInner();
         this.serviceManager = serviceManager;
         this.serverName = name;
@@ -207,7 +206,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this;
     }
 
-    ServerImpl(ServerInner innerObject, MySqlManager serviceManager) {
+    ServerImpl(ServerInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

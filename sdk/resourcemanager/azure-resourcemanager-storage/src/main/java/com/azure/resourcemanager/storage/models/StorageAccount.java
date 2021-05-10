@@ -6,6 +6,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -21,8 +24,11 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface StorageAccount
     extends GroupableResource<StorageManager, StorageAccountInner>,
-        Refreshable<StorageAccount>,
-        Updatable<StorageAccount.Update> {
+    Refreshable<StorageAccount>,
+    Updatable<StorageAccount.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
 
     /**
      * @return the status indicating whether the primary and secondary location of the storage account is available or
