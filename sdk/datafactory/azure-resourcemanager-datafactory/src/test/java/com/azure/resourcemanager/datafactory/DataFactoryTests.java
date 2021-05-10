@@ -47,7 +47,7 @@ public class DataFactoryTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testDataFactory() throws InterruptedException {
+    public void dataFactoryTest() {
         StorageManager storageManager = StorageManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
@@ -142,7 +142,7 @@ public class DataFactoryTests extends TestBase {
             PipelineRun pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
             String runStatus = pipelineRun.status();
             while ("InProgress".equals(runStatus)) {
-                Thread.sleep(10 * 1000);    // wait 10 seconds
+                sleepIfRunningAgainstService(10 * 1000);    // wait 10 seconds
                 pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
                 runStatus = pipelineRun.status();
             }
