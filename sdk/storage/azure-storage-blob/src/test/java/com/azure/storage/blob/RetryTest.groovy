@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -20,7 +21,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -35,7 +36,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -50,7 +51,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -65,7 +66,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE_SECONDARY, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -80,7 +81,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NETWORK_ERROR, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -95,7 +96,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_TRY_TIMEOUT, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -110,7 +111,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -125,7 +126,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
@@ -140,7 +141,7 @@ class RetryTest extends APISpec {
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE, retryTestOptions)
 
         when:
-        def responseMono = retryTestFactory.send(retryTestURL)
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
 
         then:
         StepVerifier.create(responseMono)
