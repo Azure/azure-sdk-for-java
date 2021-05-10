@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
- * Ths is bridge/route all JUL log records to the SLF4J API.
+ * This is bridge/route all JUL log records to the SLF4J API.
  *
  * Essentially, the idea is to install on the root logger an instance of JUL2SLF4JHandler
  * as the sole JUL handler in the system.
@@ -98,7 +98,7 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     * Has JUL2SLF4JHandler loaded into j.u.l's root logger
+     * Is JUL2SLF4JHandler loaded into j.u.l's root logger
      */
     public static boolean isInstalled() throws SecurityException {
         Logger rootLogger = getRootLogger();
@@ -145,7 +145,7 @@ public class JUL2SLF4JHandler extends Handler {
     }
 
     /**
-     *  Print j.u.l logger by SLF4J
+     *  Output j.u.l logger by SLF4J
      */
     protected void callLocationAwareLogger(LocationAwareLogger lal, LogRecord record) {
         int julLevelValue = record.getLevel().intValue();
@@ -213,7 +213,7 @@ public class JUL2SLF4JHandler extends Handler {
     private Object[] redefineParameters(LogRecord record) {
         Object[] originalParameters = record.getParameters();
         Throwable throwable = record.getThrown();
-        if (throwable != null && throwable.getMessage() != null && !throwable.getMessage().isBlank()) {
+        if (throwable != null && throwable.getMessage() != null && !throwable.getMessage().isEmpty()) {
             Object[] redefineParameters = null;
             if (originalParameters != null && originalParameters.length > 0) {
                 redefineParameters = new Object[originalParameters.length + 1];
