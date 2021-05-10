@@ -13,10 +13,10 @@ import java.nio.ByteBuffer;
 /**
  * Extended options that may be passed when uploading a file range.
  */
-public class ShareFileUploadOptions {
+public final class ShareFileUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
-    private final long length;
+    private final Long length;
     private Long offset;
     private ParallelTransferOptions parallelTransferOptions;
     private ShareRequestConditions requestConditions;
@@ -33,7 +33,7 @@ public class ShareFileUploadOptions {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         this.dataFlux = dataFlux;
         this.dataStream = null;
-        this.length = -1;
+        this.length = null;
     }
 
     /**
@@ -77,7 +77,7 @@ public class ShareFileUploadOptions {
      * @return The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream} or {@link Flux}&lt;{@link ByteBuffer}&gt;.
      */
-    public long getLength() {
+    public Long getLength() {
         return length;
     }
 

@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 /**
  * Extended options that may be passed when uploading a file range.
  */
-public class ShareFileUploadRangeOptions {
+public final class ShareFileUploadRangeOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
     private final long length;
