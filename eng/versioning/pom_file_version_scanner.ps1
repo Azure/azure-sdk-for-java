@@ -422,9 +422,19 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 # the project's version will always be an update type of "current"
                 if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}")
                 {
-                    $script:FoundError = $true
-                    # every project string needs to have an update tag and projects version tags are always 'current'
-                    Write-Error-With-Color "Error: project/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                    $groupIdArtfactId = $versionNode.NextSibling.Value.Trim().Split(";")
+                    if ($groupIdArtfactId.Count -eq 3)
+                    {
+                        if (!$libHash.ContainsKey($groupIdArtfactId[1])) {
+                            $script:FoundError = $true
+                            # every project string needs to have an update tag and projects version tags are always 'current'
+                            Write-Error-With-Color "Error(renamed): project/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                        }
+                    } else {
+                        $script:FoundError = $true
+                        # every project string needs to have an update tag and projects version tags are always 'current'
+                        Write-Error-With-Color "Error: invalid project/version tag $($versionNode.NextSibling.Value.Trim())"
+                    }
                 }
                 else
                 {
