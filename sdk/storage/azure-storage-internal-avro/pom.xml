@@ -65,6 +65,14 @@
       <version>2.0-M4-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <classifier>tests</classifier>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

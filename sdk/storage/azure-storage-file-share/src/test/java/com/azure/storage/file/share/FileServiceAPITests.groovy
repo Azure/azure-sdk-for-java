@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -276,7 +277,7 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue())
     }
 
-    @Requires( { playbackMode() } )
+    @PlaybackOnly
     def "Set and get properties premium"() {
         given:
         def originalProperties = premiumFileServiceClient.getProperties()

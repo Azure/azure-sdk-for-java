@@ -82,7 +82,7 @@
 /sdk/schemaregistry/                                @arerlend @sjkwak
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @mssfang @samvaity @conniey
+/sdk/search/                                        @alzimmermsft @hemanttanwar @mssfang @samvaity @conniey
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey @yijunxiems
