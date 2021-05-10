@@ -185,12 +185,18 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.microsoft.data.encryption</groupId>
       <artifactId>cryptography</artifactId>
-      <version>0.1.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+      <version>0.2.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.data.encryption</groupId>
       <artifactId>azure-key-vault-keystoreprovider</artifactId>
-      <version>0.1.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
+      <version>0.2.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.microsoft.data.encryption</groupId>
+          <artifactId>cryptography</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 

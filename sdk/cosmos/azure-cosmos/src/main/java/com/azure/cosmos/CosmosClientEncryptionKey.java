@@ -16,8 +16,9 @@ public class CosmosClientEncryptionKey {
     private String id;
     private final CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey;
 
-    CosmosClientEncryptionKey(String id, CosmosDatabase database,
-                                     CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey) {
+    CosmosClientEncryptionKey(String id,
+                              CosmosDatabase database,
+                              CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey) {
         this.database = database;
         this.id = id;
         this.cosmosAsyncClientEncryptionKey = cosmosAsyncClientEncryptionKey;

@@ -138,7 +138,8 @@ public class CosmosEncryptionContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedIterable}.
      */
-    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec query,
+                                                 CosmosQueryRequestOptions options,
                                                  Class<T> classType) {
         return getCosmosPagedIterable(this.cosmosEncryptionAsyncContainer.queryItems(query, options, classType));
     }

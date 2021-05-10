@@ -99,10 +99,10 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             new CosmosItemRequestOptions(), EncryptionPojo.class).block().getItem();
         validateResponse(properties, readItem);
 
-        //Check for max length support of 8000
+        //Check for length support greater than 8000
         properties = getItem(UUID.randomUUID().toString());
         String longString = "";
-        for (int i = 0; i < 8000; i++) {
+        for (int i = 0; i < 10000; i++) {
             longString += "a";
         }
         properties.setSensitiveString(longString);
@@ -111,18 +111,6 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
-
-        //Check for exception for length greater that 8000
-        longString += "a";
-        properties.setSensitiveString(longString);
-        try {
-            cosmosEncryptionAsyncContainer.createItem(properties,
-                new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
-            fail("Item create should fail as length of encryption field  is greater than 8000");
-        } catch (CosmosException ex) {
-            assertThat(ex.getMessage()).contains("Unable to convert JSON to byte[]");
-            assertThat(ex.getCause() instanceof MicrosoftDataEncryptionException).isTrue();
-        }
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)

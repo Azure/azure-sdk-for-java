@@ -5,9 +5,10 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +22,13 @@ public class CosmosEncryptionClient {
     private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
     private final CosmosAsyncClient cosmosAsyncClient;
     private final CosmosClient cosmosClient;
+    private final CosmosClientAccessor cosmosClientAccessor;
 
     CosmosEncryptionClient(CosmosClient cosmosClient, EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+        this.cosmosClientAccessor = CosmosClientHelper.geCosmosClientAccessor();
         this.encryptionKeyStoreProvider = encryptionKeyStoreProvider;
         this.cosmosClient = cosmosClient;
-        this.cosmosAsyncClient = CosmosBridgeInternal.getCosmosAsyncClient(cosmosClient);
+        this.cosmosAsyncClient = this.cosmosClientAccessor.getCosmosAsyncClient(cosmosClient);
         this.cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }
 
@@ -40,13 +43,13 @@ public class CosmosEncryptionClient {
     /**
      * Create Cosmos Client with Encryption support for performing operations using client-side encryption.
      *
-     * @param cosmosClient          Regular Cosmos Client.
+     * @param cosmosClient               Regular Cosmos Client.
      * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
      *                                   keys.
      * @return encryptionCosmosClient to perform operations supporting client-side encryption / decryption.
      */
     public static CosmosEncryptionClient createCosmosEncryptionClient(CosmosClient cosmosClient,
-                                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+                                                                      EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
         return new CosmosEncryptionClient(cosmosClient, encryptionKeyStoreProvider);
     }
 
