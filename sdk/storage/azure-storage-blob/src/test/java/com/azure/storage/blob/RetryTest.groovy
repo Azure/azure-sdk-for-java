@@ -8,9 +8,11 @@ import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Retry
 import spock.lang.Unroll
 
 // Tests for package-private functionality.
+@Retry(count = 3)
 class RetryTest extends APISpec {
     static URL retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6, 2,
