@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.aad.AADIssuerJWSKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -67,7 +68,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
     private ContextConsumer<ApplicationContext> b2CResourceServerBean() {
         return (c) -> {
             final JwtDecoder jwtDecoder = c.getBean(JwtDecoder.class);
-            final AADB2CIssuerJWSKeySelector jwsKeySelector = c.getBean(AADB2CIssuerJWSKeySelector.class);
+            final AADIssuerJWSKeySelector jwsKeySelector = c.getBean(AADIssuerJWSKeySelector.class);
             final AADB2CTrustedIssuerRepository issuerRepository = c.getBean(AADB2CTrustedIssuerRepository.class);
             Assertions.assertNotNull(jwtDecoder);
             Assertions.assertNotNull(jwsKeySelector);
@@ -156,7 +157,7 @@ public class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAu
                 final JWTClaimsSetAwareJWSKeySelector jwsKeySelector =
                     context.getBean(JWTClaimsSetAwareJWSKeySelector.class);
                 assertThat(jwsKeySelector).isNotNull();
-                assertThat(jwsKeySelector).isExactlyInstanceOf(AADB2CIssuerJWSKeySelector.class);
+                assertThat(jwsKeySelector).isExactlyInstanceOf(AADIssuerJWSKeySelector.class);
             });
     }
 }

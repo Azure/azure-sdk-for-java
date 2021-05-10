@@ -1,21 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.webapi;
+package com.azure.spring.aad;
 
+import com.azure.spring.autoconfigure.b2c.AADB2CTrustedIssuerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Locale.ROOT;
 
 /**
  * A tenant id is used to construct the trusted issuer repository.
@@ -34,7 +38,12 @@ public class AADTrustedIssuerRepository {
 
     private static final String PATH_DELIMITER_V2 = "/v2.0";
 
-    protected List<String> trustedIssuers = new ArrayList<>();
+    private Set<String> trustedIssuers = new HashSet<>();
+
+    /**
+     * Place a mapping that cannot access metadata through issuer splicing /.well-known/openid-configuration.
+     */
+    private Map<String, String> specialOidcIssuerLocationMap = new HashMap<>();
 
     protected String tenantId;
 
@@ -50,19 +59,36 @@ public class AADTrustedIssuerRepository {
                      .collect(Collectors.toList());
     }
 
-    public List<String> getTrustedIssuers() {
-        return Collections.unmodifiableList(trustedIssuers);
+    public Set<String> getTrustedIssuers() {
+        return Collections.unmodifiableSet(trustedIssuers);
     }
 
     public boolean addTrustedIssuer(String... issuers) {
-        return trustedIssuers
-            .addAll(Arrays.stream(issuers).collect(Collectors.toSet()));
+        return trustedIssuers.addAll(Arrays.asList(issuers));
+    }
+
+    public boolean addTrustedIssuer(String issuer, String oidcIssuerLocation) {
+        specialOidcIssuerLocationMap.put(issuer, oidcIssuerLocation);
+        return trustedIssuers.add(issuer);
+    }
+
+    public boolean isTrusted(String issuer) {
+        return this.trustedIssuers.contains(issuer);
+    }
+
+    public boolean hasSpecialOidcIssuerLocation(String issuer) {
+        return this.specialOidcIssuerLocationMap.containsKey(issuer);
+    }
+
+    public String getSpecialOidcIssuerLocation(String issuer) {
+        return this.specialOidcIssuerLocationMap.get(issuer);
     }
 
     @Deprecated
     public void addB2CIssuer(String baseUri) {
         Assert.notNull(baseUri, "baseUri cannot be null.");
-        trustedIssuers.add(String.format(resolveBaseUri(baseUri) + "/%s/v2.0/", tenantId));
+        String resolvedBaseUri = resolveBaseUri(baseUri);
+        trustedIssuers.add(String.format("%s/%s/v2.0/", resolvedBaseUri, tenantId));
     }
 
     /**
@@ -70,7 +96,8 @@ public class AADTrustedIssuerRepository {
      *
      * @param baseUri The base uri is the domain part of the endpoint.
      * @param userFlows The all user flows mapping which is created under b2c tenant.
-     * @deprecated Is not recommended in {@link AADTrustedIssuerRepository} add AAD B2C related content.
+     * @deprecated Is not recommended in {@link AADTrustedIssuerRepository} to add AAD B2C related content. See {@link
+     * AADB2CTrustedIssuerRepository}.
      */
     @Deprecated
     public void addB2CUserFlowIssuers(String baseUri, Map<String, String> userFlows) {
@@ -81,8 +108,8 @@ public class AADTrustedIssuerRepository {
 
     @Deprecated
     private void createB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
-        trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId,
-            userFlowName.toLowerCase(Locale.ROOT)));
+        trustedIssuers.add(String.format("%s/tfp/%s/%s/v2.0/", resolveBaseUri, tenantId,
+            userFlowName.toLowerCase(ROOT)));
     }
 
     /**

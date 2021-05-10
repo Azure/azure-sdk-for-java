@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.aad.webapi.AADTrustedIssuerRepository;
+import com.azure.spring.aad.AADTrustedIssuerRepository;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
+import static java.util.Locale.ROOT;
+
+public class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
 
     private final String resolvedBaseUri;
 
@@ -17,12 +17,7 @@ class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
 
     private final AADB2CProperties aadb2CProperties;
 
-    /**
-     * Place a mapping that cannot access metadata through issuer splicing /.well-known/openid-configuration.
-     */
-    private final Map<String, String> specialWellKnownIssMap = new HashMap<>();
-
-    AADB2CTrustedIssuerRepository(AADB2CProperties aadb2CProperties) {
+    public AADB2CTrustedIssuerRepository(AADB2CProperties aadb2CProperties) {
         super(aadb2CProperties.getTenantId());
         this.aadb2CProperties = aadb2CProperties;
         this.resolvedBaseUri = resolveBaseUri(aadb2CProperties.getBaseUri());
@@ -34,25 +29,19 @@ class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
     private void addB2CIssuer() {
         Assert.notNull(aadb2CProperties, "aadb2CProperties cannot be null.");
         Assert.notNull(resolvedBaseUri, "resolvedBaseUri cannot be null.");
-        String b2cIss = String.format(resolveBaseUri(resolvedBaseUri) + "/%s/v2.0/", tenantId);
-        trustedIssuers.add(b2cIss);
-        specialWellKnownIssMap.put(b2cIss, String.format(resolveBaseUri(resolvedBaseUri) + "/%s/%s/v2.0/", tenantId,
-            userFlows.get(aadb2CProperties.getLoginFlow())));
+        String b2cIss = String.format("%s/%s/v2.0/", resolvedBaseUri, tenantId);
+        String oidcIssuerLocation = String.format("%s/%s/%s/v2.0/", resolvedBaseUri, tenantId,
+            userFlows.get(aadb2CProperties.getLoginFlow()));
+        // Adding oidc issuer location is not a consistent mapping with issuer contained in the access token.
+        addTrustedIssuer(b2cIss, oidcIssuerLocation);
     }
 
     private void addB2CUserFlowIssuers() {
         Assert.notNull(resolvedBaseUri, "resolvedBaseUri cannot be null.");
         Assert.notNull(userFlows, "userFlows cannot be null.");
-        String resolvedBaseUri = resolveBaseUri(this.resolvedBaseUri);
-        userFlows.keySet().forEach(key -> createB2CUserFlowIssuer(resolvedBaseUri, userFlows.get(key)));
-    }
-
-    private void createB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
-        trustedIssuers.add(String.format(resolveBaseUri + "/tfp/%s/%s/v2.0/", tenantId,
-            userFlowName.toLowerCase(Locale.ROOT)));
-    }
-
-    public Map<String, String> getSpecialWellKnownIssMap() {
-        return specialWellKnownIssMap;
+        userFlows.keySet()
+                 .stream()
+                 .map(uf -> String.format("%s/tfp/%s/%s/v2.0/", resolvedBaseUri, tenantId, uf.toLowerCase(ROOT)))
+                 .forEach(this::addTrustedIssuer);
     }
 }

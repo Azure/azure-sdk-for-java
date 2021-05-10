@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.AADTrustedIssuerRepository;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -22,7 +23,6 @@ public class AADResourceServerConfigurationTest {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
 
-    private AADTrustedIssuerRepository trustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
@@ -50,7 +50,7 @@ public class AADResourceServerConfigurationTest {
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(trustedIssuerRepository);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(2);
             });
@@ -64,7 +64,7 @@ public class AADResourceServerConfigurationTest {
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(trustedIssuerRepository);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
             });

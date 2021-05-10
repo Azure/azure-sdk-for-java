@@ -44,31 +44,24 @@ public class AADResourceServerConfiguration {
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
 
-    @Bean
-    @ConditionalOnMissingBean
-    public AADTrustedIssuerRepository trustedIssuerRepository() {
-        return new AADTrustedIssuerRepository(aadAuthenticationProperties.getTenantId());
-    }
-
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
-     * @param aadTrustedIssuerRepository aad trusted issuer repository.
      * @return Get the jwtDecoder instance.
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
+    public JwtDecoder jwtDecoder() {
         AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(
             aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
-        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadTrustedIssuerRepository);
+        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
     }
 
-    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
+    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
@@ -80,7 +73,7 @@ public class AADResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtIssuerValidator(aadTrustedIssuerRepository));
+        validators.add(new AADJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());
         return validators;
     }
