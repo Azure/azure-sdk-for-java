@@ -570,6 +570,64 @@ In [Resource server visiting other resource server] scenario(For better descript
         return "Response from WebApiB.";
     }
     ```  
+
+#### Support users setting redirect-uri
+
+This starter supports Reset Redirection Endpoint(authorization server to return responses containing authorization credentials to the client via the resource owner user-agent). Developers can add path prefix for redirect-uri.
+
+* Step 1: Add `redirect-uri-template` properties in application.yml.
+    ```yaml
+      azure:
+        activedirectory:
+          client-id: <client-id>
+          client-secret: <client-secret>
+          tenant-id: <tenant-id>
+          user-group:
+            allowed-group-names: group1,group2
+            allowed-group-ids: <group1-id>,<group2-id>
+            enable-full-list: false
+          post-logout-redirect-uri: http://localhost:8080
+          redirect-uri-template: '{baseUrl}/{your-path-prefix}/login/oauth2/code/'
+          authorization-clients:
+            arm:
+              on-demand: true
+              scopes: https://management.core.windows.net/user_impersonation
+            graph:
+              scopes:
+                - https://graph.microsoft.com/User.Read
+                - https://graph.microsoft.com/Directory.Read.All
+    ```
+
+* Step 2: Update the configuration of the azure cloud platform in the portal.
+
+We need to configure the same redirect-uri as application.yml:
+
+![web-application-config-redirect-uri](resource/web-application-config-redirect-uri.png)
+
+
+* Step 3: Write your Java code:
+
+When we add the path prefix to the redirect-uri, we need to update the local access policy, otherwise request will be intercepted.
+
+```java
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
+    /**
+     * Add configuration logic as needed.
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.oauth2Login()
+                .loginProcessingUrl("/{your-path-prefix}/login/oauth2/code/*")
+                .and()
+            .authorizeRequests()
+                .anyRequest().authenticated();
+    }
+}
+```
+  
 ## Examples
 
 ### Web application visiting resource servers

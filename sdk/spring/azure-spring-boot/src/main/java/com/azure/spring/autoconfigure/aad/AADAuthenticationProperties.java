@@ -420,8 +420,7 @@ public class AADAuthenticationProperties implements InitializingBean {
                             .filter(type -> !AADAuthorizationGrantType.AUTHORIZATION_CODE.equals(type))
                             .findAny()
                             .ifPresent(notUsed -> {
-                                throw new IllegalStateException("onDemand only support authorization_code grant type."
-                                    + " ");
+                                throw new IllegalStateException("onDemand only support authorization_code grant type. ");
                             });
     }
 
