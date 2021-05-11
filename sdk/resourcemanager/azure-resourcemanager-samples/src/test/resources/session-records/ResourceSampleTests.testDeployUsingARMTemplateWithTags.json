@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8da3cde2-3b81-4a10-9d6e-ce93b93d352b",
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c45a44dd-167f-4ce5-8b22-e057ac418508",
@@ -46,7 +46,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210419T052619Z:35045ba6-3c31-42d6-8257-8c0754498d68",
       "Expires" : "-1",
       "Content-Length" : "1819",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963/operationStatuses/08585827969101003546?api-version=2020-06-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963/operationStatuses/08585827969101003546?api-version=2021-01-01",
       "x-ms-request-id" : "35045ba6-3c31-42d6-8257-8c0754498d68",
       "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963\",\"name\":\"dprsat42244817963\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateHash\":\"12170532835333742283\",\"parameters\":{\"hostingPlanName\":{\"type\":\"String\",\"value\":\"hprsat605763c28c7\"},\"webSiteName\":{\"type\":\"String\",\"value\":\"wnrsat48204ef5d7f\"},\"skuName\":{\"type\":\"String\",\"value\":\"B1\"},\"skuCapacity\":{\"type\":\"Int\",\"value\":1}},\"mode\":\"Incremental\",\"provisioningState\":\"Accepted\",\"timestamp\":\"2021-04-19T05:26:17.7787249Z\",\"duration\":\"PT2.4014583S\",\"correlationId\":\"35045ba6-3c31-42d6-8257-8c0754498d68\",\"providers\":[{\"namespace\":\"Microsoft.Web\",\"resourceTypes\":[{\"resourceType\":\"serverfarms\",\"locations\":[\"westus\"]},{\"resourceType\":\"sites\",\"locations\":[\"westus\"]},{\"resourceType\":\"sites/config\",\"locations\":[null]}]}],\"dependencies\":[{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsat3895492ca84/providers/Microsoft.Web/serverfarms/hprsat605763c28c7\",\"resourceType\":\"Microsoft.Web/serverfarms\",\"resourceName\":\"hprsat605763c28c7\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsat3895492ca84/providers/Microsoft.Web/sites/wnrsat48204ef5d7f\",\"resourceType\":\"Microsoft.Web/sites\",\"resourceName\":\"wnrsat48204ef5d7f\"},{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsat3895492ca84/providers/Microsoft.Web/sites/wnrsat48204ef5d7f\",\"resourceType\":\"Microsoft.Web/sites\",\"resourceName\":\"wnrsat48204ef5d7f\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgrsat3895492ca84/providers/Microsoft.Web/sites/wnrsat48204ef5d7f/config/web\",\"resourceType\":\"Microsoft.Web/sites/config\",\"resourceName\":\"wnrsat48204ef5d7f/web\"}]}}",
       "Content-Type" : "application/json; charset=utf-8"
@@ -54,7 +54,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963/operationStatuses/08585827969101003546?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963/operationStatuses/08585827969101003546?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "967972da-4885-4357-8092-f5537b54fefd"
@@ -79,7 +79,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963/operationStatuses/08585827969101003546?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963/operationStatuses/08585827969101003546?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4b6a8af9-ea98-4db3-a194-01081b8a0e86"
@@ -104,7 +104,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84/providers/Microsoft.Resources/deployments/dprsat42244817963?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "772f6c17-f8f5-4753-a407-158b714eb9f7"
@@ -436,7 +436,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgrsat3895492ca84?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8adc7f1d-3a17-4a0f-a456-671726650726",

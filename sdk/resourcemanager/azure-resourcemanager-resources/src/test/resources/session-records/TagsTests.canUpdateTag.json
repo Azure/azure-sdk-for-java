@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent/providers/Microsoft.KeyVault/vaults/azfluent/providers/Microsoft.Resources/tags/default?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent/providers/Microsoft.KeyVault/vaults/azfluent/providers/Microsoft.Resources/tags/default?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "939ab89f-358a-4923-b953-fef5b5e1108d",
@@ -53,7 +53,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent/providers/Microsoft.KeyVault/vaults/azfluent/providers/Microsoft.Resources/tags/default?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent/providers/Microsoft.KeyVault/vaults/azfluent/providers/Microsoft.Resources/tags/default?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f65d4d93-d77e-4e23-9fa4-99f77b216128",
@@ -79,7 +79,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent/providers/Microsoft.KeyVault/vaults/azfluent/providers/Microsoft.Resources/tags/default?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent/providers/Microsoft.KeyVault/vaults/azfluent/providers/Microsoft.Resources/tags/default?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6e82ddba-0574-42f3-bbb6-ea8785f54c07",
