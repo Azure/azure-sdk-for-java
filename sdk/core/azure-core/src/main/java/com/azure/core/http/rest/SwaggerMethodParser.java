@@ -286,7 +286,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
                 List<Object> methodArguments = new ArrayList<Object>();
                 if (methodArgument instanceof List && substitution.shouldDoMultipleQueryParams()) {
-                    methodArguments.addAll((List<Object>)methodArgument);
+                    methodArguments.addAll((List<Object>) methodArgument);
                 } else {
                     methodArguments.add(methodArgument);
                 }
