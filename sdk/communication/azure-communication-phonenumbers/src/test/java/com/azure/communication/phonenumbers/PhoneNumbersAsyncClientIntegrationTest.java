@@ -173,7 +173,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             assertNotNull(acquiredPhoneNumber);
         })
             .verifyComplete();
-
     }
 
     @ParameterizedTest

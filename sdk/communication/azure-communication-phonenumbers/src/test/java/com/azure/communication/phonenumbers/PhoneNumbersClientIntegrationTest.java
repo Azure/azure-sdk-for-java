@@ -136,7 +136,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
-        PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", true).waitForCompletion();
+        PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", true).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
         assertEquals(PhoneNumberOperationStatus.SUCCEEDED, result.getValue().getStatus());
     }
