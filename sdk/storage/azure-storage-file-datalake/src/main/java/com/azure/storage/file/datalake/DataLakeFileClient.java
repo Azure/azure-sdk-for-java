@@ -25,9 +25,12 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
@@ -496,6 +499,70 @@ public class DataLakeFileClient extends DataLakePathClient {
         }, logger);
     }
 
+    /**
+     * Opens a file input stream to download the file.
+     * <p>
+     *
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public final DataLakeFileInputStream openInputStream() {
+        return openInputStream(null, null);
+    }
+
+    /**
+     * Opens a file input stream to download the specified range of the file.
+     * <p>
+     *
+     * @param range {@link FileRange}
+     * @param requestConditions An {@link DataLakeRequestConditions} object that represents the access conditions for
+     * the file.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public final DataLakeFileInputStream openInputStream(FileRange range, DataLakeRequestConditions requestConditions) {
+        return openInputStream(new DataLakeFileInputStreamOptions().setRange(range)
+            .setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Opens a file input stream to download the specified range of the file.
+     *
+     * @param options {@link DataLakeFileInputStreamOptions}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public DataLakeFileInputStream openInputStream(DataLakeFileInputStreamOptions options) {
+        options = options == null ? new DataLakeFileInputStreamOptions() : options;
+        ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
+            ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
+
+        PathProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
+        String eTag = properties.getETag();
+
+        FileRange range = options.getRange() == null ? new FileRange(0) : options.getRange();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+
+        DataLakeRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new DataLakeRequestConditions() : options.getRequestConditions();
+
+        switch (consistentReadControl) {
+            case NONE:
+                break;
+            case ETAG:
+                // Target the user specified eTag by default. If not provided, target the latest eTag.
+                if (requestConditions.getIfMatch() == null) {
+                    requestConditions.setIfMatch(eTag);
+                }
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
+                    + "supported."));
+        }
+
+        return new DataLakeFileInputStream(this.dataLakeFileAsyncClient, range.getOffset(), range.getCount(), chunkSize,
+            requestConditions, properties);
+    }
 
     /**
      * Reads the entire file into a file specified by the path.
