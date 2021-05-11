@@ -53,7 +53,7 @@ public final class FarmBeatsClientBuilder {
 
     private static final String SDK_VERSION = "version";
 
-    static final String[] DEFAULT_SCOPES = new String[] {"https://farmbeats-dogfood.azure.net/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] {"https://farmbeats.azure.net/.default"};
 
     private final Map<String, String> properties = new HashMap<>();
 

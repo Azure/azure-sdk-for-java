@@ -9,6 +9,6 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 low-level-client: true
 credential-types: tokencredential
-credential-scopes: https://farmbeats-dogfood.azure.net/.default
+credential-scopes: https://farmbeats.azure.net/.default
 title: FarmBeatsClient
 ```
