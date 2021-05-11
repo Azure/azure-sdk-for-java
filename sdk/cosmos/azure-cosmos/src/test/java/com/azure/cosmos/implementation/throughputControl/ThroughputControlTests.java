@@ -91,7 +91,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
-    public void throughputGlobalControl(OperationType operationType) {
+    public void throughputGlobalControl(OperationType operationType) throws InterruptedException {
         String controlContainerId = "throughputControlContainer";
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
@@ -124,6 +124,8 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        Thread.sleep(10000);
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)

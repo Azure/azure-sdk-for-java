@@ -19,7 +19,7 @@ public class OperationTypeTrackingUnit {
     private final AtomicInteger successResponse;
     private final AtomicInteger failedResponse;
     private final OperationType operationType;
-    private final AtomicInteger requestsNotInSameCycle;
+    private final AtomicInteger responseOutofCycle;
     private final AtomicInteger requestsRetried;
 
     public OperationTypeTrackingUnit(OperationType operationType) {
@@ -27,7 +27,7 @@ public class OperationTypeTrackingUnit {
         this.passedRequests = new AtomicInteger(0);
         this.successRuUsage = new AtomicReference<>(0d);
         this.operationType = operationType;
-        this.requestsNotInSameCycle = new AtomicInteger(0);
+        this.responseOutofCycle = new AtomicInteger(0);
         this.requestsRetried = new AtomicInteger(0);
         this.successResponse = new AtomicInteger(0);
         this.failedResponse = new AtomicInteger(0);
@@ -40,12 +40,12 @@ public class OperationTypeTrackingUnit {
         }
 
         return String.format(
-            "Operation type: %s: [rejectedRequests: %s, passedRequests: %, sAvgRu: %s, outOfCycle: %s, retried: %s, successResponse: %s, failedResponse: %s]",
+            "Operation type: %s: [rejectedRequests: %s, passedRequests: %s, sAvgRu: %s, outOfCycle: %s, retried: %s, successResponse: %s, failedResponse: %s]",
             this.operationType.toString(),
             this.rejectedRequests.get(),
             this.passedRequests.get(),
             sAvgRuPerRequest,
-            this.requestsNotInSameCycle.get(),
+            this.responseOutofCycle.get(),
             this.requestsRetried.get(),
             this.successResponse.get(),
             this.failedResponse.get());
@@ -55,7 +55,7 @@ public class OperationTypeTrackingUnit {
         this.rejectedRequests.set(0);
         this.passedRequests.set(0);
         this.successRuUsage.set(0d);
-        this.requestsNotInSameCycle.set(0);
+        this.responseOutofCycle.set(0);
         this.requestsRetried.set(0);
         this.successResponse.set(0);
         this.failedResponse.set(0);
@@ -70,7 +70,7 @@ public class OperationTypeTrackingUnit {
     }
 
     public void increaseOutOfCycleResponse() {
-        this.requestsNotInSameCycle.incrementAndGet();
+        this.responseOutofCycle.incrementAndGet();
     }
 
     public void increaseRetriedRequests() {
