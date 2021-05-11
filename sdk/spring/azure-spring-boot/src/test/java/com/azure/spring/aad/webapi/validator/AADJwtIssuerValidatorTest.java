@@ -15,9 +15,10 @@ import static org.mockito.Mockito.when;
 
 public class AADJwtIssuerValidatorTest {
 
-    final AADAuthenticationProperties aadAuthenticationProperties = mock(AADAuthenticationProperties.class);
-    final Jwt jwt = mock(Jwt.class);
-    AADTrustedIssuerRepository aadTrustedIssuerRepository = new AADTrustedIssuerRepository("fake-tenant-id");
+    private final AADAuthenticationProperties aadAuthenticationProperties = mock(AADAuthenticationProperties.class);
+    private final Jwt jwt = mock(Jwt.class);
+    private final AADTrustedIssuerRepository aadTrustedIssuerRepository = new AADTrustedIssuerRepository("fake-tenant"
+        + "-id");
 
     @Test
     public void testNoStructureIssuerSuccessVerify() {

@@ -5,7 +5,7 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory-b
 
 1. Constructs trusted iss by configuring tenant id.
 2. Obtain the access token from the HTTP request header.
-3. Analyze access token to `iss` and construct `JwtDecoder` by `AADB2CIssuerJWSKeySelector`.
+3. Analyze access token to `iss` and construct `JwtDecoder` by `AADIssuerJWSKeySelector`.
 4. Use `JwtDecoder` to parse the access token into `Jwt`.
 5. Verify `aud`, `iss`, `nbf`, `exp` claims in access token.
 

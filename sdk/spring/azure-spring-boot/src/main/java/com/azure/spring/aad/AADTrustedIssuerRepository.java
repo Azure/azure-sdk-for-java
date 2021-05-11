@@ -107,8 +107,8 @@ public class AADTrustedIssuerRepository {
     }
 
     @Deprecated
-    private void createB2CUserFlowIssuer(String resolveBaseUri, String userFlowName) {
-        trustedIssuers.add(String.format("%s/tfp/%s/%s/v2.0/", resolveBaseUri, tenantId,
+    private void createB2CUserFlowIssuer(String resolvedBaseUri, String userFlowName) {
+        trustedIssuers.add(String.format("%s/tfp/%s/%s/v2.0/", resolvedBaseUri, tenantId,
             userFlowName.toLowerCase(ROOT)));
     }
 

@@ -40,11 +40,8 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public AADJwtIssuerValidator(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
-        if ((trustedIssuerRepo = aadTrustedIssuerRepository) == null) {
-            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, validIssuer());
-        } else {
-            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, trustedIssuerRepoValidIssuer());
-        }
+        this.trustedIssuerRepo = aadTrustedIssuerRepository;
+        this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, trustedIssuerRepoValidIssuer());
     }
 
     private Predicate<String> trustedIssuerRepoValidIssuer() {
@@ -52,18 +49,12 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
             if (iss == null) {
                 return false;
             }
-            return trustedIssuerRepo.getTrustedIssuers().contains(iss);
-        };
-    }
-
-    private Predicate<String> validIssuer() {
-        return iss -> {
-            if (iss == null) {
-                return false;
+            if (trustedIssuerRepo == null) {
+                return iss.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
+                    || iss.startsWith(STS_WINDOWS_ISSUER)
+                    || iss.startsWith(STS_CHINA_CLOUD_API_ISSUER);
             }
-            return iss.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-                || iss.startsWith(STS_WINDOWS_ISSUER)
-                || iss.startsWith(STS_CHINA_CLOUD_API_ISSUER);
+            return trustedIssuerRepo.getTrustedIssuers().contains(iss);
         };
     }
 

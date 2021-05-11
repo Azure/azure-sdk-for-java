@@ -3,6 +3,7 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.aad.AADIssuerJWSKeySelector;
+import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -52,15 +53,15 @@ public class AADB2CResourceServerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AADB2CTrustedIssuerRepository trustedIssuerRepository() {
+    public AADTrustedIssuerRepository trustedIssuerRepository() {
         return new AADB2CTrustedIssuerRepository(properties);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
-        AADB2CTrustedIssuerRepository aadb2CTrustedIssuerRepository) {
-        return new AADIssuerJWSKeySelector(aadb2CTrustedIssuerRepository, properties.getJwtConnectTimeout(),
+        AADTrustedIssuerRepository aadTrustedIssuerRepository) {
+        return new AADIssuerJWSKeySelector(aadTrustedIssuerRepository, properties.getJwtConnectTimeout(),
             properties.getJwtReadTimeout(), properties.getJwtSizeLimit());
     }
 
