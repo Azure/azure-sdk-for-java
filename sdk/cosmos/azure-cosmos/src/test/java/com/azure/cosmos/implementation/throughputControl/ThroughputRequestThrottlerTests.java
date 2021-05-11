@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.throughputControl;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -27,7 +28,7 @@ public class ThroughputRequestThrottlerTests {
         StoreResponse responseMock = Mockito.mock(StoreResponse.class);
         Mockito.doReturn(requestChargePerRequest).when(responseMock).getRequestCharge();
 
-        ThroughputRequestThrottler requestThrottler = new ThroughputRequestThrottler(scheduledThroughput);
+        ThroughputRequestThrottler requestThrottler = new ThroughputRequestThrottler(scheduledThroughput, StringUtils.EMPTY);
 
         // Request1: pass through
         TestPublisher<StoreResponse> requestPublisher1 = TestPublisher.create();
