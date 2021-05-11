@@ -231,14 +231,13 @@ public class SmsAsyncClientTests extends SmsTestBase {
         StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE).flatMap(
             requestResponse -> {
                 return requestResponse.getRequest().getBody().last();
-            }
-        ))
-            .assertNext(bodyBuff -> {
-                String bodyRequest = new String(bodyBuff.array());
-                assertTrue(bodyRequest.contains("repeatabilityRequestId"));
-                assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
             })
-            .verifyComplete();
+        ).assertNext(bodyBuff -> {
+            String bodyRequest = new String(bodyBuff.array());
+            assertTrue(bodyRequest.contains("repeatabilityRequestId"));
+            assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
+        })
+        .verifyComplete();
     }
 
     private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {
