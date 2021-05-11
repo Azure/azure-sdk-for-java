@@ -87,11 +87,11 @@ requirement for release.
 
 The `azure-sdk-bom` has additional release requirements not found in other Azure SDKs. For the `azure-sdk-bom` to be
 considered as a release candidate all managed Azure SDK libraries contained within in it must have strong alignment
-on the Core SDK libraries. For example, all libraries must be using the same version of `azure-core` or to be a viable
+on the Core SDK libraries. For example, all libraries must be using the same version of `azure-core` to be a viable
 release candidate.
 
 #### Included library requirements
 
-Only GA'd Azure SDKs are permitted to be managed dependencies in the `azure-sdk-bom`. SDKs that have yet to be GA'd
-won't be considered at this time as the `azure-sdk-bom` is meant to act as a production ready dependency management
-system for applications built using Azure SDKs.
+Only GA'd Azure SDKs in the `com.azure` group are permitted to be managed dependencies in the `azure-sdk-bom`. SDKs 
+that have yet to be GA'd won't be considered at this time as the `azure-sdk-bom` is meant to act as a production ready 
+dependency management system for applications built using Azure SDKs.
