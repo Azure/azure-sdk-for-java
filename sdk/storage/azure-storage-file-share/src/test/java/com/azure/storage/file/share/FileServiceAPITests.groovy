@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -21,6 +22,7 @@ import com.azure.storage.file.share.models.SmbMultichannel
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import spock.lang.Requires
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -254,6 +256,7 @@ class FileServiceAPITests extends APISpec {
         }
     }
 
+    @ResourceLock("ServiceProperties")
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceClient.getProperties()
@@ -276,7 +279,8 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue())
     }
 
-    @Requires( { playbackMode() } )
+    @PlaybackOnly
+    @ResourceLock("ServiceProperties")
     def "Set and get properties premium"() {
         given:
         def originalProperties = premiumFileServiceClient.getProperties()

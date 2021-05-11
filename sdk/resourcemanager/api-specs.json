@@ -227,7 +227,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2020-09"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",
@@ -275,7 +275,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2020-06 --payload-flattening-threshold=1 --add-inner=Deployment"
+    "args": "--tag=package-resources-2021-01 --payload-flattening-threshold=1 --add-inner=Deployment"
   },
   "scheduler": {
     "dir": "azure-resourcemanager-scheduler",
@@ -336,7 +336,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2020-01 --name-for-ungrouped-operations=ResourceName"
+    "args": "--tag=package-subscriptions-2021-01 --name-for-ungrouped-operations=ResourceName"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",

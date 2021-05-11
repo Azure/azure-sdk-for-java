@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.12.0-beta.1 (Unreleased)
-
+- Added support for specifying an encryption scope.
 
 ## 12.11.0 (2021-04-29)
 - GA release
