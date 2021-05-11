@@ -91,7 +91,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the jre key store aliases.
      */
-     private static final Set<String> JRE_ALIASES;
+    private static final Set<String> JRE_ALIASES;
 
     /**
      * Constructor.
