@@ -1,6 +1,6 @@
 # Release History
 
-## 12.6.0-beta.1 (Unreleased)
+## 12.6.0-beta.1 (2021-05-11)
 - Added support for the 2020-08-04 service version.
 - Added support to undelete a file or directory
 - Added support to list deletedPaths
