@@ -59,7 +59,7 @@ public final class ForecastsClientImpl implements ForecastsClient {
     private interface ForecastsService {
         @Headers({"Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.CostManagement/forecast")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QueryResultInner>> usage(
             @HostParam("$host") String endpoint,
@@ -141,7 +141,7 @@ public final class ForecastsClientImpl implements ForecastsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -391,7 +391,7 @@ public final class ForecastsClientImpl implements ForecastsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

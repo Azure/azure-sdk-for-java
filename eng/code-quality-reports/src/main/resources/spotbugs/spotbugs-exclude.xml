@@ -2325,7 +2325,7 @@
 
   <!-- The field is designed to be unread and for serialization purpose. -->
   <Match>
-    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
+    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter|SynonymMap)"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2333,10 +2333,6 @@
   <Match>
     <Class name="com.azure.search.documents.SearchAsyncClient"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-  <Match>
-    <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)"/>
-    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
   <Match>
@@ -2431,14 +2427,6 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
 
-  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions"/>
-    </Or>
-    <Bug pattern="NM_CONFUSING"/>
-  </Match>
   <!-- Returning a new copy of the object is not necessary for queuing system use cases.
   Client do not change content of message once message is created. Array copy would degrade the performance.
   https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->
@@ -2464,5 +2452,17 @@
   <Match>
     <Class name="~com.azure.security.attestation.models\.[\w]+"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Generated implementation of Anomaly Detector is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Some generated base clients in Purview Catalog do not send api-version -->
+  <Match>
+    <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 </FindBugsFilter>

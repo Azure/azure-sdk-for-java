@@ -1,13 +1,19 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
+
+## 1.6.0 (2021-04-12)
+
+### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.7.0`.
 
 ## 1.5.1 (2021-03-10)
 ### Dependency Updates
 - Update `azure-messaging-eventhubs` dependency to `5.5.1`.
 
-## 1.5.0 (2020-02-15)
+## 1.5.0 (2021-02-15)
 ### Dependency Updates
 - Update `azure-messaging-eventhubs` dependency to `5.5.0`.
 - Update `azure-storage-blob` dependency to `12.10.0`.

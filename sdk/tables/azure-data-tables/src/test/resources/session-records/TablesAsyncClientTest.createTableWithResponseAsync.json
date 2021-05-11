@@ -4,8 +4,8 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a314de6c-3472-4041-8730-d013f8d2d0ba",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5ff83de-6b80-4d8c-89e7-68f18fff263b",
       "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
@@ -14,14 +14,14 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 09 Feb 2021 06:54:07 GMT",
+      "Date" : "Wed, 21 Apr 2021 19:13:52 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename78947065')",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename74266e78')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "ee58cc75-e002-009c-74b0-fe673a000000",
+      "x-ms-request-id" : "7889cd7b-3002-0048-54e2-36a790000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "a314de6c-3472-4041-8730-d013f8d2d0ba",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename78947065')"
+      "x-ms-client-request-id" : "f5ff83de-6b80-4d8c-89e7-68f18fff263b",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename74266e78')"
     },
     "Exception" : null
   }, {
@@ -29,8 +29,8 @@
     "Uri" : "https://REDACTED.table.core.windows.net/Tables",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.4 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c46094ea-2221-42bd-9072-07005b139de9",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b12c307f-a42e-40a2-9ad9-602a03c037fb",
       "Content-Type" : "application/json;odata=nometadata"
     },
     "Response" : {
@@ -39,16 +39,16 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 09 Feb 2021 06:54:07 GMT",
+      "Date" : "Wed, 21 Apr 2021 19:13:52 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename579195ff')",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename59582033')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "ee58cc7a-e002-009c-76b0-fe673a000000",
+      "x-ms-request-id" : "7889cd89-3002-0048-5fe2-36a790000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "c46094ea-2221-42bd-9072-07005b139de9",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename579195ff')"
+      "x-ms-client-request-id" : "b12c307f-a42e-40a2-9ad9-602a03c037fb",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename59582033')"
     },
     "Exception" : null
   } ],
-  "variables" : [ "tablename78947065", "tablename579195ff" ]
+  "variables" : [ "tablename74266e78", "tablename59582033" ]
 }

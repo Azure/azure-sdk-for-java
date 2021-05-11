@@ -20,6 +20,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 /**
@@ -31,8 +32,8 @@ import reactor.core.publisher.Mono;
  * desired client.
  *
  * <p>The minimal configuration options required by {@link KeyEncryptionKeyClientBuilder} to build
- * {@link AsyncKeyEncryptionKey} are {@link String Azure Key Vault key identifier} and
- * {@link TokenCredential credential}.</p>
+ * {@link AsyncKeyEncryptionKey} are {@link JsonWebKey jsonWebKey} or {@link String Azure Key Vault key identifier}
+ * and {@link TokenCredential credential}.</p>
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyEncryptionKeyClientBuilder}.</p>
@@ -42,8 +43,8 @@ import reactor.core.publisher.Mono;
  * {@link KeyEncryptionKey}</p>
  *
  * <p> The minimal configuration options required by {@link KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder}
- * to build {@link KeyEncryptionKey} are {@link String Azure Key Vault key identifier} and
- * {@link TokenCredential credential}.</p>
+ * to build {@link KeyEncryptionKey} are {@link JsonWebKey jsonWebKey} or
+ * {@link String Azure Key Vault key identifier} and {@link TokenCredential credential}.</p>
  *
  * @see KeyEncryptionKeyAsyncClient
  * @see KeyEncryptionKeyClient
@@ -81,6 +82,23 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
+     * Creates a local {@link KeyEncryptionKeyClient} for a given JSON Web Key. Every time
+     * {@code buildKeyEncryptionKey(JsonWebKey)} is called, a new instance of {@link KeyEncryptionKey} is created.
+     * For local clients, all other builder settings are ignored.
+     *
+     * <p>The {@code key} is required to build the {@link KeyEncryptionKeyClient client}.</p>
+     *
+     * @param key The {@link JsonWebKey} to be used for cryptography operations.
+     *
+     * @return A {@link KeyEncryptionKeyClient} with the options set from the builder.
+     *
+     * @throws IllegalStateException If {{@code key} is not set.
+     */
+    public KeyEncryptionKey buildKeyEncryptionKey(JsonWebKey key) {
+        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(key).block());
+    }
+
+    /**
      * Creates a {@link KeyEncryptionKeyAsyncClient} based on options set in the builder. Every time
      * {@code buildAsyncKeyEncryptionKey(String)} is called, a new instance of {@link KeyEncryptionKeyAsyncClient} is
      * created.
@@ -103,7 +121,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
-                    + "async client."));
+                    + "client."));
         }
 
         CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
@@ -114,13 +132,38 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         if (builder.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Azure Key Vault credentials cannot be null and are required to build a key encryption key async "
-                    + "client."));
+                "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
         }
 
         HttpPipeline pipeline = builder.setupPipeline();
 
         return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
+    }
+
+    /**
+     * Creates a local {@link KeyEncryptionKeyAsyncClient} based on options set in the builder. Every time
+     * {@code buildAsyncKeyEncryptionKey(String)} is called, a new instance of
+     * {@link KeyEncryptionKeyAsyncClient} is created. For local clients, all other builder settings are ignored.
+     *
+     * <p>The {@code key} is required to build the {@link KeyEncryptionKeyAsyncClient client}.</p>
+     *
+     * @param key The key to be used for cryptography operations.
+     *
+     * @return A {@link KeyEncryptionKeyAsyncClient} with the options set from the builder.
+     *
+     * @throws IllegalArgumentException If {@code key} has no id.
+     * @throws IllegalStateException If {@code key} is {@code null}.
+     */
+    public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(JsonWebKey key) {
+        if (key == null) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
+        } else if (key.getId() == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "JSON Web Key's id property is not configured."));
+        }
+
+        return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(key)));
     }
 
     /**

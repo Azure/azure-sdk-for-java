@@ -27,6 +27,12 @@ public class ManagedClusterPodIdentity {
     private String namespace;
 
     /*
+     * Binding selector to use for the AzureIdentityBinding resource.
+     */
+    @JsonProperty(value = "bindingSelector")
+    private String bindingSelector;
+
+    /*
      * Information of the user assigned identity.
      */
     @JsonProperty(value = "identity", required = true)
@@ -81,6 +87,26 @@ public class ManagedClusterPodIdentity {
      */
     public ManagedClusterPodIdentity withNamespace(String namespace) {
         this.namespace = namespace;
+        return this;
+    }
+
+    /**
+     * Get the bindingSelector property: Binding selector to use for the AzureIdentityBinding resource.
+     *
+     * @return the bindingSelector value.
+     */
+    public String bindingSelector() {
+        return this.bindingSelector;
+    }
+
+    /**
+     * Set the bindingSelector property: Binding selector to use for the AzureIdentityBinding resource.
+     *
+     * @param bindingSelector the bindingSelector value to set.
+     * @return the ManagedClusterPodIdentity object itself.
+     */
+    public ManagedClusterPodIdentity withBindingSelector(String bindingSelector) {
+        this.bindingSelector = bindingSelector;
         return this;
     }
 

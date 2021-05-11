@@ -165,6 +165,13 @@ public final class CertificateClientBuilder {
         policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -176,13 +183,6 @@ public final class CertificateClientBuilder {
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
-
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -196,16 +196,15 @@ public final class CertificateClientBuilder {
     }
 
     /**
-     * Sets the vault endpoint url to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to.
      *
      * @param vaultUrl The vault endpoint url is used as destination on Azure to send requests to. If you have a
-     * certificate identifier, use {@link KeyVaultCertificateIdentifier#parse(String)} to parse it and obtain the
+     * certificate identifier, create a new {@link KeyVaultCertificateIdentifier} to parse it and obtain the
      * {@code vaultUrl} and other information.
      *
      * @return The updated {@link CertificateClientBuilder} object.
      *
-     * @throws IllegalArgumentException If {@code vaultUrl} cannot be parsed into a valid URL.
-     * @throws NullPointerException If {@code vaultUrl} is {@code null}.
+     * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
      */
     public CertificateClientBuilder vaultUrl(String vaultUrl) {
         if (vaultUrl == null) {

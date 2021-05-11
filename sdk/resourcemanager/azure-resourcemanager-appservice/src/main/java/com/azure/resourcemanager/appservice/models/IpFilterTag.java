@@ -4,47 +4,34 @@
 
 package com.azure.resourcemanager.appservice.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for IpFilterTag. */
-public enum IpFilterTag {
-    /** Enum value Default. */
-    DEFAULT("Default"),
+public final class IpFilterTag extends ExpandableStringEnum<IpFilterTag> {
+    /** Static value Default for IpFilterTag. */
+    public static final IpFilterTag DEFAULT = fromString("Default");
 
-    /** Enum value XffProxy. */
-    XFF_PROXY("XffProxy"),
+    /** Static value XffProxy for IpFilterTag. */
+    public static final IpFilterTag XFF_PROXY = fromString("XffProxy");
 
-    /** Enum value ServiceTag. */
-    SERVICE_TAG("ServiceTag");
-
-    /** The actual serialized value for a IpFilterTag instance. */
-    private final String value;
-
-    IpFilterTag(String value) {
-        this.value = value;
-    }
+    /** Static value ServiceTag for IpFilterTag. */
+    public static final IpFilterTag SERVICE_TAG = fromString("ServiceTag");
 
     /**
-     * Parses a serialized value to a IpFilterTag instance.
+     * Creates or finds a IpFilterTag from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed IpFilterTag object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding IpFilterTag.
      */
     @JsonCreator
-    public static IpFilterTag fromString(String value) {
-        IpFilterTag[] items = IpFilterTag.values();
-        for (IpFilterTag item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static IpFilterTag fromString(String name) {
+        return fromString(name, IpFilterTag.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known IpFilterTag values. */
+    public static Collection<IpFilterTag> values() {
+        return values(IpFilterTag.class);
     }
 }
