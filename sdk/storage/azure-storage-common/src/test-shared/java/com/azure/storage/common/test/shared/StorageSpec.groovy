@@ -11,7 +11,8 @@ import com.azure.core.test.TestMode
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
-    protected static final TestEnvironment ENVIRONMENT = new TestEnvironment();
+    private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
+    private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
@@ -27,9 +28,22 @@ class StorageSpec extends Specification {
         interceptorManager.close()
     }
 
+    protected static TestEnvironment getEnv() {
+        return ENVIRONMENT
+    }
+
     protected StorageResourceNamer getNamer() {
         Objects.requireNonNull(namer, "namer has not been initialized yet")
         return namer
+    }
+
+    protected <T> T instrument(T builder) {
+        // Groovy style reflection. All our builders follow this pattern.
+        builder."httpClient"(getHttpClient())
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
+            builder."addPolicy"(interceptorManager.getRecordPolicy())
+        }
+        return builder
     }
 
     protected HttpPipelinePolicy getRecordPolicy() {
@@ -42,8 +56,7 @@ class StorageSpec extends Specification {
 
     protected HttpClient getHttpClient() {
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-            return builder.build()
+            HTTP_CLIENT
         } else {
             return interceptorManager.getPlaybackClient()
         }
