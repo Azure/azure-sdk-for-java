@@ -167,10 +167,10 @@ public class SmsClientTests extends SmsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void repeatability(HttpClient httpClient) {
+    public void checkForRepeatabilityOptions(HttpClient httpClient) {
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        client = setupSyncClient(builder, "repeatability");
+        client = setupSyncClient(builder, "checkForRepeatabilityOptions");
         // Action & Assert
         Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
         String bodyRequest = new String(response.getRequest().getBody().blockLast().array());
