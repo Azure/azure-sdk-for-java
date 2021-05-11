@@ -97,7 +97,7 @@ stages:
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
-          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(SpringProjectPathList)'
           goals: "verify"
         PreSteps:
             - script: |

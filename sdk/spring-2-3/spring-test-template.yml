@@ -89,7 +89,7 @@ stages:
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
-          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(SpringProjectPathList)'
           goals: "verify"
         PreSteps:
             - script: |
@@ -119,7 +119,7 @@ stages:
             inputs:
               mavenPomFile: pom.xml
               goals: 'install'
-              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(SpringProjectPathList) -am'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: $(JavaBuildVersion)
@@ -131,7 +131,7 @@ stages:
             inputs:
               mavenPomFile: pom.xml
               goals: verify
-              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(SpringProjectPathList)'
             env: ${{ parameters.EnvVars }}
 
           - powershell: |

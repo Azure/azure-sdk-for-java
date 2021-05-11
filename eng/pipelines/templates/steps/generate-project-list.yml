@@ -12,12 +12,21 @@ steps:
     Write-Host "##vso[task.setvariable variable=ProjectList;]"
   displayName: Initialize project list variable
 
+- pwsh: |
+    Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]"
+  displayName: Initialize spring project path list variable
+
 # These artifacts are the principal outputs of the build. We source
 # them from the artifact list.
 - ${{each artifact in parameters.Artifacts }}:
   - pwsh: |
       Write-Host "##vso[task.setvariable variable=ProjectList;]$(ProjectList),${{artifact.groupId}}:${{artifact.name}}"
     displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project list
+
+  - ${{if eq(artifact.groupId, 'com.azure.spring')}}:
+    - pwsh: |
+        Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]$(SpringProjectPathList),./sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}"
+      displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project path list
 
 # From time to time we might need to also build another module which
 # we don't actually want to ship, so we list that here. We can't rely
@@ -29,3 +38,8 @@ steps:
   - pwsh: |
       Write-Host "##vso[task.setvariable variable=ProjectList;]$(ProjectList),${{artifact.groupId}}:${{artifact.name}}"
     displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project list
+
+  - ${{if and(eq(artifact.groupId, 'com.azure.spring'), contains(artifact.name, '-sample'))}}:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]$(SpringProjectPathList),./sdk/${{parameters.ServiceDirectory}}/azure-spring-boot-samples/${{artifact.name}}"
+        displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project path list
