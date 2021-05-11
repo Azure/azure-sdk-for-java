@@ -4,7 +4,7 @@
 package com.azure.test.aad.b2c.selenium;
 
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -69,7 +69,7 @@ public class AADB2CIT {
         assertEquals("Sign in", signInButtonText);
     }
 
-    @AfterAll
+    @AfterEach
     public void destroy() {
         aadB2CSeleniumITHelper.destroy();
     }

@@ -1,65 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetaccesspolicy04078073414b2a0614",
+    "Uri" : "https://REDACTED.queue.core.windows.net/a634f3d7a634f3d7d5f51092ecbef94b3f854d8599",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "11daafb4-a988-4202-86f8-fb9efade17bd"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5190dec3-83f8-4532-862d-8ce05a69e869"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "37a39dfd-3003-009b-1303-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:04:59 GMT",
-      "x-ms-client-request-id" : "11daafb4-a988-4202-86f8-fb9efade17bd"
+      "x-ms-request-id" : "10a7c4cc-c003-0044-7709-417c1e000000",
+      "x-ms-client-request-id" : "5190dec3-83f8-4532-862d-8ce05a69e869",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetaccesspolicy04078073414b2a0614?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/a634f3d7a634f3d7d5f51092ecbef94b3f854d8599?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7c2327d9-260d-4e99-9df9-54acc71fbf32",
-      "Content-Type" : "application/xml; charset=utf-8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7dfbb3a8-6ea6-4fc4-a913-bfc7ecc710ab",
+      "Content-Type" : "application/xml"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "37a39e0b-3003-009b-1d03-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:04:59 GMT",
-      "x-ms-client-request-id" : "7c2327d9-260d-4e99-9df9-54acc71fbf32"
+      "x-ms-request-id" : "2b95110a-0003-0006-4c09-41c59e000000",
+      "x-ms-client-request-id" : "7dfbb3a8-6ea6-4fc4-a913-bfc7ecc710ab",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestssetaccesspolicy04078073414b2a0614?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/a634f3d7a634f3d7d5f51092ecbef94b3f854d8599?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "d23212f0-6098-4390-9d18-53b1d707975a"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9116ebd6-f183-4672-82cf-397877b6960a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2020-06-12",
       "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "37a39e18-3003-009b-2803-3a8ca5000000",
+      "x-ms-request-id" : "6c1f5718-d003-0077-4609-4123b5000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers><SignedIdentifier><Id>testpermission</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>raup</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>",
-      "Date" : "Thu, 04 Jun 2020 00:04:59 GMT",
-      "x-ms-client-request-id" : "d23212f0-6098-4390-9d18-53b1d707975a",
+      "x-ms-client-request-id" : "9116ebd6-f183-4672-82cf-397877b6960a",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetaccesspolicy04078073414b2a0614" ]
+  "variables" : [ "a634f3d7a634f3d7d5f51092ecbef94b3f854d8599" ]
 }

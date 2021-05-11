@@ -9,7 +9,7 @@ import com.azure.communication.sms.models.SmsSendResult;
 
 public class SendSmsToASinglePhoneExample {
     public static void main(String[] args) {
-        String connectionString = System.getenv("COMMUNICATION_CONNECTION_STRING");
+        String connectionString = System.getenv("COMMUNICATION_SAMPLES_CONNECTION_STRING");
         String phoneNumber = System.getenv("COMMUNICATION_PHONE_NUMBER");
         SmsClient smsClient = new SmsClientBuilder()
             .connectionString(connectionString)

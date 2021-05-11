@@ -10,7 +10,7 @@
 
 # BOM
 # PRLabel: %Azure.Core
-/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
+/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy @pallavit
 # PRLabel: %azure-spring
 /sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 
@@ -82,7 +82,7 @@
 /sdk/schemaregistry/                                @arerlend @sjkwak
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @mssfang @samvaity @conniey
+/sdk/search/                                        @alzimmermsft @hemanttanwar @mssfang @samvaity @conniey
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey @yijunxiems

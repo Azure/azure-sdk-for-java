@@ -1,7 +1,10 @@
 # Release History
 
-## 12.9.0-beta.4 (Unreleased)
+## 12.10.0-beta.1 (Unreleased)
 
+
+## 12.9.0 (2021-04-29)
+- GA release
 
 ## 12.9.0-beta.3 (2021-04-16)
 - Updated azure-storage-common dependencies.
@@ -58,7 +61,7 @@ String messageText = body.toString();
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version.
 
-## 12.6.0-beta.1 (2019-07-07)
+## 12.6.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
 
 ## 12.5.2 (2020-06-12)
@@ -114,7 +117,7 @@ and
 - Added support for emulator endpoints
 - Renamed QueueSasPermission getters to use has prefix
 
-## 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's

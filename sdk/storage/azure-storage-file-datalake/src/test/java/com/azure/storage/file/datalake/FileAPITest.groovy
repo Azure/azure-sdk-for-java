@@ -7,19 +7,22 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.blob.models.BlockListType
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.FileExpirationOffset
 import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
@@ -36,12 +39,13 @@ import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
-import spock.lang.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.Requires
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -968,7 +972,7 @@ class FileAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def fileClient = getFileClient(primaryCredential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
 
         fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
         fc.flush(defaultDataSize)
@@ -1104,7 +1108,7 @@ class FileAPITest extends APISpec {
 
     def "Download to file exists"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -1125,7 +1129,7 @@ class FileAPITest extends APISpec {
 
     def "Download to file exists succeeds"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -1144,7 +1148,7 @@ class FileAPITest extends APISpec {
 
     def "Download to file does not exist"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -1163,7 +1167,7 @@ class FileAPITest extends APISpec {
 
     def "Download file does not exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -1186,7 +1190,7 @@ class FileAPITest extends APISpec {
 
     def "Download file exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -1208,13 +1212,13 @@ class FileAPITest extends APISpec {
         testFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1240,14 +1244,14 @@ class FileAPITest extends APISpec {
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file sync buffer copy"() {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceClient = new DataLakeServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .credential(env.dataLakeAccount.credential)
             .buildClient()
 
         def fileClient = datalakeServiceClient.createFileSystem(fileSystemName)
@@ -1256,7 +1260,7 @@ class FileAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         fileClient.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1282,14 +1286,14 @@ class FileAPITest extends APISpec {
         50 * Constants.MB    | _ // large file requiring multiple requests
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file async buffer copy"() {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceAsyncClient = new DataLakeServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .credential(env.dataLakeAccount.credential)
             .buildAsyncClient()
 
         def fileAsyncClient = datalakeServiceAsyncClient.createFileSystem(fileSystemName).block()
@@ -1297,7 +1301,7 @@ class FileAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         fileAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1330,7 +1334,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1363,7 +1367,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1384,7 +1388,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1442,7 +1446,7 @@ class FileAPITest extends APISpec {
         setup:
         def file = getRandomFile(defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1474,13 +1478,13 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("failing in ci")
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(Constants.MB)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
         expect:
@@ -1538,12 +1542,12 @@ class FileAPITest extends APISpec {
         outFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
         fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1891,7 +1895,7 @@ class FileAPITest extends APISpec {
     def "Append data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2094,7 +2098,7 @@ class FileAPITest extends APISpec {
     // "No overwrite interrupted" tests were not ported over for datalake. This is because the access condition check
     // occurs on the create method, so simple access conditions tests suffice.
     @Unroll
-    @Requires({liveMode()}) // Test uploads large amount of data
+    @LiveOnly // Test uploads large amount of data
     def "Upload from file"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2208,7 +2212,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2261,7 +2265,7 @@ class FileAPITest extends APISpec {
         100      | 50               | 20        || 5 // Test that blockSize is respected
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload empty"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2272,7 +2276,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload empty buffers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2295,8 +2299,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() }) // Test uploads large amount of data
-    @Ignore("Timeouts")
+    @LiveOnly // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
@@ -2367,8 +2370,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
-    @Ignore // Hanging in pipeline
+    @LiveOnly
     def "Buffered upload with reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2401,8 +2403,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({liveMode()}) // Test uploads large amount of data
-    @Ignore("Timeouts")
+    @LiveOnly // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
@@ -2438,7 +2439,7 @@ class FileAPITest extends APISpec {
 
     // These two tests are to test optimizations in buffered upload for small files.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2463,7 +2464,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing hot flux"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2488,11 +2489,11 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getFileAsyncClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2504,7 +2505,7 @@ class FileAPITest extends APISpec {
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         then:
-        def fcAsync = getFileAsyncClient(primaryCredential, fc.getFileUrl())
+        def fcAsync = getFileAsyncClient(env.dataLakeAccount.credential, fc.getFileUrl())
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fcAsync.read())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
@@ -2517,7 +2518,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload sync handle pathing with transient failure"() {
         /*
         This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
@@ -2525,7 +2526,7 @@ class FileAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2557,7 +2558,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload headers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2592,7 +2593,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload metadata"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2623,8 +2624,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
-//    @Ignore("failing in ci")
+    @LiveOnly
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2665,7 +2665,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload AC"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2698,7 +2698,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload AC fail"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2734,7 +2734,7 @@ class FileAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2838,7 +2838,7 @@ class FileAPITest extends APISpec {
 //            })
 //    }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload default no overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2849,7 +2849,7 @@ class FileAPITest extends APISpec {
             .verifyError(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2953,6 +2953,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5)
     def "Query min"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2998,6 +2999,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Retry(count = 5)
     def "Query csv serialization separator"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3113,6 +3115,7 @@ class FileAPITest extends APISpec {
 
     /* Note: Input delimited tested everywhere else. */
     @Unroll
+    @Retry(count = 5)
     def "Query Input json"() {
         setup:
         FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
@@ -3152,6 +3155,42 @@ class FileAPITest extends APISpec {
         10        | '\n'            || _
         100       | '\n'            || _
         1000      | '\n'            || _
+    }
+
+    @Unroll
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    def "Query Input parquet"() {
+        setup:
+        String fileName = "parquet.parquet"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        FileQueryParquetSerialization ser = new FileQueryParquetSerialization()
+        fc.uploadFromFile(f.getAbsolutePath(), true)
+        byte[] expectedData = "0,mdifjt55.ea3,mdifjt55.ea3\n".getBytes()
+
+        def expression = "select * from blobstorage where id < 1;"
+
+        FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(ser)
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(ser)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue()
+        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+
+        then:
+        notThrown(IOException)
+        queryData == expectedData
+
+        /* Output Stream. */
+        when:
+        fc.queryWithResponse(optionsOs, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        osData == expectedData
     }
 
     def "Query Input csv Output json"() {
@@ -3194,6 +3233,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
         FileQueryJsonSerialization inSer = new FileQueryJsonSerialization()
@@ -3234,6 +3274,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3270,6 +3311,7 @@ class FileAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3380,7 +3422,7 @@ class FileAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
-    @Requires( { liveMode() } ) // Large amount of data.
+    @LiveOnly // Large amount of data.
     def "Query multiple records with progress receiver"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3481,6 +3523,29 @@ class FileAPITest extends APISpec {
         when:
         options = new FileQueryOptions(expression, new ByteArrayOutputStream())
             .setInputSerialization(inSer)
+        fc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    def "Query parquet output IA"() {
+        setup:
+        def outSer = new FileQueryParquetSerialization()
+        def expression = "SELECT * from BlobStorage"
+        FileQueryOptions options = new FileQueryOptions(expression)
+            .setOutputSerialization(outSer)
+
+        when:
+        InputStream stream = fc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setOutputSerialization(outSer)
         fc.queryWithResponse(options, null, null)
 
         then:
@@ -3605,7 +3670,7 @@ class FileAPITest extends APISpec {
 
     def "Schedule deletion time"() {
         given:
-        OffsetDateTime now = getUTCNow()
+        OffsetDateTime now = namer.getUtcNow()
         def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(now.plusDays(1))
         def fileClient = fsc.getFileClient(generatePathName())
         fileClient.create()
@@ -3620,7 +3685,7 @@ class FileAPITest extends APISpec {
 
     def "Schedule deletion error"() {
         given:
-        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(getUTCNow().plusDays(1))
+        def fileScheduleDeletionOptions = new FileScheduleDeletionOptions(namer.getUtcNow().plusDays(1))
         def fileClient = fsc.getFileClient(generatePathName())
 
         when:
@@ -3710,7 +3775,7 @@ class FileAPITest extends APISpec {
         20 * Constants.KB || _  /* Greater than copyToOutputStream buffer size, Less than maxSingleUploadSize */
     }
 
-    @Requires({ liveMode() }) /* Flaky in playback. */
+    @LiveOnly /* Flaky in playback. */
     def "Upload input stream large data"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.MB)
@@ -3744,7 +3809,7 @@ class FileAPITest extends APISpec {
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
     @Unroll
-    @Requires({ liveMode() }) /* Flaky in playback. */
+    @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -3775,7 +3840,7 @@ class FileAPITest extends APISpec {
             .getValue().getETag() != null
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     // Reading from recordings will not allow for the timing of the test to work correctly.
     def "Upload timeout"() {
         setup:
@@ -3793,7 +3858,7 @@ class FileAPITest extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def fileClient = getFileClient(primaryCredential, fc.getFileUrl(), getPerCallVersionPolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = fileClient.getPropertiesWithResponse(null, null, null)

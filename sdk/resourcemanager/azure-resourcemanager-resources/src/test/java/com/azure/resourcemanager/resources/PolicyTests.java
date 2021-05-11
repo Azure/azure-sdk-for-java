@@ -39,15 +39,17 @@ public class PolicyTests extends ResourceManagementTest {
             Assertions.assertEquals(PolicyType.CUSTOM, definition.policyType());
             Assertions.assertEquals(displayName, definition.displayName());
             Assertions.assertEquals("This is my policy", definition.description());
-            // List
-            PagedIterable<PolicyDefinition> definitions = resourceClient.policyDefinitions().list();
-            boolean found = false;
-            for (PolicyDefinition def : definitions) {
-                if (definition.id().equalsIgnoreCase(def.id())) {
-                    found = true;
+            if (!isPlaybackMode()) {
+                // List
+                PagedIterable<PolicyDefinition> definitions = resourceClient.policyDefinitions().list();
+                boolean found = false;
+                for (PolicyDefinition def : definitions) {
+                    if (definition.id().equalsIgnoreCase(def.id())) {
+                        found = true;
+                    }
                 }
+                Assertions.assertTrue(found);
             }
-            Assertions.assertTrue(found);
             // Get
             definition = resourceClient.policyDefinitions().getByName(policyName);
             Assertions.assertNotNull(definition);
