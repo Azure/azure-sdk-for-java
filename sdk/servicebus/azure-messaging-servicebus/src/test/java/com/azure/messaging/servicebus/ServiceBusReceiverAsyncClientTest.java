@@ -316,26 +316,28 @@ class ServiceBusReceiverAsyncClientTest {
 
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             Duration.ofSeconds(30), true);
+        // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
+        try (
+            MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
+                invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), receiverOptions,
+                    new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()))) {
 
-        MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
-            invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), receiverOptions,
-                new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()));
+            ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+            when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+            when(receivedMessage.getLockToken()).thenReturn(lockToken);
 
-        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
-        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
-        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+            when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+                .thenReturn(receivedMessage);
 
-        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
-            .thenReturn(receivedMessage);
+            // Act & Assert
+            StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
+                .then(() -> messages.forEach(messageSink::next))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
 
-        // Act & Assert
-        StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(messageSink::next))
-            .expectNextCount(numberOfEvents)
-            .verifyComplete();
-
-        // Message onNext should not trigger `FluxAutoLockRenew` for each message because this is session entity.
-        Assertions.assertEquals(0, mockedAutoLockRenew.constructed().size());
+            // Message onNext should not trigger `FluxAutoLockRenew` for each message because this is session entity.
+            Assertions.assertEquals(0, mockedAutoLockRenew.constructed().size());
+        }
     }
 
     /**

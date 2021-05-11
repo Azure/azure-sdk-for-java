@@ -90,7 +90,7 @@ public class FluxAutoLockRenewTest {
         lockedUntil = OffsetDateTime.now().plusSeconds(2);
         receivedMessage.setLockToken(LOCK_TOKEN_UUID);
         receivedMessage.setLockedUntil(lockedUntil);
-        renewalFunction = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(1));
+        renewalFunction = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(10));
         defaultReceiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             MAX_AUTO_LOCK_RENEW_DURATION, true);
 
