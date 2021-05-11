@@ -4,6 +4,7 @@ import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import spock.lang.Requires
 import spock.lang.Shared
 
@@ -14,11 +15,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
     BlobContainerClient cc
 
     String keyId
-
-    @Shared
     def fakeKey
-
-    @Shared
     def fakeKeyResolver
 
 
@@ -27,26 +24,25 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        cc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        cc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
         def blobName = generateBlobName()
 
-        beac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        beac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(blobName)
             .buildEncryptedBlobAsyncClient()
 
-        bec = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .buildEncryptedBlobClient()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encrypted blob output stream not a no op"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -63,7 +59,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         os.toByteArray() != data
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encrypted blob output stream"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -77,7 +73,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(bec.openInputStream()) == data
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encrypted blob output stream default no overwrite"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -94,7 +90,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encrypted blob output stream default no overwrite interrupted"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -115,7 +111,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         ((BlobStorageException) e.getCause()).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encrypted blob output stream overwrite"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)

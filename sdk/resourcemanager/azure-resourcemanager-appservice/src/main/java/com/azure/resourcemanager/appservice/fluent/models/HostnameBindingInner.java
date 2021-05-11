@@ -245,6 +245,13 @@ public class HostnameBindingInner extends ProxyOnlyResource {
         return this.virtualIp;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HostnameBindingInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

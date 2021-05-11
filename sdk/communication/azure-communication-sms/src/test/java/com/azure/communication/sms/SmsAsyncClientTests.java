@@ -12,11 +12,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -150,10 +148,8 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response)
-            .expectError().verify();
-        // TODO: re-enable this when service change is made
-        //.expectErrorMatches(exception ->
-        //        ((HttpResponseException) exception).getResponse().getStatusCode() == 401).verify();
+        .expectErrorMatches(exception ->
+               ((HttpResponseException) exception).getResponse().getStatusCode() == 401).verify();
     }
 
     @ParameterizedTest
@@ -223,7 +219,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
         Mono<SmsSendResult> response = asyncClient.send(from, TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response).verifyError();
     }
-
 
     private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();

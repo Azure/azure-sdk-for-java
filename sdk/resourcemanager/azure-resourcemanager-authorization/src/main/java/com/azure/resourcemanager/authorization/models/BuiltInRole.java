@@ -147,6 +147,9 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     /** A role that can manage websites, but not the web plans to which they are connected. */
     public static final BuiltInRole WEBSITE_CONTRIBUTOR = BuiltInRole.fromString("Website Contributor");
 
+    /** A role that can manage key vaults, but not access to them. */
+    public static final BuiltInRole KEY_VAULT_CONTRIBUTOR = BuiltInRole.fromString("Key Vault Contributor");
+
     // Storage data related roles
     /** Storage Account Key Operators are allowed to list and regenerate keys on Storage Accounts. */
     public static final BuiltInRole STORAGE_ACCOUNT_KEY_OPERATOR_SERVICE_ROLE =
@@ -178,6 +181,35 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     /** Allows for read, write, and delete access in Azure Storage file shares over SMB. */
     public static final BuiltInRole STORAGE_FILE_DATA_SMB_SHARE_CONTRIBUTOR =
         BuiltInRole.fromString("Storage File Data SMB Share Contributor");
+
+    // Key Vault data related roles
+    /**
+     * Perform all data plane operations on a key vault and all objects in it, including certificates, keys, and
+     * secrets.
+     */
+    public static final BuiltInRole KEY_VAULT_ADMINISTRATOR =
+        BuiltInRole.fromString("Key Vault Administrator");
+    /** Perform any action on the keys of a key vault, except manage permissions. */
+    public static final BuiltInRole KEY_VAULT_CRYPTO_OFFICER =
+        BuiltInRole.fromString("Key Vault Crypto Officer");
+    /** Perform cryptographic operations using keys. */
+    public static final BuiltInRole KEY_VAULT_CRYPTO_USER =
+        BuiltInRole.fromString("Key Vault Crypto User");
+    /** Perform any action on the secrets of a key vault, except manage permissions. */
+    public static final BuiltInRole KEY_VAULT_SECRETS_OFFICER =
+        BuiltInRole.fromString("Key Vault Secrets Officer");
+    /** Read secret contents. */
+    public static final BuiltInRole KEY_VAULT_SECRETS_USER =
+        BuiltInRole.fromString("Key Vault Secrets User");
+    /** Perform any action on the certificates of a key vault, except manage permissions. */
+    public static final BuiltInRole KEY_VAULT_CERTIFICATES_OFFICER =
+        BuiltInRole.fromString("Key Vault Certificates Officer");
+    /** Read metadata of key vaults and its certificates, keys, and secrets. */
+    public static final BuiltInRole KEY_VAULT_READER =
+        BuiltInRole.fromString("Key Vault Reader");
+    /** Read metadata of keys and perform wrap/unwrap operations. */
+    public static final BuiltInRole KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER =
+        BuiltInRole.fromString("Key Vault Crypto Service Encryption User");
 
     /**
      * Finds or creates a role instance based on the specified name.
