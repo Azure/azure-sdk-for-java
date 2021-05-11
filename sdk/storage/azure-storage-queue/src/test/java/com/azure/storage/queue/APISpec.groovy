@@ -49,35 +49,30 @@ class APISpec extends StorageSpec {
     }
 
     def queueServiceBuilderHelper() {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
+        QueueServiceClientBuilder builder = instrument(new QueueServiceClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
     }
 
     def queueBuilderHelper() {
         def queueName = namer.getRandomName(60)
-        QueueClientBuilder builder = new QueueClientBuilder()
+        QueueClientBuilder builder = instrument(new QueueClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
             .queueName(queueName)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
     }
 
     QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -87,11 +82,8 @@ class APISpec extends StorageSpec {
     }
 
     QueueClientBuilder getQueueClientBuilder(String endpoint) {
-        QueueClientBuilder builder = new QueueClientBuilder()
+        QueueClientBuilder builder = instrument(new QueueClientBuilder())
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .addPolicy(getRecordPolicy())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
         return builder
     }
 

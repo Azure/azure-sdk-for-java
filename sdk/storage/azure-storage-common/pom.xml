@@ -132,7 +132,8 @@
             </goals>
             <configuration>
               <includes>
-                <include>com/azure/storage/common/test/shared/*</include>
+                <include>com/azure/storage/common/test/shared/**/*</include>
+                <include>SpockConfig.groovy</include>
               </includes>
             </configuration>
           </execution>
