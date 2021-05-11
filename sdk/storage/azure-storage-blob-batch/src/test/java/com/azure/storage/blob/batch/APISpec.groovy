@@ -3,15 +3,8 @@
 
 package com.azure.storage.blob.batch
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.Configuration
-import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobContainerClientBuilder
@@ -24,7 +17,6 @@ import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
-import spock.lang.Shared
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -57,17 +49,9 @@ class APISpec extends StorageSpec {
     BlobServiceClient versionedBlobServiceClient
 
     def setup() {
-        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        versionedBlobServiceClient = setClient(env.versionedAccount)
-    }
-
-    BlobServiceClient setClient(TestAccount account) {
-        try {
-            return getServiceClient(account)
-        } catch (Exception ignore) {
-            return null
-        }
+        versionedBlobServiceClient = getServiceClient(env.versionedAccount)
     }
 
     def getOAuthServiceClient() {
