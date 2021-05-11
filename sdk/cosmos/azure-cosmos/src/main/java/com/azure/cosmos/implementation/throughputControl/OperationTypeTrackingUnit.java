@@ -19,16 +19,12 @@ public class OperationTypeTrackingUnit {
     private final AtomicInteger successResponse;
     private final AtomicInteger failedResponse;
     private final OperationType operationType;
-    private final AtomicInteger responseOutofCycle;
-    private final AtomicInteger requestsRetried;
 
     public OperationTypeTrackingUnit(OperationType operationType) {
         this.rejectedRequests = new AtomicInteger(0);
         this.passedRequests = new AtomicInteger(0);
         this.successRuUsage = new AtomicReference<>(0d);
         this.operationType = operationType;
-        this.responseOutofCycle = new AtomicInteger(0);
-        this.requestsRetried = new AtomicInteger(0);
         this.successResponse = new AtomicInteger(0);
         this.failedResponse = new AtomicInteger(0);
     }
@@ -40,13 +36,11 @@ public class OperationTypeTrackingUnit {
         }
 
         return String.format(
-            "Operation type: %s: [rejectedRequests: %s, passedRequests: %s, sAvgRu: %s, outOfCycle: %s, retried: %s, successResponse: %s, failedResponse: %s]",
+            "Operation type: %s: [rejectedRequests: %s, passedRequests: %s, sAvgRu: %s, successResponse: %s, failedResponse: %s]",
             this.operationType.toString(),
             this.rejectedRequests.get(),
             this.passedRequests.get(),
             sAvgRuPerRequest,
-            this.responseOutofCycle.get(),
-            this.requestsRetried.get(),
             this.successResponse.get(),
             this.failedResponse.get());
     }
@@ -55,8 +49,6 @@ public class OperationTypeTrackingUnit {
         this.rejectedRequests.set(0);
         this.passedRequests.set(0);
         this.successRuUsage.set(0d);
-        this.responseOutofCycle.set(0);
-        this.requestsRetried.set(0);
         this.successResponse.set(0);
         this.failedResponse.set(0);
     }
@@ -69,14 +61,6 @@ public class OperationTypeTrackingUnit {
         this.rejectedRequests.incrementAndGet();
     }
 
-    public void increaseOutOfCycleResponse() {
-        this.responseOutofCycle.incrementAndGet();
-    }
-
-    public void increaseRetriedRequests() {
-        this.requestsRetried.incrementAndGet();
-    }
-
     public void increaseSuccessResponse() {
         this.successResponse.incrementAndGet();
     }
@@ -87,5 +71,13 @@ public class OperationTypeTrackingUnit {
 
     public void trackRRuUsage(double ruUsage) {
         this.successRuUsage.getAndAccumulate(ruUsage, (available, newRu) -> available + newRu);
+    }
+
+    public int getRejectedRequests() {
+        return rejectedRequests.get();
+    }
+
+    public int getPassedRequests() {
+        return passedRequests.get();
     }
 }

@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +55,9 @@ public class ThroughputRequestThrottler {
             this.scheduledThroughput.set(scheduledThroughput);
             this.updateAvailableThroughput();
             for (OperationTypeTrackingUnit trackingUnit : this.trackingDictionary.values()) {
-                logger.info(this.pkRangeId + " " + trackingUnit.logStatistics());
+                if (trackingUnit.getRejectedRequests() > 0 || trackingUnit.getPassedRequests() > 0) {
+                    logger.info(this.cycleId + ":" + this.pkRangeId + ":" + throughputUsagePercentage + ":" + trackingUnit.logStatistics());
+                }
                 trackingUnit.reset();
             }
             this.cycleId = UUID.randomUUID().toString();
@@ -83,12 +84,6 @@ public class ThroughputRequestThrottler {
                 return trackingUnit1;
             }));
 
-            if (StringUtils.isEmpty(request.throughputControlCycleId)) {
-                request.throughputControlCycleId = this.cycleId;
-            } else{
-                trackingUnit.increaseRetriedRequests();
-            }
-
             if (this.availableThroughput.get() > 0) {
                 trackingUnit.increasePassedRequest();
 
@@ -101,7 +96,8 @@ public class ThroughputRequestThrottler {
                 // there is no enough throughput left, block request
                 RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
 
-                int backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
+                int backoffTimeInMilliSeconds = (int)Math.ceil(Math.abs(this.availableThroughput.get() / this.scheduledThroughput.get())) * 1000;
+                //int backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
 
                 requestRateTooLargeException.getResponseHeaders().put(
                     HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
@@ -120,7 +116,6 @@ public class ThroughputRequestThrottler {
         } finally {
             this.throughputReadLock.unlock();
         }
-
     }
 
     private <T> void trackRequestCharge (RxDocumentServiceRequest request, T response) {
@@ -156,12 +151,6 @@ public class ThroughputRequestThrottler {
                         return trackingUnit;
                     });
                 }
-            }
-            if (!StringUtils.equals(this.cycleId, request.throughputControlCycleId)) {
-                this.trackingDictionary.computeIfPresent(request.getOperationType(), (type, trackingUnit) -> {
-                    trackingUnit.increaseOutOfCycleResponse();
-                    return trackingUnit;
-                });
             }
             this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
         } finally {
