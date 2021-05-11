@@ -207,7 +207,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 }
             }
         }
-
         return alias;
     }
 
