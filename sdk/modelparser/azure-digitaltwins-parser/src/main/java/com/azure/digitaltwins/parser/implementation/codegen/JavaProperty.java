@@ -62,7 +62,7 @@ public class JavaProperty extends JavaStatement {
      */
     JavaProperty getter(Access access, String description) {
         String getterMethodName = getMethodName(this.propertyName, "get");
-        JavaMethod setterMethod = new JavaMethod(true, access, Novelty.NORMAL, propertyType, getterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
+        JavaMethod setterMethod = new JavaMethod(true, access, Novelty.NORMAL, this.propertyType, getterMethodName, Multiplicity.INSTANCE, Mutability.MUTABLE);
 
         if (description != null) {
             if (!description.endsWith(".")) {

@@ -50,7 +50,7 @@ public final class CodeGeneratorTask {
         this.outputDirectory = outputDirectory;
     }
 
-    public boolean run() throws IOException {
+    public boolean run() throws Exception {
         logger.info("Reading metamodel digest file from directory: " + this.digestFilePath);
 
         String digestText;
@@ -81,6 +81,7 @@ public final class CodeGeneratorTask {
         parserLibrary.jImport("java.util.HashSet");
         parserLibrary.jImport("java.util.Set");
         parserLibrary.jImport("java.util.regex.Pattern");
+        parserLibrary.jImport("com.fasterxml.jackson.databind.ObjectMapper");
 
         logger.info("Base class is " + metamodelDigest.getBaseClass());
 
@@ -100,7 +101,7 @@ public final class CodeGeneratorTask {
         return true;
     }
 
-    private List<TypeGenerator> generateMaterialClasses(MetamodelDigest metamodelDigest) {
+    private List<TypeGenerator> generateMaterialClasses(MetamodelDigest metamodelDigest) throws Exception {
         String baseKindEnum = NameFormatter.formatNameAsEnum(metamodelDigest.getBaseClass());
         String baseKindProperty = NameFormatter.formatNameAsEnumProperty(metamodelDigest.getBaseClass());
 

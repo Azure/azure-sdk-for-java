@@ -4,7 +4,22 @@
 package com.azure.digitaltwins.parser.tests.codegen;
 
 import com.azure.digitaltwins.parser.GeneratedCodeCompareBase;
-import com.azure.digitaltwins.parser.implementation.codegen.*;
+import com.azure.digitaltwins.parser.implementation.codegen.Access;
+import com.azure.digitaltwins.parser.implementation.codegen.Multiplicity;
+import com.azure.digitaltwins.parser.implementation.codegen.CodeWriter;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaScope;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
+import com.azure.digitaltwins.parser.implementation.codegen.Novelty;
+import com.azure.digitaltwins.parser.implementation.codegen.Mutability;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaMethod;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaElseIf;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaIf;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaConstructor;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaLine;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaWhile;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaTry;
+import com.azure.digitaltwins.parser.implementation.codegen.StyleException;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaElse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -854,9 +869,9 @@ public class ClassCodeGeneratorTests extends GeneratedCodeCompareBase {
             null,
             null);
 
-        javaClass.property(Access.PUBLIC, "String", "stringProp");
-        javaClass.property(Access.PROTECTED, "int", "intProp");
-        javaClass.property(Access.PRIVATE, "String", "privateStringProp");
+        javaClass.property(Access.PUBLIC, Access.PUBLIC, Access.PUBLIC, "String", "stringProp", null);
+        javaClass.property(Access.PROTECTED, Access.PROTECTED, Access.PROTECTED, "int", "intProp", null);
+        javaClass.property(Access.PRIVATE, Access.PRIVATE, Access.PRIVATE, "String", "privateStringProp", null);
 
         javaClass.generateCode(codeWriter);
 

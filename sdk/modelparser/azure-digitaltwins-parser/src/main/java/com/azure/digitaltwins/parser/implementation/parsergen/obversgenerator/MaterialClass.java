@@ -19,10 +19,11 @@ import com.azure.digitaltwins.parser.implementation.parsergen.MaterialPropertyDi
 import com.azure.digitaltwins.parser.implementation.parsergen.StringRestriction;
 import com.azure.digitaltwins.parser.implementation.parsergen.ParserGeneratorStringValues;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Represents a class that is materialized in the parser object model.
@@ -75,7 +76,7 @@ public class MaterialClass implements TypeGenerator {
         Map<String, Map<String, String>> contexts,
         Map<String, Map<Integer, StringRestriction>> classIdentifierDefinitionRestrictions,
         Map<Integer, List<ExtensibleMaterialClass>> extensibleMaterialClasses,
-        List<DescendantControl> descendantControls) {
+        List<DescendantControl> descendantControls) throws Exception {
 
         this.typeName = typeName;
         this.baseTypeName = baseTypeName;
@@ -126,7 +127,7 @@ public class MaterialClass implements TypeGenerator {
         }
 
         // TODO: uncomment once the material factory creates actual values.
-        // this.properties.sort(Comparator.comparing(MaterialProperty::getPropertyName));
+        this.properties.sort(Comparator.comparing(MaterialProperty::getPropertyName));
 
         if (this.parentClass == null) {
             this.properties.add(new InternalProperty(
@@ -188,8 +189,7 @@ public class MaterialClass implements TypeGenerator {
      */
     @Override
     public void generateCode(JavaLibrary parserLibrary) {
-        // TODO: properties is not yet filled in.
-        // boolean anyObjectProperties = this.properties.stream().anyMatch(p -> p.getPropertyKind() == PropertyKind.OBJECT);
+        //boolean anyObjectProperties = this.properties.stream().anyMatch(p -> p.getPropertyKind() == PropertyKind.OBJECT);
 
         JavaClass obverseClass = parserLibrary.jClass(
             Access.PUBLIC,
@@ -209,7 +209,32 @@ public class MaterialClass implements TypeGenerator {
         generateVersionlessTypes(obverseClass, staticDeclaration);
         generateConcreteKinds(obverseClass, staticDeclaration);
         generateBadTypeFormatStrings(obverseClass, staticDeclaration);
+
+        // TODO: azabbasi: MaterialClassEqualizer needs to be implemented.
+        // MaterialClassEqualizer.addMembers(obverseClass, this.className, this.baseClassName, this.kindProperty, this.parentClass == null, this.isAugmentable, this.properties);
+
+        if (!this.isAbstract) {
+            this.generateConstructor(obverseClass, true);
+        }
+
+        this.generateConstructor(obverseClass, false);
+
+        // TODO: Once concrete subclass has members implement
+        //for (Map.Entry<Integer, List<ConcreteSubclass>> kvp : this.concreteSubclasses.entrySet()) {
+        //    for (ConcreteSubclass concreteSubclass : kvp.getValue()) {
+        //        concreteSubclass.addMembers(obverseClass, this.typeName);
+        //    }
+        //}
+
+        for (MaterialProperty materialProperty : this.properties) {
+            materialProperty.addMembers(this.materialClassDigest.getDtdlVersions(), obverseClass, this.isAugmentable);
+        }
+
         // TODO: implement the rest.
+    }
+
+    private void generateConstructor(JavaClass obverseClass, boolean isConcrete) {
+        // TODO: azabbasi: implement the constructor.
     }
 
     private void generateBadTypeFormatStrings(JavaClass obverseClass, JavaScope staticDeclaration) {
@@ -284,11 +309,22 @@ public class MaterialClass implements TypeGenerator {
         for (String typeId : this.typeIds) {
             staticDeclaration.line("VERSION_LESS_TYPES.add(\"" + typeId + "\");");
         }
+
+        staticDeclaration.jBreak();
     }
 
     private String getImplementingInterfaces() {
-        // TODO: implement.
-        return null;
+        StringBuilder implementingBuilder = new StringBuilder();
+
+        implementingBuilder.append("TypeChecker, ");
+
+        if (this.isAugmentable && this.properties.stream().anyMatch(p -> p.getPropertyKind() == PropertyKind.OBJECT)) {
+            implementingBuilder.append("PropertyValueConstrainer, PropertyInstanceBinder, ");
+        }
+
+        implementingBuilder.append("Equatable<").append(this.className).append(">");
+
+        return implementingBuilder.toString();
     }
 
     private static Map<Integer, List<String>> createExtensibleMaterialSubtypes(MaterialClassDigest materialClassDigest) {

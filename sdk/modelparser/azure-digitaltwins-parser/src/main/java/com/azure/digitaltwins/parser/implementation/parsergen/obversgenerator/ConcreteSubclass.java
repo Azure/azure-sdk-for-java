@@ -76,7 +76,7 @@ public class ConcreteSubclass {
      * @param superclassType The name of the superclass to which the members are being added.
      */
     public void addMembers(JavaClass obverseClass, String superclassType) {
-        // TODO: to be implemented.
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -104,7 +104,7 @@ public class ConcreteSubclass {
         String elementIdVar,
         String parentIdVar,
         String definedInVar) {
-        // TODO: to be implemented.
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -134,7 +134,7 @@ public class ConcreteSubclass {
         String propNameVar,
         String keyValueVar,
         String idRequiredVar) {
-        // TODO: azabbasi: implement
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**

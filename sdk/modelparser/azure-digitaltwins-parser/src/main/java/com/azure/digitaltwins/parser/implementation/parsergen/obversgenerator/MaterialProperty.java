@@ -4,10 +4,12 @@
 package com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
+import com.azure.digitaltwins.parser.implementation.codegen.Access;
 import com.azure.digitaltwins.parser.implementation.codegen.JavaScope;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
 import com.azure.digitaltwins.parser.implementation.codegen.JavaSorted;
 import com.azure.digitaltwins.parser.implementation.codegen.JavaSwitch;
+
 import com.azure.digitaltwins.parser.implementation.parsergen.MaterialPropertyDigest;
 import com.azure.digitaltwins.parser.implementation.parsergen.ParserGeneratorStringValues;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,7 +20,7 @@ import java.util.Map;
 public abstract class MaterialProperty {
     private final ClientLogger logger = new ClientLogger(MaterialProperty.class);
 
-    private String propertyName;
+    protected String propertyName;
     protected String obversePropertyName;
     protected Map<Integer, String> propertyNameUris;
     protected MaterialPropertyDigest propertyDigest;
@@ -104,7 +106,7 @@ public abstract class MaterialProperty {
      * @return Gets the name of the key property if the property representation is a map, or null if it is not.
      */
     public String getKeyProperty() {
-        return null;
+        return this.keyProperty;
     }
 
     /**
@@ -188,7 +190,15 @@ public abstract class MaterialProperty {
      * @param classIsAugmentable True if the material class that has the property is augmentable.
      */
     public void addMembers(List<Integer> dtdlVersions, JavaClass obverseClass, boolean classIsAugmentable) {
-        // TODO: implement.
+        if (!this.getPropertyDigest().isInherited()) {
+            obverseClass.property(
+                Access.PUBLIC,
+                Access.PUBLIC,
+                Access.PACKAGE_PRIVATE,
+                this.getPropertyType(),
+                this.getObversePropertyName(),
+                "The value of the '".concat(this.propertyName).concat("' property of the DTDL element that corresponds to this object."));
+        }
     }
 
     /**
@@ -302,6 +312,7 @@ public abstract class MaterialProperty {
      * @param switchOnProperty The {@link JavaSwitch} to which to add the code.
      */
     public void addCaseToDictionaryKeySwitch(JavaSwitch switchOnProperty) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -310,6 +321,7 @@ public abstract class MaterialProperty {
      * @param constraintVariable Name of a ValueConstraint variable to add to the field.
      */
     public void addCaseForValueConstraintSwitch(JavaSwitch switchOnProperty, String constraintVariable) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -319,6 +331,7 @@ public abstract class MaterialProperty {
      * @param instancePropVariable Name of a string variable to add to the field.
      */
     public void addCaseForInstancePropertySwitch(JavaSwitch switchOnProperty, String instancePropVariable) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -330,66 +343,6 @@ public abstract class MaterialProperty {
      * @param classIsAugmentable True if the material class is augmentable.
      */
     public void addRestrictions(JavaScope checkRestrictionsMethodBody, int dtdlVersion, String typeName, boolean classIsAugmentable) {
-        // TODO: implement.
-    }
-
-    /**
-     * Add exemplification code for group property configuration.
-     *
-     * @param dtdlVersion The DTDL version to exemplify.
-     * @param exemplifyMethodBody A {@link JavaScope} object to which to add the code.
-     * @param infoVar Name of the variable that holds the element info.
-     * @param configuratorVar Name of the variable that holds a ClassConfigurator object that provides exemplification instructions.
-     * @param exemplifierVar Name of the variable that holds a ValueExemplifier object for exemplifying literal values.
-     * @param descendantRestrictionsVar Name of the variable that holds a list of TypeExclusion objects to restrict exemplification.
-     * @param keyVar Name of the variable that holds a value to be used for the key property if the parent exposes a collection of these elements as a map.
-     * @param segVar Name of the variable that holds a DTMI segment value, used for deriving an Id value from a parent identifier.
-     */
-    public abstract void addGroupExemplification(
-        int dtdlVersion,
-        JavaScope exemplifyMethodBody,
-        String infoVar,
-        String configuratorVar,
-        String exemplifierVar,
-        String descendantRestrictionsVar,
-        String keyVar,
-        String segVar);
-
-    /**
-     * Add exemplification code for target properties.
-     *
-     * @param dtdlVersion Add exemplification code for target properties.
-     * @param exemplifyMethodBody A {@link JavaScope} object to which to add the code.
-     * @param typeName The type name (DTDL term) corresponding to the material class.
-     * @param className The java name of the material class.
-     * @param kindProperty The property on the DTDL base obverse class that indicates the kind of DTDL element.
-     * @param infoVar Name of the variable that holds the element info.
-     * @param configuratorVar Name of the variable that holds a ClassConfigurator object that provides exemplification instructions.
-     * @param exemplifierVar Name of the variable that holds a <c>ValueExemplifier</c> object for exemplifying literal values.
-     * @param descendantRestrictionsVar Name of the variable that holds a list of TypeExclusion objects to restrict exemplification.
-     * @param keyVar Name of the variable that holds a value to be used for the key property if the parent exposes a collection of these elements as a dictionary.
-     * @param descendantControls A list of objects that implement the {@link DescendantControl} interface.
-     */
-    public abstract void addIndividualExemplification(
-        int dtdlVersion,
-        JavaScope exemplifyMethodBody,
-        String typeName,
-        String className,
-        String kindProperty,
-        String infoVar,
-        String configuratorVar,
-        String exemplifierVar,
-        String descendantRestrictionsVar,
-        String keyVar,
-        List<DescendantControl> descendantControls);
-
-    /**
-     * Add exemplification code for a property with a data-type given by a string variable.
-     *
-     * @param dtdlVersion The DTDL version to exemplify.
-     * @param scope A {@link JavaScope} object to which to add the code.
-     * @param datatypeVar Name of the variable that holds a DTDL schema ID indicating the appropriate data-type.
-     */
-    public void exemplifyDatatype(int dtdlVersion, JavaScope scope, String datatypeVar) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 }
