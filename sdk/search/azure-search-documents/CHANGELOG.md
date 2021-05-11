@@ -2,6 +2,13 @@
 
 ## 11.4.0-beta.3 (Unreleased)
 
+## 11.3.2 (2021-05-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
 
 ## 11.4.0-beta.2 (2021-05-10)
 
