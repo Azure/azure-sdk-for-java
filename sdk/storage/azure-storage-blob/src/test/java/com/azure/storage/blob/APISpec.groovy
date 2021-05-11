@@ -14,14 +14,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
-import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
-import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobProperties
-import com.azure.storage.blob.models.BlobRetentionPolicy
-import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -34,13 +30,10 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
-import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
-import spock.lang.Shared
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
@@ -118,7 +111,6 @@ class APISpec extends StorageSpec {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", env.testMode))
     }
 
     def setup() {
@@ -136,20 +128,23 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        def cleanupClient = getServiceClientBuilder(env.primaryAccount.credential,
-            env.primaryAccount.blobEndpoint, null)
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
-            .buildClient()
+        if (env.testMode != TestMode.PLAYBACK) {
+            def cleanupClient = new BlobServiceClientBuilder()
+                .httpClient(getHttpClient())
+                .credential(env.primaryAccount.credential)
+                .endpoint(env.primaryAccount.blobEndpoint)
+                .buildClient()
 
-        def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
-        for (def container : cleanupClient.listBlobContainers(options, null)) {
-            def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+            def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
+            for (def container : cleanupClient.listBlobContainers(options, null)) {
+                def containerClient = cleanupClient.getBlobContainerClient(container.getName())
 
-            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                }
+
+                containerClient.delete()
             }
-
-            containerClient.delete()
         }
     }
 

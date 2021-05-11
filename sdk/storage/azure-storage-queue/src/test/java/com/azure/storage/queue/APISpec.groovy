@@ -38,7 +38,6 @@ class APISpec extends StorageSpec {
     def cleanup() {
         if (env.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
-                .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(env.primaryAccount.connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()),

@@ -97,7 +97,7 @@ class APISpec extends StorageSpec {
     def fileSystemName
 
     def setup() {
-        primaryDataLakeServiceClient = setClient(env.dataLakeAccount)
+        primaryDataLakeServiceClient = getServiceClient(env.dataLakeAccount)
         primaryDataLakeServiceAsyncClient = getServiceAsyncClient(env.dataLakeAccount)
 
         fileSystemName = generateFileSystemName()
@@ -107,33 +107,29 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        def cleanupClient = getServiceClientBuilder(env.dataLakeAccount.credential,
-            env.dataLakeAccount.dataLakeEndpoint, null)
-            .buildClient()
+        if (env.testMode != TestMode.PLAYBACK) {
+            def cleanupClient = new DataLakeServiceClientBuilder()
+                .httpClient(getHttpClient())
+                .credential(env.dataLakeAccount.credential)
+                .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+                .buildClient()
 
-        def options = new ListFileSystemsOptions().setPrefix(namer.getResourcePrefix())
-        for (def fileSystem : cleanupClient.listFileSystems(options, null)) {
-            def fileSystemClient = cleanupClient.getFileSystemClient(fileSystem.getName())
+            def options = new ListFileSystemsOptions().setPrefix(namer.getResourcePrefix())
+            for (def fileSystem : cleanupClient.listFileSystems(options, null)) {
+                def fileSystemClient = cleanupClient.getFileSystemClient(fileSystem.getName())
 
-            if (fileSystem.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(fileSystemClient).breakLeaseWithResponse(0, null, null, null)
+                if (fileSystem.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(fileSystemClient).breakLeaseWithResponse(0, null, null, null)
+                }
+
+                fileSystemClient.delete()
             }
-
-            fileSystemClient.delete()
         }
     }
 
     //TODO: Should this go in core.
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
-    }
-
-    DataLakeServiceClient setClient(TestAccount account) {
-        try {
-            return getServiceClient(account)
-        } catch (Exception ignore) {
-            return null
-        }
     }
 
     def getOAuthServiceClient() {
@@ -149,10 +145,6 @@ class APISpec extends StorageSpec {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
             return builder.credential(env.dataLakeAccount.credential).buildClient()
         }
-    }
-
-    DataLakeServiceClient getServiceClient(String endpoint) {
-        return getServiceClient(null, endpoint, null)
     }
 
     DataLakeServiceClient getServiceClient(TestAccount account) {

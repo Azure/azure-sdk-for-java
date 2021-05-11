@@ -46,17 +46,21 @@ public final class TestEnvironment {
     private static TestMode readTestModeFromEnvironment() {
         String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
 
+        TestMode testMode;
         if (azureTestMode != null) {
             try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+                testMode = TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
             } catch (IllegalArgumentException ignored) {
                 LOGGER.error("Could not parse '{}' into TestMode. Using 'Playback' mode.", azureTestMode);
-                return TestMode.PLAYBACK;
+                testMode = TestMode.PLAYBACK;
             }
+        } else {
+            LOGGER.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+            testMode = TestMode.PLAYBACK;
         }
 
-        LOGGER.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
-        return TestMode.PLAYBACK;
+        System.out.println(String.format("--------%s---------", testMode));
+        return testMode;
     }
 
     private static TestAccount readTestAccountFromEnvironment(String prefix, TestMode testMode) {
