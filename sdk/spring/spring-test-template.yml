@@ -162,6 +162,7 @@ stages:
               AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
               AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
               AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+              AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)@aadittest1.onmicrosoft.com"
               AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
               AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
               AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
