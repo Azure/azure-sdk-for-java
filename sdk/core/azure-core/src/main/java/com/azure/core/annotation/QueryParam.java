@@ -52,7 +52,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *  String multipleParams(@QueryParam("avoid", multipleQueryParams = true) List&lt;String&gt; avoid);</pre>
  *
  * <p>The value of parameter avoid would look like this:
- * "<code>http://wq.com/foo/multiple/params?avoid=test1&avoid=test2&avoid=test3</code>"</p>
+ * "<code>http://wq.com/foo/multiple/params?avoid%3Dtest1{@literal &}avoid%3Dtest2{@literal &}avoid%3Dtest3</code>"</p>
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
