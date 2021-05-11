@@ -38,12 +38,12 @@ public class AADTrustedIssuerRepository {
 
     private static final String PATH_DELIMITER_V2 = "/v2.0";
 
-    private Set<String> trustedIssuers = new HashSet<>();
+    private final Set<String> trustedIssuers = new HashSet<>();
 
     /**
      * Place a mapping that cannot access metadata through issuer splicing /.well-known/openid-configuration.
      */
-    private Map<String, String> specialOidcIssuerLocationMap = new HashMap<>();
+    private final Map<String, String> specialOidcIssuerLocationMap = new HashMap<>();
 
     protected String tenantId;
 

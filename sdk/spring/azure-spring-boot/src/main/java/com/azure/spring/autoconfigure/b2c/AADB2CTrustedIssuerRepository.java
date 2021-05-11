@@ -9,6 +9,9 @@ import java.util.Map;
 
 import static java.util.Locale.ROOT;
 
+/**
+ * Construct a trusted aad b2c issuer repository.
+ */
 public class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
 
     private final String resolvedBaseUri;

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.AADTrustedIssuerRepository;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class AADResourceServerConfigurationTest {
 

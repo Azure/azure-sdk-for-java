@@ -24,14 +24,13 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private final AADJwtClaimValidator<String> validator;
 
-    private AADTrustedIssuerRepository trustedIssuerRepo;
+    private final AADTrustedIssuerRepository trustedIssuerRepo;
 
     /**
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public AADJwtIssuerValidator() {
-        this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, validIssuer());
+        this(null);
     }
 
     /**
@@ -41,8 +40,11 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public AADJwtIssuerValidator(AADTrustedIssuerRepository aadTrustedIssuerRepository) {
-        this.trustedIssuerRepo = aadTrustedIssuerRepository;
-        this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, trustedIssuerRepoValidIssuer());
+        if ((trustedIssuerRepo = aadTrustedIssuerRepository) == null) {
+            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, validIssuer());
+        } else {
+            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, trustedIssuerRepoValidIssuer());
+        }
     }
 
     private Predicate<String> trustedIssuerRepoValidIssuer() {
