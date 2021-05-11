@@ -49,7 +49,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <pre>
  * {@literal @}GET("http://wq.com/foo/multiple/params")
- * {@literal String} multipleParams(@QueryParam("avoid", multipleQueryParams = true) List<String>);</pre>
+ *  String multipleParams(@QueryParam("avoid", multipleQueryParams = true) List<String> avoid);</pre>
  *
  * <p>The value of parameter avoid would look like this:
  * "<code>http://wq.com/foo/multiple/params?avoid=test1&avoid=test2&avoid=test3</code>"</p>
