@@ -86,12 +86,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the jre key store.
      */
-    private static final KeyStore defaultKeyStore;
+    private static final KeyStore DEFAULT_KEY_STORE;
 
     /**
      * Stores the jre key store aliases.
      */
-     private static final Set<String> jreAliases;
+     private static final Set<String> JRE_ALIASES;
 
     /**
      * Constructor.
@@ -123,19 +123,16 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     static {
-        defaultKeyStore = JREKeyStore.getDefault();
-        jreAliases = new HashSet<>();
-        if(null != defaultKeyStore){
+        DEFAULT_KEY_STORE = JREKeyStore.getDefault();
+        JRE_ALIASES = new HashSet<>();
+        if (null != DEFAULT_KEY_STORE) {
             try {
-                jreAliases.addAll(Collections.list(defaultKeyStore.aliases()));
+                JRE_ALIASES.addAll(Collections.list(DEFAULT_KEY_STORE.aliases()));
             } catch (KeyStoreException e) {
                 LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
             }
-
         }
     }
-
-
 
     @Override
     public Enumeration<String> engineAliases() {
@@ -144,7 +141,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         }
         Set<String> als = new HashSet<>();
         als.addAll(aliases);
-        als.addAll(jreAliases);
+        als.addAll(JRE_ALIASES);
         return Collections.enumeration(als);
     }
 
@@ -177,9 +174,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
-            }else {
+            } else {
                 try {
-                    certificate = defaultKeyStore.getCertificate(alias);
+                    certificate = DEFAULT_KEY_STORE.getCertificate(alias);
                 } catch (KeyStoreException e) {
                     LOGGER.log(WARNING, "Unable to load certificate from jre Key store.", e);
                 }
@@ -202,9 +199,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     break;
                 }
             }
-            if (null == alias){
+            if (null == alias) {
                 try {
-                    alias = defaultKeyStore.getCertificateAlias(cert);
+                    alias = DEFAULT_KEY_STORE.getCertificateAlias(cert);
                 } catch (KeyStoreException e) {
                     LOGGER.log(WARNING, "Unable to load the alias from jre Key store.", e);
                 }
@@ -223,7 +220,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             chain[0] = certificate;
         }else {
             try {
-                chain = defaultKeyStore.getCertificateChain(alias);
+                chain = DEFAULT_KEY_STORE.getCertificateChain(alias);
             }catch (KeyStoreException e) {
                 LOGGER.log(WARNING, "Unable to load the certificate chain from jre Key store.", e);
             }
@@ -256,8 +253,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
-            }else {
-                key = JREKeyStore.getKey(defaultKeyStore, alias);
+            } else {
+                key = JREKeyStore.getKey(DEFAULT_KEY_STORE, alias);
             }
         }
         return key;
@@ -270,7 +267,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         }
         Set<String> als = new HashSet<>();
         als.addAll(aliases);
-        als.addAll(jreAliases);
+        als.addAll(JRE_ALIASES);
         return als.contains(alias);
     }
 
@@ -337,7 +334,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public int engineSize() {
         int size = 0;
         try {
-            size = defaultKeyStore.size();
+            size = DEFAULT_KEY_STORE.size();
         } catch (KeyStoreException e) {
             LOGGER.log(WARNING, "Unable to get the size of the jre key store." ,e);
         }
@@ -431,15 +428,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         }
     }
 
-    private static class JREKeyStore{
-        private static final String javaHome =  privilegedGetProperty("java.home", "");
-        private static final Path storePath= Paths.get(javaHome).resolve("lib").resolve("security");
-        private static final Path defaultStore = storePath.resolve("cacerts");
-        private static final Path jsseDefaultStore = storePath.resolve("jssecacerts");
-        private static final String keyStorePassword = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
-        private static final String keyPassword = keyStorePassword;
+    private static class JREKeyStore {
+        private static final String JAVA_HOME =  privilegedGetProperty("java.home", "");
+        private static final Path STORE_PATH = Paths.get(JAVA_HOME).resolve("lib").resolve("security");
+        private static final Path DEFAULT_STORE = STORE_PATH.resolve("cacerts");
+        private static final Path JSSE_DEFAULT_STORE = STORE_PATH.resolve("jssecacerts");
+        private static final String KEY_STORE_PASSWORD = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
+        private static final String KEY_PASSWORD = KEY_STORE_PASSWORD;
 
-        private static KeyStore getDefault(){
+        private static KeyStore getDefault() {
             KeyStore defaultKeyStore = null;
             try{
                 defaultKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -450,11 +447,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             return defaultKeyStore;
         }
 
-        private static void loadKeyStore(KeyStore ks){
-            if (null != ks){
-                try (final InputStream inStream = Files.newInputStream(getKeyStoreFile())) {
-                    ks.load(inStream, keyStorePassword.toCharArray());
-                }catch (IOException | NoSuchAlgorithmException | CertificateException e){
+        private static void loadKeyStore(KeyStore ks) {
+            if (null != ks) {
+                try (InputStream inStream = Files.newInputStream(getKeyStoreFile())) {
+                    ks.load(inStream, KEY_STORE_PASSWORD.toCharArray());
+                } catch (IOException | NoSuchAlgorithmException | CertificateException e) {
                     LOGGER.log(WARNING, "unable to load the jre key store", e);
                 }
             }
@@ -466,18 +463,18 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             return getStoreFile(storePropName);
         }
 
-        private static Path getStoreFile(String storePropName){
+        private static Path getStoreFile(String storePropName) {
             Path storeProp;
             if (storePropName.isEmpty()){
-                storeProp = jsseDefaultStore;
-            }else {
+                storeProp = JSSE_DEFAULT_STORE;
+            } else {
                 storeProp = Paths.get(storePropName);
             }
 
             Path[] fileNames =
-                new Path[]{storeProp, defaultStore};
+                new Path[]{storeProp, DEFAULT_STORE};
             for (Path fileName : fileNames) {
-                if (Files.exists(fileName) && Files.isReadable(fileName)){
+                if (Files.exists(fileName) && Files.isReadable(fileName)) {
                     return fileName;
                 }
             }
@@ -486,7 +483,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         private static Key getKey(KeyStore ks, String alias){
             try {
-                return  ks.getKey(alias, keyPassword.toCharArray());
+                return  ks.getKey(alias, KEY_PASSWORD.toCharArray());
             } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
                 LOGGER.log(WARNING, "Unable to get the key from jre key store.", e);
             }
