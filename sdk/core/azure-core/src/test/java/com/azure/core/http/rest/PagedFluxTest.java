@@ -483,7 +483,7 @@ public class PagedFluxTest {
     }
 
     private static <T> PagedResponse<T> createPagedResponse(String continuationToken, List<T> items) {
-        return new PagedResponseBase<Void, T>(null, 200, null, new Page<>() {
+        return new PagedResponseBase<Void, T>(null, 200, null, new Page<T>() {
             @Override
             public IterableStream<T> getElements() {
                 return IterableStream.of(items);
