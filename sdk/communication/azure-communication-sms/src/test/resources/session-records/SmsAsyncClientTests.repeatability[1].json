@@ -9,13 +9,13 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "576ms",
-      "MS-CV" : "+xDpsEy4H0OYi0wOoZK1aA.0",
+      "X-Processing-Time" : "665ms",
+      "MS-CV" : "6yjVZLjhfECjs8Rjljkpmw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0OsSVYAAAAADAKISuUrp5SbpX8z5zEWDoTEFYRURHRTEyMTgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0VqKZYAAAAADNAAfvh5M4T6ie+h2cPsRzTEFYRURHRTEyMTEAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210507225034d2e90272-c41c-4cec-8544-324c29dd7f77_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
-      "Date" : "Fri, 07 May 2021 22:50:34 GMT",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_2021051021150328ba0691-36e2-44ed-a368-56c54fd721c1_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210510211503d38c6498-0bab-426c-b35c-348fecd98821_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Date" : "Mon, 10 May 2021 21:15:02 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
