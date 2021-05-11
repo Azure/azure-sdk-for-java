@@ -299,26 +299,6 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Specifies if legacy Azure Power Shell should be used for Azure Power Shell based authentication.
-     *
-     * @param useLegacyPowerShell the flag indicating if legacy Azure Power Shell should be used for authentication.
-     * @return the updated identity client options
-     */
-    public IdentityClientOptions setUseLegacyPowerShell(boolean useLegacyPowerShell) {
-        this.useLegacyPowerShell = useLegacyPowerShell;
-        return this;
-    }
-
-    /**
-     * Get the status if legacy Azure Power Shell should be used for powershell based authentication.
-     *
-     * @return the flag indicating if legacy Azure Power Shell should be used.
-     */
-    public boolean getUseLegacyPowerShell() {
-        return this.useLegacyPowerShell;
-    }
-
-    /**
      * Check whether CP1 client capability should be disabled.
      *
      * @return the status indicating if CP1 client capability should be disabled.

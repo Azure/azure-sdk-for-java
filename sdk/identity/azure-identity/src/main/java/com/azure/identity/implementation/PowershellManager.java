@@ -29,37 +29,29 @@ public class PowershellManager {
     private Process process;
     private PrintWriter commandWriter;
     private boolean closed;
-    private static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
-    private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
-    private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
-    private static final String LEGACY_LINUX_PS_EXECUTABLE = "powershell";
     private int waitPause = 1000;
     private long maxWait = 10000L;
-    private final boolean legacyPowershell;
+    private final String powershellPath;
     private ExecutorService executorService;
 
 
-    public PowershellManager(boolean legacyPowershell) {
-        this.legacyPowershell = legacyPowershell;
+    public PowershellManager(String powershellPath) {
+        this.powershellPath = powershellPath;
     }
 
-    public PowershellManager(boolean legacyPowershell, ExecutorService executorService) {
-        this.legacyPowershell = legacyPowershell;
+    public PowershellManager(String powershellPath, ExecutorService executorService) {
+        this.powershellPath = powershellPath;
         this.executorService = executorService;
     }
 
     public Mono<PowershellManager> initSession() {
 
-        String powerShellExecutablePath = legacyPowershell
-            ? (Platform.isWindows() ? LEGACY_WINDOWS_PS_EXECUTABLE : LEGACY_LINUX_PS_EXECUTABLE)
-            : (Platform.isWindows() ? DEFAULT_WINDOWS_PS_EXECUTABLE : DEFAULT_LINUX_PS_EXECUTABLE);
-
         ProcessBuilder pb;
         if (Platform.isWindows()) {
             pb = new ProcessBuilder(new String[]{"cmd.exe", "/c", "chcp", "65001", ">", "NUL", "&",
-                powerShellExecutablePath, "-ExecutionPolicy", "Bypass", "-NoExit", "-NoProfile", "-Command", "-"});
+                powershellPath, "-ExecutionPolicy", "Bypass", "-NoExit", "-NoProfile", "-Command", "-"});
         } else {
-            pb = new ProcessBuilder(new String[]{powerShellExecutablePath, "-nologo", "-noexit", "-Command", "-"});
+            pb = new ProcessBuilder(new String[]{powershellPath, "-nologo", "-noexit", "-Command", "-"});
         }
 
         pb.redirectErrorStream(true);

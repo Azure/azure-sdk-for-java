@@ -42,6 +42,8 @@ import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.sun.jna.Platform;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -72,13 +74,14 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -99,6 +102,10 @@ public class IdentityClient {
     private static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
     private static final String LINUX_MAC_PROCESS_ERROR_MESSAGE = "(.*)az:(.*)not found";
     private static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
+    private static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
+    private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
+    private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
+    private static final String LEGACY_LINUX_PS_EXECUTABLE = "powershell";
     private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
@@ -469,12 +476,48 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithAzurePowerShell(TokenRequestContext request) {
 
-        PowershellManager powershellManager = new PowershellManager(options.getUseLegacyPowerShell());
+        String defaultPowerShellPath = Platform.isWindows() ? DEFAULT_WINDOWS_PS_EXECUTABLE
+            : DEFAULT_LINUX_PS_EXECUTABLE;
+        String legacyPowerShellPath = Platform.isWindows() ? LEGACY_WINDOWS_PS_EXECUTABLE
+            : LEGACY_LINUX_PS_EXECUTABLE;
+        List<CredentialUnavailableException> exceptions = new ArrayList<>(2);
+
+        PowershellManager defaultPowerShellManager = new PowershellManager(defaultPowerShellPath);
+        PowershellManager legacyPowerShellManager = new PowershellManager(legacyPowerShellPath);
+        return Flux.fromIterable(Arrays.asList(defaultPowerShellManager, legacyPowerShellManager))
+            .flatMap(powershellManager -> getAccessTokenFromPowerShell(request, powershellManager)
+                .onErrorResume(t -> {
+                    if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                        return Mono.error(new ClientAuthenticationException(
+                            "Azure Powershell authentication failed. Error Details: " + t.getMessage(),
+                            null, t));
+                    }
+                    exceptions.add((CredentialUnavailableException) t);
+                    return Mono.empty();
+                }), 1)
+            .next()
+            .switchIfEmpty(Mono.defer(() -> {
+                // Chain Exceptions.
+                CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                for (int z = exceptions.size() - 2; z >= 0; z--) {
+                    CredentialUnavailableException current = exceptions.get(z);
+                    last = new CredentialUnavailableException("Azure Powershell authentication failed using default"
+                        + "powershell(pwsh) with following error: " + current.getMessage()
+                        + "\r\n" + "Azure Powershell authentication failed using powershell-core(powershell)"
+                        + " with following error: " + last.getMessage(),
+                        last.getCause());
+                }
+                return Mono.error(last);
+            }));
+    }
+
+    private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
+                                                           PowershellManager powershellManager) {
         return powershellManager.initSession()
             .flatMap(manager -> manager.runCommand("Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru")
                 .flatMap(output -> {
-                    if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not"
-                        + " loaded because no valid module file was found in any module directory")) {
+                    if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
+                        + "because no valid module file")) {
                         return Mono.error(new CredentialUnavailableException(
                             "Az.Account module with version >= 2.2.0 is not installed. It needs to be installed to use"
                         + "Azure PowerShell Credential."));
