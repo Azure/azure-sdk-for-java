@@ -7,7 +7,6 @@ import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -191,22 +190,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
                         assertHappyPath(firstResult);
                         assertHappyPath(secondResult);
                     });
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void repeatability(HttpClient httpClient) {
-        // Arrange
-        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        asyncClient = setupAsyncClient(builder, "repeatability");
-
-        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE))
-            .assertNext(requestResponse -> {
-                String bodyRequest = new String(requestResponse.getRequest().getBody().blockLast().array());
-                assertTrue(bodyRequest.contains("repeatabilityRequestId"));
-                assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
             })
             .verifyComplete();
     }
