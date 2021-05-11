@@ -109,6 +109,7 @@ class APISpec extends StorageSpec {
     def cleanup() {
         if (env.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new DataLakeServiceClientBuilder()
+                .httpClient(getHttpClient())
                 .credential(env.dataLakeAccount.credential)
                 .endpoint(env.dataLakeAccount.dataLakeEndpoint)
                 .buildClient()

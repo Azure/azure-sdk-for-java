@@ -95,6 +95,7 @@ class APISpec extends StorageSpec {
     def cleanup() {
         if (env.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new BlobServiceClientBuilder()
+                .httpClient(getHttpClient())
                 .credential(env.primaryAccount.credential)
                 .endpoint(env.primaryAccount.blobEndpoint)
                 .buildClient()
