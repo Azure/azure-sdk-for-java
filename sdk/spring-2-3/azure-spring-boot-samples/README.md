@@ -1,5 +1,8 @@
 # Azure Spring Sample shared client library for Java
 
+## Key concepts
+## Getting started
+
 ## Ready to run checklist
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
@@ -23,7 +26,7 @@ If you just want to run sample code with released version(not current), instead 
 #### Clone project from master branch
 It means cloning the master branch, all the code, dependencies, and readme files are up to date.
 
-1. Clone code to local repo 
+1. Clone code to local repo
 
    ```
    git clone https://github.com/Azure/azure-sdk-for-java.git
@@ -42,11 +45,15 @@ It means cloning the master branch, all the code, dependencies, and readme files
 
 - Use this [link][azure_spring_release_tags] to query the *azure-spring* release tag you want to use. If there are too many returns, you can modify the query keyword value to accurately query.
 - Replace the tag name in the following command and execute.
-  
+
     ```shell script
     git clone -b <replace-the-tag> https://github.com/Azure/azure-sdk-for-java.git
     ```
-    
+
+## Examples
+## Troubleshooting
+## Next steps
+## Contributing
 
 <!-- Links -->
 [maven]: https://maven.apache.org/
