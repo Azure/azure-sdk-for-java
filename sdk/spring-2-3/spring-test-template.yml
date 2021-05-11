@@ -111,7 +111,7 @@ stages:
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
-              python sdk/spring/scripts/replace_util.py --module spring --log debug --color false
+              python sdk/spring-2-3/scripts/replace_util.py --module spring --log debug --color false
             displayName: 'Run replace_util.py'
 
           - task: Maven@3

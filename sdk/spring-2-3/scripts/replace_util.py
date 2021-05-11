@@ -33,7 +33,7 @@ config = {
         }
     },
     'spring': {
-        'sdk/spring/azure-spring-boot-test-parent/pom.xml': {
+        'sdk/spring-2-3/azure-spring-boot-test-parent/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )

@@ -158,9 +158,9 @@ public class KeyVaultSecretValueIT {
         commands.add("git init");
         commands.add("git remote add origin https://github.com/Azure/azure-sdk-for-java.git");
         commands.add("git config core.sparsecheckout true");
-        commands.add("echo sdk/spring > .git/info/sparse-checkout");
+        commands.add("echo sdk/spring-2-3 > .git/info/sparse-checkout");
         commands.add("git pull origin master");
-        commands.add("cd sdk/spring/");
+        commands.add("cd sdk/spring-2-3/");
         commands.add("mvn package -Dmaven.test.skip=true");
         commands.add("cd azure-spring-boot-test-application/target/");
         commands.add(String.format("nohup java -jar -Xdebug "
