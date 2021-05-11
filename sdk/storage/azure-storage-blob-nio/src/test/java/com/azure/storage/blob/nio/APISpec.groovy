@@ -5,7 +5,6 @@ package com.azure.storage.blob.nio
 
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
-import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.BlobAsyncClient
@@ -23,6 +22,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
+import com.azure.storage.common.test.shared.TestAccount
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Timeout
@@ -62,19 +62,10 @@ class APISpec extends StorageSpec {
 
     static int defaultDataSize = defaultData.remaining()
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net"
-
-    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
-    static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
-
-    protected static StorageSharedKeyCredential primaryCredential
-    static StorageSharedKeyCredential alternateCredential
-
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
 
-    boolean recordLiveMode
     String containerName
 
 
@@ -92,22 +83,17 @@ class APISpec extends StorageSpec {
     static final int MB = 1024 * KB
 
     def setupSpec() {
-        primaryCredential = getCredential(PRIMARY_STORAGE)
-        alternateCredential = getCredential(SECONDARY_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", ENVIRONMENT.testMode))
+        System.out.println(String.format("--------%s---------", env.testMode))
     }
 
     def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
-
-        primaryBlobServiceClient = setClient(primaryCredential)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
-        alternateBlobServiceClient = setClient(alternateCredential)
+        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
+        alternateBlobServiceClient = setClient(env.secondaryAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -123,51 +109,9 @@ class APISpec extends StorageSpec {
         }
     }
 
-    // TODO (kasobol-msft) remove this after migration
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
-    static boolean liveMode() {
-        return ENVIRONMENT.testMode == TestMode.LIVE
-    }
-
-    String getAccountKey(String accountType) {
-        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
-            return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            return "astorageaccountkey"
-        }
-    }
-
-    String getAccountName(String accountType) {
-        if (ENVIRONMENT.testMode == TestMode.RECORD || ENVIRONMENT.testMode == TestMode.LIVE) {
-            return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-        } else {
-            return "azstoragesdkaccount"
-        }
-    }
-
-    def getAccountUri() {
-        return String.format(defaultEndpointTemplate, getAccountName(PRIMARY_STORAGE))
-    }
-
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName = getAccountName(accountType)
-        String accountKey = getAccountKey(accountType)
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
-
-    BlobServiceClient setClient(StorageSharedKeyCredential credential) {
+    BlobServiceClient setClient(TestAccount account) {
         try {
-            return getServiceClient(credential)
+            return getServiceClient(account)
         } catch (Exception ignore) {
             return null
         }
@@ -177,8 +121,8 @@ class APISpec extends StorageSpec {
         return getServiceClient(null, endpoint, null)
     }
 
-    BlobServiceClient getServiceClient(StorageSharedKeyCredential credential) {
-        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    BlobServiceClient getServiceClient(TestAccount account) {
+        return getServiceClient(account.credential, account.blobEndpoint, null)
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
@@ -194,8 +138,8 @@ class APISpec extends StorageSpec {
         return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
     }
 
-    BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
-        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
+    BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
+        return getServiceClientBuilder(account.credential, account.blobEndpoint)
             .buildAsyncClient()
     }
 
@@ -203,13 +147,12 @@ class APISpec extends StorageSpec {
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -225,9 +168,8 @@ class APISpec extends StorageSpec {
     BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder
     }
@@ -236,9 +178,8 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         builder.credential(credential).buildAsyncClient()
     }
@@ -252,9 +193,8 @@ class APISpec extends StorageSpec {
             .endpoint(endpoint)
             .blobName(blobName)
             .snapshot(snapshotId)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.sasToken(sasToken).buildClient()
     }
@@ -262,13 +202,12 @@ class APISpec extends StorageSpec {
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildClient()
     }
@@ -277,9 +216,8 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildClient()
     }
@@ -287,13 +225,12 @@ class APISpec extends StorageSpec {
     BlobClient getBlobClient(String endpoint, String sasToken) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.buildClient()
     }
@@ -311,7 +248,7 @@ class APISpec extends StorageSpec {
     }
 
     def getFileSystemUri() {
-        return new URI("azb://?endpoint=" + getAccountUri())
+        return new URI("azb://?endpoint=" + env.primaryAccount.blobEndpoint)
     }
 
     def generateContainerName() {
@@ -328,9 +265,9 @@ class APISpec extends StorageSpec {
 
     def createFS(Map<String,Object> config) {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
 
-        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountUri(), config)
+        return new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.blobEndpoint, config)
     }
 
     byte[] getRandomByteArray(int size) {
@@ -418,7 +355,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }

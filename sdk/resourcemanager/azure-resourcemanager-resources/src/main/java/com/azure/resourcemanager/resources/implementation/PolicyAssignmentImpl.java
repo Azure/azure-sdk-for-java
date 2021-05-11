@@ -22,9 +22,12 @@ final class PolicyAssignmentImpl extends
         PolicyAssignment.Definition {
     private final PolicyAssignmentsClient innerCollection;
 
+    private String scope;
+
     PolicyAssignmentImpl(String name, PolicyAssignmentInner innerModel, PolicyAssignmentsClient innerCollection) {
         super(name, innerModel);
         this.innerCollection = innerCollection;
+        this.scope = innerModel.scope();
     }
 
     @Override
@@ -60,18 +63,18 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public PolicyAssignmentImpl forScope(String scope) {
-        innerModel().withScope(scope);
+        this.scope = scope;
         return this;
     }
 
     @Override
     public PolicyAssignmentImpl forResourceGroup(ResourceGroup resourceGroup) {
-        innerModel().withScope(resourceGroup.id());
+        this.scope = resourceGroup.id();
         return this;
     }
 
     public PolicyAssignmentImpl forResource(GenericResource genericResource) {
-        innerModel().withScope(genericResource.id());
+        this.scope = genericResource.id();
         return this;
     }
 
@@ -89,7 +92,7 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public Mono<PolicyAssignment> createResourceAsync() {
-        return innerCollection.createAsync(innerModel().scope(), name(), innerModel())
+        return innerCollection.createAsync(this.scope, name(), innerModel())
                 .map(innerToFluentMap(this));
     }
 

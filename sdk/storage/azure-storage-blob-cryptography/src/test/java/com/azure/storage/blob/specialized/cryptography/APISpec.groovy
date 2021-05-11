@@ -25,6 +25,7 @@ import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.StorageSpec
+import com.azure.storage.common.test.shared.TestAccount
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -63,21 +64,6 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
-    static StorageSharedKeyCredential primaryCredential
-    static StorageSharedKeyCredential alternateCredential
-    static StorageSharedKeyCredential blobCredential
-    static StorageSharedKeyCredential premiumCredential
-    static String connectionString
-    private boolean recordLiveMode
-
-    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
-    static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
-    static def BLOB_STORAGE = "BLOB_STORAGE_"
-    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
-
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
 
@@ -94,53 +80,8 @@ class APISpec extends StorageSpec {
 
     public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
-
     @Shared
     protected KB = 1024
-
-    def setupSpec() {
-        primaryCredential = getCredential(PRIMARY_STORAGE)
-        alternateCredential = getCredential(SECONDARY_STORAGE)
-        blobCredential = getCredential(BLOB_STORAGE)
-        premiumCredential = getCredential(PREMIUM_STORAGE)
-    }
-
-    def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
-        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
-    }
-
-    // TODO (kasobol-msft) remove this after migration
-    @Override
-    protected shouldUseThisToRecord() {
-        return true
-    }
-
-    static boolean liveMode() {
-        return ENVIRONMENT.testMode == TestMode.LIVE
-    }
-
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            accountName = "azstoragesdkaccount"
-            accountKey = "astorageaccountkey"
-        }
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
 
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
@@ -183,14 +124,13 @@ class APISpec extends StorageSpec {
             .key(key, algorithm.toString())
             .keyResolver(keyResolver)
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -203,14 +143,12 @@ class APISpec extends StorageSpec {
 
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -219,18 +157,21 @@ class APISpec extends StorageSpec {
         return builder
     }
 
+    BlobServiceClientBuilder getServiceClientBuilder(TestAccount account,
+                                                     HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(account.credential, account.blobEndpoint, policies)
+    }
+
     BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
                                                      HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)

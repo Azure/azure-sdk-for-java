@@ -29,6 +29,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -398,29 +399,28 @@ public class PagedFluxTest {
             new GetContinuablePagesUntil<>("1", null, token -> String.valueOf(Integer.parseInt(token) + 1),
                 token -> token.equals("4"));
         ContinuablePagedFluxCore<String, String, ContinuablePage<String, String>> cpfcStringTokenEndsWithNull =
-            new ContinuablePagedFluxCore<>(() -> cpfcStringTokenEndsWithNullPageRetriever) { };
+            createCpfc(() -> cpfcStringTokenEndsWithNullPageRetriever, null);
 
         PageRetriever<String, ContinuablePage<String, String>> cpfcStringTokenEndsWithPredicatePageRetriever =
             new GetContinuablePagesUntil<>("1", "finalToken", token -> String.valueOf(Integer.parseInt(token) + 1),
                 token -> token.equals("4"));
         ContinuablePagedFluxCore<String, String, ContinuablePage<String, String>> cpfcStringTokenEndsWithPredicate =
-            new ContinuablePagedFluxCore<>(() -> cpfcStringTokenEndsWithPredicatePageRetriever, null,
-                token -> !token.equals("finalToken")) { };
+            createCpfc(() -> cpfcStringTokenEndsWithPredicatePageRetriever, token -> !token.equals("finalToken"));
 
         PageRetriever<byte[], ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithNullPageRetriever =
             new GetContinuablePagesUntil<>("1".getBytes(UTF_8), null,
                 token -> String.valueOf(Integer.parseInt(new String(token, UTF_8)) + 1).getBytes(UTF_8),
                 token -> new String(token, UTF_8).equals("4"));
         ContinuablePagedFluxCore<byte[], String, ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithNull =
-            new ContinuablePagedFluxCore<>(() -> cpfcByteArrayTokenEndsWithNullPageRetriever) { };
+            createCpfc(() -> cpfcByteArrayTokenEndsWithNullPageRetriever, null);
 
         PageRetriever<byte[], ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithPredicatePageRetriever =
             new GetContinuablePagesUntil<>("1".getBytes(UTF_8), "finalToken".getBytes(UTF_8),
                 token -> String.valueOf(Integer.parseInt(new String(token, UTF_8)) + 1).getBytes(UTF_8),
                 token -> new String(token, UTF_8).equals("4"));
         ContinuablePagedFluxCore<byte[], String, ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithPredicate =
-            new ContinuablePagedFluxCore<>(() -> cpfcByteArrayTokenEndsWithPredicatePageRetriever, null,
-                token -> !new String(token, UTF_8).equals("finalToken")) { };
+            createCpfc(() -> cpfcByteArrayTokenEndsWithPredicatePageRetriever,
+                token -> !new String(token, UTF_8).equals("finalToken"));
 
         List<String> pagedFluxExpectedItems = Arrays.asList("1", "2", "3", "4", "5");
 
@@ -436,12 +436,21 @@ public class PagedFluxTest {
         );
     }
 
+    private static <C, T, P extends ContinuablePage<C, T>> ContinuablePagedFluxCore<C, T, P> createCpfc(
+        Supplier<PageRetriever<C, P>> pageRetrieverSupplier, Predicate<C> continuationPredicate) {
+        if (continuationPredicate == null) {
+            return new ContinuablePagedFluxCore<C, T, P>(pageRetrieverSupplier) { };
+        }
+
+        return new ContinuablePagedFluxCore<C, T, P>(pageRetrieverSupplier, null, continuationPredicate) { };
+    }
+
     private static final class GetPagesUntil implements PageRetriever<String, PagedResponse<String>> {
         private static final Function<String, String> INCREMENT_STRING_AS_INT = str ->
             String.valueOf(Integer.parseInt(str) + 1);
 
         private static final Function<String, String> NEXT_PAGE_VALUE = INCREMENT_STRING_AS_INT;
-        private static final BiFunction<String, String, PagedResponse<String>> pageCreator = (token, item) ->
+        private static final BiFunction<String, String, PagedResponse<String>> PAGE_CREATOR = (token, item) ->
             createPagedResponse(token, Collections.singletonList(item));
 
         private final String[] pageValue = new String[] { "1" };
@@ -466,7 +475,7 @@ public class PagedFluxTest {
                     nextContinuationToken = INCREMENT_STRING_AS_INT.apply(token);
                 }
 
-                PagedResponse<String> page = pageCreator.apply(nextContinuationToken, pageValue[0]);
+                PagedResponse<String> page = PAGE_CREATOR.apply(nextContinuationToken, pageValue[0]);
                 pageValue[0] = NEXT_PAGE_VALUE.apply(pageValue[0]);
                 return Flux.just(page);
             });
@@ -530,7 +539,7 @@ public class PagedFluxTest {
     }
 
     private static <C, T> ContinuablePage<C, T> createPage(C token, List<T> items) {
-        return new ContinuablePage<>() {
+        return new ContinuablePage<C, T>() {
             @Override
             public IterableStream<T> getElements() {
                 return IterableStream.of(items);
