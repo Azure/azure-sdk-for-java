@@ -71,6 +71,13 @@ public interface IotHubDescription {
     IotHubSkuInfo sku();
 
     /**
+     * Gets the identity property: The managed identities for the IotHub.
+     *
+     * @return the identity value.
+     */
+    ArmIdentity identity();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -150,6 +157,7 @@ public interface IotHubDescription {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithEtag,
                 DefinitionStages.WithProperties,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -198,6 +206,16 @@ public interface IotHubDescription {
              */
             WithCreate withProperties(IotHubProperties properties);
         }
+        /** The stage of the IotHubDescription definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed identities for the IotHub..
+             *
+             * @param identity The managed identities for the IotHub.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ArmIdentity identity);
+        }
         /** The stage of the IotHubDescription definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -208,7 +226,7 @@ public interface IotHubDescription {
              *     an existing IoT Hub.
              * @return the next definition stage.
              */
-            WithCreate withIfMatch(String ifMatch);
+            WithCreate withWithIfMatch(String ifMatch);
         }
     }
     /**
