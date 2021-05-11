@@ -209,4 +209,4 @@ extends:
 #      - name: azure-spring-cloud-sample-storage-queue-operation
 #        groupId: com.azure.spring
 
-# trigger  test
+# trigger   test
