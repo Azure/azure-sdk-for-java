@@ -35,8 +35,6 @@ import java.util.function.BiFunction
 import java.util.function.Function
 
 class APISpec extends StorageSpec {
-    // Field common used for all APIs.
-    static ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable share names for recording tests requiring multiple shares.
 
@@ -75,24 +73,18 @@ class APISpec extends StorageSpec {
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        def cleanupFileServiceClient = new ShareServiceClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
-            .buildClient()
-        for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
-            def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
+        def cleanupFileServiceClient = instrument(new ShareServiceClientBuilder()
+                .connectionString(env.primaryAccount.connectionString))
+                .buildClient()
+            for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
+                def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
 
-            if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
-            }
+                if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                }
 
             shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
         }
-    }
-
-    static boolean liveMode() {
-        return env.testMode != TestMode.PLAYBACK
     }
 
     def generateShareName() {
@@ -142,24 +134,21 @@ class APISpec extends StorageSpec {
     }
 
     def fileServiceBuilderHelper() {
-        ShareServiceClientBuilder shareServiceClientBuilder = new ShareServiceClientBuilder();
-        shareServiceClientBuilder.addPolicy(getRecordPolicy())
+        ShareServiceClientBuilder shareServiceClientBuilder = instrument(new ShareServiceClientBuilder())
         return shareServiceClientBuilder
             .connectionString(env.primaryAccount.connectionString)
-            .httpClient(getHttpClient())
     }
 
     ShareServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
                                                      HttpPipelinePolicy... policies) {
         ShareServiceClientBuilder builder = new ShareServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -171,9 +160,8 @@ class APISpec extends StorageSpec {
     ShareClientBuilder getShareClientBuilder(String endpoint) {
         ShareClientBuilder builder = new ShareClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder
     }
@@ -183,33 +171,28 @@ class APISpec extends StorageSpec {
     }
 
     def shareBuilderHelper(final String shareName, final String snapshot) {
-        ShareClientBuilder builder = new ShareClientBuilder()
-        builder.addPolicy(getRecordPolicy())
+        ShareClientBuilder builder = instrument(new ShareClientBuilder())
         return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .snapshot(snapshot)
-            .httpClient(getHttpClient())
     }
 
     def directoryBuilderHelper(final String shareName, final String directoryPath) {
-        ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        builder.addPolicy(getRecordPolicy())
+        ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder())
         return builder.connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(directoryPath)
-            .httpClient(getHttpClient())
     }
 
     ShareDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -219,25 +202,22 @@ class APISpec extends StorageSpec {
     }
 
     def fileBuilderHelper(final String shareName, final String filePath) {
-        ShareFileClientBuilder builder = new ShareFileClientBuilder()
-        builder.addPolicy(getRecordPolicy())
+        ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(filePath)
-            .httpClient(getHttpClient())
     }
 
     ShareFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -363,10 +343,6 @@ class APISpec extends StorageSpec {
         } else {
             return leaseID
         }
-    }
-
-    static boolean playbackMode() {
-        return env.testMode == TestMode.PLAYBACK
     }
 
     def getPerCallVersionPolicy() {

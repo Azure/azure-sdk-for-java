@@ -27,6 +27,9 @@
         <module>sdk/communication/azure-communication-phonenumbers</module>
         <module>sdk/communication/azure-communication-sms</module>
 
+        <!-- Azure Confidential Ledger -->
+        <module>sdk/confidentialledger/azure-data-confidentialledger</module>
+
         <!-- Azure Container Registry -->
         <module>sdk/containerregistry/azure-containers-containerregistry</module>
 
@@ -80,6 +83,10 @@
 
         <!-- Models Repository -->
         <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
+
+        <!-- Purview -->
+        <module>sdk/purview/azure-analytics-purview-catalog</module>
+        <module>sdk/purview/azure-analytics-purview-scanning</module>
 
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
@@ -279,6 +286,14 @@
                     <packages>com.azure.containers.containerregistry*</packages>
                   </group>
                   <group>
+                    <title>Azure Purview Catalog</title>
+                    <packages>com.azure.analytics.purview.catalog*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Purview Scanning</title>
+                    <packages>com.azure.analytics.purview.scanning*</packages>
+                  </group>
+                  <group>
                     <title>Azure Quantum Jobs</title>
                     <packages>com.azure.quantum.jobs*</packages>
                   </group>
@@ -345,6 +360,10 @@
                   <group>
                     <title>Azure Communication</title>
                     <packages>com.azure.communication.*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Confidential Ledger</title>
+                    <packages>com.azure.data.confidentialledger.*</packages>
                   </group>
                 </groups>
                 <links combine.children="append">
@@ -566,6 +585,7 @@
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
@@ -582,6 +602,8 @@
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                     -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
@@ -686,6 +708,7 @@
         <module>sdk/cognitiveservices</module>
         <module>sdk/commerce</module>
         <module>sdk/communication</module>
+        <module>sdk/confidentialledger</module>
         <module>sdk/confluent</module>
         <module>sdk/consumption</module>
         <module>sdk/containerregistry</module>
@@ -753,6 +776,7 @@
         <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/resourcemover</module>
+        <module>sdk/purview</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/servicebus</module>
