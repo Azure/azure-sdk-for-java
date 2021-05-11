@@ -59,7 +59,7 @@ class Substitution {
     /**
      * Get whether or not the value from the method argument needs to be sent as string in case the
      * values are a list or as multiple query parameters.
-     * @return  Whether or not this query parameter list values should be sent as individual query
+     * @return Whether or not this query parameter list values should be sent as individual query
      * params or as a single Json.
      */
     public boolean shouldDoMultipleQueryParams() {

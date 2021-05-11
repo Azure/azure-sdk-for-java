@@ -197,7 +197,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
                     headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex,
-                    		false, false));
+                            false, false));
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
@@ -275,7 +275,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
      */
     @SuppressWarnings("unchecked")
-	public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
+    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
         if (swaggerMethodArguments == null) {
             return;
         }

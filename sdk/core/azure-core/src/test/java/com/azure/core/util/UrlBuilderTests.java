@@ -421,8 +421,8 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
             .setScheme("http")
             .setHost("www.example.com")
-            .setQueryParameter("A", "B")
-            .setQueryParameter("A", "D")
+            .appendQueryParameter("A", "B")
+            .appendQueryParameter("A", "D")
             .setPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&A=D", builder.toString());
     }
