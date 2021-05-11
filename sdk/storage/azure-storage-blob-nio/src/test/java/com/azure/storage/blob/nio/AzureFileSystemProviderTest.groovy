@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -1041,7 +1042,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "OutputStream file system config"() {
         setup:
@@ -1379,7 +1380,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "ByteChannel file system config"() {
         setup:

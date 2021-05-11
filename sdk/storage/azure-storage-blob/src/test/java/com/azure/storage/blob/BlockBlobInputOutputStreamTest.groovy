@@ -7,6 +7,7 @@ import com.azure.storage.blob.options.BlobInputStreamOptions
 import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -45,7 +46,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload download"() {
         when:
         int length = 6 * Constants.MB
@@ -74,7 +75,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Upload download block size"() {
         when:
@@ -120,7 +121,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Get properties before"() {
         when:
         int length = 6 * Constants.MB
