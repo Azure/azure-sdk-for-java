@@ -36,15 +36,11 @@ import java.util.concurrent.TimeUnit
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends StorageSpec {
 
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
 
-    boolean recordLiveMode
     String containerName
 
     def setupSpec() {
@@ -56,9 +52,6 @@ class APISpec extends StorageSpec {
     }
 
     def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
-
         primaryBlobServiceClient = setClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
 
@@ -76,10 +69,6 @@ class APISpec extends StorageSpec {
 
             containerClient.delete()
         }
-    }
-
-    static boolean playbackMode() {
-        return env.testMode == TestMode.PLAYBACK
     }
 
     def generateContainerName() {
@@ -132,13 +121,12 @@ class APISpec extends StorageSpec {
                                                      HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)

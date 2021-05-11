@@ -5,6 +5,7 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.*
 import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.Exceptions
 import spock.lang.Requires
 import spock.lang.Retry
@@ -553,7 +554,7 @@ class BlobBaseAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
-    @Requires( { liveMode() } ) // Large amount of data.
+    @LiveOnly // Large amount of data.
     def "Query multiple records with progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
