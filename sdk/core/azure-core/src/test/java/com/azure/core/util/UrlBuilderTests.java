@@ -417,6 +417,17 @@ public class UrlBuilderTests {
     }
 
     @Test
+    public void schemeAndHostAndPathAndTwoIdenticalQueryParameters() {
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B")
+            .setQueryParameter("A", "D")
+            .setPath("index.html");
+        assertEquals("http://www.example.com/index.html?A=B&A=D", builder.toString());
+    }
+
+    @Test
     public void pathWhenBuilderPathIsNullAndPathIsNull() {
         final UrlBuilder builder = new UrlBuilder();
         builder.setPath(null);
@@ -705,6 +716,12 @@ public class UrlBuilderTests {
     public void parseHostAndPathAndTwoQueryParameters() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1&b=2");
         assertEquals("www.bing.com/folder/index.html?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseHostAndPathAndTwoIdenticalQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1&a=2");
+        assertEquals("www.bing.com/folder/index.html?a=1&a=2", builder.toString());
     }
 
     @Test

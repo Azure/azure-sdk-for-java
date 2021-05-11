@@ -143,10 +143,22 @@ public final class UrlBuilder {
      * @return The provided query parameter name and encoded value to query string for the final URL.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        query.put(queryParameterName, new ArrayList<String>(Arrays.asList(queryParameterEncodedValue)));
+        return this;
+    }
+
+    /**
+     * Append the provided query parameter name and encoded value to query string for the final URL.
+     *
+     * @param queryParameterName The name of the query parameter.
+     * @param queryParameterEncodedValue The encoded value of the query parameter.
+     * @return The provided query parameter name and encoded value to query string for the final URL.
+     */
+    public UrlBuilder appendQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         if (query.containsKey(queryParameterName)) {
             query.get(queryParameterName).add(queryParameterEncodedValue);
         } else {
-            query.put(queryParameterName, new ArrayList<String>(Arrays.asList(queryParameterEncodedValue)));
+            setQueryParameter(queryParameterName, queryParameterEncodedValue);
         }
         return this;
     }
@@ -236,9 +248,9 @@ public final class UrlBuilder {
                         for (String entry : queryString.split("&")) {
                             String[] nameValue = entry.split("=");
                             if (nameValue.length == 2) {
-                                setQueryParameter(nameValue[0], nameValue[1]);
+                                appendQueryParameter(nameValue[0], nameValue[1]);
                             } else {
-                                setQueryParameter(nameValue[0], "");
+                                appendQueryParameter(nameValue[0], "");
                             }
                         }
                     }
