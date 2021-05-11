@@ -26,7 +26,7 @@ steps:
   - ${{if eq(artifact.groupId, 'com.azure.spring')}}:
     - pwsh: |
         Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]$(SpringProjectPathList),./sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}"
-      displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project path list
+      displayName: Append ./sdk/${{parameters.ServiceDirectory}}/${{artifact.name}} to project path list
 
 # From time to time we might need to also build another module which
 # we don't actually want to ship, so we list that here. We can't rely
@@ -42,4 +42,4 @@ steps:
   - ${{if and(eq(artifact.groupId, 'com.azure.spring'), contains(artifact.name, '-sample'))}}:
       - pwsh: |
           Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]$(SpringProjectPathList),./sdk/${{parameters.ServiceDirectory}}/azure-spring-boot-samples/${{artifact.name}}"
-        displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project path list
+        displayName: Append ./sdk/${{parameters.ServiceDirectory}}/azure-spring-boot-samples/${{artifact.name}} to project path list
