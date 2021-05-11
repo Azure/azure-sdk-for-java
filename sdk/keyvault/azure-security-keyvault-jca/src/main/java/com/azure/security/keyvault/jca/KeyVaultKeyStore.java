@@ -13,24 +13,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Key;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.KeyStoreSpi;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableEntryException;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
@@ -84,7 +72,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the jre key store.
      */
-    private KeyStore defaultKeyStore;
+    private static final KeyStore defaultKeyStore;
+
+    /**
+     * Stores the jre key store aliases.
+     */
+     private static final Set<String> jreAliases;
 
     /**
      * Constructor.
@@ -112,15 +105,33 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
-        defaultKeyStore = JREKeyStore.getDefault();
+
     }
+
+    static {
+        defaultKeyStore = JREKeyStore.getDefault();
+        jreAliases = new HashSet<>();
+        if(null != defaultKeyStore){
+            try {
+                jreAliases.addAll(Collections.list(defaultKeyStore.aliases()));
+            } catch (KeyStoreException e) {
+                LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
+            }
+
+        }
+    }
+
+
 
     @Override
     public Enumeration<String> engineAliases() {
         if (aliases == null) {
             aliases = keyVaultClient.getAliases();
         }
-        return Collections.enumeration(aliases);
+        Set<String> als = new HashSet<>();
+        als.addAll(aliases);
+        als.addAll(jreAliases);
+        return Collections.enumeration(als);
     }
 
     @Override
@@ -152,6 +163,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
+            }else {
+                try {
+                    certificate = defaultKeyStore.getCertificate(alias);
+                } catch (KeyStoreException e) {
+                    LOGGER.log(WARNING, "Unable to load certificate from jre Key store.", e);
+                }
             }
         }
         return certificate;
@@ -171,7 +188,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     break;
                 }
             }
+            if (null == alias){
+                try {
+                    alias = defaultKeyStore.getCertificateAlias(cert);
+                } catch (KeyStoreException e) {
+                    LOGGER.log(WARNING, "Unable to load the alias from jre Key store.", e);
+                }
+            }
         }
+
         return alias;
     }
 
@@ -182,6 +207,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (certificate != null) {
             chain = new Certificate[1];
             chain[0] = certificate;
+        }else {
+            try {
+                chain = defaultKeyStore.getCertificateChain(alias);
+            }catch (KeyStoreException e) {
+                LOGGER.log(WARNING, "Unable to load the certificate chain from jre Key store.", e);
+            }
         }
         return chain;
     }
@@ -211,6 +242,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
+            }else {
+                key = JREKeyStore.getKey(defaultKeyStore, alias);
             }
         }
         return key;
@@ -221,12 +254,18 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (aliases == null) {
             aliases = keyVaultClient.getAliases();
         }
-        return aliases.contains(alias);
+        Set<String> als = new HashSet<>();
+        als.addAll(aliases);
+        als.addAll(jreAliases);
+        return als.contains(alias);
     }
 
     @Override
     public boolean engineIsKeyEntry(String alias) {
-        return engineIsCertificateEntry(alias);
+        if (aliases == null) {
+            aliases = keyVaultClient.getAliases();
+        }
+        return aliases.contains(alias);
     }
 
     @Override
@@ -282,7 +321,13 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public int engineSize() {
-        return aliases != null ? aliases.size() : 0;
+        int size = 0;
+        try {
+            size = defaultKeyStore.size();
+        } catch (KeyStoreException e) {
+            LOGGER.log(WARNING, "Unable to get the size of the jre key store." ,e);
+        }
+        return  size + (aliases != null ? aliases.size() : 0);
     }
 
     @Override
@@ -371,6 +416,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
         }
     }
+
     private static class JREKeyStore{
         private static final String javaHome =  privilegedGetProperty("java.home", "");
         private static final Path storePath= Paths.get(javaHome).resolve("lib").resolve("security");
@@ -420,6 +466,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 if (Files.exists(fileName) && Files.isReadable(fileName)){
                     return fileName;
                 }
+            }
+            return null;
+        }
+
+        private static Key getKey(KeyStore ks, String alias){
+            try {
+                return  ks.getKey(alias, keyPassword.toCharArray());
+            } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
+                LOGGER.log(WARNING, "Unable to get the key from jre key store.", e);
             }
             return null;
         }
