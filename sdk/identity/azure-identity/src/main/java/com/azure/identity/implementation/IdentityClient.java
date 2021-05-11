@@ -105,7 +105,6 @@ public class IdentityClient {
     private static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
-    private static final String LEGACY_LINUX_PS_EXECUTABLE = "powershell";
     private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
@@ -476,15 +475,19 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithAzurePowerShell(TokenRequestContext request) {
 
-        String defaultPowerShellPath = Platform.isWindows() ? DEFAULT_WINDOWS_PS_EXECUTABLE
-            : DEFAULT_LINUX_PS_EXECUTABLE;
-        String legacyPowerShellPath = Platform.isWindows() ? LEGACY_WINDOWS_PS_EXECUTABLE
-            : LEGACY_LINUX_PS_EXECUTABLE;
         List<CredentialUnavailableException> exceptions = new ArrayList<>(2);
 
-        PowershellManager defaultPowerShellManager = new PowershellManager(defaultPowerShellPath);
-        PowershellManager legacyPowerShellManager = new PowershellManager(legacyPowerShellPath);
-        return Flux.fromIterable(Arrays.asList(defaultPowerShellManager, legacyPowerShellManager))
+        PowershellManager defaultPowerShellManager = new PowershellManager(Platform.isWindows()
+            ? DEFAULT_WINDOWS_PS_EXECUTABLE : DEFAULT_LINUX_PS_EXECUTABLE);
+
+        PowershellManager legacyPowerShellManager = Platform.isWindows()
+            ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
+
+        List<PowershellManager> powershellManagers = Arrays.asList(defaultPowerShellManager);
+        if (legacyPowerShellManager != null) {
+            powershellManagers.add(legacyPowerShellManager);
+        }
+        return Flux.fromIterable(powershellManagers)
             .flatMap(powershellManager -> getAccessTokenFromPowerShell(request, powershellManager)
                 .onErrorResume(t -> {
                     if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
@@ -686,7 +689,7 @@ public class IdentityClient {
                     DeviceCodeFlowParameters.builder(
                         new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                             new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                            OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());

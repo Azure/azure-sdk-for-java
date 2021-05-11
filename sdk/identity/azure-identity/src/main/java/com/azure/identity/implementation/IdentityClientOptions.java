@@ -32,7 +32,6 @@ public final class IdentityClientOptions {
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
-    private boolean useLegacyPowerShell;
     private String keePassDatabasePath;
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
