@@ -205,6 +205,12 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
             .thenReturn(vscodeCredential);
 
+        AzurePowerShellCredential powerShellCredential = PowerMockito.mock(AzurePowerShellCredential.class);
+        when(powerShellCredential.getToken(request))
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Powershell credential")));
+        PowerMockito.whenNew(AzurePowerShellCredential.class).withAnyArguments()
+            .thenReturn(powerShellCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
             .build();
