@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The fully qualified metric namespace name. */
 @Fluent
-public final class MetricNamespaceName {
+public final class MetricsNamespaceName {
     /*
      * The metric namespace name.
      */
@@ -31,7 +31,7 @@ public final class MetricNamespaceName {
      * @param metricNamespaceName the metricNamespaceName value to set.
      * @return the MetricNamespaceName object itself.
      */
-    public MetricNamespaceName setMetricNamespaceName(String metricNamespaceName) {
+    public MetricsNamespaceName setMetricNamespaceName(String metricNamespaceName) {
         this.metricNamespaceName = metricNamespaceName;
         return this;
     }

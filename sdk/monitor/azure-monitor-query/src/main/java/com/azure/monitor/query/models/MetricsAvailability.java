@@ -13,7 +13,7 @@ import java.time.Duration;
  * time grain.
  */
 @Fluent
-public final class MetricAvailability {
+public final class MetricsAvailability {
     /*
      * the time grain specifies the aggregation interval for the metric.
      * Expressed as a duration 'PT1M', 'P1D', etc.
@@ -45,7 +45,7 @@ public final class MetricAvailability {
      * @param timeGrain the timeGrain value to set.
      * @return the MetricAvailability object itself.
      */
-    public MetricAvailability setTimeGrain(Duration timeGrain) {
+    public MetricsAvailability setTimeGrain(Duration timeGrain) {
         this.timeGrain = timeGrain;
         return this;
     }
@@ -67,7 +67,7 @@ public final class MetricAvailability {
      * @param retention the retention value to set.
      * @return the MetricAvailability object itself.
      */
-    public MetricAvailability setRetention(Duration retention) {
+    public MetricsAvailability setRetention(Duration retention) {
         this.retention = retention;
         return this;
     }

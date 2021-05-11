@@ -56,16 +56,39 @@ LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
 
 ### Get logs for a query
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L75-L84 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L201-L233 -->
 ```java
-LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
-    new QueryTimeSpan(Duration.ofDays(2)));
-System.out.println("Number of tables = " + queryResults.getLogsTables().size());
+    LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
+        new QueryTimeSpan(Duration.ofDays(2)));
+    System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
-// Sample to iterate over all cells in the table
-for (LogsTable table : queryResults.getLogsTables()) {
-    for (LogsTableCell tableCell : table.getAllTableCells()) {
-        System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getRowValue());
+    // Sample to iterate over all cells in the table
+    for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTableCell tableCell : table.getAllTableCells()) {
+            System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
+        }
+    }
+
+
+    // Sample to iterate over each row
+    for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTableRow tableRow : table.getTableRows()) {
+            for (LogsTableCell tableCell : tableRow.getTableRow()) {
+                System.out.println("Column = " + tableCell.getColumnName()
+                    + "; value = " + tableCell.getValueAsString());
+            }
+        }
+    }
+
+    // Sample to get a specific column by name
+    for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTableRow tableRow : table.getTableRows()) {
+            Optional<LogsTableCell> tableCell = tableRow.getColumnValue("DurationMs");
+            tableCell
+                .ifPresent(logsTableCell ->
+                    System.out.println("Column = " + logsTableCell.getColumnName()
+                        + "; value = " + logsTableCell.getValueAsString()));
+        }
     }
 }
 ```
@@ -91,7 +114,7 @@ for (LogsQueryBatchResult response : responses) {
         for (LogsTableRow row : table.getTableRows()) {
             System.out.println("Row index " + row.getRowIndex());
             row.getTableRow()
-                .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
+                .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
         }
     }
 }
@@ -115,7 +138,7 @@ for (LogsTable table : logsQueryResult.getLogsTables()) {
     for (LogsTableRow row : table.getTableRows()) {
         System.out.println("Row index " + row.getRowIndex());
         row.getTableRow()
-            .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
+            .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
     }
 }
 ```
@@ -151,7 +174,7 @@ Response<MetricsQueryResult> metricsResponse = metricsClient
             .setTimespan(Duration.ofDays(30).toString())
             .setInterval(Duration.ofHours(1))
             .setTop(100)
-            .setAggregation("1,2,3,4,5"),
+            .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
         Context.NONE);
 
 MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
@@ -167,8 +190,8 @@ metrics.stream()
         metric.getTimeSeries()
             .stream()
             .flatMap(ts -> ts.getData().stream())
-            .forEach(mv -> System.out.println(mv.getTimeStamp().toString() + "; Count = " + mv.getCount() +
-                "; Average = " + mv.getAverage() + "; Maximum  " + mv.getMaximum() + "; Minimum = " + mv.getMinimum()));
+            .forEach(mv -> System.out.println(mv.getTimeStamp().toString() + "; Count = " + mv.getCount()
+                + "; Average = " + mv.getAverage()));
     });
 ```
 

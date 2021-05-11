@@ -9,8 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.monitor.query.models.MetricDefinition;
-import com.azure.monitor.query.models.MetricNamespace;
+import com.azure.monitor.query.models.MetricsDefinition;
+import com.azure.monitor.query.models.MetricsNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
@@ -63,7 +63,7 @@ public final class MetricsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime) {
+    public PagedIterable<MetricsNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime) {
         return listMetricsNamespace(resourceUri, startTime, Context.NONE);
     }
 
@@ -75,8 +75,8 @@ public final class MetricsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime,
-                                                               Context context) {
+    public PagedIterable<MetricsNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime,
+                                                                Context context) {
         return new PagedIterable<>(asyncClient.listMetricsNamespace(resourceUri, startTime, context));
     }
 
@@ -87,7 +87,7 @@ public final class MetricsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace) {
+    public PagedIterable<MetricsDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace) {
         return listMetricsDefinition(resourceUri, metricsNamespace, Context.NONE);
     }
 
@@ -99,8 +99,8 @@ public final class MetricsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace,
-                                                                 Context context) {
+    public PagedIterable<MetricsDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace,
+                                                                  Context context) {
         return new PagedIterable<>(asyncClient.listMetricsDefinition(resourceUri, metricsNamespace, context));
     }
 }

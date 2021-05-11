@@ -7,6 +7,8 @@ package com.azure.monitor.query.log.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 /** The LogQueryResponse model. */
 @Fluent
 public final class LogQueryResponse {
@@ -28,12 +30,24 @@ public final class LogQueryResponse {
     @JsonProperty(value = "body")
     private QueryResults body;
 
+    @JsonProperty(value = "headers")
+    private Map<String, String> responseHeaders;
+
+    public Map<String, String> getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    public void setResponseHeaders(Map<String, String> responseHeaders) {
+        this.responseHeaders = responseHeaders;
+    }
+
     /**
      * Get the id property: The id property.
      *
      * @return the id value.
      */
     public String getId() {
+
         return this.id;
     }
 

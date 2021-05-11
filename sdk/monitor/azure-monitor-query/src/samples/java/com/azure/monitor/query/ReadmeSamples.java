@@ -19,10 +19,10 @@ import com.azure.monitor.query.models.Metrics;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeSpan;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -32,7 +32,6 @@ import java.util.List;
  * Code samples for the README.md
  */
 public class ReadmeSamples {
-
     /**
      * Sample for creating sync and async clients for querying logs.
      */
@@ -80,7 +79,7 @@ public class ReadmeSamples {
         // Sample to iterate over all cells in the table
         for (LogsTable table : queryResults.getLogsTables()) {
             for (LogsTableCell tableCell : table.getAllTableCells()) {
-                System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getRowValue());
+                System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
             }
         }
     }
@@ -112,7 +111,7 @@ public class ReadmeSamples {
                 for (LogsTableRow row : table.getTableRows()) {
                     System.out.println("Row index " + row.getRowIndex());
                     row.getTableRow()
-                        .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
+                        .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
                 }
             }
         }
@@ -144,7 +143,7 @@ public class ReadmeSamples {
             for (LogsTableRow row : table.getTableRows()) {
                 System.out.println("Row index " + row.getRowIndex());
                 row.getTableRow()
-                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
+                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
             }
         }
     }
@@ -189,4 +188,47 @@ public class ReadmeSamples {
             });
     }
 
+    /**
+     *
+     */
+    public void getLogsQueryWithColumnNameAccess() {
+        TokenCredential tokenCredential = null;
+
+        LogsClient logsClient = new LogsClientBuilder()
+            .credential(tokenCredential)
+            .buildClient();
+
+        LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
+            new QueryTimeSpan(Duration.ofDays(2)));
+        System.out.println("Number of tables = " + queryResults.getLogsTables().size());
+
+        // Sample to iterate over all cells in the table
+        for (LogsTable table : queryResults.getLogsTables()) {
+            for (LogsTableCell tableCell : table.getAllTableCells()) {
+                System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
+            }
+        }
+
+
+        // Sample to iterate over each row
+        for (LogsTable table : queryResults.getLogsTables()) {
+            for (LogsTableRow tableRow : table.getTableRows()) {
+                for (LogsTableCell tableCell : tableRow.getTableRow()) {
+                    System.out.println("Column = " + tableCell.getColumnName()
+                        + "; value = " + tableCell.getValueAsString());
+                }
+            }
+        }
+
+        // Sample to get a specific column by name
+        for (LogsTable table : queryResults.getLogsTables()) {
+            for (LogsTableRow tableRow : table.getTableRows()) {
+                Optional<LogsTableCell> tableCell = tableRow.getColumnValue("DurationMs");
+                tableCell
+                    .ifPresent(logsTableCell ->
+                        System.out.println("Column = " + logsTableCell.getColumnName()
+                            + "; value = " + logsTableCell.getValueAsString()));
+            }
+        }
+    }
 }

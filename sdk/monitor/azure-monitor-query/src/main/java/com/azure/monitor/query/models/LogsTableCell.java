@@ -4,6 +4,9 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
+
+import java.time.OffsetDateTime;
 
 /**
  *
@@ -11,7 +14,7 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class LogsTableCell {
     private final String columnName;
-    private final String columnType;
+    private final ColumnDataType columnType;
     private final int columnIndex;
     private final int rowIndex;
     private final String rowValue;
@@ -23,7 +26,7 @@ public final class LogsTableCell {
      * @param rowIndex
      * @param rowValue
      */
-    public LogsTableCell(String columnName, String columnType, int columnIndex, int rowIndex, String rowValue) {
+    public LogsTableCell(String columnName, ColumnDataType columnType, int columnIndex, int rowIndex, String rowValue) {
         this.columnName = columnName;
         this.columnType = columnType;
         this.columnIndex = columnIndex;
@@ -34,7 +37,7 @@ public final class LogsTableCell {
     /**
      * @return
      */
-    public String getColumnType() {
+    public ColumnDataType getColumnType() {
         return columnType;
     }
 
@@ -62,7 +65,50 @@ public final class LogsTableCell {
     /**
      * @return
      */
-    public String getRowValue() {
-        return rowValue;
+    public String getValueAsString() {
+        return rowValue == null ? null : rowValue.toString();
     }
+
+    /**
+     * @return
+     */
+    public Boolean getValueAsBoolean() {
+        return rowValue == null ? null : Boolean.valueOf(rowValue.toString());
+    }
+
+    /**
+     * @return
+     */
+    public Integer getValueAsInteger() {
+        return rowValue == null ? null : Integer.parseInt(rowValue);
+    }
+
+    /**
+     * @return
+     */
+    public Double getValueAsDouble() {
+        return rowValue == null ? null : Double.parseDouble(rowValue);
+    }
+
+    /**
+     * @return
+     */
+    public Long getValueAsLong() {
+        return rowValue == null ? null : Long.parseLong(rowValue);
+    }
+
+    /**
+     * @return
+     */
+    public BinaryData getValueAsDynamic() {
+        return rowValue == null ? null : BinaryData.fromString(rowValue);
+    }
+
+    /**
+     * @return
+     */
+    public OffsetDateTime getValueAsDateTime() {
+        return rowValue == null ? null : OffsetDateTime.parse(rowValue);
+    }
+
 }

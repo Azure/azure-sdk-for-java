@@ -6,6 +6,7 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Immutable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -36,5 +37,16 @@ public final class LogsTableRow {
      */
     public List<LogsTableCell> getTableRow() {
         return tableRow;
+    }
+
+    /**
+     * @param columnName
+     *
+     * @return
+     */
+    public Optional<LogsTableCell> getColumnValue(String columnName) {
+        return tableRow.stream()
+            .filter(cell -> cell.getColumnName().equals(columnName))
+            .findFirst();
     }
 }

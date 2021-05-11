@@ -19,8 +19,8 @@ import com.azure.monitor.query.metrics.implementation.models.ResultType;
 import com.azure.monitor.query.metrics.implementation.models.TimeSeriesElement;
 import com.azure.monitor.query.metricsdefinitions.implementation.MetricsDefinitionsClientImpl;
 import com.azure.monitor.query.metricsnamespaces.implementation.MetricsNamespacesClientImpl;
-import com.azure.monitor.query.models.MetricDefinition;
-import com.azure.monitor.query.models.MetricNamespace;
+import com.azure.monitor.query.models.MetricsDefinition;
+import com.azure.monitor.query.models.MetricsNamespace;
 import com.azure.monitor.query.models.Metrics;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
@@ -87,7 +87,7 @@ public final class MetricsAsyncClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime) {
+    public PagedFlux<MetricsNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime) {
         return metricsNamespaceClient
             .getMetricNamespaces()
             .listAsync(resourceUri, startTime.toString());
@@ -100,19 +100,19 @@ public final class MetricsAsyncClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace) {
+    public PagedFlux<MetricsDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace) {
         return metricsDefinitionsClient
             .getMetricDefinitions()
             .listAsync(resourceUri, metricsNamespace);
     }
 
-    PagedFlux<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime, Context context) {
+    PagedFlux<MetricsNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime, Context context) {
         return metricsNamespaceClient
             .getMetricNamespaces()
             .listAsync(resourceUri, startTime.toString(), context);
     }
 
-    PagedFlux<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace, Context context) {
+    PagedFlux<MetricsDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace, Context context) {
         return metricsDefinitionsClient.getMetricDefinitions()
             .listAsync(resourceUri, metricsNamespace, context);
     }

@@ -53,7 +53,7 @@ public class ServerTimeoutSample {
             for (LogsTableRow row : table.getTableRows()) {
                 System.out.println("Row index " + row.getRowIndex());
                 row.getTableRow()
-                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
+                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
             }
         }
 

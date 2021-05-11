@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metric namespace class specifies the metadata for a metric namespace. */
 @Fluent
-public final class MetricNamespace {
+public final class MetricsNamespace {
     /*
      * The ID of the metricNamespace.
      */
@@ -32,7 +32,7 @@ public final class MetricNamespace {
      * Properties which include the fully qualified namespace name.
      */
     @JsonProperty(value = "properties")
-    private MetricNamespaceName properties;
+    private MetricsNamespaceName properties;
 
     /**
      * Get the id property: The ID of the metricNamespace.
@@ -49,7 +49,7 @@ public final class MetricNamespace {
      * @param id the id value to set.
      * @return the MetricNamespace object itself.
      */
-    public MetricNamespace setId(String id) {
+    public MetricsNamespace setId(String id) {
         this.id = id;
         return this;
     }
@@ -69,7 +69,7 @@ public final class MetricNamespace {
      * @param type the type value to set.
      * @return the MetricNamespace object itself.
      */
-    public MetricNamespace setType(String type) {
+    public MetricsNamespace setType(String type) {
         this.type = type;
         return this;
     }
@@ -89,7 +89,7 @@ public final class MetricNamespace {
      * @param name the name value to set.
      * @return the MetricNamespace object itself.
      */
-    public MetricNamespace setName(String name) {
+    public MetricsNamespace setName(String name) {
         this.name = name;
         return this;
     }
@@ -99,7 +99,7 @@ public final class MetricNamespace {
      *
      * @return the properties value.
      */
-    public MetricNamespaceName getProperties() {
+    public MetricsNamespaceName getProperties() {
         return this.properties;
     }
 
@@ -109,7 +109,7 @@ public final class MetricNamespace {
      * @param properties the properties value to set.
      * @return the MetricNamespace object itself.
      */
-    public MetricNamespace setProperties(MetricNamespaceName properties) {
+    public MetricsNamespace setProperties(MetricsNamespaceName properties) {
         this.properties = properties;
         return this;
     }

@@ -365,7 +365,7 @@
           }
         },
         "errors": {
-          "$ref": "#/definitions/errorDetails"
+          "$ref": "#/definitions/errorInfo"
         }
       }
     },
@@ -1371,37 +1371,6 @@
           "items": {
             "$ref": "#/definitions/logQueryResponse"
           }
-        },
-        "error": {
-          "type": "object",
-          "description": "Error response for a batch request",
-          "properties": {
-            "message": {
-              "type": "string",
-              "description": "The error message describing the cause of the error."
-            },
-            "code": {
-              "type": "string",
-              "description": "The error code"
-            },
-            "innerError": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "string"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "details": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/errorDetails"
-                  }
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -1420,6 +1389,22 @@
         }
       }
     },
+    "logQueryResult": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "body": {
+          "type": "object",
+          "$ref": "#/definitions/queryResults"
+        }
+      }
+    },
+
     "errorDetails" : {
       "type": "object",
       "properties": {

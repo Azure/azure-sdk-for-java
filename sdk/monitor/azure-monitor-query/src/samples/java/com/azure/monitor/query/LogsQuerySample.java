@@ -11,6 +11,8 @@ import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.LogsTableRow;
 
+import java.util.Optional;
+
 /**
  *
  */
@@ -36,16 +38,25 @@ public class LogsQuerySample {
         // Sample to iterate over all cells in the table
         for (LogsTable table : queryResults.getLogsTables()) {
             for (LogsTableCell tableCell : table.getAllTableCells()) {
-                System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getRowValue());
+                System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
             }
         }
 
         // Sample to iterate by row
         for (LogsTable table : queryResults.getLogsTables()) {
             for (LogsTableRow row : table.getTableRows()) {
-                System.out.println("Row index " + row.getRowIndex());
                 row.getTableRow()
-                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getRowValue()));
+                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
+            }
+        }
+
+        // Sample to get value of a column
+        for (LogsTable table : queryResults.getLogsTables()) {
+            for (LogsTableRow row : table.getTableRows()) {
+                Optional<LogsTableCell> resourceGroup = row.getColumnValue("DurationMs");
+                if (resourceGroup.isPresent()) {
+                    System.out.println(resourceGroup.get().getValueAsString());
+                }
             }
         }
     }

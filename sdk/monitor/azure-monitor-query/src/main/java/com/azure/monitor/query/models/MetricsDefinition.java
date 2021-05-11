@@ -10,7 +10,7 @@ import java.util.List;
 
 /** Metric definition class specifies the metadata for a metric. */
 @Fluent
-public final class MetricDefinition {
+public final class MetricsDefinition {
     /*
      * Flag to indicate whether the dimension is required.
      */
@@ -40,7 +40,7 @@ public final class MetricDefinition {
      * the metricsUnit of the metric.
      */
     @JsonProperty(value = "metricsUnit")
-    private Unit metricsUnit;
+    private MetricsUnit metricsUnit;
 
     /*
      * the primary aggregation type value defining how to use the values for
@@ -60,7 +60,7 @@ public final class MetricDefinition {
      * queried.
      */
     @JsonProperty(value = "metricAvailabilities")
-    private List<MetricAvailability> metricAvailabilities;
+    private List<MetricsAvailability> metricAvailabilities;
 
     /*
      * the resource identifier of the metric definition.
@@ -90,7 +90,7 @@ public final class MetricDefinition {
      * @param isDimensionRequired the isDimensionRequired value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setIsDimensionRequired(Boolean isDimensionRequired) {
+    public MetricsDefinition setIsDimensionRequired(Boolean isDimensionRequired) {
         this.isDimensionRequired = isDimensionRequired;
         return this;
     }
@@ -110,7 +110,7 @@ public final class MetricDefinition {
      * @param resourceId the resourceId value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setResourceId(String resourceId) {
+    public MetricsDefinition setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -130,7 +130,7 @@ public final class MetricDefinition {
      * @param namespace the namespace value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setNamespace(String namespace) {
+    public MetricsDefinition setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
@@ -150,7 +150,7 @@ public final class MetricDefinition {
      * @param name the name value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setName(LocalizableString name) {
+    public MetricsDefinition setName(LocalizableString name) {
         this.name = name;
         return this;
     }
@@ -160,7 +160,7 @@ public final class MetricDefinition {
      *
      * @return the metricsUnit value.
      */
-    public Unit getUnit() {
+    public MetricsUnit getUnit() {
         return this.metricsUnit;
     }
 
@@ -170,7 +170,7 @@ public final class MetricDefinition {
      * @param metricsUnit the metricsUnit value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setUnit(Unit metricsUnit) {
+    public MetricsDefinition setUnit(MetricsUnit metricsUnit) {
         this.metricsUnit = metricsUnit;
         return this;
     }
@@ -192,7 +192,7 @@ public final class MetricDefinition {
      * @param primaryAggregationType the primaryAggregationType value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setPrimaryAggregationType(AggregationType primaryAggregationType) {
+    public MetricsDefinition setPrimaryAggregationType(AggregationType primaryAggregationType) {
         this.primaryAggregationType = primaryAggregationType;
         return this;
     }
@@ -212,7 +212,7 @@ public final class MetricDefinition {
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setSupportedAggregationTypes(List<AggregationType> supportedAggregationTypes) {
+    public MetricsDefinition setSupportedAggregationTypes(List<AggregationType> supportedAggregationTypes) {
         this.supportedAggregationTypes = supportedAggregationTypes;
         return this;
     }
@@ -222,7 +222,7 @@ public final class MetricDefinition {
      *
      * @return the metricAvailabilities value.
      */
-    public List<MetricAvailability> getMetricAvailabilities() {
+    public List<MetricsAvailability> getMetricAvailabilities() {
         return this.metricAvailabilities;
     }
 
@@ -232,7 +232,7 @@ public final class MetricDefinition {
      * @param metricAvailabilities the metricAvailabilities value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setMetricAvailabilities(List<MetricAvailability> metricAvailabilities) {
+    public MetricsDefinition setMetricAvailabilities(List<MetricsAvailability> metricAvailabilities) {
         this.metricAvailabilities = metricAvailabilities;
         return this;
     }
@@ -252,7 +252,7 @@ public final class MetricDefinition {
      * @param id the id value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setId(String id) {
+    public MetricsDefinition setId(String id) {
         this.id = id;
         return this;
     }
@@ -272,7 +272,7 @@ public final class MetricDefinition {
      * @param dimensions the dimensions value to set.
      * @return the MetricDefinition object itself.
      */
-    public MetricDefinition setDimensions(List<LocalizableString> dimensions) {
+    public MetricsDefinition setDimensions(List<LocalizableString> dimensions) {
         this.dimensions = dimensions;
         return this;
     }

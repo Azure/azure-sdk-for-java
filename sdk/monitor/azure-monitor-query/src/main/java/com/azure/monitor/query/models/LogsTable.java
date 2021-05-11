@@ -14,12 +14,15 @@ import java.util.List;
 public final class LogsTable {
     private final List<LogsTableCell> allTableCells;
     private final List<LogsTableRow> tableRows;
+    private final List<LogsTableColumn> tableColumns;
 
     /**
      * @param allTableCells
      * @param tableRows
      */
-    public LogsTable(List<LogsTableCell> allTableCells, List<LogsTableRow> tableRows) {
+    public LogsTable(List<LogsTableCell> allTableCells, List<LogsTableRow> tableRows,
+                     List<LogsTableColumn> tableColumns) {
+        this.tableColumns = tableColumns;
         this.allTableCells = allTableCells;
         this.tableRows = tableRows;
     }
@@ -36,5 +39,12 @@ public final class LogsTable {
      */
     public List<LogsTableRow> getTableRows() {
         return tableRows;
+    }
+
+    /**
+     * @return
+     */
+    public List<LogsTableColumn> getTableColumns() {
+        return tableColumns;
     }
 }

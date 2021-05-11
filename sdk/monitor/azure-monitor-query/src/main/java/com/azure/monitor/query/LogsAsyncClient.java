@@ -19,6 +19,7 @@ import com.azure.monitor.query.log.implementation.models.LogQueryResponse;
 import com.azure.monitor.query.log.implementation.models.QueryBody;
 import com.azure.monitor.query.log.implementation.models.QueryResults;
 import com.azure.monitor.query.log.implementation.models.Table;
+import com.azure.monitor.query.models.ColumnDataType;
 import com.azure.monitor.query.models.LogsQueryBatch;
 import com.azure.monitor.query.models.LogsQueryBatchResult;
 import com.azure.monitor.query.models.LogsQueryBatchResultCollection;
@@ -27,6 +28,7 @@ import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableCell;
+import com.azure.monitor.query.models.LogsTableColumn;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.QueryTimeSpan;
 import reactor.core.publisher.Mono;
@@ -197,10 +199,15 @@ public final class LogsAsyncClient {
         List<LogsTable> tables = new ArrayList<>();
         LogsQueryResult logsQueryResult = new LogsQueryResult(tables);
 
+        if (queryResults.getTables() == null) {
+            return null;
+        }
+
         for (Table table : queryResults.getTables()) {
             List<LogsTableCell> tableCells = new ArrayList<>();
             List<LogsTableRow> tableRows = new ArrayList<>();
-            LogsTable logsTable = new LogsTable(tableCells, tableRows);
+            List<LogsTableColumn> tableColumns = new ArrayList<>();
+            LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
             tables.add(logsTable);
             List<List<String>> rows = table.getRows();
 
@@ -210,7 +217,7 @@ public final class LogsAsyncClient {
                 tableRows.add(tableRow);
                 for (int j = 0; j < row.size(); j++) {
                     LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
-                        table.getColumns().get(j).getType(), j, i, row.get(j));
+                        ColumnDataType.fromString(table.getColumns().get(j).getType()), j, i, row.get(j));
                     tableCells.add(cell);
                     tableRow.getTableRow().add(cell);
                 }

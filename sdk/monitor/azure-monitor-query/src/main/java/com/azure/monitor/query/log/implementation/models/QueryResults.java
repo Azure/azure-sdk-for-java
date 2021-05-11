@@ -17,6 +17,17 @@ public final class QueryResults {
     @JsonProperty(value = "tables")
     private List<Table> tables;
 
+    @JsonProperty(value = "error")
+    private ErrorInfo error;
+
+    public ErrorInfo getError() {
+        return error;
+    }
+
+    public void setError(ErrorInfo error) {
+        this.error = error;
+    }
+
     /*
      * The errors property.
      */
