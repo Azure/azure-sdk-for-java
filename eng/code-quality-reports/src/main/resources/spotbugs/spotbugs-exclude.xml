@@ -2465,4 +2465,9 @@
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+
+  <Match>
+    <Class name="com.azure.search.documents.indexes.implementation.models.Suggester"/>
+    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
+  </Match>
 </FindBugsFilter>
