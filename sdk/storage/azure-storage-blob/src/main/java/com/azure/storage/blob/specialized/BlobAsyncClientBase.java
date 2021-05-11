@@ -597,7 +597,7 @@ public class BlobAsyncClientBase {
                 destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
                 destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
                 destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(), null,
-                tagsToString(tags), sealBlob, context))
+                tagsToString(tags), sealBlob, null, null, null, context))
             .map(response -> {
                 final BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -832,7 +832,7 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
-            tagsToString(options.getTags()), context)
+            tagsToString(options.getTags()), null, null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 
