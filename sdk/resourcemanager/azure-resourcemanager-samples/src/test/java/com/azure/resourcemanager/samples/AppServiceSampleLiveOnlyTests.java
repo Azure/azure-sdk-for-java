@@ -86,7 +86,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testManageWebAppCosmosDbByMsi() {
+    public void testManageWebAppCosmosDbByMsi() throws IOException {
         Assertions.assertTrue(ManageWebAppCosmosDbByMsi.runSample(azureResourceManager, credentialFromFile(), clientIdFromFile()));
     }
 

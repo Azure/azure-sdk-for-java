@@ -1,7 +1,27 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.17.0-beta.1 (Unreleased)
 
+
+## 1.16.0 (2021-05-07)
+
+### Features Added
+
+- Added Support for Challenge Based Authentication in `BearerTokenAuthenticationPolicy`.
+
+### Key Bugs Fixed
+
+- Updated logic to eagerly read response bodies to include return types `void` and `Void`. ([#21091](https://github.com/Azure/azure-sdk-for-java/issues/21091))
+- Updated URL path appending logic to prevent double slashes (`//`) from occurring. ([#21138](https://github.com/Azure/azure-sdk-for-java/issues/21138))
+
+### Fixed
+
+- Updated `ServiceLoader`s to use the class loader that loaded the class instead of system class loader. (Thank you @ueisele)
+- Changed an instance `Map` to static `Map` for resources that are static for the lifetime of an application.
+
+### Dependency Updates
+
+- Updated Reactor from `3.4.3` to `3.4.5`.
 
 ## 1.15.0 (2021-04-02)
 

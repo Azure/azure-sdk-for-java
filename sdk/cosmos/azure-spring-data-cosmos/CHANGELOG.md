@@ -1,7 +1,7 @@
 ## Release History
 
-## 3.7.0-beta.1 (Unreleased)
-### New Features
+### 3.7.0-beta.1 (Unreleased)
+#### New Features
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).
 - Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/).
 
@@ -15,7 +15,8 @@
 * Updated `azure-cosmos` to hotfix version 4.13.1.
 
 ### 3.5.0 (2021-03-11)
-#### NOTE: THIS RELEASE SUPPORTS SPRING BOOT 2.4.3 AND ABOVE
+> [!IMPORTANT] 
+> This release supports spring boot 2.4.3 and above.
 #### New Features
 * Updated `spring-boot` to major version 2.4.3.
 * Updated `spring-core` to major version 5.3.4.
@@ -29,14 +30,14 @@
 * Fixed issue when using automatic id generation with the auditable framework.
 * Fixed query deserialization issue with `@query` annotated queries.
 
-### 3.4.0 (2020-02-09)
+### 3.4.0 (2021-02-09)
 #### New Features
 * Updated `azure-cosmos` version to 4.12.0.
 
 #### Key Bug Fixes
 * Fixed `@EnableAuditing` for Java 11 modules.
 
-### 3.3.0 (2020-01-15)
+### 3.3.0 (2021-01-15)
 #### New Features
 * Support for composite indexes in `CosmosIndexPolicy` annotation.
 * Support for changes in `CosmosIndexPolicy` annotation.
@@ -66,7 +67,7 @@
 #### New Features
 * Updated azure-cosmos dependency to `4.6.0`
 
-## 3.0.0-beta.2 (2020-09-17)
+### 3.0.0-beta.2 (2020-09-17)
 #### New Features
 * Updated artifact id to `azure-spring-data-cosmos`.
 * Updated azure-cosmos dependency to `4.5.0`.

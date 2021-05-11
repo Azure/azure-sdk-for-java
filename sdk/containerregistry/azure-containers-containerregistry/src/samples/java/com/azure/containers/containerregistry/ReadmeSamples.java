@@ -33,37 +33,37 @@ public class ReadmeSamples {
             .buildAsyncClient();
     }
 
-    public void listRepositoriesSample() {
+    public void listRepositoryNamesSample() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildClient();
 
-        client.listRepositories().forEach(repository -> System.out.println(repository));
+        client.listRepositoryNames().forEach(repository -> System.out.println(repository));
     }
 
-    public void listRepositoriesAsyncSample() {
+    public void listRepositoryNamesAsyncSample() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildAsyncClient();
 
-        client.listRepositories().subscribe(repository -> System.out.println(repository));
+        client.listRepositoryNames().subscribe(repository -> System.out.println(repository));
     }
 
     private String repository = "repository";
 
     public void getPropertiesThrows() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRepositoryClient client = new ContainerRepositoryClientBuilder()
+        ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .repository(repository)
             .credential(credential)
-            .buildClient();
+            .buildClient()
+            .getRepository(repository);
         try {
-            client.getProperties();
+            containerRepository.getProperties();
         } catch (HttpResponseException exception) {
             // Do something with the exception.
         }
