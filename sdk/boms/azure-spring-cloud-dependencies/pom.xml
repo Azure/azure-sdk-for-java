@@ -155,11 +155,6 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-storage</artifactId>
-        <version>${azure.spring.cloud.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>
