@@ -228,15 +228,15 @@ public class SmsAsyncClientTests extends SmsTestBase {
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "checkForRepeatabilityOptions");
 
-        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE))
-            .assertNext(requestResponse -> {
-                StepVerifier.create(requestResponse.getRequest().getBody())
-                    .assertNext(requestBodyBuff -> {
-                        String bodyRequest = new String(requestBodyBuff.array());
-                        assertTrue(bodyRequest.contains("repeatabilityRequestId"));
-                        assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
-                    })
-                    .verifyComplete();
+        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE).flatMap(
+            requestResponse -> {
+                return requestResponse.getRequest().getBody().last();
+            }
+        ))
+            .assertNext(bodyBuff -> {
+                String bodyRequest = new String(bodyBuff.array());
+                assertTrue(bodyRequest.contains("repeatabilityRequestId"));
+                assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
             })
             .verifyComplete();
     }
