@@ -11,7 +11,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-cloud-foundry-service-sample</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.0</version>
   <packaging>jar</packaging>
 
   <name>Azure Cloud Foundry Service Sample</name>

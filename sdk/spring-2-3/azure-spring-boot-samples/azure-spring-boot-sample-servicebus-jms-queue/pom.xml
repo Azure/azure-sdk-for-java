@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-sample-servicebus-jms-queue</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.0</version>
   <packaging>jar</packaging>
 
   <name>Azure Spring Boot Starter Sample - Service Bus JMS Queue</name>

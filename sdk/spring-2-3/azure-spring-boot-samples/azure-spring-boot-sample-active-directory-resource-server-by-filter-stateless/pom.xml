@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.0</version>
 
   <name>Azure Spring Boot Starter Sample - Azure AD Stateless Spring Security Integration</name>
   <description>Sample project using the AAD stateless app-role filter for AAD integration in Spring Security</description>

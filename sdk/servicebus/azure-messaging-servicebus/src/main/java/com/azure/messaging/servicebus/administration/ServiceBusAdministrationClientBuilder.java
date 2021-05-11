@@ -44,10 +44,28 @@ import java.util.Objects;
  * instance of the desired client.
  *
  * <p><strong>Create the sync client using a connection string</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation}
+ * <pre>
+ * &#47;&#47; Retrieve 'connectionString' from your configuration.
+ * 
+ * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;
+ *     .setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;;
+ * 
+ * ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .httpLogOptions&#40;logOptions&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  *
  * <p><strong>Create the async client using Azure Identity</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation}
+ * <pre>
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * 
+ * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;&lt;&lt; Service Bus NAMESPACE connection string&gt;&gt;&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt; my-sb-namespace.servicebus.windows.net &gt;&gt;&quot;, credential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
  *
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient

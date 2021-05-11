@@ -11,7 +11,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-sample-active-directory-b2c-oidc</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-sample-active-directory-b2c-oidc;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Spring Boot Starter Sample - Azure AD B2C Spring Security 5 OAuth Integration</name>

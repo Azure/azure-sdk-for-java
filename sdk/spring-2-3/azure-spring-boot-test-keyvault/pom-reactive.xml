@@ -8,12 +8,12 @@
   <parent>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-test-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-parent;current} -->
+    <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-parent;current} -->
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
   <artifactId>azure-spring-boot-test-keyvault-reactive</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-keyvault-reactive;current} -->
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-keyvault-reactive;current} -->
 
   <dependencies>
     <dependency>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-test-core</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-core;current} -->
+      <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

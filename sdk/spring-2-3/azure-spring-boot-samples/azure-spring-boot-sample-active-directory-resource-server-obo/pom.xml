@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-sample-active-directory-resource-server-obo</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.0</version>
   <name>Azure Spring Boot Azure AD Starter Sample - Resource Server OBO</name>
   <description>Azure AD Spring Security Integration Spring Boot Resource Server OBO</description>
 

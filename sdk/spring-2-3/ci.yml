@@ -154,8 +154,6 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-data-gremlin
-        groupId: com.azure.spring
       - name: azure-spring-boot-sample-keyvault-secrets
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-mediaservices
@@ -168,10 +166,8 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-storage-resource
         groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin
-        groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin-web-service
-        groupId: com.azure.spring
+#      - name: azure-spring-data-sample-gremlin
+#        groupId: com.azure.spring
 #      - name: spring-cloud-azure-appconfiguration-convert-sample-complete
 #        groupId: com.azure.spring
 #      - name: azure-appconfiguration-convert-sample-initial

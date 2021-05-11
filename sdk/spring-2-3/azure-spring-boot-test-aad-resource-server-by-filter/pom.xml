@@ -8,12 +8,12 @@
   <parent>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-test-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-parent;current} -->
+    <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-parent;current} -->
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
   <artifactId>azure-spring-boot-test-aad-resource-server-by-filter</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-aad;current} -->
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-aad;current} -->
 
   <dependencies>
     <dependency>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-test-core</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-core;current} -->
+      <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-core;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
