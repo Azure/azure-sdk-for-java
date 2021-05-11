@@ -21,6 +21,7 @@ pr:
       - feature/*
       - hotfix/*
       - release/*
+      - feature/spring-multi-version
   paths:
     include:
       - sdk/spring-2-3/
