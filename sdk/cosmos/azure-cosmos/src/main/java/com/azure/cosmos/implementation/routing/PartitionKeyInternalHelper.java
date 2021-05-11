@@ -9,7 +9,6 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.ByteBufferOutputStream;
 import com.azure.cosmos.implementation.Bytes;
 import com.azure.cosmos.implementation.RMResources;
-import com.azure.cosmos.util.Beta;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -36,7 +35,7 @@ public class PartitionKeyInternalHelper {
         (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
         (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
 
-    private static final Integer HashV2EPKLength = 32;
+    private static final Integer HASH_V2_EPK_LENGTH = 32;
 
     static byte[] uIntToBytes(UInt128 unit) {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
@@ -96,7 +95,7 @@ public class PartitionKeyInternalHelper {
     }
 
     static String getEffectivePartitionKeyForMultiHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
-        StringBuilder stringBuilder = new StringBuilder(partitionKeyInternal.components.size() * HashV2EPKLength);
+        StringBuilder stringBuilder = new StringBuilder(partitionKeyInternal.components.size() * HASH_V2_EPK_LENGTH);
         for (int i = 0; i < partitionKeyInternal.components.size(); i++) {
             try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
                 partitionKeyInternal.components.get(i).writeForHashingV2(byteArrayBuffer);
