@@ -2379,6 +2379,37 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzePiiEntityRecognitionWithDomainFilters(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzePiiEntityRecognitionWithDomainFiltersRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+                    client.beginAnalyzeActions(documents, tasks,
+                        new AnalyzeActionsOptions().setIncludeStatistics(false), Context.NONE);
+                syncPoller = setPollInterval(syncPoller);
+                syncPoller.waitForCompletion();
+                PagedIterable<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+
+                validateAnalyzeBatchActionsResultList(false, false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(Collections.emptyList()),
+                        // TODO: Organization "Microsoft" should be displayed since it is not a SSN.
+                        // Replace getExpectedBatchPiiEntitiesForCategoriesFilter() to getExpectedBatchPiiEntities()
+                        // instead when the issue resolved.
+                        // Issue: https://github.com/Azure/azure-sdk-for-java/issues/19568
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+                            false, TIME_NOW, getExpectedBatchPiiEntities(), null))),
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()))),
+                    result.stream().collect(Collectors.toList()));
+            }
+        );
+    }
+
     @Disabled("Linked entity recognition action doesn't contains bingId property")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")

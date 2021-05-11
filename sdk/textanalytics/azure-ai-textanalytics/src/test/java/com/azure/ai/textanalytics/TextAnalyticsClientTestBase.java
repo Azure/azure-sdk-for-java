@@ -1093,6 +1093,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 ));
     }
 
+    void analyzePiiEntityRecognitionWithDomainFiltersRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", PII_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
+            new TextAnalyticsActions()
+                .setDisplayName("Test1")
+                .setRecognizePiiEntitiesOptions(
+                    new RecognizePiiEntitiesOptions()
+                        .setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION)
+                ));
+    }
+
     void analyzeLinkedEntityRecognitionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
             LINKED_ENTITY_INPUTS,
