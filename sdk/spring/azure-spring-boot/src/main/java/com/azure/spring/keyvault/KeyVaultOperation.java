@@ -13,6 +13,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
@@ -205,20 +206,20 @@ public class KeyVaultOperation {
         this.properties = properties;
     }
 
-    boolean isUp() {
-        boolean result;
+    Status getStatusCode() {
+        Status result;
         try {
             //noinspection ResultOfMethodCallIgnored
             secretClient.listPropertiesOfSecrets();
-            result = true;
+            result = Status.UP;
         } catch (HttpResponseException httpResponseException) {
-            result = httpResponseException.getResponse().getStatusCode() < 500;
+            result = httpResponseException.getResponse().getStatusCode() < 500 ? Status.UP : Status.DOWN;
         } catch (HttpRequestException httpRequestException) {
             LOG.error("An HTTP error occurred while checking key vault connectivity", httpRequestException);
-            result = true;
+            result = Status.UNKNOWN;
         } catch (RuntimeException runtimeException) {
             LOG.error("A runtime error occurred while checking key vault connectivity", runtimeException);
-            result = false;
+            result = Status.UNKNOWN;
         }
         return result;
     }

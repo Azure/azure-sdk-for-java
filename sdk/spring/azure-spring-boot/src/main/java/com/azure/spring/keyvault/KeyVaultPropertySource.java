@@ -3,6 +3,7 @@
 
 package com.azure.spring.keyvault;
 
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.core.env.EnumerablePropertySource;
 
 import static com.azure.spring.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
@@ -34,7 +35,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
         return operations.getProperty(name);
     }
 
-    boolean isUp() {
-        return operations.isUp();
+    Status getStatusCode() {
+        return operations.getStatusCode();
     }
 }
