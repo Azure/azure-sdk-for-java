@@ -1,4 +1,4 @@
-# Sample for Azure Media Services Spring Boot client library for Java
+# Azure Sample for Azure Media Services Spring Boot client library for Java
 
 ## Key concepts
 This sample project demonstrates how to use Azure Media Services with Spring Boot.

@@ -7,7 +7,7 @@ products:
 - azure-active-directory
 - java spring boot
 ---
-# Authentication filter sample for Azure AD Spring Boot Starter client library for Java
+# Azure Authentication filter sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts
 This sample illustrates how to use `azure-spring-boot-starter-active-directory` package to plugin JWT token filter into Spring Security filter chain. The filter injects `UserPrincipal` object that is associated with the thread of the current user request. User's AAD membership info, along with token claimsset, JWS object etc. are accessible from the object which can be used for role based authorization. Methods like `isMemberOf` is also supported.

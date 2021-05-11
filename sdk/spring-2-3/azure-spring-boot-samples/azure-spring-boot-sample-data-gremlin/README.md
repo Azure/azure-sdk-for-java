@@ -1,4 +1,4 @@
-# Sample for Azure Spring Boot data gremlin client library for Java
+# Azure Sample for Azure Spring Boot data gremlin client library for Java
 
 ## Key concepts
 The sample of Spring Boot Starter `azure-spring-boot-starter-data-gremlin` please refer to

@@ -1,4 +1,4 @@
-# Cloud Foundry Sample for Azure Spring Boot client library for Java
+# Azure Cloud Foundry Sample for Azure Spring Boot client library for Java
 ## Key concepts
 This sample project demonstrates how to consume azure services exposed through the Microsoft Azure Service Broker for
 applications running in Cloud Foundry or by consuming the service configuration through a user provided service.

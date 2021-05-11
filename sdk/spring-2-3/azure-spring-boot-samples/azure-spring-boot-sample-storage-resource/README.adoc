@@ -7,7 +7,7 @@
 :storage-howto-file: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-file-storage
 :storage-howto-table: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-table-storage
 :storage-howto-queue: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-queue-storage
-= Sample for Azure Spring Boot Storage starter library for Java
+= Azure Sample for Azure Spring Boot Storage starter library for Java
 
 == Key concepts
 This code sample demonstrates how to read and write files with the Spring Resource abstraction for Azure Storage using the

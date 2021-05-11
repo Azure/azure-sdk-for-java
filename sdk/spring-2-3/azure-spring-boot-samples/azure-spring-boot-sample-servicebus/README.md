@@ -1,4 +1,4 @@
-# Sample for Azure Service Bus Spring Boot client library for Java
+# Azure Sample for Azure Service Bus Spring Boot client library for Java
 
 ## Key concepts
 This sample project demonstrates how to use Service Bus with Spring Boot. 

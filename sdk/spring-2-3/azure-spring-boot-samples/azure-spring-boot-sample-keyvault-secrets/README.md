@@ -1,4 +1,4 @@
-# Sample for Azure Key Vault Secrets Spring Boot Starter client library for Java
+# Azure Sample for Azure Key Vault Secrets Spring Boot Starter client library for Java
 
 ## Key concepts
 This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets ](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-starter-keyvault-secrets/README.md).

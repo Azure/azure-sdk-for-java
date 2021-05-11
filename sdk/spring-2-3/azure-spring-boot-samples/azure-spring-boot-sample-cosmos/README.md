@@ -1,4 +1,4 @@
-# Sample for Azure Cosmos DB Spring Boot client library for Java
+# Azure Sample for Azure Cosmos DB Spring Boot client library for Java
 
 ## Key concepts
 This sample project demonstrates how to use Azure Cosmos DB via Spring Boot Starter `azure-spring-boot-starter-cosmos` to store data in and retrieve data from your Azure Cosmos DB.

@@ -1,4 +1,4 @@
-# Sample for Spring JMS with Azure Service Bus Queue Spring Boot client library for Java
+# Azure Sample for Spring JMS with Azure Service Bus Queue Spring Boot client library for Java
 
 ## Key concepts
 

@@ -1,4 +1,4 @@
-# Sample for Azure Blob storage Spring Boot client library for Java
+# Azure Sample for Azure Blob storage Spring Boot client library for Java
 
 ## Key concepts
 ## Getting started

@@ -1,4 +1,4 @@
-# Sample for Spring JMS with Azure Service Bus Topic Spring Boot client library for Java
+# Azure Sample for Spring JMS with Azure Service Bus Topic Spring Boot client library for Java
 ## Key concepts
 
 This sample project demonstrates how to use Spring JMS Topic for Azure Service Bus via Spring Boot Starter `azure-spring-boot-starter-servicebus-jms`.
