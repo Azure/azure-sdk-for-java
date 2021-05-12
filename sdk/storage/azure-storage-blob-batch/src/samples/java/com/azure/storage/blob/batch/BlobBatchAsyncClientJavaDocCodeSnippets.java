@@ -6,7 +6,6 @@ package com.azure.storage.blob.batch;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
