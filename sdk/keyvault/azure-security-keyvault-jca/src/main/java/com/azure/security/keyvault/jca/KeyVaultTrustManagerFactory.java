@@ -33,9 +33,10 @@ public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
     }
 
     @Override
+    //TODO: enable create KeyVaultTrustManager with ManagerFactoryParameters
     protected void engineInit(ManagerFactoryParameters spec) {
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", spec);
-
+        trustManagers.add(new KeyVaultTrustManager());
     }
 
     @Override
