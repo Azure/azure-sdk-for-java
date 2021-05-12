@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.implementation;
 
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataErrorMessage;
 import com.azure.data.tables.models.TableServiceError;
@@ -49,33 +50,28 @@ public final class TableUtils {
     }
 
     /**
-     * Convert an implementation {@link com.azure.data.tables.implementation.models.TableServiceErrorException} to a a
-     * public {@link TableServiceException}.
+     * Convert an implementation {@link TableServiceErrorException} to a public {@link TableServiceException}.
      *
-     * @param exception The {@link com.azure.data.tables.implementation.models.TableServiceErrorException}.
+     * @param exception The {@link TableServiceErrorException}.
      *
      * @return The {@link TableServiceException} to be thrown.
      */
-    public static TableServiceException toTableServiceException(
-        com.azure.data.tables.implementation.models.TableServiceErrorException exception) {
-
+    public static TableServiceException toTableServiceException(TableServiceErrorException exception) {
         return new TableServiceException(exception.getMessage(), exception.getResponse(),
             toTableServiceError(exception.getValue()));
     }
 
     /**
-     * Maps a {@link Throwable} to {@link TableServiceException} if it's an instance of
-     * {@link com.azure.data.tables.implementation.models.TableServiceErrorException}, else it returns the original
-     * throwable.
+     * Map a {@link Throwable} to {@link TableServiceException} if it's an instance of
+     * {@link TableServiceErrorException}, else it returns the original throwable.
      *
      * @param throwable A throwable.
      *
      * @return A Throwable that is either an instance of {@link TableServiceException} or the original throwable.
      */
     public static Throwable mapThrowableToTableServiceException(Throwable throwable) {
-        if (throwable instanceof com.azure.data.tables.implementation.models.TableServiceErrorException) {
-            return toTableServiceException(
-                (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
+        if (throwable instanceof TableServiceErrorException) {
+            return toTableServiceException((TableServiceErrorException) throwable);
         } else {
             return throwable;
         }
