@@ -186,4 +186,19 @@ public interface CosmosQueryExecution {
             return operations.sliceQuery(query, type, container);
         }
     }
+
+    final class CountExecution implements CosmosQueryExecution {
+
+        private final CosmosOperations operations;
+
+        public CountExecution(CosmosOperations operations) {
+            this.operations = operations;
+        }
+
+        @Override
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
+            return operations.count(query, container);
+        }
+    }
+
 }

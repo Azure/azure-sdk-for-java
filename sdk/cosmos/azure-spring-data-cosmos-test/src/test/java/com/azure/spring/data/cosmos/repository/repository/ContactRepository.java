@@ -20,6 +20,10 @@ public interface ContactRepository extends CosmosRepository<Contact, String> {
 
     Contact findOneByTitle(String title);
 
+    long countByTitle(String title);
+
+    Long countByTitleAndIntValue(String title, int intValue);
+
     Optional<Contact> findOptionallyByTitle(String title);
 
     @Query(value = "select * from c where c.title = @title and c.intValue = @value")
