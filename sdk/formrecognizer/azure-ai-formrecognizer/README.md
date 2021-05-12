@@ -22,7 +22,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.7</version>
+    <version>3.0.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -120,7 +120,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.4</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
