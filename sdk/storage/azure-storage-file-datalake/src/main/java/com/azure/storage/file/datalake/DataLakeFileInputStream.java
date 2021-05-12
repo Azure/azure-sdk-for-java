@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake;
 
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageInputStream;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -10,7 +14,13 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+/**
+ * Provides an input stream to read a given Data Lake file resource.
+ */
 public final class DataLakeFileInputStream extends StorageInputStream {
+
+    private final ClientLogger logger = new ClientLogger(DataLakeFileInputStream.class);
+
     /**
      * Holds the reference to the file this stream is associated with.
      */
@@ -71,7 +81,7 @@ public final class DataLakeFileInputStream extends StorageInputStream {
         } catch (final DataLakeStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
-            throw this.lastError;
+            throw logger.logThrowableAsError(this.lastError);
         }
     }
 

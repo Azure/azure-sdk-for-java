@@ -77,6 +77,7 @@ public final class BlobInputStream extends StorageInputStream {
         } catch (final BlobStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
+            
             throw this.lastError;
         }
     }
