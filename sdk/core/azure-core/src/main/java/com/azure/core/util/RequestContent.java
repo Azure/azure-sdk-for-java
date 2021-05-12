@@ -7,11 +7,15 @@ import com.azure.core.implementation.util.ArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -96,7 +100,11 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      */
     static RequestContent create(Path file) {
-        return create(file, 0, file.toFile().length());
+        try {
+            return create(file, 0, Files.size(file));
+        } catch (IOException e) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     /**
