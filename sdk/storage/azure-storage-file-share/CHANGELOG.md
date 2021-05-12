@@ -1,6 +1,6 @@
 # Release History
 
-## 12.10.0-beta.1 (2021-05-11)
+## 12.10.0-beta.1 (2021-05-13)
 - Added support for the 2020-08-04 service version.
 - Added back ability to create a ShareLeaseClient for a Share or Share Snapshot.
 - Added upload() overloads to ShareFileClient supporting large ranges and parallel upload.

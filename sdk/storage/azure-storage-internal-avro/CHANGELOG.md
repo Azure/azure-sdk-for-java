@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.4-beta.1 (2021-05-11)
+## 12.0.4-beta.1 (2021-05-13)
 - Update `azure-storage-common` to version `12.12.0-beta.1`
 
 ## 12.0.3 (2021-04-29)
