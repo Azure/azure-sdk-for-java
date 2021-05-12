@@ -20,13 +20,10 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -65,6 +62,21 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * Stores the certificate keys by alias.
      */
     private final HashMap<String, Key> certificateKeys = new HashMap<>();
+
+    /**
+     * Stores the side load aliases.
+     */
+    private final List<String> sideLoadAliases = new ArrayList<>();
+
+    /**
+     * Stores the sideLoad certificates by alias.
+     */
+    private final Map<String, Certificate> certificatesSideLoad = new HashMap<>();
+
+    /**
+     * Stores the certificate keys by alias.
+     */
+    private final HashMap<String, Key> certificateKeysSideLoad = new HashMap<>();
 
     /**
      * Stores the creation date.
@@ -143,6 +155,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 }
             }
         }
+        if (certificate == null && certificatesSideLoad.containsKey(alias)) {
+            certificate = certificatesSideLoad.get(alias);
+        }
         return certificate;
     }
 
@@ -153,7 +168,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             if (aliases == null) {
                 aliases = keyVaultClient.getAliases();
             }
-            for (String candidateAlias : aliases) {
+            List<String> aliasList = Stream.of(aliases, sideLoadAliases)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toList());
+            for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
                 if (certificate.equals(cert)) {
                     alias = candidateAlias;
@@ -202,6 +221,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                 }
             }
         }
+        if (key == null && certificateKeysSideLoad.containsKey(alias)) {
+            key = certificateKeysSideLoad.get(alias);
+        }
         return key;
     }
 
@@ -210,7 +232,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (aliases == null) {
             aliases = keyVaultClient.getAliases();
         }
-        return aliases.contains(alias);
+        return aliases.contains(alias) || sideLoadAliases.contains(alias);
     }
 
     @Override
@@ -247,12 +269,24 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
-        if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
+        if (aliases != null && aliases.contains(alias)) {
+            return;
         }
-        if (!aliases.contains(alias)) {
-            aliases.add(alias);
-            certificates.put(alias, certificate);
+        if (!sideLoadAliases.contains(alias)) {
+            sideLoadAliases.add(alias);
+            certificatesSideLoad.put(alias, certificate);
+        }
+    }
+
+    /**
+     * Store alias and certificates to side load
+     * @param alias sideLoad certificate's alias
+     * @param certificate sideLoad certificate
+     */
+    public void engineSetSideLoadCertificateEntry(String alias, Certificate certificate) {
+        if (!sideLoadAliases.contains(alias)) {
+            sideLoadAliases.add(alias);
+            certificatesSideLoad.put(alias, certificate);
         }
     }
 
@@ -346,7 +380,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
                                     new ByteArrayInputStream(bytes));
-                                engineSetCertificateEntry(alias, certificate);
+                                engineSetSideLoadCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
                                     new Object[]{alias, filename});
                             } catch (CertificateException e) {
