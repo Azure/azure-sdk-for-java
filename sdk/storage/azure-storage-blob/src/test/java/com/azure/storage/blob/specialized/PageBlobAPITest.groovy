@@ -7,6 +7,7 @@ import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.CoreUtils
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -958,6 +959,7 @@ class PageBlobAPITest extends APISpec {
     @Ignore
     def "Get page ranges diff prev snapshot url"() {
         setup:
+        BlobServiceClient managedDiskServiceClient = getServiceClient(env.managedDiskAccount)
         BlobContainerClient managedDiskContainer = managedDiskServiceClient.getBlobContainerClient(generateContainerName())
         managedDiskContainer.create()
         PageBlobClient managedDiskBlob = managedDiskContainer.getBlobClient(generateBlobName()).getPageBlobClient()

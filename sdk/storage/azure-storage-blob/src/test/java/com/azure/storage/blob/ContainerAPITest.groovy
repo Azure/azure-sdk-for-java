@@ -34,6 +34,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.StorageImplUtils
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.ResourceLock
@@ -785,7 +786,7 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
-    @Requires( { playbackMode() } )
+    @PlaybackOnly
     def "List blobs flat options last access time"() {
         when:
         def b = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -1085,7 +1086,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    @Requires( {playbackMode()})
+    @PlaybackOnly
     def "List blobs flat ORS"() {
         setup:
         def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
@@ -1372,7 +1373,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    @Requires( {playbackMode()})
+    @PlaybackOnly
     def "List blobs hier ORS"() {
         setup:
         def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
