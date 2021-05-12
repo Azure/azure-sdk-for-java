@@ -34,60 +34,48 @@ extends:
       - name: azure-identity-spring
         groupId: com.azure.spring
         safeName: azureidentityspring
-        serviceDirectory: spring-2-3
       - name: azure-spring-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringdatagremlin
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot
         groupId: com.azure.spring
         safeName: azurespringboot
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter
         groupId: com.azure.spring
         safeName: azurespringbootstarter
-        serviceDirectory: spring-2-3
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-active-directory
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectory
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter-active-directory-b2c
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectoryb2c
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure.spring
         safeName: azurespringbootstartercosmos
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringbootstarterdatagremlin
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter-keyvault-certificates
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultcertificates
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultsecrets
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter-servicebus-jms
         groupId: com.azure.spring
         safeName: azurespringbootstarterservicebusjms
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-starter-storage
         groupId: com.azure.spring
         safeName: azurespringbootstarterstorage
         skipUpdatePackageJson: true
-        serviceDirectory: spring-2-3
 #      - name: azure-spring-cloud-context
 #        groupId: com.azure.spring
 #        safeName: azurespringcloudcontext
@@ -156,43 +144,30 @@ extends:
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory-resource-server
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-active-directory-resource-server-by-filter
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-active-directory-webapp
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-active-directory-resource-server-obo
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-keyvault-secrets
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-mediaservices
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-servicebus
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-servicebus-jms-queue
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-servicebus-jms-topic
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
       - name: azure-spring-boot-sample-storage-resource
         groupId: com.azure.spring
-        serviceDirectory: spring-2-3
 #      - name: azure-spring-data-sample-gremlin
 #        groupId: com.azure.spring
 #      - name: spring-cloud-azure-appconfiguration-convert-sample-complete
