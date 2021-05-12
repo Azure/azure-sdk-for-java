@@ -187,6 +187,9 @@ public interface CosmosQueryExecution {
         }
     }
 
+    /**
+     * count operation implementation to execute a count query
+     */
     final class CountExecution implements CosmosQueryExecution {
 
         private final CosmosOperations operations;

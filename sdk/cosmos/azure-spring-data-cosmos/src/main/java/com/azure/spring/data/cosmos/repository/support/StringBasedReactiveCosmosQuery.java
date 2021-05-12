@@ -7,7 +7,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.query.AbstractReactiveCosmosQuery;
-import com.azure.spring.data.cosmos.repository.query.CosmosEntityMetadata;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosQueryMethod;
