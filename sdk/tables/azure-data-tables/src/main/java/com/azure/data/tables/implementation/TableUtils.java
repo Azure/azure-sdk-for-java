@@ -30,7 +30,6 @@ public final class TableUtils {
         com.azure.data.tables.implementation.models.TableServiceError tableServiceError) {
 
         String errorCode = null;
-        String languageCode = null;
         String errorMessage = null;
 
         if (tableServiceError != null) {
@@ -41,13 +40,12 @@ public final class TableUtils {
                 TableServiceErrorOdataErrorMessage odataErrorMessage = odataError.getMessage();
 
                 if (odataErrorMessage != null) {
-                    languageCode = odataErrorMessage.getLang();
                     errorMessage = odataErrorMessage.getValue();
                 }
             }
         }
 
-        return new TableServiceError(errorCode, languageCode, errorMessage);
+        return new TableServiceError(errorCode, errorMessage);
     }
 
     /**

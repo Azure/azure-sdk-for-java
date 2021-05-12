@@ -12,11 +12,6 @@ public final class TableServiceError {
     private final String errorCode;
 
     /*
-     * Language code of the error message.
-     */
-    private final String languageCode;
-
-    /*
      * The error message.
      */
     private final String errorMessage;
@@ -25,10 +20,9 @@ public final class TableServiceError {
      * Create an instance of {@link TableServiceError}.
      *
      * @param errorCode The service error code.
-     * @param languageCode Language code of the error message.
      * @param errorMessage The error message.
      */
-    public TableServiceError(String errorCode, String languageCode, String errorMessage) {
+    public TableServiceError(String errorCode, String errorMessage) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }
@@ -38,17 +32,8 @@ public final class TableServiceError {
      *
      * @return The service error code.
      */
-    public String getErrorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Get the language code of the error message.
-     *
-     * @return The language code of the error message.
-     */
-    public String getLanguageCode() {
-        return this.languageCode;
+    public TableErrorCode getErrorCode() {
+        return TableErrorCode.fromString(errorCode);
     }
 
     /**
