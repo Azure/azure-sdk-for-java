@@ -100,18 +100,6 @@ public class KeyVaultProperties {
          * To enable auto refresh certificate, set certificatesRefreshInterval as refresh interval.
          */
         private long certificatesRefreshInterval;
-        /**
-         * To enable access latest certificate from portal when get unTrusted certificate
-         */
-        private boolean certificateRefreshWhenHaveUnTrustCertificate;
-
-        public boolean getCertificateRefreshWhenHaveUnTrustCertificate() {
-            return certificateRefreshWhenHaveUnTrustCertificate;
-        }
-
-        public void setCertificateRefreshWhenHaveUnTrustCertificate(boolean certificateRefreshWhenHaveUnTrustCertificate) {
-            this.certificateRefreshWhenHaveUnTrustCertificate = certificateRefreshWhenHaveUnTrustCertificate;
-        }
 
         public long getCertificatesRefreshInterval() {
             return certificatesRefreshInterval;
