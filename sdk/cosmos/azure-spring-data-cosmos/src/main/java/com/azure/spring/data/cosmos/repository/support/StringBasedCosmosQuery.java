@@ -7,6 +7,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.query.AbstractCosmosQuery;
+import com.azure.spring.data.cosmos.repository.query.CosmosEntityMetadata;
 import com.azure.spring.data.cosmos.repository.query.CosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.CosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.CosmosQueryMethod;
@@ -55,6 +56,9 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         if (isPageQuery()) {
             return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
                                                       processor.getReturnedType().getReturnedType());
+        } else if (isCountQuery()) {
+            final String container = ((CosmosEntityMetadata) getQueryMethod().getEntityInformation()).getContainerName();
+            return this.operations.count(querySpec, container);
         } else {
             return this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
                                             processor.getReturnedType().getReturnedType());

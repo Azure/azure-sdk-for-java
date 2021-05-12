@@ -7,14 +7,18 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.query.AbstractReactiveCosmosQuery;
+import com.azure.spring.data.cosmos.repository.query.CosmosEntityMetadata;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosQueryMethod;
+import com.azure.spring.data.cosmos.repository.query.SimpleReactiveCosmosEntityMetadata;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ResultProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
@@ -23,6 +27,8 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  * Cosmos query class to handle the annotated queries. This overrides the execution and runs the query directly
  */
 public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery {
+    private static final Pattern COUNT_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+count.*");
+
     private final String query;
 
     /**
@@ -54,9 +60,15 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
                             .collect(Collectors.toList());
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query, sqlParameters);
-        Flux<?> flux = this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
-                                                processor.getReturnedType().getReturnedType());
-        return flux;
+        if (isCountQuery()) {
+            final String container = ((SimpleReactiveCosmosEntityMetadata) getQueryMethod().getEntityInformation()).getContainerName();
+            final Mono<Long> mono = this.operations.count(querySpec, container);
+            return mono;
+        } else {
+            Flux<?> flux = this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
+                                                    processor.getReturnedType().getReturnedType());
+            return flux;
+        }
     }
 
     @Override
@@ -68,4 +80,14 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
     protected boolean isExistsQuery() {
         return false;
     }
+
+    protected boolean isCountQuery() {
+        Class returnedType = getQueryMethod().getReturnedObjectType();
+        if (returnedType == Long.class || returnedType == Integer.class) {
+            return COUNT_QUERY_PATTERN.matcher(query.toLowerCase()).matches();
+        } else {
+            return false;
+        }
+    }
+
 }

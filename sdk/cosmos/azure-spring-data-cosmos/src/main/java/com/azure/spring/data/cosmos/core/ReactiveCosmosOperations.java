@@ -258,6 +258,8 @@ public interface ReactiveCosmosOperations {
      */
     Mono<Long> count(CosmosQuery query, String containerName);
 
+    Mono<Long> count(SqlQuerySpec query, String containerName);
+
     /**
      * To get converter
      * @return MappingCosmosConverter

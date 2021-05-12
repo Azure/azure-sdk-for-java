@@ -89,9 +89,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
 
     protected abstract boolean isExistsQuery();
 
-    protected boolean isCountQuery() {
-        return method.getName().startsWith("count");
-    }
+    protected abstract boolean isCountQuery();
 
     protected boolean isPageQuery() {
         return method.isPageQuery();

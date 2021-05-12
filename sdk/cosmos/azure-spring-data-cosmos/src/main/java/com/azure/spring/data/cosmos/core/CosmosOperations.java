@@ -299,6 +299,8 @@ public interface CosmosOperations {
      */
     <T> long count(CosmosQuery query, String containerName);
 
+    <T> long count(SqlQuerySpec querySpec, String containerName);
+
     /**
      * To get converter
      *
