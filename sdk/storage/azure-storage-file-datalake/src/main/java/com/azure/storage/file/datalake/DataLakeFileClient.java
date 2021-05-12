@@ -507,22 +507,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public final DataLakeFileInputStream openInputStream() {
-        return openInputStream(null, null);
-    }
-
-    /**
-     * Opens a file input stream to download the specified range of the file.
-     * <p>
-     *
-     * @param range {@link FileRange}
-     * @param requestConditions An {@link DataLakeRequestConditions} object that represents the access conditions for
-     * the file.
-     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
-     * @throws DataLakeStorageException If a storage service error occurred.
-     */
-    public final DataLakeFileInputStream openInputStream(FileRange range, DataLakeRequestConditions requestConditions) {
-        return openInputStream(new DataLakeFileInputStreamOptions().setRange(range)
-            .setRequestConditions(requestConditions));
+        return openInputStream(null);
     }
 
     /**
@@ -534,6 +519,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public DataLakeFileInputStream openInputStream(DataLakeFileInputStreamOptions options) {
         options = options == null ? new DataLakeFileInputStreamOptions() : options;
+
+        // default to etag locking
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
 

@@ -10,10 +10,9 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
-import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
+import com.azure.storage.file.datalake.models.ConsistentReadControl
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
@@ -36,6 +35,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
@@ -44,7 +44,6 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Retry
 import spock.lang.Unroll
 
@@ -3873,5 +3872,68 @@ class FileAPITest extends APISpec {
         then:
         notThrown(DataLakeStorageException)
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
+
+    def "Read InputStream"() {
+        setup:
+        byte[] randomBytes = getRandomByteArray(length)
+        fc.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        when:
+        def is = fc.openInputStream(new DataLakeFileInputStreamOptions().setBlockSize(blockSize))
+        def downloadedData = new byte[length]
+        is.read(downloadedData)
+
+        then:
+        randomBytes == downloadedData
+
+        where:
+        length               | blockSize
+        Constants.KB         | null
+        4 * Constants.KB     | Constants.KB
+        4 * Constants.KB + 5 | Constants.KB
+    }
+
+    def "Input stream etag lock default"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+        fc.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        // Create the input stream and read from it.
+        // Note: Setting block size to 1 is inefficient but helps demonstrate the purpose of this test.
+        def inputStream = fc.openInputStream(new DataLakeFileInputStreamOptions().setBlockSize(1))
+        inputStream.read()
+
+        // Modify the blob again.
+        fc.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        when: "Reading after etag has been changed"
+        inputStream.read()
+
+        then:
+        thrown(IOException)
+    }
+
+    def "IS consistent read control none"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+        fc.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        // Create the input stream and read from it.
+        // Note: Setting block size to 1 is inefficient but helps demonstrate the purpose of this test.
+        def inputStream = fc.openInputStream(new DataLakeFileInputStreamOptions().setBlockSize(1)
+            .setConsistentReadControl(ConsistentReadControl.NONE))
+        inputStream.read()
+
+        // Modify the blob again.
+        fc.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        when:
+        inputStream.read()
+
+        then: "Exception should not be thrown even though blob was modified"
+        notThrown(IOException)
     }
 }
