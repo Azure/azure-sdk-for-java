@@ -392,15 +392,14 @@ class FileSASTests extends APISpec {
         primaryShareClient.create()
         primaryFileClient.create(100)
         def sas = primaryFileServiceClient.generateAccountSas(new AccountSasSignatureValues(
-            OffsetDateTime.now().plusDays(1),
+            namer.getUtcNow().plusDays(1),
             AccountSasPermission.parse("r"), new AccountSasService().setFileAccess(true),
             new AccountSasResourceType().setService(true).setContainer(true).setObject(true))
             .setProtocol(SasProtocol.HTTPS_HTTP))
 
         when:
-        def sasClient = new ShareFileClientBuilder()
-            .endpoint(primaryFileClient.getFileUrl() + "?" + sas)
-            .pipeline(primaryFileClient.getHttpPipeline())
+        def sasClient = instrument(new ShareFileClientBuilder()
+            .endpoint(primaryFileClient.getFileUrl() + "?" + sas))
             .buildFileClient()
 
         and:
@@ -411,9 +410,8 @@ class FileSASTests extends APISpec {
 
 
         when:
-        def sasShareClient = new ShareClientBuilder()
-            .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
-            .pipeline(primaryShareClient.getHttpPipeline())
+        def sasShareClient = instrument(new ShareClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl() + "?" + sas))
             .buildClient()
 
         and:
@@ -424,9 +422,8 @@ class FileSASTests extends APISpec {
 
 
         when:
-        def sasServiceClient = new ShareServiceClientBuilder()
-            .endpoint(primaryFileServiceClient.getFileServiceUrl() + "?" + sas)
-            .pipeline(primaryFileServiceClient.getHttpPipeline())
+        def sasServiceClient = instrument(new ShareServiceClientBuilder()
+            .endpoint(primaryFileServiceClient.getFileServiceUrl() + "?" + sas))
             .buildClient()
 
         and:

@@ -26,6 +26,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.IgnoreIf
 import spock.lang.ResourceLock
 
 import java.time.Duration
@@ -399,6 +400,7 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         def serviceClient = getServiceClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
