@@ -27,9 +27,9 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.options.ListTablesOptions;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;

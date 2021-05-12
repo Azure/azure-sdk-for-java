@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-import com.azure.data.tables.models.ListEntitiesOptions;
-import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.options.ListEntitiesOptions;
+import com.azure.data.tables.options.ListTablesOptions;
 
 /**
  * async code snippets for the Tables service

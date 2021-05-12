@@ -3,11 +3,11 @@
 
 package com.azure.data.tables;
 
-import com.azure.data.tables.models.ListEntitiesOptions;
-import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableStorageException;
+import com.azure.data.tables.options.ListEntitiesOptions;
+import com.azure.data.tables.options.ListTablesOptions;
 
 import java.util.Map;
 
@@ -67,6 +67,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating a table.
+     *
      * @throws TableStorageException if the table exists.
      */
     public void createTable() {
@@ -118,6 +119,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating an entity.
+     *
      * @throws TableStorageException if the entity exists.
      */
     public void createEntity() {

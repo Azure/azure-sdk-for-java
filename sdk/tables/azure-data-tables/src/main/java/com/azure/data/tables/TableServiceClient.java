@@ -8,9 +8,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.options.ListTablesOptions;
 
 import java.time.Duration;
 

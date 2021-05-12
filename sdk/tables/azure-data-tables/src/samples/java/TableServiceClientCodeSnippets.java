@@ -4,13 +4,13 @@ package com.azure.data.tables;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.models.ListEntitiesOptions;
-import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableErrorCode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableStorageException;
-import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.options.ListEntitiesOptions;
+import com.azure.data.tables.options.ListTablesOptions;
 
 /**
  * sync code snippets for the Tables service
