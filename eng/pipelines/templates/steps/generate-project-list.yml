@@ -54,4 +54,4 @@ steps:
 #- ${{if SpringChanges}}:
   - pwsh: |
       Write-Host "##vso[task.setvariable variable=ProjectList]$SpringProjectPathList"
-      displayName: Reset ProjectListvalue variable
+    displayName: Reset ProjectListvalue variable
