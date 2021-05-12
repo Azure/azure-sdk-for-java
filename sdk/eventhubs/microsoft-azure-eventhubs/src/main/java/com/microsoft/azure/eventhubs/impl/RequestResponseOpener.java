@@ -8,7 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
+
+import com.microsoft.azure.eventhubs.impl.IOObject.IOObjectState;
 
 public class RequestResponseOpener implements Operation<RequestResponseChannel> {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseOpener.class);
@@ -21,7 +24,9 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     private final AmqpConnection eventDispatcher;
     private final ScheduledExecutorService executor;
 
+    private RequestResponseChannel previousChannel;
     private boolean isOpened;
+    private CompletableFuture<Void> closeWaiter;
 
     public RequestResponseOpener(final SessionProvider sessionProvider, final String clientId, final String sessionName, final String linkName,
                                  final String endpointAddress, final AmqpConnection eventDispatcher, final ScheduledExecutorService executor) {
@@ -37,6 +42,34 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     @Override
     public synchronized void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
         if (this.isOpened) {
+            // this.previousChannel cannot be null if this.isOpened is true
+            if ((this.previousChannel.getState() == IOObjectState.OPENED) || (this.previousChannel.getState() == IOObjectState.OPENING)) {
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info("skipping run because inner channel currently open");
+                }
+                return;
+            }
+
+            // The inner channel is closing but hasn't called the callback below which does some cleanup before setting this.isOpened
+            // back to false. We want to wait for that cleanup to happen, then relaunch the run operation to open a new inner channel.
+            if (this.closeWaiter != null) {
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info("close pending, open already queued");
+                }
+                return;
+            }
+
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info("close pending, will do open when it finishes");
+            }
+            CompletableFuture<Void> tempWaiter = new CompletableFuture<Void>();
+            tempWaiter.thenRunAsync(() -> {
+                if (RequestResponseOpener.TRACE_LOGGER.isInfoEnabled()) {
+                    RequestResponseOpener.TRACE_LOGGER.info("pending close finished, starting queued open");
+                }
+                RequestResponseOpener.this.run(operationCallback);
+            }, this.executor);
+            this.closeWaiter = tempWaiter; // set closeWaiter only after the continuation is set up
             return;
         }
 
@@ -59,7 +92,7 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                 this.endpointAddress,
                 session,
                 this.executor);
-
+        this.previousChannel = requestResponseChannel;
         requestResponseChannel.open(
                 new OperationResult<Void, Exception>() {
                     @Override
@@ -94,6 +127,9 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
                         isOpened = false;
+                        if (closeWaiter != null) {
+                            closeWaiter.complete(null);
+                        }
 
                         if (TRACE_LOGGER.isInfoEnabled()) {
                             TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onClose complete clientId[%s], session[%s], link[%s], endpoint[%s]",
@@ -107,6 +143,9 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
                         isOpened = false;
+                        if (closeWaiter != null) {
+                            closeWaiter.complete(null);
+                        }
 
                         if (TRACE_LOGGER.isWarnEnabled()) {
                             TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
