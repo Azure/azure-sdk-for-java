@@ -1,6 +1,13 @@
 # Release History
 
-## 7.3.0-beta.2 (Unreleased)
+## 7.2.1 (2021-05-12)
+### Fixed
+- Fix the issue where 'ServiceBusProcessorClient:maxConcurrentCalls' will result in more messages being cached in SDK  
+  and message lock expire.
+  
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.5`.
 
 ## 7.3.0-beta.1 (2021-04-14)
 ### New Features
