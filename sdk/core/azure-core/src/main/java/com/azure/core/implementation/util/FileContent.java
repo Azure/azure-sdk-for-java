@@ -9,27 +9,28 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Path;
 
 /**
- * A {@link RequestContent} implementation which is backed by a {@code byte[]}.
+ * A {@link RequestContent} implementation which is backed by a file.
  */
-public final class ArrayContent implements RequestContent {
-    private final ClientLogger logger = new ClientLogger(ArrayContent.class);
+public final class FileContent implements RequestContent {
+    private final ClientLogger logger = new ClientLogger(FileContent.class);
 
-    private final byte[] content;
-    private final int offset;
-    private final int length;
+    private final Path file;
+    private final long offset;
+    private final long length;
 
     /**
-     * Creates a new instance of {@link ArrayContent}.
+     * Creates a new instance of {@link FileContent}.
      *
-     * @param content The {@code byte[]} content.
-     * @param offset The offset in the array to begin reading data.
+     * @param file The {@link Path} content.
+     * @param offset The offset in the {@link Path} to begin reading data.
      * @param length The length of the content.
      */
-    public ArrayContent(byte[] content, int offset, int length) {
-        this.content = content;
+    public FileContent(Path file, long offset, long length) {
+        this.file = file;
         this.offset = offset;
         this.length = length;
     }
@@ -37,7 +38,7 @@ public final class ArrayContent implements RequestContent {
     @Override
     public void writeTo(RequestOutbound requestOutbound) {
         try {
-            requestOutbound.getRequestChannel().write(ByteBuffer.wrap(content, offset, length));
+            FileChannel.open(file).transferTo(offset, length, requestOutbound.getRequestChannel());
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -45,6 +46,6 @@ public final class ArrayContent implements RequestContent {
 
     @Override
     public Long getLength() {
-        return (long) length;
+        return length;
     }
 }
