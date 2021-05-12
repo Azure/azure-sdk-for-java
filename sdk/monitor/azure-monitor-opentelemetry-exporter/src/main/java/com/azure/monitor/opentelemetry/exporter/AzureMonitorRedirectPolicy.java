@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 public final class AzureMonitorRedirectPolicy implements HttpPipelinePolicy {
 
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
+    // Based on Stamp specific redirects design doc
     private static final int MAX_REDIRECT_RETRIES = 10;
     private final ClientLogger logger = new ClientLogger(AzureMonitorRedirectPolicy.class);
     private String redirectedEndpointUrl;
@@ -55,12 +56,12 @@ public final class AzureMonitorRedirectPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Determines if its a valid retry scenario based on statusCode and tryCount.
+     * Determines if it's a valid retry scenario based on statusCode and tryCount.
      *
      * @param statusCode HTTP response status code
      * @param tryCount Redirect retries so far
      * @return True if statusCode corresponds to HTTP redirect response codes and redirect
-     * retries is less than {@code maxRedirectRetries}.
+     * retries is less than {@code MAX_REDIRECT_RETRIES}.
      */
     private boolean shouldRetryWithRedirect(int statusCode, int tryCount) {
         if (tryCount >= MAX_REDIRECT_RETRIES) {
