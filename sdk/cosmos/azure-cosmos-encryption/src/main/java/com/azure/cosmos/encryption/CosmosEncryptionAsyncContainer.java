@@ -70,7 +70,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -107,7 +107,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param itemId       id of the item.
      * @param partitionKey partitionKey of the item.
      * @param options      the request options.
-     * @return an {@link Mono} containing the Cosmos item resource response.
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosItemResponse<Object>> deleteItem(String itemId,
                                                        PartitionKey partitionKey,
@@ -123,7 +123,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item,
@@ -159,7 +159,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> replaceItem(T item,
@@ -197,7 +197,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param requestOptions request options
      * @param classType      deserialization class type
      * @param <T>            type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
                                                     PartitionKey partitionKey,

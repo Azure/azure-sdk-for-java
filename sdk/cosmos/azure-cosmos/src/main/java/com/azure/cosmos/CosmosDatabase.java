@@ -510,7 +510,7 @@ public class CosmosDatabase {
      * @param id id of the clientEncryptionKey
      * @return Cosmos ClientEncryptionKey
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKey getClientEncryptionKey(String id) {
         return new CosmosClientEncryptionKey(id, this, this.databaseWrapper.getClientEncryptionKey(id));
     }
@@ -520,7 +520,7 @@ public class CosmosDatabase {
      *
      * @return a {@link CosmosPagedIterable}.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPagedIterable<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys() {
         return getCosmosPagedIterable(this.databaseWrapper.readAllClientEncryptionKeys(new CosmosQueryRequestOptions()));
     }

@@ -37,7 +37,7 @@ public class CosmosEncryptionContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> createItem(T item,
@@ -68,7 +68,7 @@ public class CosmosEncryptionContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> upsertItem(T item,
@@ -85,7 +85,7 @@ public class CosmosEncryptionContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> replaceItem(T item,
@@ -104,7 +104,7 @@ public class CosmosEncryptionContainer {
      * @param requestOptions request options
      * @param classType      deserialization class type
      * @param <T>            type
-     * @return result
+     * @return the Cosmos item resource response.
      */
     public <T> CosmosItemResponse<T> readItem(String id,
                                               PartitionKey partitionKey,
