@@ -3,7 +3,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
@@ -97,20 +96,20 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
     }
 
 
-    public void updatePropertiesCodeSnippet() {
+    public void setPropertiesCodeSnippet() {
         ContainerRepositoryAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.repository.updateProperties
-        ContentProperties properties = getContentProperties();
-        client.updateProperties(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.repository.updateProperties
+        // BEGIN: com.azure.containers.containerregistry.async.repository.setProperties
+        RepositoryProperties properties = getRepositoryProperties();
+        client.setProperties(properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.repository.setProperties
     }
 
-    public void updatePropertiesWithResponseCodeSnippet() {
+    public void setPropertiesWithResponseCodeSnippet() {
         ContainerRepositoryAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.repository.updatePropertiesWithResponse
-        ContentProperties properties = getContentProperties();
-        client.updatePropertiesWithResponse(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.repository.updatePropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.async.repository.setPropertiesWithResponse
+        RepositoryProperties properties = getRepositoryProperties();
+        client.setPropertiesWithResponse(properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.repository.setPropertiesWithResponse
     }
 
     public void listManifestsCodeSnippet() {
@@ -140,7 +139,7 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private ContentProperties getContentProperties() {
+    private RepositoryProperties getRepositoryProperties() {
         return null;
     }
 

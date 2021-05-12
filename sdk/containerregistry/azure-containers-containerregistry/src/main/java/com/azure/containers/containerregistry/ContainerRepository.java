@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
@@ -204,16 +203,16 @@ public final class ContainerRepository {
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the given {@link #getName() repository}.
+     * Update the settable properties {@link RepositoryProperties} of the given {@link #getName() repository}.
      * These properties set the update, delete and retrieve options of the repository.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.repository.updatePropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.repository.setPropertiesWithResponse}.
      *
-     * @param value {@link ContentProperties writeable properties} that need to be updated for the repository.
+     * @param value {@link RepositoryProperties repository properties} that need to be updated for the repository.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response with the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -221,28 +220,28 @@ public final class ContainerRepository {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RepositoryProperties> updatePropertiesWithResponse(ContentProperties value, Context context) {
-        return this.asyncClient.updatePropertiesWithResponse(value, context).block();
+    public Response<RepositoryProperties> setPropertiesWithResponse(RepositoryProperties value, Context context) {
+        return this.asyncClient.setPropertiesWithResponse(value, context).block();
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the given {@link #getName() repository}.
+     * Update the repository properties {@link RepositoryProperties} of the given {@link #getName() repository}.
      * These properties set the update, delete and retrieve options of the repository.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.repository.updateProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.repository.setProperties}.
      *
-     * @param value {@link ContentProperties writeable properties} that need to be updated for the repository.
+     * @param value {@link RepositoryProperties repository properties} that need to be updated for the repository.
      * @return The updated {@link RepositoryProperties properties }
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RepositoryProperties updateProperties(ContentProperties value) {
-        return this.updatePropertiesWithResponse(value, Context.NONE).getValue();
+    public RepositoryProperties setProperties(RepositoryProperties value) {
+        return this.setPropertiesWithResponse(value, Context.NONE).getValue();
     }
 }

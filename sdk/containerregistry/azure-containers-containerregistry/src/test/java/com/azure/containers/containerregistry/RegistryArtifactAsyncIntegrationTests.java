@@ -12,8 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -35,7 +33,6 @@ import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClientsTestBase {
     private RegistryArtifactAsync asyncClient;
     private RegistryArtifact client;
@@ -71,6 +68,139 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
             .getArtifact(HELLO_WORLD_REPOSITORY_NAME, tagOrDigest);
     }
 
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("getHttpClients")
+//    public void delete(HttpClient httpClient) {
+//        client = getRegistryArtifactClient(httpClient, V4_TAG_NAME);
+//        String digest = getChildArtifactDigest(client.getManifestProperties().getManifests());
+//
+//        asyncClient = getRegistryArtifactAsyncClient(httpClient, digest);
+//
+//        Mono<Boolean> delete = asyncClient.delete()
+//            .then(monoDelay())
+//            .then(asyncClient.getManifestProperties()
+//                .flatMap(res -> Mono.just(false))
+//                .onErrorResume(res -> {
+//                    System.out.println(res);
+//                    return Mono.just(true);
+//                }));
+//
+//        StepVerifier.create(delete)
+//            .assertNext(res -> assertTrue(res))
+//            .verifyComplete();
+//    }
+//
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("getHttpClients")
+//    public void deleteTag(HttpClient httpClient) {
+//        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+//        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+//
+//        Mono<Boolean> delete = asyncClient.deleteTag(V3_TAG_NAME)
+//            .then(Mono.defer(() -> {
+//                try {
+//                    Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                return Mono.just(true);
+//            }))
+//            .then(asyncClient.getTagProperties(V3_TAG_NAME)
+//                .flatMap(res -> Mono.just(false))
+//                .onErrorResume(res -> Mono.just(true)));
+//
+//        StepVerifier.create(delete)
+//            .assertNext(res -> assertTrue(res))
+//            .verifyComplete();
+//    }
+//
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("getHttpClients")
+//    public void updateManifestProperties(HttpClient httpClient) {
+//        client = getRegistryArtifactClient(httpClient, V1_TAG_NAME);
+//        asyncClient = getRegistryArtifactAsyncClient(httpClient, V1_TAG_NAME);
+//
+//        resetManifestProperties = true;
+//        tagOrDigest = V1_TAG_NAME;
+//
+//        StepVerifier.create(asyncClient.updateManifestProperties(manifestWriteableProperties))
+//            .assertNext(res -> validateManifestContentProperties(res.getWriteableProperties()))
+//            .verifyComplete();
+//
+//        StepVerifier.create(asyncClient.updateManifestPropertiesWithResponse(manifestWriteableProperties))
+//            .assertNext(res -> validateManifestContentProperties(res.getValue().getWriteableProperties()))
+//            .verifyComplete();
+//
+//        validateManifestContentProperties(client.updateManifestProperties(manifestWriteableProperties)
+//            .getWriteableProperties());
+//
+//        validateManifestContentProperties(client.updateManifestPropertiesWithResponse(manifestWriteableProperties, Context.NONE)
+//            .getValue()
+//            .getWriteableProperties());
+//    }
+//
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("getHttpClients")
+//    public void updateTagProperties(HttpClient httpClient) {
+//        client = getRegistryArtifactClient(httpClient, V2_TAG_NAME);
+//        asyncClient = getRegistryArtifactAsyncClient(httpClient, V2_TAG_NAME);
+//
+//        tagOrDigest = V2_TAG_NAME;
+//        resetTagProperties = true;
+//
+//        StepVerifier.create(asyncClient.updateTagProperties(V2_TAG_NAME, tagWriteableProperties))
+//            .assertNext(res -> validateTagContentProperties(res.getWriteableProperties()))
+//            .verifyComplete();
+//
+//        StepVerifier.create(asyncClient.updateTagPropertiesWithResponse(V2_TAG_NAME, tagWriteableProperties))
+//            .assertNext(res -> validateTagContentProperties(res.getValue().getWriteableProperties()))
+//            .verifyComplete();
+//
+//        validateTagContentProperties(client.updateTagProperties(V2_TAG_NAME, tagWriteableProperties)
+//            .getWriteableProperties());
+//
+//        validateTagContentProperties(client.updateTagPropertiesWithResponse(V2_TAG_NAME, tagWriteableProperties, Context.NONE)
+//            .getValue()
+//            .getWriteableProperties());
+//    }
+//
+//    @Test
+//    public void deleteFromRecordFile() {
+//        recordFileName = "RegistryArtifactAsyncIntegrationTests.delete[1].json";
+//        client = getRegistryArtifactClient(V4_TAG_NAME);
+//        String digest = getChildArtifactDigest(client.getManifestProperties().getManifests());
+//
+//        asyncClient = getRegistryArtifactAsyncClient(digest);
+//        client = getRegistryArtifactClient(digest);
+//
+//        StepVerifier.create(asyncClient.delete())
+//            .verifyComplete();
+//
+//        StepVerifier.create(asyncClient.deleteWithResponse())
+//            .assertNext(res -> assertNull(res.getValue()))
+//            .verifyComplete();
+//
+//        client.delete();
+//        assertNull(client.deleteWithResponse(Context.NONE).getValue());
+//    }
+//
+//    @Test
+//    public void deleteTagFromRecordFile() {
+//        recordFileName = "RegistryArtifactAsyncIntegrationTests.deleteTag[1].json";
+//        client = getRegistryArtifactClient(LATEST_TAG_NAME);
+//        asyncClient = getRegistryArtifactAsyncClient(LATEST_TAG_NAME);
+//
+//        StepVerifier.create(asyncClient.deleteTag(V3_TAG_NAME))
+//            .verifyComplete();
+//
+//        StepVerifier.create(asyncClient.deleteTagWithResponse(V3_TAG_NAME))
+//            .assertNext(res -> assertNull(res.getValue()))
+//            .verifyComplete();
+//
+//        client.deleteTag(V3_TAG_NAME);
+//        assertNull(client.deleteTagWithResponse(V3_TAG_NAME, Context.NONE).getValue());
+//    }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getMultiArchitectureImagePropertiesWithResponse(HttpClient httpClient) {
@@ -84,7 +214,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
             }).flatMap(res -> getRegistryArtifactAsyncClient(httpClient, res.getValue().getDigest()).getManifestPropertiesWithResponse())
             .flatMap(res -> {
                 validateManifestProperties(res, true, false);
-                return Mono.just(getChildArtifactDigest(res.getValue().getManifests()));
+                return Mono.just(getChildArtifactDigest(res.getValue().getManifestReferences()));
             }).flatMap(res -> getRegistryArtifactAsyncClient(httpClient, res).getManifestPropertiesWithResponse());
 
         StepVerifier.create(safeTestRegistyArtifacts)

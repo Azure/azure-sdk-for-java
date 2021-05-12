@@ -3,7 +3,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
@@ -92,20 +91,20 @@ public class ContainerRepositoryJavaDocSnippets {
         // END: com.azure.containers.containerregistry.repository.getPropertiesWithResponse
     }
 
-    public void updatePropertiesCodeSnippet() {
+    public void setPropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.updateProperties
-        ContentProperties properties = getContentProperties();
-        client.updateProperties(properties);
-        // END: com.azure.containers.containerregistry.repository.updateProperties
+        // BEGIN: com.azure.containers.containerregistry.repository.setProperties
+        RepositoryProperties properties = getRepositoryProperties();
+        client.setProperties(properties);
+        // END: com.azure.containers.containerregistry.repository.setProperties
     }
 
-    public void updatePropertiesWithResponseCodeSnippet() {
+    public void setPropertiesWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
-        ContentProperties properties = getContentProperties();
-        client.updatePropertiesWithResponse(properties, Context.NONE);
-        // END: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.repository.setPropertiesWithResponse
+        RepositoryProperties properties = getRepositoryProperties();
+        client.setPropertiesWithResponse(properties, Context.NONE);
+        // END: com.azure.containers.containerregistry.repository.setPropertiesWithResponse
     }
 
     public void listManifestPropertiesCodeSnippet() {
@@ -136,7 +135,7 @@ public class ContainerRepositoryJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private ContentProperties getContentProperties() {
+    private RepositoryProperties getRepositoryProperties() {
         return null;
     }
 

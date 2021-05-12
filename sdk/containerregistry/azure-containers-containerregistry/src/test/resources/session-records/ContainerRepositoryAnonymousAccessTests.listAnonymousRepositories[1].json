@@ -4,12 +4,12 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a9065665-0d33-42ba-a45b-5d45cedd8757",
+      "x-ms-client-request-id" : "5bf59853-0a57-4bf4-8e59-5a1b3b477530",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "d46615e3-4d1b-46c3-91c9-b2c3fc7ef14e",
+      "X-Ms-Correlation-Request-Id" : "a4af5c1b-c6f8-486d-bdea-b0913de99ef1",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
@@ -17,7 +17,7 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 03 May 2021 22:05:02 GMT",
+      "Date" : "Tue, 18 May 2021 01:21:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,7 +26,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "53aac70f-c832-4a18-b093-3e57c02bdc00"
+      "x-ms-client-request-id" : "7490bfe4-414b-472d-8ce5-81675cf05758"
     },
     "Response" : {
       "content-length" : "41",
@@ -35,9 +35,9 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 03 May 2021 22:05:02 GMT",
+      "Date" : "Tue, 18 May 2021 01:21:55 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "1d159e56-7653-4b2f-9e82-b40264babc42",
+      "X-Ms-Correlation-Request-Id" : "94ede67d-7b86-46b2-bf53-843b5298aa4e",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Body" : "{\"repositories\":[\"library/hello-world\"]}\n",

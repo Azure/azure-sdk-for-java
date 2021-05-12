@@ -19,8 +19,8 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 
-import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBase {
@@ -34,13 +34,13 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     private ContainerRepositoryAsync getContainerRepositoryAsync() {
         return getContainerRegistryBuilder(new LocalHttpClient(recordFileName))
             .buildAsyncClient()
-            .getRepository(ALPINE_REPOSITORY_NAME);
+            .getRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME);
     }
 
     private ContainerRepository getContainerRepository() {
         return getContainerRegistryBuilder(new LocalHttpClient(recordFileName))
             .buildClient()
-            .getRepository(ALPINE_REPOSITORY_NAME);
+            .getRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME);
     }
 
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient() {
@@ -59,7 +59,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @BeforeEach
     void beforeEach() {
-        TestUtils.importImage(ImplUtils.getTestMode(), ALPINE_REPOSITORY_NAME, Arrays.asList("latest"));
+        TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_SEATTLE_REPOSITORY_NAME, Arrays.asList("latest"));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -67,7 +67,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     public void deleteRepository(HttpClient httpClient) {
         registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
 
-        StepVerifier.create(registryAsyncClient.deleteRepository(ALPINE_REPOSITORY_NAME))
+        StepVerifier.create(registryAsyncClient.deleteRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME))
             .assertNext(res -> validateDeletedRepositoryResponse(res))
             .verifyComplete();
     }
@@ -78,14 +78,14 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
         registryAsyncClient = getContainerRegistryAsyncClient();
         registryClient = getContainerRegistryClient();
 
-        StepVerifier.create(registryAsyncClient.deleteRepository(ALPINE_REPOSITORY_NAME))
+        StepVerifier.create(registryAsyncClient.deleteRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME))
             .assertNext(res -> validateDeletedRepositoryResponse(res))
             .verifyComplete();
 
-        DeleteRepositoryResult result = registryClient.deleteRepository(ALPINE_REPOSITORY_NAME);
+        DeleteRepositoryResult result = registryClient.deleteRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME);
         validateDeletedRepositoryResponse(result);
 
-        Response<DeleteRepositoryResult> response = registryClient.deleteRepositoryWithResponse(ALPINE_REPOSITORY_NAME, Context.NONE);
+        Response<DeleteRepositoryResult> response = registryClient.deleteRepositoryWithResponse(HELLO_WORLD_SEATTLE_REPOSITORY_NAME, Context.NONE);
         validateDeletedRepositoryResponse(response);
 
         asyncClient = getContainerRepositoryAsync();

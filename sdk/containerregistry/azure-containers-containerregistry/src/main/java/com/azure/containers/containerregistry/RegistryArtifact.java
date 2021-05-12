@@ -6,7 +6,6 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -61,6 +60,14 @@ public final class RegistryArtifact {
      * */
     public String getTagOrDigest() {
         return this.asyncClient.getTagOrDigest();
+    }
+
+    /**
+     * Gets the fully qualified name for the current instance.
+     * @return Fully qualified name of the current instance.
+     * */
+    public String getFullyQualifiedName() {
+        return this.asyncClient.getFullyQualifiedName();
     }
 
     /**
@@ -282,17 +289,17 @@ public final class RegistryArtifact {
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the given tag in {@link #getRepositoryName() repository}.
+     * Update the properties {@link ArtifactTagProperties} of the given tag in {@link #getRepositoryName() repository}.
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateTagPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.setTagPropertiesWithResponse}.
      *
      * @param tag Name of the tag.
-     * @param value {@link ContentProperties value} to be set.
+     * @param value {@link ArtifactTagProperties value} to be set.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
@@ -300,69 +307,69 @@ public final class RegistryArtifact {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> updateTagPropertiesWithResponse(String tag, ContentProperties value, Context context) {
-        return this.asyncClient.updateTagPropertiesWithResponse(tag, value, context).block();
+    public Response<ArtifactTagProperties> setTagPropertiesWithResponse(String tag, ArtifactTagProperties value, Context context) {
+        return this.asyncClient.setTagPropertiesWithResponse(tag, value, context).block();
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the given {@code tag}.
+     * Update the properties {@link ArtifactTagProperties} of the given {@code tag}.
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateTagProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.setTagProperties}.
      *
      * @param tag Name of the tag.
-     * @param value {@link ContentProperties value} to be set.
+     * @param value {@link ArtifactTagProperties value} to be set.
      * @return The updated {@link ArtifactTagProperties properties }
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties updateTagProperties(String tag, ContentProperties value) {
-        return this.updateTagPropertiesWithResponse(tag, value, Context.NONE).getValue();
+    public ArtifactTagProperties setTagProperties(String tag, ArtifactTagProperties value) {
+        return this.setTagPropertiesWithResponse(tag, value, Context.NONE).getValue();
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the artifact with the given {@code digest}.
+     * Update the properties {@link ArtifactTagProperties} of the artifact with the given {@code digest}.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateManifestPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.setManifestPropertiesWithResponse}.
      *
-     * @param value {@link ContentProperties value} to be set.
+     * @param value {@link ArtifactManifestProperties value} to be set.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      */
-    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(ContentProperties value, Context context) {
-        return this.asyncClient.updateManifestPropertiesWithResponse(value, context).block();
+    public Response<ArtifactManifestProperties> setManifestPropertiesWithResponse(ArtifactManifestProperties value, Context context) {
+        return this.asyncClient.setManifestPropertiesWithResponse(value, context).block();
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the artifact with the given {@code digest}.
+     * Update the writeable properties {@link ArtifactTagProperties} of the artifact with the given {@code digest}.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given manifest.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateManifestProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.setManifestProperties}.
      *
-     * @param value {@link ContentProperties value} to be set.
+     * @param value {@link ArtifactManifestProperties value} to be set.
      * @return The updated {@link ArtifactManifestProperties properties }
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties updateManifestProperties(ContentProperties value) {
-        return this.updateManifestPropertiesWithResponse(value, Context.NONE).getValue();
+    public ArtifactManifestProperties setManifestProperties(ArtifactManifestProperties value) {
+        return this.setManifestPropertiesWithResponse(value, Context.NONE).getValue();
     }
 }

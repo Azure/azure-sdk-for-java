@@ -29,6 +29,7 @@ public class TestUtils {
     public static final String ALPINE_REPOSITORY_NAME;
     public static final String HELLO_WORLD_REPOSITORY_NAME;
     public static final String HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
+    public static final String MICROSOFT_HELLO_WORLD_REPOSITORY_NAME;
     public static final String LATEST_TAG_NAME;
     public static final String V1_TAG_NAME;
     public static final String V2_TAG_NAME;
@@ -54,12 +55,15 @@ public class TestUtils {
     public static final String ANONYMOUS_REGISTRY_NAME;
     public static final String LOGIN_SERVER_SUFFIX;
     public static final String REGISTRY_ENDPOINT_PLAYBACK;
+    public static final String QUARANTINE_STATE;
+    public static final String QUARANTINE_DETAILS;
 
     static {
         CONFIGURATION = Configuration.getGlobalConfiguration().clone();
         ALPINE_REPOSITORY_NAME = "library/alpine";
         HELLO_WORLD_REPOSITORY_NAME = "library/hello-world";
         HELLO_WORLD_SEATTLE_REPOSITORY_NAME = "library/hello-seattle";
+        MICROSOFT_HELLO_WORLD_REPOSITORY_NAME = "library/mcr/hello-world";
         LATEST_TAG_NAME = "latest";
         V1_TAG_NAME = "v1";
         V2_TAG_NAME = "v2";
@@ -85,6 +89,8 @@ public class TestUtils {
         ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
         LOGIN_SERVER_SUFFIX = "azurecr.io";
         REGISTRY_ENDPOINT_PLAYBACK = "https://playbackregistry.azurecr.io";
+        QUARANTINE_STATE = "quarantine_state";
+        QUARANTINE_DETAILS = "quaratine_details";
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -108,6 +114,18 @@ public class TestUtils {
             t = t2;
         }
         return true;
+    }
+
+    static Mono<Void> monoDelay() {
+        return Mono.defer(() -> {
+            try {
+                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return Mono.empty();
+        });
     }
 
     static TokenCredential getCredential(TestMode testMode) {

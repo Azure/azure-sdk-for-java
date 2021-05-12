@@ -4,8 +4,8 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
+import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -36,7 +36,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     private ContainerRepositoryAsync asyncClient;
     private ContainerRepository client;
-    private ContentProperties contentProperties;
+    private RepositoryProperties contentProperties;
 
     @BeforeEach
     void beforeEach() {
@@ -45,12 +45,16 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @AfterEach
     void afterEach() {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return;
+        }
+
         if (contentProperties == null) {
             return;
         }
 
         client = getContainerRepository(new NettyAsyncHttpClientBuilder().build());
-        client.updateProperties(defaultProperties);
+        client.setProperties(defaultRepoWriteableProperties);
     }
 
     private ContainerRepositoryAsync getContainerRepositoryAsync(HttpClient httpClient) {
@@ -189,20 +193,22 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void updateProperties(HttpClient httpClient) {
+    public void setProperties(HttpClient httpClient) {
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
 
-        StepVerifier.create(asyncClient.updatePropertiesWithResponse(writeableProperties))
-            .assertNext(res -> validateContentProperties(res.getValue().getWriteableProperties()))
+        contentProperties = repoWriteableProperties;
+
+        StepVerifier.create(asyncClient.setPropertiesWithResponse(repoWriteableProperties))
+            .assertNext(res -> validateRepoContentProperties(res.getValue()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.updateProperties(writeableProperties))
-            .assertNext(res -> validateContentProperties(res.getWriteableProperties()))
+        StepVerifier.create(asyncClient.setProperties(repoWriteableProperties))
+            .assertNext(res -> validateRepoContentProperties(res))
             .verifyComplete();
 
-        validateContentProperties(client.updateProperties(writeableProperties).getWriteableProperties());
-        validateContentProperties(client.updatePropertiesWithResponse(writeableProperties, Context.NONE).getValue().getWriteableProperties());
+        validateRepoContentProperties(client.setProperties(repoWriteableProperties));
+        validateRepoContentProperties(client.setPropertiesWithResponse(repoWriteableProperties, Context.NONE).getValue());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

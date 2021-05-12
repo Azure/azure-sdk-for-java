@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Container Registry supported by this client library.
  */
 public enum ContainerRegistryServiceVersion implements ServiceVersion {
-    V1_0("1.0");
+    V1_0("1");
 
     private final String version;
 

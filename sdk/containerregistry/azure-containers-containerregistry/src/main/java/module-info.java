@@ -11,5 +11,5 @@ module com.azure.containers.containerregistry {
     opens com.azure.containers.containerregistry.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
 
     // This is still needed even though we export the models.
-    opens com.azure.containers.containerregistry.models to com.fasterxml.jackson.databind;
+    opens com.azure.containers.containerregistry.models to com.fasterxml.jackson.databind, com.azure.containers.containerregistry;
 }
