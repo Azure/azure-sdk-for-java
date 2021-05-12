@@ -26,22 +26,6 @@ import spock.lang.Unroll
 import java.nio.charset.StandardCharsets
 
 class BatchAPITest extends APISpec {
-    static def setupCustomPolicyBatch(BlobServiceAsyncClient blobServiceAsyncClient, HttpPipelinePolicy customPolicy) {
-        def clientPipeline = blobServiceAsyncClient.getHttpPipeline()
-
-        def policies = new HttpPipelinePolicy[clientPipeline.getPolicyCount() + 1]
-        for (def i = 0; i < clientPipeline.getPolicyCount(); i++) {
-            policies[i] = clientPipeline.getPolicy(i)
-        }
-
-        policies[clientPipeline.getPolicyCount()] = customPolicy
-
-        return new BlobBatch(blobServiceAsyncClient.getAccountUrl(), new HttpPipelineBuilder()
-            .policies(policies)
-            .httpClient(clientPipeline.getHttpClient())
-            .build())
-    }
-
     /*
      * Helper method for tests where some operations fail, but not all fail. This is needed as the underlying request
      * generation is non-deterministic in the ordering of request. This is fine when running against the live service
