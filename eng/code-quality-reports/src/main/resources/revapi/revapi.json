@@ -483,6 +483,13 @@
         "old": "@interface com.azure.core.annotation.ServiceMethod",
         "new": "@interface com.azure.core.annotation.ServiceMethod",
         "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
+      },
+      {
+        "regex": true,
+        "code": "java\\.annotation\\.added",
+        "old": ".*",
+        "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+        "justification": "These are SDK metadata annotations and don't affect runtime behavior."
       }
     ]
   }

@@ -6,6 +6,7 @@
 <suppressions>
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
+  <suppress checks="Javadoc" files="src[/\\]test-shared[/\\]java[/\\].*.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>
@@ -56,7 +57,7 @@
   <!-- Don't apply custom Checkstyle rules to files under test package -->
   <suppress
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-      files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+      files=".*[/\\]src[/\\]test(-shared)?[/\\]java[/\\].*\.java"/>
 
   <!-- Do not worry about leaking implementation API out of azure-core-test -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.*"/>
@@ -441,6 +442,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy.java"/>
 
   <!-- Checkstyle suppression for Event Hubs client APIs that use Flux instead of PagedFlux for methods that return a collection -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubConsumerClient.java"/>
@@ -554,4 +556,8 @@ the main ServiceBusClientBuilder. -->
   <!-- This policy is purely an implementation detail and should not be used by customers -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.data.tables.implementation.CosmosPatchTransformPolicy"/>
+
+  <!-- Suppress checks on AutoRest generated Text Analytics service code -->
+  <suppress checks="WhitespaceAround"
+            files="com.azure.ai.textanalytics.implementation.models.TasksStateTasksDetails"/>
 </suppressions>

@@ -62,25 +62,25 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- test -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.2.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.8.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.9.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -104,7 +104,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

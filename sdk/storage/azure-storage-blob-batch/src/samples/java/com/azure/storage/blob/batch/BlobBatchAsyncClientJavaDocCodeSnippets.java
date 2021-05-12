@@ -20,7 +20,7 @@ import java.util.List;
  * Code snippets for {@link BlobBatchAsyncClient}
  */
 public class BlobBatchAsyncClientJavaDocCodeSnippets {
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_BLOB_ENDPOINT");
     private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
@@ -29,7 +29,6 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
                                                     .buildClient();
     
     private BlobBatchAsyncClient batchAsyncClient = new BlobBatchClientBuilder(blobServiceClient).buildAsyncClient();
-
 
     /**
      * Code snippet for {@link BlobBatchAsyncClient#submitBatch(BlobBatch)}

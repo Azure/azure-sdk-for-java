@@ -1,65 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueserviceapitestsdeletequeue95373acdd20b276c0",
+    "Uri" : "https://REDACTED.queue.core.windows.net/07890cfc07890cfc5e0940177360efb1ef2140ac92",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0ff61e17-8f95-4d73-b4f6-ffeb95aac39a"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ba9d444d-5cb7-4a87-9671-3007ddb9d51d"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "37a3aeb9-3003-009b-0c04-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:06:42 GMT",
-      "x-ms-client-request-id" : "0ff61e17-8f95-4d73-b4f6-ffeb95aac39a"
+      "x-ms-request-id" : "fdcaffcd-7003-0033-2109-41a98a000000",
+      "x-ms-client-request-id" : "ba9d444d-5cb7-4a87-9671-3007ddb9d51d",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueserviceapitestsdeletequeue95373acdd20b276c0",
+    "Uri" : "https://REDACTED.queue.core.windows.net/07890cfc07890cfc5e0940177360efb1ef2140ac92",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "bbd4d5d0-19ef-45f3-bf93-ef16ba29e2e1"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "938d1267-3515-46d9-a2b1-4383525f622a"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "37a3aebf-3003-009b-0f04-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:06:42 GMT",
-      "x-ms-client-request-id" : "bbd4d5d0-19ef-45f3-bf93-ef16ba29e2e1"
+      "x-ms-request-id" : "7c5d3991-2003-0011-5609-416c95000000",
+      "x-ms-client-request-id" : "938d1267-3515-46d9-a2b1-4383525f622a",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueserviceapitestsdeletequeue95373acdd20b276c0/messages",
+    "Uri" : "https://REDACTED.queue.core.windows.net/07890cfc07890cfc5e0940177360efb1ef2140ac92/messages",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "f5574abe-ef91-4a6c-8911-d6ea64a15c4b",
-      "Content-Type" : "application/xml; charset=utf-8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "005018ff-a8c9-4d79-917a-0dfb9e89ae5a",
+      "Content-Type" : "application/xml"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "37a3aec1-3003-009b-1104-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3aec1-3003-009b-1104-3a8ca5000000\nTime:2020-06-04T00:06:42.9977095Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:06:42 GMT",
-      "x-ms-client-request-id" : "f5574abe-ef91-4a6c-8911-d6ea64a15c4b",
+      "x-ms-request-id" : "fde042a8-8003-00a1-1809-412d5c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:fde042a8-8003-00a1-1809-412d5c000000\nTime:2021-05-04T17:18:37.4746055Z</Message></Error>",
+      "x-ms-client-request-id" : "005018ff-a8c9-4d79-917a-0dfb9e89ae5a",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueserviceapitestsdeletequeue95373acdd20b276c0" ]
+  "variables" : [ "07890cfc07890cfc5e0940177360efb1ef2140ac92" ]
 }
