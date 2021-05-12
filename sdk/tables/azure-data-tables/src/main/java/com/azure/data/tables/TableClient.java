@@ -55,12 +55,12 @@ public final class TableClient {
     }
 
     /**
-     * Gets the absolute URL for this table.
+     * Gets the endpoint for this table.
      *
-     * @return The absolute URL for this table.
+     * @return The endpoint for this table.
      */
-    public String getTableUrl() {
-        return this.client.getTableUrl();
+    public String getTableEndpoint() {
+        return this.client.getTableEndpoint();
     }
 
     /**
@@ -68,8 +68,8 @@ public final class TableClient {
      *
      * @return The REST API version used by this client.
      */
-    public TableServiceVersion getApiVersion() {
-        return this.client.getApiVersion();
+    public TableServiceVersion getServiceVersion() {
+        return this.client.getServiceVersion();
     }
 
     /**

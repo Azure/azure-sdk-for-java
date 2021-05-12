@@ -44,12 +44,12 @@ public final class TableServiceClient {
     }
 
     /**
-     * Gets the absolute URL for the Tables service endpoint.
+     * Gets the endpoint for the Tables service.
      *
-     * @return The absolute URL for the Tables service endpoint.
+     * @return The endpoint for the Tables service.
      */
-    public String getServiceUrl() {
-        return client.getServiceUrl();
+    public String getServiceEndpoint() {
+        return client.getServiceEndpoint();
     }
 
     /**
@@ -57,8 +57,8 @@ public final class TableServiceClient {
      *
      * @return The REST API version used by this client.
      */
-    public TableServiceVersion getApiVersion() {
-        return client.getApiVersion();
+    public TableServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**

@@ -108,7 +108,7 @@ public class TablesClientBuilderTest {
             .buildAsyncClient();
 
         StepVerifier.create(tableAsyncClient.getHttpPipeline().send(
-            TestUtils.request(tableAsyncClient.getTableUrl())))
+            TestUtils.request(tableAsyncClient.getTableEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }

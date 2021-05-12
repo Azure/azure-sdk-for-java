@@ -103,7 +103,7 @@ public class TableServiceClientBuilderTest {
             .buildAsyncClient();
 
         StepVerifier.create(tableServiceAsyncClient.getHttpPipeline().send(
-            TestUtils.request(tableServiceAsyncClient.getServiceUrl())))
+            TestUtils.request(tableServiceAsyncClient.getServiceEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }

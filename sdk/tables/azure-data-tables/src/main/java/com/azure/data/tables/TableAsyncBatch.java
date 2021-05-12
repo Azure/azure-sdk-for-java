@@ -68,7 +68,7 @@ public final class TableAsyncBatch {
         this.operationClient = new TableClientBuilder()
             .tableName(client.getTableName())
             .endpoint(client.getImplementation().getUrl())
-            .serviceVersion(client.getApiVersion())
+            .serviceVersion(client.getServiceVersion())
             .pipeline(BuilderHelper.buildNullClientPipeline())
             .buildAsyncClient();
     }
