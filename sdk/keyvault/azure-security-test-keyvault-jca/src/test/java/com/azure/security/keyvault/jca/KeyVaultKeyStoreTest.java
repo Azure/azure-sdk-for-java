@@ -97,16 +97,6 @@ public class KeyVaultKeyStoreTest {
     }
 
     @Test
-    public void testEngineContainsAlias() {
-        assertTrue(keystore.engineContainsAlias(certificateName));
-    }
-
-    @Test
-    public void testEngineIsKeyEntry() {
-        assertTrue(keystore.engineIsKeyEntry(certificateName));
-    }
-
-    @Test
     public void testEngineSetCertificateEntry() {
 
         X509Certificate certificate;
