@@ -77,6 +77,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
