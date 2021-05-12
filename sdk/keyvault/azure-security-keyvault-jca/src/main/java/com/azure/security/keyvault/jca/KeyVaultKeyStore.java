@@ -228,7 +228,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             } else if (parameter.getManagedIdentity() != null) {
                 keyVaultClient = new KeyVaultClient(
                         parameter.getUri(),
-                        parameter.getManagedIdentity());
+                        parameter.getManagedIdentity()
+                );
             } else {
                 keyVaultClient = new KeyVaultClient(parameter.getUri());
             }
