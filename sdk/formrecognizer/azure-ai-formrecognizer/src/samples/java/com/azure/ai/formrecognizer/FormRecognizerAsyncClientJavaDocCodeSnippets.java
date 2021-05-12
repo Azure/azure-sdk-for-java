@@ -1005,12 +1005,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountryRegion();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
@@ -1074,12 +1074,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountryRegion();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
@@ -1142,12 +1142,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountryRegion();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
@@ -1219,12 +1219,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountryRegion();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
