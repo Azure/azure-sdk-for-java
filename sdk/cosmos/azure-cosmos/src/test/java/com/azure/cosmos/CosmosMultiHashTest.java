@@ -23,7 +23,9 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -40,6 +42,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosMultiHashTest extends TestSuiteBase {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonNodeFactory JSON_NODE_FACTORY_INSTANCE = JsonNodeFactory.withExactBigDecimals(true);
+
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private CosmosClient client;
     private CosmosDatabase createdDatabase;
@@ -77,8 +81,6 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting cleanup....");
-        //MultiHash Collection delete
-        createdMultiHashContainer.delete();
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
@@ -139,109 +141,101 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     private void validateDocCRUDandQuery() throws Exception {
 
-        try {
-            ArrayList<Document> docs = new ArrayList<Document>(3);
+        ArrayList<ObjectNode> docs = new ArrayList<ObjectNode>(3);
 
-            Document doc = new Document();
-            doc.setId(UUID.randomUUID().toString());
-            doc.set("city", "Redmond");
-            doc.set("zipcode", "98052");
-            docs.add(doc);
+        ObjectNode doc = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        doc.set("id", new TextNode(UUID.randomUUID().toString()));
+        doc.set("city", new TextNode("Redmond"));
+        doc.set("zipcode", new TextNode("98052"));
+        docs.add(doc);
 
-            Document doc1 = new Document();
-            doc1.setId(UUID.randomUUID().toString());
-            doc1.set("city", "Pittsburgh");
-            doc1.set("zipcode", "15232");
-            docs.add(doc1);
+        ObjectNode doc1 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        doc1.set("id", new TextNode(UUID.randomUUID().toString()));
+        doc1.set("city", new TextNode("Pittsburgh"));
+        doc1.set("zipcode", new TextNode("15232"));
+        docs.add(doc1);
 
-            Document doc2 = new Document();
-            doc2.setId(UUID.randomUUID().toString());
-            doc2.set("city", "Stonybrook");
-            doc2.set("zipcode", "11790");
-            docs.add(doc2);
+        ObjectNode doc2 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        doc2.set("id", new TextNode(UUID.randomUUID().toString()));
+        doc2.set("city", new TextNode("Stonybrook"));
+        doc2.set("zipcode", new TextNode("11790"));
+        docs.add(doc2);
 
-            Document doc3 = new Document();
-            doc3.setId(UUID.randomUUID().toString());
-            doc3.set("city", "Stonybrook");
-            doc3.set("zipcode", "11794");
-            docs.add(doc3);
+        ObjectNode doc3 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        doc3.set("id", new TextNode(UUID.randomUUID().toString()));
+        doc3.set("city", new TextNode("Stonybrook"));
+        doc3.set("zipcode", new TextNode("11794"));
+        docs.add(doc3);
 
-            Document doc4 = new Document();
-            doc4.setId(UUID.randomUUID().toString());
-            doc4.set("city", "Stonybrook");
-            doc4.set("zipcode", "11791");
-            docs.add(doc4);
+        ObjectNode doc4 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        doc4.set("id", new TextNode(UUID.randomUUID().toString()));
+        doc4.set("city", new TextNode("Stonybrook"));
+        doc4.set("zipcode", new TextNode("11791"));
+        docs.add(doc4);
 
-            //Document Create
-            for (int i = 0; i < docs.size(); i++) {
-                createdMultiHashContainer.createItem(docs.get(i));
-            }
-            //Document Create - Negative test
-            {
-                PartitionKey partitionKey =
-                    new PartitionKeyBuilder()
-                        .add("Redmond")
-                        .build();
-                try {
-                    CosmosItemResponse<Document> response =
-                        createdMultiHashContainer.createItem(doc, partitionKey, new CosmosItemRequestOptions());
-                }
-                catch (Exception e) {
-                    assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n" ));
-                }
-            }
-
-            //Document Read
-            {
-                for (int i = 0; i < docs.size(); i++) {
-                    Document doc_current = docs.get(i);
-                    PartitionKey partitionKey = new PartitionKeyBuilder()
-                        .add(doc_current.getString("city"))
-                        .add(doc_current.getString("zipcode"))
-                        .build();
-                    CosmosItemResponse<Document> response = createdMultiHashContainer.readItem(doc_current.getId(), partitionKey, Document.class);
-                }
-            }
-
-            // Query Tests.
-
-            for (int i = 0; i < docs.size(); i++) {
-                Document doc_current = docs.get(i);
-                //Build the partition key
-                PartitionKey partitionKey = new PartitionKeyBuilder()
-                    .add(doc_current.getString("city"))
-                    .add(doc_current.getString("zipcode"))
-                    .build();
-
-                //Build the query request options
-                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-                queryRequestOptions.setPartitionKey(partitionKey);
-
-                //Run the query.
-                String query = String.format("SELECT * from c where c.id = '%s'", doc_current.getId());
-
-                CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
-                    createdMultiHashContainer.queryItems(query, queryRequestOptions, InternalObjectNode.class);
-                assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
-
-                query = String.format("SELECT * from c where c.id = '%s'", doc_current.getId());
-                queryRequestOptions = new CosmosQueryRequestOptions();
-                feedResponseIterator1 =
-                    createdMultiHashContainer.queryItems(query, queryRequestOptions, InternalObjectNode.class);
-                assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
-            }
-
-            String query = String.format("SELECT * from c where c.city = '%s'", docs.get(2).getString("city"));
-            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-            CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
-                createdMultiHashContainer.queryItems(query, queryRequestOptions, InternalObjectNode.class);
-            assertThat(feedResponseIterator1.stream().count()).isEqualTo(3);
-
+        //Document Create
+        for (int i = 0; i < docs.size(); i++) {
+            createdMultiHashContainer.createItem(docs.get(i));
         }
-        catch (Exception e)
+        //Document Create - Negative test
         {
-            assertThat(false);
+            PartitionKey partitionKey =
+                new PartitionKeyBuilder()
+                    .add("Redmond")
+                    .build();
+            try {
+                CosmosItemResponse<ObjectNode> response =
+                    createdMultiHashContainer.createItem(doc, partitionKey, new CosmosItemRequestOptions());
+            } catch (Exception e) {
+                assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
+            }
         }
+
+        //Document Read
+        {
+            for (int i = 0; i < docs.size(); i++) {
+                ObjectNode doc_current = docs.get(i);
+                PartitionKey partitionKey = new PartitionKeyBuilder()
+                    .add(doc_current.get("city").toString())
+                    .add(doc_current.get("zipcode").toString())
+                    .build();
+                CosmosItemResponse<ObjectNode> response = createdMultiHashContainer.readItem(doc_current.get("id").toString(), partitionKey, ObjectNode.class);
+            }
+        }
+
+        // Query Tests.
+
+        for (int i = 0; i < docs.size(); i++) {
+            ObjectNode doc_current = docs.get(i);
+            //Build the partition key
+            PartitionKey partitionKey = new PartitionKeyBuilder()
+                .add(doc_current.get("city").toString())
+                .add(doc_current.get("zipcode").toString())
+                .build();
+
+            //Build the query request options
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+            queryRequestOptions.setPartitionKey(partitionKey);
+
+            //Run the query.
+            String query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").toString());
+
+            CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
+                createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+            assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+
+            query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").toString());
+            queryRequestOptions = new CosmosQueryRequestOptions();
+            feedResponseIterator1 =
+                createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+            assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+        }
+
+        String query = String.format("SELECT * from c where c.city = '%s'", docs.get(2).get("city").toString());
+        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
+            createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
+        assertThat(feedResponseIterator1.stream().count()).isEqualTo(3);
 
     }
 }

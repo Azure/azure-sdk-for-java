@@ -35,7 +35,7 @@ public class PartitionKeyInternalHelper {
         (byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
         (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
 
-    private static final Integer HASH_V2_EPK_LENGTH = 32;
+    private static final int HASH_V2_EPK_LENGTH = 32;
 
     static byte[] uIntToBytes(UInt128 unit) {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);

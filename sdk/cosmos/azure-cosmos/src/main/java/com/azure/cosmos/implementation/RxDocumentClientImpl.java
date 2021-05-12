@@ -1329,15 +1329,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     break;
                 case MULTI_HASH:
                     Object[] partitionKeyValues = new Object[partitionKeyDefinition.getPaths().size()];
-                    for(int path_iter = 0 ; path_iter < partitionKeyDefinition.getPaths().size(); path_iter++){
-                        String partitionPath = partitionKeyDefinition.getPaths().get(path_iter);
+                    for(int pathIter = 0 ; pathIter < partitionKeyDefinition.getPaths().size(); pathIter++){
+                        String partitionPath = partitionKeyDefinition.getPaths().get(pathIter);
                         List<String> partitionPathParts = PathParser.getPathParts(partitionPath);
-                        partitionKeyValues[path_iter] = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, partitionPathParts);
+                        partitionKeyValues[pathIter] = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, partitionPathParts);
                     }
                     return PartitionKeyInternal.fromObjectArray(partitionKeyValues, false);
 
                 default:
-                    throw new IllegalArgumentException("Unrecognized Partition kind");
+                    throw new IllegalArgumentException("Unrecognized Partition kind: " + partitionKeyDefinition.getKind());
                 }
         }
 
