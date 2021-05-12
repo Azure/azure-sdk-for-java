@@ -45,6 +45,4 @@ public final class FileSystemUndeleteOptions {
     public String getDeletedFileSystemVersion() {
         return deletedFileSystemVersion;
     }
-
-    // TODO (gapra) : Bring back destination file system name when there is support for it
 }

@@ -437,37 +437,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listPaths().first().getName() == blobName
     }
 
-    // TODO (gapra) : Bring back destination file system name when there is support for it
-    /*
-    @PlaybackOnly
-    def "Restore file system into other file system"() {
-        given:
-        def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-        cc1.create()
-        def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
-        cc1.delete()
-        def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
-            new ListFileSystemsOptions()
-                .setPrefix(cc1.getFileSystemName())
-                .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)),
-            null).first()
-        def destinationFileSystemName = generateFileSystemName()
-
-        sleepIfRecord(30000)
-
-        when:
-        def restoredContainerClient = primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
-            new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationFileSystemName(destinationFileSystemName), null, Context.NONE)
-            .getValue()
-
-        then:
-        restoredContainerClient.listPaths().size() == 1
-        restoredContainerClient.listPaths().first().getName() == blobName
-        restoredContainerClient.getFileSystemName() == destinationFileSystemName
-    } */
-
     def "Restore file system with response"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -566,33 +535,6 @@ class ServiceAPITest extends APISpec {
         then:
         thrown(DataLakeStorageException.class)
     }
-
-    // TODO (gapra) : Bring back destination file system name when there is support for it
-    /*
-    def "Restore file system into existing file system error"() {
-        given:
-        def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-        cc1.create()
-        def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
-        cc1.delete()
-        def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
-            new ListFileSystemsOptions()
-                .setPrefix(cc1.getFileSystemName())
-                .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        sleepIfRecord(30000)
-
-        when:
-        def cc2 = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())
-        primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
-            new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationFileSystemName(cc2.getFileSystemName()), null, Context.NONE)
-
-        then:
-        thrown(DataLakeStorageException.class)
-    } */
 
 //    def "Rename file system"() {
 //        setup:
