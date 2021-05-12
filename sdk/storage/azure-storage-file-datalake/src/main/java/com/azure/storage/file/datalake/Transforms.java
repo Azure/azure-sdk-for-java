@@ -594,7 +594,7 @@ class Transforms {
             return null;
         }
         return new UndeleteBlobContainerOptions(options.getDeletedFileSystemName(),
-            options.getDeletedFileSystemVersion());
+            options.getDeletedFileSystemVersion()).setDestinationContainerName(options.getDestinationFileSystemName());
     }
 
     static DataLakeServiceProperties toDataLakeServiceProperties(BlobServiceProperties blobProps) {

@@ -13,6 +13,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 public final class FileSystemUndeleteOptions {
     private final String deletedFileSystemName;
     private final String deletedFileSystemVersion;
+    private String destinationFileSystemName;
 
     /**
      * Constructs a {@link FileSystemUndeleteOptions}.
@@ -43,5 +44,37 @@ public final class FileSystemUndeleteOptions {
      */
     public String getDeletedFileSystemVersion() {
         return deletedFileSystemVersion;
+    }
+
+    /**
+     * Gets the destination file system name.
+     * The restored file system
+     * will be renamed to the <code>destinationFileSystemName</code>.
+     * If the file system associated with provided <code>destinationFileSystemName</code>
+     * already exists, the undelete operation will result in a 409 (conflict).
+     *
+     * @return The destination file system name.
+     * @deprecated Destination file system name must match deleted file system name
+     */
+    @Deprecated
+    public String getDestinationFileSystemName() {
+        return destinationFileSystemName;
+    }
+
+    /**
+     * Sets the destination file system name.
+     * The restored file system
+     * will be renamed to the <code>destinationFileSystemName</code>.
+     * If the file system associated with provided <code>destinationFileSystemName</code>
+     * already exists, the undelete operation will result in a 409 (conflict).
+     *
+     * @param destinationFileSystemName The destination file system name.
+     * @return The updated options.
+     * @deprecated Destination file system name must match deleted file system name
+     */
+    @Deprecated
+    public FileSystemUndeleteOptions setDestinationFileSystemName(String destinationFileSystemName) {
+        this.destinationFileSystemName = destinationFileSystemName;
+        return this;
     }
 }
