@@ -34,8 +34,9 @@ public class RecognizeIdentityDocumentsFromUrl {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String licenseDocumentUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/"
-                                        + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.jpg";
+        String licenseDocumentUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/"
+                + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeIdentityDocumentPoller
             = client.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl);
 

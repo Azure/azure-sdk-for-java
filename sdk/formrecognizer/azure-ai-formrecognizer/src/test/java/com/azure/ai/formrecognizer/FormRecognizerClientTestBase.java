@@ -165,7 +165,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
             builder.credential(
-                new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY")));
+                new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
 //            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
@@ -183,7 +183,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
             builder.credential(
-                new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY")));
+                new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
 //            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
