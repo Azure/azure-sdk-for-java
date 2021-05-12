@@ -27,7 +27,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * {@link TableServiceClientBuilder} object.
  */
 @ServiceClient(builder = TableServiceClientBuilder.class)
-public class TableServiceClient {
+public final class TableServiceClient {
     private final TableServiceAsyncClient client;
 
     TableServiceClient(TableServiceAsyncClient client) {

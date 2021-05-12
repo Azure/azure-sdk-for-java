@@ -50,7 +50,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * {@link TableServiceClientBuilder} object.
  */
 @ServiceClient(builder = TableServiceClientBuilder.class, isAsync = true)
-public class TableServiceAsyncClient {
+public final class TableServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableServiceAsyncClient.class);
     private final AzureTableImpl implementation;
     private final String accountName;

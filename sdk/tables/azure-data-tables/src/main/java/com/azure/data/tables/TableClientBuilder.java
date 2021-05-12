@@ -32,7 +32,7 @@ import java.util.List;
  * construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
-public class TableClientBuilder {
+public final class TableClientBuilder {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
 
     private final ClientLogger logger = new ClientLogger(TableClientBuilder.class);

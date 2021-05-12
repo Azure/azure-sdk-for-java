@@ -32,7 +32,7 @@ import java.util.List;
  * {@link #buildAsyncClient()}, respectively, to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
-public class TableServiceClientBuilder {
+public final class TableServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
