@@ -26,9 +26,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
-import java.util.Objects;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
@@ -62,12 +59,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the certificates by alias.
      */
-    private static final Map<String, Certificate> CERTIFICATES = new HashMap<>();
+    private final HashMap<String, Certificate> certificates = new HashMap<>();
 
     /**
      * Stores the certificate keys by alias.
      */
-    private static final HashMap<String, Key> CERTIFICATE_KEYS = new HashMap<>();
+    private final HashMap<String, Key> certificateKeys = new HashMap<>();
 
     /**
      * Stores the creation date.
@@ -77,8 +74,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the key vault client.
      */
-    private static KeyVaultClient keyVaultClient;
-
+    private KeyVaultClient keyVaultClient;
 
     /**
      * Constructor.
@@ -102,32 +98,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
         if (clientId != null) {
-            setKeyVaultClient(new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret));
+            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
         } else {
-            setKeyVaultClient(new KeyVaultClient(keyVaultUri, managedIdentity));
+            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
-    }
-
-    private static void setKeyVaultClient(KeyVaultClient keyVaultClient) {
-        KeyVaultKeyStore.keyVaultClient = keyVaultClient;
-    }
-
-    /**
-     * refresh certificate and KeyVaultTrustManager trustManager
-     */
-    public static void refreshCertificate() {
-
-        List<String> aliases = keyVaultClient.getAliases();
-        Optional.ofNullable(aliases)
-                .orElse(Collections.emptyList())
-                .forEach(alias -> {
-                    Key key = keyVaultClient.getKey(alias, null);
-                    Certificate certificate = keyVaultClient.getCertificate(alias);
-                    if (!Objects.isNull(key) && !Objects.isNull(certificate)) {
-                        CERTIFICATE_KEYS.put(alias, key);
-                        CERTIFICATES.put(alias, certificate);
-                    }
-                });
     }
 
     @Override
@@ -145,9 +119,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineDeleteEntry(String alias) {
-        CERTIFICATES.remove(alias);
-        CERTIFICATE_KEYS.remove(alias);
-        aliases.remove(alias);
     }
 
     @Override
@@ -158,12 +129,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Certificate engineGetCertificate(String alias) {
         Certificate certificate;
-        if (CERTIFICATES.containsKey(alias)) {
-            certificate = CERTIFICATES.get(alias);
+        if (certificates.containsKey(alias)) {
+            certificate = certificates.get(alias);
         } else {
             certificate = keyVaultClient.getCertificate(alias);
             if (certificate != null) {
-                CERTIFICATES.put(alias, certificate);
+                certificates.put(alias, certificate);
                 if (aliases == null) {
                     aliases = keyVaultClient.getAliases();
                 }
@@ -179,24 +150,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
         if (cert != null) {
-            if (aliases == null) {
-                aliases = keyVaultClient.getAliases();
-            }
-            for (String candidateAlias : aliases) {
-                Certificate certificate = engineGetCertificate(candidateAlias);
-                if (certificate.equals(cert)) {
-                    alias = candidateAlias;
-                    break;
-                }
-            }
-        }
-
-        boolean refresh = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificate-refresh-when-have-untrust-certificate"))
-            .map(Boolean::parseBoolean)
-            .orElse(false);
-
-        if (alias == null && cert != null && refresh) {
-            refreshCertificate();
             if (aliases == null) {
                 aliases = keyVaultClient.getAliases();
             }
@@ -235,12 +188,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Key engineGetKey(String alias, char[] password) {
         Key key;
-        if (CERTIFICATE_KEYS.containsKey(alias)) {
-            key = CERTIFICATE_KEYS.get(alias);
+        if (certificateKeys.containsKey(alias)) {
+            key = certificateKeys.get(alias);
         } else {
             key = keyVaultClient.getKey(alias, password);
             if (key != null) {
-                CERTIFICATE_KEYS.put(alias, key);
+                certificateKeys.put(alias, key);
                 if (aliases == null) {
                     aliases = keyVaultClient.getAliases();
                 }
@@ -270,18 +223,18 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             if (parameter.getClientId() != null) {
-                setKeyVaultClient(new KeyVaultClient(
-                        parameter.getUri(),
-                        parameter.getTenantId(),
-                        parameter.getClientId(),
-                        parameter.getClientSecret()));
+                keyVaultClient = new KeyVaultClient(
+                    parameter.getUri(),
+                    parameter.getTenantId(),
+                    parameter.getClientId(),
+                    parameter.getClientSecret());
             } else if (parameter.getManagedIdentity() != null) {
-                setKeyVaultClient(new KeyVaultClient(
-                        parameter.getUri(),
-                        parameter.getManagedIdentity())
+                keyVaultClient = new KeyVaultClient(
+                    parameter.getUri(),
+                    parameter.getManagedIdentity()
                 );
             } else {
-                setKeyVaultClient(new KeyVaultClient(parameter.getUri()));
+                keyVaultClient = new KeyVaultClient(parameter.getUri());
             }
         }
         sideLoad();
@@ -299,7 +252,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         }
         if (!aliases.contains(alias)) {
             aliases.add(alias);
-            CERTIFICATES.put(alias, certificate);
+            certificates.put(alias, certificate);
         }
     }
 
@@ -392,10 +345,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                             try {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                        new ByteArrayInputStream(bytes));
+                                    new ByteArrayInputStream(bytes));
                                 engineSetCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                        new Object[]{alias, filename});
+                                    new Object[]{alias, filename});
                             } catch (CertificateException e) {
                                 LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
                             }
@@ -407,6 +360,4 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
         }
     }
-
-
 }
