@@ -116,7 +116,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Enumeration<String> engineAliases() {
-
         List<String> aliasList = Stream.of(keyVaultCertificatesInfo.getAliases(keyVaultClient), sideLoadAliases)
             .flatMap(Collection::stream)
             .distinct().collect(Collectors.toList());
@@ -222,14 +221,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             if (parameter.getClientId() != null) {
                 keyVaultClient = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getTenantId(),
-                    parameter.getClientId(),
-                    parameter.getClientSecret());
+                        parameter.getUri(),
+                        parameter.getTenantId(),
+                        parameter.getClientId(),
+                        parameter.getClientSecret());
             } else if (parameter.getManagedIdentity() != null) {
                 keyVaultClient = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getManagedIdentity());
+                        parameter.getUri(),
+                        parameter.getManagedIdentity());
             } else {
                 keyVaultClient = new KeyVaultClient(parameter.getUri());
             }
@@ -357,10 +356,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                             try {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                    new ByteArrayInputStream(bytes));
+                                        new ByteArrayInputStream(bytes));
                                 engineSetSideLoadCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                    new Object[]{alias, filename});
+                                        new Object[]{alias, filename});
                             } catch (CertificateException e) {
                                 LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
                             }
