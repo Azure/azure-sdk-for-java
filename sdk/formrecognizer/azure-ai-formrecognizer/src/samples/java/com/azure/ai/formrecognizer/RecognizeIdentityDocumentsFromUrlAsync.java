@@ -71,7 +71,7 @@ public class RecognizeIdentityDocumentsFromUrlAsync {
                 if (countryRegionFormField != null) {
                     if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
                         String countryRegion = countryRegionFormField.getValue().asCountryRegion();
-                        System.out.printf("Country region: %s, confidence: %.2f%n",
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
                             countryRegion, countryRegionFormField.getConfidence());
                     }
                 }

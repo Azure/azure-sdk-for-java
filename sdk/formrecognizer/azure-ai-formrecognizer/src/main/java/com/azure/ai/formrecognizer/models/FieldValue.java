@@ -223,7 +223,7 @@ public final class FieldValue {
     }
 
     /**
-     * Gets the value of the field as a COUNTRY_REGION field.
+     * Gets the value of the field as a country or region field.
      *
      * @return the value of the field as COUNTRY_REGION.
      * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
