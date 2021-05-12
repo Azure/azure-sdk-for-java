@@ -66,7 +66,7 @@ public final class TestEnvironment {
     }
 
     private String readServiceVersionFromEnvironment() {
-        String serviceVersion = Configuration.getGlobalConfiguration().get("AZURE_LIVE_TEST_SERVICE_VERSIONS");
+        String serviceVersion = Configuration.getGlobalConfiguration().get("AZURE_LIVE_TEST_SERVICE_VERSION");
         if (serviceVersion == null || serviceVersion.trim().isEmpty()) {
             System.out.println("Tests will run with default service version");
             return null;
