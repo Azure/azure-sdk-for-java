@@ -13,7 +13,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 public final class FileSystemUndeleteOptions {
     private final String deletedFileSystemName;
     private final String deletedFileSystemVersion;
-    private String destinationFileSystemName;
 
     /**
      * Constructs a {@link FileSystemUndeleteOptions}.
