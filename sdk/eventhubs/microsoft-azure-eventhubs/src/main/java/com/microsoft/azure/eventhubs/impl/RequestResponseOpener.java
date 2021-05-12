@@ -25,7 +25,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     private final ScheduledExecutorService executor;
 
     private RequestResponseChannel previousChannel;
-    private boolean isOpened;
+    private final Object isOpenedSynchronizer = new Object();
+    private volatile boolean isOpened;
     private CompletableFuture<Void> closeWaiter;
 
     public RequestResponseOpener(final SessionProvider sessionProvider, final String clientId, final String sessionName, final String linkName,
@@ -41,8 +42,13 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
     @Override
     public synchronized void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
-        if (this.isOpened) {
-            // this.previousChannel cannot be null if this.isOpened is true
+        boolean capturedIsOpened;
+        synchronized (this.isOpenedSynchronizer) {
+            // Capture so that we don't have to synchronize a bunch of code
+            capturedIsOpened = this.isOpened;
+        }
+        if (capturedIsOpened) {
+            // this.previousChannel cannot be null if this.isOpened was ever true
             if ((this.previousChannel.getState() == IOObjectState.OPENED) || (this.previousChannel.getState() == IOObjectState.OPENING)) {
                 if (TRACE_LOGGER.isInfoEnabled()) {
                     TRACE_LOGGER.info("skipping run because inner channel currently open");
@@ -59,9 +65,6 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                 return;
             }
 
-            if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info("close pending, will do open when it finishes");
-            }
             CompletableFuture<Void> tempWaiter = new CompletableFuture<Void>();
             tempWaiter.thenRunAsync(() -> {
                 if (RequestResponseOpener.TRACE_LOGGER.isInfoEnabled()) {
@@ -69,8 +72,18 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                 }
                 RequestResponseOpener.this.run(operationCallback);
             }, this.executor);
-            this.closeWaiter = tempWaiter; // set closeWaiter only after the continuation is set up
-            return;
+
+            synchronized (this.isOpenedSynchronizer) {
+                if (this.isOpened) {
+                    // The close callback was not called while we were setting up
+                    if (TRACE_LOGGER.isInfoEnabled()) {
+                        TRACE_LOGGER.info("close pending, will do open when it finishes");
+                    }
+                    this.closeWaiter = tempWaiter; // set closeWaiter only after the continuation is set up
+                    return;
+                }
+                // else the close callback has been called and the open can just proceed normally!
+            }
         }
 
         final Session session = this.sessionProvider.getSession(
@@ -102,7 +115,9 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
                         operationCallback.onComplete(requestResponseChannel);
 
-                        isOpened = true;
+                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                            isOpened = true;
+                        }
 
                         if (TRACE_LOGGER.isInfoEnabled()) {
                             TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onOpen complete clientId[%s], session[%s], link[%s], endpoint[%s]",
@@ -126,9 +141,11 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
-                        isOpened = false;
-                        if (closeWaiter != null) {
-                            closeWaiter.complete(null);
+                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                            isOpened = false;
+                            if (closeWaiter != null) {
+                                closeWaiter.complete(null);
+                            }
                         }
 
                         if (TRACE_LOGGER.isInfoEnabled()) {
@@ -142,9 +159,11 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
-                        isOpened = false;
-                        if (closeWaiter != null) {
-                            closeWaiter.complete(null);
+                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                            isOpened = false;
+                            if (closeWaiter != null) {
+                                closeWaiter.complete(null);
+                            }
                         }
 
                         if (TRACE_LOGGER.isWarnEnabled()) {
