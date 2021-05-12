@@ -70,9 +70,7 @@ public final class DataLakeFileInputStream extends StorageInputStream {
         try {
             ByteBuffer currentBuffer = this.fileClient.readWithResponse(new FileRange(offset,
                 (long) readLength), null, this.accessCondition, false)
-                .flatMap(response -> {
-                    return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap);
-                })
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
                 .block();
 
             this.bufferSize = readLength;
@@ -82,7 +80,7 @@ public final class DataLakeFileInputStream extends StorageInputStream {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
             // cast required by CI checkstyle
-            throw (IOException)logger.logThrowableAsError(this.lastError);
+            throw logger.logThrowableAsError(this.lastError);
         }
     }
 
