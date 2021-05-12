@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for Conditionality. */
 public enum Conditionality {
-    /** Enum value Hypothetical. */
-    HYPOTHETICAL("Hypothetical"),
+    /** Enum value hypothetical. */
+    HYPOTHETICAL("hypothetical"),
 
-    /** Enum value Conditional. */
-    CONDITIONAL("Conditional");
+    /** Enum value conditional. */
+    CONDITIONAL("conditional");
 
     /** The actual serialized value for a Conditionality instance. */
     private final String value;

@@ -86,7 +86,7 @@ ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .credential(credential)
     .buildClient();
 
-client.listRepositories().forEach(repository -> System.out.println(repository));
+client.listRepositoryNames().forEach(repository -> System.out.println(repository));
 ```
 
 ### List repositories asynchronously
@@ -99,7 +99,7 @@ ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .credential(credential)
     .buildAsyncClient();
 
-client.listRepositories().subscribe(repository -> System.out.println(repository));
+client.listRepositoryNames().subscribe(repository -> System.out.println(repository));
 ```
 
 ## Troubleshooting
@@ -110,13 +110,13 @@ All container registry service operations will throw a
 `<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L59-L69 -->
 ```Java
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-ContainerRepositoryClient client = new ContainerRepositoryClientBuilder()
+ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .repository(repository)
     .credential(credential)
-    .buildClient();
+    .buildClient()
+    .getRepository(repository);
 try {
-    client.getProperties();
+    containerRepository.getProperties();
 } catch (HttpResponseException exception) {
     // Do something with the exception.
 }

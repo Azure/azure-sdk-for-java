@@ -29,7 +29,7 @@ spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmo
 spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName};")
 
 // create a cosmos container
-spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.items " +
+spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
       s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')")
 
 // COMMAND ----------
@@ -38,7 +38,7 @@ spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cos
 spark.createDataFrame(Seq(("cat-alive", "Schrodinger cat", 2, true), ("cat-dead", "Schrodinger cat", 2, false)))
   .toDF("id","name","age","isAlive")
    .write
-   .format("cosmos.items")
+   .format("cosmos.oltp")
    .options(cfg)
    .mode("APPEND")
    .save()
@@ -46,7 +46,7 @@ spark.createDataFrame(Seq(("cat-alive", "Schrodinger cat", 2, true), ("cat-dead"
 // COMMAND ----------
 
 // Show the schema of the table and data without auto schema inference
-val df = spark.read.format("cosmos.items").options(cfg).load()
+val df = spark.read.format("cosmos.oltp").options(cfg).load()
 df.printSchema()
 
 df.show()
@@ -54,7 +54,7 @@ df.show()
 // COMMAND ----------
 
 // Show the schema of the table and data with auto schema inference
-val df = spark.read.format("cosmos.items").options(cfgWithAutoSchemaInference).load()
+val df = spark.read.format("cosmos.oltp").options(cfgWithAutoSchemaInference).load()
 df.printSchema()
 
 df.show()
