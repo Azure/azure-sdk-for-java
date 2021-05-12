@@ -2,8 +2,9 @@
 
 ## 7.2.1 (2021-05-12)
 ### Fixed
-- Fix the issue where 'ServiceBusProcessorClient:maxConcurrentCalls' will result in more messages being cached in SDK  
-  and message lock expire.
+- Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 
+  messages that are not delivered to the client in time and sometime the client is not able to settle these messages as
+  the message lock might expire.
   
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.16.0`.
