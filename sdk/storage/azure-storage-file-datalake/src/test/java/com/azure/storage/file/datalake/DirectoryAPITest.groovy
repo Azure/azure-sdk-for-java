@@ -18,6 +18,7 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.util.function.Consumer
@@ -2879,6 +2880,7 @@ class DirectoryAPITest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
