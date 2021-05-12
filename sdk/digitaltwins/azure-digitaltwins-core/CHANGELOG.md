@@ -1,8 +1,14 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.4 (2021-05-13)
+- Upgraded `reactor-core` dependency from `3.3.12.RELEASE` to `3.4.3`
+- Upgraded `jackson-annotations` dependency from `2.12.1` to `2.12.2` 
+- Upgraded `azure-core` dependency from `1.13.0` to `1.16.0` 
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/CHANGELOG.md#1160-2021-05-07)
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.1.2` to `1.2.3` 
+  - [azure-core-serializer-json-jackson changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-serializer-json-jackson/CHANGELOG.md#123-2021-05-07)
 
-
+  
 ## 1.0.3 (2021-02-24)
 
 ### Dependency Updates
