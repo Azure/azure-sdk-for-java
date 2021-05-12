@@ -18,8 +18,6 @@ import java.security.Security;
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.azure.security.keyvault.jca.KeyVaultCertificateTools.startRefresh;
-
 /**
  * Leverage {@link EnvironmentPostProcessor} to add Key Store property source.
  */
@@ -39,7 +37,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-id");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-secret");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.managed-identity");
-        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.certificate-refresh-when-have-untrust-certificate");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.certificates-refresh-interval");
 
         MutablePropertySources propertySources = environment.getPropertySources();
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
@@ -58,11 +56,6 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             }
             propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
-
-        final Long refreshInterval = Optional.ofNullable(environment.getProperty("azure.keyvault.jca.certificates-refresh-interval"))
-            .map(Long::valueOf)
-            .orElse(0L);
-        startRefresh(refreshInterval);
 
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
         if (overrideTrustManagerFactory(environment)) {

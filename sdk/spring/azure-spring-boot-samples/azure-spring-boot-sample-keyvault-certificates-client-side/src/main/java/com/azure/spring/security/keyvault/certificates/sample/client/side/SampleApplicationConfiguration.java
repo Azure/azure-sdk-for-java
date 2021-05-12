@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.security.keyvault.certificates.sample.client.side;
 
-import com.azure.security.keyvault.jca.KeyVaultCertificateTools;
+import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -24,9 +24,15 @@ public class SampleApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplateWithTLS() throws Exception {
-        KeyStore trustStore = KeyVaultCertificateTools.getKeyStore();
+        KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"));
+        azureKeyVaultKeyStore.load(parameter);
         SSLContext sslContext = SSLContexts.custom()
-                                           .loadTrustMaterial(trustStore, null)
+                                           .loadTrustMaterial(azureKeyVaultKeyStore, null)
                                            .build();
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
                                                                                   (hostname, session) -> true);
@@ -40,7 +46,13 @@ public class SampleApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplateWithMTLS() throws Exception {
-        KeyStore azureKeyVaultKeyStore = KeyVaultCertificateTools.getKeyStore();
+        KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"));
+        azureKeyVaultKeyStore.load(parameter);
         SSLContext sslContext = SSLContexts.custom()
                                            .loadTrustMaterial(azureKeyVaultKeyStore, null)
                                            .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
