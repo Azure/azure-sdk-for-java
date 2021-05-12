@@ -38,7 +38,6 @@ class APISpec extends StorageSpec {
     def cleanup() {
         if (env.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
-                .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(env.primaryAccount.connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()),
@@ -49,35 +48,30 @@ class APISpec extends StorageSpec {
     }
 
     def queueServiceBuilderHelper() {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
+        QueueServiceClientBuilder builder = instrument(new QueueServiceClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
     }
 
     def queueBuilderHelper() {
         def queueName = namer.getRandomName(60)
-        QueueClientBuilder builder = new QueueClientBuilder()
+        QueueClientBuilder builder = instrument(new QueueClientBuilder())
         return builder
             .connectionString(env.primaryAccount.connectionString)
             .queueName(queueName)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
     }
 
     QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -87,11 +81,8 @@ class APISpec extends StorageSpec {
     }
 
     QueueClientBuilder getQueueClientBuilder(String endpoint) {
-        QueueClientBuilder builder = new QueueClientBuilder()
+        QueueClientBuilder builder = instrument(new QueueClientBuilder())
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .addPolicy(getRecordPolicy())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
         return builder
     }
 

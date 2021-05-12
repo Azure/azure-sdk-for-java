@@ -2459,4 +2459,16 @@
     <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
+
+  <!-- Some generated base clients in Purview Catalog do not send api-version -->
+  <Match>
+    <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+  
+  <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
+  <Match>
+    <Class name="~com\.azure\.data\.confidentialledger\.\w+BaseClient"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
 </FindBugsFilter>
