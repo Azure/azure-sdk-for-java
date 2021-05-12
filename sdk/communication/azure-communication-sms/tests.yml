@@ -14,7 +14,7 @@ stages:
                   -   name: azure-communication-sms
                       groupId: com.azure
                       safeName: azurecommunicationsms
-              ServiceDirectory: communication
+              ServiceDirectory: communication/azure-communication-sms
               PostSteps:
                   -   task: Maven@3
                       displayName: 'Generate aggregate code coverage report'
