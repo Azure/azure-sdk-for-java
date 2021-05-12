@@ -1,4 +1,28 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - master
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+      - feature/spring-multi-version
+  paths:
+    include:
+      - sdk/spring/
+
+pr:
+  branches:
+    include:
+      - master
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+      - feature/spring-multi-version
+  paths:
+    include:
+      - sdk/spring/
 
 stages:
     - template: spring-test-template.yml
