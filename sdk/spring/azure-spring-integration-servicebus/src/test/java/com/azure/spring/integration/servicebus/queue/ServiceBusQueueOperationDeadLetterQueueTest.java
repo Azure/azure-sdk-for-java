@@ -15,12 +15,10 @@ public class ServiceBusQueueOperationDeadLetterQueueTest extends ServiceBusQueue
 
     @Test
     public void testSendDeadLetterQueueWithoutManualCheckpointModel() {
-        subscribe(destination, m -> {
-            sendSubscribeOperation.deadLetter(destination, m, "reason", "desc");
-        }, User.class);
+        subscribe(destination, m -> sendSubscribeOperation.deadLetter(destination, m, "reason", "desc"), User.class);
 
         sendSubscribeOperation.sendAsync(destination, userMessage);
-        verifyDeadLetterCalledTimes(0);
+        verifyDeadLetterCalledTimes(1);
         verifyCompleteCalledTimes(1);
     }
 
@@ -28,9 +26,7 @@ public class ServiceBusQueueOperationDeadLetterQueueTest extends ServiceBusQueue
     public void testSendDeadLetterQueueWithManualCheckpointModel() {
         setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
 
-        subscribe(destination, m -> {
-            sendSubscribeOperation.deadLetter(destination, m, "reason", "desc");
-        }, User.class);
+        subscribe(destination, m -> sendSubscribeOperation.deadLetter(destination, m, "reason", "desc"), User.class);
 
         sendSubscribeOperation.sendAsync(destination, userMessage);
 

@@ -59,8 +59,9 @@ public class DefaultServiceBusMessageProcessor
             Map<String, Object> headers = new HashMap<>();
 
             Checkpointer checkpointer = new AzureCheckpointer(() -> success(context), () -> fail(context));
+            headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, context);
+
             if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
-                headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, context);
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 

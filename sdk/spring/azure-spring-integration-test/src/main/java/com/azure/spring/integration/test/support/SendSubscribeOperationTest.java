@@ -140,4 +140,15 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
     public void setSendSubscribeOperation(T sendSubscribeOperation) {
         this.sendSubscribeOperation = sendSubscribeOperation;
     }
+
+    protected void waitMillis(long millis) {
+        if (millis <= 0) {
+            millis = 25;
+        }
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

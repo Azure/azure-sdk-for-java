@@ -65,6 +65,7 @@ public class ServiceBusQueueOperationSendSubscribeTest
     }
 
     protected void verifyCompleteCalledTimes(int times) {
+        waitMillis(25);
         final int actualTimes = ((ServiceBusQueueTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
 
         if (actualTimes != times) {
@@ -73,6 +74,7 @@ public class ServiceBusQueueOperationSendSubscribeTest
     }
 
     protected void verifyAbandonCalledTimes(int times) {
+        waitMillis(25);
         final int actualTimes = ((ServiceBusQueueTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
 
         if (actualTimes != times) {
