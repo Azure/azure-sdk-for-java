@@ -16,8 +16,7 @@ import java.util.Arrays;
 
 public class LvaInvokeModuleSample {
 
-    private static final String CONNECTION_STRING = "connectionString" +
-        "\n";
+    private static final String CONNECTION_STRING = "connectionString";
     private static final String DEVICE_ID = "lva-sample-device";
     private static final String MODULE_ID = "mediaEdge";
     private static final String TOPOLOGY_NAME = "javaPipelineTopology";

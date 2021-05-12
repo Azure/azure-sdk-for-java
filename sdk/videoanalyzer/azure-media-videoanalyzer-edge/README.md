@@ -13,7 +13,7 @@ Use the client library for Video Analyzer on IoT Edge to:
 
 ### Install the package
 
-Install the Live Video Analytics client library for Java with Maven:
+Install the Live Video Analyzer client library for Java with Maven:
 
 ### Prerequisites
 

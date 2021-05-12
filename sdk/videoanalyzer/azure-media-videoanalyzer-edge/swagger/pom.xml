@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-media-video-analyzer-customizations</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-media-analytics<current} -->
+  <artifactId>azure-media-videoanalyzer-customizations</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-media-videoanalyzer-customizations<current} -->
 
   <name>Microsoft Azure SDK for Media Video Analyzer Customization</name>
   <description>This package contains Microsoft Azure SDK for Media Video Analyzer Customization.</description>
