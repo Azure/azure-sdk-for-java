@@ -93,6 +93,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
@@ -198,6 +199,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
