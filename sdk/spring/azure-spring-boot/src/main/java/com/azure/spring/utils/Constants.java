@@ -3,8 +3,6 @@
 
 package com.azure.spring.utils;
 
-import org.springframework.boot.actuate.health.Status;
-
 /**
  * Util class for Constants
  */
@@ -14,5 +12,4 @@ public class Constants {
 
     public static final long DEFAULT_REFRESH_INTERVAL_MS = 1800000L;
 
-    public static final Status NOT_CONFIGURED_STATUS = new Status("Not configured keyVaultPropertySource");
 }
