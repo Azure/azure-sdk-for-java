@@ -194,6 +194,7 @@ class FileServiceAsyncAPITests extends APISpec {
         new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "List shares with premium share"() {
         setup:
         def premiumShareName = generateShareName()

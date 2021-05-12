@@ -76,6 +76,7 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Create share max overloads"() {
         when:
         def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions()
@@ -120,6 +121,7 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "List shares with filter"() {
         given:
@@ -158,6 +160,7 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().setIncludeDeleted(true)   | 4      | false           | true            | true
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "List shares with args"() {
         given:
@@ -216,6 +219,7 @@ class FileServiceAPITests extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "List shares get access tier"() {
         setup:
         def shareName = generateShareName()

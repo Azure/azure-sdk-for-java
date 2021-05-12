@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -362,6 +363,7 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryDirectoryAsyncClient.create().block()
@@ -383,6 +385,7 @@ class DirectoryAsyncAPITests extends APISpec {
             .verifyErrorSatisfies({ it instanceof  ShareStorageException })
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryDirectoryAsyncClient.create().block()
