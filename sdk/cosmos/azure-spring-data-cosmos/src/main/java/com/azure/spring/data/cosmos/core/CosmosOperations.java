@@ -294,11 +294,17 @@ public interface CosmosOperations {
      *
      * @param query the document query
      * @param containerName the container name
-     * @param <T> type class of domainType
      * @return count result
      */
     <T> long count(CosmosQuery query, String containerName);
 
+    /**
+     * Count
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @return count result
+     */
     <T> long count(SqlQuerySpec querySpec, String containerName);
 
     /**

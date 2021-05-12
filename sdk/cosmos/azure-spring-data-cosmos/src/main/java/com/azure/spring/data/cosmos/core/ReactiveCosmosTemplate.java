@@ -601,13 +601,13 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Count
      *
-     * @param query the document query
+     * @param querySpec the document query spec
      * @param containerName the container name
      * @return Mono with count or error
      */
     @Override
-    public Mono<Long> count(SqlQuerySpec query, String containerName) {
-        return getCountValue(query, containerName);
+    public Mono<Long> count(SqlQuerySpec querySpec, String containerName) {
+        return getCountValue(querySpec, containerName);
     }
 
     @Override
