@@ -5,7 +5,7 @@ package com.azure.data.tables;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 
 /**
  * async code snippets for the Tables service
@@ -142,7 +142,7 @@ public class TableServiceAsyncClientCodeSnippets {
 
             //UpdateMode.REPLACE: so the entity will be replaced if it exists or the request fails if not found
             //ifUnchanged being false means the eTags must not match
-            return tableAsyncClient.updateEntity(tableEntity, UpdateMode.REPLACE, false);
+            return tableAsyncClient.updateEntity(tableEntity, TableEntityUpdateMode.REPLACE, false);
         }).subscribe(
             Void -> { },
             error -> System.err.println("There was an error updating the Entity. Error: " + error),

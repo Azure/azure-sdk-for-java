@@ -28,8 +28,8 @@ import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableServiceErrorException;
-import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -50,8 +50,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * table itself, as well as methods to create, upsert, update, delete, list, and get entities within the table. These
  * methods invoke REST API operations to make the requests and obtain the results that are returned.
  *
- * Instances of this client are obtained by calling the {@link TableClientBuilder#buildAsyncClient()} method on a {@link
- * TableClientBuilder} object.
+ * Instances of this client are obtained by calling the {@link TableClientBuilder#buildAsyncClient()} method on a
+ * {@link TableClientBuilder} object.
  */
 @ServiceClient(builder = TableClientBuilder.class, isAsync = true)
 public final class TableAsyncClient {
@@ -303,7 +303,7 @@ public final class TableAsyncClient {
      * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> upsertEntity(TableEntity entity, UpdateMode updateMode) {
+    public Mono<Void> upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         return upsertEntityWithResponse(entity, updateMode).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -327,11 +327,11 @@ public final class TableAsyncClient {
      * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode) {
+    public Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode) {
         return withContext(context -> upsertEntityWithResponse(entity, updateMode, null, context));
     }
 
-    Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
+    Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode, Duration timeout,
                                                   Context context) {
         context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
@@ -343,7 +343,7 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
-            if (updateMode == UpdateMode.REPLACE) {
+            if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                     entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
@@ -394,7 +394,7 @@ public final class TableAsyncClient {
      * @throws TableServiceErrorException If no entity with the same partition key and row key exists within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateEntity(TableEntity entity, UpdateMode updateMode) {
+    public Mono<Void> updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         return updateEntity(entity, updateMode, false);
     }
 
@@ -418,7 +418,7 @@ public final class TableAsyncClient {
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+    public Mono<Void> updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
         return updateEntityWithResponse(entity, updateMode, ifUnchanged).flatMap(response ->
             Mono.justOrEmpty(response.getValue()));
     }
@@ -443,13 +443,13 @@ public final class TableAsyncClient {
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode,
+    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                          boolean ifUnchanged) {
         return withContext(context -> updateEntityWithResponse(entity, updateMode, ifUnchanged, null, context));
     }
 
-    Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                  Duration timeout, Context context) {
+    Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                  boolean ifUnchanged, Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
 
@@ -461,7 +461,7 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
-            if (updateMode == UpdateMode.REPLACE) {
+            if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                     entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
@@ -937,8 +937,8 @@ public final class TableAsyncClient {
 
                     // Deserialize the first entity.
                     final TableEntity entity = ModelHelper.createEntity(matchingEntity);
-                    sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        EntityHelper.convertToSubclass(entity, resultType, logger)));
+                    sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), EntityHelper.convertToSubclass(entity, resultType, logger)));
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

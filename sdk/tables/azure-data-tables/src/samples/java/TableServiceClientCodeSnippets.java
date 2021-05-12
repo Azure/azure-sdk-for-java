@@ -10,7 +10,7 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableErrorCode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableStorageException;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 
 /**
  * sync code snippets for the Tables service
@@ -165,7 +165,7 @@ public class TableServiceClientCodeSnippets {
 
             //default is for UpdateMode is UpdateMode.REPLACE, which means it replaces if exists; inserts if not
             //always upsert because if no ifUnchanged boolean present the "*" in request.
-            tableClient.upsertEntity(entity, UpdateMode.REPLACE);
+            tableClient.upsertEntity(entity, TableEntityUpdateMode.REPLACE);
         } catch (TableStorageException e) {
             if (e.getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Cannot find entity. Upsert unsuccessful");
