@@ -15,5 +15,9 @@ stages:
                       - $(sub-config-communication-services-cloud-test-resources-common)
                       - $(sub-config-communication-services-cloud-test-resources-java)
               Clouds: Public
+          Artifacts:
+              -   name: azure-communication-identity
+                  groupId: com.azure
+                  safeName: azurecommunicationidentity
 
 
