@@ -1,31 +1,37 @@
 # Release History
 
+## 3.0.8 (2021-05-12)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
+
 ## 3.0.7 (2021-04-07)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to `1.15.0`, `azure-core-http-netty` to `1.9.1` and `azure-identity` to `1.2.5`.
 
 ## 3.0.6 (2021-03-10)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to `1.14.0`, `azure-core-http-netty` to `1.9.0` and `azure-identity` to `1.2.4`.
 
 ## 3.0.5 (2021-02-09)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to `1.13.0`, `azure-core-http-netty` to `1.8.0` and `azure-identity` to `1.2.3`.
 - 
 ## 3.0.4 (2021-01-14)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to `1.12.0`, `azure-core-http-netty` to `1.7.1` and `azure-identity` to `1.2.2`.
 
 ## 3.0.3 (2020-11-10)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core`, `azure-core-http-netty` and `azure-identity`.
 
 ## 3.0.2 (2020-10-06)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
 
 ## 3.0.1 (2020-09-10)
-### Dependency updates
+### Dependency Updates
 - Updated dependency version, `azure-core` to 1.8.1 and `azure-core-http-netty` to 1.6.1.
 
 ## 3.0.0 (2020-08-20)
