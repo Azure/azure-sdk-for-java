@@ -25,7 +25,7 @@ stages:
         SubscriptionConfigurations:
           - $(sub-config-communication-int-test-resources-common)
           - $(sub-config-communication-int-test-resources-java)
-    Clouds: Int
+    Clouds: Public,Int
     Artifacts:
       - name: azure-communication-chat
         groupId: com.azure
