@@ -53,5 +53,5 @@ steps:
 - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-2-3'))}}:
 #- ${{if SpringChanges}}:
   - pwsh: |
-      Write-Host "##vso[task.setvariable variable=ProjectList]$SpringProjectPathList"
+      Write-Host "##vso[task.setvariable variable=ProjectList]$($SpringProjectPathList)"
     displayName: Reset ProjectListvalue variable
