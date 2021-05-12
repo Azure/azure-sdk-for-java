@@ -634,8 +634,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
             new RecognizeBusinessCardsOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedBusinessCards -> {
                 for (int i = 0; i < recognizedBusinessCards.size(); i++) {
@@ -768,8 +768,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, businessCard.length(),
             new RecognizeBusinessCardsOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedBusinessCards -> {
                 for (int i = 0; i < recognizedBusinessCards.size(); i++) {
@@ -865,8 +865,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeInvoicesFromUrl(invoiceUrl,
             new RecognizeInvoicesOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedInvoices -> {
                 for (int i = 0; i < recognizedInvoices.size(); i++) {
@@ -946,8 +946,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             invoice.length(),
             new RecognizeInvoicesOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedInvoices -> {
                 for (int i = 0; i < recognizedInvoices.size(); i++) {
@@ -1008,7 +1008,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
+                            String country = countryFormField.getValue().asCountryRegion();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }
@@ -1047,8 +1047,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl,
             new RecognizeIdentityDocumentOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedIDDocumentResult -> {
                 for (int i = 0; i < recognizedIDDocumentResult.size(); i++) {
@@ -1077,7 +1077,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
+                            String country = countryFormField.getValue().asCountryRegion();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }
@@ -1145,7 +1145,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
+                            String country = countryFormField.getValue().asCountryRegion();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }
@@ -1192,8 +1192,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             licenseDocument.length(),
             new RecognizeIdentityDocumentOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedIDDocumentResult -> {
                 for (int i = 0; i < recognizedIDDocumentResult.size(); i++) {
@@ -1222,7 +1222,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField countryFormField = recognizedFields.get("Country");
                     if (countryFormField != null) {
                         if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
+                            String country = countryFormField.getValue().asCountryRegion();
                             System.out.printf("Country: %s, confidence: %.2f%n",
                                 country, countryFormField.getConfidence());
                         }

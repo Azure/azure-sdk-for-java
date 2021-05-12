@@ -597,8 +597,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         String businessCardUrl = "{business_card_url}";
         formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
             new RecognizeBusinessCardsOptions()
-                .setPollInterval(Duration.ofSeconds(5))
-                .setFieldElementsIncluded(true), Context.NONE).getFinalResult()
+                .setFieldElementsIncluded(true), Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5)).getFinalResult()
             .forEach(recognizedBusinessCard -> {
                 Map<String, FormField> recognizedFields = recognizedBusinessCard.getFields();
                 FormField contactNamesFormField = recognizedFields.get("ContactNames");
@@ -723,8 +723,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 businessCard.length(),
                 new RecognizeBusinessCardsOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
-                    .setFieldElementsIncluded(includeFieldElements)
-                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+                    .setFieldElementsIncluded(includeFieldElements),
+                Context.NONE).setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult()) {
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();
                 FormField contactNamesFormField = recognizedFields.get("ContactNames");
@@ -814,8 +814,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerClient.beginRecognizeInvoicesFromUrl(invoiceUrl,
             new RecognizeInvoicesOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+                .setFieldElementsIncluded(includeFieldElements),
+            Context.NONE).setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -889,9 +889,9 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             invoice.length(),
             new RecognizeInvoicesOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)),
+                .setFieldElementsIncluded(includeFieldElements),
             Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -947,7 +947,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
+                        String country = countryFormField.getValue().asCountryRegion();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
@@ -994,8 +994,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerClient.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl,
             new RecognizeIdentityDocumentOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+                .setFieldElementsIncluded(includeFieldElements),
+            Context.NONE).setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -1021,7 +1021,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
+                        String country = countryFormField.getValue().asCountryRegion();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
@@ -1084,7 +1084,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
+                        String country = countryFormField.getValue().asCountryRegion();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
@@ -1129,9 +1129,9 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             licenseDocument.length(),
             new RecognizeIdentityDocumentOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)),
+                .setFieldElementsIncluded(includeFieldElements),
             Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -1157,7 +1157,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
+                        String country = countryFormField.getValue().asCountryRegion();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }

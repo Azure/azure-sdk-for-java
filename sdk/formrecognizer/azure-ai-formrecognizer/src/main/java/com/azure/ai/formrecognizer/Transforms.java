@@ -402,13 +402,9 @@ final class Transforms {
                 value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                     FieldValueType.SELECTION_MARK_STATE);
                 break;
-            case GENDER:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueGender(),
-                    FieldValueType.GENDER);
-                break;
-            case COUNTRY:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountry(),
-                    FieldValueType.COUNTRY);
+            case COUNTRY_REGION:
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountryRegion(),
+                    FieldValueType.COUNTRY_REGION);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));

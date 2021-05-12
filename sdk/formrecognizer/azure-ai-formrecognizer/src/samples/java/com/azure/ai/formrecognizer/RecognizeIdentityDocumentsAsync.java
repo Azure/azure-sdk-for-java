@@ -79,7 +79,7 @@ public class RecognizeIdentityDocumentsAsync {
                 FormField countryFormField = recognizedFields.get("Country");
                 if (countryFormField != null) {
                     if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
+                        String country = countryFormField.getValue().asCountryRegion();
                         System.out.printf("Country: %s, confidence: %.2f%n",
                             country, countryFormField.getConfidence());
                     }
