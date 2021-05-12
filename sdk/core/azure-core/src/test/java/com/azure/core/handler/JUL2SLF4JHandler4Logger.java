@@ -24,27 +24,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class JUL2SLF4JHandler4Logger {
 
-    private static JUL2SLF4JHandler jUL2SLF4JHandler = null;
+    private static final JUL2SLF4JHandler JUL_2_SLF_4_J_HANDLER = new JUL2SLF4JHandler();
     private static Configuration configuration = null;
     private static Logger julLogger = null;
 
     @BeforeAll
-    static void beforeAll() {
+    public void beforeAll() {
         JUL2SLF4JHandler.removeHandlersForRootLogger();
         configuration = Configuration.getGlobalConfiguration();
-        jUL2SLF4JHandler = new JUL2SLF4JHandler();
         julLogger = Logger.getLogger(JUL2SLF4JHandler4Logger.class.getName());
         julLogger.setLevel(Level.ALL);
-        julLogger.addHandler(jUL2SLF4JHandler);
+        julLogger.addHandler(JUL_2_SLF_4_J_HANDLER);
     }
 
     @AfterAll
-    static void afterAll() {
-        julLogger.removeHandler(jUL2SLF4JHandler);
+    public void afterAll() {
+        julLogger.removeHandler(JUL_2_SLF_4_J_HANDLER);
     }
 
     @Test
-    void testDebugWithoutParameters() {
+    public void testDebugWithoutParameters() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.VERBOSE.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.FINEST, "Debug message without parameters and throwable");
         infoLogRecord.setLoggerName(julLogger.getName());
@@ -54,7 +53,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testDebugWithParameters1() {
+    public void testDebugWithParameters1() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.VERBOSE.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.FINEST, "Debug message with parameters {0}/{1}/{2}/{3}, and without throwable");
         infoLogRecord.setParameters(new Object[]{"Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4"});
@@ -65,7 +64,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testDebugWithParameters2() {
+    public void testDebugWithParameters2() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.VERBOSE.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.FINEST, "Debug message with parameters {0}/{1}/{2}/{3}, and throwable");
         infoLogRecord.setParameters(new Object[]{"Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4"});
@@ -77,7 +76,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testInfoWithoutParameters() {
+    public void testInfoWithoutParameters() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.INFO, "Info message without parameters and throwable");
         infoLogRecord.setLoggerName(julLogger.getName());
@@ -87,7 +86,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testInfoWithParameters() {
+    public void testInfoWithParameters() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.INFO, "Info message with parameters {0}/{1}/{2}/{3}, but without throwable");
         infoLogRecord.setLoggerName(julLogger.getName());
@@ -98,7 +97,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testWarningWithoutParameters() {
+    public void testWarningWithoutParameters() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.WARNING, "Warning message without parameters and throwable");
         infoLogRecord.setLoggerName(julLogger.getName());
@@ -108,7 +107,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testWarningWithParameters1() {
+    public void testWarningWithParameters1() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.WARNING, "Warning message with parameters {0}/{1}/{2}/{3}, and without throwable");
         infoLogRecord.setParameters(new Object[]{"Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4"});
@@ -119,7 +118,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testWarningWithParameters2() {
+    public void testWarningWithParameters2() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.WARNING, "Warning message with parameters {0}/{1}/{2}/{3}, and throwable");
         infoLogRecord.setParameters(new Object[]{"Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4", new Throwable("Test throwable message")});
@@ -132,7 +131,7 @@ public class JUL2SLF4JHandler4Logger {
 
 
     @Test
-    void testErrorWithoutParameters() {
+    public void testErrorWithoutParameters() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.ERROR.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.SEVERE, "Error message without parameters and throwable");
         infoLogRecord.setLoggerName(julLogger.getName());
@@ -142,7 +141,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testErrorWithParameters1() {
+    public void testErrorWithParameters1() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.ERROR.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.SEVERE, "Error message with parameters {0}/{1}/{2}/{3}, and without throwable");
         infoLogRecord.setParameters(new Object[]{"Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4"});
@@ -153,7 +152,7 @@ public class JUL2SLF4JHandler4Logger {
     }
 
     @Test
-    void testErrorWithParameters2() {
+    public void testErrorWithParameters2() {
         configuration.put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.ERROR.getLogLevel()));
         LogRecord infoLogRecord = new LogRecord(Level.SEVERE, "Error message with parameters {0}/{1}/{2}/{3}, and throwable");
         infoLogRecord.setParameters(new Object[]{"Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4"});
