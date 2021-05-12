@@ -30,7 +30,6 @@ public final class TableServiceError {
      */
     public TableServiceError(String errorCode, String languageCode, String errorMessage) {
         this.errorCode = errorCode;
-        this.languageCode = languageCode;
         this.errorMessage = errorMessage;
     }
 

@@ -7,7 +7,7 @@ import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableStorageException;
+import com.azure.data.tables.models.TableServiceException;
 
 import java.util.Map;
 
@@ -67,7 +67,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating a table.
-     * @throws TableStorageException if the table exists.
+     * @throws TableServiceException if the table exists.
      */
     public void createTable() {
         tableServiceClient.createTable(tableName);
@@ -118,7 +118,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating an entity.
-     * @throws TableStorageException if the entity exists.
+     * @throws TableServiceException if the entity exists.
      */
     public void createEntity() {
         TableEntity entity = new TableEntity(partitionKey, rowKey)
@@ -160,8 +160,8 @@ public class ReadmeSamples {
         // Now attempt to create the same table unconditionally.
         try {
             tableServiceClient.createTable(tableName);
-        } catch (TableStorageException e) {
-            System.out.println(e.getStatusCode()); // 409
+        } catch (TableServiceException e) {
+            System.out.println(e.getResponse().getStatusCode()); // 409
         }
     }
 }

@@ -9,7 +9,7 @@ import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableErrorCode;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableStorageException;
+import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.UpdateMode;
 
 /**
@@ -27,10 +27,10 @@ public class TableServiceClientCodeSnippets {
             .buildClient();
         try {
             tableServiceClient.createTable("OfficeSupplies");
-        } catch (TableStorageException e) {
-            if (e.getErrorCode() == TableErrorCode.TABLE_ALREADY_EXISTS) {
+        } catch (TableServiceException e) {
+            if (e.getValue().getErrorCode() == TableErrorCode.TABLE_ALREADY_EXISTS) {
                 System.err.println("Create Table Unsuccessful. Table already exists.");
-            } else if (e.getErrorCode() == TableErrorCode.INVALID_TABLE_NAME) {
+            } else if (e.getValue().getErrorCode() == TableErrorCode.INVALID_TABLE_NAME) {
                 System.err.println("Create Table Unsuccessful. Table name invalid");
             } else {
                 System.err.println("Create Table Unsuccessful. " + e);
@@ -48,8 +48,8 @@ public class TableServiceClientCodeSnippets {
 
         try {
             tableServiceClient.deleteTable("OfficeSupplies");
-        } catch (TableStorageException e) {
-            if (e.getErrorCode() == TableErrorCode.TABLE_NOT_FOUND) {
+        } catch (TableServiceException e) {
+            if (e.getValue().getErrorCode() == TableErrorCode.TABLE_NOT_FOUND) {
                 System.err.println("Delete Table Unsuccessful. Table not found.");
             } else {
                 System.err.println("Delete Table Unsuccessful. Error: " + e);
@@ -69,7 +69,7 @@ public class TableServiceClientCodeSnippets {
 
         try {
             PagedIterable<TableItem> tablePagedIterable = tableServiceClient.listTables(options);
-        } catch (TableStorageException e) {
+        } catch (TableServiceException e) {
             System.err.println("Table Query Unsuccessful. Error: " + e);
         }
     }
@@ -87,10 +87,10 @@ public class TableServiceClientCodeSnippets {
 
         try {
             tableClient.createEntity(entity);
-        } catch (TableStorageException e) {
-            if (e.getErrorCode() == TableErrorCode.ENTITY_ALREADY_EXISTS) {
+        } catch (TableServiceException e) {
+            if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_ALREADY_EXISTS) {
                 System.err.println("Create Entity Unsuccessful. Entity already exists.");
-            } else if (e.getErrorCode() == TableErrorCode.INVALID_PK_OR_RK_NAME) {
+            } else if (e.getValue().getErrorCode() == TableErrorCode.INVALID_PK_OR_RK_NAME) {
                 System.err.println("Create Table Unsuccessful. Row key or Partition key is invalid.");
             } else {
                 System.err.println("Create Entity Unsuccessful. " + e);
@@ -114,8 +114,8 @@ public class TableServiceClientCodeSnippets {
 
             //supplying the eTag means the eTags must match to delete
             tableClient.deleteEntity(partitionKey, rowKey, entity.getETag());
-        } catch (TableStorageException e) {
-            if (e.getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
+        } catch (TableServiceException e) {
+            if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Delete Entity Unsuccessful. Entity not found.");
             } else {
                 System.err.println("Delete Entity Unsuccessful. Error: " + e);
@@ -140,8 +140,8 @@ public class TableServiceClientCodeSnippets {
             //default is for UpdateMode is UpdateMode.MERGE, which means it merges if exists; fails if not
             //ifUnchanged being false means the eTags must not match
             tableClient.updateEntity(entity);
-        } catch (TableStorageException e) {
-            if (e.getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
+        } catch (TableServiceException e) {
+            if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Cannot find entity. Update unsuccessful");
             } else {
                 System.err.println("Update Entity Unsuccessful. Error: " + e);
@@ -166,8 +166,8 @@ public class TableServiceClientCodeSnippets {
             //default is for UpdateMode is UpdateMode.REPLACE, which means it replaces if exists; inserts if not
             //always upsert because if no ifUnchanged boolean present the "*" in request.
             tableClient.upsertEntity(entity, UpdateMode.REPLACE);
-        } catch (TableStorageException e) {
-            if (e.getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
+        } catch (TableServiceException e) {
+            if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Cannot find entity. Upsert unsuccessful");
             } else {
                 System.err.println("Upsert Entity Unsuccessful. Error: " + e);
@@ -189,7 +189,7 @@ public class TableServiceClientCodeSnippets {
             .setSelect("Seller, Price");
         try {
             PagedIterable<TableEntity> tableEntities = tableClient.listEntities(options);
-        } catch (TableStorageException e) {
+        } catch (TableServiceException e) {
             System.err.println("Query Table Entities Unsuccessful. Error: " + e);
         }
     }
@@ -207,7 +207,7 @@ public class TableServiceClientCodeSnippets {
         String rowKey = "crayolaMarkers";
         try {
             TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
-        } catch (TableStorageException e) {
+        } catch (TableServiceException e) {
             System.err.println("Get Entity Unsuccessful. Entity may not exist: " + e);
         }
     }

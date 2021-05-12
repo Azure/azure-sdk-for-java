@@ -29,7 +29,7 @@ import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -135,7 +135,7 @@ public class TableServiceAsyncClient {
      * @param tableName The name of the table to create.
      * @return An empty reactive result.
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTable(String tableName) {
@@ -148,7 +148,7 @@ public class TableServiceAsyncClient {
      * @param tableName The name of the table to create.
      * @return A reactive result containing the HTTP response.
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createTableWithResponse(String tableName) {
@@ -162,7 +162,7 @@ public class TableServiceAsyncClient {
         try {
             return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -194,11 +194,11 @@ public class TableServiceAsyncClient {
     }
 
     Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceErrorException
-                && ((TableServiceErrorException) e).getResponse() != null
-                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409,
+        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceException
+                && ((TableServiceException) e).getResponse() != null
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409,
             e -> {
-                HttpResponse response = ((TableServiceErrorException) e).getResponse();
+                HttpResponse response = ((TableServiceException) e).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
             });
@@ -210,7 +210,7 @@ public class TableServiceAsyncClient {
      * @param tableName The name of the table to delete.
      * @return An empty reactive result.
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceException If no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable(String tableName) {
@@ -223,7 +223,7 @@ public class TableServiceAsyncClient {
      * @param tableName The name of the table to delete.
      * @return A reactive result containing the HTTP response.
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceException If no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse(String tableName) {
@@ -235,7 +235,7 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -262,7 +262,7 @@ public class TableServiceAsyncClient {
      *
      * @return A paged reactive result containing matching tables within the account.
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableItem> listTables(ListTablesOptions options) {
@@ -298,7 +298,7 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(response -> {
                     TableQueryResponse tableQueryResponse = response.getValue();
 
