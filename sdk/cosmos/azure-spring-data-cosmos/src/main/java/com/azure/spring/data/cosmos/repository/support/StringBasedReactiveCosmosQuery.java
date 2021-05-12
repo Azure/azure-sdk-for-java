@@ -61,7 +61,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query, sqlParameters);
         if (isCountQuery()) {
-            final String container = ((SimpleReactiveCosmosEntityMetadata) getQueryMethod().getEntityInformation()).getContainerName();
+            final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             final Mono<Long> mono = this.operations.count(querySpec, container);
             return mono;
         } else {
@@ -82,7 +82,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
     }
 
     protected boolean isCountQuery() {
-        Class returnedType = getQueryMethod().getReturnedObjectType();
+        Class<?> returnedType = getQueryMethod().getReturnedObjectType();
         if (returnedType == Long.class || returnedType == Integer.class) {
             return COUNT_QUERY_PATTERN.matcher(query.toLowerCase()).matches();
         } else {
