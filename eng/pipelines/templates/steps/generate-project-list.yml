@@ -26,7 +26,7 @@ steps:
   - ${{if eq(artifact.groupId, 'com.azure.spring')}}:
     - pwsh: |
         Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]$(SpringProjectPathList),./sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}"
-      displayName: Append ./sdk/${{parameters.ServiceDirectory}}/${{artifact.name}} to project path list - ${{parameters}}
+      displayName: Append ./sdk/${{parameters.ServiceDirectory}}/${{artifact.name}} to project path list
 
 # From time to time we might need to also build another module which
 # we don't actually want to ship, so we list that here. We can't rely
@@ -47,5 +47,4 @@ steps:
 - ${{if eq(artifact.groupId, 'com.azure.spring')}}:
   - pwsh: |
       Write-Host "##vso[task.setvariable variable=ProjectList]$SpringProjectPathList"
-      displayName: Reset ProjectListvalue to: ${{ProjectList}}
-      displayName: Reset ProjectListvalue to: ${{SpringProjectPathList}}
+      displayName: Reset ProjectListvalue variable
