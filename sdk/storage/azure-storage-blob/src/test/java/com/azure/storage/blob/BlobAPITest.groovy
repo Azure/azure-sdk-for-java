@@ -42,6 +42,8 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
@@ -137,7 +139,7 @@ class BlobAPITest extends APISpec {
 
     /* TODO (gapra): Add more tests to test large data sizes. */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload input stream large data"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.MB)
@@ -170,11 +172,9 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    @LiveOnly
     def "Upload numBlocks"() {
         setup:
-        if (numBlocks > 0 && !liveMode()) {
-            return // skip multipart upload for playback/record as it uses randomly generated block ids
-        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
@@ -207,7 +207,7 @@ class BlobAPITest extends APISpec {
             .getValue().getETag() != null
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     // Reading from recordings will not allow for the timing of the test to work correctly.
     def "Upload timeout"() {
         setup:
@@ -786,7 +786,7 @@ class BlobAPITest extends APISpec {
         testFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file"() {
         setup:
@@ -823,7 +823,7 @@ class BlobAPITest extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file sync buffer copy"() {
         setup:
@@ -870,7 +870,7 @@ class BlobAPITest extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file async buffer copy"() {
         setup:
@@ -915,7 +915,7 @@ class BlobAPITest extends APISpec {
         50 * Constants.MB    | _ // large file requiring multiple requests
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range"() {
         setup:
@@ -953,7 +953,7 @@ class BlobAPITest extends APISpec {
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range fail"() {
         setup:
@@ -976,7 +976,7 @@ class BlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file count null"() {
         setup:
         def file = getRandomFile(defaultDataSize)
@@ -997,7 +997,7 @@ class BlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC"() {
         setup:
@@ -1034,7 +1034,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC fail"() {
         setup:
@@ -1072,7 +1072,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(Constants.MB)
@@ -1136,7 +1136,7 @@ class BlobAPITest extends APISpec {
         outFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
@@ -1326,7 +1326,7 @@ class BlobAPITest extends APISpec {
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
 
-    @Requires({ playbackMode() })
+    @PlaybackOnly
     def "Get properties ORS"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
@@ -2951,35 +2951,6 @@ class BlobAPITest extends APISpec {
         tier1           | tier2
         AccessTier.HOT  | AccessTier.COOL
         AccessTier.COOL | AccessTier.HOT
-    }
-
-    @ResourceLock("ServiceProperties")
-    def "Undelete"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        when:
-        def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-        bc.getProperties()
-
-        then:
-        notThrown(BlobStorageException)
-        undeleteHeaders.getValue("x-ms-request-id") != null
-        undeleteHeaders.getValue("x-ms-version") != null
-        undeleteHeaders.getValue("Date") != null
-
-        disableSoftDelete() == null
-    }
-
-    @ResourceLock("ServiceProperties")
-    def "Undelete min"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        expect:
-        bc.undeleteWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Undelete error"() {
