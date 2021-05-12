@@ -19,7 +19,7 @@ import java.util.Objects;
  * A {@code TableEntity} can be used directly when interacting with the Tables service, with methods on the
  * {@link com.azure.data.tables.TableClient} and {@link com.azure.data.tables.TableAsyncClient} classes that accept and
  * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
- * {@link #addProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
+ * {@link #setProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
  * the {@link #getProperty(String)} or {@link #getProperties()} methods to access the entity's properties.
  *
  * As an alternative, developers can also create a subclass of {@code TableEntity} and add property getters and setters
@@ -33,6 +33,8 @@ import java.util.Objects;
 public class TableEntity {
     private final ClientLogger logger = new ClientLogger(TableEntity.class);
     private final Map<String, Object> properties;
+    private final String partitionKey;
+    private final String rowKey;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
@@ -57,19 +59,25 @@ public class TableEntity {
         }
 
         this.properties = new HashMap<>();
+
         properties.put(TablesConstants.PARTITION_KEY, partitionKey);
         properties.put(TablesConstants.ROW_KEY, rowKey);
+
+        this.partitionKey = partitionKey;
+        this.rowKey = rowKey;
     }
 
     private TableEntity() {
         this.properties = new HashMap<>();
+        this.partitionKey = null;
+        this.rowKey = null;
     }
 
     /**
      * Gets a single property from the entity's properties map.
      *
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
-     * {@link #addProperties(Map)} will be returned from this method. Calling this method on a subclass of
+     * {@link #setProperties(Map)} will be returned from this method. Calling this method on a subclass of
      * {@code TableEntity} will not retrieve a property which is being supplied via a getter method on the subclass.
      *
      * @param key Key for the property.
@@ -84,7 +92,7 @@ public class TableEntity {
      * Gets the map of the entity's properties.
      *
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
-     * {@link #addProperties(Map)} will be returned from this method. Calling this method on a subclass of
+     * {@link #setProperties(Map)} will be returned from this method. Calling this method on a subclass of
      * {@code TableEntity} will not retrieve properties which are being supplied via a getter methods on the subclass.
      *
      * @return A map of all properties representing this entity, including system properties.
@@ -105,22 +113,35 @@ public class TableEntity {
     public final TableEntity addProperty(String key, Object value) {
         validateProperty(key, value);
         properties.put(key, value);
+
         return this;
     }
 
     /**
-     * Adds the contents of the provided map to the entity's properties map.
+     * Sets the contents of the provided map to the entity's properties map.
      *
-     * @param properties The map of properties to add.
+     * @param properties The map of properties to set.
      *
      * @return The updated {@link TableEntity}.
      * @throws NullPointerException if {@code properties} is null.
      */
-    public final TableEntity addProperties(Map<String, Object> properties) {
+    public final TableEntity setProperties(Map<String, Object> properties) {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             validateProperty(entry.getKey(), entry.getValue());
         }
+
+        this.properties.clear();
+
+        if (this.partitionKey != null) {
+            this.properties.put(TablesConstants.PARTITION_KEY, this.partitionKey);
+        }
+
+        if (this.rowKey != null) {
+            this.properties.put(TablesConstants.ROW_KEY, this.rowKey);
+        }
+
         this.properties.putAll(properties);
+
         return this;
     }
 
@@ -141,6 +162,7 @@ public class TableEntity {
         if ((TablesConstants.ODATA_ETAG_KEY.equals(key) || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
             || TablesConstants.ODATA_ID_KEY.equals(key) || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null
             && !(value instanceof String)) {
+
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "'%s' must be a String.", key)));
         }

@@ -442,7 +442,7 @@ public class TablesAsyncClientTest extends TestBase {
         props.put("EnumField", color);
 
         TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
-        tableEntity.addProperties(props);
+        tableEntity.setProperties(props);
 
         int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
