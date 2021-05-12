@@ -1,7 +1,13 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.3.0 (2021-05-12)
+### New Features
+- Added new storage system event `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
+- Added new policy insights system event `PolicyInsightsPolicyStateCreatedEventData`, `PolicyInsightsPolicyStateChangedEventData`, and `PolicyInsightsPolicyStateDeletedEventData`.
 
+### Dependency Updates
+- Update `azure-core` dependency to `1.16.0`.
+- Update `azure-core-http-netty` dependency to `1.9.2`.
 
 ## 4.2.0 (2021-04-07)
 
