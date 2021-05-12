@@ -26,22 +26,6 @@ import spock.lang.Unroll
 import java.nio.charset.StandardCharsets
 
 class BatchAPITest extends APISpec {
-    static def setupCustomPolicyBatch(BlobServiceAsyncClient blobServiceAsyncClient, HttpPipelinePolicy customPolicy) {
-        def clientPipeline = blobServiceAsyncClient.getHttpPipeline()
-
-        def policies = new HttpPipelinePolicy[clientPipeline.getPolicyCount() + 1]
-        for (def i = 0; i < clientPipeline.getPolicyCount(); i++) {
-            policies[i] = clientPipeline.getPolicy(i)
-        }
-
-        policies[clientPipeline.getPolicyCount()] = customPolicy
-
-        return new BlobBatch(blobServiceAsyncClient.getAccountUrl(), new HttpPipelineBuilder()
-            .policies(policies)
-            .httpClient(clientPipeline.getHttpClient())
-            .build())
-    }
-
     /*
      * Helper method for tests where some operations fail, but not all fail. This is needed as the underlying request
      * generation is non-deterministic in the ordering of request. This is fine when running against the live service
@@ -225,7 +209,7 @@ class BatchAPITest extends APISpec {
         thrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
@@ -258,7 +242,7 @@ class BatchAPITest extends APISpec {
         notThrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
@@ -380,7 +364,7 @@ class BatchAPITest extends APISpec {
         thrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202
@@ -413,7 +397,7 @@ class BatchAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (testMode == TestMode.PLAYBACK) {
+        if (env.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202
@@ -719,7 +703,7 @@ class BatchAPITest extends APISpec {
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
@@ -761,7 +745,7 @@ class BatchAPITest extends APISpec {
         def permissions = new AccountSasPermission() // No delete permission
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
@@ -955,12 +939,9 @@ class BatchAPITest extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-        def sasValues = new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        def sasValues = new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
             .setCacheControl("cache")
             .setContentDisposition("disposition")
             .setContentEncoding("encoding")
@@ -1001,12 +982,9 @@ class BatchAPITest extends APISpec {
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
-        def sasValues = new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        def sasValues = new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
             .setCacheControl("cache")
             .setContentDisposition("disposition")
             .setContentEncoding("encoding")

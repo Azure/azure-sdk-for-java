@@ -1,9 +1,30 @@
 # Release History
 
-## 7.2.0-beta.2 (Unreleased)
+## 7.2.1 (2021-05-12)
+### Fixed
+- Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 
+  messages that are not delivered to the client in time and sometime the client is not able to settle these messages as
+  the message lock might expire.
+  
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.5`.
+
+## 7.3.0-beta.1 (2021-04-14)
+### New Features
+- Adding support for AMQP Data types SEQUENCE and VALUE. It support sending and receiving of only one AMQP Sequence at 
+  present. Issue [17614](https://github.com/Azure/azure-sdk-for-java/issues/17614).
+- Adding support for `maxAutoLockRenewDuration()` on `ServiceBusProcessorClientBuilder`.
+
+## 7.2.0 (2021-04-12)
 ### Bug Fixes
 - Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
-error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
+  error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
+- Upgrade to `azure-core-amqp:2.0.4` improves recovery of connection to Service Bus.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.4`.
 
 ## 7.2.0-beta.1 (2021-03-18)
 ### New Features

@@ -19,7 +19,7 @@ public interface PolicySetDefinitionsClient {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -33,7 +33,7 @@ public interface PolicySetDefinitionsClient {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -47,7 +47,7 @@ public interface PolicySetDefinitionsClient {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -60,7 +60,7 @@ public interface PolicySetDefinitionsClient {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -218,7 +218,42 @@ public interface PolicySetDefinitionsClient {
     Response<PolicySetDefinitionInner> getBuiltInWithResponse(String policySetDefinitionName, Context context);
 
     /**
-     * This operation retrieves a list of all the policy set definitions in the given subscription.
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the
+     *     given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy set definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicySetDefinitionInner> listAsync(String filter, Integer top);
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -228,7 +263,15 @@ public interface PolicySetDefinitionsClient {
     PagedFlux<PolicySetDefinitionInner> listAsync();
 
     /**
-     * This operation retrieves a list of all the policy set definitions in the given subscription.
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,8 +281,24 @@ public interface PolicySetDefinitionsClient {
     PagedIterable<PolicySetDefinitionInner> list();
 
     /**
-     * This operation retrieves a list of all the policy set definitions in the given subscription.
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the
+     *     given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -247,10 +306,33 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicySetDefinitionInner> list(Context context);
+    PagedIterable<PolicySetDefinitionInner> list(String filter, Integer top, Context context);
 
     /**
-     * This operation retrieves a list of all the built-in policy set definitions.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
+     *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the
+     *     given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy set definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, Integer top);
+
+    /**
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -260,7 +342,9 @@ public interface PolicySetDefinitionsClient {
     PagedFlux<PolicySetDefinitionInner> listBuiltInAsync();
 
     /**
-     * This operation retrieves a list of all the built-in policy set definitions.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -270,8 +354,18 @@ public interface PolicySetDefinitionsClient {
     PagedIterable<PolicySetDefinitionInner> listBuiltIn();
 
     /**
-     * This operation retrieves a list of all the built-in policy set definitions.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the
+     *     given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -279,14 +373,14 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicySetDefinitionInner> listBuiltIn(Context context);
+    PagedIterable<PolicySetDefinitionInner> listBuiltIn(String filter, Integer top, Context context);
 
     /**
      * This operation creates or updates a policy set definition in the given management group with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,7 +395,7 @@ public interface PolicySetDefinitionsClient {
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,7 +410,7 @@ public interface PolicySetDefinitionsClient {
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -331,7 +425,7 @@ public interface PolicySetDefinitionsClient {
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy set definition.
+     * @param parameters The policy set definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -452,7 +546,44 @@ public interface PolicySetDefinitionsClient {
         String policySetDefinitionName, String managementGroupId, Context context);
 
     /**
-     * This operation retrieves a list of all the a policy set definition in the given management group.
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the
+     *     given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy set definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(
+        String managementGroupId, String filter, Integer top);
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +595,15 @@ public interface PolicySetDefinitionsClient {
     PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId);
 
     /**
-     * This operation retrieves a list of all the a policy set definition in the given management group.
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,9 +615,25 @@ public interface PolicySetDefinitionsClient {
     PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId);
 
     /**
-     * This operation retrieves a list of all the a policy set definition in the given management group.
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the
+     *     given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set
+     *     definitions whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -486,5 +641,6 @@ public interface PolicySetDefinitionsClient {
      * @return list of policy set definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId, Context context);
+    PagedIterable<PolicySetDefinitionInner> listByManagementGroup(
+        String managementGroupId, String filter, Integer top, Context context);
 }

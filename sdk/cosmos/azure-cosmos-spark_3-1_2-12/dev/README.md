@@ -58,6 +58,8 @@ cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/dependency-reduced-
 NOTE: to make sure the maven dependency resolver works correctly you need to take the `dependency-reduced-pom.xml` as the pom file instead of the original pom file.
 Use the partner release pipeline to release.
 
+Tag the release on github.
+
 ### OSS compliance
 
 [Component Governance](https://dev.azure.com/azure-sdk/internal/_componentGovernance/106501?_a=components&typeId=6129920&alerts-view-option=active)

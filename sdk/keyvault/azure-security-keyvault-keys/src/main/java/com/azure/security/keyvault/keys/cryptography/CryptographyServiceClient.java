@@ -125,15 +125,15 @@ class CryptographyServiceClient {
         return mapper.readValue(jsonString, JsonWebKey.class);
     }
 
-    Mono<EncryptResult> encrypt(EncryptOptions encryptOptions, Context context) {
-        Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
+    Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
+        Objects.requireNonNull(encryptParameters, "'encryptParameters' cannot be null.");
 
-        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
+        EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
-            .setValue(encryptOptions.getPlainText())
-            .setIv(encryptOptions.getIv())
-            .setAdditionalAuthenticatedData(encryptOptions.getAdditionalAuthenticatedData());
+            .setValue(encryptParameters.getPlainText())
+            .setIv(encryptParameters.getIv())
+            .setAdditionalAuthenticatedData(encryptParameters.getAdditionalAuthenticatedData());
         context = context == null ? Context.NONE : context;
 
         return service.encrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
@@ -150,16 +150,16 @@ class CryptographyServiceClient {
             });
     }
 
-    Mono<DecryptResult> decrypt(DecryptOptions decryptOptions, Context context) {
-        Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
+    Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {
+        Objects.requireNonNull(decryptParameters, "'decryptParameters' cannot be null.");
 
-        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
+        EncryptionAlgorithm algorithm = decryptParameters.getAlgorithm();
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
-            .setValue(decryptOptions.getCipherText())
-            .setIv(decryptOptions.getIv())
-            .setAdditionalAuthenticatedData(decryptOptions.getAdditionalAuthenticatedData())
-            .setAuthenticationTag(decryptOptions.getAuthenticationTag());
+            .setValue(decryptParameters.getCipherText())
+            .setIv(decryptParameters.getIv())
+            .setAdditionalAuthenticatedData(decryptParameters.getAdditionalAuthenticatedData())
+            .setAuthenticationTag(decryptParameters.getAuthenticationTag());
         context = context == null ? Context.NONE : context;
 
         return service.decrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,

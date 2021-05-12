@@ -2,13 +2,13 @@
 
 ## Checking out the code
 
-The SDK is open source and is available here [sdk](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/).
+The SDK is open source and is available here [sdk](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/).
 
 Clone the Repo
 
 ```bash
-git clone https://github.com/Azure/azure-cosmosdb-java.git
-cd azure-cosmosdb-java
+git clone https://github.com/Azure/azure-sdk-for-java.git
+cd azure-sdk-for-java/sdk/cosmos
 ```
 
 ## How to Build from Command Line
@@ -16,7 +16,7 @@ cd azure-cosmosdb-java
 - Run the following maven command to build:
 
 ```bash
-maven clean package -DskipTests
+mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,com.azure:azure-cosmos clean install
 ```
 
 ## Running Tests from Command Line

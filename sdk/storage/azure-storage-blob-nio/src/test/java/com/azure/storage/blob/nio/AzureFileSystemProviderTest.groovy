@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -60,7 +61,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CreateFileSystem"() {
         setup:
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         def uri = getFileSystemUri()
 
@@ -91,7 +92,7 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem duplicate"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = primaryCredential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
         provider.newFileSystem(getFileSystemUri(), config)
 
         when:
@@ -104,10 +105,10 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem initial check fail"() {
         when:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        def badKey = getAccountKey(PRIMARY_STORAGE).getBytes()
+        def badKey = env.primaryAccount.key.getBytes()
         badKey[0]++
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] =
-            new StorageSharedKeyCredential(primaryCredential.getAccountName(), new String(badKey))
+            new StorageSharedKeyCredential(env.primaryAccount.name, new String(badKey))
         provider.newFileSystem(getFileSystemUri(), config)
 
         then:
@@ -1041,7 +1042,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "OutputStream file system config"() {
         setup:
@@ -1379,7 +1380,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // Because we upload in blocks
     def "ByteChannel file system config"() {
         setup:

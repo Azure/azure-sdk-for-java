@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.encryption.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
@@ -55,7 +56,6 @@ public class EncryptionProcessor {
     private EncryptionSettings encryptionSettings;
     private AtomicBoolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
-    private final static int STRING_SIZE_ENCRYPTION_LIMIT = 1024;
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
                                CosmosEncryptionAsyncClient encryptionCosmosClient) {
@@ -258,7 +258,7 @@ public class EncryptionProcessor {
                 }
             }
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-            return listMono.flatMap(ignoreVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
+            return listMono.flatMap(ignoreVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), itemJObj)));
         }));
     }
 
@@ -367,7 +367,7 @@ public class EncryptionProcessor {
                 }
             }
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-            return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj)));
+            return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), itemJObj)));
         }));
     }
 
@@ -377,7 +377,7 @@ public class EncryptionProcessor {
         if (propertyValueHolder.isObject()) {
             for (Iterator<Map.Entry<String, JsonNode>> it = propertyValueHolder.fields(); it.hasNext(); ) {
                 Map.Entry<String, JsonNode> child = it.next();
-                if (child.getValue().isObject()) {
+                if (child.getValue().isObject() || child.getValue().isArray()) {
                     decryptAndSerializeProperty(encryptionSettings, (ObjectNode) propertyValueHolder,
                         child.getValue(), propertyName);
                 } else if (!child.getValue().isNull()) {
@@ -447,29 +447,25 @@ public class EncryptionProcessor {
             switch (jsonNode.getNodeType()) {
                 case BOOLEAN:
                     return Pair.of(TypeMarker.BOOLEAN,
-                        sqlSerializerFactory.getDefaultSerializer(Boolean.FALSE).serialize(jsonNode.asBoolean()));
+                        sqlSerializerFactory.getDefaultSerializer(Boolean.class).serialize(jsonNode.asBoolean()));
                 case NUMBER:
                     if (jsonNode.isInt() || jsonNode.isLong()) {
                         return Pair.of(TypeMarker.LONG,
-                            sqlSerializerFactory.getDefaultSerializer(0l).serialize(jsonNode.asLong()));
+                            sqlSerializerFactory.getDefaultSerializer(Long.class).serialize(jsonNode.asLong()));
                     } else if (jsonNode.isFloat() || jsonNode.isDouble()) {
                         return Pair.of(TypeMarker.DOUBLE,
-                            sqlSerializerFactory.getDefaultSerializer(0d).serialize(jsonNode.asDouble()));
+                            sqlSerializerFactory.getDefaultSerializer(Double.class).serialize(jsonNode.asDouble()));
                     }
                     break;
                 case STRING:
-                    if (jsonNode.asText().length() > STRING_SIZE_ENCRYPTION_LIMIT) {
-                        LOGGER.error("{} length is greater than allowed encryption string length {}",
-                            jsonNode.asText(), STRING_SIZE_ENCRYPTION_LIMIT);
-                    }
-
                     return Pair.of(TypeMarker.STRING,
-                        SqlSerializerFactory.getOrCreate("varchar", STRING_SIZE_ENCRYPTION_LIMIT, 0, 0, StandardCharsets.UTF_8.toString()).serialize(jsonNode.asText()));
+                        SqlSerializerFactory.getOrCreate("varchar", -1, 0, 0, StandardCharsets.UTF_8.toString()).serialize(jsonNode.asText()));
             }
         } catch (MicrosoftDataEncryptionException ex) {
-            throw new IllegalStateException("Unable to convert JSON to byte[]", ex);
+            throw BridgeInternal.createCosmosException("Unable to convert JSON to byte[]", ex, null, 0, null);
         }
-        throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + jsonNode.getNodeType());
+        throw BridgeInternal.createCosmosException(0,
+            "Invalid or Unsupported Data Type Passed " + jsonNode.getNodeType());
     }
 
     public static JsonNode toJsonNode(byte[] serializedBytes, TypeMarker typeMarker) {
@@ -477,19 +473,19 @@ public class EncryptionProcessor {
             SqlSerializerFactory sqlSerializerFactory = new SqlSerializerFactory();
             switch (typeMarker) {
                 case BOOLEAN:
-                    return BooleanNode.valueOf((boolean) sqlSerializerFactory.getDefaultSerializer(Boolean.FALSE).deserialize(serializedBytes));
+                    return BooleanNode.valueOf((boolean) sqlSerializerFactory.getDefaultSerializer(Boolean.class).deserialize(serializedBytes));
                 case LONG:
-                    return LongNode.valueOf((long) sqlSerializerFactory.getDefaultSerializer(0l).deserialize(serializedBytes));
+                    return LongNode.valueOf((long) sqlSerializerFactory.getDefaultSerializer(Long.class).deserialize(serializedBytes));
                 case DOUBLE:
-                    return DoubleNode.valueOf((double) sqlSerializerFactory.getDefaultSerializer(0d).deserialize(serializedBytes));
+                    return DoubleNode.valueOf((double) sqlSerializerFactory.getDefaultSerializer(Double.class).deserialize(serializedBytes));
                 case STRING:
                     return TextNode.valueOf((String) SqlSerializerFactory.getOrCreate("varchar",
-                        STRING_SIZE_ENCRYPTION_LIMIT, 0, 0, StandardCharsets.UTF_8.toString()).deserialize(serializedBytes));
+                        -1, 0, 0, StandardCharsets.UTF_8.toString()).deserialize(serializedBytes));
             }
         } catch (MicrosoftDataEncryptionException ex) {
-            throw new IllegalStateException("Unable to convert byte[] to JSON", ex);
+            throw BridgeInternal.createCosmosException("Unable to convert byte[] to JSON", ex, null, 0, null);
         }
-        throw new IncompatibleClassChangeError("Invalid or Unsupported Data Type Passed " + typeMarker);
+        throw BridgeInternal.createCosmosException(0, "Invalid or Unsupported Data Type Passed " + typeMarker);
     }
 
     public enum TypeMarker {

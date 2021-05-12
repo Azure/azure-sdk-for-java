@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -130,6 +131,50 @@ public class AADWebAppConfigurationTest {
                 assertTrue(repo.isClientNeedConsentWhenLogin(arm));
                 assertFalse(repo.isClientNeedConsentWhenLogin("graph"));
                 assertTrue(repo.isClientNeedConsentWhenLogin("arm"));
+            });
+    }
+
+    @Test
+    public void clientWithClientCredentialsPermissions() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials"
+            )
+            .run(context -> {
+                AADWebAppClientRegistrationRepository repo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistration azure = repo.findByRegistrationId("azure");
+                ClientRegistration graph = repo.findByRegistrationId("graph");
+
+                assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(), AuthorizationGrantType.AUTHORIZATION_CODE);
+                assertEquals(repo.findByRegistrationId("graph").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void webAppWithOboWithExceptionTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void clientWhichIsNotAuthorizationCodeButOnDemandExceptionTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials",
+                "azure.activedirectory.authorization-clients.graph.on-demand = true"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
             });
     }
 
@@ -330,6 +375,62 @@ public class AADWebAppConfigurationTest {
     }
 
     @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest1() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=",
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest2() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=common",
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest3() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=organizations",
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void multiTenantWithAllowedGroupsIdConfiguredTest4() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=consumers",
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
+    }
+
+    @Test(expected = IllegalStateException.class)
     public void multiTenantWithAllowedGroupsConfiguredTest4() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -343,10 +444,28 @@ public class AADWebAppConfigurationTest {
     }
 
     @Test
-    public void groupConfiguration() {
+    public void groupsNameConfiguration() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
+            .run(context -> {
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "https://graph.microsoft.com/User.Read",
+                    "https://graph.microsoft.com/Directory.Read.All"
+                );
+            });
+    }
+
+    @Test
+    public void groupsIdConfiguration() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718, "
+                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo =
                     context.getBean(AADWebAppClientRegistrationRepository.class);

@@ -281,7 +281,8 @@ public final class DigitalTwinsAsyncClient {
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
-     * @return A {@link DigitalTwinsResponse}
+     * @return A {@link DigitalTwinsResponse}. This response object includes an HTTP header that gives you the updated
+     * ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options)
@@ -527,7 +528,8 @@ public final class DigitalTwinsAsyncClient {
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                     This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
-     * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
+     * @return A {@link DigitalTwinsResponse} containing no parsed payload object. This response object includes an
+     * HTTP header that gives you the updated ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options) {
@@ -1139,7 +1141,8 @@ public final class DigitalTwinsAsyncClient {
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
-     * @return A {@link DigitalTwinsResponse} containing an empty Mono.
+     * @return A {@link DigitalTwinsResponse} containing an empty Mono. This response object includes an HTTP header
+     * that gives you the updated ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options) {

@@ -65,7 +65,7 @@ public final class WebPubSubsImpl {
                 @QueryParam("excluded") Iterable<String> excluded,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Content-Type") WebPubSubContentType contentType,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> payloadMessage,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> message,
                 @HeaderParam("Content-Length") long contentLength,
                 Context context);
 
@@ -77,13 +77,13 @@ public final class WebPubSubsImpl {
                 @PathParam("hub") String hub,
                 @QueryParam("excluded") Iterable<String> excluded,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("text/plain") String payloadMessage,
+                @BodyParam("text/plain") String message,
                 Context context);
 
         @Head("/api/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> checkConnectionExistence(
+        Mono<Response<Boolean>> connectionExists(
                 @HostParam("$host") String host,
                 @PathParam("hub") String hub,
                 @PathParam("connectionId") String connectionId,
@@ -110,7 +110,7 @@ public final class WebPubSubsImpl {
                 @PathParam("connectionId") String connectionId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Content-Type") WebPubSubContentType contentType,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> payloadMessage,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> message,
                 @HeaderParam("Content-Length") long contentLength,
                 Context context);
 
@@ -122,13 +122,13 @@ public final class WebPubSubsImpl {
                 @PathParam("hub") String hub,
                 @PathParam("connectionId") String connectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("text/plain") String payloadMessage,
+                @BodyParam("text/plain") String message,
                 Context context);
 
         @Head("/api/hubs/{hub}/groups/{group}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> checkGroupExistence(
+        Mono<Response<Boolean>> groupExists(
                 @HostParam("$host") String host,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
@@ -145,7 +145,7 @@ public final class WebPubSubsImpl {
                 @QueryParam("excluded") Iterable<String> excluded,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Content-Type") WebPubSubContentType contentType,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> payloadMessage,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> message,
                 @HeaderParam("Content-Length") long contentLength,
                 Context context);
 
@@ -158,7 +158,7 @@ public final class WebPubSubsImpl {
                 @PathParam("group") String group,
                 @QueryParam("excluded") Iterable<String> excluded,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("text/plain") String payloadMessage,
+                @BodyParam("text/plain") String message,
                 Context context);
 
         @Put("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
@@ -173,7 +173,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Delete("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeConnectionFromGroup(
                 @HostParam("$host") String host,
@@ -186,7 +186,7 @@ public final class WebPubSubsImpl {
         @Head("/api/hubs/{hub}/users/{userId}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> checkUserExistence(
+        Mono<Response<Boolean>> userExists(
                 @HostParam("$host") String host,
                 @PathParam("hub") String hub,
                 @PathParam("userId") String userId,
@@ -202,7 +202,7 @@ public final class WebPubSubsImpl {
                 @PathParam("userId") String userId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Content-Type") WebPubSubContentType contentType,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> payloadMessage,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> message,
                 @HeaderParam("Content-Length") long contentLength,
                 Context context);
 
@@ -214,22 +214,11 @@ public final class WebPubSubsImpl {
                 @PathParam("hub") String hub,
                 @PathParam("userId") String userId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("text/plain") String payloadMessage,
-                Context context);
-
-        @Head("/api/hubs/{hub}/users/{userId}/groups/{group}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> checkUserExistenceInGroup(
-                @HostParam("$host") String host,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @PathParam("userId") String userId,
-                @QueryParam("api-version") String apiVersion,
+                @BodyParam("text/plain") String message,
                 Context context);
 
         @Put("/api/hubs/{hub}/users/{userId}/groups/{group}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addUserToGroup(
                 @HostParam("$host") String host,
@@ -303,7 +292,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +304,7 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToAllWithResponseAsync(
             String hub,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded) {
         if (this.client.getHost() == null) {
@@ -328,8 +317,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -339,7 +328,7 @@ public final class WebPubSubsImpl {
                                 excluded,
                                 this.client.getApiVersion(),
                                 contentType,
-                                payloadMessage,
+                                message,
                                 contentLength,
                                 context));
     }
@@ -350,7 +339,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
@@ -363,7 +352,7 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToAllWithResponseAsync(
             String hub,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded,
             Context context) {
@@ -377,8 +366,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return service.sendToAll(
                 this.client.getHost(),
@@ -386,7 +375,7 @@ public final class WebPubSubsImpl {
                 excluded,
                 this.client.getApiVersion(),
                 contentType,
-                payloadMessage,
+                message,
                 contentLength,
                 context);
     }
@@ -397,7 +386,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -409,10 +398,10 @@ public final class WebPubSubsImpl {
     public Mono<Void> sendToAllAsync(
             String hub,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded) {
-        return sendToAllWithResponseAsync(hub, contentType, payloadMessage, contentLength, excluded)
+        return sendToAllWithResponseAsync(hub, contentType, message, contentLength, excluded)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -422,7 +411,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
@@ -435,11 +424,11 @@ public final class WebPubSubsImpl {
     public Mono<Void> sendToAllAsync(
             String hub,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded,
             Context context) {
-        return sendToAllWithResponseAsync(hub, contentType, payloadMessage, contentLength, excluded, context)
+        return sendToAllWithResponseAsync(hub, contentType, message, contentLength, excluded, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -449,7 +438,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,10 +449,10 @@ public final class WebPubSubsImpl {
     public void sendToAll(
             String hub,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded) {
-        sendToAllAsync(hub, contentType, payloadMessage, contentLength, excluded).block();
+        sendToAllAsync(hub, contentType, message, contentLength, excluded).block();
     }
 
     /**
@@ -472,7 +461,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
@@ -485,11 +474,11 @@ public final class WebPubSubsImpl {
     public Response<Void> sendToAllWithResponse(
             String hub,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded,
             Context context) {
-        return sendToAllWithResponseAsync(hub, contentType, payloadMessage, contentLength, excluded, context).block();
+        return sendToAllWithResponseAsync(hub, contentType, message, contentLength, excluded, context).block();
     }
 
     /**
@@ -497,7 +486,7 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -505,8 +494,7 @@ public final class WebPubSubsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToAllWithResponseAsync(
-            String hub, String payloadMessage, Iterable<String> excluded) {
+    public Mono<Response<Void>> sendToAllWithResponseAsync(String hub, String message, Iterable<String> excluded) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -514,18 +502,13 @@ public final class WebPubSubsImpl {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
                         service.sendToAll(
-                                this.client.getHost(),
-                                hub,
-                                excluded,
-                                this.client.getApiVersion(),
-                                payloadMessage,
-                                context));
+                                this.client.getHost(), hub, excluded, this.client.getApiVersion(), message, context));
     }
 
     /**
@@ -533,7 +516,7 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,7 +526,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponseAsync(
-            String hub, String payloadMessage, Iterable<String> excluded, Context context) {
+            String hub, String message, Iterable<String> excluded, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -551,11 +534,10 @@ public final class WebPubSubsImpl {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
-        return service.sendToAll(
-                this.client.getHost(), hub, excluded, this.client.getApiVersion(), payloadMessage, context);
+        return service.sendToAll(this.client.getHost(), hub, excluded, this.client.getApiVersion(), message, context);
     }
 
     /**
@@ -563,7 +545,7 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -571,8 +553,8 @@ public final class WebPubSubsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToAllAsync(String hub, String payloadMessage, Iterable<String> excluded) {
-        return sendToAllWithResponseAsync(hub, payloadMessage, excluded).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> sendToAllAsync(String hub, String message, Iterable<String> excluded) {
+        return sendToAllWithResponseAsync(hub, message, excluded).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -580,7 +562,7 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,8 +571,8 @@ public final class WebPubSubsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToAllAsync(String hub, String payloadMessage, Iterable<String> excluded, Context context) {
-        return sendToAllWithResponseAsync(hub, payloadMessage, excluded, context)
+    public Mono<Void> sendToAllAsync(String hub, String message, Iterable<String> excluded, Context context) {
+        return sendToAllWithResponseAsync(hub, message, excluded, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -599,15 +581,15 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(String hub, String payloadMessage, Iterable<String> excluded) {
-        sendToAllAsync(hub, payloadMessage, excluded).block();
+    public void sendToAll(String hub, String message, Iterable<String> excluded) {
+        sendToAllAsync(hub, message, excluded).block();
     }
 
     /**
@@ -615,7 +597,7 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -625,8 +607,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(
-            String hub, String payloadMessage, Iterable<String> excluded, Context context) {
-        return sendToAllWithResponseAsync(hub, payloadMessage, excluded, context).block();
+            String hub, String message, Iterable<String> excluded, Context context) {
+        return sendToAllWithResponseAsync(hub, message, excluded, context).block();
     }
 
     /**
@@ -641,7 +623,7 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkConnectionExistenceWithResponseAsync(String hub, String connectionId) {
+    public Mono<Response<Boolean>> connectionExistsWithResponseAsync(String hub, String connectionId) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -654,7 +636,7 @@ public final class WebPubSubsImpl {
         }
         return FluxUtil.withContext(
                 context ->
-                        service.checkConnectionExistence(
+                        service.connectionExists(
                                 this.client.getHost(), hub, connectionId, this.client.getApiVersion(), context));
     }
 
@@ -671,8 +653,7 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkConnectionExistenceWithResponseAsync(
-            String hub, String connectionId, Context context) {
+    public Mono<Response<Boolean>> connectionExistsWithResponseAsync(String hub, String connectionId, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -683,8 +664,7 @@ public final class WebPubSubsImpl {
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
-        return service.checkConnectionExistence(
-                this.client.getHost(), hub, connectionId, this.client.getApiVersion(), context);
+        return service.connectionExists(this.client.getHost(), hub, connectionId, this.client.getApiVersion(), context);
     }
 
     /**
@@ -699,8 +679,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkConnectionExistenceAsync(String hub, String connectionId) {
-        return checkConnectionExistenceWithResponseAsync(hub, connectionId)
+    public Mono<Boolean> connectionExistsAsync(String hub, String connectionId) {
+        return connectionExistsWithResponseAsync(hub, connectionId)
                 .flatMap(
                         (Response<Boolean> res) -> {
                             if (res.getValue() != null) {
@@ -724,8 +704,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkConnectionExistenceAsync(String hub, String connectionId, Context context) {
-        return checkConnectionExistenceWithResponseAsync(hub, connectionId, context)
+    public Mono<Boolean> connectionExistsAsync(String hub, String connectionId, Context context) {
+        return connectionExistsWithResponseAsync(hub, connectionId, context)
                 .flatMap(
                         (Response<Boolean> res) -> {
                             if (res.getValue() != null) {
@@ -748,8 +728,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkConnectionExistence(String hub, String connectionId) {
-        Boolean value = checkConnectionExistenceAsync(hub, connectionId).block();
+    public boolean connectionExists(String hub, String connectionId) {
+        Boolean value = connectionExistsAsync(hub, connectionId).block();
         if (value != null) {
             return value;
         } else {
@@ -770,8 +750,8 @@ public final class WebPubSubsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> checkConnectionExistenceWithResponse(String hub, String connectionId, Context context) {
-        return checkConnectionExistenceWithResponseAsync(hub, connectionId, context).block();
+    public Response<Boolean> connectionExistsWithResponse(String hub, String connectionId, Context context) {
+        return connectionExistsWithResponseAsync(hub, connectionId, context).block();
     }
 
     /**
@@ -918,7 +898,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -927,11 +907,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnectionWithResponseAsync(
-            String hub,
-            String connectionId,
-            WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
-            long contentLength) {
+            String hub, String connectionId, WebPubSubContentType contentType, Flux<ByteBuffer> message, long contentLength) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -945,8 +921,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -956,7 +932,7 @@ public final class WebPubSubsImpl {
                                 connectionId,
                                 this.client.getApiVersion(),
                                 contentType,
-                                payloadMessage,
+                                message,
                                 contentLength,
                                 context));
     }
@@ -968,7 +944,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -981,7 +957,7 @@ public final class WebPubSubsImpl {
             String hub,
             String connectionId,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Context context) {
         if (this.client.getHost() == null) {
@@ -997,8 +973,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return service.sendToConnection(
                 this.client.getHost(),
@@ -1006,7 +982,7 @@ public final class WebPubSubsImpl {
                 connectionId,
                 this.client.getApiVersion(),
                 contentType,
-                payloadMessage,
+                message,
                 contentLength,
                 context);
     }
@@ -1018,7 +994,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1027,12 +1003,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToConnectionAsync(
-            String hub,
-            String connectionId,
-            WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
-            long contentLength) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, payloadMessage, contentLength)
+            String hub, String connectionId, WebPubSubContentType contentType, Flux<ByteBuffer> message, long contentLength) {
+        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, message, contentLength)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1043,7 +1015,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1056,10 +1028,10 @@ public final class WebPubSubsImpl {
             String hub,
             String connectionId,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Context context) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, payloadMessage, contentLength, context)
+        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, message, contentLength, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1070,7 +1042,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1078,12 +1050,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToConnection(
-            String hub,
-            String connectionId,
-            WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
-            long contentLength) {
-        sendToConnectionAsync(hub, connectionId, contentType, payloadMessage, contentLength).block();
+            String hub, String connectionId, WebPubSubContentType contentType, Flux<ByteBuffer> message, long contentLength) {
+        sendToConnectionAsync(hub, connectionId, contentType, message, contentLength).block();
     }
 
     /**
@@ -1093,7 +1061,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1106,10 +1074,10 @@ public final class WebPubSubsImpl {
             String hub,
             String connectionId,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Context context) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, payloadMessage, contentLength, context)
+        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, message, contentLength, context)
                 .block();
     }
 
@@ -1119,15 +1087,14 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToConnectionWithResponseAsync(
-            String hub, String connectionId, String payloadMessage) {
+    public Mono<Response<Void>> sendToConnectionWithResponseAsync(String hub, String connectionId, String message) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1138,8 +1105,8 @@ public final class WebPubSubsImpl {
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -1148,7 +1115,7 @@ public final class WebPubSubsImpl {
                                 hub,
                                 connectionId,
                                 this.client.getApiVersion(),
-                                payloadMessage,
+                                message,
                                 context));
     }
 
@@ -1158,7 +1125,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1167,7 +1134,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnectionWithResponseAsync(
-            String hub, String connectionId, String payloadMessage, Context context) {
+            String hub, String connectionId, String message, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1178,11 +1145,11 @@ public final class WebPubSubsImpl {
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return service.sendToConnection(
-                this.client.getHost(), hub, connectionId, this.client.getApiVersion(), payloadMessage, context);
+                this.client.getHost(), hub, connectionId, this.client.getApiVersion(), message, context);
     }
 
     /**
@@ -1191,15 +1158,15 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToConnectionAsync(String hub, String connectionId, String payloadMessage) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, payloadMessage)
+    public Mono<Void> sendToConnectionAsync(String hub, String connectionId, String message) {
+        return sendToConnectionWithResponseAsync(hub, connectionId, message)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1209,7 +1176,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1217,8 +1184,8 @@ public final class WebPubSubsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToConnectionAsync(String hub, String connectionId, String payloadMessage, Context context) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, payloadMessage, context)
+    public Mono<Void> sendToConnectionAsync(String hub, String connectionId, String message, Context context) {
+        return sendToConnectionWithResponseAsync(hub, connectionId, message, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1228,14 +1195,14 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToConnection(String hub, String connectionId, String payloadMessage) {
-        sendToConnectionAsync(hub, connectionId, payloadMessage).block();
+    public void sendToConnection(String hub, String connectionId, String message) {
+        sendToConnectionAsync(hub, connectionId, message).block();
     }
 
     /**
@@ -1244,7 +1211,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1253,8 +1220,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(
-            String hub, String connectionId, String payloadMessage, Context context) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, payloadMessage, context).block();
+            String hub, String connectionId, String message, Context context) {
+        return sendToConnectionWithResponseAsync(hub, connectionId, message, context).block();
     }
 
     /**
@@ -1269,7 +1236,7 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkGroupExistenceWithResponseAsync(String hub, String group) {
+    public Mono<Response<Boolean>> groupExistsWithResponseAsync(String hub, String group) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1282,8 +1249,7 @@ public final class WebPubSubsImpl {
         }
         return FluxUtil.withContext(
                 context ->
-                        service.checkGroupExistence(
-                                this.client.getHost(), hub, group, this.client.getApiVersion(), context));
+                        service.groupExists(this.client.getHost(), hub, group, this.client.getApiVersion(), context));
     }
 
     /**
@@ -1299,7 +1265,7 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkGroupExistenceWithResponseAsync(String hub, String group, Context context) {
+    public Mono<Response<Boolean>> groupExistsWithResponseAsync(String hub, String group, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1310,7 +1276,7 @@ public final class WebPubSubsImpl {
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
-        return service.checkGroupExistence(this.client.getHost(), hub, group, this.client.getApiVersion(), context);
+        return service.groupExists(this.client.getHost(), hub, group, this.client.getApiVersion(), context);
     }
 
     /**
@@ -1325,8 +1291,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkGroupExistenceAsync(String hub, String group) {
-        return checkGroupExistenceWithResponseAsync(hub, group)
+    public Mono<Boolean> groupExistsAsync(String hub, String group) {
+        return groupExistsWithResponseAsync(hub, group)
                 .flatMap(
                         (Response<Boolean> res) -> {
                             if (res.getValue() != null) {
@@ -1350,8 +1316,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkGroupExistenceAsync(String hub, String group, Context context) {
-        return checkGroupExistenceWithResponseAsync(hub, group, context)
+    public Mono<Boolean> groupExistsAsync(String hub, String group, Context context) {
+        return groupExistsWithResponseAsync(hub, group, context)
                 .flatMap(
                         (Response<Boolean> res) -> {
                             if (res.getValue() != null) {
@@ -1374,8 +1340,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkGroupExistence(String hub, String group) {
-        Boolean value = checkGroupExistenceAsync(hub, group).block();
+    public boolean groupExists(String hub, String group) {
+        Boolean value = groupExistsAsync(hub, group).block();
         if (value != null) {
             return value;
         } else {
@@ -1396,8 +1362,8 @@ public final class WebPubSubsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> checkGroupExistenceWithResponse(String hub, String group, Context context) {
-        return checkGroupExistenceWithResponseAsync(hub, group, context).block();
+    public Response<Boolean> groupExistsWithResponse(String hub, String group, Context context) {
+        return groupExistsWithResponseAsync(hub, group, context).block();
     }
 
     /**
@@ -1407,7 +1373,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1420,7 +1386,7 @@ public final class WebPubSubsImpl {
             String hub,
             String group,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded) {
         if (this.client.getHost() == null) {
@@ -1436,8 +1402,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -1448,7 +1414,7 @@ public final class WebPubSubsImpl {
                                 excluded,
                                 this.client.getApiVersion(),
                                 contentType,
-                                payloadMessage,
+                                message,
                                 contentLength,
                                 context));
     }
@@ -1460,7 +1426,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
@@ -1474,7 +1440,7 @@ public final class WebPubSubsImpl {
             String hub,
             String group,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded,
             Context context) {
@@ -1491,8 +1457,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return service.sendToGroup(
                 this.client.getHost(),
@@ -1501,7 +1467,7 @@ public final class WebPubSubsImpl {
                 excluded,
                 this.client.getApiVersion(),
                 contentType,
-                payloadMessage,
+                message,
                 contentLength,
                 context);
     }
@@ -1513,7 +1479,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1526,10 +1492,10 @@ public final class WebPubSubsImpl {
             String hub,
             String group,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded) {
-        return sendToGroupWithResponseAsync(hub, group, contentType, payloadMessage, contentLength, excluded)
+        return sendToGroupWithResponseAsync(hub, group, contentType, message, contentLength, excluded)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1540,7 +1506,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
@@ -1554,11 +1520,11 @@ public final class WebPubSubsImpl {
             String hub,
             String group,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded,
             Context context) {
-        return sendToGroupWithResponseAsync(hub, group, contentType, payloadMessage, contentLength, excluded, context)
+        return sendToGroupWithResponseAsync(hub, group, contentType, message, contentLength, excluded, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1569,7 +1535,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1581,10 +1547,10 @@ public final class WebPubSubsImpl {
             String hub,
             String group,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded) {
-        sendToGroupAsync(hub, group, contentType, payloadMessage, contentLength, excluded).block();
+        sendToGroupAsync(hub, group, contentType, message, contentLength, excluded).block();
     }
 
     /**
@@ -1594,7 +1560,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
@@ -1608,12 +1574,11 @@ public final class WebPubSubsImpl {
             String hub,
             String group,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Iterable<String> excluded,
             Context context) {
-        return sendToGroupWithResponseAsync(hub, group, contentType, payloadMessage, contentLength, excluded, context)
-                .block();
+        return sendToGroupWithResponseAsync(hub, group, contentType, message, contentLength, excluded, context).block();
     }
 
     /**
@@ -1622,7 +1587,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1631,7 +1596,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToGroupWithResponseAsync(
-            String hub, String group, String payloadMessage, Iterable<String> excluded) {
+            String hub, String group, String message, Iterable<String> excluded) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1642,8 +1607,8 @@ public final class WebPubSubsImpl {
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -1653,7 +1618,7 @@ public final class WebPubSubsImpl {
                                 group,
                                 excluded,
                                 this.client.getApiVersion(),
-                                payloadMessage,
+                                message,
                                 context));
     }
 
@@ -1663,7 +1628,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1673,7 +1638,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToGroupWithResponseAsync(
-            String hub, String group, String payloadMessage, Iterable<String> excluded, Context context) {
+            String hub, String group, String message, Iterable<String> excluded, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1684,11 +1649,11 @@ public final class WebPubSubsImpl {
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return service.sendToGroup(
-                this.client.getHost(), hub, group, excluded, this.client.getApiVersion(), payloadMessage, context);
+                this.client.getHost(), hub, group, excluded, this.client.getApiVersion(), message, context);
     }
 
     /**
@@ -1697,7 +1662,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1705,8 +1670,8 @@ public final class WebPubSubsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToGroupAsync(String hub, String group, String payloadMessage, Iterable<String> excluded) {
-        return sendToGroupWithResponseAsync(hub, group, payloadMessage, excluded)
+    public Mono<Void> sendToGroupAsync(String hub, String group, String message, Iterable<String> excluded) {
+        return sendToGroupWithResponseAsync(hub, group, message, excluded)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1716,7 +1681,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1726,8 +1691,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToGroupAsync(
-            String hub, String group, String payloadMessage, Iterable<String> excluded, Context context) {
-        return sendToGroupWithResponseAsync(hub, group, payloadMessage, excluded, context)
+            String hub, String group, String message, Iterable<String> excluded, Context context) {
+        return sendToGroupWithResponseAsync(hub, group, message, excluded, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1737,15 +1702,15 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToGroup(String hub, String group, String payloadMessage, Iterable<String> excluded) {
-        sendToGroupAsync(hub, group, payloadMessage, excluded).block();
+    public void sendToGroup(String hub, String group, String message, Iterable<String> excluded) {
+        sendToGroupAsync(hub, group, message, excluded).block();
     }
 
     /**
@@ -1754,7 +1719,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param excluded Excluded connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1764,8 +1729,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(
-            String hub, String group, String payloadMessage, Iterable<String> excluded, Context context) {
-        return sendToGroupWithResponseAsync(hub, group, payloadMessage, excluded, context).block();
+            String hub, String group, String message, Iterable<String> excluded, Context context) {
+        return sendToGroupWithResponseAsync(hub, group, message, excluded, context).block();
     }
 
     /**
@@ -2057,7 +2022,7 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkUserExistenceWithResponseAsync(String hub, String userId) {
+    public Mono<Response<Boolean>> userExistsWithResponseAsync(String hub, String userId) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -2070,8 +2035,7 @@ public final class WebPubSubsImpl {
         }
         return FluxUtil.withContext(
                 context ->
-                        service.checkUserExistence(
-                                this.client.getHost(), hub, userId, this.client.getApiVersion(), context));
+                        service.userExists(this.client.getHost(), hub, userId, this.client.getApiVersion(), context));
     }
 
     /**
@@ -2087,7 +2051,7 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkUserExistenceWithResponseAsync(String hub, String userId, Context context) {
+    public Mono<Response<Boolean>> userExistsWithResponseAsync(String hub, String userId, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -2098,7 +2062,7 @@ public final class WebPubSubsImpl {
         if (userId == null) {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
-        return service.checkUserExistence(this.client.getHost(), hub, userId, this.client.getApiVersion(), context);
+        return service.userExists(this.client.getHost(), hub, userId, this.client.getApiVersion(), context);
     }
 
     /**
@@ -2113,8 +2077,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkUserExistenceAsync(String hub, String userId) {
-        return checkUserExistenceWithResponseAsync(hub, userId)
+    public Mono<Boolean> userExistsAsync(String hub, String userId) {
+        return userExistsWithResponseAsync(hub, userId)
                 .flatMap(
                         (Response<Boolean> res) -> {
                             if (res.getValue() != null) {
@@ -2138,8 +2102,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkUserExistenceAsync(String hub, String userId, Context context) {
-        return checkUserExistenceWithResponseAsync(hub, userId, context)
+    public Mono<Boolean> userExistsAsync(String hub, String userId, Context context) {
+        return userExistsWithResponseAsync(hub, userId, context)
                 .flatMap(
                         (Response<Boolean> res) -> {
                             if (res.getValue() != null) {
@@ -2162,8 +2126,8 @@ public final class WebPubSubsImpl {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkUserExistence(String hub, String userId) {
-        Boolean value = checkUserExistenceAsync(hub, userId).block();
+    public boolean userExists(String hub, String userId) {
+        Boolean value = userExistsAsync(hub, userId).block();
         if (value != null) {
             return value;
         } else {
@@ -2184,8 +2148,8 @@ public final class WebPubSubsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> checkUserExistenceWithResponse(String hub, String userId, Context context) {
-        return checkUserExistenceWithResponseAsync(hub, userId, context).block();
+    public Response<Boolean> userExistsWithResponse(String hub, String userId, Context context) {
+        return userExistsWithResponseAsync(hub, userId, context).block();
     }
 
     /**
@@ -2195,7 +2159,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2204,11 +2168,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToUserWithResponseAsync(
-            String hub,
-            String userId,
-            WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
-            long contentLength) {
+            String hub, String userId, WebPubSubContentType contentType, Flux<ByteBuffer> message, long contentLength) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -2222,8 +2182,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -2233,7 +2193,7 @@ public final class WebPubSubsImpl {
                                 userId,
                                 this.client.getApiVersion(),
                                 contentType,
-                                payloadMessage,
+                                message,
                                 contentLength,
                                 context));
     }
@@ -2245,7 +2205,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2258,7 +2218,7 @@ public final class WebPubSubsImpl {
             String hub,
             String userId,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Context context) {
         if (this.client.getHost() == null) {
@@ -2274,8 +2234,8 @@ public final class WebPubSubsImpl {
         if (contentType == null) {
             return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return service.sendToUser(
                 this.client.getHost(),
@@ -2283,7 +2243,7 @@ public final class WebPubSubsImpl {
                 userId,
                 this.client.getApiVersion(),
                 contentType,
-                payloadMessage,
+                message,
                 contentLength,
                 context);
     }
@@ -2295,7 +2255,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2304,12 +2264,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToUserAsync(
-            String hub,
-            String userId,
-            WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
-            long contentLength) {
-        return sendToUserWithResponseAsync(hub, userId, contentType, payloadMessage, contentLength)
+            String hub, String userId, WebPubSubContentType contentType, Flux<ByteBuffer> message, long contentLength) {
+        return sendToUserWithResponseAsync(hub, userId, contentType, message, contentLength)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2320,7 +2276,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2333,10 +2289,10 @@ public final class WebPubSubsImpl {
             String hub,
             String userId,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Context context) {
-        return sendToUserWithResponseAsync(hub, userId, contentType, payloadMessage, contentLength, context)
+        return sendToUserWithResponseAsync(hub, userId, contentType, message, contentLength, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2347,7 +2303,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2355,12 +2311,8 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToUser(
-            String hub,
-            String userId,
-            WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
-            long contentLength) {
-        sendToUserAsync(hub, userId, contentType, payloadMessage, contentLength).block();
+            String hub, String userId, WebPubSubContentType contentType, Flux<ByteBuffer> message, long contentLength) {
+        sendToUserAsync(hub, userId, contentType, message, contentLength).block();
     }
 
     /**
@@ -2370,7 +2322,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param contentType Upload file type.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2383,10 +2335,10 @@ public final class WebPubSubsImpl {
             String hub,
             String userId,
             WebPubSubContentType contentType,
-            Flux<ByteBuffer> payloadMessage,
+            Flux<ByteBuffer> message,
             long contentLength,
             Context context) {
-        return sendToUserWithResponseAsync(hub, userId, contentType, payloadMessage, contentLength, context).block();
+        return sendToUserWithResponseAsync(hub, userId, contentType, message, contentLength, context).block();
     }
 
     /**
@@ -2395,14 +2347,14 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param userId The user Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUserWithResponseAsync(String hub, String userId, String payloadMessage) {
+    public Mono<Response<Void>> sendToUserWithResponseAsync(String hub, String userId, String message) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -2413,18 +2365,13 @@ public final class WebPubSubsImpl {
         if (userId == null) {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
                         service.sendToUser(
-                                this.client.getHost(),
-                                hub,
-                                userId,
-                                this.client.getApiVersion(),
-                                payloadMessage,
-                                context));
+                                this.client.getHost(), hub, userId, this.client.getApiVersion(), message, context));
     }
 
     /**
@@ -2433,7 +2380,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param userId The user Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2442,7 +2389,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToUserWithResponseAsync(
-            String hub, String userId, String payloadMessage, Context context) {
+            String hub, String userId, String message, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -2453,11 +2400,10 @@ public final class WebPubSubsImpl {
         if (userId == null) {
             return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
-        if (payloadMessage == null) {
-            return Mono.error(new IllegalArgumentException("Parameter payloadMessage is required and cannot be null."));
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
-        return service.sendToUser(
-                this.client.getHost(), hub, userId, this.client.getApiVersion(), payloadMessage, context);
+        return service.sendToUser(this.client.getHost(), hub, userId, this.client.getApiVersion(), message, context);
     }
 
     /**
@@ -2466,15 +2412,15 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param userId The user Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToUserAsync(String hub, String userId, String payloadMessage) {
-        return sendToUserWithResponseAsync(hub, userId, payloadMessage).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> sendToUserAsync(String hub, String userId, String message) {
+        return sendToUserWithResponseAsync(hub, userId, message).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -2483,7 +2429,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param userId The user Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2491,9 +2437,8 @@ public final class WebPubSubsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToUserAsync(String hub, String userId, String payloadMessage, Context context) {
-        return sendToUserWithResponseAsync(hub, userId, payloadMessage, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> sendToUserAsync(String hub, String userId, String message, Context context) {
+        return sendToUserWithResponseAsync(hub, userId, message, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -2502,14 +2447,14 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param userId The user Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToUser(String hub, String userId, String payloadMessage) {
-        sendToUserAsync(hub, userId, payloadMessage).block();
+    public void sendToUser(String hub, String userId, String message) {
+        sendToUserAsync(hub, userId, message).block();
     }
 
     /**
@@ -2518,7 +2463,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param userId The user Id.
-     * @param payloadMessage The payload body.
+     * @param message The payload body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2526,166 +2471,8 @@ public final class WebPubSubsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendToUserWithResponse(String hub, String userId, String payloadMessage, Context context) {
-        return sendToUserWithResponseAsync(hub, userId, payloadMessage, context).block();
-    }
-
-    /**
-     * Check whether a user exists in the target group.
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkUserExistenceInGroupWithResponseAsync(String hub, String group, String userId) {
-        if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.checkUserExistenceInGroup(
-                                this.client.getHost(), hub, group, userId, this.client.getApiVersion(), context));
-    }
-
-    /**
-     * Check whether a user exists in the target group.
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkUserExistenceInGroupWithResponseAsync(
-            String hub, String group, String userId, Context context) {
-        if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return service.checkUserExistenceInGroup(
-                this.client.getHost(), hub, group, userId, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Check whether a user exists in the target group.
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkUserExistenceInGroupAsync(String hub, String group, String userId) {
-        return checkUserExistenceInGroupWithResponseAsync(hub, group, userId)
-                .flatMap(
-                        (Response<Boolean> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Check whether a user exists in the target group.
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkUserExistenceInGroupAsync(String hub, String group, String userId, Context context) {
-        return checkUserExistenceInGroupWithResponseAsync(hub, group, userId, context)
-                .flatMap(
-                        (Response<Boolean> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Check whether a user exists in the target group.
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkUserExistenceInGroup(String hub, String group, String userId) {
-        Boolean value = checkUserExistenceInGroupAsync(hub, group, userId).block();
-        if (value != null) {
-            return value;
-        } else {
-            throw new NullPointerException();
-        }
-    }
-
-    /**
-     * Check whether a user exists in the target group.
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> checkUserExistenceInGroupWithResponse(
-            String hub, String group, String userId, Context context) {
-        return checkUserExistenceInGroupWithResponseAsync(hub, group, userId, context).block();
+    public Response<Void> sendToUserWithResponse(String hub, String userId, String message, Context context) {
+        return sendToUserWithResponseAsync(hub, userId, message, context).block();
     }
 
     /**
@@ -3401,7 +3188,7 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Check if a connection have permission to the specific action.
+     * Check if a connection has permission to the specified action.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
@@ -3443,7 +3230,7 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Check if a connection have permission to the specific action.
+     * Check if a connection has permission to the specified action.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
@@ -3478,7 +3265,7 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Check if a connection have permission to the specific action.
+     * Check if a connection has permission to the specified action.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
@@ -3506,7 +3293,7 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Check if a connection have permission to the specific action.
+     * Check if a connection has permission to the specified action.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
@@ -3535,7 +3322,7 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Check if a connection have permission to the specific action.
+     * Check if a connection has permission to the specified action.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
@@ -3559,7 +3346,7 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Check if a connection have permission to the specific action.
+     * Check if a connection has permission to the specified action.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.

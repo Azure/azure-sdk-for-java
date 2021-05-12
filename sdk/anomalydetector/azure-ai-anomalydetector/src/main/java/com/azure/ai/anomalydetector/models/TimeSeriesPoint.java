@@ -12,9 +12,9 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class TimeSeriesPoint {
     /*
-     * Timestamp of a data point (ISO8601 format).
+     * Optional argument, timestamp of a data point (ISO8601 format).
      */
-    @JsonProperty(value = "timestamp", required = true)
+    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
@@ -24,7 +24,7 @@ public final class TimeSeriesPoint {
     private float value;
 
     /**
-     * Get the timestamp property: Timestamp of a data point (ISO8601 format).
+     * Get the timestamp property: Optional argument, timestamp of a data point (ISO8601 format).
      *
      * @return the timestamp value.
      */
@@ -33,7 +33,7 @@ public final class TimeSeriesPoint {
     }
 
     /**
-     * Set the timestamp property: Timestamp of a data point (ISO8601 format).
+     * Set the timestamp property: Optional argument, timestamp of a data point (ISO8601 format).
      *
      * @param timestamp the timestamp value to set.
      * @return the TimeSeriesPoint object itself.

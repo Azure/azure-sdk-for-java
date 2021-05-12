@@ -76,14 +76,6 @@ public final class ClientEncryptionPolicy {
         return this.includedPaths;
     }
 
-    int getPolicyFormatVersion() {
-        return policyFormatVersion;
-    }
-
-    void setPolicyFormatVersion(int policyFormatVersion) {
-        this.policyFormatVersion = policyFormatVersion;
-    }
-
     private void validateIncludedPaths(List<ClientEncryptionIncludedPath> clientEncryptionIncludedPath) {
         List<String> includedPathsList = new ArrayList<>();
         for (ClientEncryptionIncludedPath path : clientEncryptionIncludedPath) {

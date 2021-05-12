@@ -14,17 +14,15 @@ import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
-/** An export resource. */
+/** A export resource. */
 @JsonFlatten
 @Fluent
 public class ExportInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportInner.class);
 
     /*
-     * The format of the export being delivered. Currently only 'Csv' is
-     * supported.
+     * The format of the export being delivered.
      */
     @JsonProperty(value = "properties.format")
     private FormatType format;
@@ -36,23 +34,10 @@ public class ExportInner extends ProxyResource {
     private ExportDeliveryInfo deliveryInfo;
 
     /*
-     * Has the definition for the export.
+     * Has definition for the export.
      */
     @JsonProperty(value = "properties.definition")
     private ExportDefinition definition;
-
-    /*
-     * If requested, has the most recent execution history for the export.
-     */
-    @JsonProperty(value = "properties.runHistory")
-    private ExportExecutionListResultInner runHistory;
-
-    /*
-     * If the export has an active schedule, provides an estimate of the next
-     * execution time.
-     */
-    @JsonProperty(value = "properties.nextRunTimeEstimate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextRunTimeEstimate;
 
     /*
      * Has schedule information for the export.
@@ -69,7 +54,7 @@ public class ExportInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the format property: The format of the export being delivered. Currently only 'Csv' is supported.
+     * Get the format property: The format of the export being delivered.
      *
      * @return the format value.
      */
@@ -78,7 +63,7 @@ public class ExportInner extends ProxyResource {
     }
 
     /**
-     * Set the format property: The format of the export being delivered. Currently only 'Csv' is supported.
+     * Set the format property: The format of the export being delivered.
      *
      * @param format the format value to set.
      * @return the ExportInner object itself.
@@ -109,7 +94,7 @@ public class ExportInner extends ProxyResource {
     }
 
     /**
-     * Get the definition property: Has the definition for the export.
+     * Get the definition property: Has definition for the export.
      *
      * @return the definition value.
      */
@@ -118,7 +103,7 @@ public class ExportInner extends ProxyResource {
     }
 
     /**
-     * Set the definition property: Has the definition for the export.
+     * Set the definition property: Has definition for the export.
      *
      * @param definition the definition value to set.
      * @return the ExportInner object itself.
@@ -126,36 +111,6 @@ public class ExportInner extends ProxyResource {
     public ExportInner withDefinition(ExportDefinition definition) {
         this.definition = definition;
         return this;
-    }
-
-    /**
-     * Get the runHistory property: If requested, has the most recent execution history for the export.
-     *
-     * @return the runHistory value.
-     */
-    public ExportExecutionListResultInner runHistory() {
-        return this.runHistory;
-    }
-
-    /**
-     * Set the runHistory property: If requested, has the most recent execution history for the export.
-     *
-     * @param runHistory the runHistory value to set.
-     * @return the ExportInner object itself.
-     */
-    public ExportInner withRunHistory(ExportExecutionListResultInner runHistory) {
-        this.runHistory = runHistory;
-        return this;
-    }
-
-    /**
-     * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
-     * execution time.
-     *
-     * @return the nextRunTimeEstimate value.
-     */
-    public OffsetDateTime nextRunTimeEstimate() {
-        return this.nextRunTimeEstimate;
     }
 
     /**
@@ -211,9 +166,6 @@ public class ExportInner extends ProxyResource {
         }
         if (definition() != null) {
             definition().validate();
-        }
-        if (runHistory() != null) {
-            runHistory().validate();
         }
         if (schedule() != null) {
             schedule().validate();

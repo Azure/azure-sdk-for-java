@@ -3,9 +3,14 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.spark.OperationContext;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +78,36 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class CosmosQueryRequestOptionsHelper {
+        private static CosmosQueryRequestOptionsAccessor accessor;
+
+        private CosmosQueryRequestOptionsHelper() {}
+        static {
+            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+        }
+
+        public static void setCosmosQueryRequestOptionsAccessor(final CosmosQueryRequestOptionsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosQueryRequestOptionsAccessor getCosmosQueryRequestOptionsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosQueryRequestOptionsAccessor {
+            void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
+            OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
+        }
+    }
+
     public static final class CosmosItemResponseHelper {
         private static CosmosItemResponseBuilderAccessor accessor;
 
@@ -109,6 +144,37 @@ public class ImplementationBridgeHelpers {
             void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
 
             ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
+        }
+    }
+
+    public static final class CosmosClientHelper {
+        private static CosmosClientAccessor accessor;
+
+        private CosmosClientHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosClient.class);
+        }
+
+        public static void setCosmosClientAccessor(final CosmosClientAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosClientAccessor accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosClientAccessor geCosmosClientAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosClientAccessor accessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosClientAccessor {
+            CosmosAsyncClient getCosmosAsyncClient(CosmosClient cosmosClient);
         }
     }
 

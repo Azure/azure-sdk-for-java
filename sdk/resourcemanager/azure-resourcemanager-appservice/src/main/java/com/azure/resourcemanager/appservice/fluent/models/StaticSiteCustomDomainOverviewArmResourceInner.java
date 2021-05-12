@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.CustomDomainStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,6 +33,24 @@ public class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyRes
     @JsonProperty(value = "properties.createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
+    /*
+     * The status of the custom domain
+     */
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    private CustomDomainStatus status;
+
+    /*
+     * The TXT record validation token
+     */
+    @JsonProperty(value = "properties.validationToken", access = JsonProperty.Access.WRITE_ONLY)
+    private String validationToken;
+
+    /*
+     * The errorMessage property.
+     */
+    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
+    private String errorMessage;
+
     /**
      * Get the domainName property: The domain name for the static site custom domain.
      *
@@ -48,6 +67,40 @@ public class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyRes
      */
     public OffsetDateTime createdOn() {
         return this.createdOn;
+    }
+
+    /**
+     * Get the status property: The status of the custom domain.
+     *
+     * @return the status value.
+     */
+    public CustomDomainStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the validationToken property: The TXT record validation token.
+     *
+     * @return the validationToken value.
+     */
+    public String validationToken() {
+        return this.validationToken;
+    }
+
+    /**
+     * Get the errorMessage property: The errorMessage property.
+     *
+     * @return the errorMessage value.
+     */
+    public String errorMessage() {
+        return this.errorMessage;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteCustomDomainOverviewArmResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
     }
 
     /**
