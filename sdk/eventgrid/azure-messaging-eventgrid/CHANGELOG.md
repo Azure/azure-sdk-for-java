@@ -2,8 +2,8 @@
 
 ## 4.3.0 (2021-05-12)
 ### New Features
-- Added new storage system event `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
-- Added new policy insights system event `PolicyInsightsPolicyStateCreatedEventData`, `PolicyInsightsPolicyStateChangedEventData`, and `PolicyInsightsPolicyStateDeletedEventData`.
+- Added new Storage system events `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
+- Added new Policy Insights system events `PolicyInsightsPolicyStateCreatedEventData`, `PolicyInsightsPolicyStateChangedEventData`, and `PolicyInsightsPolicyStateDeletedEventData`.
 
 ### Dependency Updates
 - Update `azure-core` dependency to `1.16.0`.
@@ -82,4 +82,3 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
-
