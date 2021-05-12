@@ -3,7 +3,6 @@
 
 package com.azure.spring.servicebus.stream.binder;
 
-import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
@@ -31,18 +30,10 @@ public class ServiceBusTopicPartitionBinderTests
     @Mock
     ServiceBusTopicClientFactory clientFactory;
 
-    @Mock
-    SubscriptionClient subscriptionClient;
-
     private ServiceBusTopicTestBinder binder;
 
     @Before
     public void setUp() {
-//        when(this.clientFactory.getOrCreateSubscriptionClient(anyString(), anyString())).thenReturn(
-//            this.subscriptionClient);
-//        CompletableFuture<Void> future = new CompletableFuture<>();
-//        future.complete(null);
-//        when(this.subscriptionClient.completeAsync(any())).thenReturn(future);
         this.binder = new ServiceBusTopicTestBinder(new ServiceBusTopicTestOperation(this.clientFactory));
     }
 

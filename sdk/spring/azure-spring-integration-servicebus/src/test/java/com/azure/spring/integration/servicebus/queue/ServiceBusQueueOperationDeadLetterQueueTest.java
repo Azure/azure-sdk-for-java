@@ -18,7 +18,7 @@ public class ServiceBusQueueOperationDeadLetterQueueTest extends ServiceBusQueue
         subscribe(destination, m -> sendSubscribeOperation.deadLetter(destination, m, "reason", "desc"), User.class);
 
         sendSubscribeOperation.sendAsync(destination, userMessage);
-        verifyDeadLetterCalledTimes(0);
+        verifyDeadLetterCalledTimes(1);
         verifyCompleteCalledTimes(1);
     }
 

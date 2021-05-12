@@ -34,10 +34,6 @@ public class ServiceBusQueuePartitionBinderTests
 
     @Before
     public void setUp() {
-//        when(this.clientFactory.getOrCreateProcessor(anyString(), any(), any())).thenReturn(this.processorClient);
-//        CompletableFuture<Void> future = new CompletableFuture<>();
-//        future.complete(null);
-//        when(this.processorClient.completeAsync(any())).thenReturn(future);
         this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory));
     }
 
