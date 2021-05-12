@@ -4,6 +4,7 @@
 package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -269,6 +270,7 @@ class FileServiceAsyncAPITests extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share min"() {
         given:
         def shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName())
@@ -293,6 +295,7 @@ class FileServiceAsyncAPITests extends APISpec {
         .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share max"() {
         given:
         def shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName())
@@ -318,6 +321,7 @@ class FileServiceAsyncAPITests extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share error"() {
         when:
         def setPropertyVerifier = StepVerifier.create(primaryFileServiceAsyncClient.undeleteShare(generateShareName(), "01D60F8BB59A4652"))

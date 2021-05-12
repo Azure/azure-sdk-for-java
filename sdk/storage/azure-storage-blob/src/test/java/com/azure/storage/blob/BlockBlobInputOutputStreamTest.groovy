@@ -8,6 +8,7 @@ import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -265,6 +266,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes1 == randomBytes
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "IS consistent read control etag user provides version client chooses etag"() {
         setup:
         int length = Constants.KB

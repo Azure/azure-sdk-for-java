@@ -6,6 +6,7 @@ package com.azure.storage.file.share
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -331,6 +332,7 @@ class FileServiceAPITests extends APISpec {
         INVALID_ALLOWED_METHOD | 400        | ShareErrorCode.INVALID_XML_NODE_VALUE
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share min"() {
         given:
         def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
@@ -352,6 +354,7 @@ class FileServiceAPITests extends APISpec {
         restoredShareClient.getFileClient(fileName).exists()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share max"() {
         given:
         def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
@@ -375,6 +378,7 @@ class FileServiceAPITests extends APISpec {
         restoredShareClient.getFileClient(fileName).exists()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share error"() {
         when:
         primaryFileServiceClient.undeleteShare(generateShareName(), "01D60F8BB59A4652")

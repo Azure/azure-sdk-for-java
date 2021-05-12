@@ -489,6 +489,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list tags"() {
         setup:
@@ -515,6 +516,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC"() {
         setup:
@@ -545,6 +547,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC fail"() {
         setup:
@@ -670,6 +673,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags"() {
         setup:
         def t = new HashMap<String, String>()
@@ -683,6 +687,7 @@ class BlockBlobAPITest extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags fail"() {
         when:
         blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"notfoo\" = 'notbar'"), null, Context.NONE)
@@ -779,6 +784,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @LiveOnly
     def "Upload from file with tags"() {
         given:
@@ -1023,6 +1029,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload tags"() {
         setup:
@@ -1050,6 +1057,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC"() {
         setup:
@@ -1080,6 +1088,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC fail"() {
         setup:
@@ -1590,6 +1599,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @LiveOnly
     def "Buffered upload tags"() {
