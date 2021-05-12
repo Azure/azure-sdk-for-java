@@ -8,8 +8,6 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-import static com.azure.spring.utils.Constants.NOT_CONFIGURED_STATUS;
-
 /**
  * Indicator class of KeyVaultHealth
  */
@@ -23,12 +21,19 @@ public class KeyVaultHealthIndicator implements HealthIndicator {
 
     @Override
     public Health health() {
-        Status status = environment.getPropertySources().stream()
-                                   .filter(propertySource -> propertySource instanceof KeyVaultPropertySource)
-                                   .map(propertySource -> (KeyVaultPropertySource) propertySource)
-                                   .map(KeyVaultPropertySource::getStatusCode)
-                                   .findFirst()
-                                   .orElse(null);
-        return status == null ? Health.status(NOT_CONFIGURED_STATUS).build() : Health.status(status).build();
+        KeyVaultPropertySource keyVaultPropertySource =
+            environment.getPropertySources()
+                       .stream()
+                       .filter(propertySource -> propertySource instanceof KeyVaultPropertySource)
+                       .map(propertySource -> (KeyVaultPropertySource) propertySource)
+                       .findFirst()
+                       .orElse(null);
+        if (keyVaultPropertySource == null) {
+            return Health.status(Status.UNKNOWN).build();
+        } else if (keyVaultPropertySource.isUp()) {
+            return Health.status(Status.UP).build();
+        } else {
+            return Health.status(Status.DOWN).build();
+        }
     }
 }
