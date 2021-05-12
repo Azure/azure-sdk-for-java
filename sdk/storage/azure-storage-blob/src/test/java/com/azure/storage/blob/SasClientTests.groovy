@@ -291,7 +291,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_07_07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "container sas tags"() {
         setup:
         def permissions = new BlobContainerSasPermission()
