@@ -46,31 +46,5 @@ public final class FileSystemUndeleteOptions {
         return deletedFileSystemVersion;
     }
 
-    /**
-     * Gets the destination file system name.
-     * The restored file system
-     * will be renamed to the <code>destinationFileSystemName</code>.
-     * If the file system associated with provided <code>destinationFileSystemName</code>
-     * already exists, the undelete operation will result in a 409 (conflict).
-     *
-     * @return The destination file system name.
-     */
-    public String getDestinationFileSystemName() {
-        return destinationFileSystemName;
-    }
-
-    /**
-     * Sets the destination file system name.
-     * The restored file system
-     * will be renamed to the <code>destinationFileSystemName</code>.
-     * If the file system associated with provided <code>destinationFileSystemName</code>
-     * already exists, the undelete operation will result in a 409 (conflict).
-     *
-     * @param destinationFileSystemName The destination file system name.
-     * @return The updated options.
-     */
-    public FileSystemUndeleteOptions setDestinationFileSystemName(String destinationFileSystemName) {
-        this.destinationFileSystemName = destinationFileSystemName;
-        return this;
-    }
+    // TODO (gapra) : Bring back destination file system name when there is support for it
 }

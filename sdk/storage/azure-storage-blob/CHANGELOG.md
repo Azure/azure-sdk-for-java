@@ -2,6 +2,7 @@
 
 ## 12.12.0-beta.1 (2021-05-11)
 - Added support for the 2020-08-04 service version.
+- Deprecated support to undelete a blob container to a new name. 
 
 ## 12.11.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 

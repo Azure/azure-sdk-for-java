@@ -437,6 +437,8 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listPaths().first().getName() == blobName
     }
 
+    // TODO (gapra) : Bring back destination file system name when there is support for it
+    /*
     @PlaybackOnly
     def "Restore file system into other file system"() {
         given:
@@ -464,7 +466,7 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listPaths().size() == 1
         restoredContainerClient.listPaths().first().getName() == blobName
         restoredContainerClient.getFileSystemName() == destinationFileSystemName
-    }
+    } */
 
     def "Restore file system with response"() {
         given:
@@ -565,6 +567,8 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException.class)
     }
 
+    // TODO (gapra) : Bring back destination file system name when there is support for it
+    /*
     def "Restore file system into existing file system error"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -588,7 +592,7 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException.class)
-    }
+    } */
 
 //    def "Rename file system"() {
 //        setup:
