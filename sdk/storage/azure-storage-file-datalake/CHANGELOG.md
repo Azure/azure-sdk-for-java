@@ -5,6 +5,7 @@
 - Added support to undelete a file or directory
 - Added support to list deletedPaths
 - Added support to get/set service properties
+- Deprecated support to undelete a file system to a new name. 
 
 ## 12.5.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 
