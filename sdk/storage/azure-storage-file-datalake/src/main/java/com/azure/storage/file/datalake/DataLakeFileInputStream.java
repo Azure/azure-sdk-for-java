@@ -81,7 +81,7 @@ public final class DataLakeFileInputStream extends StorageInputStream {
         } catch (final DataLakeStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
-            throw logger.logThrowableAsError(this.lastError);
+            throw (DataLakeStorageException)logger.logThrowableAsError(this.lastError);
         }
     }
 
