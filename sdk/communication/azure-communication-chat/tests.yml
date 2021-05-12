@@ -1,23 +1,46 @@
 trigger: none
 
 stages:
-    - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-      parameters:
-          AllocateResourceGroup: 'false'
-          BuildTargetingString: 'azure-communication-chat'
-          JobName: chat
-          ServiceDirectory: communication
-          TestSamples: true
-          CloudConfig:
-              Public:
-                  SubscriptionConfigurations:
-                      - $(sub-config-azure-cloud-test-resources)
-                      - $(sub-config-communication-services-cloud-test-resources-common)
-                      - $(sub-config-communication-services-cloud-test-resources-java)
-              Clouds: Public
+- template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+      CloudConfig:
+          Public:
+              SubscriptionConfigurations:
+                  - $(sub-config-azure-cloud-test-resources)
+                  - $(sub-config-communication-services-cloud-test-resources-common)
+                  - $(sub-config-communication-services-cloud-test-resources-java)
+          Clouds: Public
           Artifacts:
               -   name: azure-communication-chat
                   groupId: com.azure
                   safeName: azurecommunicationchat
+          ServiceDirectory: communication
+          PostSteps:
+              -   task: Maven@3
+                  displayName: 'Generate aggregate code coverage report'
+                  # The OSName variable gets set by the verify-agent-os.yml template
+                  condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
+                  inputs:
+                      mavenPomFile: sdk/communication/azure-communication-chat/pom.xml
+                      options: -Pcoverage
+                      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                      javaHomeOption: 'JDKVersion'
+                      jdkVersionOption: $(JavaTestVersion)
+                      jdkArchitectureOption: 'x64'
+                      goals: jacoco:report-aggregate
+                      # we want to run this when TestFromSource isn't true
+                      condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+              # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
+              # Code coverage reporting is setup only for Track 2 modules.
+              -   task: PublishCodeCoverageResults@1
+                  condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
+                  inputs:
+                      codeCoverageTool: JaCoCo
+                      summaryFileLocation: sdk/communication/azure-communication-chat/target/site/jacoco-aggregate/jacoco.xml
+                      reportDirectory: sdk/communication/azure-communication-chat/target/site/jacoco-aggregate/
+                      failIfCoverageEmpty: false
+          EnvVars:
+              SKIP_LIVE_TEST: TRUE
 
 
