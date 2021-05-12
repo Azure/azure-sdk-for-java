@@ -21,6 +21,7 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -102,6 +103,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier rehydrate priority"() {
         setup:
@@ -132,6 +134,7 @@ class BatchAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier AC"() {
         setup:
@@ -767,6 +770,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     // Container scoped batch
     def "Set tier all succeed container scoped"() {
         setup:
@@ -794,6 +798,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Delete blob all succeed container scoped"() {
         setup:
         def containerName = generateContainerName()
@@ -820,6 +825,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Bulk delete blobs container scoped"() {
         setup:
         def containerName = generateContainerName()
@@ -844,6 +850,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Bulk set access tier container scoped"() {
         setup:
         def containerName = generateContainerName()
@@ -920,6 +927,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Submit batch with container sas credentials"() {
         setup:
         def containerName = generateContainerName()
@@ -968,6 +976,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Submit batch with container sas credentials error"() {
         setup:
         def containerName = generateContainerName()
