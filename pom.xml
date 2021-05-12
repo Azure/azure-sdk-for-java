@@ -266,6 +266,10 @@
                     <packages>com.azure.iot.modelsrepository*</packages>
                   </group>
                   <group>
+                    <title>Azure FarmBeats</title>
+                    <packages>com.azure.verticals.agrifood.farming*</packages>
+                  </group>
+                  <group>
                     <title>Azure Form Recognizer</title>
                     <packages>com.azure.ai.formrecognizer*</packages>
                   </group>
@@ -598,6 +602,7 @@
                     -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                     -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/java
                     <!-- -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
@@ -732,6 +737,7 @@
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
+        <module>sdk/farmbeats</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>

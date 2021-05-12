@@ -6,7 +6,6 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
@@ -23,16 +22,13 @@ import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +38,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class EncryptionCrudTest extends TestSuiteBase {
+public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private static final int TIMEOUT = 6000_000;
@@ -53,7 +49,7 @@ public class EncryptionCrudTest extends TestSuiteBase {
     private EncryptionKeyWrapMetadata metadata2;
 
     @Factory(dataProvider = "clientBuilders")
-    public EncryptionCrudTest(CosmosClientBuilder clientBuilder) {
+    public EncryptionAsyncApiCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -89,77 +85,65 @@ public class EncryptionCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
-    public void createItemEncrypt_readItemDecrypt() throws MicrosoftDataEncryptionException, IOException {
-        Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+    public void createItemEncrypt_readItemDecrypt() {
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
-        Pojo responseItem = itemResponse.getItem();
+        EncryptionPojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
-        Pojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
-            new CosmosItemRequestOptions(), Pojo.class).block().getItem();
+        EncryptionPojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.getId(), new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions(), EncryptionPojo.class).block().getItem();
         validateResponse(properties, readItem);
 
-        //Check for max length support of 8000
+        //Check for length support greater than 8000
         properties = getItem(UUID.randomUUID().toString());
         String longString = "";
-        for (int i = 0; i < 8000; i++) {
+        for (int i = 0; i < 10000; i++) {
             longString += "a";
         }
-        properties.sensitiveString = longString;
+        properties.setSensitiveString(longString);
         itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
-
-        //Check for exception for length greater that 8000
-        longString += "a";
-        properties.sensitiveString = longString;
-        try {
-            cosmosEncryptionAsyncContainer.createItem(properties,
-                new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
-            fail("Item create should fail as length of encryption field  is greater than 8000");
-        } catch (CosmosException ex) {
-            assertThat(ex.getMessage()).contains("Unable to convert JSON to byte[]");
-            assertThat(ex.getCause() instanceof MicrosoftDataEncryptionException).isTrue();
-        }
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void upsertItem_readItem() {
-        Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.upsertItem(properties,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.upsertItem(properties,
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
-        Pojo responseItem = itemResponse.getItem();
+        EncryptionPojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
-        Pojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.id, new PartitionKey(properties.mypk),
-            new CosmosItemRequestOptions(), Pojo.class).block().getItem();
+        EncryptionPojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.getId(), new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions(), EncryptionPojo.class).block().getItem();
         validateResponse(properties, readItem);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItems() {
-        Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
-        Pojo responseItem = itemResponse.getItem();
+        EncryptionPojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", properties.id);
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosPagedFlux<Pojo> feedResponseIterator =
-            cosmosEncryptionAsyncContainer.queryItems(querySpec, cosmosQueryRequestOptions, Pojo.class);
-        List<Pojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
+        CosmosPagedFlux<EncryptionPojo> feedResponseIterator =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec, cosmosQueryRequestOptions, EncryptionPojo.class);
+        List<EncryptionPojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
         assertThat(feedResponse.size()).isGreaterThanOrEqualTo(1);
-        for (Pojo pojo : feedResponse) {
-            if (pojo.id.equals(properties.id)) {
+        for (EncryptionPojo pojo : feedResponse) {
+            if (pojo.getId().equals(properties.getId())) {
                 validateResponse(pojo, responseItem);
             }
         }
@@ -167,34 +151,34 @@ public class EncryptionCrudTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsOnEncryptedProperties() {
-        Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
-        Pojo responseItem = itemResponse.getItem();
+        EncryptionPojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
         String query = String.format("SELECT * FROM c where c.sensitiveString = @sensitiveString and c.nonSensitive =" +
             " " +
             "@nonSensitive and c.sensitiveLong = @sensitiveLong");
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.nonSensitive);
+        SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.getNonSensitive());
         querySpec.getParameters().add(parameter1);
 
-        SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.sensitiveString);
-        SqlParameter parameter3 = new SqlParameter("@sensitiveLong", properties.sensitiveLong);
+        SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.getSensitiveString());
+        SqlParameter parameter3 = new SqlParameter("@sensitiveLong", properties.getSensitiveLong());
         SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption = new SqlQuerySpecWithEncryption(querySpec);
         sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveString", parameter2);
         sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveLong", parameter3);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        CosmosPagedFlux<Pojo> feedResponseIterator =
+        CosmosPagedFlux<EncryptionPojo> feedResponseIterator =
             cosmosEncryptionAsyncContainer.queryItemsOnEncryptedProperties(sqlQuerySpecWithEncryption,
-                cosmosQueryRequestOptions, Pojo.class);
-        List<Pojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
+                cosmosQueryRequestOptions, EncryptionPojo.class);
+        List<EncryptionPojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
         assertThat(feedResponse.size()).isGreaterThanOrEqualTo(1);
-        for (Pojo pojo : feedResponse) {
-            if (pojo.id.equals(properties.id)) {
+        for (EncryptionPojo pojo : feedResponse) {
+            if (pojo.getId().equals(properties.getId())) {
                 validateResponse(pojo, responseItem);
             }
         }
@@ -202,56 +186,54 @@ public class EncryptionCrudTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsOnRandomizedEncryption() {
-        Pojo properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
-        Pojo responseItem = itemResponse.getItem();
+        EncryptionPojo responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
 
         String query = String.format("SELECT * FROM c where c.sensitiveString = @sensitiveString and c.nonSensitive =" +
             " " +
             "@nonSensitive and c.sensitiveDouble = @sensitiveDouble");
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.nonSensitive);
+        SqlParameter parameter1 = new SqlParameter("@nonSensitive", properties.getNonSensitive());
         querySpec.getParameters().add(parameter1);
 
-        SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.sensitiveString);
-        SqlParameter parameter3 = new SqlParameter("@sensitiveDouble", properties.sensitiveDouble);
+        SqlParameter parameter2 = new SqlParameter("@sensitiveString", properties.getSensitiveString());
+        SqlParameter parameter3 = new SqlParameter("@sensitiveDouble", properties.getSensitiveDouble());
         SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption = new SqlQuerySpecWithEncryption(querySpec);
         sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveString", parameter2);
         sqlQuerySpecWithEncryption.addEncryptionParameter("/sensitiveDouble", parameter3);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        CosmosPagedFlux<Pojo> feedResponseIterator =
+        CosmosPagedFlux<EncryptionPojo> feedResponseIterator =
             cosmosEncryptionAsyncContainer.queryItemsOnEncryptedProperties(sqlQuerySpecWithEncryption,
-                cosmosQueryRequestOptions, Pojo.class);
+                cosmosQueryRequestOptions, EncryptionPojo.class);
         try {
-            List<Pojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
+            List<EncryptionPojo> feedResponse = feedResponseIterator.byPage().blockFirst().getResults();
             fail("Query on randomized parameter should fail");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).contains("Path /sensitiveDouble cannot be used in the " +
                 "query because of randomized encryption");
         }
-
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() throws Exception {
         List<String> actualIds = new ArrayList<>();
-        Pojo properties = getItem(UUID.randomUUID().toString());
-        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions()).block();
-        actualIds.add(properties.id);
+        actualIds.add(properties.getId());
         properties = getItem(UUID.randomUUID().toString());
-        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions()).block();
-        actualIds.add(properties.id);
+        actualIds.add(properties.getId());
         properties = getItem(UUID.randomUUID().toString());
-        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.mypk),
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions()).block();
-        actualIds.add(properties.id);
-
+        actualIds.add(properties.getId());
 
         String query = String.format("SELECT * from c where c.id in ('%s', '%s', '%s')", actualIds.get(0),
             actualIds.get(1), actualIds.get(2));
@@ -262,13 +244,13 @@ public class EncryptionCrudTest extends TestSuiteBase {
         int initialDocumentCount = 3;
         int finalDocumentCount = 0;
 
-        CosmosPagedFlux<Pojo> feedResponseIterator =
-            cosmosEncryptionAsyncContainer.queryItems(query, cosmosQueryRequestOptions, Pojo.class);
+        CosmosPagedFlux<EncryptionPojo> feedResponseIterator =
+            cosmosEncryptionAsyncContainer.queryItems(query, cosmosQueryRequestOptions, EncryptionPojo.class);
 
         do {
-            Iterable<FeedResponse<Pojo>> feedResponseIterable =
-                feedResponseIterator.byPage(1).toIterable();
-            for (FeedResponse<Pojo> fr : feedResponseIterable) {
+            Iterable<FeedResponse<EncryptionPojo>> feedResponseIterable =
+                feedResponseIterator.byPage(continuationToken, 1).toIterable();
+            for (FeedResponse<EncryptionPojo> fr : feedResponseIterable) {
                 int resultSize = fr.getResults().size();
                 assertThat(resultSize).isEqualTo(pageSize);
                 finalDocumentCount += fr.getResults().size();
@@ -279,144 +261,109 @@ public class EncryptionCrudTest extends TestSuiteBase {
         assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
     }
 
+    static void validateResponse(EncryptionPojo originalItem, EncryptionPojo result) {
+        assertThat(result.getId()).isEqualTo(originalItem.getId());
+        assertThat(result.getNonSensitive()).isEqualTo(originalItem.getNonSensitive());
+        assertThat(result.getSensitiveString()).isEqualTo(originalItem.getSensitiveString());
+        assertThat(result.getSensitiveInt()).isEqualTo(originalItem.getSensitiveInt());
+        assertThat(result.getSensitiveFloat()).isEqualTo(originalItem.getSensitiveFloat());
+        assertThat(result.getSensitiveLong()).isEqualTo(originalItem.getSensitiveLong());
+        assertThat(result.getSensitiveDouble()).isEqualTo(originalItem.getSensitiveDouble());
+        assertThat(result.isSensitiveBoolean()).isEqualTo(originalItem.isSensitiveBoolean());
+        assertThat(result.getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveIntArray());
+        assertThat(result.getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveStringArray());
+        assertThat(result.getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveString3DArray());
 
-    private void validateResponse(Pojo originalItem, Pojo result) {
-        assertThat(result.id).isEqualTo(originalItem.id);
-        assertThat(result.mypk).isEqualTo(originalItem.mypk);
-        assertThat(result.nonSensitive).isEqualTo(originalItem.nonSensitive);
-        assertThat(result.sensitiveString).isEqualTo(originalItem.sensitiveString);
-        assertThat(result.sensitiveInt).isEqualTo(originalItem.sensitiveInt);
-        assertThat(result.sensitiveFloat).isEqualTo(originalItem.sensitiveFloat);
-        assertThat(result.sensitiveLong).isEqualTo(originalItem.sensitiveLong);
-        assertThat(result.sensitiveDouble).isEqualTo(originalItem.sensitiveDouble);
-        assertThat(result.sensitiveBoolean).isEqualTo(originalItem.sensitiveBoolean);
-        assertThat(result.sensitiveIntArray).isEqualTo(originalItem.sensitiveIntArray);
-        assertThat(result.sensitiveStringArray).isEqualTo(originalItem.sensitiveStringArray);
-        assertThat(result.sensitiveString3DArray).isEqualTo(originalItem.sensitiveString3DArray);
+        assertThat(result.getSensitiveNestedPojo().getId()).isEqualTo(originalItem.getSensitiveNestedPojo().getId());
+        assertThat(result.getSensitiveNestedPojo().getMypk()).isEqualTo(originalItem.getSensitiveNestedPojo().getMypk());
+        assertThat(result.getSensitiveNestedPojo().getNonSensitive()).isEqualTo(originalItem.getSensitiveNestedPojo().getNonSensitive());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveString()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveString());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveInt()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveInt());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveFloat()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveFloat());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveLong()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveLong());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveDouble()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveDouble());
+        assertThat(result.getSensitiveNestedPojo().isSensitiveBoolean()).isEqualTo(originalItem.getSensitiveNestedPojo().isSensitiveBoolean());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveIntArray());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveStringArray());
+        assertThat(result.getSensitiveNestedPojo().getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveString3DArray());
 
-        assertThat(result.sensitiveNestedPojo.id).isEqualTo(originalItem.sensitiveNestedPojo.id);
-        assertThat(result.sensitiveNestedPojo.mypk).isEqualTo(originalItem.sensitiveNestedPojo.mypk);
-        assertThat(result.sensitiveNestedPojo.nonSensitive).isEqualTo(originalItem.sensitiveNestedPojo.nonSensitive);
-        assertThat(result.sensitiveNestedPojo.sensitiveString).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveString);
-        assertThat(result.sensitiveNestedPojo.sensitiveInt).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveInt);
-        assertThat(result.sensitiveNestedPojo.sensitiveFloat).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveFloat);
-        assertThat(result.sensitiveNestedPojo.sensitiveLong).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveLong);
-        assertThat(result.sensitiveNestedPojo.sensitiveDouble).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveDouble);
-        assertThat(result.sensitiveNestedPojo.sensitiveBoolean).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveBoolean);
-        assertThat(result.sensitiveNestedPojo.sensitiveIntArray).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveIntArray);
-        assertThat(result.sensitiveNestedPojo.sensitiveStringArray).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveStringArray);
-        assertThat(result.sensitiveNestedPojo.sensitiveString3DArray).isEqualTo(originalItem.sensitiveNestedPojo.sensitiveString3DArray);
+        assertThat(result.getSensitiveChildPojoList().size()).isEqualTo(originalItem.getSensitiveChildPojoList().size());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveString()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveString());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveInt()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveInt());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveFloat()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveFloat());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveLong()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveLong());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveDouble()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveDouble());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveIntArray());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveStringArray());
+        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveString3DArray());
 
-        assertThat(result.sensitiveChildPojoList.size()).isEqualTo(originalItem.sensitiveChildPojoList.size());
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveString).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveString);
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveInt).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveInt);
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveFloat).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveFloat);
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveLong).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveLong);
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveDouble).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveDouble);
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveIntArray).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveIntArray);
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveStringArray).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveStringArray);
-        assertThat(result.sensitiveChildPojoList.get(0).sensitiveString3DArray).isEqualTo(originalItem.sensitiveChildPojoList.get(0).sensitiveString3DArray);
-
-        assertThat(result.sensitiveChildPojo2DArray.length).isEqualTo(originalItem.sensitiveChildPojo2DArray.length);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveString).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveString);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveInt).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveInt);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveFloat).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveFloat);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveLong).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveLong);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveDouble).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveDouble);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveIntArray).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveIntArray);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveStringArray).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveStringArray);
-        assertThat(result.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray).isEqualTo(originalItem.sensitiveChildPojo2DArray[0][0].sensitiveString3DArray);
+        assertThat(result.getSensitiveChildPojo2DArray().length).isEqualTo(originalItem.getSensitiveChildPojo2DArray().length);
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString());
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveInt()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveInt());
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveFloat()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveFloat());
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveLong()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveLong());
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveDouble()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveDouble());
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray());
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray());
+        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray());
     }
 
-    public static Pojo getItem(String documentId) {
-        Pojo pojo = new Pojo();
-        pojo.id = documentId;
-        pojo.mypk = documentId;
-        pojo.nonSensitive = UUID.randomUUID().toString();
-        pojo.sensitiveString = "testingString";
-        pojo.sensitiveDouble = 10.123;
-        pojo.sensitiveFloat = 20.0f;
-        pojo.sensitiveInt = 30;
-        pojo.sensitiveLong = 1234;
-        pojo.sensitiveBoolean = true;
+    public static EncryptionPojo getItem(String documentId) {
+        EncryptionPojo pojo = new EncryptionPojo();
+        pojo.setId(documentId);
+        pojo.setMypk(documentId);
+        pojo.setNonSensitive(UUID.randomUUID().toString());
+        pojo.setSensitiveString("testingString");
+        pojo.setSensitiveDouble(10.123);
+        pojo.setSensitiveFloat(20.0f);
+        pojo.setSensitiveInt(30);
+        pojo.setSensitiveLong(1234);
+        pojo.setSensitiveBoolean(true);
 
-        Pojo nestedPojo = new Pojo();
-        nestedPojo.id = "nestedPojo";
-        nestedPojo.mypk = "nestedPojo";
-        nestedPojo.sensitiveString = "nestedPojo";
-        nestedPojo.sensitiveDouble = 10.123;
-        nestedPojo.sensitiveInt = 123;
-        nestedPojo.sensitiveLong = 1234;
-        nestedPojo.sensitiveStringArray = new String[]{"str1", "str1"};
-        nestedPojo.sensitiveString3DArray = new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
-            "str7", "str8"}}};
-        nestedPojo.sensitiveBoolean = true;
+        EncryptionPojo nestedPojo = new EncryptionPojo();
+        nestedPojo.setId("nestedPojo");
+        nestedPojo.setMypk("nestedPojo");
+        nestedPojo.setSensitiveString("nestedPojo");
+        nestedPojo.setSensitiveDouble(10.123);
+        nestedPojo.setSensitiveInt(123);
+        nestedPojo.setSensitiveLong(1234);
+        nestedPojo.setSensitiveStringArray(new String[]{"str1", "str1"});
+        nestedPojo.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+            "str7", "str8"}}});
+        nestedPojo.setSensitiveBoolean(true);
 
-        pojo.sensitiveNestedPojo = nestedPojo;
+        pojo.setSensitiveNestedPojo(nestedPojo);
 
-        pojo.sensitiveIntArray = new int[]{1, 2};
-        pojo.sensitiveStringArray = new String[]{"str1", "str1"};
-        pojo.sensitiveString3DArray = new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
-            "str7", "str8"}}};
+        pojo.setSensitiveIntArray(new int[]{1, 2});
+        pojo.setSensitiveStringArray(new String[]{"str1", "str1"});
+        pojo.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+            "str7", "str8"}}});
 
-        Pojo childPojo1 = new Pojo();
-        childPojo1.id = "childPojo1";
-        childPojo1.sensitiveString = "child1TestingString";
-        childPojo1.sensitiveDouble = 10.123;
-        childPojo1.sensitiveInt = 123;
-        childPojo1.sensitiveLong = 1234;
-        childPojo1.sensitiveBoolean = true;
-        childPojo1.sensitiveStringArray = new String[]{"str1", "str1"};
-        childPojo1.sensitiveString3DArray = new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
-            "str7", "str8"}}};
-        Pojo childPojo2 = new Pojo();
-        childPojo2.id = "childPojo2";
-        childPojo2.sensitiveString = "child2TestingString";
-        childPojo2.sensitiveDouble = 10.123;
-        childPojo2.sensitiveInt = 123;
-        childPojo2.sensitiveLong = 1234;
-        childPojo2.sensitiveBoolean = true;
+        EncryptionPojo childPojo1 = new EncryptionPojo();
+        childPojo1.setId("childPojo1");
+        childPojo1.setSensitiveString("child1TestingString");
+        childPojo1.setSensitiveDouble(10.123);
+        childPojo1.setSensitiveInt(123);
+        childPojo1.setSensitiveLong(1234);
+        childPojo1.setSensitiveBoolean(true);
+        childPojo1.setSensitiveStringArray(new String[]{"str1", "str1"});
+        childPojo1.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+            "str7", "str8"}}});
+        EncryptionPojo childPojo2 = new EncryptionPojo();
+        childPojo2.setId("childPojo2");
+        childPojo2.setSensitiveString("child2TestingString");
+        childPojo2.setSensitiveDouble(10.123);
+        childPojo2.setSensitiveInt(123);
+        childPojo2.setSensitiveLong(1234);
+        childPojo2.setSensitiveBoolean(true);
 
-        pojo.sensitiveChildPojoList = new ArrayList<>();
-        pojo.sensitiveChildPojoList.add(childPojo1);
-        pojo.sensitiveChildPojoList.add(childPojo2);
+        pojo.setSensitiveChildPojoList(new ArrayList<>());
+        pojo.getSensitiveChildPojoList().add(childPojo1);
+        pojo.getSensitiveChildPojoList().add(childPojo2);
 
-        pojo.sensitiveChildPojo2DArray = new Pojo[][]{{childPojo1, childPojo2}, {childPojo1, childPojo2}};
+        pojo.setSensitiveChildPojo2DArray(new EncryptionPojo[][]{{childPojo1, childPojo2}, {childPojo1, childPojo2}});
 
         return pojo;
-    }
-
-
-    public static class Pojo {
-        public String id;
-        @JsonProperty
-        public String mypk;
-        @JsonProperty
-        public String nonSensitive;
-        @JsonProperty
-        public String sensitiveString;
-        @JsonProperty
-        public int sensitiveInt;
-        @JsonProperty
-        public float sensitiveFloat;
-        @JsonProperty
-        public long sensitiveLong;
-        @JsonProperty
-        public double sensitiveDouble;
-        @JsonProperty
-        public boolean sensitiveBoolean;
-        @JsonProperty
-        public Pojo sensitiveNestedPojo;
-        @JsonProperty
-        public int[] sensitiveIntArray;
-        @JsonProperty
-        public String[] sensitiveStringArray;
-        @JsonProperty
-        public String[][][] sensitiveString3DArray;
-        @JsonProperty
-        public Pojo[][] sensitiveChildPojo2DArray;
-        @JsonProperty
-        public List<Pojo> sensitiveChildPojoList;
     }
 
     public static class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
@@ -448,12 +395,12 @@ public class EncryptionCrudTest extends TestSuiteBase {
         }
 
         @Override
-        public byte[] sign(String s, boolean b) throws MicrosoftDataEncryptionException {
+        public byte[] sign(String s, boolean b) {
             return new byte[0];
         }
 
         @Override
-        public boolean verify(String s, boolean b, byte[] bytes) throws MicrosoftDataEncryptionException {
+        public boolean verify(String s, boolean b, byte[] bytes) {
             return true;
         }
     }

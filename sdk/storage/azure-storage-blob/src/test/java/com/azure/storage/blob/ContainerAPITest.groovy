@@ -1602,12 +1602,10 @@ class ContainerAPITest extends APISpec {
             cc.create()
         }
 
-        AppendBlobClient bc = new BlobClientBuilder()
+        AppendBlobClient bc = instrument(new BlobClientBuilder()
             .credential(env.primaryAccount.credential)
             .endpoint(env.primaryAccount.blobEndpoint)
-            .blobName("rootblob")
-            .httpClient(getHttpClient())
-            .pipeline(cc.getHttpPipeline())
+            .blobName("rootblob"))
             .buildClient().getAppendBlobClient()
 
         when:
@@ -1630,11 +1628,10 @@ class ContainerAPITest extends APISpec {
         }
 
         when:
-        cc = new BlobContainerClientBuilder()
+        cc = instrument(new BlobContainerClientBuilder()
             .credential(env.primaryAccount.credential)
             .endpoint(env.primaryAccount.blobEndpoint)
-            .containerName(null)
-            .pipeline(cc.getHttpPipeline())
+            .containerName(null))
             .buildClient()
 
         then:

@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -685,6 +686,7 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | 1
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
