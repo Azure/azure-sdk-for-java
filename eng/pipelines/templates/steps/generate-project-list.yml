@@ -44,7 +44,7 @@ steps:
         Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]$(SpringProjectPathList),./sdk/${{parameters.ServiceDirectory}}/azure-spring-boot-samples/${{artifact.name}}"
       displayName: Append ./sdk/${{parameters.ServiceDirectory}}/azure-spring-boot-samples/${{artifact.name}} to project path list
 
-- ${{if eq(artifact.groupId, 'com.azure.spring')}}:
+- ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-2-3')}}:
   - pwsh: |
       Write-Host "##vso[task.setvariable variable=ProjectList]$SpringProjectPathList"
       displayName: Reset ProjectListvalue variable
