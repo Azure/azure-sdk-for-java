@@ -13,6 +13,7 @@ import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import reactor.test.StepVerifier
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 class FileServiceAsyncAPITests extends APISpec {
@@ -210,6 +211,7 @@ class FileServiceAsyncAPITests extends APISpec {
         shareProperty.getProvisionedIops()
     }
 
+    @ResourceLock("ServiceProperties")
     def "Set and get properties"() {
         given:
         def originalProperties = primaryFileServiceAsyncClient.getProperties().block()

@@ -26,6 +26,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
 import com.microsoft.azure.storage.blob.BlobRequestOptions
@@ -194,7 +195,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encryption large"() {
         expect:
         encryptionTestHelper(size, byteBufferCount)
@@ -229,7 +230,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encryption computeMd5"() {
         setup:
         def byteBufferList = []
@@ -283,7 +284,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that metadata in encryption is successfully set
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encryption metadata"() {
         setup:
         Map<String, String> metadata = new HashMap<>()
@@ -387,7 +388,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the upload to file method on an encrypted client
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encrypted upload file"() {
         setup:
         def file = getRandomFile(Constants.MB)
@@ -473,7 +474,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Tests key resolver
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Key resolver used to decrypt data large"() {
         expect:
         keyResolverTestHelper(size, byteBufferCount)
@@ -518,7 +519,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with old SDK download with new SDK.
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Cross platform test upload old download new"() {
         setup:
         def blobName = generateBlobName()
@@ -553,7 +554,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with new SDK download with old SDK.
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Cross platform test upload new download old"() {
         setup:
         def blobName = generateBlobName()
@@ -942,7 +943,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         testFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file"() {
         setup:
@@ -978,7 +979,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file sync buffer copy"() {
         setup:
@@ -1025,7 +1026,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file async buffer copy"() {
         setup:
@@ -1073,7 +1074,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         50 * Constants.MB    | _ // large file requiring multiple requests
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range"() {
         setup:
@@ -1111,7 +1112,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range fail"() {
         setup:
@@ -1134,7 +1135,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file count null"() {
         setup:
         def file = getRandomFile(defaultDataSize)
@@ -1155,7 +1156,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC"() {
         setup:
@@ -1192,7 +1193,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC fail"() {
         setup:
@@ -1230,7 +1231,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(Constants.MB)
@@ -1292,7 +1293,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         outFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
@@ -1430,7 +1431,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         outputByteBuffer.array() != byteBuffer.array()
     }
 
-    @Requires( { liveMode() } )
+    @LiveOnly
     def "Encryption upload IS large data"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.MB)
@@ -1450,11 +1451,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     @Unroll
+    @LiveOnly
     def "Encryption uploadIS numBlocks"() {
         setup:
-        if (numBlocks > 0 && !liveMode()) {
-            return // Multipart upload paths use randomly generated block ids that can't be recorded and played back.
-        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 

@@ -33,7 +33,7 @@ class SoftDeleteTest extends APISpec{
     }
 
     def setup() {
-        softDeleteDataLakeServiceClient = setClient(env.dataLakeSoftDeleteAccount)
+        softDeleteDataLakeServiceClient = getServiceClient(env.dataLakeSoftDeleteAccount)
         fileSystemClient = softDeleteDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         fileSystemClient.create()
     }

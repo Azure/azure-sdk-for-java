@@ -29,6 +29,12 @@ public final class WhatIfChange {
     private ChangeType changeType;
 
     /*
+     * The explanation about why the resource is unsupported by What-If.
+     */
+    @JsonProperty(value = "unsupportedReason")
+    private String unsupportedReason;
+
+    /*
      * The snapshot of the resource before the deployment is executed.
      */
     @JsonProperty(value = "before")
@@ -83,6 +89,26 @@ public final class WhatIfChange {
      */
     public WhatIfChange withChangeType(ChangeType changeType) {
         this.changeType = changeType;
+        return this;
+    }
+
+    /**
+     * Get the unsupportedReason property: The explanation about why the resource is unsupported by What-If.
+     *
+     * @return the unsupportedReason value.
+     */
+    public String unsupportedReason() {
+        return this.unsupportedReason;
+    }
+
+    /**
+     * Set the unsupportedReason property: The explanation about why the resource is unsupported by What-If.
+     *
+     * @param unsupportedReason the unsupportedReason value to set.
+     * @return the WhatIfChange object itself.
+     */
+    public WhatIfChange withUnsupportedReason(String unsupportedReason) {
+        this.unsupportedReason = unsupportedReason;
         return this;
     }
 

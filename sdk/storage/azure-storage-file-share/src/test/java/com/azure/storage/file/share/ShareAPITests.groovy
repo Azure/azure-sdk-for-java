@@ -6,6 +6,7 @@ package com.azure.storage.file.share
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.share.implementation.util.ModelHelper
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareAccessPolicy
@@ -321,7 +322,7 @@ class ShareAPITests extends APISpec {
     }
 
     @Unroll
-    @Requires({ playbackMode() })
+    @PlaybackOnly
     def "Get properties premium"() {
         given:
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol)
@@ -355,7 +356,7 @@ class ShareAPITests extends APISpec {
     }
 
     @Unroll
-    @Requires({ playbackMode() })
+    @PlaybackOnly
     def "Set premium properties"() {
         setup:
         def premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(),
