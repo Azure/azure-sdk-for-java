@@ -64,4 +64,3 @@ stages:
     EnvVars:
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
-      TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}
