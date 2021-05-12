@@ -503,7 +503,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Opens a file input stream to download the file.
      * <p>
      *
-     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public final DataLakeFileInputStream openInputStream() {

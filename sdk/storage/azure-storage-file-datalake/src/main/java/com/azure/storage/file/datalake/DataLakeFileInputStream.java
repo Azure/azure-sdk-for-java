@@ -2,7 +2,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.StorageInputStream;
-import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -13,39 +12,39 @@ import java.nio.ByteBuffer;
 
 public final class DataLakeFileInputStream extends StorageInputStream {
     /**
-     * Holds the reference to the blob this stream is associated with.
+     * Holds the reference to the file this stream is associated with.
      */
     private final DataLakeFileAsyncClient fileClient;
 
     /**
-     * Holds the {@link DataLakeRequestConditions} object that represents the access conditions for the blob.
+     * Holds the {@link DataLakeRequestConditions} object that represents the access conditions for the file.
      */
     private final DataLakeRequestConditions accessCondition;
 
     /**
-     * Holds the {@link PathProperties} object that represents the blob's properties.
+     * Holds the {@link PathProperties} object that represents the file's properties.
      */
     private final PathProperties properties;
 
     /**
-     * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
-     * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
+     * Initializes a new instance of the DataLakeFileInputStream class. Note that if {@code fileRangeOffset} is not {@code 0} or
+     * {@code fileRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
-     * @param blobClient A {@link DataLakeFileAsyncClient} object which represents the blob that this stream is associated
+     * @param fileClient A {@link DataLakeFileAsyncClient} object which represents the file that this stream is associated
      * with.
-     * @param fileRangeOffset The offset of blob data to begin stream.
-     * @param fileRangeLength How much data the stream should return after blobRangeOffset.
+     * @param fileRangeOffset The offset of file data to begin stream.
+     * @param fileRangeLength How much data the stream should return after fileRangeOffset.
      * @param chunkSize The size of the chunk to download.
      * @param accessCondition An {@link DataLakeRequestConditions} object which represents the access conditions for the
-     * blob.
+     * file.
      * @throws DataLakeStorageException An exception representing any error which occurred during the operation.
      */
-    DataLakeFileInputStream(final DataLakeFileAsyncClient blobClient, long fileRangeOffset, Long fileRangeLength,
+    DataLakeFileInputStream(final DataLakeFileAsyncClient fileClient, long fileRangeOffset, Long fileRangeLength,
         int chunkSize, final DataLakeRequestConditions accessCondition, final PathProperties pathProperties)
         throws DataLakeStorageException {
         super(fileRangeOffset, fileRangeLength, chunkSize, pathProperties.getFileSize());
 
-        this.fileClient = blobClient;
+        this.fileClient = fileClient;
         this.accessCondition = accessCondition;
         this.properties = pathProperties;
     }
@@ -77,9 +76,9 @@ public final class DataLakeFileInputStream extends StorageInputStream {
     }
 
     /**
-     * Gets the blob properties.
+     * Gets the file properties.
      * <p>
-     * If no data has been read from the stream, a network call is made to get properties. Otherwise, the blob
+     * If no data has been read from the stream, a network call is made to get properties. Otherwise, the file
      * properties obtained from the download are stored.
      *
      * @return {@link PathProperties}
