@@ -29,13 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TablesClientBuilderTest {
     private String tableName;
     private String connectionString;
-    private TablesServiceVersion serviceVersion;
+    private TableServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
         tableName = "someTable";
         connectionString = TestUtils.getConnectionString(true);
-        serviceVersion = TablesServiceVersion.V2019_02_02;
+        serviceVersion = TableServiceVersion.V2019_02_02;
     }
 
     @Test

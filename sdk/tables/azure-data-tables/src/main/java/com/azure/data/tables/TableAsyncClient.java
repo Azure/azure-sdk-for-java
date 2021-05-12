@@ -90,7 +90,7 @@ public final class TableAsyncClient {
         this.pipeline = implementation.getHttpPipeline();
     }
 
-    TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TablesServiceVersion serviceVersion,
+    TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
                      SerializerAdapter serializerAdapter) {
         this(tableName, new AzureTableImplBuilder()
                 .url(serviceUrl)
@@ -143,8 +143,8 @@ public final class TableAsyncClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return TablesServiceVersion.fromString(implementation.getVersion());
+    public TableServiceVersion getApiVersion() {
+        return TableServiceVersion.fromString(implementation.getVersion());
     }
 
     /**

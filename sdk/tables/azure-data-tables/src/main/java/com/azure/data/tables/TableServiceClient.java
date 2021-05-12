@@ -57,7 +57,7 @@ public class TableServiceClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
+    public TableServiceVersion getApiVersion() {
         return client.getApiVersion();
     }
 

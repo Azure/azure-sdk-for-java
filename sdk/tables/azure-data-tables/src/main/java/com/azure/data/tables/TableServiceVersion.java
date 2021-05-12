@@ -7,7 +7,7 @@ import com.azure.core.util.ServiceVersion;
 /**
  * The versions of Tables REST API supported by this client library.
  */
-public enum TablesServiceVersion implements ServiceVersion {
+public enum TableServiceVersion implements ServiceVersion {
     /**
      * API version 2019-02-02
      */
@@ -15,7 +15,7 @@ public enum TablesServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    TablesServiceVersion(String version) {
+    TableServiceVersion(String version) {
         this.version = version;
     }
 
@@ -32,12 +32,12 @@ public enum TablesServiceVersion implements ServiceVersion {
      *
      * @return The latest REST API version supported by this client library.
      */
-    public static TablesServiceVersion getLatest() {
+    public static TableServiceVersion getLatest() {
         return V2019_02_02;
     }
 
-    static TablesServiceVersion fromString(String version) {
-        for (TablesServiceVersion value : TablesServiceVersion.values()) {
+    static TableServiceVersion fromString(String version) {
+        for (TableServiceVersion value : TableServiceVersion.values()) {
             if (value.version.equals(version)) {
                 return value;
             }

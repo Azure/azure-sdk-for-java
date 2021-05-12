@@ -56,7 +56,7 @@ public class TableServiceAsyncClient {
     private final String accountName;
     private final HttpPipeline pipeline;
 
-    TableServiceAsyncClient(HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
+    TableServiceAsyncClient(HttpPipeline pipeline, String url, TableServiceVersion serviceVersion,
         SerializerAdapter serializerAdapter) {
 
         try {
@@ -109,8 +109,8 @@ public class TableServiceAsyncClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return TablesServiceVersion.fromString(implementation.getVersion());
+    public TableServiceVersion getApiVersion() {
+        return TableServiceVersion.fromString(implementation.getVersion());
     }
 
     /**
