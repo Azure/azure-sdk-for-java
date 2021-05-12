@@ -217,10 +217,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (certificate != null) {
             chain = new Certificate[1];
             chain[0] = certificate;
-        }else {
+        } else {
             try {
                 chain = DEFAULT_KEY_STORE.getCertificateChain(alias);
-            }catch (KeyStoreException e) {
+            } catch (KeyStoreException e) {
                 LOGGER.log(WARNING, "Unable to load the certificate chain from jre Key store.", e);
             }
         }
@@ -335,7 +335,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         try {
             size = DEFAULT_KEY_STORE.size();
         } catch (KeyStoreException e) {
-            LOGGER.log(WARNING, "Unable to get the size of the jre key store." ,e);
+            LOGGER.log(WARNING, "Unable to get the size of the jre key store.", e);
         }
         return  size + (aliases != null ? aliases.size() : 0);
     }
@@ -437,7 +437,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         private static KeyStore getDefault() {
             KeyStore defaultKeyStore = null;
-            try{
+            try {
                 defaultKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
                 loadKeyStore(defaultKeyStore);
             } catch (KeyStoreException e) {
@@ -464,7 +464,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         private static Path getStoreFile(String storePropName) {
             Path storeProp;
-            if (storePropName.isEmpty()){
+            if (storePropName.isEmpty()) {
                 storeProp = JSSE_DEFAULT_STORE;
             } else {
                 storeProp = Paths.get(storePropName);
@@ -480,7 +480,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             return null;
         }
 
-        private static Key getKey(KeyStore ks, String alias){
+        private static Key getKey(KeyStore ks, String alias) {
             try {
                 return  ks.getKey(alias, KEY_PASSWORD.toCharArray());
             } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
@@ -489,7 +489,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             return null;
         }
 
-        private static String  privilegedGetProperty(String theProp, String defaultVal){
+        private static String  privilegedGetProperty(String theProp, String defaultVal) {
             if (System.getSecurityManager() == null) {
                 String value = System.getProperty(theProp, "");
                 return (value.isEmpty()) ? defaultVal : value;
