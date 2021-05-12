@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -14,19 +14,17 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultKeyManagerTest {
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyManagerTest.class.getName());
 
-    private KeyVaultKeyManager manager;
-    private String certificateName;
+    private static KeyVaultKeyManager manager;
+    private static String certificateName;
 
-    @BeforeEach
-    public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
+    @BeforeAll
+    public static void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",

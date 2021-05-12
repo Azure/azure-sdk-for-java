@@ -3,20 +3,19 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultClientTest {
-    private KeyVaultClient keyVaultClient;
-    private String certificateName;
+    private static KeyVaultClient keyVaultClient;
+    private static String certificateName;
 
-    @BeforeEach
-    public void setEnvironmentProperty() {
+    @BeforeAll
+    public static void setEnvironmentProperty() {
         keyVaultClient = new KeyVaultClient(
             System.getenv("AZURE_KEYVAULT_URI"),
             System.getenv("AZURE_KEYVAULT_TENANT_ID"),
@@ -27,12 +26,12 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetAliases() {
-        assertEquals(keyVaultClient.getAliases().get(0),"myalias");
+        assertNotNull(keyVaultClient.getAliases());
     }
 
     @Test
     public void testGetCertificate() {
-        assertEquals(keyVaultClient.getCertificate(certificateName).toString(),"myalias");
+        assertNotNull(keyVaultClient.getCertificate(certificateName));
     }
 
     @Test

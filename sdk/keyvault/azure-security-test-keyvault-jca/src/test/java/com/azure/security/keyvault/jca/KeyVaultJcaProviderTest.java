@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -19,15 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultJcaProviderTest {
 
-    @BeforeEach
-    public void setEnvironmentProperty() {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
-    }
 
     /**
      * Test getting a certificate using the Provider.
@@ -36,6 +26,12 @@ public class KeyVaultJcaProviderTest {
      */
     @Test
     public void testGetCertificate() throws Exception {
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
         Security.addProvider(new KeyVaultJcaProvider());
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
