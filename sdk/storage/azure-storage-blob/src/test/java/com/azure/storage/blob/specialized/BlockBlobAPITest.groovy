@@ -15,6 +15,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
@@ -39,6 +40,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -1949,6 +1951,7 @@ class BlockBlobAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url min"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -1972,6 +1975,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == defaultData.array()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -1993,6 +1997,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == defaultData.array()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite fails on existing blob"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2016,6 +2021,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url max"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2056,6 +2062,7 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getAccessTier() == AccessTier.COOL
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from with invalid source MD5"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2075,6 +2082,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url source request conditions"() {
         setup:
@@ -2099,6 +2107,7 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url destination request conditions"() {
         setup:
