@@ -479,6 +479,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive"() {
         when:
         def response = fc.setAccessControlRecursive(pathAccessControlEntries)
@@ -489,6 +490,7 @@ class FileAPITest extends APISpec {
         response.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive"() {
         when:
         def response = fc.updateAccessControlRecursive(pathAccessControlEntries)
@@ -499,6 +501,7 @@ class FileAPITest extends APISpec {
         response.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive"() {
         setup:
         def removeAccessControlEntries = PathRemoveAccessControlEntry.parseList("mask," +
@@ -3665,6 +3668,7 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Schedule deletion"() {
         given:
@@ -3686,6 +3690,7 @@ class FileAPITest extends APISpec {
         null                                                                                    | false
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Schedule deletion time"() {
         given:
         OffsetDateTime now = namer.getUtcNow()
