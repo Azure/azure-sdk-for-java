@@ -229,7 +229,11 @@ public final class RestProxy implements InvocationHandler {
                 if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
                     urlBuilder.setPath(path);
                 } else {
-                    urlBuilder.setPath(hostPath + "/" + path);
+                    if (path.startsWith("/")) {
+                        urlBuilder.setPath(hostPath + path);
+                    } else {
+                        urlBuilder.setPath(hostPath + "/" + path);
+                    }
                 }
             }
         }

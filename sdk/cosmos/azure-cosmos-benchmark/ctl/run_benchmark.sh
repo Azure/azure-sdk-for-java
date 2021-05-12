@@ -57,8 +57,13 @@ else
     diagnostics_threshold_duration=$ctl_diagnostics_threshold_duration
 fi
 
+if [ -z "$ctl_number_of_precreated_documents" ]; then
+    number_of_precreated_documents=10000
+else
+    number_of_precreated_documents=$ctl_number_of_precreated_documents
+fi
+
 connection_mode=Direct
-number_of_precreated_documents=10000
 gateway_connection_poolsize=5
 
 protocol=Tcp
@@ -90,9 +95,9 @@ additional_benchmark_options="-documentDataFieldSize 10 -documentDataFieldCount 
 additional_benchmark_options="$additional_benchmark_options -maxConnectionPoolSize $gateway_connection_poolsize"
 
 if [ -z "$ctl_graphite_endpoint" ]; then
-    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$ctl_client_telemetry_endpoint -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryPct "$read_write_query_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
+    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.ENVIRONMENT_NAME=$ctl_env -DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$ctl_client_telemetry_endpoint -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryPct "$read_write_query_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 else
-    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$ctl_client_telemetry_endpoint -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryPct "$read_write_query_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
+    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.ENVIRONMENT_NAME=$ctl_env -DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$ctl_client_telemetry_endpoint -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryPct "$read_write_query_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents $ctl_accountNameInGraphiteReporter $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 fi
 
 end=$(date +%s)

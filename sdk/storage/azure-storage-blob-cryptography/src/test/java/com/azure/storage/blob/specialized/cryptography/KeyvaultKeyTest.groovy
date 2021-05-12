@@ -31,35 +31,34 @@ class KeyvaultKeyTest extends APISpec {
 
     def setup() {
         def keyVaultUrl = "https://azstoragesdkvault.vault.azure.net/"
-        if (testMode != TestMode.PLAYBACK) {
+        if (env.testMode != TestMode.PLAYBACK) {
             keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL")
         }
 
         keyClient = new KeyClientBuilder()
-            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_2))
+            .pipeline(getHttpPipeline(KeyServiceVersion.V7_2))
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
             .buildClient()
 
-        keyId = generateResourceName("keyId", entityNo++)
+        keyId = namer.getRandomName(50)
 
         KeyVaultKey keyVaultKey = keyClient.createRsaKey(new CreateRsaKeyOptions(keyId)
             .setExpiresOn(OffsetDateTime.now().plusYears(1))
             .setKeySize(2048))
 
         AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_2))
+            .pipeline(getHttpPipeline(KeyServiceVersion.V7_2))
             .httpClient(getHttpClient())
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()
 
-        cc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        cc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        bec = getEncryptedClientBuilder(akek, null, primaryCredential,
+        bec = getEncryptedClientBuilder(akek, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
@@ -98,10 +97,10 @@ class KeyvaultKeyTest extends APISpec {
         inputArray != os.toByteArray()
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+    HttpPipeline getHttpPipeline(KeyServiceVersion serviceVersion) {
         TokenCredential credential = null;
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (env.testMode != TestMode.PLAYBACK) {
             String clientId = System.getenv("AZURE_CLIENT_ID");
             String clientKey = System.getenv("AZURE_CLIENT_SECRET");
             String tenantId = System.getenv("AZURE_TENANT_ID");
@@ -127,15 +126,11 @@ class KeyvaultKeyTest extends APISpec {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (!interceptorManager.isPlaybackMode()) {
-            if (testMode == TestMode.RECORD) {
-                policies.add(interceptorManager.getRecordPolicy());
-            }
-        }
+        policies.add(getRecordPolicy());
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(getHttpClient())
             .build()
 
         return pipeline;
