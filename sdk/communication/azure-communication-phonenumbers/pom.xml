@@ -213,5 +213,19 @@
         <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
       </properties>
     </profile>
+    <profile>
+      <id>disable-coverage-if-phonenumbers</id>
+      <activation>
+        <property>
+          <name>env.COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
   </profiles>
 </project>
