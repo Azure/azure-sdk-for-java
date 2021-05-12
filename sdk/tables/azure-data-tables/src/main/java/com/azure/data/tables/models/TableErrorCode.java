@@ -10,16 +10,6 @@ import com.azure.core.util.ExpandableStringEnum;
  */
 public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
-     * Static value {@code InvalidTableName}.
-     */
-    public static final TableErrorCode INVALID_TABLE_NAME = fromString("InvalidTableName");
-
-    /**
-     * Static value {@code InvalidPkOrRkName}.
-     */
-    public static final TableErrorCode INVALID_PK_OR_RK_NAME = fromString("InvalidPkOrRkName");
-
-    /**
      * Static value {@code AuthorizationResourceTypeMismatch}.
      */
     public static final TableErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH =

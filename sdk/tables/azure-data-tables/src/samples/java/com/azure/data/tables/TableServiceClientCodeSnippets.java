@@ -30,8 +30,6 @@ public class TableServiceClientCodeSnippets {
         } catch (TableServiceException e) {
             if (e.getValue().getErrorCode() == TableErrorCode.TABLE_ALREADY_EXISTS) {
                 System.err.println("Create Table Unsuccessful. Table already exists.");
-            } else if (e.getValue().getErrorCode() == TableErrorCode.INVALID_TABLE_NAME) {
-                System.err.println("Create Table Unsuccessful. Table name invalid");
             } else {
                 System.err.println("Create Table Unsuccessful. " + e);
             }
@@ -90,8 +88,6 @@ public class TableServiceClientCodeSnippets {
         } catch (TableServiceException e) {
             if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_ALREADY_EXISTS) {
                 System.err.println("Create Entity Unsuccessful. Entity already exists.");
-            } else if (e.getValue().getErrorCode() == TableErrorCode.INVALID_PK_OR_RK_NAME) {
-                System.err.println("Create Table Unsuccessful. Row key or Partition key is invalid.");
             } else {
                 System.err.println("Create Entity Unsuccessful. " + e);
             }
