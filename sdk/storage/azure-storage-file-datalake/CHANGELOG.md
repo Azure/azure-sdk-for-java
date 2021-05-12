@@ -5,6 +5,7 @@
 - Added support to undelete a file or directory
 - Added support to list deletedPaths
 - Added support to get/set service properties
+- Added support for openInputStream to data lake file clients
 
 ## 12.5.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 
