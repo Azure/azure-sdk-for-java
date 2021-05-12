@@ -75,7 +75,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private final Date creationDate;
 
-
+    /**
+     * Stores the key vault client.
+     */
     private KeyVaultClient keyVaultClient;
 
     /**
