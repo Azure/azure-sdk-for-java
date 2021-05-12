@@ -391,13 +391,8 @@ final class Transforms {
                 } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
                 } else {
-                    // TODO: (ServiceBug) https://github.com/Azure/azure-sdk-for-java/issues/18967
-                    // Currently, the fieldValue's valueSelectionMark is null which is incorrect.
-                    // Use the fieldValue's text as the temperately solution.
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
-                        fieldValue.getText());
-                    //        throw LOGGER.logThrowableAsError(new RuntimeException(
-                    //                String.format("%s, unsupported selection mark state.", selectionMarkState)));
+                        fieldValue.getValueSelectionMark().toString());
                 }
                 value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                     FieldValueType.SELECTION_MARK_STATE);
