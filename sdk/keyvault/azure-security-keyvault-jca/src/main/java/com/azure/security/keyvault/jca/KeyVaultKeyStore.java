@@ -20,10 +20,17 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.Map;
+import java.util.Collection;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -49,21 +56,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
     /**
-     * Stores the list of aliases.
-     */
-    private List<String> aliases;
-
-    /**
-     * Stores the certificates by alias.
-     */
-    private final HashMap<String, Certificate> certificates = new HashMap<>();
-
-    /**
-     * Stores the certificate keys by alias.
-     */
-    private final HashMap<String, Key> certificateKeys = new HashMap<>();
-
-    /**
      * Stores the side load aliases.
      */
     private final List<String> sideLoadAliases = new ArrayList<>();
@@ -83,10 +75,13 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private final Date creationDate;
 
-    /**
-     * Stores the key vault client.
-     */
+
     private KeyVaultClient keyVaultClient;
+
+    /**
+     * Store certificates on portal info
+     */
+    private final KeyVaultCertificatesInfo keyVaultCertificatesInfo;
 
     /**
      * Constructor.
@@ -114,14 +109,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
+        keyVaultCertificatesInfo = new KeyVaultCertificatesInfo();
     }
 
     @Override
     public Enumeration<String> engineAliases() {
-        if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
-        }
-        return Collections.enumeration(aliases);
+
+        List<String> aliasList = Stream.of(keyVaultCertificatesInfo.getAliases(keyVaultClient), sideLoadAliases)
+            .flatMap(Collection::stream)
+            .distinct().collect(Collectors.toList());
+
+        return Collections.enumeration(aliasList);
     }
 
     @Override
@@ -140,20 +138,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Certificate engineGetCertificate(String alias) {
-        Certificate certificate;
+        Certificate certificate = null;
+        Map<String, Certificate> certificates = keyVaultCertificatesInfo.getCertificates(keyVaultClient);
         if (certificates.containsKey(alias)) {
             certificate = certificates.get(alias);
-        } else {
-            certificate = keyVaultClient.getCertificate(alias);
-            if (certificate != null) {
-                certificates.put(alias, certificate);
-                if (aliases == null) {
-                    aliases = keyVaultClient.getAliases();
-                }
-                if (!aliases.contains(alias)) {
-                    aliases.add(alias);
-                }
-            }
         }
         if (certificate == null && certificatesSideLoad.containsKey(alias)) {
             certificate = certificatesSideLoad.get(alias);
@@ -165,13 +153,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
         if (cert != null) {
-            if (aliases == null) {
-                aliases = keyVaultClient.getAliases();
-            }
-            List<String> aliasList = Stream.of(aliases, sideLoadAliases)
+            List<String> portalAlias = keyVaultCertificatesInfo.getAliases(keyVaultClient);
+            List<String> aliasList = Stream.of(portalAlias, sideLoadAliases)
                 .flatMap(Collection::stream)
                 .distinct()
                 .collect(Collectors.toList());
+
             for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
                 if (certificate.equals(cert)) {
@@ -206,20 +193,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Key engineGetKey(String alias, char[] password) {
-        Key key;
-        if (certificateKeys.containsKey(alias)) {
-            key = certificateKeys.get(alias);
-        } else {
-            key = keyVaultClient.getKey(alias, password);
-            if (key != null) {
-                certificateKeys.put(alias, key);
-                if (aliases == null) {
-                    aliases = keyVaultClient.getAliases();
-                }
-                if (!aliases.contains(alias)) {
-                    aliases.add(alias);
-                }
-            }
+        Key key = null;
+        Map<String, Key> portalKeys = keyVaultCertificatesInfo.getCertificateKeys(keyVaultClient);
+        if (portalKeys.containsKey(alias)) {
+            key = portalKeys.get(alias);
         }
         if (key == null && certificateKeysSideLoad.containsKey(alias)) {
             key = certificateKeysSideLoad.get(alias);
@@ -229,10 +206,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public boolean engineIsCertificateEntry(String alias) {
-        if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
-        }
-        return aliases.contains(alias) || sideLoadAliases.contains(alias);
+        return keyVaultCertificatesInfo.getAliases(keyVaultClient).contains(alias) || sideLoadAliases.contains(alias);
     }
 
     @Override
@@ -253,8 +227,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             } else if (parameter.getManagedIdentity() != null) {
                 keyVaultClient = new KeyVaultClient(
                     parameter.getUri(),
-                    parameter.getManagedIdentity()
-                );
+                    parameter.getManagedIdentity());
             } else {
                 keyVaultClient = new KeyVaultClient(parameter.getUri());
             }
@@ -269,7 +242,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
-        if (aliases != null && aliases.contains(alias)) {
+        List<String> portalAlias = keyVaultCertificatesInfo.getAliases(keyVaultClient);
+
+        if (portalAlias != null && portalAlias.contains(alias)) {
             return;
         }
         if (!sideLoadAliases.contains(alias)) {
@@ -305,7 +280,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public int engineSize() {
-        return aliases != null ? aliases.size() : 0;
+        List<String> portalAliases = keyVaultCertificatesInfo.getAliases(keyVaultClient);
+        return (portalAliases != null ? portalAliases.size() : 0) + sideLoadAliases.size();
     }
 
     @Override
