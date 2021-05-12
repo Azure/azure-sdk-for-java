@@ -47,6 +47,7 @@ import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
+import spock.lang.IgnoreIf
 import spock.lang.Requires
 import spock.lang.ResourceLock
 import spock.lang.Unroll
@@ -3051,6 +3052,7 @@ class BlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
      def "Per call policy"() {
          bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())

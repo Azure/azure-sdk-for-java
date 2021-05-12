@@ -25,6 +25,7 @@ import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Ignore
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -1345,6 +1346,7 @@ class PageBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
