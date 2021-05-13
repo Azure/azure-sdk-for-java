@@ -303,6 +303,7 @@ public class ReflectionUtils {
         return get(AtomicBoolean.class, cosmosAsyncContainer, "isInitialized");
     }
 
+    @SuppressWarnings("unchecked")
     public static ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> getThroughputControlTrackingDictionary(
         ThroughputRequestThrottler requestThrottler) {
         return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
