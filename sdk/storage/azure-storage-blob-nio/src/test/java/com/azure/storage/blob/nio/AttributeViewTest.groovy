@@ -23,7 +23,7 @@ class AttributeViewTest extends APISpec {
         fs = createFS(initializeConfigMap())
         cc = rootNameToContainerClient(getDefaultDir(fs))
         bc = cc.getBlobClient(generateBlobName())
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
     def cleanup() {
@@ -189,9 +189,9 @@ class AttributeViewTest extends APISpec {
         response.getContentType() == contentType
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
-        null         | null               | null            | null            | null                                                                                     | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
+        null         | null               | null            | null            | null                                                                                          | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
     def "AzureBlobFileAttributeView setHeaders fs closed"() {

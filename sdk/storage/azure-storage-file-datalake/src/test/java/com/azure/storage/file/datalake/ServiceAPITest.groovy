@@ -421,7 +421,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
@@ -448,7 +448,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
@@ -477,7 +477,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
@@ -508,7 +508,7 @@ class ServiceAPITest extends APISpec {
         def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-            .then(cc1.getFileAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
             .then(cc1.delete())
             .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryDataLakeServiceAsyncClient.listFileSystems(
@@ -539,7 +539,7 @@ class ServiceAPITest extends APISpec {
         def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-            .then(cc1.getFileAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
             .then(cc1.delete())
             .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryDataLakeServiceAsyncClient.listFileSystems(
@@ -579,7 +579,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
