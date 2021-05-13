@@ -567,6 +567,7 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException.class)
     }
 
+
     def "Restore file system into existing file system error"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
