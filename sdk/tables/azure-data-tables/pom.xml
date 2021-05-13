@@ -43,11 +43,6 @@ Licensed under the MIT License.
       <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
