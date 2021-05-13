@@ -1,5 +1,9 @@
 # Release History
 
+## 12.11.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` to version `1.16.0`
+
 ## 12.11.0 (2021-04-29)
 - Fixed concurrency issue in UploadBufferPool that caused large files to hang.
 
