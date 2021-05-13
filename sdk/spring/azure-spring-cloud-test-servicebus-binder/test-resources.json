@@ -109,7 +109,7 @@
     }
   ],
   "outputs": {
-    "SPRING_PREMIUM_SERVICEBUS_CONNECTION_STRING": {
+    "SERVICEBUS_BINDER_TEST_CONNECTION_STRING": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
     }
