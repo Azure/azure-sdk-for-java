@@ -37,9 +37,8 @@ stages:
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/communication/azure-communication-sms/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/communication/azure-communication-sms/target/site/jacoco-aggregate/
+          summaryFileLocation: sdk/communication/target/site/jacoco-aggregate/jacoco.xml
+          reportDirectory: sdk/communication/target/site/jacoco-aggregate/
           failIfCoverageEmpty: false
     EnvVars:
       SKIP_LIVE_TEST: TRUE
-      TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}
