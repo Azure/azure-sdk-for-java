@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ResultProcessor;
 
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
@@ -24,6 +25,8 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  * Cosmos query class to handle the annotated queries. This overrides the execution and runs the query directly
  */
 public class StringBasedCosmosQuery extends AbstractCosmosQuery {
+    private static final Pattern COUNT_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+count.*", Pattern.CASE_INSENSITIVE);
+
     private final String query;
 
     /**
@@ -74,4 +77,19 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
     protected boolean isExistsQuery() {
         return false;
     }
+
+    @Override
+    protected boolean isCountQuery() {
+        return isCountQuery(query, getQueryMethod().getReturnedObjectType());
+    }
+
+    static boolean isCountQuery(String query, Class<?> returnedType) {
+        if (returnedType == Long.class || returnedType == long.class ||
+            returnedType == Integer.class || returnedType == int.class) {
+            return COUNT_QUERY_PATTERN.matcher(query).matches();
+        } else {
+            return false;
+        }
+    }
+
 }

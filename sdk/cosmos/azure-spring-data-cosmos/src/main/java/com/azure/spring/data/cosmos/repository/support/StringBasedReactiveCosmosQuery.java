@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,6 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  * Cosmos query class to handle the annotated queries. This overrides the execution and runs the query directly
  */
 public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery {
-    private static final Pattern COUNT_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+count.*");
 
     private final String query;
 
@@ -82,12 +80,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
     }
 
     protected boolean isCountQuery() {
-        Class<?> returnedType = getQueryMethod().getReturnedObjectType();
-        if (returnedType == Long.class || returnedType == Integer.class) {
-            return COUNT_QUERY_PATTERN.matcher(query.toLowerCase(Locale.ROOT)).matches();
-        } else {
-            return false;
-        }
+        return StringBasedCosmosQuery.isCountQuery(query, getQueryMethod().getReturnedObjectType());
     }
 
 }
