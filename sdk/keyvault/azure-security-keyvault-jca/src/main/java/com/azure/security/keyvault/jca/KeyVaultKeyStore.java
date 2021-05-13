@@ -447,13 +447,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         }
 
         private static void loadKeyStore(KeyStore ks) {
-            if (null != ks) {
                 try (InputStream inStream = Files.newInputStream(getKeyStoreFile())) {
                     ks.load(inStream, KEY_STORE_PASSWORD.toCharArray());
                 } catch (IOException | NoSuchAlgorithmException | CertificateException e) {
                     LOGGER.log(WARNING, "unable to load the jre key store", e);
                 }
-            }
         }
 
         private static Path getKeyStoreFile() {
