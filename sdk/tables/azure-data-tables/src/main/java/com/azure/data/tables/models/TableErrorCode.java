@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * Defines values for error codes returned from the Tables service. For detailed information about what each error
  * code means and their accompanying status codes, visit the following page:
- * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/table-service-error-codes">Table service error codes</a>
+ * <a href="https://docs.microsoft.com/rest/api/storageservices/table-service-error-codes">Table service error codes</a>
  */
 public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
