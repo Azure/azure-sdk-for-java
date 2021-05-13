@@ -26,14 +26,11 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -228,7 +225,8 @@ public class TablesAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     void createEntitySubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -272,7 +270,7 @@ public class TablesAsyncClientTest extends TestBase {
             })
             .expectComplete()
             .verify();
-    }
+    }*/
 
     @Test
     void deleteTableAsync() {
@@ -417,7 +415,8 @@ public class TablesAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     void getEntityWithResponseSubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -474,7 +473,7 @@ public class TablesAsyncClientTest extends TestBase {
             })
             .expectComplete()
             .verify();
-    }
+    }*/
 
     @Test
     void updateEntityWithResponseReplaceAsync() {
@@ -525,7 +524,8 @@ public class TablesAsyncClientTest extends TestBase {
             .verifyComplete();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     void updateEntityWithResponseSubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
@@ -550,7 +550,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals("UpdatedValue", properties.get("SubclassProperty"));
             })
             .verifyComplete();
-    }
+    }*/
 
     @Test
     @Tag("ListEntities")
@@ -639,7 +639,8 @@ public class TablesAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     @Tag("ListEntities")
     void listEntitiesSubclassAsync() {
         // Arrange
@@ -655,7 +656,7 @@ public class TablesAsyncClientTest extends TestBase {
             .thenConsumeWhile(x -> true)
             .expectComplete()
             .verify();
-    }
+    }*/
 
     @Test
     @Tag("Batch")

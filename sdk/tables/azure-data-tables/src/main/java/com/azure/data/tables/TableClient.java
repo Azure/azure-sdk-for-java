@@ -466,44 +466,6 @@ public class TableClient {
     }
 
     /**
-     * Lists all entities within the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A paged iterable containing all entities within the table.
-     *
-     * @throws IllegalArgumentException If an instance of the provided {@code resultType} can't be created.
-     * @throws TableServiceErrorException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T extends TableEntity> PagedIterable<T> listEntities(Class<T> resultType) {
-        return new PagedIterable<>(client.listEntities(resultType));
-    }
-
-    /**
-     * Lists entities using the parameters in the provided options.
-     *
-     * If the `filter` parameter in the options is set, only entities matching the filter will be returned. If the
-     * `select` parameter is set, only the properties included in the select parameter will be returned for each entity.
-     * If the `top` parameter is set, the number of returned entities will be limited to that value.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param options The `filter`, `select`, and `top` OData query options to apply to this operation.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A paged iterable containing matching entities within the table.
-     *
-     * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed, or if
-     * an instance of the provided {@code resultType} can't be created.
-     * @throws TableServiceErrorException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T extends TableEntity> PagedIterable<T> listEntities(ListEntitiesOptions options, Class<T> resultType) {
-        return new PagedIterable<>(client.listEntities(options, resultType));
-    }
-
-    /**
      * Gets a single entity from the table.
      *
      * @param partitionKey The partition key of the entity.
@@ -542,48 +504,6 @@ public class TableClient {
     /**
      * Gets a single entity from the table.
      *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return The entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, or if an
-     * instance of the provided {@code resultType} can't be created.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, Class<T> resultType) {
-        return client.getEntity(partitionKey, rowKey, resultType).block();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return The entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, if the
-     * {@code select} OData query option is malformed, or if an instance of the provided {@code resultType} can't be
-     * created.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType) {
-        return client.getEntity(partitionKey, rowKey, select, resultType).block();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The partition key of the entity.
      * @param select An OData `select` expression to limit the set of properties included in the returned entity.
@@ -598,31 +518,7 @@ public class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableEntity getEntity(String partitionKey, String rowKey, String select, Duration timeout) {
-        return getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, timeout, null).getValue();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @return The entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, if the
-     * {@code select} OData query option is malformed, or if an instance of the provided {@code resultType} can't be
-     * created.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType,
-                                               Duration timeout) {
-        return getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, null).getValue();
+        return getEntityWithResponse(partitionKey, rowKey, select, timeout, null).getValue();
     }
 
     /**
@@ -645,31 +541,5 @@ public class TableClient {
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, String select,
                                                        Duration timeout, Context context) {
         return client.getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, timeout, context).block();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
-     * @return The HTTP response containing the entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, if the
-     * {@code select} OData query option is malformed, or if an instance of the provided {@code resultType} can't be
-     * created.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> Response<T> getEntityWithResponse(String partitionKey, String rowKey, String select,
-                                                                     Class<T> resultType, Duration timeout,
-                                                                     Context context) {
-        return client.getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, context).block();
     }
 }

@@ -30,7 +30,7 @@ import java.util.Objects;
  * for more information about data types supported by the Tables service.
  */
 @Fluent
-public class TableEntity {
+public final class TableEntity {
     private final ClientLogger logger = new ClientLogger(TableEntity.class);
     private final Map<String, Object> properties;
 
@@ -76,7 +76,7 @@ public class TableEntity {
      * @return Value of the property.
      * @throws NullPointerException if {@code key} is null.
      */
-    public final Object getProperty(String key) {
+    public Object getProperty(String key) {
         return properties.get(key);
     }
 
@@ -89,7 +89,7 @@ public class TableEntity {
      *
      * @return A map of all properties representing this entity, including system properties.
      */
-    public final Map<String, Object> getProperties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -102,7 +102,7 @@ public class TableEntity {
      * @return The updated {@link TableEntity}.
      * @throws NullPointerException if {@code key} is null.
      */
-    public final TableEntity addProperty(String key, Object value) {
+    public TableEntity addProperty(String key, Object value) {
         validateProperty(key, value);
         properties.put(key, value);
         return this;
@@ -116,7 +116,7 @@ public class TableEntity {
      * @return The updated {@link TableEntity}.
      * @throws NullPointerException if {@code properties} is null.
      */
-    public final TableEntity addProperties(Map<String, Object> properties) {
+    public TableEntity addProperties(Map<String, Object> properties) {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             validateProperty(entry.getKey(), entry.getValue());
         }
@@ -151,7 +151,7 @@ public class TableEntity {
      *
      * @return The entity's row key.
      */
-    public final String getRowKey() {
+    public String getRowKey() {
         return (String) properties.get(TablesConstants.ROW_KEY);
     }
 
@@ -160,7 +160,7 @@ public class TableEntity {
      *
      * @return The entity's partition key.
      */
-    public final String getPartitionKey() {
+    public String getPartitionKey() {
         return (String) properties.get(TablesConstants.PARTITION_KEY);
     }
 
@@ -172,7 +172,7 @@ public class TableEntity {
      *
      * @return The entity's timestamp.
      */
-    public final OffsetDateTime getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return (OffsetDateTime) properties.get(TablesConstants.TIMESTAMP_KEY);
     }
 
@@ -184,7 +184,7 @@ public class TableEntity {
      *
      * @return The entity's eTag.
      */
-    public final String getETag() {
+    public String getETag() {
         return (String) properties.get(TablesConstants.ODATA_ETAG_KEY);
     }
 
@@ -193,7 +193,7 @@ public class TableEntity {
      *
      * @return type
      */
-    final String getOdataType() {
+    String getOdataType() {
         return (String) properties.get(TablesConstants.ODATA_TYPE_KEY);
     }
 
@@ -202,7 +202,7 @@ public class TableEntity {
      *
      * @return ID
      */
-    final String getOdataId() {
+    String getOdataId() {
         return (String) properties.get(TablesConstants.ODATA_ID_KEY);
     }
 
@@ -211,7 +211,7 @@ public class TableEntity {
      *
      * @return edit link
      */
-    final String getOdataEditLink() {
+    String getOdataEditLink() {
         return (String) properties.get(TablesConstants.ODATA_EDIT_LINK_KEY);
     }
 }
