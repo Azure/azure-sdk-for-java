@@ -64,25 +64,6 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static int defaultDataSize = defaultData.remaining()
-
-    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
-
-    @Shared
-    protected KB = 1024
-
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
     */

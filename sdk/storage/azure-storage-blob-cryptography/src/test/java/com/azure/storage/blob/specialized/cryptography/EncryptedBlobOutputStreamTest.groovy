@@ -115,7 +115,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
     def "Encrypted blob output stream overwrite"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
-        beac.upload(defaultFlux, null)
+        beac.upload(data.defaultFlux, null)
 
         when:
         def outputStream = bec.getBlobOutputStream(true)
