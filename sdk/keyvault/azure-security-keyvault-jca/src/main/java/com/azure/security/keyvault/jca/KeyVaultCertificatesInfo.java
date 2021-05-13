@@ -38,11 +38,19 @@ public class KeyVaultCertificatesInfo {
      */
     private Date lastRefreshTime;
 
+    /**
+     * Stores the overall refresh time.
+     */
+    private static Date overallRefreshTime = new Date();
+
     private final long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificates-refresh-interval"))
         .map(Long::valueOf)
         .orElse(0L);
 
     boolean certificatesNeedRefresh() {
+        if (overallRefreshTime.after(lastRefreshTime)) {
+            return true;
+        }
         if (refreshInterval > 0) {
             return lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
         }
@@ -51,26 +59,26 @@ public class KeyVaultCertificatesInfo {
 
     List<String> getAliases(KeyVaultClient keyVaultClient) {
         if (lastRefreshTime == null || certificatesNeedRefresh()) {
-            getLatestCertificates(keyVaultClient);
+            RefreshCertificates(keyVaultClient);
         }
         return aliases;
     }
 
     Map<String, Certificate> getCertificates(KeyVaultClient keyVaultClient) {
         if (lastRefreshTime == null || certificatesNeedRefresh()) {
-            getLatestCertificates(keyVaultClient);
+            RefreshCertificates(keyVaultClient);
         }
         return certificates;
     }
 
     Map<String, Key> getCertificateKeys(KeyVaultClient keyVaultClient) {
         if (lastRefreshTime == null || certificatesNeedRefresh()) {
-            getLatestCertificates(keyVaultClient);
+            RefreshCertificates(keyVaultClient);
         }
         return certificateKeys;
     }
 
-    void getLatestCertificates(KeyVaultClient keyVaultClient) {
+    void RefreshCertificates(KeyVaultClient keyVaultClient) {
         aliases = keyVaultClient.getAliases();
         certificateKeys.clear();
         certificates.clear();
@@ -85,6 +93,22 @@ public class KeyVaultCertificatesInfo {
                 }
             });
         lastRefreshTime = new Date();
+    }
+
+    public String getAliasByCertInTime(Certificate certificate, KeyVaultClient keyVaultClient) {
+        RefreshCertificates(keyVaultClient);
+        String key="";
+        for (Map.Entry<String, Certificate> entry : certificates.entrySet()) {
+            if(certificate.equals(entry.getValue())){
+                key=entry.getKey();
+            }
+        }
+        overallRefreshTime = new Date();
+        return key;
+    }
+
+    public static void refreshCertsInfo() {
+        overallRefreshTime = new Date();
     }
 
 }

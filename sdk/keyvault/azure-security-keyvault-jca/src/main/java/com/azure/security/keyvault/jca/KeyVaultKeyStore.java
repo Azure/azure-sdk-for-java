@@ -26,11 +26,12 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.Map;
-import java.util.Collection;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -167,6 +168,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     break;
                 }
             }
+        }
+        boolean refresh = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificate-refresh-when-have-un-trust-certificate"))
+            .map(Boolean::parseBoolean)
+            .orElse(false);
+        if (refresh && alias == null) {
+            alias = keyVaultCertificatesInfo.getAliasByCertInTime(cert, keyVaultClient);
         }
         return alias;
     }

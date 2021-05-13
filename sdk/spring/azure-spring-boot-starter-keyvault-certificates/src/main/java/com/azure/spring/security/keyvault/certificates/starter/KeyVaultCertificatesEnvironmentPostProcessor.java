@@ -38,6 +38,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-secret");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.managed-identity");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.certificates-refresh-interval");
+        putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.jca.certificate-refresh-when-have-un-trust-certificate");
 
         MutablePropertySources propertySources = environment.getPropertySources();
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
