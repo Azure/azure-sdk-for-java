@@ -1,8 +1,11 @@
 # Release History
 
 ## 7.3.0-beta.2 (Unreleased)
-
-
+### Fixed
+- Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more  
+  messages that are not delivered to the client in time and sometime the client is not able to settle these messages as 
+  the message lock might expire.
+  
 ## 7.3.0-beta.1 (2021-04-14)
 ### New Features
 - Adding support for AMQP Data types SEQUENCE and VALUE. It support sending and receiving of only one AMQP Sequence at 
