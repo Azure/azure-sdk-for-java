@@ -215,7 +215,7 @@ public class KeyVaultOperation {
             result = httpResponseException.getResponse().getStatusCode() < 500;
         } catch (HttpRequestException httpRequestException) {
             LOG.error("An HTTP error occurred while checking key vault connectivity", httpRequestException);
-            result = true;
+            result = false;
         } catch (RuntimeException runtimeException) {
             LOG.error("A runtime error occurred while checking key vault connectivity", runtimeException);
             result = false;
