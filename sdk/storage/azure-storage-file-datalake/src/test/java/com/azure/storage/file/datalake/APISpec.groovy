@@ -51,23 +51,6 @@ class APISpec extends StorageSpec {
     DataLakeFileSystemClient fsc
     DataLakeFileSystemAsyncClient fscAsync
 
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    static int defaultDataSize = defaultData.remaining()
-
-    @Shared
-    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
-
     /*
     The values below are used to create data-driven tests for access conditions.
      */
