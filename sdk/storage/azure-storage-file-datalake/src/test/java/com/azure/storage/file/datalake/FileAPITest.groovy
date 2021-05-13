@@ -12,6 +12,7 @@ import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -478,6 +479,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive"() {
         when:
         def response = fc.setAccessControlRecursive(pathAccessControlEntries)
@@ -488,6 +490,7 @@ class FileAPITest extends APISpec {
         response.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive"() {
         when:
         def response = fc.updateAccessControlRecursive(pathAccessControlEntries)
@@ -498,6 +501,7 @@ class FileAPITest extends APISpec {
         response.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive"() {
         setup:
         def removeAccessControlEntries = PathRemoveAccessControlEntry.parseList("mask," +
@@ -2953,6 +2957,7 @@ class FileAPITest extends APISpec {
         return queryData
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query min"() {
@@ -2999,6 +3004,7 @@ class FileAPITest extends APISpec {
         4000      | _ // 125 KB
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query csv serialization separator"() {
@@ -3075,6 +3081,7 @@ class FileAPITest extends APISpec {
         '\n'            | '\\'            | false          || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query csv serialization escape and field quote"() {
         setup:
@@ -3115,6 +3122,7 @@ class FileAPITest extends APISpec {
     }
 
     /* Note: Input delimited tested everywhere else. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query Input json"() {
@@ -3194,6 +3202,7 @@ class FileAPITest extends APISpec {
         osData == expectedData
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query Input csv Output json"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3234,6 +3243,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
@@ -3275,6 +3285,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
@@ -3312,6 +3323,7 @@ class FileAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
@@ -3351,6 +3363,7 @@ class FileAPITest extends APISpec {
         receiver.numErrors > 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3381,6 +3394,7 @@ class FileAPITest extends APISpec {
         thrown(Exceptions.ReactiveException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query progress receiver"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3423,6 +3437,7 @@ class FileAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @LiveOnly // Large amount of data.
     def "Query multiple records with progress receiver"() {
         setup:
@@ -3474,6 +3489,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query input output IA"() {
         setup:
@@ -3508,6 +3524,7 @@ class FileAPITest extends APISpec {
         false   | true     || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query arrow input IA"() {
         setup:
         def inSer = new FileQueryArrowSerialization()
@@ -3553,6 +3570,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -3570,6 +3588,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query AC"() {
         setup:
@@ -3611,6 +3630,7 @@ class FileAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query AC fail"() {
         setup:
@@ -3648,6 +3668,7 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Schedule deletion"() {
         given:
@@ -3669,6 +3690,7 @@ class FileAPITest extends APISpec {
         null                                                                                    | false
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Schedule deletion time"() {
         given:
         OffsetDateTime now = namer.getUtcNow()

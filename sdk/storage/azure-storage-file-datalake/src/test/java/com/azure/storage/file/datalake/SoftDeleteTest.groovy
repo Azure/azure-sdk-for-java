@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.test.TestMode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -42,6 +43,7 @@ class SoftDeleteTest extends APISpec{
         fileSystemClient.delete()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
     def "Restore path"() {
         setup:
         def dir = fileSystemClient.getDirectoryClient(generatePathName())
@@ -74,6 +76,7 @@ class SoftDeleteTest extends APISpec{
         returnedClient.getPathUrl() == file.getPathUrl()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
     @Unroll
     def "Restore path special characters"() {
         setup:
@@ -160,6 +163,7 @@ class SoftDeleteTest extends APISpec{
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
     def "List deleted paths path"() {
         setup:
         def dir = fileSystemClient.getDirectoryClient(generatePathName())
@@ -181,6 +185,7 @@ class SoftDeleteTest extends APISpec{
         deletedBlobs.first().getPath() == dir.getDirectoryName() + "/" + fc1.getFileName()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
     // TODO (gapra): Add more get paths tests (Github issue created)
     def "List deleted paths"() {
         setup:

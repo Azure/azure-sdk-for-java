@@ -11,6 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
@@ -454,6 +455,7 @@ class DirectoryAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive min"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -469,6 +471,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -487,6 +490,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches resume"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -509,6 +513,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches progress"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -539,6 +544,7 @@ class DirectoryAPITest extends APISpec {
         (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches follow token"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -582,6 +588,7 @@ class DirectoryAPITest extends APISpec {
         return getDirectoryClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive progress with failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -631,6 +638,7 @@ class DirectoryAPITest extends APISpec {
         progress.failures[0].getErrorMessage()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive continue on failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -688,6 +696,7 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive continue on failure batch failures"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -746,6 +755,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getContinuationToken() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -834,6 +844,7 @@ class DirectoryAPITest extends APISpec {
         e.getCause().class == DataLakeStorageException.class
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Set ACL recursive error middle of batches"() {
         setup:
@@ -862,6 +873,7 @@ class DirectoryAPITest extends APISpec {
         new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -876,6 +888,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -894,6 +907,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches resume"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -916,6 +930,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches progress"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -946,6 +961,7 @@ class DirectoryAPITest extends APISpec {
         (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches follow token"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -979,6 +995,7 @@ class DirectoryAPITest extends APISpec {
         iterations == 2
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive progress with failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1028,6 +1045,7 @@ class DirectoryAPITest extends APISpec {
         progress.failures[0].getErrorMessage()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive continue on failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1085,6 +1103,7 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive continue on failure batch failures"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1143,6 +1162,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getContinuationToken() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1231,6 +1251,7 @@ class DirectoryAPITest extends APISpec {
         e.getCause().class == DataLakeStorageException.class
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Update ACL recursive error middle of batches"() {
         setup:
@@ -1259,6 +1280,7 @@ class DirectoryAPITest extends APISpec {
         new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1272,6 +1294,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1290,6 +1313,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches resume"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1312,6 +1336,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches progress"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1342,6 +1367,7 @@ class DirectoryAPITest extends APISpec {
         (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches follow token"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1375,6 +1401,7 @@ class DirectoryAPITest extends APISpec {
         iterations == 2
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive progress with failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1424,6 +1451,7 @@ class DirectoryAPITest extends APISpec {
         progress.failures[0].getErrorMessage()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive continue on failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1481,6 +1509,7 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive continue on failure batch failures"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1539,6 +1568,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getContinuationToken() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1627,6 +1657,7 @@ class DirectoryAPITest extends APISpec {
         e.getCause().class == DataLakeStorageException.class
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Remove ACL recursive error middle of batches"() {
         setup:
