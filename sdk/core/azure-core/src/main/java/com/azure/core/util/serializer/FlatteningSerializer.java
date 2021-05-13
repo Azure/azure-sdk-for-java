@@ -5,7 +5,6 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -21,15 +20,11 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.BeanSerializer;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.time.Duration;
@@ -46,10 +41,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
 
 /**
- * Custom serializer for serializing types with wrapped properties. For example, a property with annotation {@code
- *
- * @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to {@code
- * {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
+ * Custom serializer for serializing types with wrapped properties. For example, a property with annotation
+ * {@code @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to
+ * {@code {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
     private static final long serialVersionUID = -6130180289951110573L;
@@ -349,13 +343,13 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         jgen.writeTree(res);
     }
 
-    private void writeValue(JsonGenerator jgen, BeanPropertyWriter writer, Object value) {
-        try {
-            mapper.writeValue(jgen, writer.get(value));
-        } catch (Exception e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(new JsonGenerationException(e, jgen)));
-        }
-    }
+//    private void writeValue(JsonGenerator jgen, BeanPropertyWriter writer, Object value) {
+//        try {
+//            mapper.writeValue(jgen, writer.get(value));
+//        } catch (Exception e) {
+//            throw logger.logExceptionAsError(new UncheckedIOException(new JsonGenerationException(e, jgen)));
+//        }
+//    }
 
     @Override
     public void resolve(SerializerProvider provider) throws JsonMappingException {
