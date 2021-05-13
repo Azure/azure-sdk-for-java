@@ -1,11 +1,5 @@
 trigger: none
 
-parameters:
-    - name: TestPackagesEnabled
-      displayName: Tests Enabled
-      type: string
-      values:
-          - sms
 stages:
 - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
