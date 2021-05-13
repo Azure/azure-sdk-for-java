@@ -3,8 +3,6 @@
 
 package com.azure.data.tables;
 
-import com.azure.storage.common.implementation.StorageImplUtils;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +10,9 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.data.tables.implementation.TableUtils.computeHMac256;
+import static com.azure.data.tables.implementation.TableUtils.parseQueryStringSplitValues;
 
 /**
  * A SharedKey credential that authorizes requests to the Tables service.
@@ -42,8 +43,7 @@ public class TablesSharedKeyCredential {
      * @return the auth header
      */
     String generateAuthorizationHeader(URL requestUrl, Map<String, String> headers) {
-        String signature = StorageImplUtils.computeHMac256(accountKey, buildStringToSign(requestUrl,
-            headers));
+        String signature = computeHMac256(accountKey, buildStringToSign(requestUrl, headers));
         return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
     }
 
@@ -92,7 +92,7 @@ public class TablesSharedKeyCredential {
         }
 
         if (requestUrl.getQuery() != null) {
-            Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestUrl.getQuery());
+            Map<String, String[]> queryParams = parseQueryStringSplitValues(requestUrl.getQuery());
             ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
 
             Collections.sort(queryParamNames);

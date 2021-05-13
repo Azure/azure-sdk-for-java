@@ -15,7 +15,7 @@ import com.azure.data.tables.models.UpdateMode;
 
 import java.time.Duration;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
  * Provides a synchronous service client for accessing a table in the Azure Tables service.

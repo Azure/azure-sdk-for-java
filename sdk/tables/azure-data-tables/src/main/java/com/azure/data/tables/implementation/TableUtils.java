@@ -7,6 +7,7 @@ import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataErrorMessage;
 import com.azure.data.tables.models.TableServiceError;
 import com.azure.data.tables.models.TableServiceErrorException;
+import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -15,6 +16,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
@@ -95,6 +97,23 @@ public final class TableUtils {
                 (com.azure.data.tables.implementation.models.TableServiceErrorException) throwable);
         } else {
             return throwable;
+        }
+    }
+
+    /**
+     * Blocks an asynchronous response with an optional timeout.
+     *
+     * @param response Asynchronous response to block.
+     * @param timeout Optional timeout.
+     * @param <T> Return type of the asynchronous response.
+     * @return The value of the asynchronous response.
+     * @throws RuntimeException If the asynchronous response doesn't complete before the timeout expires.
+     */
+    public static <T> T blockWithOptionalTimeout(Mono<T> response, Duration timeout) {
+        if (timeout == null) {
+            return response.block();
+        } else {
+            return response.block(timeout);
         }
     }
 

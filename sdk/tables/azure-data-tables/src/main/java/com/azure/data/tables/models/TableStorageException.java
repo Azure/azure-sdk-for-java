@@ -5,7 +5,8 @@ package com.azure.data.tables.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
+
+import static com.azure.data.tables.implementation.StorageConstants.HeaderConstants.ERROR_CODE;
 
 /**
  * A {@code TableStorageException} is thrown whenever the Tables service successfully returns an error code that is not

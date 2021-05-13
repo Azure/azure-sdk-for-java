@@ -16,7 +16,7 @@ import com.azure.data.tables.models.UpdateMode;
 import java.time.Duration;
 import java.util.List;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
  * Provides a batch object for asynchronously executing a transaction containing one or more operations on entities
