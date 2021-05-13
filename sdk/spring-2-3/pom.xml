@@ -93,7 +93,7 @@
         <module>azure-spring-boot-test-core</module>
         <module>azure-spring-boot-test-cosmos</module>
         <module>azure-spring-boot-test-keyvault/pom.xml</module>
-        <module>azure-spring-boot-test-keyvault/pom-reactive.xml</module>
+        <!--<module>azure-spring-boot-test-keyvault/pom-reactive.xml</module>-->
         <module>azure-spring-boot-test-parent</module>
         <module>azure-spring-boot</module>
         <module>azure-spring-data-gremlin</module>
