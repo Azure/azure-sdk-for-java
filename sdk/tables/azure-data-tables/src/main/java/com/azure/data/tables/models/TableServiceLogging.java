@@ -10,11 +10,11 @@ import com.azure.data.tables.implementation.models.RetentionPolicy;
  * A model representing configurable Azure Analytics Logging settings of the Table service.
  */
 @Fluent
-public class TableServiceLogging {
+public final class TableServiceLogging {
     /*
      * The version of Analytics to configure.
      */
-    private String version;
+    private String analyticsVersion;
 
     /*
      * Indicates whether all delete requests should be logged.
@@ -39,21 +39,21 @@ public class TableServiceLogging {
     /**
      * Get the version of Analytics to configure.
      *
-     * @return The {@code version}.
+     * @return The {@code analyticsVersion}.
      */
-    public String getVersion() {
-        return this.version;
+    public String getAnalyticsVersion() {
+        return this.analyticsVersion;
     }
 
     /**
      * Set the version of Analytics to configure.
      *
-     * @param version The {@code version} to set.
+     * @param analyticsVersion The {@code analyticsVersion} to set.
      *
      * @return The updated {@link TableServiceLogging} object.
      */
-    public TableServiceLogging setVersion(String version) {
-        this.version = version;
+    public TableServiceLogging setAnalyticsVersion(String analyticsVersion) {
+        this.analyticsVersion = analyticsVersion;
 
         return this;
     }

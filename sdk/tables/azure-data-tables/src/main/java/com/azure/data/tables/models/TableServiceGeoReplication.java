@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  * Geo-Replication information for the Secondary Storage Service.
  */
 @Immutable
-public class TableServiceGeoReplication {
+public final class TableServiceGeoReplication {
     /*
      * The status of the secondary location.
      */

@@ -12,7 +12,7 @@ import com.azure.core.annotation.Fluent;
  * in another domain.
  */
 @Fluent
-public class TableServiceCorsRule {
+public final class TableServiceCorsRule {
     /*
      * The origin domains that are permitted to make a request against the service via CORS. The origin domain is the
      * domain from which the request originates. Note that the origin must be an exact case-sensitive match with the

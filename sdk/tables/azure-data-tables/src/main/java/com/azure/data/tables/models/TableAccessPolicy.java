@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  * A table's access policy.
  */
 @Fluent
-public class TableAccessPolicy {
+public final class TableAccessPolicy {
     /*
      * The date-time the policy is active.
      */

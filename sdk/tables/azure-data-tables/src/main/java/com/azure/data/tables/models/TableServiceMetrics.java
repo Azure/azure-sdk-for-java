@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * A model representing configurable metrics settings of the Table service.
  */
 @Fluent
-public class TableServiceMetrics {
+public final class TableServiceMetrics {
     /*
      * The version of Analytics to configure.
      */

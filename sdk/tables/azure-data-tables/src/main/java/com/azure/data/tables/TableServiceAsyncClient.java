@@ -428,7 +428,7 @@ public class TableServiceAsyncClient {
 
     private TableServiceLogging toTableServiceLogging(Logging logging) {
         return new TableServiceLogging()
-            .setVersion(logging.getVersion())
+            .setAnalyticsVersion(logging.getVersion())
             .setDeleteLogged(logging.isDelete())
             .setReadLogged(logging.isRead())
             .setWriteLogged(logging.isWrite())
@@ -512,7 +512,7 @@ public class TableServiceAsyncClient {
 
     private Logging toLogging(TableServiceLogging tableServiceLogging) {
         return new Logging()
-            .setVersion(tableServiceLogging.getVersion())
+            .setVersion(tableServiceLogging.getAnalyticsVersion())
             .setDelete(tableServiceLogging.isDeleteLogged())
             .setRead(tableServiceLogging.isReadLogged())
             .setWrite(tableServiceLogging.isWriteLogged())

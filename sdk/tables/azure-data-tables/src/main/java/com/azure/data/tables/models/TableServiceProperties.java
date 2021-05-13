@@ -11,7 +11,7 @@ import java.util.List;
  * A model representing configurable settings of the Table service.
  */
 @Fluent
-public class TableServiceProperties {
+public final class TableServiceProperties {
     /*
      * Azure Analytics Logging settings.
      */

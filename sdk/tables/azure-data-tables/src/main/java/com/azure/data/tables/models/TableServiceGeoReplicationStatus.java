@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 /**
  * Defines values for {@link TableServiceGeoReplicationStatus}.
  */
-public class TableServiceGeoReplicationStatus extends ExpandableStringEnum<TableServiceGeoReplicationStatus> {
+public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum<TableServiceGeoReplicationStatus> {
     /**
      * Static value 'live' for {@link TableServiceGeoReplicationStatus}.
      */

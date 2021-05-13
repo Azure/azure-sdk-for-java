@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * A model representing Table service statistics.
  */
 @Immutable
-public class TableServiceStatistics {
+public final class TableServiceStatistics {
     /*
      * Geo-Replication information for the Secondary Storage Service.
      */

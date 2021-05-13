@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The Table service retention policy.
  */
 @Fluent
-public class TableServiceRetentionPolicy {
+public final class TableServiceRetentionPolicy {
     /*
      * Indicates whether a retention policy is enabled for the Table service.
      */

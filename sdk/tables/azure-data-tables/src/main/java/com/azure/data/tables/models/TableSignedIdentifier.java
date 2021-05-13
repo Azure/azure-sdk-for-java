@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * A signed identifier.
  */
 @Fluent
-public class TableSignedIdentifier {
+public final class TableSignedIdentifier {
     /*
      * A unique id
      */
