@@ -17,6 +17,7 @@ import com.azure.data.tables.models.UpdateMode;
 import java.time.Duration;
 import java.util.List;
 
+import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -722,11 +723,12 @@ public class TableClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return The table's {@link TableSignedIdentifier access policies}.
+     * @return A reactive result containing the HTTP response and the table's
+     * {@link TableSignedIdentifier access policies}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TableSignedIdentifier> getAccessPolicy() {
-        return client.getAccessPolicy().block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TableSignedIdentifier> getAccessPolicy() {
+        return new PagedIterable<>(client.getAccessPolicy());
     }
 
     /**
@@ -739,9 +741,9 @@ public class TableClient {
      * @return A reactive result containing the HTTP response and the table's
      * {@link TableSignedIdentifier access policies}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<TableSignedIdentifier>> getAccessPolicyWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.getAccessPolicyWithResponse(context), timeout);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TableSignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
+        return new PagedIterable<>(applyOptionalTimeout(client.getAccessPolicy(context), timeout));
     }
 
     /**

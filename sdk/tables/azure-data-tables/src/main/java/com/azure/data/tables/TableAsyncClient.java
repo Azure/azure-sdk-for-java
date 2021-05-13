@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -40,10 +41,13 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
+import static com.azure.core.util.FluxUtil.fluxContext;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -953,36 +957,34 @@ public final class TableAsyncClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return A reactive result containing the table's {@link TableSignedIdentifier access policies}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TableSignedIdentifier>> getAccessPolicy() {
-        return this.getAccessPolicyWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
-     * Signatures.
-     *
-     * @return A reactive result containing the HTTP response and the table's
+     * @return A paged reactive result containing the HTTP response and the table's
      * {@link TableSignedIdentifier access policies}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<TableSignedIdentifier>>> getAccessPolicyWithResponse() {
-        return withContext(this::getAccessPolicyWithResponse);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TableSignedIdentifier> getAccessPolicy() {
+        return (PagedFlux<TableSignedIdentifier>) fluxContext(this::getAccessPolicy);
     }
 
-    Mono<Response<List<TableSignedIdentifier>>> getAccessPolicyWithResponse(Context context) {
+    PagedFlux<TableSignedIdentifier> getAccessPolicy(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {
-            return implementation.getTables().getAccessPolicyWithResponseAsync(tableName, null, null, context)
-                .map(response ->
-                    new SimpleResponse<>(response, response.getValue().stream()
-                        .map(this::toTableSignedIdentifier)
-                        .collect(Collectors.toList())));
+            Context finalContext = context;
+            Function<String, Mono<PagedResponse<TableSignedIdentifier>>> retriever =
+                marker ->
+                    implementation.getTables().getAccessPolicyWithResponseAsync(tableName, null, null, finalContext)
+                    .map(response -> new PagedResponseBase<>(response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        response.getValue().stream()
+                            .map(this::toTableSignedIdentifier)
+                            .collect(Collectors.toList()),
+                        null,
+                        response.getDeserializedHeaders()));
+
+            return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return pagedFluxError(logger, e);
         }
     }
 
