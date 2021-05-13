@@ -57,10 +57,6 @@
                                     <pattern>org.apache.commons</pattern>
                                     <shadedPattern>com.azure.keyvault.jca.org.apache.commons</shadedPattern>
                                 </relocation>
-                              <relocation>
-                                <pattern>org.apache.http</pattern>
-                                <shadedPattern>com.azure.keyvault.jca.org.apache.http</shadedPattern>
-                              </relocation>
                                 <relocation>
                                     <pattern>mozilla</pattern>
                                     <shadedPattern>com.azure.keyvault.jca.mozilla</shadedPattern>
