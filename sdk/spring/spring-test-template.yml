@@ -10,6 +10,8 @@ parameters:
     - spring/azure-spring-cloud-test-eventhubs
     - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder
     - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
+    - spring/azure-spring-boot-test-aad
+    - spring/azure-spring-boot-test-aad-b2c
   Artifacts:
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
