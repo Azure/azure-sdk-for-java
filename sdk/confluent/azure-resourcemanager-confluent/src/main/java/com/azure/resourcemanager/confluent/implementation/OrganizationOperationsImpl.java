@@ -7,7 +7,6 @@ package com.azure.resourcemanager.confluent.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.fluent.OrganizationOperationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.confluent.models.OperationResult;
@@ -19,28 +18,29 @@ public final class OrganizationOperationsImpl implements OrganizationOperations 
 
     private final OrganizationOperationsClient innerClient;
 
-    private final ConfluentManager serviceManager;
+    private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    public OrganizationOperationsImpl(OrganizationOperationsClient innerClient, ConfluentManager serviceManager) {
+    public OrganizationOperationsImpl(
+        OrganizationOperationsClient innerClient, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OperationResult> list() {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationResult> list(Context context) {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     private OrganizationOperationsClient serviceClient() {
         return this.innerClient;
     }
 
-    private ConfluentManager manager() {
+    private com.azure.resourcemanager.confluent.ConfluentManager manager() {
         return this.serviceManager;
     }
 }

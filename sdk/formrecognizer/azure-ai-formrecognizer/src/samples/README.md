@@ -29,8 +29,8 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 |----------------|-------------|
 |[Authentication][authentication_sample]|Authenticate the client|
 |[RecognizeContent][recognize_content] and [RecognizeContentFromUrlAsync][recognize_content_from_url_async]|Recognize text and table structures of a document|
-|[RecognizeIdDocuments][recognize_id_documents] and [RecognizeIdDocumentsAsync][recognize_id_documents_async]|Recognize data from an ID document like a passport or a US drivers license using a prebuilt model|
-|[RecognizeIdDocumentsFromUrl][recognize_id_documents_from_url] and [RecognizeIdDocumentsFromUrlAsync][recognize_id_documents_from_url_async]|Recognize data from a URL of a  passport or a US drivers license using a prebuilt model|
+|[RecognizeIdentityDocuments][recognize_id_documents] and [RecognizeIdentityDocumentsAsync][recognize_id_documents_async]|Recognize data from an identity document like a passport or a US drivers license using a prebuilt model|
+|[RecognizeIdentityDocumentsFromUrl][recognize_id_documents_from_url] and [RecognizeIdentityDocumentsFromUrlAsync][recognize_id_documents_from_url_async]|Recognize data from a URL of a passport or a US drivers license using a prebuilt model|
 |[RecognizeReceipts][recognize_receipts] and [RecognizeReceiptsAsync][recognize_receipts_async]|Recognize data from a file of a US sales receipt using a prebuilt model|
 |[RecognizeReceiptsFromUrl][recognize_receipts_from_url] and [RecognizeReceiptsFromUrlAsync][recognize_receipts_from_url_async]|Recognize data from a URL of a US sales receipt using a prebuilt model|
 |[RecognizeCustomFormsFromUrl][recognize_custom_forms] and [RecognizeCustomFormsAsync][recognize_custom_forms_async]|Recognize forms with your custom model|
@@ -46,7 +46,7 @@ Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 ## Next steps
 Check out the [API reference documentation][java_fr_ref_docs] to learn more about
 what you can do with the Azure Form Recognizer client library.
-Following section provides code samples for some of the advanced scenarios in Form Recognizer Client library:
+Following section provides code samples for some advanced scenarios in Form Recognizer Client library:
 
 |**Advanced Sample File Name**|**Description**|
 |----------------|-------------|
@@ -82,10 +82,10 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [recognize_content_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeContentFromUrlAsync.java
 [recognize_custom_forms]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsFromUrl.java
 [recognize_custom_forms_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
-[recognize_id_documents]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdDocuments.java
-[recognize_id_documents_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdDocumentsAsync.java
-[recognize_id_documents_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdDocumentsFromUrl.java
-[recognize_id_documents_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdDocumentsFromUrlAsync.java
+[recognize_id_documents]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdentityDocuments.java
+[recognize_id_documents_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdentityDocumentsAsync.java
+[recognize_id_documents_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdentityDocumentsFromUrl.java
+[recognize_id_documents_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeIdentityDocumentsFromUrlAsync.java
 [recognize_receipts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceipts.java
 [recognize_receipts_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsAsync.java
 [recognize_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrl.java

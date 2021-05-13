@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,7 +59,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @Host("{$host}")
     @ServiceInterface(name = "FeatureClientFeature")
     private interface FeaturesService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -66,9 +67,10 @@ public final class FeaturesClientImpl implements FeaturesClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
                 + "/features")
@@ -79,9 +81,10 @@ public final class FeaturesClientImpl implements FeaturesClient {
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
                 + "/features/{featureName}")
@@ -93,9 +96,10 @@ public final class FeaturesClientImpl implements FeaturesClient {
             @PathParam("featureName") String featureName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
                 + "/features/{featureName}/register")
@@ -107,9 +111,10 @@ public final class FeaturesClientImpl implements FeaturesClient {
             @PathParam("featureName") String featureName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
                 + "/features/{featureName}/unregister")
@@ -121,21 +126,28 @@ public final class FeaturesClientImpl implements FeaturesClient {
             @PathParam("featureName") String featureName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FeatureOperationsListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FeatureOperationsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -159,6 +171,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -167,6 +180,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<FeatureResultInner>>map(
                 res ->
@@ -177,7 +191,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -203,9 +217,15 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
-            .listAll(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .listAll(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -299,6 +319,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -308,6 +329,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                             resourceProviderNamespace,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<FeatureResultInner>>map(
                 res ->
@@ -318,7 +340,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -352,6 +374,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -359,6 +382,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                 resourceProviderNamespace,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -466,6 +490,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -476,8 +501,9 @@ public final class FeaturesClientImpl implements FeaturesClient {
                             featureName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -515,6 +541,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -523,6 +550,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                 featureName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -615,6 +643,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -625,8 +654,9 @@ public final class FeaturesClientImpl implements FeaturesClient {
                             featureName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -664,6 +694,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
             .register(
@@ -672,6 +703,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                 featureName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -764,6 +796,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -774,8 +807,9 @@ public final class FeaturesClientImpl implements FeaturesClient {
                             featureName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -813,6 +847,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
             .unregister(
@@ -821,6 +856,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                 featureName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -893,8 +929,15 @@ public final class FeaturesClientImpl implements FeaturesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, context))
+            .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<FeatureResultInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -904,7 +947,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -922,9 +965,16 @@ public final class FeaturesClientImpl implements FeaturesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
-            .listAllNext(nextLink, context)
+            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -950,8 +1000,15 @@ public final class FeaturesClientImpl implements FeaturesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<FeatureResultInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -961,7 +1018,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -979,9 +1036,16 @@ public final class FeaturesClientImpl implements FeaturesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
