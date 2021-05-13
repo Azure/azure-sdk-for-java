@@ -75,7 +75,7 @@ class BlobOutputStreamTest extends APISpec {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
         def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def outputStream = blockBlobClient.getBlobOutputStream(true)

@@ -342,13 +342,13 @@ class ServiceAPITest extends APISpec {
         setup:
         def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
             .setTags(Collections.singletonMap("key", "value")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
             .setTags(Collections.singletonMap("bar", "foo")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         sleepIfRecord(10 * 1000) // To allow tags to index
 
@@ -373,7 +373,7 @@ class ServiceAPITest extends APISpec {
         def tags = Collections.singletonMap("tag", "value")
         for (int i = 0; i < 10; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
         }
 
         sleepIfRecord(10 * 1000) // To allow tags to index
@@ -406,7 +406,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
         }
 
         expect:
@@ -431,7 +431,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
         }
 
         expect:
@@ -473,7 +473,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
         }
 
         when: "Consume results by page"
@@ -852,7 +852,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
@@ -878,7 +878,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
@@ -905,7 +905,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
@@ -936,7 +936,7 @@ class ServiceAPITest extends APISpec {
         def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-        .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+        .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
         .then(cc1.delete())
         .then(Mono.delay(Duration.ofMillis(delay)))
         .then(primaryBlobServiceAsyncClient.listBlobContainers(
@@ -967,7 +967,7 @@ class ServiceAPITest extends APISpec {
         def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-            .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
             .then(cc1.delete())
             .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryBlobServiceAsyncClient.listBlobContainers(
@@ -1008,7 +1008,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()

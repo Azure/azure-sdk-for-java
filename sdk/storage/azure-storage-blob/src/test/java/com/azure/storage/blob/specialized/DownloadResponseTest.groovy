@@ -26,7 +26,7 @@ class DownloadResponseTest extends APISpec {
 
     def setup() {
         bu = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu.upload(defaultInputStream.get(), defaultText.length())
+        bu.upload(data.defaultInputStream, data.defaultText.length())
     }
 
     /*
@@ -38,7 +38,7 @@ class DownloadResponseTest extends APISpec {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == defaultData.array()
+        outputStream.toByteArray() == data.defaultData.array()
     }
 
     def "Network call no etag returned"() {
@@ -65,7 +65,7 @@ class DownloadResponseTest extends APISpec {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == defaultData.array()
+        outputStream.toByteArray() == data.defaultData.array()
     }
 
     @Unroll
