@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.5.1 (2021-05-13)
+### Dependency Updates
 - Updated `azure-storage-blob` to version `12.11.1`
 - Updated `azure-core` to version `1.16.0`
 

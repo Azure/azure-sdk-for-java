@@ -25,6 +25,7 @@ import com.azure.storage.file.datalake.options.FileSystemRenameOptions
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Requires
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -259,6 +260,7 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listPaths().first().getName() == blobName
     }
 
+    @Requires( { playbackMode() } )
     def "Restore file system into other file system"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -386,6 +388,7 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException.class)
     }
 
+    @Requires( { playbackMode() } )
     def "Restore file system into existing file system error"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
