@@ -10,6 +10,7 @@ import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -136,6 +137,7 @@ class FileAPITests extends APISpec {
         assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null, null, null), 201)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Create file 4TB"() {
         expect:
         assertResponseStatusCode(primaryFileClient.createWithResponse(4 * Constants.TB, null, null, null, null, null, null), 201)
@@ -349,6 +351,7 @@ class FileAPITests extends APISpec {
         data == stream.toByteArray()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Upload Range 4TB"() {
         given:
         def fileSize = 4 * Constants.TB
@@ -1043,6 +1046,7 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "List ranges diff"() {
         setup:
@@ -1093,6 +1097,7 @@ class FileAPITests extends APISpec {
         createFileRanges(0, 511, 1024, 1535) | createFileRanges(512, 1023, 1536, 2047) | createFileRanges(0, 511, 1024, 1535) | createClearRanges(512, 1023, 1536, 2047)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "List ranges diff with range"() {
         given:
         def fileName = namer.getRandomName(60)
@@ -1115,6 +1120,7 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "List ranges diff lease"() {
         given:
         def fileName = namer.getRandomName(60)
@@ -1192,6 +1198,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.listHandles(2, null, null).size() == 0
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryFileClient.create(512)
@@ -1216,6 +1223,7 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryFileClient.create(512)

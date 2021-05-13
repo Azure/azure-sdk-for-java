@@ -12,6 +12,7 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging
 import com.azure.storage.file.datalake.models.DataLakeCorsRule
 import com.azure.storage.file.datalake.models.DataLakeMetrics
@@ -162,6 +163,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @ResourceLock("ServiceProperties")
     def "Set props static website"() {
         setup:
@@ -413,6 +415,7 @@ class ServiceAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -468,6 +471,7 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.getFileSystemName() == destinationFileSystemName
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system with response"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -496,6 +500,7 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listPaths().first().getName() == blobName
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system async"() {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
@@ -526,6 +531,7 @@ class ServiceAPITest extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system async with response"() {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
@@ -567,6 +573,7 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException.class)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system into existing file system error"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())

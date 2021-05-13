@@ -9,6 +9,7 @@ import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -1149,6 +1150,7 @@ class FileAsyncAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "List ranges diff"() {
         setup:
@@ -1220,6 +1222,7 @@ class FileAsyncAPITests extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryFileAsyncClient.create(512).block()
@@ -1241,6 +1244,7 @@ class FileAsyncAPITests extends APISpec {
             .verifyErrorSatisfies({ it instanceof ShareStorageException })
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryFileAsyncClient.create(512).block()
