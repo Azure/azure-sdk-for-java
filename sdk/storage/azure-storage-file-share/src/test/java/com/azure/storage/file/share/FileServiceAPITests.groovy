@@ -226,6 +226,7 @@ class FileServiceAPITests extends APISpec {
         def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
 
         def time = namer.getUtcNow().truncatedTo(ChronoUnit.SECONDS)
+        time = time.minusSeconds(1) // account for time skew on the other side.
         share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED))
 
         when:
