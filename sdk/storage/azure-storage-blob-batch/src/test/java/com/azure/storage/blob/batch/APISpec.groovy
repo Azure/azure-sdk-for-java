@@ -18,10 +18,6 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
 
-import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
-import java.util.function.Supplier
-
 class APISpec extends StorageSpec {
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
