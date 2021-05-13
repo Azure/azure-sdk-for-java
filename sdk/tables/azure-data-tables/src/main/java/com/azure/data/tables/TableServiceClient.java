@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceProperties;
 
 import java.time.Duration;
 
@@ -233,4 +234,28 @@ public class TableServiceClient {
         return new PagedIterable<>(client.listTables(options));
     }
 
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @return The {@link TableServiceProperties properties} of an account's Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableServiceProperties getProperties() {
+        return client.getProperties().block();
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response and the {@link TableServiceProperties properties} of an account's Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.getPropertiesWithResponse(context), timeout);
+    }
 }
