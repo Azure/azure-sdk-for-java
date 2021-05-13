@@ -21,7 +21,7 @@ import com.azure.data.tables.implementation.models.BatchRequestBody;
 import com.azure.data.tables.implementation.models.BatchSubRequest;
 import com.azure.data.tables.implementation.models.TableServiceError;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -253,7 +253,7 @@ public final class TableAsyncBatch {
      * @return A reactive result containing a list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -269,7 +269,7 @@ public final class TableAsyncBatch {
      * contain a list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -355,7 +355,7 @@ public final class TableAsyncBatch {
                 message += " " + errorMessage;
             }
 
-            return monoError(logger, new TableServiceErrorException(message, null, toTableServiceError(error)));
+            return monoError(logger, new TableServiceException(message, null, toTableServiceError(error)));
         } else {
             return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }

@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.implementation.CustomFormModelInfoHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
  * The CustomFormModelInfo model.
  */
+@Immutable
 public final class CustomFormModelInfo {
 
     /*

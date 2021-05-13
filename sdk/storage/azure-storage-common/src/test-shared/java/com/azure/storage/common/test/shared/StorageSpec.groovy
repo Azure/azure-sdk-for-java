@@ -8,6 +8,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.util.ServiceVersion
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
@@ -37,12 +38,25 @@ class StorageSpec extends Specification {
         return namer
     }
 
+    protected getData() {
+        return TestDataFactory.getInstance();
+    }
+
     protected <T> T instrument(T builder) {
         // Groovy style reflection. All our builders follow this pattern.
         builder."httpClient"(getHttpClient())
         if (ENVIRONMENT.testMode == TestMode.RECORD) {
             builder."addPolicy"(interceptorManager.getRecordPolicy())
         }
+
+        if (ENVIRONMENT.serviceVersion != null) {
+            Class<ServiceVersion> serviceVersionClass = builder.class.methods
+                .find { it.name == "serviceVersion" && it.parameterCount == 1}.parameterTypes[0] as Class<ServiceVersion>
+            def parsedServiceVersion = Enum.valueOf(serviceVersionClass, ENVIRONMENT.serviceVersion)
+            builder."serviceVersion"(parsedServiceVersion)
+            builder."addPolicy"(new ServiceVersionValidationPolicy(parsedServiceVersion.version))
+        }
+
         return builder
     }
 
