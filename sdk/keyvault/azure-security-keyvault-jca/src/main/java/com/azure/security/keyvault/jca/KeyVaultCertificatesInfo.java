@@ -59,26 +59,26 @@ public class KeyVaultCertificatesInfo {
 
     List<String> getAliases(KeyVaultClient keyVaultClient) {
         if (lastRefreshTime == null || certificatesNeedRefresh()) {
-            RefreshCertificates(keyVaultClient);
+            refreshCertificates(keyVaultClient);
         }
         return aliases;
     }
 
     Map<String, Certificate> getCertificates(KeyVaultClient keyVaultClient) {
         if (lastRefreshTime == null || certificatesNeedRefresh()) {
-            RefreshCertificates(keyVaultClient);
+            refreshCertificates(keyVaultClient);
         }
         return certificates;
     }
 
     Map<String, Key> getCertificateKeys(KeyVaultClient keyVaultClient) {
         if (lastRefreshTime == null || certificatesNeedRefresh()) {
-            RefreshCertificates(keyVaultClient);
+            refreshCertificates(keyVaultClient);
         }
         return certificateKeys;
     }
 
-    void RefreshCertificates(KeyVaultClient keyVaultClient) {
+    void refreshCertificates(KeyVaultClient keyVaultClient) {
         aliases = keyVaultClient.getAliases();
         certificateKeys.clear();
         certificates.clear();
@@ -95,18 +95,27 @@ public class KeyVaultCertificatesInfo {
         lastRefreshTime = new Date();
     }
 
+    /**
+     *  get latest alias by certificate which in portal
+     * @param certificate certificate getted
+     * @param keyVaultClient keyVaultClient in keyStore
+     * @return certificate's alias if exist.
+     */
     public String getAliasByCertInTime(Certificate certificate, KeyVaultClient keyVaultClient) {
-        RefreshCertificates(keyVaultClient);
-        String key="";
+        refreshCertificates(keyVaultClient);
+        String key = "";
         for (Map.Entry<String, Certificate> entry : certificates.entrySet()) {
-            if(certificate.equals(entry.getValue())){
-                key=entry.getKey();
+            if (certificate.equals(entry.getValue())) {
+                key = entry.getKey();
             }
         }
-        overallRefreshTime = new Date();
+        refreshCertsInfo();
         return key;
     }
 
+    /**
+     * overall refresh certificates's info
+     */
     public static void refreshCertsInfo() {
         overallRefreshTime = new Date();
     }
