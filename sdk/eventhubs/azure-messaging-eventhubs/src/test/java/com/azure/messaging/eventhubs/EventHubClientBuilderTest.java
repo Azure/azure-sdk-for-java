@@ -7,6 +7,8 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
@@ -123,6 +125,27 @@ public class EventHubClientBuilderTest {
         }
 
         Assertions.assertEquals(expectedClientCreation, clientCreated);
+    }
+
+    @Test
+    public void testConnectionWithAzureNameKeyCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessKeyName = "SharedAccessKeyName test-value";
+        String sharedAccessKey = "SharedAccessKey test-value";
+        String eventHubName = "test-event-hub-name";
+        assertNotNull(new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, eventHubName,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+    }
+
+    @Test
+    public void testConnectionWithAzureSasCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessSignature = "SharedAccessSignature test-value";
+        String eventHubName = "test-event-hub-name";
+        assertNotNull(new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, eventHubName,
+                new AzureSasCredential(sharedAccessSignature)));
     }
 
     private static Stream<Arguments> getProxyConfigurations() {
