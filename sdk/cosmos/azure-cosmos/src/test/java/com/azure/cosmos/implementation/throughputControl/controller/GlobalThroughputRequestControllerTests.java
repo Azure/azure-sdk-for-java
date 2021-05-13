@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
-import jdk.dynalink.Operation;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
