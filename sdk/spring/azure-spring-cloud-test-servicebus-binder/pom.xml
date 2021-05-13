@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-test-servicebus-binder</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-servicebus-binder;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-servicebus-binder;current} -->
 
   <dependencies>
     <dependency>

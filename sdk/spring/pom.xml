@@ -217,6 +217,7 @@
         <module>azure-spring-cloud-stream-binder-test</module>
         <module>azure-spring-cloud-telemetry</module>
         <module>azure-spring-cloud-test-eventhubs</module>
+        <module>azure-spring-cloud-test-servicebus-binder</module>
         <module>azure-spring-data-gremlin</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>
