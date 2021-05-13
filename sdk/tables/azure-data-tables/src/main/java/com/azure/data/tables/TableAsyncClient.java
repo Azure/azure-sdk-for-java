@@ -21,14 +21,18 @@ import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.models.AccessPolicy;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Mono;
 
@@ -943,5 +947,107 @@ public final class TableAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @return A reactive result containing the table's {@link TableSignedIdentifier access policies}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<TableSignedIdentifier>> getAccessPolicy() {
+        return this.getAccessPolicyWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @return A reactive result containing the HTTP response and the table's
+     * {@link TableSignedIdentifier access policies}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<TableSignedIdentifier>>> getAccessPolicyWithResponse() {
+        return withContext(this::getAccessPolicyWithResponse);
+    }
+
+    Mono<Response<List<TableSignedIdentifier>>> getAccessPolicyWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return implementation.getTables().getAccessPolicyWithResponseAsync(tableName, null, null, context)
+                .map(response ->
+                    new SimpleResponse<>(response, response.getValue().stream()
+                        .map(this::toTableSignedIdentifier)
+                        .collect(Collectors.toList())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
+        return new TableSignedIdentifier()
+            .setId(signedIdentifier.getId())
+            .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
+    }
+
+    private TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
+        return new TableAccessPolicy()
+            .setExpiresOn(accessPolicy.getExpiry())
+            .setStartsOn(accessPolicy.getStart())
+            .setPermissions(accessPolicy.getPermission());
+    }
+
+    /**
+     * Sets stored access policies for the table that may be used with Shared Access Signatures.
+     *
+     * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
+     *
+     * @return An empty reactive result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setAccessPolicy(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return this.setAccessPolicyWithResponse(tableSignedIdentifiers).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
+     *
+     * @return A reactive result containing the HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return withContext(context -> this.setAccessPolicyWithResponse(tableSignedIdentifiers, context));
+    }
+
+    Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                     Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return implementation.getTables()
+                .setAccessPolicyWithResponseAsync(tableName, null, null,
+                    tableSignedIdentifiers.stream().map(this::toSignedIdentifier).collect(Collectors.toList()), context)
+                .map(response -> new SimpleResponse<>(response, response.getValue()));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
+        return new SignedIdentifier()
+            .setId(tableSignedIdentifier.getId())
+            .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
+    }
+
+    private AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
+        return new AccessPolicy()
+            .setExpiry(tableAccessPolicy.getExpiresOn())
+            .setStart(tableAccessPolicy.getStartsOn())
+            .setPermission(tableAccessPolicy.getPermissions());
     }
 }
