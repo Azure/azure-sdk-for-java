@@ -434,7 +434,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_07_07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "account sas tags and filter tags"() {
         setup:
         def service = new AccountSasService()
