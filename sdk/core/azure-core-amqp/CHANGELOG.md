@@ -22,7 +22,6 @@
 ## 2.1.0-beta.1 (2021-03-26)
 ### New Features
 - Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
->>>>>>> feature/servicebus-support-amqp-data-types-17614
 
 ## 2.0.4 (2021-04-12)
 
