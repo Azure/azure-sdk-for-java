@@ -6,6 +6,7 @@ package com.azure.storage.file.share
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -40,12 +41,16 @@ class FileServiceAPITests extends APISpec {
     static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new ShareCorsRule().setAllowedOrigins(reallyLongString))
     static def INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
-    def setup() {
-        shareName = namer.getRandomName(60)
-        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
+    def setupSpec() {
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new ShareCorsRule())
         }
+        TOO_MANY_RULES = Collections.unmodifiableList(TOO_MANY_RULES)
+    }
+
+    def setup() {
+        shareName = namer.getRandomName(60)
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
     }
 
     def "Get file service URL"() {
@@ -75,6 +80,7 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Create share max overloads"() {
         when:
         def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions()
@@ -119,6 +125,7 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "List shares with filter"() {
         given:
@@ -157,6 +164,7 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().setIncludeDeleted(true)   | 4      | false           | true            | true
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "List shares with args"() {
         given:
@@ -215,12 +223,14 @@ class FileServiceAPITests extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "List shares get access tier"() {
         setup:
         def shareName = generateShareName()
         def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
 
         def time = namer.getUtcNow().truncatedTo(ChronoUnit.SECONDS)
+        time = time.minusSeconds(1) // account for time skew on the other side.
         share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED))
 
         when:
@@ -331,6 +341,7 @@ class FileServiceAPITests extends APISpec {
         INVALID_ALLOWED_METHOD | 400        | ShareErrorCode.INVALID_XML_NODE_VALUE
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share min"() {
         given:
         def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
@@ -352,6 +363,7 @@ class FileServiceAPITests extends APISpec {
         restoredShareClient.getFileClient(fileName).exists()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share max"() {
         given:
         def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
@@ -375,6 +387,7 @@ class FileServiceAPITests extends APISpec {
         restoredShareClient.getFileClient(fileName).exists()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Restore share error"() {
         when:
         primaryFileServiceClient.undeleteShare(generateShareName(), "01D60F8BB59A4652")
