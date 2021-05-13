@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class TestDataFactory {
     private static final TestDataFactory INSTANCE = new TestDataFactory();
@@ -32,8 +33,12 @@ public class TestDataFactory {
         return defaultText;
     }
 
+    public byte[] getDefaultBytes() {
+        return Arrays.copyOf(defaultBytes, defaultBytes.length);
+    }
+
     public ByteBuffer getDefaultData() {
-        return ByteBuffer.wrap(defaultBytes);
+        return ByteBuffer.wrap(defaultBytes).asReadOnlyBuffer();
     }
 
     public InputStream getDefaultInputStream() {
@@ -48,7 +53,11 @@ public class TestDataFactory {
         return defaultBytes.length;
     }
 
+    public long getDefaultDataSizeLong() {
+        return defaultBytes.length;
+    }
+
     public Flux<ByteBuffer> getDefaultFlux() {
-        return Flux.just(getDefaultData()).map(ByteBuffer::duplicate);
+        return Flux.just(getDefaultData());
     }
 }
