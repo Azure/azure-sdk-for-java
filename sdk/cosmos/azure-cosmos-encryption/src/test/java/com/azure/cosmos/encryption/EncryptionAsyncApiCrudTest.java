@@ -57,14 +57,15 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
+        EncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            new TestEncryptionKeyStoreProvider());
+            encryptionKeyStoreProvider);
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);
 
-        metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
+        metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
@@ -368,6 +369,12 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
     public static class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
         Map<String, Integer> keyInfo = new HashMap<>();
+        String providerName = "TEST_KEY_STORE_PROVIDER";
+
+        @Override
+        public String getProviderName() {
+            return providerName;
+        }
 
         public TestEncryptionKeyStoreProvider() {
             keyInfo.put("tempmetadata1", 1);
