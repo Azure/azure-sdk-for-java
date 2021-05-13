@@ -12,6 +12,9 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableStorageException;
 import com.azure.data.tables.models.UpdateMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * sync code snippets for the Tables service
  */
@@ -184,9 +187,13 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
+        List<String> propertiesToSelect = new ArrayList<>();
+        propertiesToSelect.add("Seller");
+        propertiesToSelect.add("Price");
+
         ListEntitiesOptions options = new ListEntitiesOptions()
             .setFilter("Product eq markers")
-            .setSelect("Seller, Price");
+            .setSelect(propertiesToSelect);
         try {
             PagedIterable<TableEntity> tableEntities = tableClient.listEntities(options, null, null);
         } catch (TableStorageException e) {

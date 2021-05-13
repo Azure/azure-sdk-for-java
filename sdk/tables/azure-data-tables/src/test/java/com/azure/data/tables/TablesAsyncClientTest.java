@@ -26,6 +26,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -397,9 +398,11 @@ public class TablesAsyncClientTest extends TestBase {
         tableEntity.addProperty("Test", "Value");
         final int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
+        List<String> propertyList = new ArrayList<>();
+        propertyList.add("Test");
 
         // Act & Assert
-        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, "Test"))
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, propertyList))
             .assertNext(response -> {
                 final TableEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
@@ -602,8 +605,10 @@ public class TablesAsyncClientTest extends TestBase {
         final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue)
             .addProperty("propertyC", "valueC")
             .addProperty("propertyD", "valueD");
+        List<String> propertyList = new ArrayList<>();
+        propertyList.add("propertyC");
         ListEntitiesOptions options = new ListEntitiesOptions()
-            .setSelect("propertyC");
+            .setSelect(propertyList);
         tableClient.createEntity(entity).block(TIMEOUT);
 
         // Act & Assert

@@ -37,6 +37,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
@@ -713,10 +714,22 @@ public final class TableAsyncClient {
                                                                         Context context, ListEntitiesOptions options,
                                                                         Class<T> resultType) {
         context = context == null ? Context.NONE : context;
+        String select = null;
+
+        if (options.getSelect() != null) {
+            StringJoiner selectJoiner = new StringJoiner(",");
+
+            for (String propertyToSelect : options.getSelect()) {
+                selectJoiner.add(propertyToSelect);
+            }
+
+            select = selectJoiner.toString();
+        }
+
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
-            .setSelect(options.getSelect())
+            .setSelect(select)
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         try {
@@ -819,7 +832,7 @@ public final class TableAsyncClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
+     * @param select A list of properties to select on the entity.
      *
      * @return A reactive result containing the entity.
      *
@@ -829,7 +842,7 @@ public final class TableAsyncClient {
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableEntity> getEntity(String partitionKey, String rowKey, String select) {
+    public Mono<TableEntity> getEntity(String partitionKey, String rowKey, List<String> select) {
         return getEntityWithResponse(partitionKey, rowKey, select).flatMap(FluxUtil::toMono);
     }
 
@@ -871,7 +884,7 @@ public final class TableAsyncClient {
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> Mono<T> getEntity(String partitionKey, String rowKey, String select,
+    public <T extends TableEntity> Mono<T> getEntity(String partitionKey, String rowKey, List<String> select,
                                                      Class<T> resultType) {
         return getEntityWithResponse(partitionKey, rowKey, select, resultType).flatMap(FluxUtil::toMono);
     }
@@ -881,7 +894,7 @@ public final class TableAsyncClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
+     * @param select A list of properties to select on the entity.
      *
      * @return A reactive result containing the response and entity.
      *
@@ -891,7 +904,7 @@ public final class TableAsyncClient {
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, String select) {
+    public Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, List<String> select) {
         return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, context));
     }
 
@@ -914,17 +927,24 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey,
-                                                                           String select, Class<T> resultType) {
+                                                                           List<String> select, Class<T> resultType) {
         return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, resultType, context));
     }
 
-    <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey, String select,
-                                                                    Class<T> resultType, Context context) {
+    <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey,
+                                                                    List<String> select, Class<T> resultType,
+                                                                    Context context) {
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         if (select != null) {
-            queryOptions.setSelect(select);
+            StringJoiner selectJoiner = new StringJoiner(",");
+
+            for (String propertyToSelect : select) {
+                selectJoiner.add(propertyToSelect);
+            }
+
+            queryOptions.setSelect(selectJoiner.toString());
         }
 
         if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {

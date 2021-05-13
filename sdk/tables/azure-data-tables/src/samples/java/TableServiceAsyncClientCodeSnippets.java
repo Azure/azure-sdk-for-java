@@ -7,6 +7,9 @@ import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * async code snippets for the Tables service
  */
@@ -158,9 +161,13 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("OfficeSupplies");
+        List<String> propertiesToSelect = new ArrayList<>();
+        propertiesToSelect.add("Seller");
+        propertiesToSelect.add("Price");
+
         ListEntitiesOptions options = new ListEntitiesOptions()
             .setFilter("Product eq markers")
-            .setSelect("Seller, Price");
+            .setSelect(propertiesToSelect);
 
         tableAsyncClient.listEntities(options).subscribe(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);

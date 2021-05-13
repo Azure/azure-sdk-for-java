@@ -15,6 +15,7 @@ import com.azure.data.tables.models.TableServiceErrorException;
 import com.azure.data.tables.models.UpdateMode;
 
 import java.time.Duration;
+import java.util.List;
 
 import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
@@ -430,7 +431,7 @@ public class TableClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
+     * @param select A list of properties to select on the entity.
      *
      * @return The entity.
      *
@@ -440,7 +441,7 @@ public class TableClient {
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntity getEntity(String partitionKey, String rowKey, String select) {
+    public TableEntity getEntity(String partitionKey, String rowKey, List<String> select) {
         return client.getEntity(partitionKey, rowKey, select).block();
     }
 
@@ -449,7 +450,7 @@ public class TableClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
+     * @param select A list of properties to select on the entity.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -461,7 +462,7 @@ public class TableClient {
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, String select,
+    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
                                                        Duration timeout, Context context) {
         return blockWithOptionalTimeout(
             client.getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, context), timeout);

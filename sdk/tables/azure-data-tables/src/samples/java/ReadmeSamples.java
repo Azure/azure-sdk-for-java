@@ -9,6 +9,8 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableStorageException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -133,9 +135,13 @@ public class ReadmeSamples {
      * Code sample for listing entities.
      */
     public void listEntities() {
+        List<String> propertiesToSelect = new ArrayList<>();
+        propertiesToSelect.add("Product");
+        propertiesToSelect.add("Price");
+
         ListEntitiesOptions options = new ListEntitiesOptions()
             .setFilter(String.format("PartitionKey eq '%s'", partitionKey))
-            .setSelect("Product, Price");
+            .setSelect(propertiesToSelect);
 
         for (TableEntity entity : tableClient.listEntities(options, null, null)) {
             Map<String, Object> properties = entity.getProperties();
