@@ -1,5 +1,8 @@
 # Release History
 
+## 12.11.1 (2021-05-13)
+- Updated `azure-core` to version `1.16.0`
+
 ## 12.11.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 
 
