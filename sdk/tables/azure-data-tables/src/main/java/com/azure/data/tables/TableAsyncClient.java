@@ -37,7 +37,6 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
@@ -716,13 +715,7 @@ public final class TableAsyncClient {
         String select = null;
 
         if (options.getSelect() != null) {
-            StringJoiner selectJoiner = new StringJoiner(",");
-
-            for (String propertyToSelect : options.getSelect()) {
-                selectJoiner.add(propertyToSelect);
-            }
-
-            select = selectJoiner.toString();
+            select = String.join(",", options.getSelect());
         }
 
         QueryOptions queryOptions = new QueryOptions()
@@ -937,13 +930,7 @@ public final class TableAsyncClient {
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         if (select != null) {
-            StringJoiner selectJoiner = new StringJoiner(",");
-
-            for (String propertyToSelect : select) {
-                selectJoiner.add(propertyToSelect);
-            }
-
-            queryOptions.setSelect(selectJoiner.toString());
+            queryOptions.setSelect(String.join(",", select));
         }
 
         if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
