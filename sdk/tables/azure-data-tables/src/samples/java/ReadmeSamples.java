@@ -3,11 +3,11 @@
 
 package com.azure.data.tables;
 
+import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableStorageException;
-import com.azure.data.tables.options.ListEntitiesOptions;
-import com.azure.data.tables.options.ListTablesOptions;
 
 import java.util.Map;
 

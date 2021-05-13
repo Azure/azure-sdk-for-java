@@ -8,7 +8,6 @@ module com.azure.data.tables {
     // public API surface area
     exports com.azure.data.tables;
     exports com.azure.data.tables.models;
-    exports com.azure.data.tables.options;
 
     exports com.azure.data.tables.implementation to com.azure.core;
     exports com.azure.data.tables.implementation.models to com.azure.core;
@@ -18,5 +17,4 @@ module com.azure.data.tables {
     opens com.azure.data.tables.implementation to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.data.tables.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.data.tables.models to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.data.tables.options to com.fasterxml.jackson.databind, com.azure.core;
 }
