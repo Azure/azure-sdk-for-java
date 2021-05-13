@@ -21,19 +21,20 @@ Install the Live Video Analyzer client library for Java with Maven:
 - You need an active [Azure subscription][azure_sub] and a [IoT device connection string][iot_device_connection_string] to use this package.
 - To interact with Azure IoT Hub you will need to add their dependency to your `pom.xml`
 
+#<!-- {x-version-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
  ```xml
 <dependency>
   <groupId>com.microsoft.azure.sdk.iot</groupId>
   <artifactId>iot-service-client</artifactId>
-  <version>1.28.0</version> <!-- {x-version-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
+  <version>1.28.0</version> 
 </dependency>
 ```
 
 - You will need to use the version of the SDK that corresponds to the version of the Video Analyzer Edge module you are using.
 
   | SDK     | Video Analyzer Edge Module |
-      | ------- | --------------- |
-  | 1.0.0b1 | 1.0             |
+  | ------- | --------------- |
+  | 1.0.0-beta.1 | 1.0        |
 
 ### Creating a pipeline topology and making requests
 
@@ -50,62 +51,63 @@ A _pipeline topology_ is a blueprint or template for instantiating live pipeline
 ### Creating a pipeline topology
 
 To create a pipeline topology you need to define parameters, sources, and sinks.
-
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L25-L72 -->
 ```java
 private static PipelineTopology buildPipeLineTopology() {
-        IotHubMessageSource msgSource = new IotHubMessageSource("iotMsgSource")
-            .setHubInputName("${hubSourceInput}");
+    IotHubMessageSource msgSource = new IotHubMessageSource("iotMsgSource")
+        .setHubInputName("${hubSourceInput}");
 
-        UsernamePasswordCredentials creds = new UsernamePasswordCredentials("${rtspUsername}", "${rtspPassword}");
+    UsernamePasswordCredentials creds = new UsernamePasswordCredentials("${rtspUsername}", "${rtspPassword}");
 
-        UnsecuredEndpoint endpoint = new UnsecuredEndpoint("${rtspUrl}")
-            .setCredentials(creds);
+    UnsecuredEndpoint endpoint = new UnsecuredEndpoint("${rtspUrl}")
+        .setCredentials(creds);
 
-        RtspSource rtspSource = new RtspSource("rtspSource", endpoint);
+    RtspSource rtspSource = new RtspSource("rtspSource", endpoint);
 
-        NodeInput rtspInput = new NodeInput("rtspSource");
+    NodeInput rtspInput = new NodeInput("rtspSource");
 
-        OutputSelector rtspOutputSelector = new OutputSelector()
-            .setProperty(OutputSelectorProperty.MEDIA_TYPE)
-            .setOperator(OutputSelectorOperator.IS)
-            .setValue("video");
-        ImageScale imageScale = new ImageScale()
-            .setMode(ImageScaleMode.PRESERVE_ASPECT_RATIO)
-            .setHeight("416")
-            .setWidth("416");
-        ImageFormatBmp imageFormat = new ImageFormatBmp();
-        ImageProperties image = new ImageProperties()
-            .setScale(imageScale)
-            .setFormat(imageFormat);
-        ExtensionProcessorBase httpExtension = new HttpExtension("inferenceClient", Arrays.asList(rtspInput), endpoint, image);
+    OutputSelector rtspOutputSelector = new OutputSelector()
+        .setProperty(OutputSelectorProperty.MEDIA_TYPE)
+        .setOperator(OutputSelectorOperator.IS)
+        .setValue("video");
+    ImageScale imageScale = new ImageScale()
+        .setMode(ImageScaleMode.PRESERVE_ASPECT_RATIO)
+        .setHeight("416")
+        .setWidth("416");
+    ImageFormatBmp imageFormat = new ImageFormatBmp();
+    ImageProperties image = new ImageProperties()
+        .setScale(imageScale)
+        .setFormat(imageFormat);
+    ExtensionProcessorBase httpExtension = new HttpExtension("inferenceClient", Arrays.asList(rtspInput), endpoint, image);
 
-        NodeInput nodeInput = new NodeInput("inferenceClient");
+    NodeInput nodeInput = new NodeInput("inferenceClient");
 
-        IotHubMessageSink msgSink = new IotHubMessageSink("msgSink", Arrays.asList(nodeInput),"${hubSinkOutputName}");
+    IotHubMessageSink msgSink = new IotHubMessageSink("msgSink", Arrays.asList(nodeInput),"${hubSinkOutputName}");
 
-        ParameterDeclaration userName = new ParameterDeclaration("rtspUserName", ParameterType.STRING);
+    ParameterDeclaration userName = new ParameterDeclaration("rtspUserName", ParameterType.STRING);
 
-        ParameterDeclaration password = new ParameterDeclaration("rtspPassword", ParameterType.SECRET_STRING);
-        ParameterDeclaration url = new ParameterDeclaration("rtspUrl", ParameterType.STRING);
-        ParameterDeclaration hubOutput = new ParameterDeclaration("hubSinkOutputName", ParameterType.STRING);
+    ParameterDeclaration password = new ParameterDeclaration("rtspPassword", ParameterType.SECRET_STRING);
+    ParameterDeclaration url = new ParameterDeclaration("rtspUrl", ParameterType.STRING);
+    ParameterDeclaration hubOutput = new ParameterDeclaration("hubSinkOutputName", ParameterType.STRING);
 
-        PipelineTopologyProperties pipeProps = new PipelineTopologyProperties()
-            .setParameters(Arrays.asList(userName, password, url, hubOutput))
-            .setSources(Arrays.asList(rtspSource))
-            .setSinks(Arrays.asList(msgSink))
-            .setProcessors(Arrays.asList(httpExtension));
+    PipelineTopologyProperties pipeProps = new PipelineTopologyProperties()
+        .setParameters(Arrays.asList(userName, password, url, hubOutput))
+        .setSources(Arrays.asList(rtspSource))
+        .setSinks(Arrays.asList(msgSink))
+        .setProcessors(Arrays.asList(httpExtension));
 
-        PipelineTopology pipelineTopology = new PipelineTopology(TOPOLOGY_NAME)
-            .setProperties(pipeProps);
+    PipelineTopology pipelineTopology = new PipelineTopology(TOPOLOGY_NAME)
+        .setProperties(pipeProps);
 
-        return pipelineTopology;
-    }
+    return pipelineTopology;
+}
 ```
 
 ### Creating a live pipeline
 
 To create a live pipeline instance, you need to have an existing pipeline topology.
 
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L74-L92 -->
 ```java
 private static LivePipeline buildLivePipeline() {
     ParameterDefinition hubParam = new ParameterDefinition("hubSinkOutputName")
@@ -126,11 +128,10 @@ private static LivePipeline buildLivePipeline() {
 
     return livePipeline;
 }
-
 ```
 
 ### Invoking a pipeline method request
-
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L94-L104 -->
 ```java
 private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String methodName, String payload) throws IOException, IotHubException {
     MethodResult result = null;
@@ -143,11 +144,12 @@ private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String
 
     return result;
 }
+```
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L111-L112 -->
+```java
 PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest(pipelineTopology);
 MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTopologyRequest.getMethodName(), setPipelineTopologyRequest.getPayloadAsJson());
-        
 ```
-
 ## Troubleshooting
 
 ## Next steps
@@ -195,4 +197,6 @@ additional questions or comments.
 
 [iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
-[github-page-issues]: https://github.com/Azure/azure-sdk-for-python/issues
+[github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fvideoanalyzer%2Fazure-media-videoanalyzer-edge%2FREADME.png)
+
