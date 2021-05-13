@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sqlvirtualmachine.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.AvailabilityGroupListenerInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListener;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
@@ -16,7 +15,7 @@ public final class AvailabilityGroupListenerImpl
     implements AvailabilityGroupListener, AvailabilityGroupListener.Definition, AvailabilityGroupListener.Update {
     private AvailabilityGroupListenerInner innerObject;
 
-    private final SqlVirtualMachineManager serviceManager;
+    private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -59,7 +58,7 @@ public final class AvailabilityGroupListenerImpl
         return this.innerObject;
     }
 
-    private SqlVirtualMachineManager manager() {
+    private com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager() {
         return this.serviceManager;
     }
 
@@ -104,7 +103,8 @@ public final class AvailabilityGroupListenerImpl
         return this;
     }
 
-    AvailabilityGroupListenerImpl(String name, SqlVirtualMachineManager serviceManager) {
+    AvailabilityGroupListenerImpl(
+        String name, com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = new AvailabilityGroupListenerInner();
         this.serviceManager = serviceManager;
         this.availabilityGroupListenerName = name;
@@ -142,7 +142,9 @@ public final class AvailabilityGroupListenerImpl
         return this;
     }
 
-    AvailabilityGroupListenerImpl(AvailabilityGroupListenerInner innerObject, SqlVirtualMachineManager serviceManager) {
+    AvailabilityGroupListenerImpl(
+        AvailabilityGroupListenerInner innerObject,
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
