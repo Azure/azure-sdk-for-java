@@ -439,7 +439,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         when:
 
         // Upload encrypted data with regular client
-        normalClient.uploadWithResponse(new ByteArrayInputStream(data.defaultData.array()), data.defaultDataSize, null, null,
+        normalClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
             null, null, null, null, null)
 
         // Download data with encrypted client - command should fail
@@ -448,7 +448,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(IllegalStateException)
-        os.toByteArray() == data.defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         cleanup:
         cac.delete()
@@ -585,7 +585,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         v8DecryptBlob.download(stream, null, downloadOptions, null)
 
         then:
-        stream.toByteArray() == data.defaultData.array()
+        stream.toByteArray() == data.defaultBytes
     }
 
     def "encrypted client file upload overwrite false"() {
@@ -743,7 +743,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == data.defaultData.array()
+        result == data.defaultBytes
     }
 
     @Unroll

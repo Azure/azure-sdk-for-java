@@ -96,7 +96,7 @@ class BlobCryptographyBuilderTest extends APISpec {
         uploadResponse.getStatusCode() == 201
         uploadResponse.getValue().isServerEncrypted()
         uploadResponse.getValue().getEncryptionKeySha256() == key.getKeySha256()
-        downloadResult.toByteArray() == data.defaultData.array()
+        downloadResult.toByteArray() == data.defaultBytes
     }
 
     def "Customer provided key not a noop"() {
@@ -141,7 +141,7 @@ class BlobCryptographyBuilderTest extends APISpec {
 
         then:
         uploadResponse.getStatusCode() == 201
-        downloadResult.toByteArray() == data.defaultData.array()
+        downloadResult.toByteArray() == data.defaultBytes
         encryptedClient.getProperties().getEncryptionScope() == scope
     }
 

@@ -71,7 +71,7 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 200
-        datastream.toByteArray() == data.defaultData.array()
+        datastream.toByteArray() == data.defaultBytes
     }
 
     def "Put block with CPK"() {

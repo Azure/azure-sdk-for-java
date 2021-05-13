@@ -121,7 +121,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block transactionalMD5"() {
         setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultData.array())
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
 
         expect:
         blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, md5, null, null, null)
@@ -274,7 +274,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(), null,
-            MessageDigest.getInstance("MD5").digest(data.defaultData.array()), null, null, null, null)
+            MessageDigest.getInstance("MD5").digest(data.defaultBytes), null, null, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -459,9 +459,9 @@ class BlockBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                        | contentType
-        null         | null               | null            | null            | null                                                              | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(data.defaultData.array()) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                 | contentType
+        null         | null               | null            | null            | null                                                       | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(data.defaultBytes) | "type"
     }
 
     @Unroll
@@ -973,7 +973,7 @@ class BlockBlobAPITest extends APISpec {
         def response = blockBlobClient.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
-        contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(data.defaultData.array()) : contentMD5
+        contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(data.defaultBytes) : contentMD5
         contentType = (contentType == null) ? "application/octet-stream" : contentType
 
         then:
@@ -982,12 +982,12 @@ class BlockBlobAPITest extends APISpec {
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                        | contentType
         null         | null               | null            | null            | null                                                              | null
-        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(data.defaultData.array()) | "type"
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(data.defaultBytes) | "type"
     }
 
     def "Upload transactionalMD5"() {
         setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultData.array())
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
 
         expect:
         blockBlobClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, md5, null, null, null)
@@ -1982,7 +1982,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == data.defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
@@ -2004,7 +2004,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == data.defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
@@ -2037,7 +2037,7 @@ class BlockBlobAPITest extends APISpec {
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
         sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
         sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB"))
-        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(data.defaultData.array())
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
         def sourceProperties = sourceBlob.getProperties()
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
@@ -2066,7 +2066,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == data.defaultData.array()
+        os.toByteArray() == data.defaultBytes
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL

@@ -311,7 +311,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getDeserializedHeaders()
 
         then:
-        body.toBytes() == data.defaultData.array()
+        body.toBytes() == data.defaultBytes
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getTagCount() == 1
         headers.getContentLength() != null
@@ -393,7 +393,7 @@ class BlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == data.defaultData.array()
+        result == data.defaultBytes
     }
 
     def "Download streaming min"() {
@@ -403,7 +403,7 @@ class BlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == data.defaultData.array()
+        result == data.defaultBytes
     }
 
     def "Download binary data min"() {
@@ -411,7 +411,7 @@ class BlobAPITest extends APISpec {
         def result = bc.downloadContent()
 
         then:
-        result.toBytes() == data.defaultData.array()
+        result.toBytes() == data.defaultBytes
     }
 
     @Unroll
@@ -1408,7 +1408,7 @@ class BlobAPITest extends APISpec {
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
             .setContentLanguage(properties.getContentLanguage())
-            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultData.array())))
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)))
 
         bc.setHttpHeaders(headers)
 
@@ -1436,7 +1436,7 @@ class BlobAPITest extends APISpec {
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
         null         | null               | null            | null            | null                                                                                          | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultData.array())) | "type"
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")

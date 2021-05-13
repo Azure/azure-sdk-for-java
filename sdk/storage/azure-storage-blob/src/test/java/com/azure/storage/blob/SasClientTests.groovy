@@ -73,7 +73,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(data.defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -139,7 +139,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(data.defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -177,7 +177,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == data.defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         then:
         validateSasProperties(properties)
@@ -216,7 +216,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == new String(data.defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
     }
 
@@ -563,7 +563,7 @@ class SasClientTests extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == new String(data.defaultData.array())
+        os.toString() == data.defaultText
     }
 
     def "account sas blob delete fails"() {

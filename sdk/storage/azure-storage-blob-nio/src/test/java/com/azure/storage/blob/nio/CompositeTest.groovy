@@ -54,7 +54,7 @@ class CompositeTest extends APISpec {
         fs.provider().newInputStream(dest).read(resultArr)
 
         then:
-        resultArr == data.defaultData.array()
+        resultArr == data.defaultBytes
 
         when:
         def dest2 = fs.getPath("dest2")
@@ -65,7 +65,7 @@ class CompositeTest extends APISpec {
         fs.provider().newInputStream(dest2).read(resultArr)
 
         then:
-        resultArr == data.defaultData.array()
+        resultArr == data.defaultBytes
 
         when:
         def dest3 = fs.getPath("dest3")
@@ -74,7 +74,7 @@ class CompositeTest extends APISpec {
         fs.provider().newInputStream(dest3).read(resultArr)
 
         then:
-        resultArr == data.defaultData.array()
+        resultArr == data.defaultBytes
     }
 
     // Bug: https://github.com/Azure/azure-sdk-for-java/issues/20325

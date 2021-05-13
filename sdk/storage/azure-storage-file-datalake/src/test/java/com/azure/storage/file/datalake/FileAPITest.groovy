@@ -716,7 +716,7 @@ class FileAPITest extends APISpec {
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
             .setContentLanguage(properties.getContentLanguage())
-            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultData.array())))
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)))
 
         fc.setHttpHeaders(headers)
 
@@ -727,7 +727,7 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
         def putHeaders = new PathHttpHeaders()
             .setCacheControl(cacheControl)
@@ -745,9 +745,9 @@ class FileAPITest extends APISpec {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
-        null         | null               | null            | null            | null                                                                                          | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultData.array())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                             | contentType
+        null         | null               | null            | null            | null                                                                                   | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
     @Unroll
@@ -912,7 +912,7 @@ class FileAPITest extends APISpec {
 
     def "Read all null"() {
         setup:
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -979,7 +979,7 @@ class FileAPITest extends APISpec {
         setup:
         def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
 
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -998,7 +998,7 @@ class FileAPITest extends APISpec {
 
     def "Read min"() {
         setup:
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -1007,14 +1007,14 @@ class FileAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == data.defaultData.array()
+        result == data.defaultBytes
     }
 
     @Unroll
     def "Read range"() {
         setup:
         def range = (count == null) ? new FileRange(offset) : new FileRange(offset, count)
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
 
@@ -1089,7 +1089,7 @@ class FileAPITest extends APISpec {
 
     def "Read md5"() {
         setup:
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -1117,7 +1117,7 @@ class FileAPITest extends APISpec {
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -1138,7 +1138,7 @@ class FileAPITest extends APISpec {
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -1157,7 +1157,7 @@ class FileAPITest extends APISpec {
         if (testFile.exists()) {
             assert testFile.delete()
         }
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -1176,7 +1176,7 @@ class FileAPITest extends APISpec {
         if (testFile.exists()) {
             assert testFile.delete()
         }
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -1199,7 +1199,7 @@ class FileAPITest extends APISpec {
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         when:
@@ -1795,7 +1795,7 @@ class FileAPITest extends APISpec {
 
     def "Append data min"() {
         when:
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
 
         then:
         notThrown(DataLakeStorageException)
@@ -1912,12 +1912,12 @@ class FileAPITest extends APISpec {
         then:
         def os = new ByteArrayOutputStream()
         fc.read(os)
-        os.toByteArray() == data.defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
     def "Flush data min"() {
         when:
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
 
         then:
@@ -2058,9 +2058,9 @@ class FileAPITest extends APISpec {
 
     def "Flush data overwrite"() {
         when:
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
-        fc.append(new ByteArrayInputStream(data.defaultData.array()), 0, data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         // Attempt to write data without overwrite enabled
         fc.flush(data.defaultDataSize, true)
 

@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public class TestDataFactory {
+public final class TestDataFactory {
     private static final TestDataFactory INSTANCE = new TestDataFactory();
 
     private final String defaultText;

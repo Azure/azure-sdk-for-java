@@ -101,7 +101,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(data.defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
@@ -236,7 +236,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(data.defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }

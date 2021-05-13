@@ -239,7 +239,7 @@ class FileAsyncAPITests extends APISpec {
             assert headers.getFileId()
 
             FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .flatMap({ actualData -> assert data.defaultData.array() == actualData })
+                .flatMap({ actualData -> assert data.defaultBytes == actualData })
                 .then()
         }).verifyComplete()
     }
@@ -261,7 +261,7 @@ class FileAsyncAPITests extends APISpec {
             assert assertResponseStatusCode(it, 206)
             assert it.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
             FluxUtil.collectBytesInByteBufferStream(it.getValue())
-                .flatMap({ actualData -> assert actualData == data.defaultData.array() })
+                .flatMap({ actualData -> assert actualData == data.defaultBytes })
         }.verifyComplete()
     }
 

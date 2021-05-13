@@ -38,7 +38,7 @@ class DownloadResponseTest extends APISpec {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == data.defaultData.array()
+        outputStream.toByteArray() == data.defaultBytes
     }
 
     def "Network call no etag returned"() {
@@ -65,7 +65,7 @@ class DownloadResponseTest extends APISpec {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == data.defaultData.array()
+        outputStream.toByteArray() == data.defaultBytes
     }
 
     @Unroll

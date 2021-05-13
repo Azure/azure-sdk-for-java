@@ -926,7 +926,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
         when:
         // Defaults should allow us to create a new file.
-        nioStream.write(data.defaultData.array())
+        nioStream.write(data.defaultBytes)
         nioStream.close()
 
         then:
@@ -969,7 +969,7 @@ class AzureFileSystemProviderTest extends APISpec {
         // Succeed in creating a new file
         def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW,
             StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
-        nioStream.write(data.defaultData.array())
+        nioStream.write(data.defaultBytes)
         nioStream.close()
 
         then:
@@ -1250,7 +1250,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def cc = rootNameToContainerClient(getDefaultDir(fs))
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
-        def contentMd5 = MessageDigest.getInstance("MD5").digest(data.defaultData.array())
+        def contentMd5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
         FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
                                          new TestFileAttribute<String>("foo", "bar"),
                                          new TestFileAttribute<String>("Content-Type", "myType"),
@@ -1813,7 +1813,7 @@ class AzureFileSystemProviderTest extends APISpec {
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
         null         | null               | null            | null            | null                                                                                          | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultData.array())) | "type"
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
     @Unroll

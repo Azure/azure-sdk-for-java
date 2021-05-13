@@ -94,7 +94,7 @@ class PageBlobAPITest extends APISpec {
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
         null         | null               | null            | null            | null                                                                                          | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultData.array())) | "type"
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
     @Unroll
