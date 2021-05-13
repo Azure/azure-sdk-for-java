@@ -3,15 +3,15 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
-@Disabled
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultLoadStoreParameterTest {
 
     /**
@@ -20,10 +20,10 @@ public class KeyVaultLoadStoreParameterTest {
     @Test
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            null,
-            null,
-            null
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET")
         );
         assertNull(parameter.getProtectionParameter());
     }

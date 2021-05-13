@@ -3,29 +3,21 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.security.KeyStore;
 import java.security.Security;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The JUnit tests for the KeyVaultProvider class.
  */
-@Disabled
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultJcaProviderTest {
 
-    /**
-     * Test the constructor.
-     */
-    @Test
-    public void testConstructor() {
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        assertNotNull(provider);
-    }
 
     /**
      * Test getting a certificate using the Provider.
@@ -34,14 +26,20 @@ public class KeyVaultJcaProviderTest {
      */
     @Test
     public void testGetCertificate() throws Exception {
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
         Security.addProvider(new KeyVaultJcaProvider());
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         keystore.load(parameter);
-        assertNull(keystore.getCertificate("myalias"));
+        assertNotNull(keystore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
     }
 }

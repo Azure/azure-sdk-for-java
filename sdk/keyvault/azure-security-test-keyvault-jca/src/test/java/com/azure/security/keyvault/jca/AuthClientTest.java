@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.net.URLEncoder;
 
@@ -13,19 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * The JUnit test for the AuthClient.
  */
-@Disabled
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class AuthClientTest {
 
     /**
      * Test getAuthorizationToken method.
-     * 
+     *
      * @throws Exception when a serious error occurs.
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
+        String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
+        String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
+        String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
         AuthClient authClient = new AuthClient();
         String result = authClient.getAccessToken(
             "https://management.azure.com/",
