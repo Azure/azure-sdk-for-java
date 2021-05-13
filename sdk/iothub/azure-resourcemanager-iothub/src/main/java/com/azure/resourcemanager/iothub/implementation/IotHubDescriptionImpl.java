@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubDescriptionInner;
 import com.azure.resourcemanager.iothub.models.ExportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.ImportDevicesRequest;
@@ -25,7 +24,7 @@ public final class IotHubDescriptionImpl
     implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
     private IotHubDescriptionInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -76,7 +75,7 @@ public final class IotHubDescriptionImpl
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 
@@ -111,7 +110,7 @@ public final class IotHubDescriptionImpl
         return this;
     }
 
-    IotHubDescriptionImpl(String name, IotHubManager serviceManager) {
+    IotHubDescriptionImpl(String name, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = new IotHubDescriptionInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -141,7 +140,8 @@ public final class IotHubDescriptionImpl
         return this;
     }
 
-    IotHubDescriptionImpl(IotHubDescriptionInner innerObject, IotHubManager serviceManager) {
+    IotHubDescriptionImpl(
+        IotHubDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -233,7 +233,7 @@ public final class IotHubDescriptionImpl
         return this;
     }
 
-    public IotHubDescriptionImpl withIfMatch(String ifMatch) {
+    public IotHubDescriptionImpl withWithIfMatch(String ifMatch) {
         this.createIfMatch = ifMatch;
         return this;
     }

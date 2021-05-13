@@ -208,7 +208,7 @@ public interface IotHubDescription {
              *     an existing IoT Hub.
              * @return the next definition stage.
              */
-            WithCreate withIfMatch(String ifMatch);
+            WithCreate withWithIfMatch(String ifMatch);
         }
     }
     /**

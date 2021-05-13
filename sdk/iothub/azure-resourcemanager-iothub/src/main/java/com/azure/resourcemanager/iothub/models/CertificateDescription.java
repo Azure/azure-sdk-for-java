@@ -113,7 +113,7 @@ public interface CertificateDescription {
              *     update an existing certificate.
              * @return the next definition stage.
              */
-            WithCreate withIfMatch(String ifMatch);
+            WithCreate withWithIfMatch(String ifMatch);
         }
     }
     /**
