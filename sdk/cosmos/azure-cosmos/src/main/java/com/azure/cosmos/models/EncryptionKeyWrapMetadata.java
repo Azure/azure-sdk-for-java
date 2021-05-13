@@ -94,6 +94,7 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return type of metadata.
      */
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getType() {
         return type;
     }
