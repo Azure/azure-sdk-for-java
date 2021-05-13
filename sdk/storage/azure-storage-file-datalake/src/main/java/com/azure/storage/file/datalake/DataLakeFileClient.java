@@ -506,7 +506,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
-    public final DataLakeFileInputStream openInputStream() {
+    public DataLakeFileInputStream openInputStream() {
         return openInputStream(null);
     }
 
