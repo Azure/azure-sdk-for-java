@@ -19,11 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +37,30 @@ public class ServiceBusMessageTest {
     // Create a giant payload with 10000 characters that are "a".
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
     private static final BinaryData PAYLOAD_BINARY = BinaryData.fromString(PAYLOAD);
+
+    /**
+     * Verifies {@link ServiceBusMessage} created using AmqpMessageBody.
+     * 1. properly set message body.
+     * 2. properly set message body type.
+     */
+    @Test
+    public void copyAmqpConstructorTest() {
+        // Arrange
+        final List<Object> expected = new ArrayList<>();
+        expected.add(1L);
+        expected.add("one");
+
+        // Act
+        final ServiceBusMessage actual = new ServiceBusMessage(AmqpMessageBody.fromSequence(expected));
+        List<Object> actualSequence = actual.getRawAmqpMessage().getBody().getSequence();
+        assertEquals(AmqpMessageBodyType.SEQUENCE, actual.getRawAmqpMessage().getBody().getBodyType());
+        assertEquals(expected.size(), actualSequence.size());
+        assertArrayEquals(expected.toArray(), actualSequence.toArray());
+        assertThrows(IllegalStateException.class, () -> {
+            actual.getBody();
+        });
+
+    }
 
     /**
      * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}.

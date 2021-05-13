@@ -1,5 +1,10 @@
 # Release History
 
+## 2.2.0-beta.2 (2021-05-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`.
+
 ## 2.0.5 (2021-05-07)
 
 ### Dependency Updates
@@ -13,6 +18,10 @@
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
+
+## 2.1.0-beta.1 (2021-03-26)
+### New Features
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
 
 ## 2.0.4 (2021-04-12)
 
