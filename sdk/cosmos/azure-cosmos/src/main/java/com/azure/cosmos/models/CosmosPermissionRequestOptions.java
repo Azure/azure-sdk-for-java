@@ -11,6 +11,27 @@ public final class CosmosPermissionRequestOptions {
     //TODO: Need to add respective options
     private String ifMatchETag;
     private String ifNoneMatchETag;
+    private Integer resourceTokenExpirySeconds;
+
+    /**
+     * Gets the resource token expiry in seconds associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the resourceTokenExpirySeconds associated with the request.
+     */
+    public Integer getResourceTokenExpirySeconds() {
+        return this.resourceTokenExpirySeconds;
+    }
+
+    /**
+     * Sets the resource token expiry in seconds associated with the request in the Azure Cosmos DB service.
+     *
+     * @param resourceTokenExpirySeconds the resourceTokenExpirySeconds associated with the request.
+     * @return the current request options
+     */
+    public CosmosPermissionRequestOptions setResourceTokenExpirySeconds(Integer resourceTokenExpirySeconds) {
+        this.resourceTokenExpirySeconds = resourceTokenExpirySeconds;
+        return this;
+    }
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
@@ -57,6 +78,7 @@ public final class CosmosPermissionRequestOptions {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
+        requestOptions.setResourceTokenExpirySeconds(getResourceTokenExpirySeconds());
         return requestOptions;
     }
 }
