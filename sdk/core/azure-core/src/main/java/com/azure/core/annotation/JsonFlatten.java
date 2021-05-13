@@ -17,6 +17,6 @@ import java.lang.annotation.Target;
  *
  */
 @Retention(RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD})
 public @interface JsonFlatten {
 }

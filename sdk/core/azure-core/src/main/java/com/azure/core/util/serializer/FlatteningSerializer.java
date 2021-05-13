@@ -5,6 +5,7 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -13,58 +14,104 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.introspect.AnnotatedField;
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import com.fasterxml.jackson.databind.ser.BeanSerializer;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
+import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Pattern;
 
 /**
- * Custom serializer for serializing types with wrapped properties. For example, a property with annotation
- * {@code @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to
- * {@code {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
+ * Custom serializer for serializing types with wrapped properties. For example, a property with annotation {@code
+ *
+ * @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to {@code
+ * {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
     private static final long serialVersionUID = -6130180289951110573L;
+
+    private static final Pattern CHECK_IF_FLATTEN_PROPERTY_PATTERN = Pattern.compile(".+[^\\\\]\\..+");
+    private static final Pattern SPLIT_FLATTEN_PROPERTY_PATTERN = Pattern.compile("((?<!\\\\))\\.");
+
+    private static final Pattern CREATE_ESCAPED_MAP_PATTERN = Pattern.compile("((?<!\\\\))\\.");
+    private static final Pattern CHECK_IF_ESCAPED_MAP_PATTERN = Pattern.compile(".*[^\\\\]\\\\..+");
+    private static final Pattern REPLACE_ESCAPED_MAP_PATTERN = Pattern.compile("\\\\.");
+
     private final ClientLogger logger = new ClientLogger(FlatteningSerializer.class);
 
-    /**
+    /*
      * The default mapperAdapter for the current type.
      */
     private final JsonSerializer<?> defaultSerializer;
 
-    /**
+    /*
      * The object mapper for default serializations.
      */
     private final ObjectMapper mapper;
 
+    /*
+     * Flag indicating if the class using the serializer is annotated with @JsonFlatten.
+     */
+    private final boolean classHasJsonFlatten;
+
+    /*
+     * Set containing which JSON properties are annotated with @JsonFlatten.
+     *
+     * If classHasJsonFlatten is true this value is ignored as inspecting properties isn't required.
+     */
+    private final Set<String> jsonPropertiesWithJsonFlatten;
+
     /**
      * Creates an instance of FlatteningSerializer.
      *
-     * @param vc handled type
-     * @param defaultSerializer the default JSON serializer
-     * @param mapper the object mapper for default serializations
+     * @param beanDesc The {@link BeanDescription} of the class being serialized.
+     * @param defaultSerializer The default JSON serializer.
+     * @param mapper The {@link ObjectMapper} for default serialization.
      */
-    protected FlatteningSerializer(Class<?> vc, JsonSerializer<?> defaultSerializer, ObjectMapper mapper) {
-        super(vc, false);
+    FlatteningSerializer(BeanDescription beanDesc, JsonSerializer<?> defaultSerializer, ObjectMapper mapper) {
+        super(beanDesc.getBeanClass(), false);
         this.defaultSerializer = defaultSerializer;
         this.mapper = mapper;
+        this.classHasJsonFlatten = beanDesc.getClassAnnotations().has(JsonFlatten.class);
+
+        if (classHasJsonFlatten) {
+            // If the class is annotated with @JsonFlatten creating a JSON property -> flattened map isn't required.
+            this.jsonPropertiesWithJsonFlatten = Collections.emptySet();
+        } else {
+            // Otherwise each property in the serialized class will be inspected for being annotated with @JsonFlatten
+            // to determine which JSON properties need to be flattened.
+            this.jsonPropertiesWithJsonFlatten = new HashSet<>();
+            for (BeanPropertyDefinition beanPropertyDefinition : beanDesc.findProperties()) {
+                AnnotatedField annotatedField = beanPropertyDefinition.getField();
+                if (annotatedField.hasAnnotation(JsonFlatten.class)) {
+                    this.jsonPropertiesWithJsonFlatten.add(beanPropertyDefinition.getName());
+                }
+            }
+        }
     }
 
     /**
@@ -79,9 +126,17 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             @Override
             public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
                 JsonSerializer<?> serializer) {
-                if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {
-                    return new FlatteningSerializer(beanDesc.getBeanClass(), serializer, mapper);
+                // If the class is annotated with @JsonFlatten add the serializer.
+                // Else if any property is annotated with @JsonFlatten add the serializer.
+                // Otherwise do not add the serializer.
+                boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
+                boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
+                    .anyMatch(property -> property.getField().hasAnnotation(JsonFlatten.class));
+
+                if (hasJsonFlattenOnClass || hasJsonFlattenOnProperty) {
+                    return new FlatteningSerializer(beanDesc, serializer, mapper);
                 }
+
                 return serializer;
             }
         });
@@ -116,8 +171,35 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             return;
         }
 
-        int mod = value.getClass().getModifiers();
-        if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+        // Why does this deeply flatten all sub-classes, collection, and map values?
+        // Should JsonFlatten simply flatten the top level property, ex
+        // @JsonProperty("my.flattened.value")
+        // private Map<String, String> value;
+        //
+        // Turns into
+        // {
+        //   "my":
+        //   {
+        //     "flattened":
+        //     {
+        //        "value": <serialized map here>
+        //     }
+        //   }
+        // }
+
+        if (value instanceof Map<?, ?>) {
+            for (String key : new HashSet<>(((Map<String, Object>) value).keySet())) {
+                if (key.contains(".")) {
+                    String newKey = CREATE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll("\\\\.");
+                    Object val = ((Map<String, Object>) value).remove(key);
+                    ((Map<String, Object>) value).put(newKey, val);
+                }
+            }
+
+            for (Object val : ((Map<?, ?>) value).values()) {
+                escapeMapKeys(val);
+            }
+
             return;
         }
 
@@ -128,21 +210,13 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             return;
         }
 
-        if (value instanceof Map<?, ?>) {
-            for (String key : new HashSet<>(((Map<String, Object>) value).keySet())) {
-                if (key.contains(".")) {
-                    String newKey = key.replaceAll("((?<!\\\\))\\.", "\\\\.");
-                    Object val = ((Map<String, Object>) value).remove(key);
-                    ((Map<String, Object>) value).put(newKey, val);
-                }
-            }
-            for (Object val : ((Map<?, ?>) value).values()) {
-                escapeMapKeys(val);
-            }
+        int mod = value.getClass().getModifiers();
+        if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
             return;
         }
 
         for (Field f : getAllDeclaredFields(value.getClass())) {
+            // Why is this setting accessible to true?
             f.setAccessible(true);
             try {
                 escapeMapKeys(f.get(value));
@@ -158,7 +232,53 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             jgen.writeNull();
             return;
         }
+
+        // Investigation into serializing the class ourselves to prevent string manipulation.
+        // Code below doesn't handle the following:
+        // - Null values are serialized without respecting ObjectMapper inclusion.
+        // - JsonType information isn't included.
+//        if (defaultSerializer instanceof BeanSerializer) {
+//            BeanSerializer beanSerializer = (BeanSerializer) defaultSerializer;
+//
+//            jgen.writeStartObject();
+//
+//            Iterator<PropertyWriter> writerIterator = beanSerializer.properties();
+//            while (writerIterator.hasNext()) {
+//                BeanPropertyWriter writer = (BeanPropertyWriter) writerIterator.next();
+//                String jsonPropertyName = writer.getName();
+//                if ((writer.getMember().hasAnnotation(JsonFlatten.class) || classHasJsonFlatten)
+//                    && CHECK_IF_FLATTEN_PROPERTY_PATTERN.matcher(jsonPropertyName).matches()) {
+//                    String[] flatteningNames = SPLIT_FLATTEN_PROPERTY_PATTERN.split(jsonPropertyName);
+//
+//                    jgen.writeFieldName(flatteningNames[0]);
+//                    jgen.writeStartObject();
+//
+//                    for (int i = 1; i < flatteningNames.length - 1; i++) {
+//                        jgen.writeFieldName(flatteningNames[i]);
+//                        jgen.writeStartObject();
+//                    }
+//
+//                    jgen.writeFieldName(flatteningNames[flatteningNames.length - 1]);
+//                    writeValue(jgen, writer, value);
+//
+//                    for (int i = 1; i < flatteningNames.length - 1; i++) {
+//                        jgen.writeEndObject();
+//                    }
+//
+//                    jgen.writeEndObject();
+//                } else {
+//                    jgen.writeFieldName(jsonPropertyName);
+//                    writeValue(jgen, writer, value);
+//                }
+//            }
+//
+//            jgen.writeEndObject();
+//
+//            return;
+//        }
+
         escapeMapKeys(value);
+
         // BFS for all collapsed properties
         ObjectNode root = mapper.valueToTree(value);
         ObjectNode res = root.deepCopy();
@@ -175,10 +295,17 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 ObjectNode node = resCurrent;
                 String key = field.getKey();
                 JsonNode outNode = resCurrent.get(key);
-                if (key.matches(".+[^\\\\]\\..+")) {
+
+                // If the class isn't annotated with @JsonFlatten and the JSON property isn't annotated with
+                // @JsonFlatten don't attempt flattening.
+                if (!classHasJsonFlatten && !jsonPropertiesWithJsonFlatten.contains(key)) {
+                    continue;
+                }
+
+                if (CHECK_IF_FLATTEN_PROPERTY_PATTERN.matcher(key).matches()) {
                     // Handle flattening properties
                     //
-                    String[] values = key.split("((?<!\\\\))\\.");
+                    String[] values = SPLIT_FLATTEN_PROPERTY_PATTERN.split(key);
                     for (int i = 0; i < values.length; ++i) {
                         values[i] = values[i].replace("\\.", ".");
                         if (i == values.length - 1) {
@@ -196,13 +323,14 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                     node.set(values[values.length - 1], resCurrent.get(key));
                     resCurrent.remove(key);
                     outNode = node.get(values[values.length - 1]);
-                } else if (key.matches(".*[^\\\\]\\\\..+")) {
+                } else if (CHECK_IF_ESCAPED_MAP_PATTERN.matcher(key).matches()) {
                     // Handle escaped map key
                     //
-                    String originalKey = key.replaceAll("\\\\.", ".");
+                    String originalKey = REPLACE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll(".");
                     resCurrent.remove(key);
                     resCurrent.set(originalKey, outNode);
                 }
+
                 if (field.getValue() instanceof ObjectNode) {
                     source.add((ObjectNode) field.getValue());
                     target.add((ObjectNode) outNode);
@@ -219,6 +347,14 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             }
         }
         jgen.writeTree(res);
+    }
+
+    private void writeValue(JsonGenerator jgen, BeanPropertyWriter writer, Object value) {
+        try {
+            mapper.writeValue(jgen, writer.get(value));
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(new JsonGenerationException(e, jgen)));
+        }
     }
 
     @Override
