@@ -62,7 +62,7 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
 
     @Override
     protected boolean isCountQuery() {
-        return getQueryMethod().getName().startsWith("count");
+        return tree.isCountProjection();
     }
 
 }
