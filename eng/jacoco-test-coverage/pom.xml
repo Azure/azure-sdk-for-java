@@ -215,14 +215,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
       <version>7.3.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
-<<<<<<< HEAD
-=======
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-webpubsub</artifactId>
       <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
->>>>>>> 51c233b7c2a6d56d7cb7ec0af1d36de734db521e
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
