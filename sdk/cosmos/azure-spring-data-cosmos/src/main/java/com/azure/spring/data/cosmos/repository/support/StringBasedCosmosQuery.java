@@ -84,12 +84,18 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
     }
 
     static boolean isCountQuery(String query, Class<?> returnedType) {
-        if (returnedType == Long.class || returnedType == long.class ||
-            returnedType == Integer.class || returnedType == int.class) {
+        if (isCountQueryReturnType(returnedType)) {
             return COUNT_QUERY_PATTERN.matcher(query).matches();
         } else {
             return false;
         }
+    }
+
+    private static boolean isCountQueryReturnType(Class<?> returnedType) {
+        return returnedType == Long.class
+            || returnedType == long.class
+            || returnedType == Integer.class
+            || returnedType == int.class;
     }
 
 }
