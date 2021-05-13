@@ -3,19 +3,18 @@
 
 package com.azure.spring.servicebus.stream.binder;
 
-import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
-import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
-import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusQueueInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
+import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
+import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
+import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
 
