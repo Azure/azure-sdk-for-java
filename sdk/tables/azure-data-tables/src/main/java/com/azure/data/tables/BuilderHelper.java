@@ -110,7 +110,6 @@ final class BuilderHelper {
         policies.addAll(perRetryAdditionalPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies); //should this be between 3/4?
 
-        policies.add(getResponseValidationPolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
         policies.add(new TableScrubEtagPolicy());
 
@@ -158,18 +157,5 @@ final class BuilderHelper {
             endpoint.setHost(String.join(".", hostParts));
         }
         return String.format("%s/.default", endpoint.toString());
-    }
-
-    /*
-     * Creates a {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} used to validate response data from
-     * the service.
-     *
-     * @return The {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} for the module.
-     */
-    private static HttpPipelinePolicy getResponseValidationPolicy() {
-        return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(StorageConstants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(StorageConstants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-            .build();
     }
 }

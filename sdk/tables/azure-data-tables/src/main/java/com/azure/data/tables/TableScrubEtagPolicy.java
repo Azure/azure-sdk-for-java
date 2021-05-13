@@ -20,7 +20,7 @@ import java.nio.charset.Charset;
  * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
  * standardize the value.
  */
-public class TableScrubEtagPolicy implements HttpPipelinePolicy {
+public final class TableScrubEtagPolicy implements HttpPipelinePolicy {
     private static final String ETAG = "eTag";
 
     /**
