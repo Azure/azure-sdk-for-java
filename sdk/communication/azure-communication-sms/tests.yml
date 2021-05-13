@@ -14,5 +14,6 @@ stages:
       - name: azure-communication-sms
         groupId: com.azure
         safeName: azurecommunicationsms
+    ServiceDirectory: communication
     EnvVars:
       SKIP_LIVE_TEST: TRUE
