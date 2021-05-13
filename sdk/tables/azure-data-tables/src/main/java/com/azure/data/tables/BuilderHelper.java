@@ -19,6 +19,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -28,10 +29,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ final class BuilderHelper {
     static HttpPipeline buildPipeline(
         TablesSharedKeyCredential tablesSharedKeyCredential,
         TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken,
-        String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
+        String endpoint, RetryPolicy retryPolicy, HttpLogOptions logOptions, ClientOptions clientOptions,
         HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
         List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger) {
 
@@ -84,7 +84,7 @@ final class BuilderHelper {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         // Add retry policy.
-        policies.add(new RequestRetryPolicy(retryOptions));
+        policies.add(retryPolicy);
 
         policies.add(new AddDatePolicy());
         HttpPipelinePolicy credentialPolicy;

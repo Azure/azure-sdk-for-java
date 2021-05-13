@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,7 +20,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,7 +48,7 @@ public class TableServiceClientBuilder {
     private TablesSharedKeyCredential tablesSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RetryPolicy retryPolicy = new RetryPolicy();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -79,7 +79,7 @@ public class TableServiceClientBuilder {
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, endpoint, retryOptions,
+            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, endpoint, retryPolicy,
             httpLogOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
@@ -349,20 +349,20 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the request retry options for all the requests made through the client.
+     * Sets the request retry policy for all the requests made through the client.
      *
-     * @param retryOptions {@link RequestRetryOptions}.
+     * @param retryPolicy {@link RetryPolicy}.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      *
-     * @throws NullPointerException if {@code retryOptions} is {@code null}.
+     * @throws NullPointerException if {@code retryPolicy} is {@code null}.
      */
-    public TableServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        if (retryOptions == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryOptions' cannot be null."));
+    public TableServiceClientBuilder retryOptions(RetryPolicy retryPolicy) {
+        if (retryPolicy == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
         }
 
-        this.retryOptions = retryOptions;
+        this.retryPolicy = retryPolicy;
 
         return this;
     }
