@@ -38,9 +38,9 @@ parameters:
     - name: azure-spring-boot-test-keyvault
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvault
-    - name: azure-spring-boot-test-keyvault-reactive
-      groupId: com.azure.spring
-      safeName: azurespringboottestkeyvaultreactive
+#    - name: azure-spring-boot-test-keyvault-reactive
+#      groupId: com.azure.spring
+#      safeName: azurespringboottestkeyvaultreactive
     - name: azure-spring-boot-test-parent
       groupId: com.azure.spring
       safeName: azurespringboottestparent
