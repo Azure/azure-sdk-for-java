@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -83,7 +84,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
     protected boolean isCountQuery() {
         Class<?> returnedType = getQueryMethod().getReturnedObjectType();
         if (returnedType == Long.class || returnedType == Integer.class) {
-            return COUNT_QUERY_PATTERN.matcher(query.toLowerCase()).matches();
+            return COUNT_QUERY_PATTERN.matcher(query.toLowerCase(Locale.ROOT)).matches();
         } else {
             return false;
         }
