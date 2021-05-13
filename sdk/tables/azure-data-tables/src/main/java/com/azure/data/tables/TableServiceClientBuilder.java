@@ -3,8 +3,8 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
@@ -43,9 +43,8 @@ public class TableServiceClientBuilder {
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private ClientOptions clientOptions;
     private TablesServiceVersion version;
-    private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
-    private TablesSharedKeyCredential tablesSharedKeyCredential;
+    private AzureNamedKeyCredential azureNamedKeyCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
     private RetryPolicy retryPolicy = new RetryPolicy();
@@ -79,8 +78,8 @@ public class TableServiceClientBuilder {
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, endpoint, retryPolicy,
-            httpLogOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            azureNamedKeyCredential, azureSasCredential, sasToken, endpoint, retryPolicy, httpLogOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
@@ -113,7 +112,7 @@ public class TableServiceClientBuilder {
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-            this.credential(new TablesSharedKeyCredential(authSettings.getAccount().getName(),
+            this.credential(new AzureNamedKeyCredential(authSettings.getAccount().getName(),
                 authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
@@ -200,8 +199,7 @@ public class TableServiceClientBuilder {
         }
 
         this.sasToken = sasToken;
-        this.tablesSharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.azureNamedKeyCredential = null;
 
         return this;
     }
@@ -226,42 +224,20 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
-     *
-     * @return The updated {@link TableServiceClientBuilder}.
-     *
-     * @throws NullPointerException if {@code credential} is {@code null}.
-     */
-    public TableServiceClientBuilder credential(TablesSharedKeyCredential credential) {
-        if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
-        }
-
-        this.tablesSharedKeyCredential = credential;
-        this.tokenCredential = null;
-        this.sasToken = null;
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
-     *
-     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     * @param credential {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      *
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
-    public TableServiceClientBuilder credential(TokenCredential credential) {
+    public TableServiceClientBuilder credential(AzureNamedKeyCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
-        this.tokenCredential = credential;
-        this.tablesSharedKeyCredential = null;
+        this.azureNamedKeyCredential = credential;
         this.sasToken = null;
 
         return this;

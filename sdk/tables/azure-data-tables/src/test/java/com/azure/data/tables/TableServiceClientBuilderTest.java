@@ -3,8 +3,8 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -88,8 +88,7 @@ public class TableServiceClientBuilderTest {
     @Test
     public void nullCredentialThrowsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((AzureSasCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((TablesSharedKeyCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((TokenCredential) null));
+        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((AzureNamedKeyCredential) null));
     }
 
     @Test

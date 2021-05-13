@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
@@ -38,8 +39,8 @@ public class ReadmeSamples {
     /**
      * Code sample for authenticating with a shared key.
      */
-    public void authenticateWithSharedKey() {
-        TablesSharedKeyCredential credential = new TablesSharedKeyCredential("<your-account-name>", "<account-access-key>");
+    public void authenticateWithNamedKey() {
+        AzureNamedKeyCredential credential = new AzureNamedKeyCredential("<your-account-name>", "<account-access-key>");
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("<your-table-account-url>")
             .credential(credential)
