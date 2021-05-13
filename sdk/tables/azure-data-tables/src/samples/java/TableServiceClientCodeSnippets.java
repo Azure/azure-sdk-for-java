@@ -68,7 +68,7 @@ public class TableServiceClientCodeSnippets {
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq OfficeSupplies");
 
         try {
-            PagedIterable<TableItem> tablePagedIterable = tableServiceClient.listTables(options);
+            PagedIterable<TableItem> tablePagedIterable = tableServiceClient.listTables(options, null, null);
         } catch (TableStorageException e) {
             System.err.println("Table Query Unsuccessful. Error: " + e);
         }
@@ -188,7 +188,7 @@ public class TableServiceClientCodeSnippets {
             .setFilter("Product eq markers")
             .setSelect("Seller, Price");
         try {
-            PagedIterable<TableEntity> tableEntities = tableClient.listEntities(options);
+            PagedIterable<TableEntity> tableEntities = tableClient.listEntities(options, null, null);
         } catch (TableStorageException e) {
             System.err.println("Query Table Entities Unsuccessful. Error: " + e);
         }

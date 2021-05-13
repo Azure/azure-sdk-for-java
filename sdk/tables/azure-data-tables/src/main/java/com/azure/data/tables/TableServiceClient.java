@@ -14,7 +14,8 @@ import com.azure.data.tables.models.TableServiceErrorException;
 
 import java.time.Duration;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
@@ -91,21 +92,7 @@ public class TableServiceClient {
      * Creates a table within the Tables service.
      *
      * @param tableName The name of the table to create.
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTable(String tableName, Duration timeout) {
-        blockWithOptionalTimeout(client.createTable(tableName), timeout);
-    }
-
-    /**
-     * Creates a table within the Tables service.
-     *
-     * @param tableName The name of the table to create.
-     * @param timeout Duration to wait for the operation to complete.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The HTTP response.
@@ -134,20 +121,7 @@ public class TableServiceClient {
      * Creates a table within the Tables service if the table does not already exist.
      *
      * @param tableName The name of the table to create.
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTableIfNotExists(String tableName, Duration timeout) {
-        blockWithOptionalTimeout(client.createTableIfNotExists(tableName), timeout);
-    }
-
-    /**
-     * Creates a table within the Tables service if the table does not already exist.
-     *
-     * @param tableName The name of the table to create.
-     * @param timeout Duration to wait for the operation to complete.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The HTTP response.
@@ -176,21 +150,7 @@ public class TableServiceClient {
      * Deletes a table within the Tables service.
      *
      * @param tableName The name of the table to delete.
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTable(String tableName, Duration timeout) {
-        blockWithOptionalTimeout(client.deleteTable(tableName), timeout);
-    }
-
-    /**
-     * Deletes a table within the Tables service.
-     *
-     * @param tableName The name of the table to delete.
-     * @param timeout Duration to wait for the operation to complete.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The HTTP response.
@@ -222,6 +182,8 @@ public class TableServiceClient {
      * parameter is set, the number of returned tables will be limited to that value.
      *
      * @param options The `filter` and `top` OData query options to apply to this operation.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A paged iterable containing matching tables within the account.
      *
@@ -229,8 +191,7 @@ public class TableServiceClient {
      * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableItem> listTables(ListTablesOptions options) {
-        return new PagedIterable<>(client.listTables(options));
+    public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
+        return new PagedIterable<>(applyOptionalTimeout(client.listTables(options, context), timeout));
     }
-
 }

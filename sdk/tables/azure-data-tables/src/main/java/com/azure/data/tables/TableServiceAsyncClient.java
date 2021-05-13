@@ -271,6 +271,25 @@ public class TableServiceAsyncClient {
             token -> withContext(context -> listTablesNextPage(token, context, options)));
     }
 
+    /**
+     * Lists tables using the parameters in the provided options.
+     *
+     * If the 'filter' parameter in the options is set, only tables matching the filter will be returned. If the 'top'
+     * parameter is set, the number of returned tables will be limited to that value.
+     *
+     * @param options The 'filter' and 'top' OData query options to apply to this operation.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A paged reactive result containing matching tables within the account.
+     * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
+     * @throws TableServiceErrorException If the request is rejected by the service.
+     */
+    PagedFlux<TableItem> listTables(ListTablesOptions options, Context context) {
+        return new PagedFlux<>(
+            () -> listTablesFirstPage(context, options),
+            token -> listTablesNextPage(token, context, options));
+    }
+
     private Mono<PagedResponse<TableItem>> listTablesFirstPage(Context context, ListTablesOptions options) {
         try {
             return listTables(null, context, options);

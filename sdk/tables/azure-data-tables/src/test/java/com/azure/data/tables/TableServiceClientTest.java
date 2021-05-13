@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 public class TableServiceClientTest extends TestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private TableServiceClient serviceClient;
 
     @Override
@@ -46,24 +45,6 @@ public class TableServiceClientTest extends TestBase {
 
         // Act & Assert
         serviceClient.createTable(tableName);
-    }
-
-    @Test
-    void serviceCreateTableWithTimeout() {
-        // Arrange
-        String tableName = testResourceNamer.randomName("test", 20);
-
-        // Act & Assert
-        serviceClient.createTable(tableName, TIMEOUT);
-    }
-
-    @Test
-    void serviceCreateTableWithNullTimeout() {
-        // Arrange
-        String tableName = testResourceNamer.randomName("test", 20);
-
-        // Act & Assert
-        serviceClient.createTable(tableName, null);
     }
 
     @Test

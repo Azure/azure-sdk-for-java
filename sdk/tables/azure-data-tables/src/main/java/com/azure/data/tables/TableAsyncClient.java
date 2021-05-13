@@ -35,7 +35,6 @@ import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -245,12 +244,11 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createEntityWithResponse(TableEntity entity) {
-        return withContext(context -> createEntityWithResponse(entity, null, context));
+        return withContext(context -> createEntityWithResponse(entity, context));
     }
 
-    Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
+    Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
         context = context == null ? Context.NONE : context;
-        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
@@ -259,7 +257,7 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
-            return implementation.getTables().insertEntityWithResponseAsync(tableName, timeoutInt, null,
+            return implementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
                 ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                 .map(response ->
@@ -332,13 +330,11 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode) {
-        return withContext(context -> upsertEntityWithResponse(entity, updateMode, null, context));
+        return withContext(context -> upsertEntityWithResponse(entity, updateMode, context));
     }
 
-    Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
-                                                  Context context) {
+    Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Context context) {
         context = context == null ? Context.NONE : context;
-        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
@@ -349,14 +345,14 @@ public final class TableAsyncClient {
         try {
             if (updateMode == UpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context)
+                    entity.getRowKey(), null, null, null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context)
+                    entity.getRowKey(), null, null, null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -449,13 +445,12 @@ public final class TableAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode,
                                                          boolean ifUnchanged) {
-        return withContext(context -> updateEntityWithResponse(entity, updateMode, ifUnchanged, null, context));
+        return withContext(context -> updateEntityWithResponse(entity, updateMode, ifUnchanged, context));
     }
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                  Duration timeout, Context context) {
+                                                  Context context) {
         context = context == null ? Context.NONE : context;
-        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
@@ -467,14 +462,14 @@ public final class TableAsyncClient {
         try {
             if (updateMode == UpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context)
+                    entity.getRowKey(), null, null, eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context)
+                    entity.getRowKey(), null, null, eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -553,7 +548,7 @@ public final class TableAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEntity(TableEntity tableEntity) {
         return deleteEntityWithResponse(tableEntity.getPartitionKey(), tableEntity.getRowKey(), tableEntity.getETag(),
-            null, null).flatMap(FluxUtil::toMono);
+            null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -572,14 +567,12 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag) {
-        return withContext(context -> deleteEntityWithResponse(partitionKey, rowKey, eTag, null, context));
+        return withContext(context -> deleteEntityWithResponse(partitionKey, rowKey, eTag, context));
     }
 
-    Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
-                                                  Context context) {
+    Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Context context) {
         context = context == null ? Context.NONE : context;
         String matchParam = eTag == null ? "*" : eTag;
-        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
 
         if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
@@ -587,7 +580,7 @@ public final class TableAsyncClient {
 
         try {
             return implementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam,
-                timeoutInt, null, null, context)
+                null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                 .map(response ->
                     new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
@@ -667,6 +660,27 @@ public final class TableAsyncClient {
         return new PagedFlux<>(
             () -> withContext(context -> listEntitiesFirstPage(context, options, resultType)),
             token -> withContext(context -> listEntitiesNextPage(token, context, options, resultType)));
+    }
+
+    /**
+     * Lists entities using the parameters in the provided options.
+     *
+     * If the `filter` parameter in the options is set, only entities matching the filter will be returned. If the
+     * `select` parameter is set, only the properties included in the select parameter will be returned for each entity.
+     * If the `top` parameter is set, the number of returned entities will be limited to that value.
+     *
+     * @param options The `filter`, `select`, and `top` OData query options to apply to this operation.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A paged reactive result containing matching entities within the table.
+     *
+     * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
+     * @throws TableServiceErrorException If the request is rejected by the service.
+     */
+    PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context) {
+        return new PagedFlux<>(
+            () -> listEntitiesFirstPage(context, options, TableEntity.class),
+            token -> listEntitiesNextPage(token, context, options, TableEntity.class));
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesFirstPage(Context context,
@@ -878,8 +892,7 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, String select) {
-        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, null,
-            context));
+        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, context));
     }
 
     /**
@@ -902,13 +915,11 @@ public final class TableAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey,
                                                                            String select, Class<T> resultType) {
-        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, resultType, null, context));
+        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, resultType, context));
     }
 
     <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey, String select,
-                                                                    Class<T> resultType, Duration timeout,
-                                                                    Context context) {
-        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
+                                                                    Class<T> resultType, Context context) {
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
@@ -921,8 +932,8 @@ public final class TableAsyncClient {
         }
 
         try {
-            return implementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKey,
-                rowKey, timeoutInt, null, queryOptions, context)
+            return implementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
+                partitionKey, rowKey, null, null, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
                 .handle((response, sink) -> {
                     final Map<String, Object> matchingEntity = response.getValue();

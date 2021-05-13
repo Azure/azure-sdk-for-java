@@ -87,7 +87,7 @@ public class ReadmeSamples {
         ListTablesOptions options = new ListTablesOptions()
             .setFilter(String.format("TableName eq '%s'", tableName));
 
-        for (TableItem tableItem : tableServiceClient.listTables(options)) {
+        for (TableItem tableItem : tableServiceClient.listTables(options, null, null)) {
             System.out.println(tableItem.getName());
         }
     }
@@ -137,7 +137,7 @@ public class ReadmeSamples {
             .setFilter(String.format("PartitionKey eq '%s'", partitionKey))
             .setSelect("Product, Price");
 
-        for (TableEntity entity : tableClient.listEntities(options)) {
+        for (TableEntity entity : tableClient.listEntities(options, null, null)) {
             Map<String, Object> properties = entity.getProperties();
             System.out.println(String.format("%s: %.2f", properties.get("Product"), properties.get("Price")));
         }
