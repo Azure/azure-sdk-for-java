@@ -39,7 +39,7 @@ stages:
           codeCoverageTool: JaCoCo
           summaryFileLocation: sdk/communication/target/site/jacoco-aggregate/jacoco.xml
           reportDirectory: sdk/communication/target/site/jacoco-aggregate/
-          failIfCoverageEmpty: false
+          failIfCoverageEmpty: true
     EnvVars:
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
