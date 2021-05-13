@@ -14,7 +14,7 @@ stages:
       - name: azure-communication-phonenumbers
         groupId: com.azure
         safeName: azurecommunicationphonenumbers
-    ServiceDirectory: communication
+    ServiceDirectory: communication/azure-communication-phonenumbers
     PostSteps:
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
