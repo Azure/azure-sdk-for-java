@@ -37,7 +37,7 @@ com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.2;3.0.0-beta.3
-com.azure:azure-ai-formrecognizer;3.0.7;3.0.8
+com.azure:azure-ai-formrecognizer;3.0.8;3.1.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-metricsadvisor;1.0.0-beta.3;1.0.0-beta.4
