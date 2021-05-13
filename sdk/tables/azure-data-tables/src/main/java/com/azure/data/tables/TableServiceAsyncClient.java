@@ -23,6 +23,7 @@ import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.models.CorsRule;
+import com.azure.data.tables.implementation.models.GeoReplication;
 import com.azure.data.tables.implementation.models.Logging;
 import com.azure.data.tables.implementation.models.Metrics;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
@@ -32,14 +33,18 @@ import com.azure.data.tables.implementation.models.RetentionPolicy;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
+import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceGeoReplication;
+import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
 import com.azure.data.tables.models.TableServiceLogging;
 import com.azure.data.tables.models.TableServiceMetrics;
 import com.azure.data.tables.models.TableServiceProperties;
 import com.azure.data.tables.models.TableServiceRetentionPolicy;
+import com.azure.data.tables.models.TableServiceStatistics;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -451,5 +456,48 @@ public class TableServiceAsyncClient {
             .setAllowedHeaders(corsRule.getAllowedHeaders())
             .setExposedHeaders(corsRule.getExposedHeaders())
             .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @return A reactive result containing statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableServiceStatistics> getStatistics() {
+        return this.getStatisticsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @return A reactive result containing the HTTP response and statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableServiceStatistics>> getStatisticsWithResponse() {
+        return withContext(this::getStatisticsWithResponse);
+    }
+
+    Mono<Response<TableServiceStatistics>> getStatisticsWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return this.implementation.getServices().getStatisticsWithResponseAsync(null, null, context)
+                .map(response -> new SimpleResponse<>(response, toTableServiceStatistics(response.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
+        return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
+    }
+
+    private TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
+        return new TableServiceGeoReplication(
+            TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
+            geoReplication.getLastSyncTime());
     }
 }

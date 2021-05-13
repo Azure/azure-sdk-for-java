@@ -12,6 +12,7 @@ import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceErrorException;
 import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableServiceStatistics;
 
 import java.time.Duration;
 
@@ -257,5 +258,30 @@ public class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         return blockWithOptionalTimeout(client.getPropertiesWithResponse(context), timeout);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @return Statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableServiceStatistics getStatistics() {
+        return client.getStatistics().block();
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A reactive result containing the HTTP response and statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.getStatisticsWithResponse(context), timeout);
     }
 }
