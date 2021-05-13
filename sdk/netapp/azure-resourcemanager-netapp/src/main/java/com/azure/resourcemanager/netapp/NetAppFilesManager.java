@@ -32,7 +32,6 @@ import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.netapp.implementation.VaultsImpl;
-import com.azure.resourcemanager.netapp.implementation.VolumeBackupStatusImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
 import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Accounts;
@@ -44,7 +43,6 @@ import com.azure.resourcemanager.netapp.models.Pools;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.Snapshots;
 import com.azure.resourcemanager.netapp.models.Vaults;
-import com.azure.resourcemanager.netapp.models.VolumeBackupStatus;
 import com.azure.resourcemanager.netapp.models.Volumes;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -68,11 +66,9 @@ public final class NetAppFilesManager {
 
     private SnapshotPolicies snapshotPolicies;
 
-    private VolumeBackupStatus volumeBackupStatus;
+    private Backups backups;
 
     private AccountBackups accountBackups;
-
-    private Backups backups;
 
     private BackupPolicies backupPolicies;
 
@@ -202,7 +198,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -229,6 +225,7 @@ public final class NetAppFilesManager {
                 .add(
                     new BearerTokenAuthenticationPolicy(
                         credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -296,12 +293,12 @@ public final class NetAppFilesManager {
         return snapshotPolicies;
     }
 
-    /** @return Resource collection API of VolumeBackupStatus. */
-    public VolumeBackupStatus volumeBackupStatus() {
-        if (this.volumeBackupStatus == null) {
-            this.volumeBackupStatus = new VolumeBackupStatusImpl(clientObject.getVolumeBackupStatus(), this);
+    /** @return Resource collection API of Backups. */
+    public Backups backups() {
+        if (this.backups == null) {
+            this.backups = new BackupsImpl(clientObject.getBackups(), this);
         }
-        return volumeBackupStatus;
+        return backups;
     }
 
     /** @return Resource collection API of AccountBackups. */
@@ -310,14 +307,6 @@ public final class NetAppFilesManager {
             this.accountBackups = new AccountBackupsImpl(clientObject.getAccountBackups(), this);
         }
         return accountBackups;
-    }
-
-    /** @return Resource collection API of Backups. */
-    public Backups backups() {
-        if (this.backups == null) {
-            this.backups = new BackupsImpl(clientObject.getBackups(), this);
-        }
-        return backups;
     }
 
     /** @return Resource collection API of BackupPolicies. */

@@ -12,6 +12,7 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging
 import com.azure.storage.file.datalake.models.DataLakeCorsRule
 import com.azure.storage.file.datalake.models.DataLakeMetrics
@@ -162,6 +163,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @ResourceLock("ServiceProperties")
     def "Set props static website"() {
         setup:
@@ -413,12 +415,13 @@ class ServiceAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
@@ -445,7 +448,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
@@ -468,12 +471,13 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.getFileSystemName() == destinationFileSystemName
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system with response"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
@@ -496,6 +500,7 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listPaths().first().getName() == blobName
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system async"() {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
@@ -503,7 +508,7 @@ class ServiceAPITest extends APISpec {
         def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-            .then(cc1.getFileAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
             .then(cc1.delete())
             .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryDataLakeServiceAsyncClient.listFileSystems(
@@ -526,6 +531,7 @@ class ServiceAPITest extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system async with response"() {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
@@ -533,7 +539,7 @@ class ServiceAPITest extends APISpec {
         def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-            .then(cc1.getFileAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
             .then(cc1.delete())
             .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryDataLakeServiceAsyncClient.listFileSystems(
@@ -567,12 +573,13 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException.class)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Restore file system into existing file system error"() {
         given:
         def cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         cc1.create()
         def blobName = generatePathName()
-        cc1.getFileClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getFileClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryDataLakeServiceClient.listFileSystems(
             new ListFileSystemsOptions()
