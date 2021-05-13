@@ -28,9 +28,9 @@ import java.util.function.Supplier;
 @SpringBootTest(classes = EventHubBinderConsumeErrorIT.TestConfig.class)
 @TestPropertySource(properties =
     {
-        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub",
-        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub",
-        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub"
+        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-message",
+        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-message",
+        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-message"
     })
 public class EventHubBinderConsumeErrorIT {
 
@@ -73,7 +73,7 @@ public class EventHubBinderConsumeErrorIT {
             };
         }
 
-        @ServiceActivator(inputChannel = "test-eventhub.$Default.errors")
+        @ServiceActivator(inputChannel = "test-eventhub-message.$Default.errors")
         public void consumeError(Message<?> message) throws InterruptedException {
             EXCHANGER.exchange("ERROR!");
         }

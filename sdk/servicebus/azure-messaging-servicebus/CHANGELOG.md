@@ -2,7 +2,10 @@
 
 ## 7.3.0-beta.2 (Unreleased)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 51c233b7c2a6d56d7cb7ec0af1d36de734db521e
 ## 7.3.0-beta.1 (2021-04-14)
 ### New Features
 - Adding support for AMQP Data types SEQUENCE and VALUE. It support sending and receiving of only one AMQP Sequence at 

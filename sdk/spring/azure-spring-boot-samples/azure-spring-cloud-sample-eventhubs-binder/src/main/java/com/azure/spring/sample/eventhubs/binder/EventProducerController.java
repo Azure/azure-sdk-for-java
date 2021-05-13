@@ -30,7 +30,7 @@ public class EventProducerController {
 
     @PostMapping("/messages")
     public ResponseEntity<String> sendMessage(@RequestParam String message) {
-        LOGGER.info("Going to add message {} to Sinks.Many.", message);
+        LOGGER.info("Going to add message {} to sendMessage.", message);
         many.emitNext(MessageBuilder.withPayload(message).build(), Sinks.EmitFailureHandler.FAIL_FAST);
         return ResponseEntity.ok(message);
     }

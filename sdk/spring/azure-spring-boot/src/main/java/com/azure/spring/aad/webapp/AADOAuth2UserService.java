@@ -25,6 +25,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -50,12 +51,14 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
     private static final String ROLES = "roles";
 
-    public AADOAuth2UserService(
-        AADAuthenticationProperties properties
-    ) {
+    public AADOAuth2UserService(AADAuthenticationProperties properties) {
+        this(properties, new GraphClient(properties));
+    }
+
+    public AADOAuth2UserService(AADAuthenticationProperties properties, GraphClient graphClient) {
         this.properties = properties;
         this.oidcUserService = new OidcUserService();
-        this.graphClient = new GraphClient(properties);
+        this.graphClient = graphClient;
     }
 
     @Override
@@ -109,15 +112,23 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     }
 
     Set<String> extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken) {
-        Set<String> roles = Optional.of(accessToken)
-                                    .filter(notUsed -> properties.allowedGroupsConfigured())
-                                    .map(AbstractOAuth2Token::getTokenValue)
-                                    .map(graphClient::getGroupsFromGraph)
-                                    .orElseGet(Collections::emptySet)
-                                    .stream()
-                                    .filter(properties::isAllowedGroup)
-                                    .map(group -> ROLE_PREFIX + group)
-                                    .collect(Collectors.toSet());
+        if (!properties.allowedGroupIdsConfigured() && !properties.allowedGroupNamesConfigured()) {
+            return Collections.emptySet();
+        }
+        Set<String> groups = Optional.of(accessToken)
+                                     .map(AbstractOAuth2Token::getTokenValue)
+                                     .map(graphClient::getGroupsFromGraph)
+                                     .orElseGet(Collections::emptySet);
+        if (properties.getUserGroup().getEnableFullList()) {
+            return groups;
+        }
+        Set<String> roles = Arrays
+            .asList(properties.getUserGroup().getAllowedGroupIds(), properties.getUserGroup().getAllowedGroupNames())
+            .stream()
+            .flatMap(Collection::stream)
+            .filter(groups::contains)
+            .map(group -> ROLE_PREFIX + group)
+            .collect(Collectors.toSet());
         return roles;
     }
 }

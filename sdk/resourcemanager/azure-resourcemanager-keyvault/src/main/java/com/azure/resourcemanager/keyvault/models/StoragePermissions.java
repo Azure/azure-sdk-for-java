@@ -10,6 +10,9 @@ import java.util.Collection;
 
 /** Defines values for StoragePermissions. */
 public final class StoragePermissions extends ExpandableStringEnum<StoragePermissions> {
+    /** Static value all for StoragePermissions. */
+    public static final StoragePermissions ALL = fromString("all");
+
     /** Static value get for StoragePermissions. */
     public static final StoragePermissions GET = fromString("get");
 

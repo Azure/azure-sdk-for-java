@@ -44,18 +44,18 @@ class LargeBlobTest extends APISpec {
         blobName = generateBlobName()
         def basic = cc.getBlobClient(blobName)
         this.blobClient = getBlobClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             basic.getBlobUrl(),
             new PayloadDroppingPolicy(),
             // Regenerate auth header after body got substituted
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.primaryAccount.credential)
         )
         this.blobAsyncClient = getBlobAsyncClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             basic.getBlobUrl(),
             new PayloadDroppingPolicy(),
             // Regenerate auth header after body got substituted
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.primaryAccount.credential)
         )
     }
 
