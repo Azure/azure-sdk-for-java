@@ -15,7 +15,7 @@ import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.UpdateMode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -763,7 +763,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(batch.submitTransactionWithResponse())
-            .expectErrorMatches(e -> e instanceof TableServiceErrorException
+            .expectErrorMatches(e -> e instanceof TableServiceException
                 && e.getMessage().contains("An operation within the batch failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")
