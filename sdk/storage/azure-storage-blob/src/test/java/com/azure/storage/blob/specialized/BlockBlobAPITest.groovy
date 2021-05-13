@@ -15,6 +15,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
@@ -38,11 +39,13 @@ import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Ignore
-import spock.lang.Requires
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -486,6 +489,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list tags"() {
         setup:
@@ -512,6 +516,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC"() {
         setup:
@@ -542,6 +547,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC fail"() {
         setup:
@@ -667,6 +673,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags"() {
         setup:
         def t = new HashMap<String, String>()
@@ -680,6 +687,7 @@ class BlockBlobAPITest extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags fail"() {
         when:
         blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"notfoo\" = 'notbar'"), null, Context.NONE)
@@ -718,8 +726,7 @@ class BlockBlobAPITest extends APISpec {
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
        for getBlockID that will change every time test is run
      */
-
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Upload from file"() {
         setup:
@@ -758,7 +765,7 @@ class BlockBlobAPITest extends APISpec {
         101 * Constants.MB                             | 4 * 1024 * 1024 || 0  // Size is too small to trigger stage block uploading
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file with metadata"() {
         given:
         def metadata = Collections.singletonMap("metadata", "value")
@@ -777,7 +784,8 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @LiveOnly
     def "Upload from file with tags"() {
         given:
         def tags = Collections.singletonMap("tag", "value")
@@ -797,7 +805,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file default no overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -817,7 +825,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -856,7 +864,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Failing in live test run with unexpected reported byte count")
     def "Upload from file reporter"() {
         when:
@@ -886,7 +894,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload from file options"() {
         setup:
         def file = getRandomFile(dataSize)
@@ -1021,6 +1029,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload tags"() {
         setup:
@@ -1048,6 +1057,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC"() {
         setup:
@@ -1078,6 +1088,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC fail"() {
         setup:
@@ -1167,7 +1178,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == data
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload empty"() {
 
         expect:
@@ -1181,7 +1192,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload empty buffers"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable([buffer1, buffer2, buffer3]), null, true))
@@ -1202,22 +1213,22 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
-    def "Async buffered upload"() {
-        setup:
-        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
-            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
-            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+    @LiveOnly
+        def "Async buffered upload"() {
+            setup:
+            def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+                .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+                .getBlobAsyncClient(blobAsyncClient.getBlobName())
 
-        when:
-        def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
-        blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
-        data.position(0)
+            when:
+            def data = getRandomData(dataSize)
+            ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
+            blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
+            data.position(0)
 
-        then:
-        // Due to memory issues, this check only runs on small to medium sized data sets.
-        if (dataSize < 100 * 1024 * 1024) {
+            then:
+            // Due to memory issues, this check only runs on small to medium sized data sets.
+            if (dataSize < 100 * 1024 * 1024) {
             StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
                 .assertNext({ assert it == data })
                 .verifyComplete()
@@ -1250,7 +1261,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Async buffered upload computeMd5"() {
         setup:
         def byteBufferList = []
@@ -1314,7 +1325,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload with reporter"() {
         setup:
         def blobAsyncClient = getPrimaryServiceClientForWrites(blockSize)
@@ -1350,7 +1361,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -1384,7 +1395,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1410,7 +1421,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing hot flux"() {
         setup:
         def dataList = [] as List<ByteBuffer>
@@ -1436,7 +1447,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getBlobAsyncClient(
@@ -1468,7 +1479,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload sync handle pathing with transient failure"() {
         /*
         This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
@@ -1524,7 +1535,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload headers"() {
         when:
         def data = getRandomByteArray(dataSize)
@@ -1558,7 +1569,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload metadata"() {
         setup:
         def metadata = [:] as Map<String, String>
@@ -1588,8 +1599,9 @@ class BlockBlobAPITest extends APISpec {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload tags"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1621,7 +1633,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload options"() {
         setup:
         def data = getRandomData(dataSize)
@@ -1644,7 +1656,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload AC"() {
         setup:
         blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
@@ -1676,7 +1688,7 @@ class BlockBlobAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload AC fail"() {
         setup:
         blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
@@ -1711,7 +1723,7 @@ class BlockBlobAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         blockBlobAsyncClient.upload(defaultFlux, defaultDataSize, true).block()
@@ -1769,7 +1781,7 @@ class BlockBlobAPITest extends APISpec {
     notThrown(IllegalArgumentException)
 }*/
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload network error"() {
         setup:
         /*
@@ -1792,7 +1804,6 @@ class BlockBlobAPITest extends APISpec {
         blobAsyncClient = new BlobServiceClientBuilder()
             .credential(env.primaryAccount.credential)
             .endpoint(env.primaryAccount.blobEndpoint)
-            .httpClient(getHttpClient())
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
@@ -1811,7 +1822,7 @@ class BlockBlobAPITest extends APISpec {
             })
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload default no overwrite"() {
         expect:
         StepVerifier.create(blobAsyncClient.upload(defaultFlux, null))
@@ -1824,7 +1835,7 @@ class BlockBlobAPITest extends APISpec {
             .verifyError(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload no overwrite interrupted"() {
         setup:
         def smallFile = getRandomFile(50)
@@ -1847,7 +1858,7 @@ class BlockBlobAPITest extends APISpec {
         smallFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Buffered upload overwrite"() {
         when:
         def file = getRandomFile(50)
@@ -1935,6 +1946,7 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
@@ -1949,6 +1961,7 @@ class BlockBlobAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url min"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -1972,6 +1985,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == defaultData.array()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -1993,6 +2007,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == defaultData.array()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite fails on existing blob"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2016,6 +2031,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url max"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2056,6 +2072,7 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getAccessTier() == AccessTier.COOL
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from with invalid source MD5"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2075,6 +2092,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url source request conditions"() {
         setup:
@@ -2099,6 +2117,7 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url destination request conditions"() {
         setup:

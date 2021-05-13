@@ -8,6 +8,8 @@ import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -59,7 +61,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -171,12 +173,12 @@ class FileAsyncAPITests extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file buffer copy"() {
         setup:
         def shareServiceAsyncClient = new ShareServiceClientBuilder()
-            .connectionString(env.fileAccount.connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .buildAsyncClient()
 
         def fileClient = shareServiceAsyncClient.getShareAsyncClient(shareName)
@@ -631,7 +633,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -667,7 +669,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -699,7 +701,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.fileAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -1148,6 +1150,7 @@ class FileAsyncAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "List ranges diff"() {
         setup:
@@ -1219,6 +1222,7 @@ class FileAsyncAPITests extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryFileAsyncClient.create(512).block()
@@ -1240,6 +1244,7 @@ class FileAsyncAPITests extends APISpec {
             .verifyErrorSatisfies({ it instanceof ShareStorageException })
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryFileAsyncClient.create(512).block()

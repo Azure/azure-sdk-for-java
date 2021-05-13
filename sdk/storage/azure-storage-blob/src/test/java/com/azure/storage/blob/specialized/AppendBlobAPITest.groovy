@@ -6,7 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
-
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
@@ -17,6 +17,8 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -105,6 +107,7 @@ class AppendBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Create tags"() {
         setup:
@@ -130,6 +133,7 @@ class AppendBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Create AC"() {
         setup:
@@ -263,6 +267,7 @@ class AppendBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Append block AC"() {
         setup:
@@ -434,6 +439,7 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Append block from URL destination AC"() {
         setup:
@@ -598,6 +604,7 @@ class AppendBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Seal defaults"() {
         when:
         def sealResponse = bc.sealWithResponse(null, null, null)
@@ -607,6 +614,7 @@ class AppendBlobAPITest extends APISpec {
         sealResponse.getHeaders().getValue("x-ms-blob-sealed")
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Seal min"() {
         when:
         bc.seal()
@@ -616,6 +624,7 @@ class AppendBlobAPITest extends APISpec {
         bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null).getDeserializedHeaders().isSealed()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Seal error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
@@ -627,6 +636,7 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Seal AC"() {
         setup:
@@ -655,6 +665,7 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | 0
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Seal AC fail"() {
         setup:
@@ -685,6 +696,7 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | 1
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
