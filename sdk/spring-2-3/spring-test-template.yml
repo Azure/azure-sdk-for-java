@@ -5,6 +5,8 @@ parameters:
   TestResourceDirectories:
     - spring-2-3/azure-spring-boot-test-cosmos
     - spring-2-3/azure-spring-boot-test-keyvault
+    - spring-2-3/azure-spring-boot-test-aad
+    - spring-2-3/azure-spring-boot-test-aad-b2c
 #    - spring-2-3/azure-spring-boot-test-servicebus-jms
 #    - spring-2-3/azure-spring-boot-test-storage
 #    - spring-2-3/azure-spring-cloud-test-eventhubs
@@ -89,7 +91,7 @@ stages:
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
-          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(SpringProjectPathList)'
+          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
         PreSteps:
             - script: |
@@ -119,7 +121,7 @@ stages:
             inputs:
               mavenPomFile: pom.xml
               goals: 'install'
-              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(SpringProjectPathList) -am'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: $(JavaBuildVersion)
@@ -131,7 +133,7 @@ stages:
             inputs:
               mavenPomFile: pom.xml
               goals: verify
-              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(SpringProjectPathList)'
+              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
             env: ${{ parameters.EnvVars }}
 
           - powershell: |

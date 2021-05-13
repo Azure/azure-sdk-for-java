@@ -1,28 +1,4 @@
-trigger:
-  branches:
-    include:
-      - master
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-      - feature/spring-multi-version
-  paths:
-    include:
-      - sdk/spring-2-3/
-
-pr:
-  branches:
-    include:
-      - master
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-      - feature/spring-multi-version
-  paths:
-    include:
-      - sdk/spring-2-3/
+trigger: none
 
 stages:
     - template: spring-test-template.yml
@@ -33,6 +9,7 @@ stages:
         Clouds: China
         TestResourceDirectories:
           - spring-2-3/azure-spring-boot-test-aad
+          - spring-2-3/azure-spring-boot-test-aad-b2c
         Artifacts:
           - name: azure-spring-boot-test-aad
             groupId: com.azure.spring

@@ -156,7 +156,7 @@ def update_property_dict(project_element, property_dict):
 
 
 def output_version_dict_to_file(dependency_dict):
-    output_file = open('sdk/spring/scripts/spring_managed_external_dependencies.txt', 'w''')
+    output_file = open('sdk/spring-2-3/scripts/spring_managed_external_dependencies.txt', 'w''')
     for key, value in sorted(dependency_dict.items()):
         output_file.write('{};{}\n'.format(key, value))
     output_file.close()
