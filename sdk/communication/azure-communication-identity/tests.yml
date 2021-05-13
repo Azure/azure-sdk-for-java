@@ -14,5 +14,6 @@ stages:
       - name: azure-communication-identity
         groupId: com.azure
         safeName: azurecommunicationidentity
+    ServiceDirectory: communication
     EnvVars:
       SKIP_LIVE_TEST: TRUE

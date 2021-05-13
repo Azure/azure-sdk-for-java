@@ -14,6 +14,7 @@ stages:
       - name: azure-communication-phonenumbers
         groupId: com.azure
         safeName: azurecommunicationphonenumbers
+    ServiceDirectory: communication
     EnvVars:
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE

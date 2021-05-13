@@ -14,5 +14,6 @@ stages:
       - name: azure-communication-chat
         groupId: com.azure
         safeName: azurecommunicationchat
+    ServiceDirectory: communication
     EnvVars:
       SKIP_LIVE_TEST: TRUE
