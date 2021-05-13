@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 
 /**
  * Provides an asynchronous service client for accessing the Azure Tables service.
@@ -240,7 +241,7 @@ public class TableServiceAsyncClient {
      * @return An empty reactive result.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable(String tableName) {
@@ -255,7 +256,7 @@ public class TableServiceAsyncClient {
      * @return A reactive result containing the HTTP response.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse(String tableName) {
@@ -268,7 +269,8 @@ public class TableServiceAsyncClient {
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
-                .map(response -> new SimpleResponse<>(response, null));
+                .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
+                .onErrorResume(TableServiceErrorException.class, e -> swallowExceptionForStatusCode(404, e, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -176,7 +176,7 @@ public class TableServiceClient {
      * @param tableName The name of the table to delete.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String tableName) {
@@ -193,7 +193,7 @@ public class TableServiceClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {

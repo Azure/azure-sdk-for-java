@@ -2,7 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.implementation;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataErrorMessage;
 import com.azure.data.tables.models.TableServiceError;
@@ -11,6 +16,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A class containing utility methods for the Azure Data Tables library.
@@ -139,5 +146,26 @@ public final class TableUtils {
         } else {
             return response.block(timeout);
         }
+    }
+
+    /**
+     * Deserializes a given {@link Response HTTP response} including headers to a given class.
+     *
+     * @param statusCode The status code which will trigger exception swallowing.
+     * @param httpResponseException The {@link HttpResponseException} to be swallowed.
+     * @param logger {@link ClientLogger} that will be used to record the exception.
+     * @param <E> The class of the exception to swallow.
+     *
+     * @return A {@link Mono} that contains the deserialized response.
+     */
+    public static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode, E httpResponseException, ClientLogger logger) {
+        HttpResponse httpResponse = httpResponseException.getResponse();
+
+        if (httpResponse.getStatusCode() == statusCode) {
+            return Mono.just(new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                httpResponse.getHeaders(), null));
+        }
+
+        return monoError(logger, httpResponseException);
     }
 }

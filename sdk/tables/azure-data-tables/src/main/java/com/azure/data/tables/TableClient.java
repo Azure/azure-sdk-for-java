@@ -301,7 +301,7 @@ public class TableClient {
     /**
      * Deletes the table within the Tables service.
      *
-     * @throws TableServiceErrorException If no table with this name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable() {
@@ -316,7 +316,7 @@ public class TableClient {
      *
      * @return The HTTP response.
      *
-     * @throws TableServiceErrorException If no table with this name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
@@ -330,7 +330,7 @@ public class TableClient {
      * @param rowKey The row key of the entity.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
+     * @throws TableServiceErrorException If the request is rejected by the service.
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -345,7 +345,7 @@ public class TableClient {
      *
      * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
      * {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
+     * @throws TableServiceErrorException If the request is rejected by the service.
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -367,8 +367,7 @@ public class TableClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,

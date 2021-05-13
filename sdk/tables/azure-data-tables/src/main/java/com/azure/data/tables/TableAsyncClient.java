@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 
 /**
  * Provides an asynchronous service client for accessing a table in the Azure Tables service.
@@ -486,7 +487,7 @@ public final class TableAsyncClient {
      *
      * @return An empty reactive result.
      *
-     * @throws TableServiceErrorException If no table with this name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable() {
@@ -498,7 +499,7 @@ public final class TableAsyncClient {
      *
      * @return A reactive result containing the response.
      *
-     * @throws TableServiceErrorException If no table with this name exists within the service.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse() {
@@ -511,7 +512,8 @@ public final class TableAsyncClient {
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
-                .map(response -> new SimpleResponse<>(response, null));
+                .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
+                .onErrorResume(TableServiceErrorException.class, e -> swallowExceptionForStatusCode(404, e, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -526,8 +528,7 @@ public final class TableAsyncClient {
      * @return An empty reactive result.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEntity(String partitionKey, String rowKey) {
@@ -543,8 +544,7 @@ public final class TableAsyncClient {
      *
      * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
      * {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEntity(TableEntity tableEntity) {
@@ -563,8 +563,7 @@ public final class TableAsyncClient {
      * @return A reactive result containing the response.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table.
+     * @throws TableServiceErrorException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag) {
@@ -583,8 +582,8 @@ public final class TableAsyncClient {
             return implementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam,
                 null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
-                .map(response ->
-                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+                .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
+                .onErrorResume(TableServiceErrorException.class, e -> swallowExceptionForStatusCode(404, e, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

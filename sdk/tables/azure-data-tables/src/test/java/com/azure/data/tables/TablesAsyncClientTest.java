@@ -282,6 +282,16 @@ public class TablesAsyncClientTest extends TestBase {
     }
 
     @Test
+    void deleteNonExistingTableAsync() {
+        // Act & Assert
+        tableClient.deleteTable().block();
+
+        StepVerifier.create(tableClient.deleteTable())
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void deleteTableWithResponseAsync() {
         // Arrange
         final int expectedStatusCode = 204;
@@ -291,6 +301,20 @@ public class TablesAsyncClientTest extends TestBase {
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingTableWithResponseAsync() {
+        // Arrange
+        final int expectedStatusCode = 404;
+
+        // Act & Assert
+        tableClient.deleteTableWithResponse().block();
+
+        StepVerifier.create(tableClient.deleteTableWithResponse())
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -306,6 +330,18 @@ public class TablesAsyncClientTest extends TestBase {
         final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(TIMEOUT);
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
+
+        // Act & Assert
+        StepVerifier.create(tableClient.deleteEntity(partitionKeyValue, rowKeyValue))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingEntityAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
 
         // Act & Assert
         StepVerifier.create(tableClient.deleteEntity(partitionKeyValue, rowKeyValue))
@@ -331,6 +367,20 @@ public class TablesAsyncClientTest extends TestBase {
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingEntityWithResponseAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final int expectedStatusCode = 404;
+
+        // Act & Assert
+        StepVerifier.create(tableClient.deleteEntityWithResponse(partitionKeyValue, rowKeyValue, null))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
