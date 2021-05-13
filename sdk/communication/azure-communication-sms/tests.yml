@@ -37,7 +37,7 @@ stages:
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/communication/target/site/jacoco-aggregate/jacoco.xml
+          summaryFileLocation: sdk/communication/**/target/site/jacoco-aggregate/jacoco.xml
           reportDirectory: sdk/communication/target/site/jacoco-aggregate/
           failIfCoverageEmpty: true
     EnvVars:
