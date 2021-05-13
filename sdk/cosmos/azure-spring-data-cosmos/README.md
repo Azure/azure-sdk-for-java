@@ -283,6 +283,7 @@ Extends CosmosRepository interface, which provides Spring Data repository suppor
 @Repository
 public interface UserRepository extends CosmosRepository<User, String> {
     Iterable<User> findByFirstName(String firstName);
+    long countByFirstName(String firstName);
     User findOne(String id, String lastName);
 }
 ```
@@ -296,11 +297,14 @@ Azure spring data cosmos supports specifying annotated queries in the repositori
 
 ```java
 public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     List<User> getUsersByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     List<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    @Query("select value count(1) from c where c.firstName = @firstName")
+    long getNumberOfUsersWithFirstName(@Param("firstName") String firstName);
 }
 ```
 
@@ -309,14 +313,17 @@ public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosReposit
 
 ```java
 public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends ReactiveCosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     Flux<User> getUsersByTitleAndValue(@Param("firstName") int firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     Flux<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
 
-    @Query(value = "select count(c.id) as num_ids, c.lastName from c group by c.lastName")
+    @Query("select count(c.id) as num_ids, c.lastName from c group by c.lastName")
     Flux<ObjectNode> getCoursesGroupByDepartment();
+
+    @Query("select value count(1) from c where c.lastName = @lastName")
+    Mono<Long> getNumberOfUsersWithLastName(@Param("lastName") String lastName);
 }
 ```
 
