@@ -7,8 +7,8 @@ package com.azure.resourcemanager.maintenance.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for MaintenanceClient class. */
-public interface MaintenanceClient {
+/** The interface for MaintenanceManagementClient class. */
+public interface MaintenanceManagementClient {
     /**
      * Gets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
@@ -46,6 +46,13 @@ public interface MaintenanceClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the PublicMaintenanceConfigurationsClient object to access its operations.
+     *
+     * @return the PublicMaintenanceConfigurationsClient object.
+     */
+    PublicMaintenanceConfigurationsClient getPublicMaintenanceConfigurations();
+
+    /**
      * Gets the ApplyUpdatesClient object to access its operations.
      *
      * @return the ApplyUpdatesClient object.
@@ -65,6 +72,20 @@ public interface MaintenanceClient {
      * @return the MaintenanceConfigurationsClient object.
      */
     MaintenanceConfigurationsClient getMaintenanceConfigurations();
+
+    /**
+     * Gets the MaintenanceConfigurationsForResourceGroupsClient object to access its operations.
+     *
+     * @return the MaintenanceConfigurationsForResourceGroupsClient object.
+     */
+    MaintenanceConfigurationsForResourceGroupsClient getMaintenanceConfigurationsForResourceGroups();
+
+    /**
+     * Gets the ApplyUpdateForResourceGroupsClient object to access its operations.
+     *
+     * @return the ApplyUpdateForResourceGroupsClient object.
+     */
+    ApplyUpdateForResourceGroupsClient getApplyUpdateForResourceGroups();
 
     /**
      * Gets the OperationsClient object to access its operations.

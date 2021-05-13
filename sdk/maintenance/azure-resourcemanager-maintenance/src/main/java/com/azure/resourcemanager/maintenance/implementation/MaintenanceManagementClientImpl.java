@@ -21,11 +21,14 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.maintenance.fluent.ApplyUpdateForResourceGroupsClient;
 import com.azure.resourcemanager.maintenance.fluent.ApplyUpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsClient;
-import com.azure.resourcemanager.maintenance.fluent.MaintenanceClient;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsClient;
+import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsForResourceGroupsClient;
+import com.azure.resourcemanager.maintenance.fluent.MaintenanceManagementClient;
 import com.azure.resourcemanager.maintenance.fluent.OperationsClient;
+import com.azure.resourcemanager.maintenance.fluent.PublicMaintenanceConfigurationsClient;
 import com.azure.resourcemanager.maintenance.fluent.UpdatesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -37,10 +40,10 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the MaintenanceClientImpl type. */
-@ServiceClient(builder = MaintenanceClientBuilder.class)
-public final class MaintenanceClientImpl implements MaintenanceClient {
-    private final ClientLogger logger = new ClientLogger(MaintenanceClientImpl.class);
+/** Initializes a new instance of the MaintenanceManagementClientImpl type. */
+@ServiceClient(builder = MaintenanceManagementClientBuilder.class)
+public final class MaintenanceManagementClientImpl implements MaintenanceManagementClient {
+    private final ClientLogger logger = new ClientLogger(MaintenanceManagementClientImpl.class);
 
     /**
      * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of
@@ -118,6 +121,18 @@ public final class MaintenanceClientImpl implements MaintenanceClient {
         return this.defaultPollInterval;
     }
 
+    /** The PublicMaintenanceConfigurationsClient object to access its operations. */
+    private final PublicMaintenanceConfigurationsClient publicMaintenanceConfigurations;
+
+    /**
+     * Gets the PublicMaintenanceConfigurationsClient object to access its operations.
+     *
+     * @return the PublicMaintenanceConfigurationsClient object.
+     */
+    public PublicMaintenanceConfigurationsClient getPublicMaintenanceConfigurations() {
+        return this.publicMaintenanceConfigurations;
+    }
+
     /** The ApplyUpdatesClient object to access its operations. */
     private final ApplyUpdatesClient applyUpdates;
 
@@ -154,6 +169,30 @@ public final class MaintenanceClientImpl implements MaintenanceClient {
         return this.maintenanceConfigurations;
     }
 
+    /** The MaintenanceConfigurationsForResourceGroupsClient object to access its operations. */
+    private final MaintenanceConfigurationsForResourceGroupsClient maintenanceConfigurationsForResourceGroups;
+
+    /**
+     * Gets the MaintenanceConfigurationsForResourceGroupsClient object to access its operations.
+     *
+     * @return the MaintenanceConfigurationsForResourceGroupsClient object.
+     */
+    public MaintenanceConfigurationsForResourceGroupsClient getMaintenanceConfigurationsForResourceGroups() {
+        return this.maintenanceConfigurationsForResourceGroups;
+    }
+
+    /** The ApplyUpdateForResourceGroupsClient object to access its operations. */
+    private final ApplyUpdateForResourceGroupsClient applyUpdateForResourceGroups;
+
+    /**
+     * Gets the ApplyUpdateForResourceGroupsClient object to access its operations.
+     *
+     * @return the ApplyUpdateForResourceGroupsClient object.
+     */
+    public ApplyUpdateForResourceGroupsClient getApplyUpdateForResourceGroups() {
+        return this.applyUpdateForResourceGroups;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -179,7 +218,7 @@ public final class MaintenanceClientImpl implements MaintenanceClient {
     }
 
     /**
-     * Initializes an instance of MaintenanceClient client.
+     * Initializes an instance of MaintenanceManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -189,7 +228,7 @@ public final class MaintenanceClientImpl implements MaintenanceClient {
      *     subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    MaintenanceClientImpl(
+    MaintenanceManagementClientImpl(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
@@ -201,10 +240,14 @@ public final class MaintenanceClientImpl implements MaintenanceClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-04-01";
+        this.apiVersion = "2021-05-01";
+        this.publicMaintenanceConfigurations = new PublicMaintenanceConfigurationsClientImpl(this);
         this.applyUpdates = new ApplyUpdatesClientImpl(this);
         this.configurationAssignments = new ConfigurationAssignmentsClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
+        this.maintenanceConfigurationsForResourceGroups =
+            new MaintenanceConfigurationsForResourceGroupsClientImpl(this);
+        this.applyUpdateForResourceGroups = new ApplyUpdateForResourceGroupsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.updates = new UpdatesClientImpl(this);
     }

@@ -15,9 +15,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the MaintenanceClientImpl type. */
-@ServiceClientBuilder(serviceClients = {MaintenanceClientImpl.class})
-public final class MaintenanceClientBuilder {
+/** A builder for creating a new instance of the MaintenanceManagementClientImpl type. */
+@ServiceClientBuilder(serviceClients = {MaintenanceManagementClientImpl.class})
+public final class MaintenanceManagementClientBuilder {
     /*
      * Subscription credentials that uniquely identify a Microsoft Azure
      * subscription. The subscription ID forms part of the URI for every
@@ -30,9 +30,9 @@ public final class MaintenanceClientBuilder {
      * part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
-     * @return the MaintenanceClientBuilder.
+     * @return the MaintenanceManagementClientBuilder.
      */
-    public MaintenanceClientBuilder subscriptionId(String subscriptionId) {
+    public MaintenanceManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -46,9 +46,9 @@ public final class MaintenanceClientBuilder {
      * Sets server parameter.
      *
      * @param endpoint the endpoint value.
-     * @return the MaintenanceClientBuilder.
+     * @return the MaintenanceManagementClientBuilder.
      */
-    public MaintenanceClientBuilder endpoint(String endpoint) {
+    public MaintenanceManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -62,9 +62,9 @@ public final class MaintenanceClientBuilder {
      * Sets The environment to connect to.
      *
      * @param environment the environment value.
-     * @return the MaintenanceClientBuilder.
+     * @return the MaintenanceManagementClientBuilder.
      */
-    public MaintenanceClientBuilder environment(AzureEnvironment environment) {
+    public MaintenanceManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -78,9 +78,9 @@ public final class MaintenanceClientBuilder {
      * Sets The default poll interval for long-running operation.
      *
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the MaintenanceClientBuilder.
+     * @return the MaintenanceManagementClientBuilder.
      */
-    public MaintenanceClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public MaintenanceManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -94,9 +94,9 @@ public final class MaintenanceClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the MaintenanceClientBuilder.
+     * @return the MaintenanceManagementClientBuilder.
      */
-    public MaintenanceClientBuilder pipeline(HttpPipeline pipeline) {
+    public MaintenanceManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -110,19 +110,19 @@ public final class MaintenanceClientBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the MaintenanceClientBuilder.
+     * @return the MaintenanceManagementClientBuilder.
      */
-    public MaintenanceClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public MaintenanceManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of MaintenanceClientImpl with the provided parameters.
+     * Builds an instance of MaintenanceManagementClientImpl with the provided parameters.
      *
-     * @return an instance of MaintenanceClientImpl.
+     * @return an instance of MaintenanceManagementClientImpl.
      */
-    public MaintenanceClientImpl buildClient() {
+    public MaintenanceManagementClientImpl buildClient() {
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }
@@ -141,8 +141,8 @@ public final class MaintenanceClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        MaintenanceClientImpl client =
-            new MaintenanceClientImpl(
+        MaintenanceManagementClientImpl client =
+            new MaintenanceManagementClientImpl(
                 pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
