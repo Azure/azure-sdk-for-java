@@ -277,7 +277,7 @@ public class NestedEntitySample {
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L19 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L20 -->
 
 ```java
 @Repository
