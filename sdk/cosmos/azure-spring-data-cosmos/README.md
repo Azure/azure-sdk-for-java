@@ -858,6 +858,8 @@ For example, if you want to use spring logback as logging framework, add the fol
   <logger name="com.azure.cosmos" level="error"/>
   <logger name="org.springframework" level="error"/>
   <logger name="io.netty" level="error"/>
+  <!-- This will enable query logging, to include query parameter logging, set this logger to TRACE -->  
+  <logger name="com.azure.cosmos.implementation.SqlQuerySpecLogger" level="DEBUG"/>  
 </configuration>
 ```
 
