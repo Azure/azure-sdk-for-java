@@ -39,7 +39,7 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     private String domainVerificationToken;
 
     /*
-     * Duration in years (must be between 1 and 3).
+     * Duration in years (must be 1).
      */
     @JsonProperty(value = "properties.validityInYears")
     private Integer validityInYears;
@@ -140,6 +140,12 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties.nextAutoRenewalTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextAutoRenewalTimestamp;
 
+    /*
+     * Contact info
+     */
+    @JsonProperty(value = "properties.contact", access = JsonProperty.Access.WRITE_ONLY)
+    private CertificateOrderContact contact;
+
     /**
      * Get the certificates property: State of the Key Vault secret.
      *
@@ -191,7 +197,7 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the validityInYears property: Duration in years (must be between 1 and 3).
+     * Get the validityInYears property: Duration in years (must be 1).
      *
      * @return the validityInYears value.
      */
@@ -200,7 +206,7 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the validityInYears property: Duration in years (must be between 1 and 3).
+     * Set the validityInYears property: Duration in years (must be 1).
      *
      * @param validityInYears the validityInYears value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
@@ -395,6 +401,22 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     }
 
     /**
+     * Get the contact property: Contact info.
+     *
+     * @return the contact value.
+     */
+    public CertificateOrderContact contact() {
+        return this.contact;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppServiceCertificateOrderPatchResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -420,6 +442,9 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
         }
         if (root() != null) {
             root().validate();
+        }
+        if (contact() != null) {
+            contact().validate();
         }
     }
 }

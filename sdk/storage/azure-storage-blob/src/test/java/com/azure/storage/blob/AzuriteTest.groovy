@@ -27,12 +27,9 @@ class AzuriteTest extends APISpec {
     private BlobServiceClient getAzuriteServiceClient(String azuriteEndpoint) {
         def builder = new BlobServiceClientBuilder()
             .endpoint(azuriteEndpoint)
-            .httpClient(getHttpClient())
             .credential(azuriteCredential)
 
-        if(testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        instrument(builder)
 
         return builder.buildClient()
     }

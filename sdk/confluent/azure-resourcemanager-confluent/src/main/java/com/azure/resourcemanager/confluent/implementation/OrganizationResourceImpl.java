@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.confluent.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
@@ -21,7 +21,7 @@ public final class OrganizationResourceImpl
     implements OrganizationResource, OrganizationResource.Definition, OrganizationResource.Update {
     private OrganizationResourceInner innerObject;
 
-    private final ConfluentManager serviceManager;
+    private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -46,6 +46,10 @@ public final class OrganizationResourceImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public OffsetDateTime createdTime() {
@@ -84,7 +88,7 @@ public final class OrganizationResourceImpl
         return this.innerObject;
     }
 
-    private ConfluentManager manager() {
+    private com.azure.resourcemanager.confluent.ConfluentManager manager() {
         return this.serviceManager;
     }
 
@@ -117,7 +121,7 @@ public final class OrganizationResourceImpl
         return this;
     }
 
-    OrganizationResourceImpl(String name, ConfluentManager serviceManager) {
+    OrganizationResourceImpl(String name, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = new OrganizationResourceInner();
         this.serviceManager = serviceManager;
         this.organizationName = name;
@@ -148,7 +152,8 @@ public final class OrganizationResourceImpl
         return this;
     }
 
-    OrganizationResourceImpl(OrganizationResourceInner innerObject, ConfluentManager serviceManager) {
+    OrganizationResourceImpl(
+        OrganizationResourceInner innerObject, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -185,21 +190,6 @@ public final class OrganizationResourceImpl
         return this;
     }
 
-    public OrganizationResourceImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateBody.withTags(tags);
-            return this;
-        }
-    }
-
-    public OrganizationResourceImpl withProvisioningState(ProvisionState provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
-        return this;
-    }
-
     public OrganizationResourceImpl withOfferDetail(OfferDetail offerDetail) {
         this.innerModel().withOfferDetail(offerDetail);
         return this;
@@ -208,6 +198,16 @@ public final class OrganizationResourceImpl
     public OrganizationResourceImpl withUserDetail(UserDetail userDetail) {
         this.innerModel().withUserDetail(userDetail);
         return this;
+    }
+
+    public OrganizationResourceImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

@@ -9,9 +9,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.resources.fluent.DataPolicyManifestsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
+import com.azure.resourcemanager.resources.fluent.PolicyExemptionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -43,18 +45,6 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -93,6 +83,18 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         return this.defaultPollInterval;
     }
 
+    /** The DataPolicyManifestsClient object to access its operations. */
+    private final DataPolicyManifestsClient dataPolicyManifests;
+
+    /**
+     * Gets the DataPolicyManifestsClient object to access its operations.
+     *
+     * @return the DataPolicyManifestsClient object.
+     */
+    public DataPolicyManifestsClient getDataPolicyManifests() {
+        return this.dataPolicyManifests;
+    }
+
     /** The PolicyAssignmentsClient object to access its operations. */
     private final PolicyAssignmentsClient policyAssignments;
 
@@ -129,6 +131,18 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         return this.policySetDefinitions;
     }
 
+    /** The PolicyExemptionsClient object to access its operations. */
+    private final PolicyExemptionsClient policyExemptions;
+
+    /**
+     * Gets the PolicyExemptionsClient object to access its operations.
+     *
+     * @return the PolicyExemptionsClient object.
+     */
+    public PolicyExemptionsClient getPolicyExemptions() {
+        return this.policyExemptions;
+    }
+
     /**
      * Initializes an instance of PolicyClient client.
      *
@@ -152,9 +166,10 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-09-01";
+        this.dataPolicyManifests = new DataPolicyManifestsClientImpl(this);
         this.policyAssignments = new PolicyAssignmentsClientImpl(this);
         this.policyDefinitions = new PolicyDefinitionsClientImpl(this);
         this.policySetDefinitions = new PolicySetDefinitionsClientImpl(this);
+        this.policyExemptions = new PolicyExemptionsClientImpl(this);
     }
 }

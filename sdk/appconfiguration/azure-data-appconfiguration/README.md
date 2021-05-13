@@ -18,7 +18,7 @@ Use the client library for App Configuration to create and manage application co
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
+[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;dependency})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>

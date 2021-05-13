@@ -3,19 +3,19 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "620ms",
-      "MS-CV" : "kNlN2GFqUU2EY8PANxGa9g.0",
+      "X-Processing-Time" : "510ms",
+      "MS-CV" : "bTOEw24+T0a2KoFGh7SUOw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0Fn5CYAAAAAC0dNZhMPh0Rqimy8F9GyTpWVZSMzBFREdFMDQwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0tcWVYAAAAAAjTuzWx1IyTrf/5ItIspAATEFYRURHRTEyMDYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_2021030518531146333cd2-4143-40d5-903f-b5b87b63756b_noam\",\"httpStatusCode\":202,\"successful\":true}]}",
-      "Date" : "Fri, 05 Mar 2021 18:53:11 GMT",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202105072256536139fcac-838b-43e4-a54e-bdb1acca3597_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Date" : "Fri, 07 May 2021 22:56:53 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

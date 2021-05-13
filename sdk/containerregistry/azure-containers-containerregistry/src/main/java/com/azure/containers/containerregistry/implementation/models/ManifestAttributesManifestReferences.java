@@ -4,29 +4,31 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Manifest attributes details. */
-@Fluent
+@Immutable
 public final class ManifestAttributesManifestReferences {
     /*
      * Manifest digest
      */
-    @JsonProperty(value = "digest")
+    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture")
-    private String architecture;
+    @JsonProperty(value = "architecture", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os")
-    private String os;
+    @JsonProperty(value = "os", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private ArtifactOperatingSystem operatingSystem;
 
     /**
      * Get the digest property: Manifest digest.
@@ -38,53 +40,20 @@ public final class ManifestAttributesManifestReferences {
     }
 
     /**
-     * Set the digest property: Manifest digest.
-     *
-     * @param digest the digest value to set.
-     * @return the ManifestAttributesManifestReferences object itself.
-     */
-    public ManifestAttributesManifestReferences setDigest(String digest) {
-        this.digest = digest;
-        return this;
-    }
-
-    /**
      * Get the architecture property: CPU architecture.
      *
      * @return the architecture value.
      */
-    public String getArchitecture() {
+    public ArtifactArchitecture getArchitecture() {
         return this.architecture;
     }
 
     /**
-     * Set the architecture property: CPU architecture.
+     * Get the operatingSystem property: Operating system.
      *
-     * @param architecture the architecture value to set.
-     * @return the ManifestAttributesManifestReferences object itself.
+     * @return the operatingSystem value.
      */
-    public ManifestAttributesManifestReferences setArchitecture(String architecture) {
-        this.architecture = architecture;
-        return this;
-    }
-
-    /**
-     * Get the os property: Operating system.
-     *
-     * @return the os value.
-     */
-    public String getOs() {
-        return this.os;
-    }
-
-    /**
-     * Set the os property: Operating system.
-     *
-     * @param os the os value to set.
-     * @return the ManifestAttributesManifestReferences object itself.
-     */
-    public ManifestAttributesManifestReferences setOs(String os) {
-        this.os = os;
-        return this;
+    public ArtifactOperatingSystem getOperatingSystem() {
+        return this.operatingSystem;
     }
 }

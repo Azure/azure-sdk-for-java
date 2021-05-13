@@ -42,6 +42,8 @@ import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.sun.jna.Platform;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -72,6 +74,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -99,6 +102,9 @@ public class IdentityClient {
     private static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
     private static final String LINUX_MAC_PROCESS_ERROR_MESSAGE = "(.*)az:(.*)not found";
     private static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
+    private static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
+    private static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
+    private static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
     private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
@@ -264,9 +270,11 @@ public class IdentityClient {
                 publicClientApplicationBuilder.executorService(options.getExecutorService());
             }
 
-            Set<String> set = new HashSet<>(1);
-            set.add("CP1");
-            publicClientApplicationBuilder.clientCapabilities(set);
+            if (!options.isCp1Disabled()) {
+                Set<String> set = new HashSet<>(1);
+                set.add("CP1");
+                publicClientApplicationBuilder.clientCapabilities(set);
+            }
             return Mono.just(publicClientApplicationBuilder);
         }).flatMap(builder -> {
             TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
@@ -458,6 +466,91 @@ public class IdentityClient {
         return Mono.just(token);
     }
 
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure Power Shell.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithAzurePowerShell(TokenRequestContext request) {
+
+        List<CredentialUnavailableException> exceptions = new ArrayList<>(2);
+
+        PowershellManager defaultPowerShellManager = new PowershellManager(Platform.isWindows()
+            ? DEFAULT_WINDOWS_PS_EXECUTABLE : DEFAULT_LINUX_PS_EXECUTABLE);
+
+        PowershellManager legacyPowerShellManager = Platform.isWindows()
+            ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
+
+        List<PowershellManager> powershellManagers = Arrays.asList(defaultPowerShellManager);
+        if (legacyPowerShellManager != null) {
+            powershellManagers.add(legacyPowerShellManager);
+        }
+        return Flux.fromIterable(powershellManagers)
+            .flatMap(powershellManager -> getAccessTokenFromPowerShell(request, powershellManager)
+                .onErrorResume(t -> {
+                    if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                        return Mono.error(new ClientAuthenticationException(
+                            "Azure Powershell authentication failed. Error Details: " + t.getMessage(),
+                            null, t));
+                    }
+                    exceptions.add((CredentialUnavailableException) t);
+                    return Mono.empty();
+                }), 1)
+            .next()
+            .switchIfEmpty(Mono.defer(() -> {
+                // Chain Exceptions.
+                CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                for (int z = exceptions.size() - 2; z >= 0; z--) {
+                    CredentialUnavailableException current = exceptions.get(z);
+                    last = new CredentialUnavailableException("Azure Powershell authentication failed using default"
+                        + "powershell(pwsh) with following error: " + current.getMessage()
+                        + "\r\n" + "Azure Powershell authentication failed using powershell-core(powershell)"
+                        + " with following error: " + last.getMessage(),
+                        last.getCause());
+                }
+                return Mono.error(last);
+            }));
+    }
+
+    private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
+                                                           PowershellManager powershellManager) {
+        return powershellManager.initSession()
+            .flatMap(manager -> manager.runCommand("Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru")
+                .flatMap(output -> {
+                    if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
+                        + "because no valid module file")) {
+                        return Mono.error(new CredentialUnavailableException(
+                            "Az.Account module with version >= 2.2.0 is not installed. It needs to be installed to use"
+                        + "Azure PowerShell Credential."));
+                    }
+                    StringBuilder accessTokenCommand = new StringBuilder("Get-AzAccessToken -ResourceUrl ");
+                    accessTokenCommand.append(ScopeUtil.scopesToResource(request.getScopes()));
+                    accessTokenCommand.append(" | ConvertTo-Json");
+                    return manager.runCommand(accessTokenCommand.toString())
+                        .flatMap(out -> {
+                            if (out.contains("Run Connect-AzAccount to login")) {
+                                return Mono.error(new CredentialUnavailableException(
+                                    "Run Connect-AzAccount to login to Azure account in PowerShell."));
+                            }
+                            try {
+                                Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
+                                    SerializerEncoding.JSON);
+                                String accessToken = objectMap.get("Token");
+                                String time = objectMap.get("ExpiresOn");
+                                OffsetDateTime expiresOn = OffsetDateTime.parse(time)
+                                    .withOffsetSameInstant(ZoneOffset.UTC);
+                                return Mono.just(new AccessToken(accessToken, expiresOn));
+                            } catch (IOException e) {
+                                return Mono.error(logger
+                                    .logExceptionAsError(new CredentialUnavailableException(
+                                        "Encountered error when deserializing response from Azure Power Shell.", e)));
+                            }
+                        });
+                })).doFinally(ignored -> powershellManager.close());
+    }
+
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
      *
@@ -596,7 +689,7 @@ public class IdentityClient {
                     DeviceCodeFlowParameters.builder(
                         new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                             new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                            OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());

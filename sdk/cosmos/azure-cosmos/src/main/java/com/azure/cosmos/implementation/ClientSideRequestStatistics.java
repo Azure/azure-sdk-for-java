@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -33,7 +32,6 @@ public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext clientContext;
     private final DiagnosticsClientContext diagnosticsClientContext;
-    private ConnectionMode connectionMode;
 
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
@@ -61,9 +59,9 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
-        this.connectionMode = ConnectionMode.DIRECT;
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
+        this.retryContext = new RetryContext();
     }
 
     public Duration getDuration() {
@@ -73,7 +71,6 @@ public class ClientSideRequestStatistics {
     public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
         Instant responseTime = Instant.now();
-        connectionMode = ConnectionMode.DIRECT;
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
@@ -83,7 +80,6 @@ public class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
-            this.retryContext = new RetryContext(request.requestContext.retryContext);
             if (request.requestContext.locationEndpointToRoute != null) {
                 locationEndPoint = request.requestContext.locationEndpointToRoute;
             }
@@ -111,8 +107,6 @@ public class ClientSideRequestStatistics {
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
         CosmosException exception) {
         Instant responseTime = Instant.now();
-        connectionMode = ConnectionMode.GATEWAY;
-
 
         synchronized (this) {
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
@@ -122,11 +116,8 @@ public class ClientSideRequestStatistics {
             URI locationEndPoint = null;
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
-                if (rxDocumentServiceRequest.requestContext.retryContext != null) {
-                    rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = Instant.now();
-                    this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
-                }
             }
+            this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
                 this.regionsContacted.add(locationEndPoint);
@@ -134,6 +125,7 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+                this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
             }
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
@@ -225,11 +217,12 @@ public class ClientSideRequestStatistics {
         return this.serializationDiagnosticsContext;
     }
 
-    public void recordRetryContext(RxDocumentServiceRequest request) {
-        if(request.requestContext.retryContext != null) {
-            request.requestContext.retryContext.retryEndTime =  Instant.now();
-            this.retryContext = new RetryContext(request.requestContext.retryContext);
-        }
+    public void recordRetryContextEndTime() {
+        this.retryContext.updateEndTime();
+    }
+
+    public RetryContext getRetryContext() {
+        return retryContext;
     }
 
     public static class StoreResponseStatistics {
@@ -284,7 +277,6 @@ public class ClientSideRequestStatistics {
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
-            generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
             int initialIndex =
@@ -349,6 +341,7 @@ public class ClientSideRequestStatistics {
     private static class GatewayStatistics {
         String sessionToken;
         OperationType operationType;
+        ResourceType resourceType;
         int statusCode;
         int subStatusCode;
         String requestCharge;
@@ -376,6 +369,10 @@ public class ClientSideRequestStatistics {
 
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
+        }
+
+        public ResourceType getResourceType() {
+            return resourceType;
         }
     }
 }
