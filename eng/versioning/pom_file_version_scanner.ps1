@@ -52,7 +52,7 @@ $DependencyTypeDependency = "dependency"
 $DependencyTypeExternal = "external_dependency"
 $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency)|$($DependencyTypeExternal)"
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
-$ShouldLogAlways = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose'] -or [System.Convert]::ToBoolean($Env:system.debug)
+$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose'] -or [System.Convert]::ToBoolean($Env:system.debug)
 $StartTime = $(get-date)
 
 # This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
@@ -67,10 +67,10 @@ function Join-With-NewLine([string]$msg, [string]$append)
 
 function Write-Log-Message([string]$msg, [boolean]$hasError) 
 {
-    if ($hasError -and $ShouldLogAlways) {
+    if ($hasError) {
         $script:FoundError = $true
         Write-Error-With-Color $potentialLogMessage
-    } elseif ($ShouldLogAlways) {
+    } elseif ($UseVerboseLogging) {
         Write-Host $potentialLogMessage
     }
 }
@@ -300,14 +300,15 @@ function Assert-Spring-Sample-Version-Tags {
     if (-not $versionNode)
     {
         $hasError = $true
-        Write-Error-With-Color "Error: parent/version is missing."
-        Write-Error-With-Color "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: parent/version is missing."
+        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
     } else {
         $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
         if ($retVal)
         {
             $hasError = $true
-            Write-Error-With-Color "$($retVal)"
+
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
         }
     }
 
@@ -326,7 +327,7 @@ function Assert-Spring-Sample-Version-Tags {
             {
                 $hasError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
-                Write-Error-With-Color "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
             }
             continue
         }
@@ -338,7 +339,7 @@ function Assert-Spring-Sample-Version-Tags {
             if (-not $versionNode)
             {
                 $hasError = $true
-                Write-Error-With-Color "Error: dependency is missing version element and tag groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element and tag groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             } else {
                 # verify the version tag and version are correct
                 if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
@@ -347,11 +348,11 @@ function Assert-Spring-Sample-Version-Tags {
                     if ($retVal)
                     {
                         $hasError = $true
-                        Write-Error-With-Color "$($retVal)"
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                     }
                 } else {
                     $hasError = $true
-                    Write-Error-With-Color "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
             }
         } else {
@@ -365,12 +366,12 @@ function Assert-Spring-Sample-Version-Tags {
                     if ($retVal)
                     {
                         $hasError = $true
-                        Write-Error-With-Color "$($retVal)"
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                     }
                 # If there's no version tag then error, if there's a version then it must be tagged
                 } else {
                     $hasError = $true
-                    Write-Error-With-Color "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
             }
         }
@@ -426,7 +427,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     if ($xmlPomFile.project.dependencyManagement)
     {
         $hasError = $true
-        Write-Error-With-Color "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
+        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
 
     $xmlNsManager = New-Object -TypeName "Xml.XmlNamespaceManager" -ArgumentList $xmlPomFile.NameTable
@@ -448,7 +449,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 {
                     $hasError = $true
                     # every project string needs to have an update tag and projects version tags are always 'current'
-                    Write-Error-With-Color "Error: project/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: project/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
                 }
                 else
                 {
@@ -457,7 +458,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $hasError = $true
-                        Write-Error-With-Color "$($retVal)"
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                     }
                 }
             }
@@ -466,7 +467,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 $hasError = $true
                 # <!-- {x-version-update;<groupId>:<artifactId>;current} -->
                 # every project string needs to have an update tag and projects version tags are always 'current'
-                Write-Error-With-Color "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
             }
 
         }
@@ -474,7 +475,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         {
             # output an error for missing version element
             $hasError = $true
-            Write-Error-With-Color "Error: Could not find project/version node for $($pomFile)"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Could not find project/version node for $($pomFile)"
         }
     }
 
@@ -492,7 +493,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}")
                 {
                     $hasError = $true
-                    Write-Error-With-Color "Error: project/parent/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: project/parent/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
                 }
                 else
                 {
@@ -501,7 +502,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if ($retVal)
                     {
                         $hasError = $true
-                        Write-Error-With-Color "$($retVal)"
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                     }
                 }
             }
@@ -509,14 +510,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             {
                 $hasError = $true
                 # every project string needs to have an update tag and projects version tags are always 'current'
-                Write-Error-With-Color "Error: Missing project/parent/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing project/parent/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
             }
         }
         else
         {
             # output an error for missing version element
             $hasError = $true
-            Write-Error-With-Color "Error: Could not find project/parent/version node for $($pomFile)"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Could not find project/parent/version node for $($pomFile)"
         }
     }
 
@@ -535,7 +536,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             {
                 $hasError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
-                Write-Error-With-Color "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
             }
             continue
         }
@@ -544,7 +545,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         if (!$versionNode)
         {
             $hasError = $true
-            Write-Error-With-Color "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
         if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
@@ -554,7 +555,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
             {
                 $hasError = $true
-                Write-Error-With-Color "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
             else
             {
@@ -563,14 +564,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($retVal)
                 {
                     $hasError = $true
-                    Write-Error-With-Color $retVal
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage $retVal
                 }
             }
         }
         else
         {
             $hasError = $true
-            Write-Error-With-Color "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }
     # Verify every plugin has a group, artifact and version
@@ -589,7 +590,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             {
                 $hasError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
-                Write-Error-With-Color "Error: plugin is missing version element and/or artifactId and groupId elements pluginNode=$($pluginNode.OuterXml)"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin is missing version element and/or artifactId and groupId elements pluginNode=$($pluginNode.OuterXml)"
             }
             continue
         }
@@ -597,14 +598,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         if (!$groupId)
         {
             $hasError = $true
-            Write-Error-With-Color "Error: plugin $($artifactId) is missing its groupId tag"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin $($artifactId) is missing its groupId tag"
             continue
         }
         $versionNode = $pluginNode.GetElementsByTagName("version")[0]
         if (!$versionNode)
         {
             $hasError = $true
-            Write-Error-With-Color "Error: plugin is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
         if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
@@ -614,7 +615,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
             {
                 $hasError = $true
-                Write-Error-With-Color "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
             else
             {
@@ -623,14 +624,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if ($retVal)
                 {
                     $hasError = $true
-                    Write-Error-With-Color "$($retVal)"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                 }
             }
         }
         else
         {
             $hasError = $true
-            Write-Error-With-Color "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }
 
@@ -652,12 +653,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 if (!$includeNode.NextSibling -or $includeNode.NextSibling.NodeType -ne "Comment")
                 {
                     $hasError = $true
-                    Write-Error-With-Color "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
                 elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(.+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}")
                 {
                     $hasError = $true
-                    Write-Error-With-Color "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
                 else
                 {
@@ -665,7 +666,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     if (!$version.StartsWith("[") -or !$version.EndsWith("]"))
                     {
                         $hasError = $true
-                        Write-Error-With-Color "Error: the version entry '$($version)' for <include> '$($rawIncludeText)' is not formatted correctly. The include version needs to of the form '[<version>]', the braces lock the include to a specific version for these entries. -->"
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the version entry '$($version)' for <include> '$($rawIncludeText)' is not formatted correctly. The include version needs to of the form '[<version>]', the braces lock the include to a specific version for these entries. -->"
                     }
                     # verify the version has the correct value
                     else
@@ -684,13 +685,13 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                                 if ($versionWithoutBraces -ne $extDepHash[$depKey].ver)
                                 {
                                     $hasError = $true
-                                    Write-Error-With-Color "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
+                                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
                                 }
                             }
                             else
                             {
                                 $hasError = $true
-                                Write-Error-With-Color "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
+                                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
                             }
                         }
                         else
@@ -737,14 +738,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 {
                     $hasError = $true
                     $AllowListIncludeForError = $ComAzureAllowlistIncludes -join " and "
-                    Write-Error-With-Color "Error:  $($rawIncludeText) is not a valid <include> entry. With the exception of the $($AllowListIncludeForError), every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error:  $($rawIncludeText) is not a valid <include> entry. With the exception of the $($AllowListIncludeForError), every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
                 }
             }
             else
             {
                 # At this point the include entry is wildly incorrect.
                 $hasError = $true
-                Write-Error-With-Color "Error:  $($rawIncludeText) is not a valid <include> entry. Every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error:  $($rawIncludeText) is not a valid <include> entry. Every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
             }
         }
     }
@@ -752,9 +753,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     Write-Log-Message $potentialLogMessage $hasError
 }
 
-$ElapsedTime = $(get-date) - $StartTime
-$TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
-Write-Host "Total run time=$($TotalRunTime)"
+if ($UseVerboseLogging) 
+{
+    $ElapsedTime = $(get-date) - $StartTime
+    $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
+    Write-Host "Total run time=$($TotalRunTime)"
+}
 
 if ($script:FoundError)
 {
