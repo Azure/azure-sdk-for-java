@@ -535,27 +535,25 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEntity(String partitionKey, String rowKey) {
-        return deleteEntity(partitionKey, rowKey, null);
+        return deleteEntityWithResponse(partitionKey, rowKey, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an entity from the table.
      *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     * the delete will not occur and an exception will be thrown.
+     * @param tableEntity The table entity to delete.
      *
      * @return An empty reactive result.
      *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
+     * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
+     * {@code null} or empty.
      * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table, or if {@code eTag} is not {@code null} and the existing entity's eTag does not match that of the provided
-     * entity.
+     * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntity(String partitionKey, String rowKey, String eTag) {
-        return deleteEntityWithResponse(partitionKey, rowKey, eTag).then();
+    public Mono<Void> deleteEntity(TableEntity tableEntity) {
+        return deleteEntityWithResponse(tableEntity.getPartitionKey(), tableEntity.getRowKey(), tableEntity.getETag(),
+            null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -570,8 +568,7 @@ public final class TableAsyncClient {
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
      * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table, or if {@code eTag} is not {@code null} and the existing entity's eTag does not match that of the provided
-     * entity.
+     * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag) {

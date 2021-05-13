@@ -399,38 +399,17 @@ public class TableClient {
     /**
      * Deletes an entity from the table.
      *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     * the delete will not occur and an exception will be thrown.
+     * @param tableEntity The table entity to delete.
      *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
+     * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
+     * {@code null} or empty.
      * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table, or if {@code eTag} is not {@code null} and the existing entity's eTag does not match that of the provided
-     * entity.
+     * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(String partitionKey, String rowKey, String eTag) {
-        client.deleteEntity(partitionKey, rowKey, eTag).block();
-    }
-
-    /**
-     * Deletes an entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     * the delete will not occur and an exception will be thrown.
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table, or if {@code eTag} is not {@code null} and the existing entity's eTag does not match that of the provided
-     * entity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(String partitionKey, String rowKey, String eTag, Duration timeout) {
-        deleteEntityWithResponse(partitionKey, rowKey, eTag, timeout, null);
+    public void deleteEntity(TableEntity tableEntity) {
+        client.deleteEntityWithResponse(tableEntity.getPartitionKey(), tableEntity.getRowKey(), tableEntity.getETag(),
+            null, null).block();
     }
 
     /**
@@ -447,8 +426,7 @@ public class TableClient {
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
      * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
-     * table, or if {@code eTag} is not {@code null} and the existing entity's eTag does not match that of the provided
-     * entity.
+     * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,

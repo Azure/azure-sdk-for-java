@@ -113,7 +113,7 @@ public class TableServiceClientCodeSnippets {
             TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
             //supplying the eTag means the eTags must match to delete
-            tableClient.deleteEntity(partitionKey, rowKey, entity.getETag());
+            tableClient.deleteEntity(entity);
         } catch (TableStorageException e) {
             if (e.getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Delete Entity Unsuccessful. Entity not found.");
