@@ -3,11 +3,14 @@
 
 package com.azure.cosmos.implementation.throughputControl.controller;
 
+import com.azure.cosmos.implementation.DocumentServiceRequestContext;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
+import jdk.dynalink.Operation;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -49,6 +52,8 @@ public class GlobalThroughputRequestControllerTests {
 
         // First request: Can find the matching region request throttler in request controller
         RxDocumentServiceRequest request1Mock = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.doReturn(OperationType.Read).when(request1Mock).getOperationType();
+        request1Mock.requestContext = new DocumentServiceRequestContext();
 
         TestPublisher<StoreResponse> request1MonoPublisher = TestPublisher.create();
         Mono<StoreResponse> request1Mono = request1MonoPublisher.mono();
