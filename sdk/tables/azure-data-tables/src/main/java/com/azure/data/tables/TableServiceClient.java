@@ -261,6 +261,33 @@ public class TableServiceClient {
     }
 
     /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setProperties(TableServiceProperties tableServiceProperties) {
+        client.setProperties(tableServiceProperties).block();
+    }
+
+    /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
+                                                    Context context) {
+        return blockWithOptionalTimeout(client.setPropertiesWithResponse(tableServiceProperties, context), timeout);
+    }
+
+    /**
      * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the account.
      *

@@ -422,7 +422,7 @@ public class TableServiceAsyncClient {
             .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
             .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
             .setCorsRules(tableServiceProperties.getCors().stream()
-                .map(this::toTablesServiceCoresRule)
+                .map(this::toTablesServiceCorsRule)
                 .collect(Collectors.toList()));
     }
 
@@ -449,8 +449,92 @@ public class TableServiceAsyncClient {
             .setRetentionPolicy(toTableServiceRetentionPolicy(metrics.getRetentionPolicy()));
     }
 
-    private TableServiceCorsRule toTablesServiceCoresRule(CorsRule corsRule) {
+    private TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
         return new TableServiceCorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     *
+     * @return An empty reactive result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setProperties(TableServiceProperties tableServiceProperties) {
+        return this.setPropertiesWithResponse(tableServiceProperties).flatMap(FluxUtil::toMono);
+    }
+
+
+    /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     *
+     * @return A reactive result containing the HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties) {
+        return withContext(context -> this.setPropertiesWithResponse(tableServiceProperties, context));
+    }
+
+    Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return
+                this.implementation.getServices().setPropertiesWithResponseAsync(
+                    toImplTableServiceProperties(tableServiceProperties), null, null, context)
+                    .map(response -> new SimpleResponse<>(response, null));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private com.azure.data.tables.implementation.models.TableServiceProperties toImplTableServiceProperties(
+        TableServiceProperties tableServiceProperties) {
+
+        return new com.azure.data.tables.implementation.models.TableServiceProperties()
+            .setLogging(toLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCors(tableServiceProperties.getCorsRules().stream()
+                .map(this::toCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    private Logging toLogging(TableServiceLogging tableServiceLogging) {
+        return new Logging()
+            .setVersion(tableServiceLogging.getVersion())
+            .setDelete(tableServiceLogging.isDeleteLogged())
+            .setRead(tableServiceLogging.isReadLogged())
+            .setWrite(tableServiceLogging.isWriteLogged())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceLogging.getRetentionPolicy()));
+    }
+
+    private RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
+        return new RetentionPolicy()
+            .setEnabled(tableServiceRetentionPolicy.isEnabled())
+            .setDays(tableServiceRetentionPolicy.getDaysToRetain());
+    }
+
+    private Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
+        return new Metrics()
+            .setVersion(tableServiceMetrics.getVersion())
+            .setEnabled(tableServiceMetrics.isEnabled())
+            .setIncludeAPIs(tableServiceMetrics.isIncludeApis())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceMetrics.getTableServiceRetentionPolicy()));
+    }
+
+    private CorsRule toCorsRule(TableServiceCorsRule corsRule) {
+        return new CorsRule()
             .setAllowedOrigins(corsRule.getAllowedOrigins())
             .setAllowedMethods(corsRule.getAllowedMethods())
             .setAllowedHeaders(corsRule.getAllowedHeaders())
