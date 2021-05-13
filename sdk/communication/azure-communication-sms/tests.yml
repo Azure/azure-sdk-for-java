@@ -14,7 +14,7 @@ stages:
       - name: azure-communication-sms
         groupId: com.azure
         safeName: azurecommunicationsms
-    ServiceDirectory: communication/azure-communication-sms
+    ServiceDirectory: communication
     PostSteps:
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
@@ -42,5 +42,4 @@ stages:
           failIfCoverageEmpty: false
     EnvVars:
       SKIP_LIVE_TEST: TRUE
-
-
+      TEST_PACKAGES_ENABLED: ${{ parameters.TestPackagesEnabled }}
