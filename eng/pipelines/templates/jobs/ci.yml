@@ -141,9 +141,12 @@ jobs:
     steps:
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
-      - pwsh: |
-          $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
-        displayName: "Verify versions in POM files"
+      - task: PowerShell@2
+        displayName: 'Verify versions in POM files'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/versioning/pom_file_version_scanner.ps1
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
