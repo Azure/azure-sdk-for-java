@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,9 @@ public class ThroughputRequestThrottler {
     private final AtomicReference<Double> scheduledThroughput;
     private final ReentrantReadWriteLock.WriteLock throughputWriteLock;
     private final ReentrantReadWriteLock.ReadLock throughputReadLock;
-    private final ConcurrentHashMap<OperationType, OperationTypeTrackingUnit> trackingDictionary;
-    private String cycleId;
+    private final ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> trackingDictionary;
     private final String pkRangeId;
+    private String cycleId;
 
     public ThroughputRequestThrottler(double scheduledThroughput, String pkRangeId) {
         this.availableThroughput = new AtomicReference<>(scheduledThroughput);
@@ -54,13 +55,19 @@ public class ThroughputRequestThrottler {
             double throughputUsagePercentage = (this.scheduledThroughput.get() - this.availableThroughput.get()) / this.scheduledThroughput.get();
             this.scheduledThroughput.set(scheduledThroughput);
             this.updateAvailableThroughput();
-            for (OperationTypeTrackingUnit trackingUnit : this.trackingDictionary.values()) {
-                if (trackingUnit.getRejectedRequests() > 0 || trackingUnit.getPassedRequests() > 0) {
-                    logger.info(this.cycleId + ":" + this.pkRangeId + ":" + throughputUsagePercentage + ":" + trackingUnit.logStatistics());
-                }
-                trackingUnit.reset();
+
+            if (throughputUsagePercentage > 0) {
+                logger.debug(
+                    String.format(
+                        "[CycleId: %s, pkRangeId: %s, ruUsagePercentage: %s]",
+                        this.cycleId, this.pkRangeId, throughputUsagePercentage));
             }
-            this.cycleId = UUID.randomUUID().toString();
+
+            String newCycleId = UUID.randomUUID().toString();
+            for (ThroughputControlTrackingUnit trackingUnit : this.trackingDictionary.values()) {
+                trackingUnit.reset(newCycleId);
+            }
+            this.cycleId = newCycleId;
             return throughputUsagePercentage;
         } finally {
             this.throughputWriteLock.unlock();
@@ -76,17 +83,20 @@ public class ThroughputRequestThrottler {
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
         try {
             this.throughputReadLock.lock();
-
-            OperationTypeTrackingUnit trackingUnit = this.trackingDictionary.compute(request.getOperationType(), ((operationType, trackingUnit1) -> {
-                if (trackingUnit1 == null) {
-                    trackingUnit1 = new OperationTypeTrackingUnit(request.getOperationType());
-                }
-                return trackingUnit1;
-            }));
+            ThroughputControlTrackingUnit trackingUnit =
+                this.trackingDictionary.compute(request.getOperationType(), ((key, value) -> {
+                    if (value == null) {
+                        value = new ThroughputControlTrackingUnit(request.getOperationType(), this.cycleId);
+                    }
+                    return value;
+                }));
 
             if (this.availableThroughput.get() > 0) {
-                trackingUnit.increasePassedRequest();
+                if (StringUtils.isEmpty(request.requestContext.throughputControlCycleId)) {
+                    request.requestContext.throughputControlCycleId = this.cycleId;
+                }
 
+                trackingUnit.increasePassedRequest();
                 return originalRequestMono
                     .doOnSuccess(response -> this.trackRequestCharge(request, response))
                     .doOnError(throwable -> this.trackRequestCharge(request, throwable));
@@ -97,7 +107,6 @@ public class ThroughputRequestThrottler {
                 RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
 
                 int backoffTimeInMilliSeconds = (int)Math.ceil(Math.abs(this.availableThroughput.get() / this.scheduledThroughput.get())) * 1000;
-                //int backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
 
                 requestRateTooLargeException.getResponseHeaders().put(
                     HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
@@ -123,40 +132,40 @@ public class ThroughputRequestThrottler {
             // Read lock is enough here.
             this.throughputReadLock.lock();
             double requestCharge = 0;
+            boolean failedRequest = false;
             if (response instanceof StoreResponse) {
                 requestCharge = ((StoreResponse)response).getRequestCharge();
-                double finalRequestCharge = requestCharge;
-                this.trackingDictionary.computeIfPresent(request.getOperationType(), (type, trackingUnit) -> {
-                    trackingUnit.increaseSuccessResponse();
-                    trackingUnit.trackRRuUsage(finalRequestCharge);
-                    return trackingUnit;
-                });
-
             } else if (response instanceof RxDocumentServiceResponse) {
                 requestCharge = ((RxDocumentServiceResponse)response).getRequestCharge();
-                double finalRequestCharge = requestCharge;
-                this.trackingDictionary.computeIfPresent(request.getOperationType(), (type, trackingUnit) -> {
-                    trackingUnit.increaseSuccessResponse();
-                    trackingUnit.trackRRuUsage(finalRequestCharge);
-                    return trackingUnit;
-                });
-
             } else if (response instanceof Throwable) {
                 CosmosException cosmosException = Utils.as(Exceptions.unwrap((Throwable) response), CosmosException.class);
                 if (cosmosException != null) {
                     requestCharge = cosmosException.getRequestCharge();
-
-                    this.trackingDictionary.computeIfPresent(request.getOperationType(), (type, trackingUnit) -> {
-                        trackingUnit.increaseFailedresponse();
-                        return trackingUnit;
-                    });
+                    failedRequest = true;
                 }
             }
-            this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
+
+            ThroughputControlTrackingUnit trackingUnit = trackingDictionary.get(request.getOperationType());
+            if (trackingUnit != null) {
+                if (failedRequest) {
+                    trackingUnit.increaseFailedResponse();
+                } else {
+                    trackingUnit.increaseSuccessResponse();
+                    trackingUnit.trackRRuUsage(requestCharge);
+                }
+            }
+
+            // If the response comes back in a different cycle, discard it.
+            if (StringUtils.equals(this.cycleId, request.requestContext.throughputControlCycleId)) {
+                this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
+            } else {
+                if (trackingUnit != null) {
+                    trackingUnit.increaseOutOfCycleResponse();
+                }
+            }
         } finally {
             this.throughputReadLock.unlock();
         }
-
     }
 
     public double getAvailableThroughput() {
