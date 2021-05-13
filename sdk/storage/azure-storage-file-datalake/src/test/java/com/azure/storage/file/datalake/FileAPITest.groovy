@@ -2208,7 +2208,7 @@ class FileAPITest extends APISpec {
 
         @Override
         void reportProgress(long bytesTransferred) {
-            this.reportedByteCount += bytesTransferred
+            this.reportedByteCount = bytesTransferred
         }
 
         long getReportedByteCount() {
@@ -2233,9 +2233,8 @@ class FileAPITest extends APISpec {
         StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
             null, null, null))
             .verifyComplete()
-
-        // Check if the reported size is equal to or greater than the file size in case there are retries.
-        uploadReporter.getReportedByteCount() >= size
+        
+        uploadReporter.getReportedByteCount() == size
 
         cleanup:
         file.delete()
