@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -82,7 +83,9 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 // Otherwise do not add the deserializer.
                 boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
                 boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
-                    .anyMatch(property -> property.getField().hasAnnotation(JsonFlatten.class));
+                    .filter(BeanPropertyDefinition::hasField)
+                    .map(BeanPropertyDefinition::getField)
+                    .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
 
                 if (hasJsonFlattenOnClass || hasJsonFlattenOnProperty) {
                     return new FlatteningDeserializer(beanDesc.getBeanClass(), deserializer, mapper);

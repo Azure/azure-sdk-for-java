@@ -39,6 +39,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Custom serializer for serializing types with wrapped properties. For example, a property with annotation
@@ -98,13 +99,11 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         } else {
             // Otherwise each property in the serialized class will be inspected for being annotated with @JsonFlatten
             // to determine which JSON properties need to be flattened.
-            this.jsonPropertiesWithJsonFlatten = new HashSet<>();
-            for (BeanPropertyDefinition beanPropertyDefinition : beanDesc.findProperties()) {
-                AnnotatedField annotatedField = beanPropertyDefinition.getField();
-                if (annotatedField.hasAnnotation(JsonFlatten.class)) {
-                    this.jsonPropertiesWithJsonFlatten.add(beanPropertyDefinition.getName());
-                }
-            }
+            this.jsonPropertiesWithJsonFlatten = beanDesc.findProperties().stream()
+                .filter(BeanPropertyDefinition::hasField)
+                .filter(property -> property.getField().hasAnnotation(JsonFlatten.class))
+                .map(BeanPropertyDefinition::getName)
+                .collect(Collectors.toSet());
         }
     }
 
@@ -125,7 +124,9 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 // Otherwise do not add the serializer.
                 boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
                 boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
-                    .anyMatch(property -> property.getField().hasAnnotation(JsonFlatten.class));
+                    .filter(BeanPropertyDefinition::hasField)
+                    .map(BeanPropertyDefinition::getField)
+                    .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
 
                 if (hasJsonFlattenOnClass || hasJsonFlattenOnProperty) {
                     return new FlatteningSerializer(beanDesc, serializer, mapper);
