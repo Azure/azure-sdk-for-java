@@ -133,7 +133,7 @@ public final class TableAsyncClient {
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
-     * @return The pipeline.
+     * @return This client's {@link HttpPipeline}.
      */
     HttpPipeline getHttpPipeline() {
         return this.pipeline;

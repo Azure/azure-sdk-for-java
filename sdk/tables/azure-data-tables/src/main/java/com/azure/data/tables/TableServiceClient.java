@@ -5,15 +5,22 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceErrorException;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
@@ -80,12 +87,14 @@ public class TableServiceClient {
      *
      * @param tableName The name of the table to create.
      *
+     * @return A {@link TableClient} for the created table.
+     *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTable(String tableName) {
-        client.createTable(tableName).block();
+    public TableClient createTable(String tableName) {
+        return createTableWithResponse(tableName, null, null).getValue();
     }
 
     /**
@@ -95,14 +104,28 @@ public class TableServiceClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return The HTTP response.
+     * @return The HTTP response containing a {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createTableWithResponse(String tableName, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.createTableWithResponse(tableName, context), timeout);
+    public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
+        return blockWithOptionalTimeout(createTableWithResponse(tableName, context), timeout);
+    }
+
+    Mono<Response<TableClient>> createTableWithResponse(String tableName, Context context) {
+        context = context == null ? Context.NONE : context;
+        final TableProperties properties = new TableProperties().setTableName(tableName);
+
+        try {
+            return client.getImplementation().getTables().createWithResponseAsync(properties, null,
+                ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
+        } catch (RuntimeException ex) {
+            return monoError(client.getLogger(), ex);
+        }
     }
 
     /**
@@ -110,11 +133,13 @@ public class TableServiceClient {
      *
      * @param tableName The name of the table to create.
      *
+     * @return A {@link TableClient} for the created table.
+     *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTableIfNotExists(String tableName) {
-        client.createTableIfNotExists(tableName).block();
+    public TableClient createTableIfNotExists(String tableName) {
+        return createTableIfNotExistsWithResponse(tableName, null, null).getValue();
     }
 
     /**
@@ -124,13 +149,25 @@ public class TableServiceClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return The HTTP response.
+     * @return The HTTP response containing a {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createTableIfNotExistsWithResponse(String tableName, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.createTableIfNotExistsWithResponse(tableName, context), timeout);
+    public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
+                                                                    Context context) {
+        return blockWithOptionalTimeout(createTableIfNotExistsWithResponse(tableName, context), timeout);
+    }
+
+    Mono<Response<TableClient>> createTableIfNotExistsWithResponse(String tableName, Context context) {
+        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceErrorException
+                && ((TableServiceErrorException) e).getResponse() != null
+                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409,
+            e -> {
+                HttpResponse response = ((TableServiceErrorException) e).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
+            });
     }
 
     /**

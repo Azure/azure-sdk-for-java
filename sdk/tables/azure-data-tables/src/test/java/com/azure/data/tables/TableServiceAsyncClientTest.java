@@ -21,6 +21,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
@@ -67,6 +69,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTable(tableName))
+            .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify();
     }
@@ -93,7 +96,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         //Act & Assert
         StepVerifier.create(serviceClient.createTableWithResponse(tableName))
             .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                assertEquals(expectedStatusCode, response.getStatusCode());
+                assertNotNull(response.getValue());
             })
             .expectComplete()
             .verify();
@@ -106,6 +110,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExists(tableName))
+            .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify();
     }
@@ -131,7 +136,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
             .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                assertEquals(expectedStatusCode, response.getStatusCode());
+                assertNotNull(response.getValue());
             })
             .expectComplete()
             .verify();
@@ -147,7 +153,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
             .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                assertEquals(expectedStatusCode, response.getStatusCode());
+                assertNull(response.getValue());
             })
             .expectComplete()
             .verify();
