@@ -49,7 +49,7 @@ public class TableClientBuilder {
     private AzureSasCredential azureSasCredential;
     private String sasToken;
     private TablesServiceVersion version;
-    private RetryPolicy retryPolicy = new RetryPolicy();
+    private RetryPolicy retryPolicy;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableClient} and
@@ -159,10 +159,6 @@ public class TableClientBuilder {
      * @return The updated {@link TableClientBuilder}.
      */
     public TableClientBuilder pipeline(HttpPipeline pipeline) {
-        if (this.httpPipeline != null && pipeline == null) {
-            logger.warning("'pipeline' is being set to 'null' when it was previously configured.");
-        }
-
         this.httpPipeline = pipeline;
 
         return this;
@@ -273,14 +269,8 @@ public class TableClientBuilder {
      * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
      *
      * @return The updated {@link TableClientBuilder}.
-     *
-     * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
     public TableClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        if (logOptions == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'logOptions' cannot be null."));
-        }
-
         this.httpLogOptions = logOptions;
 
         return this;
@@ -332,17 +322,13 @@ public class TableClientBuilder {
     /**
      * Sets the request retry policy for all the requests made through the client.
      *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
      * @param retryPolicy {@link RetryPolicy}.
      *
      * @return The updated {@link TableClientBuilder}.
-     *
-     * @throws NullPointerException If {@code retryPolicy} is {@code null}.
      */
-    public TableClientBuilder retryOptions(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
+    public TableClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
 
         return this;

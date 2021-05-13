@@ -40,14 +40,14 @@ public class TableServiceClientBuilder {
     private Configuration configuration;
     private String endpoint;
     private HttpClient httpClient;
-    private HttpLogOptions httpLogOptions = new HttpLogOptions();
+    private HttpLogOptions httpLogOptions;
     private ClientOptions clientOptions;
     private TablesServiceVersion version;
     private HttpPipeline httpPipeline;
     private AzureNamedKeyCredential azureNamedKeyCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
-    private RetryPolicy retryPolicy = new RetryPolicy();
+    private RetryPolicy retryPolicy;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -155,10 +155,6 @@ public class TableServiceClientBuilder {
      * @return The updated {@link TableServiceClientBuilder}.
      */
     public TableServiceClientBuilder pipeline(HttpPipeline pipeline) {
-        if (this.httpPipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-
         this.httpPipeline = pipeline;
 
         return this;
@@ -268,14 +264,8 @@ public class TableServiceClientBuilder {
      * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
      *
      * @return The updated {@link TableServiceClientBuilder}.
-     *
-     * @throws NullPointerException if {@code logOptions} is {@code null}.
      */
     public TableServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        if (logOptions == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'logOptions' cannot be null."));
-        }
-
         this.httpLogOptions = logOptions;
 
         return this;
@@ -314,12 +304,12 @@ public class TableServiceClientBuilder {
      *
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version The {@link TablesServiceVersion} of the service to be used when making requests.
+     * @param serviceVersion The {@link TablesServiceVersion} of the service to be used when making requests.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
-    public TableServiceClientBuilder serviceVersion(TablesServiceVersion version) {
-        this.version = version;
+    public TableServiceClientBuilder serviceVersion(TablesServiceVersion serviceVersion) {
+        this.version = serviceVersion;
 
         return this;
     }
@@ -327,17 +317,13 @@ public class TableServiceClientBuilder {
     /**
      * Sets the request retry policy for all the requests made through the client.
      *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
      * @param retryPolicy {@link RetryPolicy}.
      *
      * @return The updated {@link TableServiceClientBuilder}.
-     *
-     * @throws NullPointerException if {@code retryPolicy} is {@code null}.
      */
-    public TableServiceClientBuilder retryOptions(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
+    public TableServiceClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
 
         return this;
