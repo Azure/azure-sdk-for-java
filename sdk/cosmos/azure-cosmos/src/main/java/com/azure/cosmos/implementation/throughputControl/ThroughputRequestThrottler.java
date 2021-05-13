@@ -58,9 +58,8 @@ public class ThroughputRequestThrottler {
 
             if (throughputUsagePercentage > 0) {
                 logger.debug(
-                    String.format(
-                        "[CycleId: %s, pkRangeId: %s, ruUsagePercentage: %s]",
-                        this.cycleId, this.pkRangeId, throughputUsagePercentage));
+                    "[CycleId: {}, pkRangeId: {}, ruUsagePercentage: {}]",
+                    this.cycleId, this.pkRangeId, throughputUsagePercentage);
             }
 
             String newCycleId = UUID.randomUUID().toString();

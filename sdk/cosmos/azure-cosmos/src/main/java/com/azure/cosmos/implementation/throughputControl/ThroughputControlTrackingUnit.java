@@ -47,16 +47,15 @@ public class ThroughputControlTrackingUnit {
             }
 
             logger.debug(
-                String.format(
-                    "[CycleId: %s, operationType: %s, rejectedCnt: %s, passedCnt: %s, sAvgRu: %s, successCnt: %s, failedCnt: %s, outOfCycleCnt: %s]",
-                    this.throughputControlCycleId,
-                    this.operationType.toString(),
-                    this.rejectedRequests.get(),
-                    this.passedRequests.get(),
-                    sAvgRuPerRequest,
-                    this.successResponse.get(),
-                    this.failedResponse.get(),
-                    this.outOfCycleResponse.get()));
+                "[CycleId: {}, operationType: {}, rejectedCnt: {}, passedCnt: {}, sAvgRu: {}, successCnt: {}, failedCnt: {}, outOfCycleCnt: {}]",
+                this.throughputControlCycleId,
+                this.operationType.toString(),
+                this.rejectedRequests.get(),
+                this.passedRequests.get(),
+                sAvgRuPerRequest,
+                this.successResponse.get(),
+                this.failedResponse.get(),
+                this.outOfCycleResponse.get());
         }
 
         this.rejectedRequests.set(0);
