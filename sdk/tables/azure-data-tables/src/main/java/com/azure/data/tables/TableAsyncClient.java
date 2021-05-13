@@ -26,8 +26,10 @@ import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceErrorException;
 import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Mono;
@@ -177,28 +179,28 @@ public final class TableAsyncClient {
     /**
      * Creates the table within the Tables service.
      *
-     * @return An empty reactive result.
+     * @return A reactive result containing a {@link TableItem} that represents the table.
      *
      * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> create() {
-        return createWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    public Mono<TableItem> createTable() {
+        return createTableWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
      * Creates the table within the Tables service.
      *
-     * @return A reactive result containing the HTTP response.
+     * @return A reactive result containing the HTTP response and a {@link TableItem} that represents the table.
      *
      * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createWithResponse() {
-        return withContext(this::createWithResponse);
+    public Mono<Response<TableItem>> createTableWithResponse() {
+        return withContext(this::createTableWithResponse);
     }
 
-    Mono<Response<Void>> createWithResponse(Context context) {
+    Mono<Response<TableItem>> createTableWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
@@ -206,7 +208,9 @@ public final class TableAsyncClient {
             return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
-                .map(response -> new SimpleResponse<>(response, null));
+                .map(response ->
+                    new SimpleResponse<>(response,
+                        ModelHelper.createItem(new TableResponseProperties().setTableName(tableName))));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -489,8 +493,8 @@ public final class TableAsyncClient {
      * @throws TableServiceErrorException If no table with this name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete() {
-        return deleteWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    public Mono<Void> deleteTable() {
+        return deleteTableWithResponse().flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -501,11 +505,11 @@ public final class TableAsyncClient {
      * @throws TableServiceErrorException If no table with this name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(context -> deleteWithResponse(context));
+    public Mono<Response<Void>> deleteTableWithResponse() {
+        return withContext(this::deleteTableWithResponse);
     }
 
-    Mono<Response<Void>> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteTableWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {

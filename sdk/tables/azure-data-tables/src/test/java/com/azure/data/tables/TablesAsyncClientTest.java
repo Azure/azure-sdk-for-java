@@ -18,6 +18,7 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceErrorException;
 import com.azure.data.tables.models.UpdateMode;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,7 @@ public class TablesAsyncClientTest extends TestBase {
         }
 
         tableClient = builder.buildAsyncClient();
-        tableClient.create().block(TIMEOUT);
+        tableClient.createTable().block(TIMEOUT);
     }
 
     @Test
@@ -110,7 +111,8 @@ public class TablesAsyncClientTest extends TestBase {
         final TableAsyncClient tableClient2 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(tableClient2.create())
+        StepVerifier.create(tableClient2.createTable())
+            .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify();
     }
@@ -140,7 +142,7 @@ public class TablesAsyncClientTest extends TestBase {
         final int expectedStatusCode = 204;
 
         // Act & Assert
-        StepVerifier.create(tableClient2.createWithResponse())
+        StepVerifier.create(tableClient2.createTableWithResponse())
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })
@@ -275,7 +277,7 @@ public class TablesAsyncClientTest extends TestBase {
     @Test
     void deleteTableAsync() {
         // Act & Assert
-        StepVerifier.create(tableClient.delete())
+        StepVerifier.create(tableClient.deleteTable())
             .expectComplete()
             .verify();
     }
@@ -286,7 +288,7 @@ public class TablesAsyncClientTest extends TestBase {
         final int expectedStatusCode = 204;
 
         // Act & Assert
-        StepVerifier.create(tableClient.deleteWithResponse())
+        StepVerifier.create(tableClient.deleteTableWithResponse())
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })

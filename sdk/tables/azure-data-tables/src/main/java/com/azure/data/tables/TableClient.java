@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceErrorException;
 import com.azure.data.tables.models.UpdateMode;
 
@@ -93,23 +94,13 @@ public class TableClient {
     /**
      * Creates the table within the Tables service.
      *
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create() {
-        client.create().block();
-    }
-
-    /**
-     * Creates the table within the Tables service.
-     *
-     * @param timeout Duration to wait for the operation to complete.
+     * @return A {@link TableItem} that represents the table.
      *
      * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(Duration timeout) {
-        blockWithOptionalTimeout(client.create(), timeout);
+    public TableItem createTable() {
+        return client.createTable().block();
     }
 
     /**
@@ -118,13 +109,13 @@ public class TableClient {
      * @param timeout Duration to wait for the operation to complete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return The HTTP response.
+     * @return The HTTP response containing a {@link TableItem} that represents the table.
      *
      * @throws TableServiceErrorException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.createWithResponse(context), timeout);
+    public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.createTableWithResponse(context), timeout);
     }
 
     /**
@@ -371,20 +362,8 @@ public class TableClient {
      * @throws TableServiceErrorException If no table with this name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete() {
-        client.delete().block();
-    }
-
-    /**
-     * Deletes the table within the Tables service.
-     *
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @throws TableServiceErrorException If no table with this name exists within the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(Duration timeout) {
-        blockWithOptionalTimeout(client.delete(), timeout);
+    public void deleteTable() {
+        client.deleteTable().block();
     }
 
     /**
@@ -398,8 +377,8 @@ public class TableClient {
      * @throws TableServiceErrorException If no table with this name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.deleteWithResponse(context), timeout);
+    public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.deleteTableWithResponse(context), timeout);
     }
 
     /**

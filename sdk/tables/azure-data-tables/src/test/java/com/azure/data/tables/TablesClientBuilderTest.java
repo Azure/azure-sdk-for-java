@@ -126,7 +126,7 @@ public class TablesClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, tableClient::create);
+        assertThrows(RuntimeException.class, tableClient::createTable);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class TablesClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, tableClient::create);
+        assertThrows(RuntimeException.class, tableClient::createTable);
     }
 
     @Test
@@ -157,7 +157,7 @@ public class TablesClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, tableClient::create);
+        assertThrows(RuntimeException.class, tableClient::createTable);
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
