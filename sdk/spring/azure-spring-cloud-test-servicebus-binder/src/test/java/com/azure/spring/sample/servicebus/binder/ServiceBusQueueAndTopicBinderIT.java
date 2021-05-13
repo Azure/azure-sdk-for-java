@@ -91,12 +91,12 @@ public class ServiceBusQueueAndTopicBinderIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         Thread.sleep(1500);
-        GenericMessage<String> stringGenericMessage = new GenericMessage<>(message);
-        manyQueue.emitNext(stringGenericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
+        GenericMessage<String> genericMessage = new GenericMessage<>(message);
+        manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
         Thread.sleep(5000);
         Assertions.assertEquals(1, count.get());
         Thread.sleep(1500);
-        manyTopic.emitNext(stringGenericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
+        manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
         Thread.sleep(5000);
         Assertions.assertEquals(2, count.get());
     }
