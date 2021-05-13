@@ -8,10 +8,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
-import com.azure.storage.common.policy.RequestRetryPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -176,7 +176,7 @@ public class TablesClientBuilderTest {
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            if (pipeline.getPolicy(i).getClass() == RequestRetryPolicy.class) {
+            if (pipeline.getPolicy(i).getClass() == RetryPolicy.class) {
                 retryPolicyPosition = i;
             }
 
