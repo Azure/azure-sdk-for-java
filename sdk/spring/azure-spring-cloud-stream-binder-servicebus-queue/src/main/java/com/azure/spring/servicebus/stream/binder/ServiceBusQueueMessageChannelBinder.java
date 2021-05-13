@@ -40,7 +40,7 @@ public class ServiceBusQueueMessageChannelBinder extends
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
         // TODO (xiada) the instance of service bus operation is shared among consumer endpoints, if each of them
-        //  doesn't share the same configuration, the last will win is it possible that's this is a bug here
+        //  doesn't share the same configuration the last will win。 Is it possible that's this is a bug here？
         this.serviceBusQueueOperation.setCheckpointConfig(buildCheckpointConfig(properties));
         this.serviceBusQueueOperation.setClientConfig(buildClientConfig(properties));
         ServiceBusQueueInboundChannelAdapter inboundAdapter =
@@ -59,28 +59,23 @@ public class ServiceBusQueueMessageChannelBinder extends
     @Override
     protected MessageHandler getErrorMessageHandler(ConsumerDestination destination,
         String group, final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        return new MessageHandler() {
-            @Override
-            public void handleMessage(Message<?> message) throws MessagingException {
-                Assert.state(message instanceof ErrorMessage, "Expected an ErrorMessage, not a "
-                        + message.getClass().toString() + " for: " + message);
+        return message -> {
+            Assert.state(message instanceof ErrorMessage, "Expected an ErrorMessage, not a "
+                    + message.getClass().toString() + " for: " + message);
 
-                ErrorMessage errorMessage = (ErrorMessage) message;
-                Message<?> amqpMessage = errorMessage.getOriginalMessage();
+            ErrorMessage errorMessage = (ErrorMessage) message;
+            Message<?> amqpMessage = errorMessage.getOriginalMessage();
 
-                if (amqpMessage == null) {
-                    logger.error("No raw message header in " + message);
+            if (amqpMessage == null) {
+                logger.error("No raw message header in " + message);
+            } else {
+                Throwable cause = (Throwable) message.getPayload();
+
+                if (properties.getExtension().isRequeueRejected()) {
+                    serviceBusQueueOperation.deadLetter(destination.getName(), amqpMessage, EXCEPTION_MESSAGE,
+                            cause.getCause() != null ? cause.getCause().getMessage() : cause.getMessage());
                 } else {
-                    Throwable cause = (Throwable) message.getPayload();
-
-                    if (properties.getExtension().isRequeueRejected()) {
-                        serviceBusQueueOperation.deadLetter(destination.getName(), amqpMessage,
-                                EXCEPTION_MESSAGE,
-                                cause.getCause() != null ? cause.getCause().getMessage()
-                                        : cause.getMessage());
-                    } else {
-                        serviceBusQueueOperation.abandon(destination.getName(), amqpMessage);
-                    }
+                    serviceBusQueueOperation.abandon(destination.getName(), amqpMessage);
                 }
             }
         };

@@ -19,10 +19,8 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,9 +34,6 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
 
     private final Multimap<String, ServiceBusReceivedMessageContext> queuesByName = ArrayListMultimap.create();
     private final Multimap<String, DefaultServiceBusMessageProcessor> processorsByQueue = ArrayListMultimap.create();
-    private final AtomicInteger abandonCalledTimes = new AtomicInteger(0);
-    private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
-    private final AtomicInteger deadLetterCalledTimes = new AtomicInteger(0);
 
     public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
         super(clientFactory);
@@ -84,23 +79,8 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
 
         ServiceBusReceivedMessageContext receivedMessageContext = mock(ServiceBusReceivedMessageContext.class);
         when(receivedMessageContext.getMessage()).thenReturn(receivedMessage);
-
-//        doAnswer(invocationOnMock -> abandonCalledTimes.getAndAdd(1)).when(receivedMessageContext).abandon();
-        doAnswer(invocationOnMock -> completeCalledTimes.getAndAdd(1)).when(receivedMessageContext).complete();
-//        doAnswer(invocationOnMock -> deadLetterCalledTimes.getAndAdd(1)).when(receivedMessageContext).deadLetter();
         return receivedMessageContext;
     }
 
-    public int getAbandonCalledTimes() {
-        return abandonCalledTimes.get();
-    }
-
-    public int getCompleteCalledTimes() {
-        return completeCalledTimes.get();
-    }
-
-    public int getDeadLetterCalledTimes() {
-        return deadLetterCalledTimes.get();
-    }
 }
 

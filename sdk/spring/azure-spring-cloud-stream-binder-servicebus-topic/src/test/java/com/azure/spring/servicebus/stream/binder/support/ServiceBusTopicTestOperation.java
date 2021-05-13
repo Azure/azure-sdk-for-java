@@ -18,10 +18,8 @@ import org.springframework.messaging.Message;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,8 +31,6 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final Multimap<String, ServiceBusReceivedMessageContext> topicsByName = ArrayListMultimap.create();
     private final Map<String, Map<String, DefaultServiceBusMessageProcessor>> processorsByTopicAndSub =
         new ConcurrentHashMap<>();
-    private final AtomicInteger abandonCalledTimes = new AtomicInteger(0);
-    private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
 
     public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory) {
         super(clientFactory);
@@ -82,17 +78,7 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
         ServiceBusReceivedMessageContext receivedMessageContext = mock(ServiceBusReceivedMessageContext.class);
         when(receivedMessageContext.getMessage()).thenReturn(receivedMessage);
 
-//        doAnswer(invocationOnMock -> abandonCalledTimes.getAndAdd(1)).when(receivedMessageContext).abandon();
-        doAnswer(invocationOnMock -> completeCalledTimes.getAndAdd(1)).when(receivedMessageContext).complete();
         return receivedMessageContext;
-    }
-
-    public int getAbandonCalledTimes() {
-        return abandonCalledTimes.get();
-    }
-
-    public int getCompleteCalledTimes() {
-        return completeCalledTimes.get();
     }
 
 }
