@@ -15,6 +15,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
@@ -39,11 +40,12 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Ignore
-import spock.lang.Requires
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -487,6 +489,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list tags"() {
         setup:
@@ -513,6 +516,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC"() {
         setup:
@@ -543,6 +547,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Commit block list AC fail"() {
         setup:
@@ -668,6 +673,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags"() {
         setup:
         def t = new HashMap<String, String>()
@@ -681,6 +687,7 @@ class BlockBlobAPITest extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get block list tags fail"() {
         when:
         blockBlobClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"notfoo\" = 'notbar'"), null, Context.NONE)
@@ -777,6 +784,7 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @LiveOnly
     def "Upload from file with tags"() {
         given:
@@ -1021,6 +1029,7 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload tags"() {
         setup:
@@ -1048,6 +1057,7 @@ class BlockBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC"() {
         setup:
@@ -1078,6 +1088,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Upload AC fail"() {
         setup:
@@ -1588,6 +1599,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @LiveOnly
     def "Buffered upload tags"() {
@@ -1934,6 +1946,7 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
@@ -1948,6 +1961,7 @@ class BlockBlobAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url min"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -1971,6 +1985,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == defaultData.array()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -1992,6 +2007,7 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == defaultData.array()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url overwrite fails on existing blob"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2015,6 +2031,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from Url max"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2055,6 +2072,7 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getAccessTier() == AccessTier.COOL
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Upload from with invalid source MD5"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
@@ -2074,6 +2092,7 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url source request conditions"() {
         setup:
@@ -2098,6 +2117,7 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     @Unroll
     def "Upload from Url destination request conditions"() {
         setup:

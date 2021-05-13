@@ -560,4 +560,10 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress checks on AutoRest generated Text Analytics service code -->
   <suppress checks="WhitespaceAround"
             files="com.azure.ai.textanalytics.implementation.models.TasksStateTasksDetails"/>
+
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Form Recognizer -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.training.models.(TrainingDocumentInfo|CustomFormSubmodel|CustomFormModelProperties|CustomFormModelInfo|CustomFormModel).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.models.(TextAppearance|RecognizedForm|FormTable|FormSelectionMark|FormPage|FormLine).java"/>
 </suppressions>

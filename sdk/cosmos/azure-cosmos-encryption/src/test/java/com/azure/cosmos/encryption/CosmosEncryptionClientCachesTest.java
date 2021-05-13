@@ -56,7 +56,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         CosmosDatabaseProperties cosmosDatabaseProperties = this.client.createDatabase("TestDBForEncryptionCacheTest"
             , ThroughputProperties.createManualThroughput(1000)).block().getProperties();
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider());
+            new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider());
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
         //Create ClientEncryptionKeys
@@ -68,7 +68,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block();
 
         //Create collection with clientEncryptionPolicy
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(EncryptionCrudTest.getPaths());
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(EncryptionAsyncApiCrudTest.getPaths());
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("TestCollForEncryptionCacheTest"
             , "/mypk");
         containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
@@ -93,9 +93,9 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
     public void cacheAfterInitialization() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         CosmosEncryptionAsyncClient spyCosmosEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
         ReflectionUtils.setCosmosEncryptionAsyncClient(cosmosEncryptionAsyncContainer.getEncryptionProcessor(), spyCosmosEncryptionAsyncClient);
-        EncryptionCrudTest.Pojo properties = EncryptionCrudTest.getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<EncryptionCrudTest.Pojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions()).block();
+        EncryptionPojo properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
         Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString());
 
         //Testing clientEncryptionPolicy cache
@@ -137,8 +137,8 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
             cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer("TestCollForEncryptionCacheTest");
         spyCosmosEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
         ReflectionUtils.setCosmosEncryptionAsyncClient(cosmosEncryptionAsyncContainer.getEncryptionProcessor(), spyCosmosEncryptionAsyncClient);
-        cosmosEncryptionAsyncContainer.readItem(properties.id,
-            new PartitionKey(properties.mypk), new CosmosItemRequestOptions(), EncryptionCodeSnippet.Pojo.class).block();
+        cosmosEncryptionAsyncContainer.readItem(properties.getId(),
+            new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions(), EncryptionCodeSnippet.Pojo.class).block();
         Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(0)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString());
     }
 

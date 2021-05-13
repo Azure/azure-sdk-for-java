@@ -44,9 +44,11 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
+import spock.lang.IgnoreIf
 import spock.lang.Requires
 import spock.lang.ResourceLock
 import spock.lang.Unroll
@@ -222,6 +224,7 @@ class BlobAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Download all null"() {
         when:
         def stream = new ByteArrayOutputStream()
@@ -260,6 +263,7 @@ class BlobAPITest extends APISpec {
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Download all null streaming"() {
         when:
         def stream = new ByteArrayOutputStream()
@@ -298,6 +302,7 @@ class BlobAPITest extends APISpec {
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Download all null binary data"() {
         when:
         bc.setTags(Collections.singletonMap("foo", "bar"))
@@ -429,6 +434,7 @@ class BlobAPITest extends APISpec {
         3      | 2L    || defaultText.substring(3, 3 + 2)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Download AC"() {
         setup:
@@ -462,6 +468,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Download AC streaming"() {
         setup:
@@ -495,6 +502,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Download AC binary data"() {
         setup:
@@ -1081,9 +1089,9 @@ class BlobAPITest extends APISpec {
         Files.deleteIfExists(file.toPath())
 
         expect:
-        def bac = new BlobClientBuilder()
+        def bac = instrument(new BlobClientBuilder()
             .pipeline(bc.getHttpPipeline())
-            .endpoint(bc.getBlobUrl())
+            .endpoint(bc.getBlobUrl()))
             .buildAsyncClient()
             .getBlockBlobAsyncClient()
 
@@ -1218,6 +1226,7 @@ class BlobAPITest extends APISpec {
     }
 
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get properties default"() {
         when:
         bc.setTags(Collections.singletonMap("foo", "bar"))
@@ -1266,6 +1275,7 @@ class BlobAPITest extends APISpec {
         bc.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Get properties AC"() {
         setup:
@@ -1429,7 +1439,7 @@ class BlobAPITest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
     }
 
-
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set HTTP headers AC"() {
         setup:
@@ -1546,6 +1556,7 @@ class BlobAPITest extends APISpec {
         "foo" | "bar0, bar1"  | null   | null   || 200 /* Test comma separated values */
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set metadata AC"() {
         setup:
@@ -1639,6 +1650,7 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags all null"() {
         when:
         def response = bc.setTagsWithResponse(new BlobSetTagsOptions(new HashMap<String, String>()), null, null)
@@ -1648,6 +1660,7 @@ class BlobAPITest extends APISpec {
         response.getStatusCode() == 204
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags min"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1660,6 +1673,7 @@ class BlobAPITest extends APISpec {
         bc.getTags() == tags
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tags tags"() {
         setup:
@@ -1682,6 +1696,7 @@ class BlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null   || 204
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tags AC"() {
         setup:
@@ -1700,6 +1715,7 @@ class BlobAPITest extends APISpec {
         "\"foo\" = 'bar'" || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_07_07")
     @Unroll
     def "Set tags AC fail"() {
         setup:
@@ -1717,6 +1733,7 @@ class BlobAPITest extends APISpec {
         "\"foo\" = 'bar'" || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Get tags AC"() {
         setup:
@@ -1761,6 +1778,7 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags lease"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1776,6 +1794,7 @@ class BlobAPITest extends APISpec {
         bc.getTags() == tags
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get tags lease"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1792,6 +1811,7 @@ class BlobAPITest extends APISpec {
         response.getValue() == tags
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags lease fail"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1806,6 +1826,7 @@ class BlobAPITest extends APISpec {
         e.getStatusCode() == 412
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get tags lease fail"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1890,6 +1911,7 @@ class BlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Snapshot AC"() {
         setup:
@@ -2057,6 +2079,7 @@ class BlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy tags"() {
         setup:
@@ -2086,6 +2109,7 @@ class BlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy seal"() {
         setup:
@@ -2115,6 +2139,7 @@ class BlobAPITest extends APISpec {
         false  | false
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy source AC"() {
         setup:
@@ -2175,6 +2200,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null         | "\"notfoo\" = 'notbar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy dest AC"() {
         setup:
@@ -2415,6 +2441,7 @@ class BlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Sync copy tags"() {
         setup:
@@ -2491,6 +2518,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | receivedEtag
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Sync copy dest AC"() {
         setup:
@@ -2604,6 +2632,7 @@ class BlobAPITest extends APISpec {
         DeleteSnapshotsOptionType.ONLY    | 2
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Delete AC"() {
         setup:
@@ -2791,6 +2820,7 @@ class BlobAPITest extends APISpec {
         AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier rehydrate priority"() {
         setup:
@@ -2814,6 +2844,7 @@ class BlobAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tier snapshot"() {
         setup:
         def bc2 = bc.createSnapshot()
@@ -2894,6 +2925,7 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tier tags"() {
         setup:
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
@@ -3051,6 +3083,7 @@ class BlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
      def "Per call policy"() {
          bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())

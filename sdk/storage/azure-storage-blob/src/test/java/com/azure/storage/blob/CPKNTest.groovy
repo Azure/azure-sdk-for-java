@@ -34,7 +34,6 @@ class CPKNTest extends APISpec {
         ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).setEncryptionScopeOverridePrevented(true)
 
         builder = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .addPolicy(getRecordPolicy())
             .credential(env.primaryAccount.credential)
 
         cpknContainer = builder.encryptionScope(es).buildClient()

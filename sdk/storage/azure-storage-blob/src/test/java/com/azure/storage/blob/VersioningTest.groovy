@@ -16,10 +16,12 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import org.apache.commons.lang3.StringUtils
 
 import java.nio.charset.StandardCharsets
 
+@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
 class VersioningTest extends APISpec {
 
     BlobContainerClient blobContainerClient

@@ -7,6 +7,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.implementation.util.ModelHelper
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareAccessPolicy
@@ -133,6 +134,7 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null, null), 201)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Create share with args"() {
         expect:
@@ -248,6 +250,7 @@ class ShareAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Delete share lease"() {
         setup:
         primaryShareClient.create()
@@ -291,6 +294,7 @@ class ShareAPITests extends APISpec {
         getPropertiesResponse.getValue().getQuota() == 1
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Get properties lease"() {
         setup:
         primaryShareClient.create()
@@ -300,6 +304,7 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 200)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Get properties lease error"() {
         setup:
         primaryShareClient.create()
@@ -429,6 +434,7 @@ class ShareAPITests extends APISpec {
         id1.getAccessPolicy().getPermissions() == identifier2.getAccessPolicy().getPermissions()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Set access policy lease"() {
         setup:
         primaryShareClient.create()
@@ -482,6 +488,7 @@ class ShareAPITests extends APISpec {
         id.getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Get access policy lease"() {
         setup:
         primaryShareClient.create()
@@ -530,6 +537,7 @@ class ShareAPITests extends APISpec {
         getQuotaAfterResponse.getQuota() == 2
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
     def "Set properties access tier"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
@@ -549,6 +557,7 @@ class ShareAPITests extends APISpec {
         getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Set properties lease"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
@@ -562,6 +571,7 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Set properties lease error"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
@@ -599,6 +609,7 @@ class ShareAPITests extends APISpec {
         metadataAfterSet == getMetadataAfterResponse.getMetadata()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Set metadata lease"() {
         given:
         primaryShareClient.createWithResponse(null, 1, null, null)
@@ -655,6 +666,7 @@ class ShareAPITests extends APISpec {
         (long) 3 * Constants.GB || 3
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Get statistics lease"() {
         setup:
         primaryShareClient.create()
@@ -667,6 +679,7 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(resp, 200)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Get statistics lease error"() {
         setup:
         primaryShareClient.create()

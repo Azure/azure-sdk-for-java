@@ -25,9 +25,11 @@ import com.azure.resourcemanager.confluent.implementation.ConfluentManagementCli
 import com.azure.resourcemanager.confluent.implementation.MarketplaceAgreementsImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationOperationsImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationsImpl;
+import com.azure.resourcemanager.confluent.implementation.ValidationsImpl;
 import com.azure.resourcemanager.confluent.models.MarketplaceAgreements;
 import com.azure.resourcemanager.confluent.models.OrganizationOperations;
 import com.azure.resourcemanager.confluent.models.Organizations;
+import com.azure.resourcemanager.confluent.models.Validations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -41,6 +43,8 @@ public final class ConfluentManager {
     private OrganizationOperations organizationOperations;
 
     private Organizations organizations;
+
+    private Validations validations;
 
     private final ConfluentManagementClient clientObject;
 
@@ -160,17 +164,31 @@ public final class ConfluentManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            StringBuilder userAgentBuilder = new StringBuilder();
+            userAgentBuilder
+                .append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.confluent")
+                .append("/")
+                .append("1.0.0-beta.2");
+            if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
+                userAgentBuilder
+                    .append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
+            } else {
+                userAgentBuilder.append(" (auto-generated)");
+            }
+
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies
-                .add(
-                    new UserAgentPolicy(
-                        null,
-                        "com.azure.resourcemanager.confluent",
-                        "1.0.0-beta.1",
-                        Configuration.getGlobalConfiguration()));
+            policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
@@ -179,6 +197,7 @@ public final class ConfluentManager {
                 .add(
                     new BearerTokenAuthenticationPolicy(
                         credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -213,6 +232,14 @@ public final class ConfluentManager {
             this.organizations = new OrganizationsImpl(clientObject.getOrganizations(), this);
         }
         return organizations;
+    }
+
+    /** @return Resource collection API of Validations. */
+    public Validations validations() {
+        if (this.validations == null) {
+            this.validations = new ValidationsImpl(clientObject.getValidations(), this);
+        }
+        return validations;
     }
 
     /**
