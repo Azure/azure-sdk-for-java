@@ -51,6 +51,7 @@ final class BuilderHelper {
         List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger) {
 
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        retryPolicy = (retryPolicy == null) ? new RetryPolicy() : retryPolicy;
 
         validateSingleCredentialIsPresent(
             tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);

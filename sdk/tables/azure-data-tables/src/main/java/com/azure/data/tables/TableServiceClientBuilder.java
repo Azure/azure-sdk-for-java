@@ -48,7 +48,7 @@ public class TableServiceClientBuilder {
     private TablesSharedKeyCredential tablesSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
-    private RetryPolicy retryPolicy = new RetryPolicy();
+    private RetryPolicy retryPolicy;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -349,19 +349,15 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the request retry options for all the requests made through the client.
+     * Sets the request retry policy for all the requests made through the client.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy {@link RetryPolicy}.
      *
      * @return The updated {@link TableServiceClientBuilder}.
-     *
-     * @throws NullPointerException if {@code retryPolicy} is {@code null}.
      */
     public TableServiceClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (retryPolicy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryPolicy' cannot be null."));
-        }
-
         this.retryPolicy = retryPolicy;
 
         return this;
