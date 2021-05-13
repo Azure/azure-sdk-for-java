@@ -865,7 +865,6 @@ class BlockBlobAPITest extends APISpec {
 
     @Unroll
     @LiveOnly
-    @Ignore("Failing in live test run with unexpected reported byte count")
     def "Upload from file reporter"() {
         when:
         def uploadReporter = new FileUploadReporter()
