@@ -500,6 +500,11 @@
         "old": ".*",
         "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
         "justification": "These are SDK metadata annotations and don't affect runtime behavior."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "new": "@interface com.azure.core.annotation.JsonFlatten",
+        "justification": "Changes made the annotation more permissive on the target types."
       }
     ]
   }

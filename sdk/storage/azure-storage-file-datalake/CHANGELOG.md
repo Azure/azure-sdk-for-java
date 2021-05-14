@@ -10,6 +10,11 @@
 - Added support to get/set service properties
 - Deprecated support to undelete a file system to a new name. 
 
+## 12.5.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-storage-blob` to version `12.11.1`
+- Updated `azure-core` to version `1.16.0`
+
 ## 12.5.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 
 - DataLakeLeaseClient now remembers the Lease ID after a lease change.
