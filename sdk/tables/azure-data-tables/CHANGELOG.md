@@ -44,11 +44,15 @@
 - Renamed `getTableUrl()` and `getApiVersion()` to `getTableEndpoint()` and `getServiceVersion()` respectively, in `TableClient` and `TableAsyncClient`.
 - Renamed `getServiceUrl()` and `getApiVersion()` to `getServiceEndpoint()` and `getServiceVersion()` respectively, in `TableClient` and `TableAsyncClient`.
 - Renamed `addProperties()` to `setProperties()` in `TableEntity`. Also made `setProperties()` replace the contents of properties map with those of the argument, instead of adding them to the existing properties.
+- Removed dependency on `azure-storage-common` and added direct dependency on `azure-core-http-netty`.
 
 ### Bug Fixes
 
 - Merge operations no longer fail for Cosmos table endpoints.
 - Fixed issue with `TablesJacksonSerializer` where it could not handle HTTP responses with empty bodies.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`.
 
 ## 12.0.0-beta.6 (2021-04-07)
 
