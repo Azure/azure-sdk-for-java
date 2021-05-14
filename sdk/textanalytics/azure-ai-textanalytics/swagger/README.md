@@ -32,4 +32,5 @@ add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
 context-client-method-parameter: true
+service-interface-as-public: true
 ```

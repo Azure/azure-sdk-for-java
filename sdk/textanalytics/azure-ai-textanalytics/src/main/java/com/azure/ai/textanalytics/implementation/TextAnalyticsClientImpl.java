@@ -161,7 +161,7 @@ public final class TextAnalyticsClientImpl {
      */
     @Host("{Endpoint}/text/analytics/{ApiVersion}")
     @ServiceInterface(name = "TextAnalyticsClient")
-    private interface TextAnalyticsClientService {
+    public interface TextAnalyticsClientService {
         @Post("/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
