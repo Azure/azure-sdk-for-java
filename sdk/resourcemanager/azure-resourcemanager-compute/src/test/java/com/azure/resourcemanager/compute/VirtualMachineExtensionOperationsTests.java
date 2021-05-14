@@ -159,7 +159,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     public void canInstallUninstallCustomExtension() throws Exception {
         final String vmName = "javavm3";
 
-        final String installCommand = "sudo apt-get -y install mysql-server";
+        final String installCommand = "sudo -- sh -c 'apt-get update && apt-get -y install mysql-server'";
 
         // Create Linux VM with a custom extension to install MySQL
         //
