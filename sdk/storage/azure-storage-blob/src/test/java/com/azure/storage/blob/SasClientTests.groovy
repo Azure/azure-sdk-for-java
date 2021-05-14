@@ -46,7 +46,7 @@ class SasClientTests extends APISpec {
     def setup() {
         blobName = generateBlobName()
         sasClient = getBlobClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
-        sasClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
+        sasClient.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
     def "blob sas read permissions"() {
@@ -73,7 +73,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -139,7 +139,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -177,7 +177,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         then:
         validateSasProperties(properties)
@@ -216,7 +216,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
     }
 
@@ -563,7 +563,7 @@ class SasClientTests extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
     }
 
     def "account sas blob delete fails"() {

@@ -10,9 +10,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableServiceErrorException;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableServiceException;
 
 import java.time.Duration;
 import java.util.List;
@@ -32,7 +32,7 @@ import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalT
  * TableClientBuilder} object.
  */
 @ServiceClient(builder = TableClientBuilder.class)
-public class TableClient {
+public final class TableClient {
     final TableAsyncClient client;
 
     TableClient(TableAsyncClient client) {
@@ -58,12 +58,12 @@ public class TableClient {
     }
 
     /**
-     * Gets the absolute URL for this table.
+     * Gets the endpoint for this table.
      *
-     * @return The absolute URL for this table.
+     * @return The endpoint for this table.
      */
-    public String getTableUrl() {
-        return this.client.getTableUrl();
+    public String getTableEndpoint() {
+        return this.client.getTableEndpoint();
     }
 
     /**
@@ -71,8 +71,8 @@ public class TableClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return this.client.getApiVersion();
+    public TableServiceVersion getServiceVersion() {
+        return this.client.getServiceVersion();
     }
 
     /**
@@ -98,7 +98,7 @@ public class TableClient {
      *
      * @return A {@link TableItem} that represents the table.
      *
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableItem createTable() {
@@ -113,7 +113,7 @@ public class TableClient {
      *
      * @return The HTTP response containing a {@link TableItem} that represents the table.
      *
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
@@ -125,7 +125,7 @@ public class TableClient {
      *
      * @param entity The entity to insert.
      *
-     * @throws TableServiceErrorException If an entity with the same partition key and row key already exists within the
+     * @throws TableServiceException If an entity with the same partition key and row key already exists within the
      * table.
      * @throws IllegalArgumentException If the provided entity is invalid.
      */
@@ -143,7 +143,7 @@ public class TableClient {
      *
      * @return The HTTP response.
      *
-     * @throws TableServiceErrorException If an entity with the same partition key and row key already exists within the
+     * @throws TableServiceException If an entity with the same partition key and row key already exists within the
      * table.
      * @throws IllegalArgumentException If the provided entity is invalid.
      */
@@ -161,7 +161,7 @@ public class TableClient {
      * @param entity The entity to upsert.
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upsertEntity(TableEntity entity) {
@@ -183,10 +183,10 @@ public class TableClient {
      * @param updateMode The type of update to perform if the entity already exits.
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(TableEntity entity, UpdateMode updateMode) {
+    public void upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         client.upsertEntity(entity, updateMode).block();
     }
 
@@ -209,11 +209,11 @@ public class TableClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
-                                                   Context context) {
+    public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                   Duration timeout, Context context) {
         return blockWithOptionalTimeout(client.upsertEntityWithResponse(entity, updateMode, context), timeout);
     }
 
@@ -223,7 +223,7 @@ public class TableClient {
      * @param entity The entity to update.
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceErrorException If no entity with the same partition key and row key exists within the table.
+     * @throws TableServiceException If no entity with the same partition key and row key exists within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateEntity(TableEntity entity) {
@@ -241,10 +241,10 @@ public class TableClient {
      * @param updateMode which type of mode to execute
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceErrorException If no entity with the same partition key and row key exists within the table.
+     * @throws TableServiceException If no entity with the same partition key and row key exists within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode) {
+    public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         client.updateEntity(entity, updateMode).block();
     }
 
@@ -261,12 +261,12 @@ public class TableClient {
      * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceErrorException If no entity with the same partition key and row key exists within the table,
+     * @throws TableServiceException If no entity with the same partition key and row key exists within the table,
      * or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does not match that of the provided
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+    public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
         client.updateEntity(entity, updateMode, ifUnchanged).block();
     }
 
@@ -287,13 +287,13 @@ public class TableClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceErrorException If no entity with the same partition key and row key exists within the table,
+     * @throws TableServiceException If no entity with the same partition key and row key exists within the table,
      * or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does not match that of the provided
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                   Duration timeout, Context context) {
+    public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                   boolean ifUnchanged, Duration timeout, Context context) {
         return blockWithOptionalTimeout(
             client.updateEntityWithResponse(entity, updateMode, ifUnchanged, context), timeout);
     }
@@ -301,7 +301,7 @@ public class TableClient {
     /**
      * Deletes the table within the Tables service.
      *
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable() {
@@ -316,7 +316,7 @@ public class TableClient {
      *
      * @return The HTTP response.
      *
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
@@ -330,7 +330,7 @@ public class TableClient {
      * @param rowKey The row key of the entity.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -345,7 +345,7 @@ public class TableClient {
      *
      * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
      * {@code null} or empty.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -367,7 +367,7 @@ public class TableClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
@@ -380,7 +380,7 @@ public class TableClient {
      *
      * @return A paged iterable containing all entities within the table.
      *
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities() {
@@ -401,7 +401,7 @@ public class TableClient {
      * @return A paged iterable containing matching entities within the table.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
@@ -417,7 +417,7 @@ public class TableClient {
      * @return The entity.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
+     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -436,7 +436,7 @@ public class TableClient {
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, or if the
      * {@code select} OData query option is malformed.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
+     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -457,7 +457,7 @@ public class TableClient {
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, or if the
      * {@code select} OData query option is malformed.
-     * @throws TableServiceErrorException If no entity with the provided partition key and row key exists within the
+     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
      * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

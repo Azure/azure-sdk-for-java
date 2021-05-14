@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -82,8 +82,8 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTable(tableName))
-            .expectErrorMatches(e -> e instanceof TableServiceErrorException
-                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409)
+            .expectErrorMatches(e -> e instanceof TableServiceException
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409)
             .verify();
     }
 

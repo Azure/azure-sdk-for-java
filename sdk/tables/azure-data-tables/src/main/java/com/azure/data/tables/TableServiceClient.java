@@ -15,7 +15,7 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -35,7 +35,7 @@ import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalT
  * {@link TableServiceClientBuilder} object.
  */
 @ServiceClient(builder = TableServiceClientBuilder.class)
-public class TableServiceClient {
+public final class TableServiceClient {
     private final TableServiceAsyncClient client;
 
     TableServiceClient(TableServiceAsyncClient client) {
@@ -52,12 +52,12 @@ public class TableServiceClient {
     }
 
     /**
-     * Gets the absolute URL for the Tables service endpoint.
+     * Gets the endpoint for the Tables service.
      *
-     * @return The absolute URL for the Tables service endpoint.
+     * @return The endpoint for the Tables service.
      */
-    public String getServiceUrl() {
-        return client.getServiceUrl();
+    public String getServiceEndpoint() {
+        return client.getServiceEndpoint();
     }
 
     /**
@@ -65,8 +65,8 @@ public class TableServiceClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return client.getApiVersion();
+    public TableServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -90,7 +90,7 @@ public class TableServiceClient {
      * @return A {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableClient createTable(String tableName) {
@@ -107,7 +107,7 @@ public class TableServiceClient {
      * @return The HTTP response containing a {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
@@ -121,7 +121,7 @@ public class TableServiceClient {
         try {
             return client.getImplementation().getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
         } catch (RuntimeException ex) {
             return monoError(client.getLogger(), ex);
@@ -160,11 +160,11 @@ public class TableServiceClient {
     }
 
     Mono<Response<TableClient>> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceErrorException
-                && ((TableServiceErrorException) e).getResponse() != null
-                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409,
+        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceException
+                && ((TableServiceException) e).getResponse() != null
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409,
             e -> {
-                HttpResponse response = ((TableServiceErrorException) e).getResponse();
+                HttpResponse response = ((TableServiceException) e).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
             });
@@ -176,7 +176,7 @@ public class TableServiceClient {
      * @param tableName The name of the table to delete.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String tableName) {
@@ -193,7 +193,7 @@ public class TableServiceClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
@@ -205,7 +205,7 @@ public class TableServiceClient {
      *
      * @return A paged iterable containing all tables within the account.
      *
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables() {
@@ -225,7 +225,7 @@ public class TableServiceClient {
      * @return A paged iterable containing matching tables within the account.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {

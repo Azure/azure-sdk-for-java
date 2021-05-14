@@ -29,7 +29,7 @@ import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -51,14 +51,14 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * {@link TableServiceClientBuilder} object.
  */
 @ServiceClient(builder = TableServiceClientBuilder.class, isAsync = true)
-public class TableServiceAsyncClient {
+public final class TableServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableServiceAsyncClient.class);
     private final AzureTableImpl implementation;
     private final String accountName;
     private final HttpPipeline pipeline;
 
-    TableServiceAsyncClient(HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
-                            SerializerAdapter serializerAdapter) {
+    TableServiceAsyncClient(HttpPipeline pipeline, String url, TableServiceVersion serviceVersion,
+        SerializerAdapter serializerAdapter) {
 
         try {
             final URI uri = URI.create(url);
@@ -88,11 +88,11 @@ public class TableServiceAsyncClient {
     }
 
     /**
-     * Gets the absolute URL for the Tables service endpoint.
+     * Gets the endpoint for the Tables service.
      *
-     * @return The absolute URL for the Tables service endpoint.
+     * @return The endpoint for the Tables service.
      */
-    public String getServiceUrl() {
+    public String getServiceEndpoint() {
         return implementation.getUrl();
     }
 
@@ -128,8 +128,8 @@ public class TableServiceAsyncClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return TablesServiceVersion.fromString(implementation.getVersion());
+    public TableServiceVersion getServiceVersion() {
+        return TableServiceVersion.fromString(implementation.getVersion());
     }
 
     /**
@@ -144,8 +144,8 @@ public class TableServiceAsyncClient {
     public TableAsyncClient getTableClient(String tableName) {
         return new TableClientBuilder()
             .pipeline(this.implementation.getHttpPipeline())
-            .serviceVersion(this.getApiVersion())
-            .endpoint(this.getServiceUrl())
+            .serviceVersion(this.getServiceVersion())
+            .endpoint(this.getServiceEndpoint())
             .tableName(tableName)
             .buildAsyncClient();
     }
@@ -158,7 +158,7 @@ public class TableServiceAsyncClient {
      * @return A reactive result containing a {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableAsyncClient> createTable(String tableName) {
@@ -173,7 +173,7 @@ public class TableServiceAsyncClient {
      * @return A reactive result containing the HTTP response and a {@link TableClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableAsyncClient>> createTableWithResponse(String tableName) {
@@ -187,7 +187,7 @@ public class TableServiceAsyncClient {
         try {
             return implementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -223,11 +223,11 @@ public class TableServiceAsyncClient {
     }
 
     Mono<Response<TableAsyncClient>> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceErrorException
-                && ((TableServiceErrorException) e).getResponse() != null
-                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409,
+        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceException
+                && ((TableServiceException) e).getResponse() != null
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409,
             e -> {
-                HttpResponse response = ((TableServiceErrorException) e).getResponse();
+                HttpResponse response = ((TableServiceException) e).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
             });
@@ -241,7 +241,7 @@ public class TableServiceAsyncClient {
      * @return An empty reactive result.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable(String tableName) {
@@ -256,7 +256,7 @@ public class TableServiceAsyncClient {
      * @return A reactive result containing the HTTP response.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse(String tableName) {
@@ -268,9 +268,9 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
-                .onErrorResume(TableServiceErrorException.class, e -> swallowExceptionForStatusCode(404, e, logger));
+                .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -297,7 +297,7 @@ public class TableServiceAsyncClient {
      * @return A paged reactive result containing matching tables within the account.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableItem> listTables(ListTablesOptions options) {
@@ -353,7 +353,7 @@ public class TableServiceAsyncClient {
 
         try {
             return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceErrorException)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(response -> {
                     TableQueryResponse tableQueryResponse = response.getValue();
 
