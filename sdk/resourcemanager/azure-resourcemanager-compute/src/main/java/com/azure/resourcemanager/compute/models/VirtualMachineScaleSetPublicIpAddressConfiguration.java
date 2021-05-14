@@ -26,6 +26,12 @@ public class VirtualMachineScaleSetPublicIpAddressConfiguration {
     private String name;
 
     /*
+     * Describes the public IP Sku
+     */
+    @JsonProperty(value = "sku")
+    private PublicIpAddressSku sku;
+
+    /*
      * The idle timeout of the public IP address.
      */
     @JsonProperty(value = "properties.idleTimeoutInMinutes")
@@ -57,6 +63,12 @@ public class VirtualMachineScaleSetPublicIpAddressConfiguration {
     @JsonProperty(value = "properties.publicIPAddressVersion")
     private IpVersion publicIpAddressVersion;
 
+    /*
+     * Specify what happens to the public IP when the VM is deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
+
     /**
      * Get the name property: The publicIP address configuration name.
      *
@@ -74,6 +86,26 @@ public class VirtualMachineScaleSetPublicIpAddressConfiguration {
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the sku property: Describes the public IP Sku.
+     *
+     * @return the sku value.
+     */
+    public PublicIpAddressSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: Describes the public IP Sku.
+     *
+     * @param sku the sku value to set.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
+     */
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withSku(PublicIpAddressSku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -182,6 +214,26 @@ public class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
+     * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
+     */
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -192,6 +244,9 @@ public class VirtualMachineScaleSetPublicIpAddressConfiguration {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineScaleSetPublicIpAddressConfiguration"));
+        }
+        if (sku() != null) {
+            sku().validate();
         }
         if (dnsSettings() != null) {
             dnsSettings().validate();
