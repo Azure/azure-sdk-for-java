@@ -3,12 +3,15 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,8 +41,8 @@ public class ReadmeSamples {
     /**
      * Code sample for authenticating with a shared key.
      */
-    public void authenticateWithSharedKey() {
-        TablesSharedKeyCredential credential = new TablesSharedKeyCredential("<your-account-name>", "<account-access-key>");
+    public void authenticateWithNamedKey() {
+        AzureNamedKeyCredential credential = new AzureNamedKeyCredential("<your-account-name>", "<account-access-key>");
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("<your-table-account-url>")
             .credential(credential)
@@ -67,17 +70,18 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating a table.
+     *
      * @throws TableServiceException if the table exists.
      */
     public void createTable() {
-        tableServiceClient.createTable(tableName);
+        TableClient tableClient = tableServiceClient.createTable(tableName);
     }
 
     /**
      * Code sample for creating a table if it doesn't exist.
      */
     public void createTableIfNotExists() {
-        tableServiceClient.createTableIfNotExists(tableName);
+        TableClient tableClient = tableServiceClient.createTableIfNotExists(tableName);
     }
 
     /**
@@ -87,7 +91,7 @@ public class ReadmeSamples {
         ListTablesOptions options = new ListTablesOptions()
             .setFilter(String.format("TableName eq '%s'", tableName));
 
-        for (TableItem tableItem : tableServiceClient.listTables(options)) {
+        for (TableItem tableItem : tableServiceClient.listTables(options, null, null)) {
             System.out.println(tableItem.getName());
         }
     }
@@ -118,6 +122,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating an entity.
+     *
      * @throws TableServiceException if the entity exists.
      */
     public void createEntity() {
@@ -133,11 +138,15 @@ public class ReadmeSamples {
      * Code sample for listing entities.
      */
     public void listEntities() {
+        List<String> propertiesToSelect = new ArrayList<>();
+        propertiesToSelect.add("Product");
+        propertiesToSelect.add("Price");
+
         ListEntitiesOptions options = new ListEntitiesOptions()
             .setFilter(String.format("PartitionKey eq '%s'", partitionKey))
-            .setSelect("Product, Price");
+            .setSelect(propertiesToSelect);
 
-        for (TableEntity entity : tableClient.listEntities(options)) {
+        for (TableEntity entity : tableClient.listEntities(options, null, null)) {
             Map<String, Object> properties = entity.getProperties();
             System.out.println(String.format("%s: %.2f", properties.get("Product"), properties.get("Price")));
         }
