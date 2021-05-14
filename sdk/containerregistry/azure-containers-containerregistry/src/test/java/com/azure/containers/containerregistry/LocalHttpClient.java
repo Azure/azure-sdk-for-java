@@ -56,8 +56,7 @@ public class LocalHttpClient implements HttpClient {
             headers.set("Link", response.get("Link"));
             byte[] body = response.get("Body") != null ? response.get("Body").getBytes(StandardCharsets.UTF_8) : new byte[0];
             return Mono.just(new MockHttpResponse(request, statusCode, headers, body));
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             return Mono.error(new HttpResponseException(new MockHttpResponse(request, 404)));
         }
     }

@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The FormSelectionMark model.
  */
+@Immutable
 public final class FormSelectionMark extends FormElement {
     private float confidence;
     private SelectionMarkState state;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.confluent.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.confluent.fluent.models.ConfluentAgreementResourceInner;
 import java.time.OffsetDateTime;
 
@@ -29,6 +30,13 @@ public interface ConfluentAgreementResource {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the publisher property: Publisher identifier string.

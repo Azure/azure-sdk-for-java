@@ -65,12 +65,12 @@ The services available via `azure-resourcemanager` are listed as below:
 - Private DNS
 - Redis
 - Resources
+- Search
 - Service Bus
 - Spring Cloud
 - SQL
 - Storage
 - Traffic Manager
-- Search
 </details>
 
 In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
@@ -161,7 +161,7 @@ The key concepts of Azure Management Libraries includes:
 - Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 - [API design][design]
-- [API design (preview)][design_preview]
+- [API design (Preview)][design_preview]
 
 ## Examples
 

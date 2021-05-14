@@ -2,23 +2,15 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
-import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.InterceptorManager
-import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.Configuration
 import com.azure.core.util.FluxUtil
-import com.azure.core.util.logging.ClientLogger
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
@@ -30,17 +22,13 @@ import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.StorageSpec
-import org.spockframework.runtime.model.IterationInfo
+import com.azure.storage.common.test.shared.TestAccount
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
-import spock.lang.Shared
 
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
-import java.util.function.Supplier
 
 class APISpec extends StorageSpec {
 
@@ -59,10 +47,6 @@ class APISpec extends StorageSpec {
 
     static final String garbageEtag = "garbage"
 
-    String containerPrefix = "jtc" // java test container
-
-    String blobPrefix = "javablob"
-
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     /*
@@ -73,111 +57,6 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
-    static StorageSharedKeyCredential primaryCredential
-    static StorageSharedKeyCredential alternateCredential
-    static StorageSharedKeyCredential blobCredential
-    static StorageSharedKeyCredential premiumCredential
-    static String connectionString
-    private boolean recordLiveMode
-
-    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
-    static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
-    static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
-    static def BLOB_STORAGE = "BLOB_STORAGE_"
-    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
-
-    TestResourceNamer resourceNamer
-    def InterceptorManager interceptorManager
-    protected String testName
-
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static int defaultDataSize = defaultData.remaining()
-
-    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
-
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
-
-    @Shared
-    protected KB = 1024
-
-    def setupSpec() {
-        primaryCredential = getCredential(PRIMARY_STORAGE)
-        alternateCredential = getCredential(SECONDARY_STORAGE)
-        blobCredential = getCredential(BLOB_STORAGE)
-        premiumCredential = getCredential(PREMIUM_STORAGE)
-    }
-
-    def setup() {
-        String fullTestName = getFullTestName(specificationContext.getCurrentIteration())
-        String className = specificationContext.getCurrentSpec().getName()
-        int iterationIndex = fullTestName.lastIndexOf("[")
-        int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
-        this.testName = fullTestName.substring(0, substringIndex)
-        this.interceptorManager = new InterceptorManager(className + fullTestName, ENVIRONMENT.testMode)
-        this.resourceNamer = new TestResourceNamer(className + testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
-
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
-        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
-    }
-
-    private def getFullTestName(IterationInfo iterationInfo) {
-        def fullName = iterationInfo.getParent().getName().split(" ").collect { it.toLowerCase() }.join("")
-
-        if (iterationInfo.getDataValues().length == 0) {
-            return fullName
-        }
-        def prefix = fullName
-        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
-
-        return prefix + suffix
-    }
-
-    def cleanup() {
-        interceptorManager.close()
-    }
-
-    static boolean liveMode() {
-        return ENVIRONMENT.testMode == TestMode.LIVE
-    }
-
-    private StorageSharedKeyCredential getCredential(String accountType) {
-        String accountName
-        String accountKey
-
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
-            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
-        } else {
-            accountName = "azstoragesdkaccount"
-            accountKey = "astorageaccountkey"
-        }
-
-        if (accountName == null || accountKey == null) {
-            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
-            return null
-        }
-
-        return new StorageSharedKeyCredential(accountName, accountKey)
-    }
-
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
     */
@@ -186,7 +65,7 @@ class APISpec extends StorageSpec {
     }
 
     byte[] getRandomByteArray(int size) {
-        long seed = UUID.fromString(resourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        long seed = UUID.fromString(namer.getRandomUuid()).getMostSignificantBits() & Long.MAX_VALUE
         Random rand = new Random(seed)
         byte[] data = new byte[size]
         rand.nextBytes(data)
@@ -209,21 +88,6 @@ class APISpec extends StorageSpec {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
 
-    HttpClient getHttpClient() {
-        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            builder.wiretap(true)
-
-            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
-                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            }
-
-            return builder.build()
-        } else {
-            return interceptorManager.getPlaybackClient()
-        }
-    }
-
     EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
                                                          AsyncKeyEncryptionKeyResolver keyResolver,
                                                          StorageSharedKeyCredential credential, String endpoint,
@@ -234,16 +98,13 @@ class APISpec extends StorageSpec {
             .key(key, algorithm.toString())
             .keyResolver(keyResolver)
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -256,16 +117,12 @@ class APISpec extends StorageSpec {
 
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -274,20 +131,21 @@ class APISpec extends StorageSpec {
         return builder
     }
 
+    BlobServiceClientBuilder getServiceClientBuilder(TestAccount account,
+                                                     HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(account.credential, account.blobEndpoint, policies)
+    }
+
     BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
                                                      HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -297,15 +155,15 @@ class APISpec extends StorageSpec {
     }
 
     def generateContainerName() {
-        generateResourceName(containerPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
-    def String generateResourceName(String prefix, int entityNo) {
-        return resourceNamer.randomName(prefix + testName + entityNo, 63)
+    private String generateResourceName(int entityNo) {
+        return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
     def generateBlobName() {
-        generateResourceName(blobPrefix, entityNo++)
+        generateResourceName(entityNo++)
     }
 
     def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,

@@ -1,3 +1,6 @@
+# WebapiA is an optional client, we can access obo resource servers.
+# We can also access a custom server according to the webapiA client.
+
 azure:
   activedirectory:
     client-id: <client-id>
@@ -6,6 +9,7 @@ azure:
     user-group:
       allowed-group-names: group1,group2
       allowed-group-ids: <group1-id>,<group2-id>
+      enable-full-list: false
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:
