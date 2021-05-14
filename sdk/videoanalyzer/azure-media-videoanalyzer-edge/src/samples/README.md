@@ -4,11 +4,11 @@ This document explains samples and how to use them.
 
 ## Getting started
 
-Getting started explained in detail [here](sdk_readme_getting_started).
+Getting started explained in detail [here][sdk_readme_getting_started].
 
 ## Key concepts
 
-Key concepts are explained in detail [here](sdk_readme_key_concepts).
+Key concepts are explained in detail [here][sdk_readme_key_concepts].
 
 ## Examples
 
@@ -124,11 +124,11 @@ MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTo
 
 ## Troubleshooting
 
-Troubleshooting steps can be found [here](sdk_readme_troubleshooting).
+Troubleshooting steps can be found [here][sdk_readme_troubleshooting].
 
 ## Next steps
 
--   [Samples](samples)
+-   [Samples][samples]
 -   [Azure IoT Device SDK][iot-device-sdk]
 -   [Azure IoTHub Service SDK][iot-hub-sdk]
 
