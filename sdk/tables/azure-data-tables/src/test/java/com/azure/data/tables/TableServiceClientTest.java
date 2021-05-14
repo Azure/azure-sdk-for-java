@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +82,7 @@ public class TableServiceClientTest extends TestBase {
         serviceClient.createTable(tableName);
 
         // Act & Assert
-        Assertions.assertThrows(TableServiceErrorException.class,
+        Assertions.assertThrows(TableServiceException.class,
             () -> serviceClient.createTable(tableName));
     }
 
