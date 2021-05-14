@@ -2,7 +2,7 @@
 
 ## 3.5.0-beta.1 (Unreleased)
 ### Key Bug Fixes
-- Fix AAD B2C cannot complete well know metadata acquisition through issuer.
+- Fix AAD B2C cannot complete OpenID Connect metadata document acquisition through issuer.
 
 ### New Features
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
