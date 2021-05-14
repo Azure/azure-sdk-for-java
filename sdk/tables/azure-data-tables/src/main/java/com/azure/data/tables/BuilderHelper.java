@@ -26,9 +26,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
-import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.ScrubEtagPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,14 +101,8 @@ final class BuilderHelper {
         policies.addAll(perRetryAdditionalPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies); //should this be between 3/4?
 
-        policies.add(getResponseValidationPolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
-
-        //hm what is this and why here not 5?
-        // vcolin7: Probably to log the actual ETag from the service before scrubbing it.
-        policies.add(new ScrubEtagPolicy());
-
-        //where is #7, transport policy
+        policies.add(new TableScrubEtagPolicy());
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -142,18 +133,5 @@ final class BuilderHelper {
                     .collect(Collectors.joining(","))
             ));
         }
-    }
-
-    /*
-     * Creates a {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} used to validate response data from
-     * the service.
-     *
-     * @return The {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} for the module.
-     */
-    private static HttpPipelinePolicy getResponseValidationPolicy() {
-        return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-            .build();
     }
 }

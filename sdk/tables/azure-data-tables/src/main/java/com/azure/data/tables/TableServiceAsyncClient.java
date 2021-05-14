@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -21,15 +22,29 @@ import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.models.CorsRule;
+import com.azure.data.tables.implementation.models.GeoReplication;
+import com.azure.data.tables.implementation.models.Logging;
+import com.azure.data.tables.implementation.models.Metrics;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.RetentionPolicy;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
+import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
+import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableServiceGeoReplication;
+import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
+import com.azure.data.tables.models.TableServiceLogging;
+import com.azure.data.tables.models.TableServiceMetrics;
+import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableServiceRetentionPolicy;
+import com.azure.data.tables.models.TableServiceStatistics;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -418,5 +433,210 @@ public final class TableServiceAsyncClient {
         @Override
         public void close() {
         }
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @return A reactive result containing the {@link TableServiceProperties properties} of an account's Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableServiceProperties> getProperties() {
+        return this.getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @return A reactive result containing the HTTP response and the {@link TableServiceProperties properties} of an
+     * account's Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableServiceProperties>> getPropertiesWithResponse() {
+        return withContext(this::getPropertiesWithResponse);
+    }
+
+    Mono<Response<TableServiceProperties>> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return this.implementation.getServices().getPropertiesWithResponseAsync(null, null, context)
+                .map(response -> new SimpleResponse<>(response, toTableServiceProperties(response.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private TableServiceProperties toTableServiceProperties(
+        com.azure.data.tables.implementation.models.TableServiceProperties tableServiceProperties) {
+
+        return new TableServiceProperties()
+            .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCorsRules(tableServiceProperties.getCors().stream()
+                .map(this::toTablesServiceCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    private TableServiceLogging toTableServiceLogging(Logging logging) {
+        return new TableServiceLogging()
+            .setAnalyticsVersion(logging.getVersion())
+            .setDeleteLogged(logging.isDelete())
+            .setReadLogged(logging.isRead())
+            .setWriteLogged(logging.isWrite())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(logging.getRetentionPolicy()));
+    }
+
+    private TableServiceRetentionPolicy toTableServiceRetentionPolicy(RetentionPolicy retentionPolicy) {
+        return new TableServiceRetentionPolicy()
+            .setEnabled(retentionPolicy.isEnabled())
+            .setDaysToRetain(retentionPolicy.getDays());
+    }
+
+    private TableServiceMetrics toTableServiceMetrics(Metrics metrics) {
+        return new TableServiceMetrics()
+            .setVersion(metrics.getVersion())
+            .setEnabled(metrics.isEnabled())
+            .setIncludeApis(metrics.isIncludeAPIs())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(metrics.getRetentionPolicy()));
+    }
+
+    private TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
+        return new TableServiceCorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     *
+     * @return An empty reactive result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setProperties(TableServiceProperties tableServiceProperties) {
+        return this.setPropertiesWithResponse(tableServiceProperties).flatMap(FluxUtil::toMono);
+    }
+
+
+    /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     *
+     * @return A reactive result containing the HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties) {
+        return withContext(context -> this.setPropertiesWithResponse(tableServiceProperties, context));
+    }
+
+    Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return
+                this.implementation.getServices().setPropertiesWithResponseAsync(
+                    toImplTableServiceProperties(tableServiceProperties), null, null, context)
+                    .map(response -> new SimpleResponse<>(response, null));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private com.azure.data.tables.implementation.models.TableServiceProperties toImplTableServiceProperties(
+        TableServiceProperties tableServiceProperties) {
+
+        return new com.azure.data.tables.implementation.models.TableServiceProperties()
+            .setLogging(toLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCors(tableServiceProperties.getCorsRules().stream()
+                .map(this::toCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    private Logging toLogging(TableServiceLogging tableServiceLogging) {
+        return new Logging()
+            .setVersion(tableServiceLogging.getAnalyticsVersion())
+            .setDelete(tableServiceLogging.isDeleteLogged())
+            .setRead(tableServiceLogging.isReadLogged())
+            .setWrite(tableServiceLogging.isWriteLogged())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceLogging.getRetentionPolicy()));
+    }
+
+    private RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
+        return new RetentionPolicy()
+            .setEnabled(tableServiceRetentionPolicy.isEnabled())
+            .setDays(tableServiceRetentionPolicy.getDaysToRetain());
+    }
+
+    private Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
+        return new Metrics()
+            .setVersion(tableServiceMetrics.getVersion())
+            .setEnabled(tableServiceMetrics.isEnabled())
+            .setIncludeAPIs(tableServiceMetrics.isIncludeApis())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceMetrics.getTableServiceRetentionPolicy()));
+    }
+
+    private CorsRule toCorsRule(TableServiceCorsRule corsRule) {
+        return new CorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @return A reactive result containing statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableServiceStatistics> getStatistics() {
+        return this.getStatisticsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @return A reactive result containing the HTTP response and statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableServiceStatistics>> getStatisticsWithResponse() {
+        return withContext(this::getStatisticsWithResponse);
+    }
+
+    Mono<Response<TableServiceStatistics>> getStatisticsWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return this.implementation.getServices().getStatisticsWithResponseAsync(null, null, context)
+                .map(response -> new SimpleResponse<>(response, toTableServiceStatistics(response.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
+        return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
+    }
+
+    private TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
+        return new TableServiceGeoReplication(
+            TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
+            geoReplication.getLastSyncTime());
     }
 }
