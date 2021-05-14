@@ -147,6 +147,8 @@ jobs:
           pwsh: true
           workingDirectory: $(Agent.BuildDirectory)
           filePath: eng/versioning/pom_file_version_scanner.ps1
+          arguments: >
+            -Debug:$$(System.Debug)
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'

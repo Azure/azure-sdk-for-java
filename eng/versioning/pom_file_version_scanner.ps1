@@ -52,7 +52,7 @@ $DependencyTypeDependency = "dependency"
 $DependencyTypeExternal = "external_dependency"
 $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency)|$($DependencyTypeExternal)"
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
-$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose'] -or [System.Convert]::ToBoolean([Environment]::GetEnvironmentVariable("system.debug"))
+$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose']
 $StartTime = $(get-date)
 
 # This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
@@ -60,12 +60,12 @@ $StartTime = $(get-date)
 # to this is the blanket, wildcard include for com.azure and com.microsoft.azure libraries.
 $ComAzureAllowlistIncludes = ("com.azure:*", "com.azure.resourcemanager:*", "com.microsoft.azure:*", "com.azure.spring:*")
 
-function Join-With-NewLine([string]$msg, [string]$append) 
+function Join-With-NewLine([string]$msg, [string]$append)
 {
     return $msg + [Environment]::NewLine + $append
 }
 
-function Write-Log-Message([string]$msg, [boolean]$hasError) 
+function Write-Log-Message([string]$msg, [boolean]$hasError)
 {
     if ($hasError) {
         $script:FoundError = $true
@@ -753,7 +753,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     Write-Log-Message $potentialLogMessage $hasError
 }
 
-if ($UseVerboseLogging) 
+if ($UseVerboseLogging)
 {
     $ElapsedTime = $(get-date) - $StartTime
     $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
