@@ -111,7 +111,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     private Boolean doNotVerifyRemoteGateways;
 
     /*
-     * The resourceGuid property of the Virtual Network Peering resource.
+     * The resourceGuid property of the Virtual Network peering resource.
      */
     @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
@@ -373,7 +373,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the resourceGuid property: The resourceGuid property of the Virtual Network Peering resource.
+     * Get the resourceGuid property: The resourceGuid property of the Virtual Network peering resource.
      *
      * @return the resourceGuid value.
      */
