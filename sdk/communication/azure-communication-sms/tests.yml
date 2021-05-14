@@ -37,7 +37,7 @@ stages:
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: ${project.reporting.outputDirectory}/test-coverage/jacoco.xml
+          summaryFileLocation: ${project.reporting.outputDirectory}/jacoco/jacoco.xml
           reportDirectory: sdk/communication/azure-communication-sms/target/site/jacoco-coverage/
           failIfCoverageEmpty: true
     EnvVars:
