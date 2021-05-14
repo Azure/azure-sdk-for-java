@@ -1,7 +1,15 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.2.8 (2021-05-14)
 
+### Bug Fixes
+- Fixed an issue that prevented setting tags when creating a key using `KeyClient` and `KeyAsyncClient`.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
 
 ## 4.2.7 (2021-04-08)
 
@@ -10,7 +18,7 @@
 - `NullPointerException`s thrown by client builders when setting configuration properties are now properly logger at the `ERROR` level.
 
 ### Dependency Updates
-- Upgraded `azure-cbre` dependency to `1.15.0`
+- Upgraded `azure-core` dependency to `1.15.0`
 - Upgraded `azure-core-http-netty` dependency to `1.9.1`
 - Upgraded `azure-core-http-okhttp` dependency to `1.6.1`
 - Upgraded `azure-identity` dependency to `1.2.5`
