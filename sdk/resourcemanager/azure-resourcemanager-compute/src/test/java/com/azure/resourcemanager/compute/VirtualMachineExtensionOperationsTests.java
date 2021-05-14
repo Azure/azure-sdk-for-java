@@ -61,7 +61,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("BaR@12abc!")
+                .withRootPassword(password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withExistingStorageAccount(storageAccount)
                 .create();
@@ -121,7 +121,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("BaR@12abc!")
+                .withRootPassword(password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
@@ -219,7 +219,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("BaR@12abc!")
+                .withRootPassword(password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("VMAccessForLinux")
                 .withPublisher("Microsoft.OSTCExtensions")
