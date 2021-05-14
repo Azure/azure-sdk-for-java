@@ -3,7 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
