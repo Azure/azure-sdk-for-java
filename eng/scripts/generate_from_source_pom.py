@@ -408,7 +408,8 @@ def main():
         raise ValueError('Missing project list.')
     start_time = time.time()
     if args.project_list_path:
-        create_from_source_pom_spring(args.project_list, args.project_list_path)
+        # please note these two values have been swapped.
+        create_from_source_pom_spring(args.project_list_path, args.project_list)
     else:
         create_from_source_pom(args.project_list)
     elapsed_time = time.time() - start_time

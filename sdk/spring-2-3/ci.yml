@@ -34,9 +34,9 @@ extends:
       - name: azure-identity-spring
         groupId: com.azure.spring
         safeName: azureidentityspring
-      - name: azure-spring-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringdatagremlin
+#      - name: azure-spring-data-gremlin
+#        groupId: com.azure.spring
+#        safeName: azurespringdatagremlin
       - name: azure-spring-boot
         groupId: com.azure.spring
         safeName: azurespringboot
