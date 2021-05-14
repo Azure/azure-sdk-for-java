@@ -52,7 +52,7 @@ $DependencyTypeDependency = "dependency"
 $DependencyTypeExternal = "external_dependency"
 $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency)|$($DependencyTypeExternal)"
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
-$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose'] -or [System.Convert]::ToBoolean($Env:system.debug)
+$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose'] -or [System.Convert]::ToBoolean([Environment]::GetEnvironmentVariable("system.debug"))
 $StartTime = $(get-date)
 
 # This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
