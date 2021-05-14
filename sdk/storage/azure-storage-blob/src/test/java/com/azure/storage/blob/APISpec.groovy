@@ -13,15 +13,10 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
-import com.azure.core.util.BinaryData
-import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
-import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobProperties
-import com.azure.storage.blob.models.BlobRetentionPolicy
-import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -34,13 +29,10 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
-import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
-import spock.lang.Shared
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
@@ -52,37 +44,15 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import java.util.function.BiFunction
 import java.util.function.Function
-import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends StorageSpec {
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     // both sync and async clients point to same container
     BlobContainerClient cc
     BlobContainerClient ccPremium
     BlobContainerAsyncClient ccAsync
-
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    public static final BinaryData defaultBinaryData = BinaryData.fromString(defaultText)
-
-    protected static int defaultDataSize = defaultData.remaining()
-
-    protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     /*
     The values below are used to create data-driven tests for access conditions.
@@ -111,10 +81,9 @@ class APISpec extends StorageSpec {
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
     BlobServiceClient premiumBlobServiceClient
-    BlobServiceClient managedDiskServiceClient
     BlobServiceClient versionedBlobServiceClient
+    BlobServiceClient softDeleteServiceClient
 
-    boolean recordLiveMode
     String containerName
 
     def setupSpec() {
@@ -122,19 +91,15 @@ class APISpec extends StorageSpec {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", env.testMode))
     }
 
     def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) != null
-
-        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        alternateBlobServiceClient = setClient(env.secondaryAccount)
-        premiumBlobServiceClient = setClient(env.premiumAccount)
-        managedDiskServiceClient = setClient(env.managedDiskAccount)
-        versionedBlobServiceClient = setClient(env.versionedAccount)
+        alternateBlobServiceClient = getServiceClient(env.secondaryAccount)
+        premiumBlobServiceClient = getServiceClient(env.premiumAccount)
+        versionedBlobServiceClient = getServiceClient(env.versionedAccount)
+        softDeleteServiceClient = getServiceClient(env.softDeleteAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -143,20 +108,23 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        def cleanupClient = getServiceClientBuilder(env.primaryAccount.credential,
-            env.primaryAccount.blobEndpoint, null)
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
-            .buildClient()
+        if (env.testMode != TestMode.PLAYBACK) {
+            def cleanupClient = new BlobServiceClientBuilder()
+                .httpClient(getHttpClient())
+                .credential(env.primaryAccount.credential)
+                .endpoint(env.primaryAccount.blobEndpoint)
+                .buildClient()
 
-        def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
-        for (def container : cleanupClient.listBlobContainers(options, null)) {
-            def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+            def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
+            for (def container : cleanupClient.listBlobContainers(options, null)) {
+                def containerClient = cleanupClient.getBlobContainerClient(container.getName())
 
-            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                    createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                }
+
+                containerClient.delete()
             }
-
-            containerClient.delete()
         }
     }
 
@@ -164,33 +132,17 @@ class APISpec extends StorageSpec {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
 
-    static boolean liveMode() {
-        return env.testMode == TestMode.LIVE
-    }
-
-    static boolean playbackMode() {
-        return env.testMode == TestMode.PLAYBACK
-    }
-
-    BlobServiceClient setClient(TestAccount account) {
-        try {
-            return getServiceClient(account.credential, account.blobEndpoint)
-        } catch (Exception ignore) {
-            return null
-        }
-    }
-
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(env.primaryAccount.blobEndpoint)
-            .httpClient(getHttpClient())
+
+        instrument(builder)
 
         return setOauthCredentials(builder).buildClient()
     }
 
     def setOauthCredentials(BlobServiceClientBuilder builder) {
         if (env.testMode != TestMode.PLAYBACK) {
-            builder.addPolicy(getRecordPolicy())
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build())
         } else {
@@ -201,6 +153,10 @@ class APISpec extends StorageSpec {
 
     BlobServiceClient getServiceClient(String endpoint) {
         return getServiceClient(null, endpoint, null)
+    }
+
+    BlobServiceClient getServiceClient(TestAccount account) {
+        return getServiceClient(account.credential, account.blobEndpoint)
     }
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
@@ -225,13 +181,12 @@ class APISpec extends StorageSpec {
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -277,8 +232,8 @@ class APISpec extends StorageSpec {
     BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument(builder)
 
         return builder
     }
@@ -287,8 +242,8 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument(builder)
 
         builder.credential(credential).buildAsyncClient()
     }
@@ -301,9 +256,9 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .addPolicy(getRecordPolicy())
             .snapshot(snapshotId)
-            .httpClient(getHttpClient())
+
+        instrument(builder)
 
         return builder.sasToken(sasToken).buildClient()
     }
@@ -311,13 +266,12 @@ class APISpec extends StorageSpec {
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildClient()
     }
@@ -325,13 +279,12 @@ class APISpec extends StorageSpec {
     BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential).buildAsyncClient()
     }
@@ -340,8 +293,8 @@ class APISpec extends StorageSpec {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument(builder)
 
         return builder.credential(credential).buildClient()
     }
@@ -349,8 +302,8 @@ class APISpec extends StorageSpec {
     BlobClient getBlobClient(String endpoint, String sasToken) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+
+        instrument(builder)
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
             builder.sasToken(sasToken)
@@ -363,13 +316,12 @@ class APISpec extends StorageSpec {
 
         SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.credential(credential)
     }
@@ -709,20 +661,6 @@ class APISpec extends StorageSpec {
             response.getValue().getContentLanguage() == contentLanguage &&
             response.getValue().getContentMd5() == contentMD5 &&
             response.getValue().getContentType() == contentType
-    }
-
-    def enableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2)))
-
-        sleepIfRecord(30000)
-    }
-
-    def disableSoftDelete() {
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(false)))
-
-        sleepIfRecord(30000)
     }
 
     // Only sleep if test is running in live mode

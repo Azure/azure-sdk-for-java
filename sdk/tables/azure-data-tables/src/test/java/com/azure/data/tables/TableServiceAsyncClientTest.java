@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,6 +21,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
@@ -67,6 +69,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTable(tableName))
+            .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify();
     }
@@ -79,8 +82,8 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTable(tableName))
-            .expectErrorMatches(e -> e instanceof TableServiceErrorException
-                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409)
+            .expectErrorMatches(e -> e instanceof TableServiceException
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409)
             .verify();
     }
 
@@ -93,7 +96,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         //Act & Assert
         StepVerifier.create(serviceClient.createTableWithResponse(tableName))
             .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                assertEquals(expectedStatusCode, response.getStatusCode());
+                assertNotNull(response.getValue());
             })
             .expectComplete()
             .verify();
@@ -106,6 +110,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExists(tableName))
+            .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify();
     }
@@ -131,7 +136,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
             .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                assertEquals(expectedStatusCode, response.getStatusCode());
+                assertNotNull(response.getValue());
             })
             .expectComplete()
             .verify();
@@ -147,7 +153,8 @@ public class TableServiceAsyncClientTest extends TestBase {
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
             .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+                assertEquals(expectedStatusCode, response.getStatusCode());
+                assertNull(response.getValue());
             })
             .expectComplete()
             .verify();
@@ -166,6 +173,17 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
+    void serviceDeleteNonExistingTableAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.deleteTable(tableName))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void serviceDeleteTableWithResponseAsync() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
@@ -174,9 +192,20 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
-            .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> Assertions.assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void serviceDeleteNonExistingTableWithResponseAsync() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        int expectedStatusCode = 404;
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
+            .assertNext(response -> Assertions.assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }

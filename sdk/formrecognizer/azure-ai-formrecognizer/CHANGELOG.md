@@ -1,17 +1,28 @@
 # Release History
 
-## 3.1.0-beta.4 (Unreleased)
+## 3.1.0 (Unreleased)
+### Features Added
+- This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.4`.
+- Added `clientOptions()` and `getDefaultLogOptions()` methods to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
+- We are able to support multiple service API versions now: `V2_0` and `V2_1`.
+- Add more static values to `FormRecognizerLanguage` expandable string class.
+
 ### Breaking Changes
-- Renamed `ReadingOrder` model to `FormReadingOrder`.
-- Renamed the method names and the method parameters, using `identity` to replace `id` keyword in the identity documents recognition API.
-  For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
+- The client defaults to the latest supported service version, which currently is 2.1.
 - The model `TextAppearance` now includes the properties `styleName` and `styleConfidence` that were part of the `TextStyle` object.
 - Removed the model `TextStyle`.
-- Removed `V2_1_PREVIEW_1` and `V2_1_PREVIEW_2` but only support latest service beta API version `V2_1_PREVIEW_3`.
-
-### New features
-- Added `clientOptions()` and `getDefaultLogOptions()` methods to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
-- We are able to support multiple service API versions now: `V2_0` and `V2_1_PREVIEW_3`.
+- Removed `V2_1_PREVIEW_1` and `V2_1_PREVIEW_2` but only support latest service API version `V2_1`.
+- Removed the `pollInterval` property from all endpoints' options bag, such as `RecognizeBusinessCardsOptions`, etc. Polling interval
+  can be updated in the Azure Core `SyncPoller` or `PollerFlux`'s method, `setPollInterval()`, synchronously and asynchronously, respectively.
+- Removed class type `FieldValueGender`.
+- Removed value `Gender` from the model `FieldValuetype`.
+- Renamed `ReadingOrder` model to `FormReadingOrder`, and refactor the class to be expandable string class.
+- Renamed the method names and the method parameters, using `identity` to replace `id` keyword in the identity documents recognition API.
+  For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
+- Renamed the method `asCountry` to `asCountryRegion`.
+- Renamed value `COUNTRY` to `COUNTRY_REGION` in the model `FieldValuetype`.
+- Make `FormLine`, `FormPage`, `FormTable`, `FormSelectionMark`, `TextAppearance`, `CustomFormModel`, `CustomFormModelInfo`, `CustomFormModelProperties`
+  `CustomFormSubmodel`, `TrainingDocumentInfo` model class immutable.
 
 ## 3.0.7 (2021-04-07)
 ### Dependency updates

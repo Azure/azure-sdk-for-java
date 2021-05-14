@@ -260,8 +260,7 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
         client.listFileSystems(listFileSystemsOptions).flatMap(
             deletedFileSystem -> {
                 Mono<DataLakeFileSystemAsyncClient> fileSystemClient = client.undeleteFileSystemWithResponse(
-                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion())
-                        .setDestinationFileSystemName(deletedFileSystem.getName() + "V2"))
+                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion()))
                     .map(Response::getValue);
                 return fileSystemClient;
             }

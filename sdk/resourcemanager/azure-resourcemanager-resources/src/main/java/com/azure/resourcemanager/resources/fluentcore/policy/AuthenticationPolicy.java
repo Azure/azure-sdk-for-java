@@ -59,7 +59,7 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
         return tokenResult
                 .flatMap(accessToken -> {
-                    context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER_KEY,
+                    context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER_KEY,
                         String.format(AUTHORIZATION_HEADER_VALUE_FORMAT, accessToken.getToken()));
                     return next.process();
                 });

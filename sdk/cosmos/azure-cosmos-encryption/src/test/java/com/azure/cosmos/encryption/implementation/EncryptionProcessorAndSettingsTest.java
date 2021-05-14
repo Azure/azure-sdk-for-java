@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.EncryptionCrudTest;
+import com.azure.cosmos.encryption.EncryptionAsyncApiCrudTest;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
@@ -41,8 +41,8 @@ public class EncryptionProcessorAndSettingsTest {
     public void initializeEncryptionSettingsAsync() {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
+        EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
+            new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));
@@ -74,8 +74,8 @@ public class EncryptionProcessorAndSettingsTest {
     public void withoutInitializeEncryptionSettingsAsync() {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
+        EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
+            new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));
@@ -110,8 +110,8 @@ public class EncryptionProcessorAndSettingsTest {
     public void encryptionSettingCachedTimeToLive() {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
+        EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
+            new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));
@@ -142,8 +142,8 @@ public class EncryptionProcessorAndSettingsTest {
     public void invalidClientEncryptionKeyException() throws Exception {
         CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
-        EncryptionCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-            new EncryptionCrudTest.TestEncryptionKeyStoreProvider();
+        EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
+            new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         Mockito.when(cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider()).thenReturn(keyStoreProvider);
         Mockito.when(EncryptionBridgeInternal.getClientEncryptionPolicyAsync(cosmosEncryptionAsyncClient,
             Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionPolicy()));

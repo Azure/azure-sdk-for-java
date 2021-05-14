@@ -1,8 +1,15 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.10.0-beta.2 (Unreleased)
+
+
+
+## 12.10.0-beta.1 (2021-05-13)
 - Added support for the 2020-08-04 service version.
 - Added back ability to create a ShareLeaseClient for a Share or Share Snapshot.
+- Added upload() overloads to ShareFileClient supporting large ranges and parallel upload.
+- Deprecated old upload() overloads on ShareFileClient that only supported single Put Range operations, replacing them
+with uploadRange() methods.
 
 ## 12.9.0 (2021-04-29)
 - ShareLeaseClient now updates it's leaseID through a lease change.

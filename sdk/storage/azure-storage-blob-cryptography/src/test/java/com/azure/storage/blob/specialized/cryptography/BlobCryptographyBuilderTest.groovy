@@ -3,6 +3,7 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.common.implementation.Constants
 
 class BlobCryptographyBuilderTest extends APISpec {
 
@@ -50,7 +51,7 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "Encrypted client integrity"() {
         setup:
         cc.create()
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.KB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
@@ -85,7 +86,7 @@ class BlobCryptographyBuilderTest extends APISpec {
         def encryptedClient = builder.buildEncryptedBlobClient()
 
         when:
-        def uploadResponse = encryptedAsyncClient.uploadWithResponse(defaultFlux, null, null, null, null, null).block()
+        def uploadResponse = encryptedAsyncClient.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
 
         def downloadResult = new ByteArrayOutputStream()
 
@@ -95,7 +96,7 @@ class BlobCryptographyBuilderTest extends APISpec {
         uploadResponse.getStatusCode() == 201
         uploadResponse.getValue().isServerEncrypted()
         uploadResponse.getValue().getEncryptionKeySha256() == key.getKeySha256()
-        downloadResult.toByteArray() == defaultData.array()
+        downloadResult.toByteArray() == data.defaultBytes
     }
 
     def "Customer provided key not a noop"() {
@@ -111,7 +112,7 @@ class BlobCryptographyBuilderTest extends APISpec {
             .buildEncryptedBlobClient()
 
         when:
-        encryptedClientWithCpk.uploadWithResponse(defaultFlux, null, null, null, null, null).block()
+        encryptedClientWithCpk.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
 
         def datastream = new ByteArrayOutputStream()
         encryptedClientNoCpk.downloadWithResponse(datastream, null, null, null, false, null, null)
@@ -119,6 +120,29 @@ class BlobCryptographyBuilderTest extends APISpec {
         then:
         def e = thrown(BlobStorageException)
         e.getStatusCode() == 409
+    }
+
+    def "Encryption scope"() {
+        setup:
+        def scope = "testscope1"
+        cc.create()
+        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            .encryptionScope(scope)
+            .blobName(generateBlobName())
+        def encryptedAsyncClient = builder.buildEncryptedBlobAsyncClient()
+        def encryptedClient = builder.buildEncryptedBlobClient()
+
+        when:
+        def uploadResponse = encryptedAsyncClient.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
+
+        def downloadResult = new ByteArrayOutputStream()
+
+        encryptedClient.download(downloadResult)
+
+        then:
+        uploadResponse.getStatusCode() == 201
+        downloadResult.toByteArray() == data.defaultBytes
+        encryptedClient.getProperties().getEncryptionScope() == scope
     }
 
     def "Conflicting encryption info"() {

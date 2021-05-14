@@ -45,8 +45,8 @@ public class VirtualMachineScaleSetIdentity {
      * ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
-    @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(content = JsonInclude.Include.ALWAYS)
+    @JsonProperty(value = "userAssignedIdentities")
     private Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**

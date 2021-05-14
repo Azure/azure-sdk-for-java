@@ -42,8 +42,8 @@ class SASTest extends APISpec {
         pathName = generatePathName()
         sasClient = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
-        sasClient.append(defaultInputStream.get(), 0, defaultDataSize)
-        sasClient.flush(defaultDataSize)
+        sasClient.append(data.defaultInputStream, 0, data.defaultDataSize)
+        sasClient.flush(data.defaultDataSize)
     }
 
     DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
@@ -101,7 +101,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
@@ -236,7 +236,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
@@ -364,8 +364,8 @@ class SASTest extends APISpec {
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
 
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         then:
         notThrown(DataLakeStorageException)
@@ -411,8 +411,8 @@ class SASTest extends APISpec {
 
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         then:
         thrown(DataLakeStorageException)
@@ -436,8 +436,8 @@ class SASTest extends APISpec {
         client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
 
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
 
@@ -524,8 +524,8 @@ class SASTest extends APISpec {
         def pathName = generatePathName()
         def fc = fsc.getFileClient(pathName)
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -545,7 +545,7 @@ class SASTest extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == defaultText
+        os.toString() == data.defaultText
     }
 
     def "account sas file delete error"() {
@@ -809,11 +809,9 @@ class SASTest extends APISpec {
         fsc.createDirectory(pathName)
 
         when:
-        new DataLakeFileSystemClientBuilder()
+        instrument(new DataLakeFileSystemClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .sasToken(sas)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -821,11 +819,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeFileSystemClientBuilder()
+        instrument(new DataLakeFileSystemClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -833,10 +829,8 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeFileSystemClientBuilder()
-            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -844,12 +838,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildDirectoryClient()
             .getProperties()
 
@@ -857,12 +849,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildDirectoryClient()
             .getProperties()
 
@@ -870,11 +860,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .pathName(pathName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .pathName(pathName))
             .buildDirectoryClient()
             .getProperties()
 
@@ -882,12 +870,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildFileClient()
             .getProperties()
 
@@ -895,12 +881,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildFileClient()
             .getProperties()
 
@@ -908,11 +892,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .pathName(pathName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .pathName(pathName))
             .buildFileClient()
             .getProperties()
 
@@ -920,11 +902,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeServiceClientBuilder()
+        instrument(new DataLakeServiceClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -932,11 +912,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeServiceClientBuilder()
+        instrument(new DataLakeServiceClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -944,10 +922,8 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeServiceClientBuilder()
-            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
