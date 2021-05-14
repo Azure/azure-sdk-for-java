@@ -1,5 +1,8 @@
 ## Release History
 
+## 3.8.0-beta.1 (Unreleased)
+
+
 ### 3.7.0 (2021-05-12)
 #### New Features
 * Updated Spring Boot to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).

@@ -577,7 +577,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def name = generateBlobName()
         def bu = cc.getBlobClient(name).getBlockBlobClient()
-        bu.upload(defaultInputStream.get(), 7)
+        bu.upload(data.defaultInputStream, 7)
 
         when:
         def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(namer.getResourcePrefix()), null).iterator()
@@ -736,7 +736,7 @@ class ContainerAPITest extends APISpec {
         tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
-        uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())
+        uncommittedBlob.stageBlock(getBlockID(), data.defaultInputStream, data.defaultData.remaining())
 
         return normal.createSnapshot().getSnapshotId()
     }
@@ -792,7 +792,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options last access time"() {
         when:
         def b = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        b.upload(defaultInputStream.get(), defaultData.remaining())
+        b.upload(data.defaultInputStream, data.defaultData.remaining())
         def blob = cc.listBlobs().iterator().next()
 
         then:
@@ -925,7 +925,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def prefix = generateBlobName() + ", " + generateBlobName()
         def b = cc.getBlobClient(prefix).getBlockBlobClient()
-        b.upload(defaultInputStream.get(), defaultData.remaining())
+        b.upload(data.defaultInputStream, data.defaultData.remaining())
 
         when:
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix)
@@ -1016,7 +1016,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def name = generateBlobName()
         def bc = cc.getBlobClient(name).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), 7)
+        bc.upload(data.defaultInputStream, 7)
 
         if (rehydratePriority != null) {
             bc.setAccessTier(AccessTier.ARCHIVE)
@@ -1056,7 +1056,7 @@ class ContainerAPITest extends APISpec {
         def blobs = [] as Collection<BlobClientBase>
         for (i in (1..NUM_BLOBS)) {
             def blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-            blob.upload(defaultInputStream.get(), defaultDataSize)
+            blob.upload(data.defaultInputStream, data.defaultDataSize)
             blobs << blob
         }
 
@@ -1075,7 +1075,7 @@ class ContainerAPITest extends APISpec {
         def blobs = [] as Collection<BlobClientBase>
         for (i in (1..NUM_BLOBS)) {
             def blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-            blob.upload(defaultInputStream.get(), defaultDataSize)
+            blob.upload(data.defaultInputStream, data.defaultDataSize)
             blobs << blob
         }
 
@@ -1424,7 +1424,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def name = generateBlobName()
         def bc = cc.getBlobClient(name).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), 7)
+        bc.upload(data.defaultInputStream, 7)
 
         if (rehydratePriority != null) {
             bc.setAccessTier(AccessTier.ARCHIVE)
@@ -1512,7 +1512,7 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null, null)
+        bu4.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, null, null, null)
             .getStatusCode() == 201
 
         when:
@@ -1546,7 +1546,7 @@ class ContainerAPITest extends APISpec {
         bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
         bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null, null)
+        bu4.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, null, null, null)
             .getStatusCode() == 201
 
         when:

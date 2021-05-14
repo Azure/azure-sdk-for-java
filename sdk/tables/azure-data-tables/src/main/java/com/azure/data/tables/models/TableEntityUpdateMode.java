@@ -5,7 +5,7 @@ package com.azure.data.tables.models;
 /**
  * The type of update operation to perform on an existing entity within a table.
  */
-public enum UpdateMode {
+public enum TableEntityUpdateMode {
     /**
      * The provided entity's properties will be merged into the existing entity.
      */

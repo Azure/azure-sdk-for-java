@@ -23,7 +23,7 @@ import java.time.Duration
 class LeaseAPITest extends APISpec {
     private BlobClientBase createBlobClient() {
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         return bc
     }
