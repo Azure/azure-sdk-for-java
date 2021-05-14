@@ -18,7 +18,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-      <version>3.2.1-beta.1</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+      <version>3.2.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
     </dependency>
 
     <!-- spring boot starter dependencies. -->
