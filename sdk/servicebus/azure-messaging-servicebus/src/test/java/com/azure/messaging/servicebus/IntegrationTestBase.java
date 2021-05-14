@@ -27,7 +27,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -101,10 +100,6 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
         StepVerifier.resetDefaultTimeout();
         afterTest();
-
-        // Tear down any inline mocks to avoid memory leaks.
-        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -358,17 +353,20 @@ public abstract class IntegrationTestBase extends TestBase {
 
         Mono.when(closeableMonos).block(TIMEOUT);
     }
-
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
         logger.verbose("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
-
-    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+  
+    protected ServiceBusMessage getMessage(byte[] content, String messageId, boolean isSessionEnabled) {
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(content, messageId);
         logger.verbose("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
+    }
+
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
+        return getMessage(CONTENTS_BYTES, messageId, isSessionEnabled);
     }
 
     protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {
