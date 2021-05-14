@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appconfiguration.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnectionReference;
@@ -40,6 +41,12 @@ public class ConfigurationStoreInner extends Resource {
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
+
+    /*
+     * Resource system metadata.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The provisioning state of the configuration store.
@@ -79,6 +86,12 @@ public class ConfigurationStoreInner extends Resource {
     @JsonProperty(value = "properties.publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
+    /*
+     * Disables all authentication methods other than AAD authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
     /**
      * Get the identity property: The managed identity information, if configured.
      *
@@ -117,6 +130,15 @@ public class ConfigurationStoreInner extends Resource {
     public ConfigurationStoreInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Resource system metadata.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -195,6 +217,26 @@ public class ConfigurationStoreInner extends Resource {
      */
     public ConfigurationStoreInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
         return this;
     }
 
