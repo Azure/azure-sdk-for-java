@@ -1,241 +1,201 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "33fe5a1c-5615-4379-a109-b1d4d02e90ac",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "67407527-9347-4502-a7ae-5349bddd121a",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "286",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "182",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "980f2f12-c44b-4100-9e7e-4b93712b3937",
+      "apim-request-id" : "08f7ad4c-f1ef-4e4a-a426-84cec8a90527",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 26 Mar 2021 13:45:48 GMT",
-      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/f1665345-c022-4713-b2db-58e70726fae5"
+      "Date" : "Tue, 11 May 2021 17:56:29 GMT",
+      "Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cc6fc1ca-b744-4593-a6ce-9ed0e37a3585"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5f5577e-0ef5-47e8-b030-2a24c7e1bb34"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "18",
+      "content-length" : "170",
+      "x-envoy-upstream-service-time" : "57",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7c4b4631-4d00-469d-a7f5-2d31ffb6a51c",
+      "apim-request-id" : "59077229-11bd-4cee-870d-f08f48b4e0a7",
       "retry-after" : "0",
-      "Content-Length" : "170",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"f1665345-c022-4713-b2db-58e70726fae5\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-26T13:45:49Z\",\"lastUpdatedDateTime\":\"2021-03-26T13:45:49Z\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:45:54 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"50841e40-7b73-4c8a-b431-862fb3e8a6c5\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T17:56:30Z\",\"lastUpdatedDateTime\":\"2021-05-11T17:56:30Z\"}}",
+      "Date" : "Tue, 11 May 2021 17:56:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "64a488a4-ace2-4353-a355-38e74871921c"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6c8433c2-e8b9-462e-80e4-d3c67f881af2"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "16",
+      "content-length" : "170",
+      "x-envoy-upstream-service-time" : "74",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d41165f4-4336-4c1d-a638-1558989cf02e",
+      "apim-request-id" : "97b2692a-d2b0-4398-baf7-817135db9e72",
       "retry-after" : "0",
-      "Content-Length" : "170",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"f1665345-c022-4713-b2db-58e70726fae5\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-26T13:45:49Z\",\"lastUpdatedDateTime\":\"2021-03-26T13:45:49Z\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:46:00 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"50841e40-7b73-4c8a-b431-862fb3e8a6c5\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T17:56:30Z\",\"lastUpdatedDateTime\":\"2021-05-11T17:56:30Z\"}}",
+      "Date" : "Tue, 11 May 2021 17:56:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e00ba25e-8b20-4367-b999-1535d6d68bb7"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34424b6e-ff17-4e9a-898d-4380ffb2c5ba"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "16",
+      "content-length" : "170",
+      "x-envoy-upstream-service-time" : "24",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "cb57e014-e618-4396-b857-0d11996369c0",
+      "apim-request-id" : "e446a87f-dec2-4636-988f-4bf9a2552aee",
       "retry-after" : "0",
-      "Content-Length" : "170",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"f1665345-c022-4713-b2db-58e70726fae5\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-26T13:45:49Z\",\"lastUpdatedDateTime\":\"2021-03-26T13:45:49Z\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:46:05 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"50841e40-7b73-4c8a-b431-862fb3e8a6c5\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T17:56:30Z\",\"lastUpdatedDateTime\":\"2021-05-11T17:56:30Z\"}}",
+      "Date" : "Tue, 11 May 2021 17:56:46 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "35029f26-df72-44d1-9ef1-63720fbe4370"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4ab5fe49-dc6b-41ae-aaa7-977959162aea"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "19",
+      "content-length" : "939",
+      "x-envoy-upstream-service-time" : "61",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a806a7a9-6004-4b2c-af07-2e05930764b2",
+      "apim-request-id" : "eb4a8657-83ed-48c2-903a-4386dfdfb9ad",
       "retry-after" : "0",
-      "Content-Length" : "170",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"f1665345-c022-4713-b2db-58e70726fae5\",\"status\":\"creating\",\"createdDateTime\":\"2021-03-26T13:45:49Z\",\"lastUpdatedDateTime\":\"2021-03-26T13:45:49Z\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:46:10 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"50841e40-7b73-4c8a-b431-862fb3e8a6c5\",\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T17:56:30Z\",\"lastUpdatedDateTime\":\"2021-05-11T17:56:47Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Ft Lauderdale, FL Phone:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Tue, 11 May 2021 17:56:50 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0f1e40bb-85cf-4299-9fc7-2595ea2a00f0"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee4941ce-a1df-4d1b-a48e-13efeca064e8"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "16",
+      "content-length" : "939",
+      "x-envoy-upstream-service-time" : "113",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0a7a921c-514f-47e2-8a10-27075011dfc6",
+      "apim-request-id" : "c17bdc36-8bbd-49e4-8065-de2dd7d804fa",
       "retry-after" : "0",
-      "Content-Length" : "912",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"f1665345-c022-4713-b2db-58e70726fae5\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-26T13:45:49Z\",\"lastUpdatedDateTime\":\"2021-03-26T13:46:12Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Fri, 26 Mar 2021 13:46:16 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fbb496e5-358b-4790-aaf5-7b27d3d38f7c"
-    },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "53",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4b25d23d-0dc6-472c-8941-0ebb4400e00f",
-      "retry-after" : "0",
-      "Content-Length" : "912",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"f1665345-c022-4713-b2db-58e70726fae5\",\"status\":\"ready\",\"createdDateTime\":\"2021-03-26T13:45:49Z\",\"lastUpdatedDateTime\":\"2021-03-26T13:46:12Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Fri, 26 Mar 2021 13:46:16 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"50841e40-7b73-4c8a-b431-862fb3e8a6c5\",\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T17:56:30Z\",\"lastUpdatedDateTime\":\"2021-05-11T17:56:47Z\"},\"keys\":{\"clusters\":{\"0\":[\"Additional Notes:\",\"Address:\",\"Company Name:\",\"Company Phone:\",\"Dated As:\",\"Details\",\"Email:\",\"Ft Lauderdale, FL Phone:\",\"Hero Limited\",\"Name:\",\"Phone:\",\"Purchase Order\",\"Purchase Order #:\",\"Quantity\",\"SUBTOTAL\",\"Seattle, WA 93849 Phone:\",\"Shipped From\",\"Shipped To\",\"TAX\",\"TOTAL\",\"Total\",\"Unit Price\",\"Vendor Name:\",\"Website:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Tue, 11 May 2021 17:56:50 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "72628536-aef4-4602-af2b-331ba46334df",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "603111c2-0e94-4486-b587-281c6cf50be3",
       "Content-Type" : "application/pdf"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "63",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "151",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f9980c3d-469e-495d-b878-0506db663edd",
+      "apim-request-id" : "48844183-c35d-4072-98e1-2a0c0463a4b6",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/f1665345-c022-4713-b2db-58e70726fae5/analyzeresults/3acaa2b7-2da9-4f14-b50d-5e700ca22cde",
-      "Date" : "Fri, 26 Mar 2021 13:46:17 GMT"
+      "Operation-Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5/analyzeresults/a21a471f-f03f-4413-9ed7-6d689b2710b2",
+      "Date" : "Tue, 11 May 2021 17:56:50 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5/analyzeResults/3acaa2b7-2da9-4f14-b50d-5e700ca22cde",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5/analyzeResults/a21a471f-f03f-4413-9ed7-6d689b2710b2",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d7064f6a-3399-48ab-b558-4d7030cfb009"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c19c088-70df-47ee-89d1-c719a6705fa4"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "27",
+      "content-length" : "134",
+      "x-envoy-upstream-service-time" : "39",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2f8110e1-8c8b-4594-91da-fe4532986edd",
+      "apim-request-id" : "26f759dc-bf66-443d-bb23-8ca7903473e4",
       "retry-after" : "0",
-      "Content-Length" : "134",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-03-26T13:46:18Z\", \"lastUpdatedDateTime\": \"2021-03-26T13:46:18Z\", \"analyzeResult\": null}",
-      "Date" : "Fri, 26 Mar 2021 13:46:23 GMT",
+      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-05-11T17:56:51Z\", \"lastUpdatedDateTime\": \"2021-05-11T17:56:52Z\", \"analyzeResult\": null}",
+      "Date" : "Tue, 11 May 2021 17:56:56 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5/analyzeResults/3acaa2b7-2da9-4f14-b50d-5e700ca22cde",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5/analyzeResults/a21a471f-f03f-4413-9ed7-6d689b2710b2",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a63332e1-fee1-4a87-b3b4-85c6337668e5"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e06f2f4-1e22-4f3f-8ca3-f65b23ec7261"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "24",
+      "content-length" : "4875",
+      "x-envoy-upstream-service-time" : "97",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7e8a487d-302e-4560-9601-fff876bb28ab",
+      "apim-request-id" : "349fd49e-adb7-41ed-a696-eb5d29473dfa",
       "retry-after" : "0",
-      "Content-Length" : "134",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-03-26T13:46:18Z\", \"lastUpdatedDateTime\": \"2021-03-26T13:46:18Z\", \"analyzeResult\": null}",
-      "Date" : "Fri, 26 Mar 2021 13:46:28 GMT",
+      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-05-11T17:56:51Z\", \"lastUpdatedDateTime\": \"2021-05-11T17:56:58Z\", \"analyzeResult\": {\"version\": null, \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.7917, 1.5, 1.3889, 1.5, 1.3889, 1.6319, 0.7917, 1.6319], \"elements\": null}, \"value\": {\"text\": \"14564 Main St. Saratoga, CA 94588\", \"boundingBox\": [0.7889, 1.691, 2.0556, 1.691, 2.0556, 2.0241, 0.7889, 2.0241], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [4.3722, 1.5046, 5.15, 1.5046, 5.15, 1.6343, 4.3722, 1.6343], \"elements\": null}, \"value\": {\"text\": \"First Up Consultants 1234 King St Redmond, WA 97624\", \"boundingBox\": [5.1736, 1.4976, 6.5667, 1.4976, 6.5667, 2.0329, 5.1736, 2.0329], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Number\", \"boundingBox\": [0.5139, 2.863, 1.5861, 2.863, 1.5861, 2.9914, 0.5139, 2.9914], \"elements\": null}, \"value\": {\"text\": \"7689302\", \"boundingBox\": [0.5306, 3.3993, 1.0833, 3.3993, 1.0833, 3.5243, 0.5306, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Date\", \"boundingBox\": [1.9306, 2.8632, 2.7639, 2.8632, 2.7639, 2.9896, 1.9306, 2.9896], \"elements\": null}, \"value\": {\"text\": \"3/09/2015\", \"boundingBox\": [1.9306, 3.3993, 2.5625, 3.3993, 2.5625, 3.5243, 1.9306, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Due Date\", \"boundingBox\": [3.3306, 2.8611, 4.4722, 2.8611, 4.4722, 2.9912, 3.3306, 2.9912], \"elements\": null}, \"value\": {\"text\": \"6/29/2016\", \"boundingBox\": [3.3361, 3.3958, 3.9653, 3.3958, 3.9653, 3.5243, 3.3361, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Charges\", \"boundingBox\": [4.7389, 2.8646, 5.2986, 2.8646, 5.2986, 2.9965, 4.7389, 2.9965], \"elements\": null}, \"value\": {\"text\": \"$22, 123.24\", \"boundingBox\": [5.275, 3.4078, 5.9972, 3.4078, 5.9972, 3.5382, 5.275, 3.5382], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"VAT ID\", \"boundingBox\": [6.1319, 2.8611, 6.5944, 2.8611, 6.5944, 2.9884, 6.1319, 2.9884], \"elements\": null}, \"value\": {\"text\": \"QR\", \"boundingBox\": [6.2194, 3.4028, 6.4194, 3.4028, 6.4194, 3.5208, 6.2194, 3.5208], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 2, \"columns\": 5, \"cells\": [{\"text\": \"Invoice Number\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [0.5139, 2.863, 1.5861, 2.863, 1.5861, 2.9914, 0.5139, 2.9914], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Date\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [1.9306, 2.8632, 2.7639, 2.8632, 2.7639, 2.9896, 1.9306, 2.9896], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Due Date\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [3.3306, 2.8611, 4.4722, 2.8611, 4.4722, 2.9912, 3.3306, 2.9912], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Charges\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [4.7389, 2.8646, 5.2986, 2.8646, 5.2986, 2.9965, 4.7389, 2.9965], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"VAT ID\", \"rowIndex\": 0, \"columnIndex\": 4, \"boundingBox\": [6.1319, 2.8611, 6.5944, 2.8611, 6.5944, 2.9884, 6.1319, 2.9884], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"7689302\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [0.5306, 3.3993, 1.0833, 3.3993, 1.0833, 3.5243, 0.5306, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"3/09/2015\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [1.9306, 3.3993, 2.5625, 3.3993, 2.5625, 3.5243, 1.9306, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6/29/2016\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [3.3361, 3.3958, 3.9653, 3.3958, 3.9653, 3.5243, 3.3361, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"$22, 123.24\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [5.275, 3.4078, 5.9972, 3.4078, 5.9972, 3.5382, 5.275, 3.5382], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"QR\", \"rowIndex\": 1, \"columnIndex\": 4, \"boundingBox\": [6.2194, 3.4028, 6.4194, 3.4028, 6.4194, 3.5208, 6.2194, 3.5208], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}], \"documentResults\": [], \"errors\": []}}",
+      "Date" : "Tue, 11 May 2021 17:57:02 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5/analyzeResults/3acaa2b7-2da9-4f14-b50d-5e700ca22cde",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/50841e40-7b73-4c8a-b431-862fb3e8a6c5/analyzeResults/a21a471f-f03f-4413-9ed7-6d689b2710b2",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a88e32f1-baea-47b1-939b-1d66aa0c345d"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7fd0a4c2-4f22-4da6-9434-4ee5d58fa945"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "25",
+      "content-length" : "4875",
+      "x-envoy-upstream-service-time" : "31",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6b8475be-0228-49f7-b395-16a0ace6e193",
+      "apim-request-id" : "fca94afb-232e-4d4a-a2d9-84effb79a3a7",
       "retry-after" : "0",
-      "Content-Length" : "4961",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-03-26T13:46:18Z\", \"lastUpdatedDateTime\": \"2021-03-26T13:46:29Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.7917, 1.5, 1.3889, 1.5, 1.3889, 1.6319, 0.7917, 1.6319], \"elements\": null}, \"value\": {\"text\": \"14564 Main St. Saratoga, CA 94588\", \"boundingBox\": [0.7944, 1.691, 2.0417, 1.691, 2.0417, 2.0241, 0.7944, 2.0241], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [4.3722, 1.5046, 5.1361, 1.5046, 5.1361, 1.6343, 4.3722, 1.6343], \"elements\": null}, \"value\": {\"text\": \"First Up Consultants 1234 King St Redmond, WA 97624\", \"boundingBox\": [5.1694, 1.4976, 6.5528, 1.4976, 6.5528, 2.0329, 5.1694, 2.0329], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Number\", \"boundingBox\": [0.5139, 2.863, 1.5833, 2.863, 1.5833, 2.9914, 0.5139, 2.9914], \"elements\": null}, \"value\": {\"text\": \"7689302\", \"boundingBox\": [0.5306, 3.3993, 1.0625, 3.3993, 1.0625, 3.5243, 0.5306, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Date\", \"boundingBox\": [1.9306, 2.8632, 2.7431, 2.8632, 2.7431, 2.9896, 1.9306, 2.9896], \"elements\": null}, \"value\": {\"text\": \"3/09/2015\", \"boundingBox\": [1.9375, 3.3993, 2.5417, 3.3993, 2.5417, 3.5243, 1.9375, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Due Date\", \"boundingBox\": [3.3306, 2.8611, 4.4514, 2.8611, 4.4514, 2.9912, 3.3306, 2.9912], \"elements\": null}, \"value\": {\"text\": \"6/29/2016\", \"boundingBox\": [3.3361, 3.3958, 3.9333, 3.3958, 3.9333, 3.5243, 3.3361, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Charges\", \"boundingBox\": [4.7389, 2.8646, 5.2889, 2.8646, 5.2889, 2.9965, 4.7389, 2.9965], \"elements\": null}, \"value\": {\"text\": \"$22,123.24\", \"boundingBox\": [5.275, 3.4097, 5.9653, 3.4097, 5.9653, 3.5382, 5.275, 3.5382], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"VAT ID\", \"boundingBox\": [6.1319, 2.8611, 6.5667, 2.8611, 6.5667, 2.9884, 6.1319, 2.9884], \"elements\": null}, \"value\": {\"text\": \"QR\", \"boundingBox\": [6.2194, 3.4028, 6.3861, 3.4028, 6.3861, 3.5208, 6.2194, 3.5208], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 2, \"columns\": 5, \"boundingBox\": [0.5139, 2.8611, 6.5667, 2.8611, 6.5667, 3.5382, 0.5139, 3.5382], \"cells\": [{\"text\": \"Invoice Number\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [0.5139, 2.863, 1.5833, 2.863, 1.5833, 2.9914, 0.5139, 2.9914], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Date\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [1.9306, 2.8632, 2.7431, 2.8632, 2.7431, 2.9896, 1.9306, 2.9896], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Due Date\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [3.3306, 2.8611, 4.4514, 2.8611, 4.4514, 2.9912, 3.3306, 2.9912], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Charges\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [4.7389, 2.8646, 5.2889, 2.8646, 5.2889, 2.9965, 4.7389, 2.9965], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"VAT ID\", \"rowIndex\": 0, \"columnIndex\": 4, \"boundingBox\": [6.1319, 2.8611, 6.5667, 2.8611, 6.5667, 2.9884, 6.1319, 2.9884], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"7689302\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [0.5306, 3.3993, 1.0625, 3.3993, 1.0625, 3.5243, 0.5306, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"3/09/2015\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [1.9375, 3.3993, 2.5417, 3.3993, 2.5417, 3.5243, 1.9375, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6/29/2016\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [3.3361, 3.3958, 3.9333, 3.3958, 3.9333, 3.5243, 3.3361, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"$22,123.24\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [5.275, 3.4097, 5.9653, 3.4097, 5.9653, 3.5382, 5.275, 3.5382], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"QR\", \"rowIndex\": 1, \"columnIndex\": 4, \"boundingBox\": [6.2194, 3.4028, 6.3861, 3.4028, 6.3861, 3.5208, 6.2194, 3.5208], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}], \"documentResults\": [], \"errors\": []}}",
-      "Date" : "Fri, 26 Mar 2021 13:46:33 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/f1665345-c022-4713-b2db-58e70726fae5/analyzeResults/3acaa2b7-2da9-4f14-b50d-5e700ca22cde",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c3ad0878-e57a-4f5b-99ae-1e68f7fd039d"
-    },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "22",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "81af8119-d78c-41f6-b9a5-f40585b9203b",
-      "retry-after" : "0",
-      "Content-Length" : "4961",
-      "StatusCode" : "200",
-      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-03-26T13:46:18Z\", \"lastUpdatedDateTime\": \"2021-03-26T13:46:29Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.7917, 1.5, 1.3889, 1.5, 1.3889, 1.6319, 0.7917, 1.6319], \"elements\": null}, \"value\": {\"text\": \"14564 Main St. Saratoga, CA 94588\", \"boundingBox\": [0.7944, 1.691, 2.0417, 1.691, 2.0417, 2.0241, 0.7944, 2.0241], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [4.3722, 1.5046, 5.1361, 1.5046, 5.1361, 1.6343, 4.3722, 1.6343], \"elements\": null}, \"value\": {\"text\": \"First Up Consultants 1234 King St Redmond, WA 97624\", \"boundingBox\": [5.1694, 1.4976, 6.5528, 1.4976, 6.5528, 2.0329, 5.1694, 2.0329], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Number\", \"boundingBox\": [0.5139, 2.863, 1.5833, 2.863, 1.5833, 2.9914, 0.5139, 2.9914], \"elements\": null}, \"value\": {\"text\": \"7689302\", \"boundingBox\": [0.5306, 3.3993, 1.0625, 3.3993, 1.0625, 3.5243, 0.5306, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Date\", \"boundingBox\": [1.9306, 2.8632, 2.7431, 2.8632, 2.7431, 2.9896, 1.9306, 2.9896], \"elements\": null}, \"value\": {\"text\": \"3/09/2015\", \"boundingBox\": [1.9375, 3.3993, 2.5417, 3.3993, 2.5417, 3.5243, 1.9375, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Due Date\", \"boundingBox\": [3.3306, 2.8611, 4.4514, 2.8611, 4.4514, 2.9912, 3.3306, 2.9912], \"elements\": null}, \"value\": {\"text\": \"6/29/2016\", \"boundingBox\": [3.3361, 3.3958, 3.9333, 3.3958, 3.9333, 3.5243, 3.3361, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Charges\", \"boundingBox\": [4.7389, 2.8646, 5.2889, 2.8646, 5.2889, 2.9965, 4.7389, 2.9965], \"elements\": null}, \"value\": {\"text\": \"$22,123.24\", \"boundingBox\": [5.275, 3.4097, 5.9653, 3.4097, 5.9653, 3.5382, 5.275, 3.5382], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"VAT ID\", \"boundingBox\": [6.1319, 2.8611, 6.5667, 2.8611, 6.5667, 2.9884, 6.1319, 2.9884], \"elements\": null}, \"value\": {\"text\": \"QR\", \"boundingBox\": [6.2194, 3.4028, 6.3861, 3.4028, 6.3861, 3.5208, 6.2194, 3.5208], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 2, \"columns\": 5, \"boundingBox\": [0.5139, 2.8611, 6.5667, 2.8611, 6.5667, 3.5382, 0.5139, 3.5382], \"cells\": [{\"text\": \"Invoice Number\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [0.5139, 2.863, 1.5833, 2.863, 1.5833, 2.9914, 0.5139, 2.9914], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Date\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [1.9306, 2.8632, 2.7431, 2.8632, 2.7431, 2.9896, 1.9306, 2.9896], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Due Date\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [3.3306, 2.8611, 4.4514, 2.8611, 4.4514, 2.9912, 3.3306, 2.9912], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Charges\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [4.7389, 2.8646, 5.2889, 2.8646, 5.2889, 2.9965, 4.7389, 2.9965], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"VAT ID\", \"rowIndex\": 0, \"columnIndex\": 4, \"boundingBox\": [6.1319, 2.8611, 6.5667, 2.8611, 6.5667, 2.9884, 6.1319, 2.9884], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"7689302\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [0.5306, 3.3993, 1.0625, 3.3993, 1.0625, 3.5243, 0.5306, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"3/09/2015\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [1.9375, 3.3993, 2.5417, 3.3993, 2.5417, 3.5243, 1.9375, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6/29/2016\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [3.3361, 3.3958, 3.9333, 3.3958, 3.9333, 3.5243, 3.3361, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"$22,123.24\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [5.275, 3.4097, 5.9653, 3.4097, 5.9653, 3.5382, 5.275, 3.5382], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"QR\", \"rowIndex\": 1, \"columnIndex\": 4, \"boundingBox\": [6.2194, 3.4028, 6.3861, 3.4028, 6.3861, 3.5208, 6.2194, 3.5208], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}], \"documentResults\": [], \"errors\": []}}",
-      "Date" : "Fri, 26 Mar 2021 13:46:34 GMT",
+      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-05-11T17:56:51Z\", \"lastUpdatedDateTime\": \"2021-05-11T17:56:58Z\", \"analyzeResult\": {\"version\": null, \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.7917, 1.5, 1.3889, 1.5, 1.3889, 1.6319, 0.7917, 1.6319], \"elements\": null}, \"value\": {\"text\": \"14564 Main St. Saratoga, CA 94588\", \"boundingBox\": [0.7889, 1.691, 2.0556, 1.691, 2.0556, 2.0241, 0.7889, 2.0241], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [4.3722, 1.5046, 5.15, 1.5046, 5.15, 1.6343, 4.3722, 1.6343], \"elements\": null}, \"value\": {\"text\": \"First Up Consultants 1234 King St Redmond, WA 97624\", \"boundingBox\": [5.1736, 1.4976, 6.5667, 1.4976, 6.5667, 2.0329, 5.1736, 2.0329], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Number\", \"boundingBox\": [0.5139, 2.863, 1.5861, 2.863, 1.5861, 2.9914, 0.5139, 2.9914], \"elements\": null}, \"value\": {\"text\": \"7689302\", \"boundingBox\": [0.5306, 3.3993, 1.0833, 3.3993, 1.0833, 3.5243, 0.5306, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Date\", \"boundingBox\": [1.9306, 2.8632, 2.7639, 2.8632, 2.7639, 2.9896, 1.9306, 2.9896], \"elements\": null}, \"value\": {\"text\": \"3/09/2015\", \"boundingBox\": [1.9306, 3.3993, 2.5625, 3.3993, 2.5625, 3.5243, 1.9306, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Invoice Due Date\", \"boundingBox\": [3.3306, 2.8611, 4.4722, 2.8611, 4.4722, 2.9912, 3.3306, 2.9912], \"elements\": null}, \"value\": {\"text\": \"6/29/2016\", \"boundingBox\": [3.3361, 3.3958, 3.9653, 3.3958, 3.9653, 3.5243, 3.3361, 3.5243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Charges\", \"boundingBox\": [4.7389, 2.8646, 5.2986, 2.8646, 5.2986, 2.9965, 4.7389, 2.9965], \"elements\": null}, \"value\": {\"text\": \"$22, 123.24\", \"boundingBox\": [5.275, 3.4078, 5.9972, 3.4078, 5.9972, 3.5382, 5.275, 3.5382], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"VAT ID\", \"boundingBox\": [6.1319, 2.8611, 6.5944, 2.8611, 6.5944, 2.9884, 6.1319, 2.9884], \"elements\": null}, \"value\": {\"text\": \"QR\", \"boundingBox\": [6.2194, 3.4028, 6.4194, 3.4028, 6.4194, 3.5208, 6.2194, 3.5208], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 2, \"columns\": 5, \"cells\": [{\"text\": \"Invoice Number\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [0.5139, 2.863, 1.5861, 2.863, 1.5861, 2.9914, 0.5139, 2.9914], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Date\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [1.9306, 2.8632, 2.7639, 2.8632, 2.7639, 2.9896, 1.9306, 2.9896], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Invoice Due Date\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [3.3306, 2.8611, 4.4722, 2.8611, 4.4722, 2.9912, 3.3306, 2.9912], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Charges\", \"rowIndex\": 0, \"columnIndex\": 3, \"boundingBox\": [4.7389, 2.8646, 5.2986, 2.8646, 5.2986, 2.9965, 4.7389, 2.9965], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"VAT ID\", \"rowIndex\": 0, \"columnIndex\": 4, \"boundingBox\": [6.1319, 2.8611, 6.5944, 2.8611, 6.5944, 2.9884, 6.1319, 2.9884], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"7689302\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [0.5306, 3.3993, 1.0833, 3.3993, 1.0833, 3.5243, 0.5306, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"3/09/2015\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [1.9306, 3.3993, 2.5625, 3.3993, 2.5625, 3.5243, 1.9306, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6/29/2016\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [3.3361, 3.3958, 3.9653, 3.3958, 3.9653, 3.5243, 3.3361, 3.5243], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"$22, 123.24\", \"rowIndex\": 1, \"columnIndex\": 3, \"boundingBox\": [5.275, 3.4078, 5.9972, 3.4078, 5.9972, 3.5382, 5.275, 3.5382], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"QR\", \"rowIndex\": 1, \"columnIndex\": 4, \"boundingBox\": [6.2194, 3.4028, 6.4194, 3.4028, 6.4194, 3.5208, 6.2194, 3.5208], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}], \"documentResults\": [], \"errors\": []}}",
+      "Date" : "Tue, 11 May 2021 17:57:02 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

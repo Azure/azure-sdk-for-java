@@ -137,6 +137,13 @@ public class DeletedSiteInner extends ProxyOnlyResource {
         return this.geoRegionName;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DeletedSiteInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

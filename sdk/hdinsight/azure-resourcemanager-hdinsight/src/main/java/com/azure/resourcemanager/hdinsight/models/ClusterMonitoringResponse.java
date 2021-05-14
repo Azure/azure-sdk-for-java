@@ -9,16 +9,14 @@ import com.azure.resourcemanager.hdinsight.fluent.models.ClusterMonitoringRespon
 /** An immutable client-side representation of ClusterMonitoringResponse. */
 public interface ClusterMonitoringResponse {
     /**
-     * Gets the clusterMonitoringEnabled property: The status of the Operations Management Suite (OMS) on the HDInsight
-     * cluster.
+     * Gets the clusterMonitoringEnabled property: The status of the monitor on the HDInsight cluster.
      *
      * @return the clusterMonitoringEnabled value.
      */
     Boolean clusterMonitoringEnabled();
 
     /**
-     * Gets the workspaceId property: The workspace ID of the Operations Management Suite (OMS) on the HDInsight
-     * cluster.
+     * Gets the workspaceId property: The workspace ID of the monitor on the HDInsight cluster.
      *
      * @return the workspaceId value.
      */

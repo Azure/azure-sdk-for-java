@@ -5,7 +5,9 @@
 server:
   port: 8082
 
-#azure:
-#  activedirectory:
-#    client-id: <client-id>
-#    app-id-uri: <app-id-uri>
+azure:
+  activedirectory:
+    tenant-id: ${your-tenant-id}
+#    client-id:  ${your-client-id}
+#    app-id-uri:  ${your-app-id-uri}
+

@@ -28,6 +28,10 @@ public class RuntimeConstants {
         public static final String TCP = "rntbd";
     }
 
+    public static class Encoding {
+        public static final String GZIP = "gzip";
+    }
+
     static class Separators {
         static final char[] Url = new char[] {'/'};
         static final char[] Quote = new char[] {'\''};

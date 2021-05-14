@@ -1,65 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestssetmultipleaccesspolicies96733ed7eb4",
+    "Uri" : "https://REDACTED.queue.core.windows.net/847f2765847f276535f93665167dd0ea8e554e44b3",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a928b118-6bc8-4c33-811b-eeeff859bab7"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fad8df9b-c961-433b-9ec6-75d317d7c338"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "37a3a192-3003-009b-3603-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:05:19 GMT",
-      "x-ms-client-request-id" : "a928b118-6bc8-4c33-811b-eeeff859bab7"
+      "x-ms-request-id" : "90ba1197-f003-00bb-4209-414c83000000",
+      "x-ms-client-request-id" : "fad8df9b-c961-433b-9ec6-75d317d7c338",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestssetmultipleaccesspolicies96733ed7eb4?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/847f2765847f276535f93665167dd0ea8e554e44b3?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "cde2eb2d-e097-47fe-8946-839b2e220b8d",
-      "Content-Type" : "application/xml; charset=utf-8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e94f456-2324-429a-aeb4-bea63215c749",
+      "Content-Type" : "application/xml"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "37a3a197-3003-009b-3a03-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:05:20 GMT",
-      "x-ms-client-request-id" : "cde2eb2d-e097-47fe-8946-839b2e220b8d"
+      "x-ms-request-id" : "80fe110e-6003-002f-5a09-41fbea000000",
+      "x-ms-client-request-id" : "0e94f456-2324-429a-aeb4-bea63215c749",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestssetmultipleaccesspolicies96733ed7eb4?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/847f2765847f276535f93665167dd0ea8e554e44b3?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "54f173f4-fc31-4ee5-8215-246150172522"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d7123d0c-97c9-4c87-9ac9-d31877179389"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2020-06-12",
       "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "37a3a19a-3003-009b-3d03-3a8ca5000000",
+      "x-ms-request-id" : "10a7c4de-c003-0044-0609-417c1e000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers><SignedIdentifier><Id>policy0</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier><SignedIdentifier><Id>policy1</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier><SignedIdentifier><Id>policy2</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>",
-      "Date" : "Thu, 04 Jun 2020 00:05:20 GMT",
-      "x-ms-client-request-id" : "54f173f4-fc31-4ee5-8215-246150172522",
+      "x-ms-client-request-id" : "d7123d0c-97c9-4c87-9ac9-d31877179389",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestssetmultipleaccesspolicies96733ed7eb4" ]
+  "variables" : [ "847f2765847f276535f93665167dd0ea8e554e44b3" ]
 }

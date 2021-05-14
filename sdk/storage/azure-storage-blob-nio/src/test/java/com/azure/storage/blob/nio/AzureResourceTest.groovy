@@ -71,8 +71,8 @@ class AzureResourceTest extends APISpec {
 
         // Create resources as necessary
         if (status == DirectoryStatus.NOT_A_DIRECTORY) {
-            blobClient1.upload(defaultInputStream.get(), defaultDataSize)
-            blobClient2.upload(defaultInputStream.get(), defaultDataSize)
+            blobClient1.upload(data.defaultInputStream, data.defaultDataSize)
+            blobClient2.upload(data.defaultInputStream, data.defaultDataSize)
         } else if (status == DirectoryStatus.EMPTY) {
             putDirectoryBlob(blobClient1.getBlockBlobClient())
             putDirectoryBlob(blobClient2.getBlockBlobClient())
@@ -81,8 +81,8 @@ class AzureResourceTest extends APISpec {
                 putDirectoryBlob(blobClient1.getBlockBlobClient())
                 putDirectoryBlob(blobClient2.getBlockBlobClient())
             }
-            childClient1.upload(defaultInputStream.get(), defaultDataSize)
-            childClient2.upload(defaultInputStream.get(), defaultDataSize)
+            childClient1.upload(data.defaultInputStream, data.defaultDataSize)
+            childClient2.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         expect:
@@ -249,7 +249,7 @@ class AzureResourceTest extends APISpec {
         setup:
         def fs = createFS(config)
         def resource = new AzureResource(fs.getPath(generateBlobName()))
-        resource.getBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        resource.getBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         match = setupBlobMatchCondition(resource.getBlobClient(), match)
         def bac = new BlobRequestConditions()
             .setIfMatch(match)
@@ -277,7 +277,7 @@ class AzureResourceTest extends APISpec {
         setup:
         def fs = createFS(config)
         def resource = new AzureResource(fs.getPath(generateBlobName()))
-        resource.getBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        resource.getBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         noneMatch = setupBlobMatchCondition(resource.getBlobClient(), noneMatch)
         def bac = new BlobRequestConditions()
             .setIfMatch(match)

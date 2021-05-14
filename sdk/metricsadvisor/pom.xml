@@ -52,6 +52,7 @@
       </activation>
       <modules>
         <module>azure-ai-metricsadvisor</module>
+        <module>azure-ai-metricsadvisor-perf</module>
       </modules>
     </profile>
   </profiles>

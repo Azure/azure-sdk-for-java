@@ -328,8 +328,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         client.listBlobContainers(listBlobContainersOptions).flatMap(
             deletedContainer -> {
                 Mono<BlobContainerAsyncClient> blobContainerClient = client.undeleteBlobContainerWithResponse(
-                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion())
-                        .setDestinationContainerName(deletedContainer.getName() + "V2"))
+                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion()))
                     .map(Response::getValue);
                 return blobContainerClient;
             }

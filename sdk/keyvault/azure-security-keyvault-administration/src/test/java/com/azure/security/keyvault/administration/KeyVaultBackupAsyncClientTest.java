@@ -28,7 +28,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     }
 
     /**
-     * Tests that a Key Vault can be backed up.
+     * Tests that a Key Vault or MHSM can be backed up.
      */
     @SuppressWarnings("ConstantConditions")
     @ParameterizedTest(name = DISPLAY_NAME)

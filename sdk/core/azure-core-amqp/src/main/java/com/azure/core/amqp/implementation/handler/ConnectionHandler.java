@@ -204,7 +204,7 @@ public class ConnectionHandler extends Handler {
             connection.free();
         }
 
-        onNext(connection.getRemoteState());
+        close();
     }
 
     @Override
