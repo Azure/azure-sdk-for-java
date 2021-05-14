@@ -6,20 +6,15 @@ package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
-import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
-import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.ResourceKind;
-import com.azure.resourcemanager.eventgrid.models.ResourceSku;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
@@ -33,7 +28,7 @@ import java.util.stream.Collectors;
 public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     private TopicInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -58,22 +53,6 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public ResourceSku sku() {
-        return this.innerModel().sku();
-    }
-
-    public IdentityInfo identity() {
-        return this.innerModel().identity();
-    }
-
-    public ResourceKind kind() {
-        return this.innerModel().kind();
-    }
-
-    public ExtendedLocation extendedLocation() {
-        return this.innerModel().extendedLocation();
     }
 
     public SystemData systemData() {
@@ -139,7 +118,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -172,7 +151,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    TopicImpl(String name, EventGridManager serviceManager) {
+    TopicImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new TopicInner();
         this.serviceManager = serviceManager;
         this.topicName = name;
@@ -201,7 +180,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    TopicImpl(TopicInner innerObject, EventGridManager serviceManager) {
+    TopicImpl(TopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -262,41 +241,6 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
             this.updateTopicUpdateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public TopicImpl withSku(ResourceSku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateTopicUpdateParameters.withSku(sku);
-            return this;
-        }
-    }
-
-    public TopicImpl withIdentity(IdentityInfo identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateTopicUpdateParameters.withIdentity(identity);
-            return this;
-        }
-    }
-
-    public TopicImpl withKind(ResourceKind kind) {
-        this.innerModel().withKind(kind);
-        return this;
-    }
-
-    public TopicImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
-        return this;
-    }
-
-    public TopicImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
-        return this;
     }
 
     public TopicImpl withInputSchema(InputSchema inputSchema) {

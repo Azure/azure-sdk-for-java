@@ -10,7 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 
 import java.time.Duration;
 
@@ -27,7 +27,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * {@link TableServiceClientBuilder} object.
  */
 @ServiceClient(builder = TableServiceClientBuilder.class)
-public class TableServiceClient {
+public final class TableServiceClient {
     private final TableServiceAsyncClient client;
 
     TableServiceClient(TableServiceAsyncClient client) {
@@ -44,12 +44,12 @@ public class TableServiceClient {
     }
 
     /**
-     * Gets the absolute URL for the Tables service endpoint.
+     * Gets the endpoint for the Tables service.
      *
-     * @return The absolute URL for the Tables service endpoint.
+     * @return The endpoint for the Tables service.
      */
-    public String getServiceUrl() {
-        return client.getServiceUrl();
+    public String getServiceEndpoint() {
+        return client.getServiceEndpoint();
     }
 
     /**
@@ -57,8 +57,8 @@ public class TableServiceClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return client.getApiVersion();
+    public TableServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -80,7 +80,7 @@ public class TableServiceClient {
      * @param tableName The name of the table to create.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTable(String tableName) {
@@ -94,7 +94,7 @@ public class TableServiceClient {
      * @param timeout Duration to wait for the operation to complete.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTable(String tableName, Duration timeout) {
@@ -111,7 +111,7 @@ public class TableServiceClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If a table with the same name already exists within the service.
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createTableWithResponse(String tableName, Duration timeout, Context context) {
@@ -165,7 +165,7 @@ public class TableServiceClient {
      * @param tableName The name of the table to delete.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceException If no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String tableName) {
@@ -179,7 +179,7 @@ public class TableServiceClient {
      * @param timeout Duration to wait for the operation to complete.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceException If no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String tableName, Duration timeout) {
@@ -196,7 +196,7 @@ public class TableServiceClient {
      * @return The HTTP response.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws TableServiceErrorException If no table with the provided name exists within the service.
+     * @throws TableServiceException If no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
@@ -208,7 +208,7 @@ public class TableServiceClient {
      *
      * @return A paged iterable containing all tables within the account.
      *
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables() {
@@ -226,7 +226,7 @@ public class TableServiceClient {
      * @return A paged iterable containing matching tables within the account.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options) {

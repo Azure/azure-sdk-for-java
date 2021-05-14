@@ -55,10 +55,10 @@ public class BackupPatch {
     private String label;
 
     /*
-     * Type of backup adhoc or scheduled
+     * Type of backup Manual or Scheduled
      */
     @JsonProperty(value = "properties.backupType", access = JsonProperty.Access.WRITE_ONLY)
-    private String backupType;
+    private BackupType backupType;
 
     /*
      * Failure reason
@@ -71,6 +71,13 @@ public class BackupPatch {
      */
     @JsonProperty(value = "properties.volumeName", access = JsonProperty.Access.WRITE_ONLY)
     private String volumeName;
+
+    /*
+     * Manual backup an already existing snapshot. This will always be false
+     * for scheduled backups and true/false for manual backups
+     */
+    @JsonProperty(value = "properties.useExistingSnapshot")
+    private Boolean useExistingSnapshot;
 
     /**
      * Get the tags property: Resource tags.
@@ -149,11 +156,11 @@ public class BackupPatch {
     }
 
     /**
-     * Get the backupType property: Type of backup adhoc or scheduled.
+     * Get the backupType property: Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */
-    public String backupType() {
+    public BackupType backupType() {
         return this.backupType;
     }
 
@@ -173,6 +180,28 @@ public class BackupPatch {
      */
     public String volumeName() {
         return this.volumeName;
+    }
+
+    /**
+     * Get the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
+     * scheduled backups and true/false for manual backups.
+     *
+     * @return the useExistingSnapshot value.
+     */
+    public Boolean useExistingSnapshot() {
+        return this.useExistingSnapshot;
+    }
+
+    /**
+     * Set the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
+     * scheduled backups and true/false for manual backups.
+     *
+     * @param useExistingSnapshot the useExistingSnapshot value to set.
+     * @return the BackupPatch object itself.
+     */
+    public BackupPatch withUseExistingSnapshot(Boolean useExistingSnapshot) {
+        this.useExistingSnapshot = useExistingSnapshot;
+        return this;
     }
 
     /**

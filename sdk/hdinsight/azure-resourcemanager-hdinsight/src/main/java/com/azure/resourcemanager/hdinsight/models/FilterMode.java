@@ -16,6 +16,12 @@ public final class FilterMode extends ExpandableStringEnum<FilterMode> {
     /** Static value Include for FilterMode. */
     public static final FilterMode INCLUDE = fromString("Include");
 
+    /** Static value Recommend for FilterMode. */
+    public static final FilterMode RECOMMEND = fromString("Recommend");
+
+    /** Static value Default for FilterMode. */
+    public static final FilterMode DEFAULT = fromString("Default");
+
     /**
      * Creates or finds a FilterMode from its string representation.
      *

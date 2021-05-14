@@ -4,23 +4,28 @@
 
 package com.azure.resourcemanager.hdinsight.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterInner;
 import com.azure.resourcemanager.hdinsight.models.Cluster;
 import com.azure.resourcemanager.hdinsight.models.ClusterCreateParametersExtended;
 import com.azure.resourcemanager.hdinsight.models.ClusterCreateProperties;
+import com.azure.resourcemanager.hdinsight.models.ClusterDiskEncryptionParameters;
 import com.azure.resourcemanager.hdinsight.models.ClusterGetProperties;
 import com.azure.resourcemanager.hdinsight.models.ClusterIdentity;
 import com.azure.resourcemanager.hdinsight.models.ClusterPatchParameters;
+import com.azure.resourcemanager.hdinsight.models.ExecuteScriptActionParameters;
+import com.azure.resourcemanager.hdinsight.models.GatewaySettings;
+import com.azure.resourcemanager.hdinsight.models.UpdateClusterIdentityCertificateParameters;
+import com.azure.resourcemanager.hdinsight.models.UpdateGatewaySettingsParameters;
 import java.util.Collections;
 import java.util.Map;
 
 public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.Update {
     private ClusterInner innerObject;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -71,7 +76,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerObject;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 
@@ -106,7 +111,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(String name, HDInsightManager serviceManager) {
+    ClusterImpl(String name, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -138,7 +143,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(ClusterInner innerObject, HDInsightManager serviceManager) {
+    ClusterImpl(ClusterInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -163,6 +168,46 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
                 .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
                 .getValue();
         return this;
+    }
+
+    public void rotateDiskEncryptionKey(ClusterDiskEncryptionParameters parameters) {
+        serviceManager.clusters().rotateDiskEncryptionKey(resourceGroupName, clusterName, parameters);
+    }
+
+    public void rotateDiskEncryptionKey(ClusterDiskEncryptionParameters parameters, Context context) {
+        serviceManager.clusters().rotateDiskEncryptionKey(resourceGroupName, clusterName, parameters, context);
+    }
+
+    public GatewaySettings getGatewaySettings() {
+        return serviceManager.clusters().getGatewaySettings(resourceGroupName, clusterName);
+    }
+
+    public Response<GatewaySettings> getGatewaySettingsWithResponse(Context context) {
+        return serviceManager.clusters().getGatewaySettingsWithResponse(resourceGroupName, clusterName, context);
+    }
+
+    public void updateGatewaySettings(UpdateGatewaySettingsParameters parameters) {
+        serviceManager.clusters().updateGatewaySettings(resourceGroupName, clusterName, parameters);
+    }
+
+    public void updateGatewaySettings(UpdateGatewaySettingsParameters parameters, Context context) {
+        serviceManager.clusters().updateGatewaySettings(resourceGroupName, clusterName, parameters, context);
+    }
+
+    public void updateIdentityCertificate(UpdateClusterIdentityCertificateParameters parameters) {
+        serviceManager.clusters().updateIdentityCertificate(resourceGroupName, clusterName, parameters);
+    }
+
+    public void updateIdentityCertificate(UpdateClusterIdentityCertificateParameters parameters, Context context) {
+        serviceManager.clusters().updateIdentityCertificate(resourceGroupName, clusterName, parameters, context);
+    }
+
+    public void executeScriptActions(ExecuteScriptActionParameters parameters) {
+        serviceManager.clusters().executeScriptActions(resourceGroupName, clusterName, parameters);
+    }
+
+    public void executeScriptActions(ExecuteScriptActionParameters parameters, Context context) {
+        serviceManager.clusters().executeScriptActions(resourceGroupName, clusterName, parameters, context);
     }
 
     public ClusterImpl withRegion(Region location) {

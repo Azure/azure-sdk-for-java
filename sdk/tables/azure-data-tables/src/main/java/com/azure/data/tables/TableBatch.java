@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.data.tables.implementation.models.BatchOperation;
 import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableServiceErrorException;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableServiceException;
 
 import java.time.Duration;
 import java.util.List;
@@ -100,7 +100,7 @@ public final class TableBatch {
      * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
-    public TableBatch upsertEntity(TableEntity entity, UpdateMode updateMode) {
+    public TableBatch upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         batch.upsertEntity(entity, updateMode);
 
         return this;
@@ -141,7 +141,7 @@ public final class TableBatch {
      * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
-    public TableBatch updateEntity(TableEntity entity, UpdateMode updateMode) {
+    public TableBatch updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         batch.updateEntity(entity, updateMode);
 
         return this;
@@ -166,7 +166,7 @@ public final class TableBatch {
      * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
-    public TableBatch updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+    public TableBatch updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
         batch.updateEntity(entity, updateMode, ifUnchanged);
 
         return this;
@@ -224,7 +224,7 @@ public final class TableBatch {
      * @return A list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -241,7 +241,7 @@ public final class TableBatch {
      * @return A list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -260,7 +260,7 @@ public final class TableBatch {
      * sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

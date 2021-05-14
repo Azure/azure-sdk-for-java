@@ -16,6 +16,9 @@ public final class Expander extends ExpandableStringEnum<Expander> {
     /** Static value most-pods for Expander. */
     public static final Expander MOST_PODS = fromString("most-pods");
 
+    /** Static value priority for Expander. */
+    public static final Expander PRIORITY = fromString("priority");
+
     /** Static value random for Expander. */
     public static final Expander RANDOM = fromString("random");
 

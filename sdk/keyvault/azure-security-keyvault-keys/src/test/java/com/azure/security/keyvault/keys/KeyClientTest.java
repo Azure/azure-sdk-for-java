@@ -392,6 +392,7 @@ public class KeyClientTest extends KeyClientTestBase {
         getKeyClient(httpClient, serviceVersion);
         listDeletedKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToDelete = keys;
+
             for (CreateKeyOptions key : keysToDelete.values()) {
                 assertKeyEquals(key, client.createKey(key));
             }
@@ -404,10 +405,12 @@ public class KeyClientTest extends KeyClientTestBase {
                     pollResponse = poller.poll();
                 }
             }
+
             sleepInRecordMode(300000);
 
             Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
             assertTrue(deletedKeys.iterator().hasNext());
+
             for (DeletedKey deletedKey : deletedKeys) {
                 assertNotNull(deletedKey.getDeletedOn());
                 assertNotNull(deletedKey.getRecoveryId());

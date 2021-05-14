@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.QueryStatisticInner;
 import com.azure.resourcemanager.mysql.models.QueryStatistic;
 import java.time.OffsetDateTime;
@@ -14,9 +13,9 @@ import java.util.List;
 public final class QueryStatisticImpl implements QueryStatistic {
     private QueryStatisticInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    QueryStatisticImpl(QueryStatisticInner innerObject, MySqlManager serviceManager) {
+    QueryStatisticImpl(QueryStatisticInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -82,7 +81,7 @@ public final class QueryStatisticImpl implements QueryStatistic {
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

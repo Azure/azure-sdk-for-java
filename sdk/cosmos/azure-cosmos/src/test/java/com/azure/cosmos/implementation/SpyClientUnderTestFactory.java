@@ -97,7 +97,7 @@ public class SpyClientUnderTestFactory {
             doAnswer(new Answer<Object>() {
                 @Override
                 public Object answer(InvocationOnMock invocationOnMock)  {
-                    RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
+                    RxDocumentServiceRequest req = invocationOnMock.getArgument(0, RxDocumentServiceRequest.class);
                     requests.add(req);
                     return ClientWithGatewaySpy.this.origRxGatewayStoreModel.processMessage(req);
                 }
@@ -135,8 +135,11 @@ public class SpyClientUnderTestFactory {
         }
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
-            HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
-            Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
+            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (invocationOnMock.getArguments().length == 2) {
+                responseTimeout = invocationOnMock.getArgument(1, Duration.class);
+            }
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
             this.requestsResponsePairs.add(Pair.of(httpRequest, f));
 
@@ -224,8 +227,8 @@ public class SpyClientUnderTestFactory {
 
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
-                HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
-                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
+                HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+                Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 

@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.mediaservices.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
 import com.azure.resourcemanager.mediaservices.models.Job;
 import com.azure.resourcemanager.mediaservices.models.JobInput;
 import com.azure.resourcemanager.mediaservices.models.JobOutput;
 import com.azure.resourcemanager.mediaservices.models.JobState;
 import com.azure.resourcemanager.mediaservices.models.Priority;
-import com.azure.resourcemanager.mediaservices.models.SystemData;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.Map;
 public final class JobImpl implements Job, Job.Definition, Job.Update {
     private JobInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -94,7 +93,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -134,7 +133,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
         return this;
     }
 
-    JobImpl(String name, MediaservicesManager serviceManager) {
+    JobImpl(String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new JobInner();
         this.serviceManager = serviceManager;
         this.jobName = name;
@@ -165,7 +164,7 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
         return this;
     }
 
-    JobImpl(JobInner innerObject, MediaservicesManager serviceManager) {
+    JobImpl(JobInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

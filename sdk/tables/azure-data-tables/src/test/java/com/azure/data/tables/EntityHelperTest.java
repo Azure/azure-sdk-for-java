@@ -39,7 +39,7 @@ public class EntityHelperTest {
         props.put("EnumField", color);
 
         TableEntity entity = new TableEntity("abc", "def");
-        entity.addProperties(props);
+        entity.setProperties(props);
 
         SampleEntity result = EntityHelper.convertToSubclass(entity, SampleEntity.class, logger);
         Assertions.assertEquals(bytes, result.getByteField());

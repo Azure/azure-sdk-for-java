@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0f3c5a18-f1cf-4d67-8ce6-35bc9eb6ebb3",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e7bf645a-db2b-49ae-b028-6b62a3f37186",
       "Content-Type" : "application/pdf"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "4",
+      "content-length" : "270",
+      "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0156053a-422b-4b21-bbdc-b86127c40972",
+      "apim-request-id" : "9b2a8b35-dc38-4c24-8f49-6fde255658b0",
       "retry-after" : "0",
-      "Content-Length" : "270",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidImage\",\"message\":\"The file submitted couldn't be parsed. This can be due to one of the following reasons: the file format is not supported ( Supported formats include JPEG, PNG, BMP, PDF and TIFF), the file is corrupted or password protected.\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:47:38 GMT",
+      "Date" : "Tue, 11 May 2021 21:28:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

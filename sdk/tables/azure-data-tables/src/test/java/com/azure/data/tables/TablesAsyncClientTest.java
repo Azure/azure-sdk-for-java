@@ -15,8 +15,8 @@ import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableServiceErrorException;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableServiceException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -442,7 +442,7 @@ public class TablesAsyncClientTest extends TestBase {
         props.put("EnumField", color);
 
         TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
-        tableEntity.addProperties(props);
+        tableEntity.setProperties(props);
 
         int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
@@ -476,21 +476,21 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     void updateEntityWithResponseReplaceAsync() {
-        updateEntityWithResponseAsync(UpdateMode.REPLACE);
+        updateEntityWithResponseAsync(TableEntityUpdateMode.REPLACE);
     }
 
     @Test
     void updateEntityWithResponseMergeAsync() {
-        updateEntityWithResponseAsync(UpdateMode.MERGE);
+        updateEntityWithResponseAsync(TableEntityUpdateMode.MERGE);
     }
 
     /**
-     * In the case of {@link UpdateMode#MERGE}, we expect both properties to exist.
-     * In the case of {@link UpdateMode#REPLACE}, we only expect {@code newPropertyKey} to exist.
+     * In the case of {@link TableEntityUpdateMode#MERGE}, we expect both properties to exist.
+     * In the case of {@link TableEntityUpdateMode#REPLACE}, we only expect {@code newPropertyKey} to exist.
      */
-    void updateEntityWithResponseAsync(UpdateMode mode) {
+    void updateEntityWithResponseAsync(TableEntityUpdateMode mode) {
         // Arrange
-        final boolean expectOldProperty = mode == UpdateMode.MERGE;
+        final boolean expectOldProperty = mode == TableEntityUpdateMode.MERGE;
         final String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
         final int expectedStatusCode = 204;
@@ -508,26 +508,19 @@ public class TablesAsyncClientTest extends TestBase {
         createdEntity.addProperty(newPropertyKey, "valueB");
 
         // Act & Assert
-        if (mode == UpdateMode.MERGE && tableClient.getTableUrl().contains("cosmos.azure.com")) {
-            // This scenario is currently broken when using the CosmosDB Table API
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .expectError(TableServiceErrorException.class)
-                .verify();
-        } else {
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
-                .expectComplete()
-                .verify();
+        StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
 
-            // Assert and verify that the new properties are in there.
-            StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
-                .assertNext(entity -> {
-                    final Map<String, Object> properties = entity.getProperties();
-                    assertTrue(properties.containsKey(newPropertyKey));
-                    assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
-                })
-                .verifyComplete();
-        }
+        // Assert and verify that the new properties are in there.
+        StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
+            .assertNext(entity -> {
+                final Map<String, Object> properties = entity.getProperties();
+                assertTrue(properties.containsKey(newPropertyKey));
+                assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -543,7 +536,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
-        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, UpdateMode.REPLACE, true))
+        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, TableEntityUpdateMode.REPLACE, true))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
@@ -736,10 +729,10 @@ public class TablesAsyncClientTest extends TestBase {
         TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
         batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValueCreate))
             .upsertEntity(new TableEntity(partitionKeyValue, rowKeyValueUpsertInsert))
-            .upsertEntity(toUpsertMerge, UpdateMode.MERGE)
-            .upsertEntity(toUpsertReplace, UpdateMode.REPLACE)
-            .updateEntity(toUpdateMerge, UpdateMode.MERGE)
-            .updateEntity(toUpdateReplace, UpdateMode.REPLACE)
+            .upsertEntity(toUpsertMerge, TableEntityUpdateMode.MERGE)
+            .upsertEntity(toUpsertReplace, TableEntityUpdateMode.REPLACE)
+            .updateEntity(toUpdateMerge, TableEntityUpdateMode.MERGE)
+            .updateEntity(toUpdateReplace, TableEntityUpdateMode.REPLACE)
             .deleteEntity(rowKeyValueDelete);
 
         // Act & Assert
@@ -770,7 +763,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(batch.submitTransactionWithResponse())
-            .expectErrorMatches(e -> e instanceof TableServiceErrorException
+            .expectErrorMatches(e -> e instanceof TableServiceException
                 && e.getMessage().contains("An operation within the batch failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")
