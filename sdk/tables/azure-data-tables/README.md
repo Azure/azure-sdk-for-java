@@ -192,18 +192,18 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 ```
 
 #### Create a table
-Create a table by calling the `TableServiceClient`'s `createTable` method. An exception will be thrown if a table with the provided name exists.
+Create a table by calling the `TableServiceClient`'s `createTable` method. A `TableClient` will be returned, this client allows to perform operations on the table. An exception will be thrown if a table with the provided name exists.
 
 <!-- embedme src/samples/java/ReadmeSamples.java#L77-L77 -->
 ```java
-tableServiceClient.createTable(tableName);
+TableClient tableClient = tableServiceClient.createTable(tableName);
 ```
 
-Alternatively, you can call the `createTableIfNotExists` method which will create the table only if no such table exists, and does not throw an exception.
+Alternatively, you can call the `createTableIfNotExists` method which will create the table only if no such table exists, and does not throw an exception. A `TableClient` will be returned as well.
 
 <!-- embedme src/samples/java/ReadmeSamples.java#L84-L84 -->
 ```java
-tableServiceClient.createTableIfNotExists(tableName);
+TableClient tableClient = tableServiceClient.createTableIfNotExists(tableName);
 ```
 
 #### List tables
@@ -220,7 +220,7 @@ for (TableItem tableItem : tableServiceClient.listTables(options, null, null)) {
 ```
 
 #### Delete a table
-Delete a table by calling the `TableServiceClient`'s `deleteTable` method. An exception will be thrown if no table with the provided name exists.
+Delete a table by calling the `TableServiceClient`'s `deleteTable` method.
 
 <!-- embedme src/samples/java/ReadmeSamples.java#L103-L103 -->
 ```java
@@ -276,19 +276,18 @@ ListEntitiesOptions options = new ListEntitiesOptions()
 for (TableEntity entity : tableClient.listEntities(options, null, null)) {
     Map<String, Object> properties = entity.getProperties();
     System.out.println(String.format("%s: %.2f", properties.get("Product"), properties.get("Price")));
-    }
 }
 ```
 
 #### Delete an entity
-Delete an entity by calling the `TableClient`'s `deleteEntity` method. An exception will be thrown if no entity with the provided partition key and row key exists.
+Delete an entity by calling the `TableClient`'s `deleteEntity` method.
 
 <!-- embedme src/samples/java/ReadmeSamples.java#L159-L159 -->
 ```java
 tableClient.deleteEntity(partitionKey, rowKey);
 ```
 
-``## Troubleshooting
+## Troubleshooting
 
 ### General
 When you interact with Tables service using the Azure Tables library for Java, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests.
