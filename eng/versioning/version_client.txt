@@ -310,3 +310,4 @@ com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.1;1.0.0-be
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.6
+beta_com.azure:azure-data-appconfiguration;1.2.0-beta.1
