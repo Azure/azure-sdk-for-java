@@ -74,14 +74,14 @@ public class ReadmeSamples {
      * @throws TableServiceException if the table exists.
      */
     public void createTable() {
-        tableServiceClient.createTable(tableName);
+        TableClient tableClient = tableServiceClient.createTable(tableName);
     }
 
     /**
      * Code sample for creating a table if it doesn't exist.
      */
     public void createTableIfNotExists() {
-        tableServiceClient.createTableIfNotExists(tableName);
+        TableClient tableClient = tableServiceClient.createTableIfNotExists(tableName);
     }
 
     /**
