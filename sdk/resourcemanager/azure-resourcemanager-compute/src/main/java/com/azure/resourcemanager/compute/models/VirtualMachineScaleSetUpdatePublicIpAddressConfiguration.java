@@ -36,6 +36,12 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     @JsonProperty(value = "properties.dnsSettings")
     private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
 
+    /*
+     * Specify what happens to the public IP when the VM is deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
+
     /**
      * Get the name property: The publicIP address configuration name.
      *
@@ -95,6 +101,26 @@ public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withDnsSettings(
         VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 
