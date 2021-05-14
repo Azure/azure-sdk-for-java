@@ -276,6 +276,7 @@ ListEntitiesOptions options = new ListEntitiesOptions()
 for (TableEntity entity : tableClient.listEntities(options, null, null)) {
     Map<String, Object> properties = entity.getProperties();
     System.out.println(String.format("%s: %.2f", properties.get("Product"), properties.get("Price")));
+    }
 }
 ```
 
@@ -287,7 +288,7 @@ Delete an entity by calling the `TableClient`'s `deleteEntity` method. An except
 tableClient.deleteEntity(partitionKey, rowKey);
 ```
 
-## Troubleshooting
+``## Troubleshooting
 
 ### General
 When you interact with Tables service using the Azure Tables library for Java, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests.
