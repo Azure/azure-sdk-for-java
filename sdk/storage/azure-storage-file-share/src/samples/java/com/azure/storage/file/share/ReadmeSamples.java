@@ -63,6 +63,13 @@ public class ReadmeSamples {
             .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
     }
 
+    public void createShareClientWithConnectionString() {
+        String shareName = "testshare";
+        String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
+        ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
+            .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
+    }
+    
     public void createDirectoryClient() {
         String shareName = "testshare";
         String directoryPath = "directoryPath";

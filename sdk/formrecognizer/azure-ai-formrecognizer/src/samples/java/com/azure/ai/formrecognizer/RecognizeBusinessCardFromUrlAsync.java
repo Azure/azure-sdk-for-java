@@ -32,8 +32,10 @@ public class RecognizeBusinessCardFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String businessCardUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+        String businessCardUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
+
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeBusinessCardPoller
             = client.beginRecognizeBusinessCardsFromUrl(businessCardUrl);
 

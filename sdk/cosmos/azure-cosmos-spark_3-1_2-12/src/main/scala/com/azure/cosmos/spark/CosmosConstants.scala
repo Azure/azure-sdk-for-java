@@ -28,4 +28,8 @@ private object CosmosConstants {
     val Gone = 410
     val Timeout = 408
   }
+
+  object SystemProperties {
+    val LineSeparator = System.getProperty("line.separator")
+  }
 }

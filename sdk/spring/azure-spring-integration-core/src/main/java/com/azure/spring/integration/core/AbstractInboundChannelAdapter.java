@@ -17,38 +17,23 @@ import java.util.Map;
  * The abstract inbound channel adapter. The subscriber will start to subscribe on start and stop subscribing on stop.
  */
 public abstract class AbstractInboundChannelAdapter extends MessageProducerSupport {
+
     private final String destination;
     protected String consumerGroup = null;
-    protected SubscribeOperation subscribeOperation = null;
     protected SubscribeByGroupOperation subscribeByGroupOperation = null;
-
-    public String getConsumerGroup() {
-        return consumerGroup;
-    }
-
-    public void setConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-    }
-
-    public SubscribeOperation getSubscribeOperation() {
-        return subscribeOperation;
-    }
-
-    public void setSubscribeOperation(SubscribeOperation subscribeOperation) {
-        this.subscribeOperation = subscribeOperation;
-    }
-
-    public SubscribeByGroupOperation getSubscribeByGroupOperation() {
-        return subscribeByGroupOperation;
-    }
-
-    public void setSubscribeByGroupOperation(SubscribeByGroupOperation subscribeByGroupOperation) {
-        this.subscribeByGroupOperation = subscribeByGroupOperation;
-    }
+    protected SubscribeOperation subscribeOperation = null;
 
     protected AbstractInboundChannelAdapter(String destination) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.destination = destination;
+    }
+
+    protected Map<String, Object> buildPropertiesMap() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("consumerGroup", consumerGroup);
+        properties.put("destination", destination);
+
+        return properties;
     }
 
     @Override
@@ -59,10 +44,6 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
         } else {
             this.subscribeOperation.subscribe(this.destination, this::receiveMessage);
         }
-    }
-
-    public void receiveMessage(Message<?> message) {
-        sendMessage(message);
     }
 
     @Override
@@ -76,16 +57,12 @@ public abstract class AbstractInboundChannelAdapter extends MessageProducerSuppo
         super.doStop();
     }
 
-    private boolean useGroupOperation() {
-        return this.subscribeByGroupOperation != null && StringUtils.hasText(consumerGroup);
+    public void receiveMessage(Message<?> message) {
+        sendMessage(message);
     }
 
-    protected Map<String, Object> buildPropertiesMap() {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("consumerGroup", consumerGroup);
-        properties.put("destination", destination);
-
-        return properties;
+    private boolean useGroupOperation() {
+        return this.subscribeByGroupOperation != null && StringUtils.hasText(consumerGroup);
     }
 
 }

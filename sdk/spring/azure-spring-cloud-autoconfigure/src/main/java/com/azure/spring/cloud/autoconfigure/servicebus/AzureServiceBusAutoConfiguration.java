@@ -3,13 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
-import com.microsoft.azure.servicebus.IMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 @AutoConfigureAfter(AzureContextAutoConfiguration.class)
-@ConditionalOnClass(IMessage.class)
+@ConditionalOnClass(ServiceBusReceivedMessage.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureServiceBusProperties.class)
 public class AzureServiceBusAutoConfiguration {

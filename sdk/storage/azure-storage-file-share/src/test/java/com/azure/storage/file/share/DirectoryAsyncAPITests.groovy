@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -23,7 +24,7 @@ class DirectoryAsyncAPITests extends APISpec {
     String directoryPath
     String shareName
     static Map<String, String> testMetadata
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
@@ -38,7 +39,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
         when:
         def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl()
@@ -362,6 +363,7 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryDirectoryAsyncClient.create().block()
@@ -383,6 +385,7 @@ class DirectoryAsyncAPITests extends APISpec {
             .verifyErrorSatisfies({ it instanceof  ShareStorageException })
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryDirectoryAsyncClient.create().block()
