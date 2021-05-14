@@ -11,15 +11,15 @@ Use the client library for Video Analyzer on IoT Edge to:
 
 ## Getting started
 
-### Install the package
-
-Install the Live Video Analyzer client library for Java with Maven:
-
 ### Prerequisites
 
 - A Java Development Kit, version 8 or later.
 - You need an active [Azure subscription][azure_sub] and a [IoT device connection string][iot_device_connection_string] to use this package.
 - To interact with Azure IoT Hub you will need to add their dependency to your `pom.xml`
+
+### Include the package
+
+Install the Live Video Analyzer client library for Java with Maven:
 
 #<!-- {x-version-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
  ```xml
