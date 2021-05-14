@@ -33,6 +33,7 @@ extends:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
+        overridePath: ./sdk/template/azure-template
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
