@@ -58,6 +58,12 @@ public final class ServiceBusReceivedMessage {
         context = Context.NONE;
     }
 
+    ServiceBusReceivedMessage(AmqpMessageBody body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(body);
+        context = Context.NONE;
+    }
+
     /**
      * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata
      * associated with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for

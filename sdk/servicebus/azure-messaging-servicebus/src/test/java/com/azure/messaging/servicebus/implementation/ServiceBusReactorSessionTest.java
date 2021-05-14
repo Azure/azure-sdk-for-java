@@ -196,10 +196,11 @@ public class ServiceBusReactorSessionTest {
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
 
+        when(connection.getShutdownSignals()).thenReturn(Flux.empty());
+        serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler, SESSION_NAME, reactorProvider,
+            handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
+            new ServiceBusCreateSessionOptions(false));
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
-
-        serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler, SESSION_NAME,
-            reactorProvider, handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions);
     }
 
     @AfterEach
@@ -268,7 +269,7 @@ public class ServiceBusReactorSessionTest {
 
         // Act
         serviceBusReactorSession.createProducer(ENTITY_PATH, ENTITY_PATH, retryOptions.getTryTimeout(),
-            retryPolicy, null)
+            retryPolicy)
             .subscribe();
 
         // Assert
@@ -282,5 +283,44 @@ public class ServiceBusReactorSessionTest {
         invocations.get(0).run();
 
         verify(senderViaEntity, never()).setProperties(anyMap());
+    }
+
+    /**
+     * Test for create Sender Link.
+     */
+    @Test
+    void createCoordinatorLink() throws IOException {
+        // Arrange
+        final String transactionLinkName = "coordinator";
+        final Sender coordinatorSenderEntity = mock(Sender.class);
+        doNothing().when(coordinatorSenderEntity).setSource(any(Source.class));
+        doNothing().when(coordinatorSenderEntity).setSenderSettleMode(SenderSettleMode.UNSETTLED);
+        doNothing().when(coordinatorSenderEntity).setTarget(any(Target.class));
+        doNothing().when(coordinatorSenderEntity).setTarget(any(Target.class));
+        when(coordinatorSenderEntity.attachments()).thenReturn(record);
+        when(session.sender(transactionLinkName)).thenReturn(coordinatorSenderEntity);
+
+        final ServiceBusReactorSession serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler,
+            SESSION_NAME, reactorProvider, handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
+            retryOptions, new ServiceBusCreateSessionOptions(true));
+
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, transactionLinkName, transactionLinkName))
+            .thenReturn(sendEntityLinkHandler);
+
+        // Act
+        serviceBusReactorSession.getOrCreateTransactionCoordinator()
+            .subscribe();
+
+        // Assert
+        verify(tokenManagerEntity, never()).authorize();
+
+        verify(dispatcher).invoke(dispatcherCaptor.capture());
+        List<Runnable> invocations = dispatcherCaptor.getAllValues();
+
+        // Apply the invocation.
+        invocations.get(0).run();
+
+        verify(coordinatorSenderEntity).open();
+        verify(session).sender(transactionLinkName);
     }
 }
