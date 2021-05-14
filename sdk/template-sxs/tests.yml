@@ -1,0 +1,11 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: appconfiguration
+      Artifacts:
+        - name: azure-sdk-template
+          groupId: com.azure
+          safeName: azuresdktemplate
+          overridePath: ./sdk/template-sxs/azure-sdk-template
