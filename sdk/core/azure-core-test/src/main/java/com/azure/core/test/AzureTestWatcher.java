@@ -11,17 +11,22 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * JUnit 5 extension class which reports on testing running and simple metrics about the test such as run time.
  */
 public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
-    private static final boolean LOG_EXECUTION_STATUS = Configuration.getGlobalConfiguration()
-        .get("system.debug", Boolean::parseBoolean);
+    private static final String SYSTEM_DEBUG = "system.debug";
+    private static final String AZURE_TEST_DEBUG = "AZURE_TEST_DEBUG";
+
+    private static final Supplier<Boolean> SHOULD_LOG_EXECUTION_STATUS = () ->
+        Configuration.getGlobalConfiguration().get(SYSTEM_DEBUG, Boolean::parseBoolean)
+            || Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG, Boolean::parseBoolean);
 
     @Override
     public void beforeTestExecution(ExtensionContext extensionContext) {
-        if (!LOG_EXECUTION_STATUS) {
+        if (!SHOULD_LOG_EXECUTION_STATUS.get()) {
             return;
         }
 
@@ -52,7 +57,7 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
 
     @Override
     public void afterTestExecution(ExtensionContext context) {
-        if (!LOG_EXECUTION_STATUS) {
+        if (!SHOULD_LOG_EXECUTION_STATUS.get()) {
             return;
         }
 
