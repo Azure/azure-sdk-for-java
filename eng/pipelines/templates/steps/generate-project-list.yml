@@ -14,7 +14,7 @@ steps:
 
 - pwsh: |
     Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]"
-    Write-Host "##vso[task.setvariable variable=SpringChanges]$false"
+    Write-Host "##vso[task.setvariable variable=ProjectListBak;]"
   displayName: Initialize spring project path list variable
 
 # These artifacts are the principal outputs of the build. We source
@@ -53,5 +53,6 @@ steps:
 
 - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-2-3'))}}:
   - pwsh: |
+      Write-Host "##vso[task.setvariable variable=ProjectListBak]$(ProjectList)"
       Write-Host "##vso[task.setvariable variable=ProjectList]$(SpringProjectPathList)"
     displayName: Reset ProjectListvalue variable

@@ -104,6 +104,64 @@ def create_from_source_pom(project_list: str):
 
         fromSourcePom.write(pom_file_end)
 
+# Function that creates the aggregate POM.
+def create_from_source_pom_spring(project_list: str, project_list_path: str):
+    print(project_list)
+    print(project_list_path)
+    project_list_identifiers = project_list.split(',')
+    project_list_path_identifiers = []
+    if project_list_path:
+        project_list_path_identifiers = project_list_path.split(',')
+        for idx, path_identifier in enumerate(project_list_path_identifiers):
+            project_list_path_identifiers[idx] = path_identifier[1:]
+
+    # Get the artifact identifiers from client_versions.txt to act as our source of truth.
+    artifact_identifier_to_source_version = load_client_artifact_identifiers()
+
+    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings_spring(project_list_identifiers, project_list_path_identifiers, artifact_identifier_to_source_version)
+
+    dependent_modules = []
+
+    # Resolve all projects, including transitively, that are dependent on the projects in the project list.
+    for project_identifier in project_list_path_identifiers:
+        if not project_identifier in project_to_pom_path_mapping:
+            continue
+
+        dependent_modules = resolve_dependent_project(project_identifier, dependent_modules,
+                                                      dependency_to_project_mapping)
+
+    # Distinct the dependent modules, even though this should be guarded, to reduce downstream processing requirements.
+    dependent_modules = list(set(dependent_modules))
+
+    # Sort for making debugging easier (since it is cheap)
+    dependent_modules.sort()
+
+    dependency_modules = []
+
+    # Resolve all dependencies of the projects in the project list and of the dependent modules.
+    for project_identifier in project_list_path_identifiers + dependent_modules:
+        depencency_modules = resolve_project_dependencies(project_identifier, dependency_modules, project_dependencies_mapping)
+
+    modules = []
+    # Finally map the project identifiers to relative module paths.
+    for project_identifier in project_list_path_identifiers + dependent_modules + depencency_modules:
+        if project_identifier in project_to_pom_path_mapping:
+            modules.append(project_to_pom_path_mapping[project_identifier])
+
+    # Distinct the modules list.
+    modules = list(set(modules))
+
+    # Sort the modules list for easier reading.
+    modules.sort()
+
+    with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
+        fromSourcePom.write(pom_file_start)
+
+        for module in modules:
+            fromSourcePom.write('    <module>{}</module>\n'.format(module))
+
+        fromSourcePom.write(pom_file_end)
+
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
 def load_client_artifact_identifiers():
     artifact_identifiers = {}
@@ -136,6 +194,25 @@ def create_dependency_and_path_mappings(project_list_identifiers: list, artifact
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
                 add_project_to_dependency_and_module_mappings(file_path, project_dependencies_mapping, project_list_identifiers, artifact_identifier_to_source_version, dependency_mapping, module_path_mapping)
+
+    return project_dependencies_mapping, dependency_mapping, module_path_mapping
+
+# Function which creates project dependencies mapping, dependencies to dependent projects mapping, and project to module relative path mapping.
+def create_dependency_and_path_mappings_spring(project_list_identifiers: list, project_list_path_identifiers: list, artifact_identifier_to_source_version: dict):
+    project_dependencies_mapping = {}
+    dependency_mapping = {}
+    module_path_mapping = {}
+
+    for root, _, files in os.walk(root_path):
+        for file_name in files:
+            file_path = root + os.sep + file_name
+            file_path_list = file_path.split(os.sep)
+            # if not ('sdk' in file_path_list and ('spring' in file_path_list or 'spring-2-3' in file_path_list)):
+            #     continue
+
+            # Only parse files that are pom.xml files.
+            if (file_name.startswith('pom') and file_name.endswith('.xml')):
+                add_project_to_dependency_and_module_mappings_spring(file_path, project_dependencies_mapping, project_list_identifiers, project_list_path_identifiers, artifact_identifier_to_source_version, dependency_mapping, module_path_mapping)
 
     return project_dependencies_mapping, dependency_mapping, module_path_mapping
 
@@ -179,6 +256,69 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         project_dependencies_mapping[project_identifier].append(dependency_identifier)
         dependency_mapping[dependency_identifier].append(project_identifier)
 
+
+# Function that constructs the project dependencies map and adds to dependency to project map and project to module relative path map for a track 2 project.
+def add_project_to_dependency_and_module_mappings_spring(file_path: str, project_dependencies_mapping: dict, project_list_identifiers: list, project_list_path_identifiers: list,
+    artifact_identifier_to_source_version: dict, dependency_mapping: dict, module_path_mapping: dict):
+    if 'eng' in file_path.split(os.sep):
+        return
+
+    tree = ET.parse(file_path)
+    tree_root = tree.getroot()
+
+    project_identifier, project_identifier_path = create_artifact_identifier_spring(file_path, tree_root)
+
+    # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
+    if (not project_identifier in project_list_identifiers or not project_identifier_path in project_list_path_identifiers) and not is_track_two_pom(tree_root):
+        return
+
+    module_path_mapping[project_identifier_path] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
+
+    dependencies = tree_root.iter(maven_xml_namespace + 'dependency')
+
+    # If the project doesn't have a dependencies XML element skip it.
+    if dependencies is None:
+        return
+
+    if not project_identifier_path in project_dependencies_mapping:
+        project_dependencies_mapping[project_identifier_path] = []
+
+    find_alias_key = False
+    file_path_list = file_path.split(os.sep);
+    if 'sdk' in file_path_list and 'spring-2-3' in file_path_list:
+        find_alias_key = True
+
+    for dependency in dependencies:
+        dependency_identifier, dependency_identifier_path = create_artifact_identifier_spring(file_path, dependency)
+        if not dependency_identifier in artifact_identifier_to_source_version:
+            continue
+
+        dependency_version = get_dependency_version(dependency)
+        if is_different_version(find_alias_key, artifact_identifier_to_source_version, dependency_identifier, dependency_version):
+            continue
+
+        if not dependency_identifier_path in dependency_mapping:
+            dependency_mapping[dependency_identifier_path] = []
+
+        project_dependencies_mapping[project_identifier_path].append(dependency_identifier_path)
+        dependency_mapping[dependency_identifier_path].append(project_identifier_path)
+
+
+# Function which check the version effectiveness
+def is_different_version(find_alias_key: bool, artifact_identifier_to_source_version: dict, dependency_identifier: str, dependency_version: str):
+    alias_key = None
+    if find_alias_key:
+        for key in artifact_identifier_to_source_version.keys():
+            if not alias_key and dependency_identifier in key and len(dependency_identifier) < len(key):
+                alias_key = key
+                break
+
+    if find_alias_key and alias_key:
+        return dependency_version != artifact_identifier_to_source_version[alias_key]
+    else:
+        return dependency_version != artifact_identifier_to_source_version[dependency_identifier]
+
+
 # Function which resolves the dependent projects of the project.
 def resolve_dependent_project(pom_identifier: str, dependent_modules: list, dependency_to_project_mapping: dict):
     if pom_identifier in dependency_to_project_mapping:
@@ -218,6 +358,34 @@ def create_artifact_identifier(element: ET.Element):
 
     return group_id.text + ':' + element_find(element, 'artifactId').text
 
+
+# Creates an artifacts identifier.
+def create_artifact_identifier_spring(file_path: str, element: ET.Element):
+    group_id = element_find(element, 'groupId')
+
+    # POMs allow the groupId to be inferred from the parent POM.
+    # This is a guard to prevent this from raising an error.
+    if group_id is None:
+        group_id = element_find(element_find(element, 'parent'), 'groupId')
+    artifact_id_text = element_find(element, 'artifactId').text
+    file_path_list = file_path.split(os.sep);
+    if 'sdk' in file_path_list and ('spring' in file_path_list or 'spring-2-3' in file_path_list):
+        if not 'com.azure.spring' == group_id.text:
+            return None, None
+
+        if 'spring' in file_path_list:
+            if '-sample' in artifact_id_text:
+                return group_id.text + ':' + artifact_id_text, '/sdk/spring/azure-spring-boot-samples/' + artifact_id_text
+            else:
+                return group_id.text + ':' + artifact_id_text, '/sdk/spring/' + artifact_id_text
+        else:
+            if '-sample' in artifact_id_text:
+                return group_id.text + ':' + artifact_id_text, '/sdk/spring-2-3/azure-spring-boot-samples/' + artifact_id_text
+            else:
+                return group_id.text + ':' + artifact_id_text, '/sdk/spring-2-3/' + artifact_id_text
+    return group_id.text + ':' + artifact_id_text, None
+
+
 # Gets the dependency version.
 def get_dependency_version(element: ET.Element):
     dependency_version = element_find(element, 'version')
@@ -233,12 +401,16 @@ def element_find(element: ET.Element, path: str):
 
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
-    parser.add_argument('--project-list', '--pl', type=str)
+    parser.add_argument('--project-list', '-pl', type=str)
+    parser.add_argument('--project-list-path', '-plp', type=str)
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list)
+    if args.project_list_path:
+        create_from_source_pom_spring(args.project_list, args.project_list_path)
+    else:
+        create_from_source_pom(args.project_list)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')
