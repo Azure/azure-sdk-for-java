@@ -38,6 +38,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.IgnoreIf
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
@@ -88,7 +89,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
 
-        builder.buildEncryptedBlobAsyncClient().upload(defaultFlux, null).block()
+        builder.buildEncryptedBlobAsyncClient().upload(data.defaultFlux, null).block()
 
         ebc = builder.buildEncryptedBlobClient()
     }
@@ -265,8 +266,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Buffered upload
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(defaultDataSize).setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, headers, null, null, null).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(data.defaultDataSize).setMaxConcurrency(2)
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, headers, null, null, null).block()
         def response = beac.getPropertiesWithResponse(null).block()
 
         then:
@@ -296,7 +297,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
 
         when:
-        beac.uploadWithResponse(defaultFlux, null, null, metadata, null, null).block()
+        beac.uploadWithResponse(data.defaultFlux, null, null, metadata, null, null).block()
         def properties = beac.getProperties().block()
 
         then:
@@ -305,9 +306,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         when:
         // Buffered upload
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(defaultDataSize)
+            .setBlockSizeLong(data.defaultDataSize)
             .setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, metadata, null, null).block()
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, null, metadata, null, null).block()
         properties = beac.getProperties().block()
 
         then:
@@ -323,7 +324,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Encryption AC"() {
         when:
-        beac.upload(defaultFlux, null).block()
+        beac.upload(data.defaultFlux, null).block()
         def etag = setupBlobMatchCondition(beac, match)
         leaseID = setupBlobLeaseCondition(beac, leaseID)
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -334,15 +335,15 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         then:
-        beac.uploadWithResponse(defaultFlux, null, null, null, null, bac).block().getStatusCode() == 201
+        beac.uploadWithResponse(data.defaultFlux, null, null, null, null, bac).block().getStatusCode() == 201
 
         when:
         etag = setupBlobMatchCondition(beac, match)
         bac.setIfMatch(etag)
 
         then:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(defaultDataSize).setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(data.defaultDataSize).setMaxConcurrency(2)
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, null, null, null, bac)
             .block().getStatusCode() == 201
 
         where:
@@ -359,7 +360,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Encryption AC fail"() {
         setup:
-        beac.upload(defaultFlux, null).block()
+        beac.upload(data.defaultFlux, null).block()
         noneMatch = setupBlobMatchCondition(beac, noneMatch)
         setupBlobLeaseCondition(beac, leaseID)
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -370,8 +371,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(defaultDataSize).setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(data.defaultDataSize).setMaxConcurrency(2)
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, null, null, null, bac).block()
 
         then:
         def e = thrown(BlobStorageException)
@@ -407,11 +408,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
         //def dataFlux = Flux.just(defaultData).map{buf -> buf.duplicate()}
 
         when:
-        beac.upload(defaultFlux, null).block()
+        beac.upload(data.defaultFlux, null).block()
         beac.downloadToFile(path).block()
 
         then:
-        compareDataToFile(defaultFlux, new File(path))
+        compareDataToFile(data.defaultFlux, new File(path))
 
         cleanup:
         new File(path).delete()
@@ -438,7 +439,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         when:
 
         // Upload encrypted data with regular client
-        normalClient.uploadWithResponse(new ByteArrayInputStream(defaultData.array()), defaultDataSize, null, null,
+        normalClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
             null, null, null, null, null)
 
         // Download data with encrypted client - command should fail
@@ -447,7 +448,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(IllegalStateException)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         cleanup:
         cac.delete()
@@ -577,19 +578,19 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Upload with current version
-        encryptClient.upload(defaultFlux, null).block()
+        encryptClient.upload(data.defaultFlux, null).block()
 
         // Download with v8
         ByteArrayOutputStream stream = new ByteArrayOutputStream()
         v8DecryptBlob.download(stream, null, downloadOptions, null)
 
         then:
-        stream.toByteArray() == defaultData.array()
+        stream.toByteArray() == data.defaultBytes
     }
 
     def "encrypted client file upload overwrite false"() {
         setup:
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.KB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
@@ -602,7 +603,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "encrypted client file upload overwrite true"() {
         setup:
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.KB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
@@ -674,7 +675,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def headers = response.getDeserializedHeaders()
 
         then:
-        body == defaultData
+        body == data.defaultData
         headers.getMetadata()
         headers.getContentLength() != null
         headers.getContentType() != null
@@ -742,7 +743,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == defaultData.array()
+        result == data.defaultBytes
     }
 
     @Unroll
@@ -760,9 +761,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         where:
         offset | count || expectedData
-        0      | null  || defaultText
-        0      | 5L    || defaultText.substring(0, 5)
-        3      | 2L    || defaultText.substring(3, 3 + 2)
+        0      | null  || data.defaultText
+        0      | 5L    || data.defaultText.substring(0, 5)
+        3      | 2L    || data.defaultText.substring(3, 3 + 2)
     }
 
     @Unroll
@@ -877,7 +878,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFile(testFile.getPath(), true)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -894,7 +895,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFile(testFile.getPath())
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -915,7 +916,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -937,7 +938,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -1078,7 +1079,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Download file range"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
@@ -1100,12 +1101,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                         | _
-        new BlobRange(0, defaultDataSize)             | _ // Exact count
-        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
-        new BlobRange(3, 2)                           | _ // Narrow range in middle
-        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+        range                                              | _
+        new BlobRange(0, data.defaultDataSize)             | _ // Exact count
+        new BlobRange(1, data.defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                                | _ // Narrow range in middle
+        new BlobRange(0, data.defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                        | _ // Count much larger than remaining data
     }
 
     /*
@@ -1116,7 +1117,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Download file range fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
@@ -1138,7 +1139,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @LiveOnly
     def "Download file count null"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
@@ -1149,7 +1150,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
 
         then:
-        compareFiles(file, outFile, 0, defaultDataSize)
+        compareFiles(file, outFile, 0, data.defaultDataSize)
 
         cleanup:
         outFile.delete()
@@ -1160,7 +1161,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Download file AC"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
@@ -1197,7 +1198,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Download file AC fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
@@ -1264,7 +1265,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
          * so that the download is able to get an ETag before it is changed.
          */
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+            .doOnSubscribe({ bac.upload(data.defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine
@@ -1356,7 +1357,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .blobName(blobName)
             .buildClient()
 
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when: "Sync min"
         bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
@@ -1395,7 +1396,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Encryption upload IS overwrite fails"() {
         when:
-        ebc.upload(defaultInputStream.get(), defaultDataSize)
+        ebc.upload(data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -1489,6 +1490,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         def client = getEncryptedClientBuilder(fakeKey, fakeKeyResolver, env.primaryAccount.credential, bec.getBlobUrl(), getPerCallVersionPolicy()).buildEncryptedBlobClient()

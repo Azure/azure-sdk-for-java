@@ -527,7 +527,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be
             # something like <area>_groupId
-            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(\w+)?$($groupId):$($artifactId);\w+}")
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
             {
                 $script:FoundError = $true
                 Write-Error-With-Color "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
@@ -587,7 +587,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be
             # something like <area>_groupId
-            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(\w+)?$($groupId):$($artifactId);\w+}")
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
             {
                 $script:FoundError = $true
                 Write-Error-With-Color "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
@@ -630,7 +630,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     $script:FoundError = $true
                     Write-Error-With-Color "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
-                elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(\w+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}")
+                elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(.+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}")
                 {
                     $script:FoundError = $true
                     Write-Error-With-Color "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"

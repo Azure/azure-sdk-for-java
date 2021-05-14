@@ -2465,4 +2465,10 @@
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+  
+  <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
+  <Match>
+    <Class name="~com\.azure\.data\.confidentialledger\.\w+BaseClient"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
 </FindBugsFilter>
