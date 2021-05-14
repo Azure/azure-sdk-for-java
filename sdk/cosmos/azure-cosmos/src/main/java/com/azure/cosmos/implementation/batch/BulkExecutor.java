@@ -264,29 +264,42 @@ public final class BulkExecutor<TContext> {
 
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
             // add it in the mainSink.
-            if (cosmosException.getStatusCode() == HttpResponseStatus.GONE.code() &&
-                itemBulkOperation.getRetryPolicy().shouldRetryForGone(
-                    cosmosException.getStatusCode(),
-                    cosmosException.getSubStatusCode())) {
+            if (cosmosException.getStatusCode() == HttpResponseStatus.GONE.code()) {
 
-                mainSink.next(itemOperation);
-                return Mono.empty();
+                return itemBulkOperation.getRetryPolicy()
+                    .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
+                    .flatMap(shouldRetryGone -> {
+                        if (shouldRetryGone) {
+                            mainSink.next(itemOperation);
+                            return Mono.empty();
+                        } else {
+                            return retryOtherExceptions(itemOperation, exception, groupSink, cosmosException,
+                                                        itemBulkOperation);
+                        }
+                    });
             } else {
-                return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
-                    if (result.shouldRetry) {
-
-                        groupSink.next(itemOperation);
-                        return Mono.empty();
-                    } else {
-
-                        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
-                            itemOperation, exception, this.batchContext));
-                    }
-                });
+                return retryOtherExceptions(itemOperation, exception, groupSink, cosmosException,
+                                            itemBulkOperation);
             }
         }
 
         return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, this.batchContext));
+    }
+
+    private Mono<CosmosBulkOperationResponse<TContext>> retryOtherExceptions(
+        CosmosItemOperation itemOperation, Exception exception, FluxSink<CosmosItemOperation> groupSink,
+        CosmosException cosmosException, ItemBulkOperation<?> itemBulkOperation) {
+        return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
+            if (result.shouldRetry) {
+
+                groupSink.next(itemOperation);
+                return Mono.empty();
+            } else {
+
+                return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
+                    itemOperation, exception, this.batchContext));
+            }
+        });
     }
 
     private Mono<TransactionalBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
