@@ -50,7 +50,7 @@
     <azure.eventhub.version>5.7.1</azure.eventhub.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     <azure.eventhub.checkpoint.version>1.7.0</azure.eventhub.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     <azure.servicebus.version>3.6.1</azure.servicebus.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
-    <azure.storage.queue.version>12.9.0</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+    <azure.storage.queue.version>12.9.1</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
   </properties>
 
   <dependencyManagement>
