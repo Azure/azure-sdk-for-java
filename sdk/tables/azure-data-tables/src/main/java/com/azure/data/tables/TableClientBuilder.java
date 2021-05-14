@@ -32,7 +32,7 @@ import java.util.List;
  * construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
-public class TableClientBuilder {
+public final class TableClientBuilder {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
 
     private final ClientLogger logger = new ClientLogger(TableClientBuilder.class);
@@ -48,7 +48,7 @@ public class TableClientBuilder {
     private AzureNamedKeyCredential azureNamedKeyCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
-    private TablesServiceVersion version;
+    private TableServiceVersion version;
     private RetryPolicy retryPolicy;
 
     /**
@@ -79,7 +79,7 @@ public class TableClientBuilder {
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableAsyncClient buildAsyncClient() {
-        TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
+        TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             azureNamedKeyCredential, azureSasCredential, sasToken, endpoint, retryPolicy, httpLogOptions,
@@ -301,7 +301,7 @@ public class TableClientBuilder {
     }
 
     /**
-     * Sets the {@link TablesServiceVersion} that is used when making API requests.
+     * Sets the {@link TableServiceVersion} that is used when making API requests.
      *
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -309,11 +309,11 @@ public class TableClientBuilder {
      *
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version The {@link TablesServiceVersion} of the service to be used when making requests.
+     * @param version The {@link TableServiceVersion} of the service to be used when making requests.
      *
      * @return The updated {@link TableClientBuilder}.
      */
-    public TableClientBuilder serviceVersion(TablesServiceVersion version) {
+    public TableClientBuilder serviceVersion(TableServiceVersion version) {
         this.version = version;
 
         return this;

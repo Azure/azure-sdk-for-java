@@ -8,7 +8,7 @@ import com.azure.data.tables.implementation.models.TableResponseProperties;
 /**
  * A table within a storage or CosmosDB table API account.
  */
-public class TableItem {
+public final class TableItem {
     private final String name;
     private final String odataType;
     private final String odataId;

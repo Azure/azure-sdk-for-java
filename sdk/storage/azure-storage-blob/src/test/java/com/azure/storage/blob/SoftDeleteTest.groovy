@@ -16,7 +16,7 @@ class SoftDeleteTest extends APISpec {
         containerClient = softDeleteServiceClient.getBlobContainerClient(generateContainerName())
         containerClient.create()
         blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
     }
 
     def cleanup() {

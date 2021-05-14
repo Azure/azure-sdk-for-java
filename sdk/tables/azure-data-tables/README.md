@@ -194,14 +194,14 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 #### Create a table
 Create a table by calling the `TableServiceClient`'s `createTable` method. An exception will be thrown if a table with the provided name exists.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L74-L74 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L75-L75 -->
 ```java
 tableServiceClient.createTable(tableName);
 ```
 
 Alternatively, you can call the `createTableIfNotExists` method which will create the table only if no such table exists, and does not throw an exception.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L81-L81 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L82-L82 -->
 ```java
 tableServiceClient.createTableIfNotExists(tableName);
 ```
@@ -209,7 +209,7 @@ tableServiceClient.createTableIfNotExists(tableName);
 #### List tables
 List or query the set of existing tables by calling the `TableServiceClient`'s `listTables` method, optionally passing in a `ListTablesOptions` instance to filter or limit the query results. See [Supported Query Options][query_options] for details about supported query options.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L88-L93 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L89-L94 -->
 ```java
 ListTablesOptions options = new ListTablesOptions()
     .setFilter(String.format("TableName eq '%s'", tableName));
@@ -222,7 +222,7 @@ for (TableItem tableItem : tableServiceClient.listTables(options)) {
 #### Delete a table
 Delete a table by calling the `TableServiceClient`'s `deleteTable` method. An exception will be thrown if no table with the provided name exists.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L100-L100 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L101-L101 -->
 ```java
 tableServiceClient.deleteTable(tableName);
 ```
@@ -232,7 +232,7 @@ tableServiceClient.deleteTable(tableName);
 #### Construct a `TableClient`
 Construct a `TableClient` by creating an instance of `TableClientBuilder`, calling the builder's `tableName` method with the name of the table, and then calling its `buildClient` or `buildAsyncClient` methods.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L107-L110 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L108-L111 -->
 ```java
 TableClient tableClient = new TableClientBuilder()
     .connectionString("<your-connection-string>") // or use any of the other authentication methods
@@ -242,7 +242,7 @@ TableClient tableClient = new TableClientBuilder()
 
 Alternatively, a `TableClient` can be retrieved from an existing `TableServiceClient` by calling its `getTableClient` method.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L117-L117 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L118-L118 -->
 ```java
 TableClient tableClient = tableServiceClient.getTableClient(tableName);
 ```
@@ -250,7 +250,7 @@ TableClient tableClient = tableServiceClient.getTableClient(tableName);
 #### Create an entity
 Create a new `TableEntity` instance, providing the partition key and row key of the entity to create, optionally adding properties to the created object. Then pass the object to the `TableClient`'s `createEntity` method. An exception will be thrown if an entity with the provided partition key and row key exists within the table.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L125-L130 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L127-L132 -->
 ```java
 TableEntity entity = new TableEntity(partitionKey, rowKey)
     .addProperty("Product", "Marker Set")
@@ -263,7 +263,7 @@ tableClient.createEntity(entity);
 #### List entities
 List or query the set of entities within the table by calling the `TableClient`'s `listEntities` method, optionally passing in a `ListEntitiesOptions` instance to filter, select, or limit the query results. See [Supported Query Options][query_options] for details about supported query options.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L137-L144 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L139-L146 -->
 ```java
 ListEntitiesOptions options = new ListEntitiesOptions()
     .setFilter(String.format("PartitionKey eq '%s'", partitionKey))
@@ -278,7 +278,7 @@ for (TableEntity entity : tableClient.listEntities(options)) {
 #### Delete an entity
 Delete an entity by calling the `TableClient`'s `deleteEntity` method. An exception will be thrown if no entity with the provided partition key and row key exists.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L151-L151 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L153-L153 -->
 ```java
 tableClient.deleteEntity(partitionKey, rowKey);
 ```
@@ -290,7 +290,7 @@ When you interact with Tables service using the Azure Tables library for Java, e
 
 For example, if you try to create a table that already exists, a `409` error is returned, indicating "Conflict".
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L158-L166 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L160-L168 -->
 ```java
 // Create the table if it doesn't already exist.
 tableServiceClient.createTableIfNotExists(tableName);
@@ -298,8 +298,8 @@ tableServiceClient.createTableIfNotExists(tableName);
 // Now attempt to create the same table unconditionally.
 try {
     tableServiceClient.createTable(tableName);
-} catch (TableStorageException e) {
-    System.out.println(e.getStatusCode()); // 409
+} catch (TableServiceException e) {
+    System.out.println(e.getResponse().getStatusCode()); // 409
 }
 ```
 

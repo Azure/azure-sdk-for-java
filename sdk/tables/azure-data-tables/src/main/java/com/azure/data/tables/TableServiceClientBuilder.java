@@ -32,7 +32,7 @@ import java.util.List;
  * {@link #buildAsyncClient()}, respectively, to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
-public class TableServiceClientBuilder {
+public final class TableServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -42,7 +42,7 @@ public class TableServiceClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private ClientOptions clientOptions;
-    private TablesServiceVersion version;
+    private TableServiceVersion version;
     private HttpPipeline httpPipeline;
     private AzureNamedKeyCredential azureNamedKeyCredential;
     private AzureSasCredential azureSasCredential;
@@ -75,7 +75,7 @@ public class TableServiceClientBuilder {
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableServiceAsyncClient buildAsyncClient() {
-        TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
+        TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             azureNamedKeyCredential, azureSasCredential, sasToken, endpoint, retryPolicy, httpLogOptions,
@@ -296,7 +296,7 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link TablesServiceVersion} that is used when making API requests.
+     * Sets the {@link TableServiceVersion} that is used when making API requests.
      *
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -304,11 +304,11 @@ public class TableServiceClientBuilder {
      *
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param serviceVersion The {@link TablesServiceVersion} of the service to be used when making requests.
+     * @param serviceVersion The {@link TableServiceVersion} of the service to be used when making requests.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
-    public TableServiceClientBuilder serviceVersion(TablesServiceVersion serviceVersion) {
+    public TableServiceClientBuilder serviceVersion(TableServiceVersion serviceVersion) {
         this.version = serviceVersion;
 
         return this;
