@@ -15,13 +15,5 @@ stages:
         groupId: com.azure
         safeName: azurecommunicationsms
     ServiceDirectory: communication
-    PostSteps:
-      - task: PublishCodeCoverageResults@1
-      condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
-      inputs:
-          codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/communication/azure-communication-sms/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/communication/azure-communication-sms/target/site/jacoco-aggregate/
-          failIfCoverageEmpty: false
     EnvVars:
       SKIP_LIVE_TEST: TRUE
