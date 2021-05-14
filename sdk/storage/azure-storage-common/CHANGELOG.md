@@ -1,5 +1,8 @@
 # Release History
 
+## 12.12.0-beta.1 (Unreleased)
+
+
 ## 12.11.1 (2021-05-13)
 ### Dependency Updates
 - Updated `azure-core` to version `1.16.0`
