@@ -13,7 +13,7 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-sdk-template</module>
+        <module>azure-sdk-template-sxs</module>
       </modules>
       <dependencies>
         <dependency>
