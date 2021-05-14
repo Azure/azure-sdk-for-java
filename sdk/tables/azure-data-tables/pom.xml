@@ -44,8 +44,8 @@ Licensed under the MIT License.
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -99,7 +99,6 @@ Licensed under the MIT License.
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
-                --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.data.tables/com.azure.data.tables=ALL-UNNAMED
                 --add-opens com.azure.data.tables/com.azure.data.tables.implementation=ALL-UNNAMED
                 --add-opens com.azure.data.tables/com.azure.data.tables.implementation.models=ALL-UNNAMED
