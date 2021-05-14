@@ -139,7 +139,7 @@ public class PublicIpAddressInner extends Resource {
     private PublicIpAddressMigrationPhase migrationPhase;
 
     /*
-     * The source Public IP Address (IPv6) that links to this address (IPv4).
+     * The linked public IP address of the public IP address resource.
      */
     @JsonProperty(value = "properties.linkedPublicIPAddress")
     private PublicIpAddressInner linkedPublicIpAddress;
@@ -469,7 +469,7 @@ public class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Get the linkedPublicIpAddress property: The source Public IP Address (IPv6) that links to this address (IPv4).
+     * Get the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
      *
      * @return the linkedPublicIpAddress value.
      */
@@ -478,7 +478,7 @@ public class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Set the linkedPublicIpAddress property: The source Public IP Address (IPv6) that links to this address (IPv4).
+     * Set the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
      *
      * @param linkedPublicIpAddress the linkedPublicIpAddress value to set.
      * @return the PublicIpAddressInner object itself.

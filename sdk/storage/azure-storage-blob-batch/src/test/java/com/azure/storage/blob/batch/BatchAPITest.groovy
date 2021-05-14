@@ -21,6 +21,7 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -85,8 +86,8 @@ class BatchAPITest extends APISpec {
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
@@ -102,6 +103,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier rehydrate priority"() {
         setup:
@@ -110,7 +112,7 @@ class BatchAPITest extends APISpec {
         def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         def blobClient1 = containerClient.getBlobClient(blobName1)
-        blobClient1.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        blobClient1.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         blobClient1.setAccessTier(AccessTier.ARCHIVE)
 
         when:
@@ -132,6 +134,7 @@ class BatchAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier AC"() {
         setup:
@@ -140,7 +143,7 @@ class BatchAPITest extends APISpec {
         def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         def blobClient1 = containerClient.getBlobClient(blobName1)
-        blobClient1.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        blobClient1.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         def t = new HashMap<String, String>()
         t.put("foo", "bar")
         blobClient1.setTags(t)
@@ -172,7 +175,7 @@ class BatchAPITest extends APISpec {
         def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         def blobClient1 = containerClient.getBlobClient(blobName1)
-        blobClient1.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        blobClient1.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT)
@@ -198,7 +201,7 @@ class BatchAPITest extends APISpec {
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
@@ -231,7 +234,7 @@ class BatchAPITest extends APISpec {
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
@@ -519,7 +522,7 @@ class BatchAPITest extends APISpec {
         def blobUrls = new ArrayList<String>()
         for (def i = 0; i < 10; i++) {
             def pageBlobClient = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient()
-            pageBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+            pageBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
             blobUrls.add(pageBlobClient.getBlobUrl())
         }
 
@@ -540,7 +543,7 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         def blobClient = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient()
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
         def snapClient = blobClient.createSnapshot()
 
         def blobUrls = new ArrayList<String>()
@@ -767,6 +770,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     // Container scoped batch
     def "Set tier all succeed container scoped"() {
         setup:
@@ -774,8 +778,8 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         def batchClient = new BlobBatchClientBuilder(containerClient).buildClient()
         def batch = batchClient.getBlobBatch()
@@ -794,6 +798,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Delete blob all succeed container scoped"() {
         setup:
         def containerName = generateContainerName()
@@ -820,6 +825,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Bulk delete blobs container scoped"() {
         setup:
         def containerName = generateContainerName()
@@ -844,6 +850,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Bulk set access tier container scoped"() {
         setup:
         def containerName = generateContainerName()
@@ -851,7 +858,7 @@ class BatchAPITest extends APISpec {
         def blobUrls = new ArrayList<String>()
         for (def i = 0; i < 10; i++) {
             def pageBlobClient = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient()
-            pageBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+            pageBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
             blobUrls.add(pageBlobClient.getBlobUrl())
         }
         def batchClient = new BlobBatchClientBuilder(containerClient).buildClient()
@@ -874,8 +881,8 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         // Get a batch client associated with a different container.
         containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
@@ -900,8 +907,8 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         // Get a batch client associated with a different container.
         containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
@@ -920,6 +927,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Submit batch with container sas credentials"() {
         setup:
         def containerName = generateContainerName()
@@ -968,6 +976,7 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_06_12")
     def "Submit batch with container sas credentials error"() {
         setup:
         def containerName = generateContainerName()

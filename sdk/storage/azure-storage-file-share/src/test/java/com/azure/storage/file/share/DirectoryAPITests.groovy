@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
@@ -462,6 +463,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryDirectoryClient.create()
@@ -486,6 +488,7 @@ class DirectoryAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryDirectoryClient.create()

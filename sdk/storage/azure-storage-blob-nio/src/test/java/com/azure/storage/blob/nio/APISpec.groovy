@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
 import spock.lang.Timeout
@@ -41,20 +42,6 @@ class APISpec extends StorageSpec {
     BlobContainerClient cc
     BlobContainerAsyncClient ccAsync
 
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    static int defaultDataSize = defaultData.remaining()
-
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
     BlobServiceClient alternateBlobServiceClient
@@ -71,9 +58,6 @@ class APISpec extends StorageSpec {
      be used.
      */
     static final String receivedEtag = "received"
-
-    static final int KB = 1024
-    static final int MB = 1024 * KB
 
     def setupSpec() {
         // The property is to limit flapMap buffer size of concurrency
@@ -222,9 +206,9 @@ class APISpec extends StorageSpec {
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
 
-        if (size > MB) {
-            for (def i = 0; i < size / MB; i++) {
-                def dataSize = Math.min(MB, size - i * MB)
+        if (size > Constants.MB) {
+            for (def i = 0; i < size / Constants.MB; i++) {
+                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
                 fos.write(getRandomByteArray(dataSize))
             }
         } else {
@@ -254,7 +238,7 @@ class APISpec extends StorageSpec {
 
     def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
-        def defaultReadBuffer = 128 * KB
+        def defaultReadBuffer = 128 * Constants.KB
         try {
             // If the amount we are going to read is smaller than the default buffer size use that instead.
             def bufferSize = (int) Math.min(defaultReadBuffer, count)
