@@ -1,7 +1,11 @@
 # Release History
 
 ## 3.5.0-beta.1 (Unreleased)
+### Breaking Changes
+- Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
 
+### New Features
+- Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.
 
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
