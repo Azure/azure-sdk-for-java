@@ -200,8 +200,8 @@ public class RequestResponseChannel implements Disposable {
 
     @Override
     public void dispose() {
-        disposeAsync("Dispose called.")
-            .block(retryOptions.getTryTimeout());
+        disposeAsync("Dispose called.");
+            //.block(retryOptions.getTryTimeout());
     }
 
     Mono<Void> disposeAsync(String message) {
