@@ -390,8 +390,8 @@ springboot_2_3_com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.2.0;3
 springboot_2_3_com.azure.spring:azure-spring-boot-starter-storage;3.2.0;3.2.0
 springboot_2_3_com.azure.spring:azure-spring-boot-starter;3.2.0;3.2.0
 springboot_2_3_com.azure.spring:azure-spring-boot;3.2.0;3.2.0
-springboot_2_3_com.azure.spring:azure-spring-data-gremlin;2.3.2;2.3.2
-springboot_2_3_com.azure.spring:azure-spring-boot-starter-data-gremlin;2.3.2;2.3.2
+springboot_2_3_com.azure.spring:azure-spring-data-gremlin;2.3.2;2.3.1
+springboot_2_3_com.azure.spring:azure-spring-boot-starter-data-gremlin;2.3.2;2.3.1
 springboot_2_3_com.azure.spring:azure-spring-boot-test-aad;0.0.0;0.0.0
 springboot_2_3_com.azure.spring:azure-spring-boot-test-aad-b2c;0.0.0;0.0.0
 springboot_2_3_com.azure.spring:azure-spring-boot-test-selenium-common;0.0.0;0.0.0
