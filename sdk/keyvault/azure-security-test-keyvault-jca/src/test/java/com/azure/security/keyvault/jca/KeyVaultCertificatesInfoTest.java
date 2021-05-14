@@ -5,6 +5,7 @@ package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.ByteArrayInputStream;
 import java.security.KeyStore;
@@ -18,6 +19,10 @@ import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The JUnit test for the KeyVaultCertificatesInfo.
+ */
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultCertificatesInfoTest {
 
     /**
