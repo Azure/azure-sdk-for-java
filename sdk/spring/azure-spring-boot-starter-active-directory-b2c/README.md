@@ -18,7 +18,7 @@ while protecting the identities of your customers at the same time.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.5.0-beta.1</version>
+    <version>3.4.0</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -80,7 +80,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-      <version>3.5.0-beta.1</version>
+      <version>3.4.0</version>
     </dependency>
 
     <dependency>
@@ -310,7 +310,7 @@ This scenario not support login. Just protect the server by validating the acces
    <dependency>
      <groupId>com.azure.spring</groupId>
      <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-     <version>3.5.0-beta.1</version>
+     <version>3.4.0</version>
    </dependency>
 
    <dependency>
