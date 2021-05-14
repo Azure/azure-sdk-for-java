@@ -298,8 +298,8 @@ tableServiceClient.createTableIfNotExists(tableName);
 // Now attempt to create the same table unconditionally.
 try {
     tableServiceClient.createTable(tableName);
-} catch (TableStorageException e) {
-    System.out.println(e.getStatusCode()); // 409
+} catch (TableServiceException e) {
+    System.out.println(e.getResponse().getStatusCode()); // 409
 }
 ```
 

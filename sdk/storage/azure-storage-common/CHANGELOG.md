@@ -1,6 +1,9 @@
 # Release History
 
-## 12.12.0-beta.1 (Unreleased)
+## 12.12.0-beta.2 (Unreleased)
+
+
+## 12.12.0-beta.1 (2021-05-13)
 - Fixed bug in Utility.convertStreamToByteBuffer where variable updates would happen incorrectly if we hit the end of stream.
 
 ## 12.11.0 (2021-04-29)

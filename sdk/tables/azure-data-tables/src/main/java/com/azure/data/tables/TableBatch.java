@@ -11,7 +11,7 @@ import com.azure.data.tables.implementation.models.BatchOperation;
 import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
-import com.azure.data.tables.models.TableServiceErrorException;
+import com.azure.data.tables.models.TableServiceException;
 
 import java.time.Duration;
 import java.util.List;
@@ -224,7 +224,7 @@ public final class TableBatch {
      * @return A list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -241,7 +241,7 @@ public final class TableBatch {
      * @return A list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -260,7 +260,7 @@ public final class TableBatch {
      * sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

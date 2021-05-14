@@ -14,6 +14,9 @@ public final class DedicatedGatewayRequestOptions {
 
     private Duration maxIntegratedCacheStaleness;
 
+    /**
+     * Constructor
+     */
     @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions() {
 
