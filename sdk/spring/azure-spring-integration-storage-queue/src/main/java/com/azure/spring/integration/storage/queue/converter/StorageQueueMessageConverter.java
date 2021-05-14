@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link QueueMessageItem} and vice versa.
  */
-public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<QueueMessageItem> {
+public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<QueueMessageItem, QueueMessageItem> {
 
     @Override
     protected byte[] getPayload(QueueMessageItem azureMessage) {

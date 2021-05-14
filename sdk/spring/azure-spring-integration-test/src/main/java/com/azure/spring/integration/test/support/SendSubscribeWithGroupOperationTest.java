@@ -10,8 +10,9 @@ import org.springframework.messaging.Message;
 
 import java.util.function.Consumer;
 
-public abstract class SendSubscribeByGroupOperationTest<T extends SendOperation & SubscribeByGroupOperation>
+public abstract class SendSubscribeWithGroupOperationTest<T extends SendOperation & SubscribeByGroupOperation>
     extends SendSubscribeOperationTest<T> {
+
     protected String consumerGroup = "group1";
 
     @Override

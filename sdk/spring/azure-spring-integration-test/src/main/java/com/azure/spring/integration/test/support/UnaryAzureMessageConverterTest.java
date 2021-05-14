@@ -11,31 +11,26 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class AzureMessageConverterTest<T> {
-    protected String payload = "payload";
+public abstract class UnaryAzureMessageConverterTest<T> {
+
     protected String headerProperties = "headerProperties";
-    private AzureMessageConverter<T> converter = null;
-    private Class<T> targetClass;
+    protected String payload = "payload";
+    private AzureMessageConverter<T, T> converter = null;
 
-    public static void main(String[] args) {
+    protected abstract AzureMessageConverter<T, T> getConverter();
 
-    }
+    protected abstract Class<T> getTargetClass();
+
+    protected abstract void assertMessageHeadersEqual(T azureMessage, Message<?> message);
 
     @Before
     public void setUp() {
         converter = getConverter();
-        targetClass = getTargetClass();
-    }
-
-    @Test
-    public void payloadAsString() {
-        convertAndBack(payload, String.class);
     }
 
     @Test
@@ -44,8 +39,8 @@ public abstract class AzureMessageConverterTest<T> {
     }
 
     @Test
-    public void payloadAsTargetType() {
-        convertAndBack(getInstance(), targetClass);
+    public void payloadAsString() {
+        convertAndBack(payload, String.class);
     }
 
     @Test
@@ -55,8 +50,10 @@ public abstract class AzureMessageConverterTest<T> {
 
     private <U> void convertAndBack(U payload, Class<U> payloadClass) {
         Message<U> message = MessageBuilder.withPayload(payload).setHeader(headerProperties, headerProperties).build();
-        T azureMessage = converter.fromMessage(message, targetClass);
+        T azureMessage = converter.fromMessage(message, getTargetClass());
+
         Message<U> convertedMessage = converter.toMessage(azureMessage, payloadClass);
+
         assertNotNull(convertedMessage);
         assertMessagePayloadEquals(convertedMessage.getPayload(), payload);
         assertMessageHeadersEqual(azureMessage, convertedMessage);
@@ -64,18 +61,9 @@ public abstract class AzureMessageConverterTest<T> {
 
     private <U> void assertMessagePayloadEquals(U convertedPayload, U payload) {
         if (convertedPayload.getClass().equals(byte[].class)) {
-            assertTrue(Arrays.equals((byte[]) convertedPayload, (byte[]) payload));
+            assertArrayEquals((byte[]) convertedPayload, (byte[]) payload);
         } else {
             assertEquals(convertedPayload, payload);
         }
     }
-
-    protected void assertMessageHeadersEqual(T azureMessage, Message<?> message) {
-    }
-
-    protected abstract T getInstance();
-
-    protected abstract AzureMessageConverter<T> getConverter();
-
-    protected abstract Class<T> getTargetClass();
 }
