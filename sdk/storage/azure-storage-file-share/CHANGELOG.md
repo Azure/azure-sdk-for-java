@@ -11,6 +11,11 @@
 - Deprecated old upload() overloads on ShareFileClient that only supported single Put Range operations, replacing them
 with uploadRange() methods.
 
+## 12.9.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` to version `1.16.0`
+- Updated `azure-storage-common` to version `12.11.1`
+
 ## 12.9.0 (2021-04-29)
 - ShareLeaseClient now updates it's leaseID through a lease change.
 - Fixed a bug where working with a root directory client could improperly form requests and subdirectory clients
