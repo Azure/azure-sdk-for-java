@@ -21,8 +21,8 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
     private static final String AZURE_TEST_DEBUG = "AZURE_TEST_DEBUG";
 
     private static final Supplier<Boolean> SHOULD_LOG_EXECUTION_STATUS = () ->
-        Configuration.getGlobalConfiguration().get(SYSTEM_DEBUG, Boolean::parseBoolean)
-            || Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG, Boolean::parseBoolean);
+        Boolean.parseBoolean(Configuration.getGlobalConfiguration().get(SYSTEM_DEBUG))
+            || Boolean.parseBoolean(Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG));
 
     @Override
     public void beforeTestExecution(ExtensionContext extensionContext) {
