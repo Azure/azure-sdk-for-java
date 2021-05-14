@@ -24,7 +24,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.0-beta.3</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -122,7 +122,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -274,8 +274,8 @@ See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approac
 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L154-L210-->
 ```java
-String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
-    + "/contoso-allinone.jpg";
+String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
+        + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
     formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
 List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();

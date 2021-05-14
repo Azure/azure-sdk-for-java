@@ -1,6 +1,11 @@
 # Release History
 
-## 2.2.0-beta.2 (Unreleased)
+## 2.0.5 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
+- Upgraded Reactor from `3.4.3` to `3.4.5`.
 
 ## 2.2.0-beta.1 (2021-04-14)
 ### New Features

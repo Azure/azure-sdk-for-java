@@ -64,13 +64,6 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
-
-    // TODO (kasobol-msft) get rid of this.
-    static String connectionString
-    private boolean recordLiveMode
-
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
 
@@ -89,16 +82,6 @@ class APISpec extends StorageSpec {
 
     @Shared
     protected KB = 1024
-
-    def setup() {
-        // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentFeature().getFeatureMethod().getAnnotation(Requires.class) == null
-        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
-    }
-
-    static boolean liveMode() {
-        return env.testMode == TestMode.LIVE
-    }
 
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
@@ -141,14 +124,13 @@ class APISpec extends StorageSpec {
             .key(key, algorithm.toString())
             .keyResolver(keyResolver)
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -161,14 +143,12 @@ class APISpec extends StorageSpec {
 
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -186,14 +166,12 @@ class APISpec extends StorageSpec {
                                                      HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
