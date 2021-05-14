@@ -569,7 +569,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -676,7 +676,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -731,13 +732,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             iotHubDescription,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -800,7 +802,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -830,7 +833,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -866,7 +870,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -887,7 +892,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -914,7 +920,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -937,7 +944,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -959,7 +967,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -987,7 +996,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1008,7 +1018,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1028,7 +1039,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -1103,7 +1115,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             iotHubTags,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1364,7 +1376,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1601,7 +1613,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1749,7 +1761,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1909,7 +1921,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             resourceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2067,7 +2079,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2253,7 +2265,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2451,7 +2463,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             name,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2632,7 +2644,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             name,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2813,7 +2825,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             name,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2985,7 +2997,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3165,7 +3177,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             jobId,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3335,7 +3347,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3515,7 +3527,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3684,7 +3696,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             operationInputs,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3838,7 +3850,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             input,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4006,7 +4018,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             input,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4176,7 +4188,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4360,7 +4372,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             keyName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4534,7 +4546,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             exportDevicesParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4717,7 +4729,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             importDevicesParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4877,7 +4889,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4950,7 +4962,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5022,7 +5034,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5096,7 +5108,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5168,7 +5180,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5239,7 +5251,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5311,7 +5323,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -5384,7 +5396,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -13,15 +13,19 @@ import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import com.microsoft.data.encryption.cryptography.KeyEncryptionKey;
+import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import com.microsoft.data.encryption.cryptography.ProtectedDataEncryptionKey;
 import reactor.core.publisher.Mono;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * CosmosEncryptionAsyncDatabase with encryption capabilities.
  */
 public class CosmosEncryptionAsyncDatabase {
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
-    private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+    private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
 
     CosmosEncryptionAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase,
                                   CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -88,7 +92,7 @@ public class CosmosEncryptionAsyncDatabase {
                 new CosmosClientEncryptionKeyProperties(clientEncryptionKeyId, encryptionAlgorithm,
                     wrappedDataEncryptionKey, encryptionKeyWrapMetadata);
             return this.cosmosAsyncDatabase.createClientEncryptionKey(clientEncryptionKeyProperties);
-        } catch (Exception ex) {
+        } catch (NoSuchAlgorithmException | MicrosoftDataEncryptionException | InvalidKeyException ex) {
             return Mono.error(ex);
         }
     }

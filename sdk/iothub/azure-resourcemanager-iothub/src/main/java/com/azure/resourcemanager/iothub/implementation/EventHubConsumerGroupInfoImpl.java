@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.EventHubConsumerGroupInfoInner;
 import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupInfo;
 import java.util.Collections;
@@ -13,9 +12,10 @@ import java.util.Map;
 public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGroupInfo {
     private EventHubConsumerGroupInfoInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    EventHubConsumerGroupInfoImpl(EventHubConsumerGroupInfoInner innerObject, IotHubManager serviceManager) {
+    EventHubConsumerGroupInfoImpl(
+        EventHubConsumerGroupInfoInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -49,7 +49,7 @@ public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGrou
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }
