@@ -5,6 +5,29 @@
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
 - Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
 - Support creating `GrantedAuthority` by groupId and groupName for web application.
+  The application can configure to use groupName to control the permission, for example
+    ```java
+    @GetMapping("groupName")
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_<groupName>')")
+    public String groupName() {
+        return "groupName message";
+    }
+    ```
+  but groupName is changeable, if there are two users with groupNameA and groupNameB, groupNameA is renamed to groupNameB, groupNameB is renamed to groupNameA,
+  the application may behave unexpectedly.
+  To avoid the situation, the application now can configure to create GrantedAuthority by groupId.
+
+    ```java
+        @GetMapping("group1Id")
+        @ResponseBody
+        @PreAuthorize("hasRole('ROLE_<group1-id>')")
+        public String group1Id() {
+            return "group1Id message";
+        }
+
+    ```
+  Check [issue] here for more information.
 
 
 ## 3.4.0 (2021-04-19)
@@ -68,4 +91,6 @@
 
 ## 2.3.3 (2020-08-13)
 ### Key Bug Fixes 
-- Address CVEs and cleaned up all warnings at build time. 
+- Address CVEs and cleaned up all warnings at build time.
+  
+[issue]: https://github.com/Azure/azure-sdk-for-java/issues/20218
