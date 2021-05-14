@@ -47,7 +47,7 @@ public class KeyVaultCertificatesInfo {
         .map(Long::valueOf)
         .orElse(0L);
 
-    boolean certificatesNeedRefresh() {
+    private boolean certificatesNeedRefresh() {
         if (overallRefreshTime.after(lastRefreshTime)) {
             return true;
         }
@@ -78,7 +78,7 @@ public class KeyVaultCertificatesInfo {
         return certificateKeys;
     }
 
-    void refreshCertificates(KeyVaultClient keyVaultClient) {
+    private void refreshCertificates(KeyVaultClient keyVaultClient) {
         aliases = keyVaultClient.getAliases();
         certificateKeys.clear();
         certificates.clear();
@@ -101,7 +101,7 @@ public class KeyVaultCertificatesInfo {
      * @param keyVaultClient keyVaultClient in keyStore
      * @return certificate's alias if exist.
      */
-    public String getAliasByCertInTime(Certificate certificate, KeyVaultClient keyVaultClient) {
+    String getAliasByCertInTime(Certificate certificate, KeyVaultClient keyVaultClient) {
         refreshCertificates(keyVaultClient);
         String key = "";
         for (Map.Entry<String, Certificate> entry : certificates.entrySet()) {
@@ -111,6 +111,18 @@ public class KeyVaultCertificatesInfo {
         }
         refreshCertsInfo();
         return key;
+    }
+
+    /**
+     * delete certificate info by alias if exits
+     * @param alias deleted certificate
+     */
+    void deleteEntry(String alias) {
+        if (aliases != null) {
+            aliases.remove(alias);
+        }
+        certificates.remove(alias);
+        certificateKeys.remove(alias);
     }
 
     /**
