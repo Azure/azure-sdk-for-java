@@ -3,8 +3,8 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -29,13 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TablesClientBuilderTest {
     private String tableName;
     private String connectionString;
-    private TablesServiceVersion serviceVersion;
+    private TableServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
         tableName = "someTable";
         connectionString = TestUtils.getConnectionString(true);
-        serviceVersion = TablesServiceVersion.V2019_02_02;
+        serviceVersion = TableServiceVersion.V2019_02_02;
     }
 
     @Test
@@ -92,8 +92,7 @@ public class TablesClientBuilderTest {
     @Test
     public void nullCredentialThrowsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((AzureSasCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((TablesSharedKeyCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((TokenCredential) null));
+        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((AzureNamedKeyCredential) null));
     }
 
     @Test
@@ -108,7 +107,7 @@ public class TablesClientBuilderTest {
             .buildAsyncClient();
 
         StepVerifier.create(tableAsyncClient.getHttpPipeline().send(
-            TestUtils.request(tableAsyncClient.getTableUrl())))
+            TestUtils.request(tableAsyncClient.getTableEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -126,7 +125,7 @@ public class TablesClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, tableClient::create);
+        assertThrows(RuntimeException.class, tableClient::createTable);
     }
 
     @Test
@@ -141,7 +140,7 @@ public class TablesClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, tableClient::create);
+        assertThrows(RuntimeException.class, tableClient::createTable);
     }
 
     @Test
@@ -157,7 +156,7 @@ public class TablesClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, tableClient::create);
+        assertThrows(RuntimeException.class, tableClient::createTable);
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials

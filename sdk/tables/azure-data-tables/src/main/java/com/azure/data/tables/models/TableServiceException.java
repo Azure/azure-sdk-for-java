@@ -8,25 +8,25 @@ import com.azure.core.http.HttpResponse;
 /**
  * Exception thrown for an invalid response with {@link TableServiceError} information.
  */
-public final class TableServiceErrorException extends HttpResponseException {
+public final class TableServiceException extends HttpResponseException {
     /**
-     * Initializes a new instance of the {@link TableServiceErrorException} class.
+     * Initializes a new instance of the {@link TableServiceException} class.
      *
      * @param message The exception message or the response content if a message is not available.
      * @param response The HTTP response.
      */
-    public TableServiceErrorException(String message, HttpResponse response) {
+    public TableServiceException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the {@link TableServiceErrorException} class.
+     * Initializes a new instance of the {@link TableServiceException} class.
      *
      * @param message The exception message or the response content if a message is not available.
      * @param response The HTTP response.
      * @param value The deserialized response value.
      */
-    public TableServiceErrorException(String message, HttpResponse response, TableServiceError value) {
+    public TableServiceException(String message, HttpResponse response, TableServiceError value) {
         super(message, response, value);
     }
 
