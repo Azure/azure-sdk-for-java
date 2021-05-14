@@ -29,13 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TableServiceClientBuilderTest {
     private String tableName;
     private String connectionString;
-    private TablesServiceVersion serviceVersion;
+    private TableServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
         tableName = "someTable";
         connectionString = TestUtils.getConnectionString(true);
-        serviceVersion = TablesServiceVersion.V2019_02_02;
+        serviceVersion = TableServiceVersion.V2019_02_02;
     }
 
     @Test
@@ -103,7 +103,7 @@ public class TableServiceClientBuilderTest {
             .buildAsyncClient();
 
         StepVerifier.create(tableServiceAsyncClient.getHttpPipeline().send(
-            TestUtils.request(tableServiceAsyncClient.getServiceUrl())))
+            TestUtils.request(tableServiceAsyncClient.getServiceEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }

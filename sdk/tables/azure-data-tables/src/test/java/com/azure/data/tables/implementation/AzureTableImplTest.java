@@ -18,7 +18,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.TablesServiceVersion;
+import com.azure.data.tables.TableServiceVersion;
 import com.azure.data.tables.TablesSharedKeyCredential;
 import com.azure.data.tables.TablesSharedKeyCredentialPolicy;
 import com.azure.data.tables.TestUtils;
@@ -111,7 +111,7 @@ public class AzureTableImplTest extends TestBase {
         azureTable = new AzureTableImplBuilder()
                 .pipeline(pipeline)
                 .serializerAdapter(new TablesJacksonSerializer())
-                .version(TablesServiceVersion.getLatest().getVersion())
+                .version(TableServiceVersion.getLatest().getVersion())
                 .url(storageConnectionString.getTableEndpoint().getPrimaryUri())
                 .buildClient();
     }

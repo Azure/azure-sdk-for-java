@@ -28,8 +28,8 @@ import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableServiceException;
-import com.azure.data.tables.models.UpdateMode;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -61,7 +61,7 @@ public final class TableAsyncClient {
     private final AzureTableImpl implementation;
     private final SerializerAdapter serializerAdapter;
     private final String accountName;
-    private final String tableUrl;
+    private final String tableEndpoint;
     private final HttpPipeline pipeline;
 
     private TableAsyncClient(String tableName, AzureTableImpl implementation, SerializerAdapter serializerAdapter) {
@@ -78,7 +78,7 @@ public final class TableAsyncClient {
 
             final URI uri = URI.create(implementation.getUrl());
             this.accountName = uri.getHost().split("\\.", 2)[0];
-            this.tableUrl = uri.resolve("/" + tableName).toString();
+            this.tableEndpoint = uri.resolve("/" + tableName).toString();
 
             logger.verbose("Table Service URI: {}", uri);
         } catch (NullPointerException | IllegalArgumentException ex) {
@@ -90,7 +90,7 @@ public final class TableAsyncClient {
         this.pipeline = implementation.getHttpPipeline();
     }
 
-    TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TablesServiceVersion serviceVersion,
+    TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
                      SerializerAdapter serializerAdapter) {
         this(tableName, new AzureTableImplBuilder()
                 .url(serviceUrl)
@@ -121,21 +121,30 @@ public final class TableAsyncClient {
     }
 
     /**
-     * Gets the absolute URL for this table.
+     * Gets the endpoint for this table.
      *
-     * @return The absolute URL for this table.
+     * @return The endpoint for this table.
      */
-    public String getTableUrl() {
-        return tableUrl;
+    public String getTableEndpoint() {
+        return tableEndpoint;
     }
 
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
-     * @return The pipeline.
+     * @return This client's {@link HttpPipeline}.
      */
     HttpPipeline getHttpPipeline() {
         return this.pipeline;
+    }
+
+    /**
+     * Gets the {@link AzureTableImpl} powering this client.
+     *
+     * @return This client's {@link AzureTableImpl}.
+     */
+    AzureTableImpl getImplementation() {
+        return implementation;
     }
 
     /**
@@ -143,8 +152,8 @@ public final class TableAsyncClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return TablesServiceVersion.fromString(implementation.getVersion());
+    public TableServiceVersion getServiceVersion() {
+        return TableServiceVersion.fromString(implementation.getVersion());
     }
 
     /**
@@ -168,10 +177,6 @@ public final class TableAsyncClient {
         }
 
         return new TableAsyncBatch(partitionKey, this);
-    }
-
-    AzureTableImpl getImplementation() {
-        return implementation;
     }
 
     /**
@@ -303,7 +308,7 @@ public final class TableAsyncClient {
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> upsertEntity(TableEntity entity, UpdateMode updateMode) {
+    public Mono<Void> upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         return upsertEntityWithResponse(entity, updateMode).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -327,11 +332,11 @@ public final class TableAsyncClient {
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode) {
+    public Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode) {
         return withContext(context -> upsertEntityWithResponse(entity, updateMode, null, context));
     }
 
-    Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
+    Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode, Duration timeout,
                                                   Context context) {
         context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
@@ -343,7 +348,7 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
-            if (updateMode == UpdateMode.REPLACE) {
+            if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                     entity.getRowKey(), timeoutInt, null, null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
@@ -394,7 +399,7 @@ public final class TableAsyncClient {
      * @throws TableServiceException If no entity with the same partition key and row key exists within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateEntity(TableEntity entity, UpdateMode updateMode) {
+    public Mono<Void> updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         return updateEntity(entity, updateMode, false);
     }
 
@@ -418,7 +423,7 @@ public final class TableAsyncClient {
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+    public Mono<Void> updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
         return updateEntityWithResponse(entity, updateMode, ifUnchanged).flatMap(response ->
             Mono.justOrEmpty(response.getValue()));
     }
@@ -443,13 +448,13 @@ public final class TableAsyncClient {
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode,
+    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                          boolean ifUnchanged) {
         return withContext(context -> updateEntityWithResponse(entity, updateMode, ifUnchanged, null, context));
     }
 
-    Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                  Duration timeout, Context context) {
+    Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                  boolean ifUnchanged, Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
 
@@ -461,7 +466,7 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
-            if (updateMode == UpdateMode.REPLACE) {
+            if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                     entity.getRowKey(), timeoutInt, null, eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)

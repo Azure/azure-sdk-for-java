@@ -10,8 +10,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableServiceException;
-import com.azure.data.tables.models.UpdateMode;
 
 import java.time.Duration;
 
@@ -29,7 +29,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * TableClientBuilder} object.
  */
 @ServiceClient(builder = TableClientBuilder.class)
-public class TableClient {
+public final class TableClient {
     final TableAsyncClient client;
 
     TableClient(TableAsyncClient client) {
@@ -55,12 +55,12 @@ public class TableClient {
     }
 
     /**
-     * Gets the absolute URL for this table.
+     * Gets the endpoint for this table.
      *
-     * @return The absolute URL for this table.
+     * @return The endpoint for this table.
      */
-    public String getTableUrl() {
-        return this.client.getTableUrl();
+    public String getTableEndpoint() {
+        return this.client.getTableEndpoint();
     }
 
     /**
@@ -68,8 +68,8 @@ public class TableClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return this.client.getApiVersion();
+    public TableServiceVersion getServiceVersion() {
+        return this.client.getServiceVersion();
     }
 
     /**
@@ -208,7 +208,7 @@ public class TableClient {
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(TableEntity entity, UpdateMode updateMode) {
+    public void upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         client.upsertEntity(entity, updateMode).block();
     }
 
@@ -231,7 +231,7 @@ public class TableClient {
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(TableEntity entity, UpdateMode updateMode, Duration timeout) {
+    public void upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode, Duration timeout) {
         upsertEntityWithResponse(entity, updateMode, timeout, null);
     }
 
@@ -257,8 +257,8 @@ public class TableClient {
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
-                                                   Context context) {
+    public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                   Duration timeout, Context context) {
         return client.upsertEntityWithResponse(entity, updateMode, timeout, context).block();
     }
 
@@ -289,7 +289,7 @@ public class TableClient {
      * @throws TableServiceException If no entity with the same partition key and row key exists within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode) {
+    public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         client.updateEntity(entity, updateMode).block();
     }
 
@@ -311,7 +311,7 @@ public class TableClient {
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+    public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
         client.updateEntity(entity, updateMode, ifUnchanged).block();
     }
 
@@ -334,7 +334,8 @@ public class TableClient {
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged, Duration timeout) {
+    public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged,
+                             Duration timeout) {
         updateEntityWithResponse(entity, updateMode, ifUnchanged, timeout, null);
     }
 
@@ -360,8 +361,8 @@ public class TableClient {
      * entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                   Duration timeout, Context context) {
+    public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                   boolean ifUnchanged, Duration timeout, Context context) {
         return client.updateEntityWithResponse(entity, updateMode, ifUnchanged, timeout, context).block();
     }
 

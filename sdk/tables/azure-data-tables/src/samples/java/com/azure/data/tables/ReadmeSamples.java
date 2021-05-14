@@ -67,6 +67,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating a table.
+     *
      * @throws TableServiceException if the table exists.
      */
     public void createTable() {
@@ -118,6 +119,7 @@ public class ReadmeSamples {
 
     /**
      * Code sample for creating an entity.
+     *
      * @throws TableServiceException if the entity exists.
      */
     public void createEntity() {
