@@ -402,12 +402,12 @@ def element_find(element: ET.Element, path: str):
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '-pl', type=str)
-    parser.add_argument('--project-list-path', '-plp', type=str)
+    parser.add_argument('--project-list-path', '-plp', type=str, required=False, default=None)
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    if args.project_list_path:
+    if args.project_list_path and not 'not-specified' == args.project_list_path:
         # please note these two values have been swapped.
         create_from_source_pom_spring(args.project_list_path, args.project_list)
     else:
