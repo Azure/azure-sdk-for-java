@@ -300,6 +300,16 @@ public interface CosmosOperations {
     <T> long count(CosmosQuery query, String containerName);
 
     /**
+     * Count
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @param <T> type class of domainType
+     * @return count result
+     */
+    <T> long count(SqlQuerySpec querySpec, String containerName);
+
+    /**
      * To get converter
      *
      * @return MappingCosmosConverter
