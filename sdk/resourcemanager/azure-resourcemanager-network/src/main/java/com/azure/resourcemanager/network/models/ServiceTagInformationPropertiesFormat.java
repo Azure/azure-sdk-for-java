@@ -39,6 +39,12 @@ public final class ServiceTagInformationPropertiesFormat {
     @JsonProperty(value = "addressPrefixes", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> addressPrefixes;
 
+    /*
+     * The state of the service tag.
+     */
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
+    private String state;
+
     /**
      * Get the changeNumber property: The iteration number of service tag.
      *
@@ -73,6 +79,15 @@ public final class ServiceTagInformationPropertiesFormat {
      */
     public List<String> addressPrefixes() {
         return this.addressPrefixes;
+    }
+
+    /**
+     * Get the state property: The state of the service tag.
+     *
+     * @return the state value.
+     */
+    public String state() {
+        return this.state;
     }
 
     /**

@@ -16,11 +16,32 @@ public interface OperationDefinition {
     String name();
 
     /**
+     * Gets the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
      * Gets the display property: The display information for the configuration store operation.
      *
      * @return the display value.
      */
     OperationDefinitionDisplay display();
+
+    /**
+     * Gets the origin property: Origin of the operation.
+     *
+     * @return the origin value.
+     */
+    String origin();
+
+    /**
+     * Gets the properties property: Properties of the operation.
+     *
+     * @return the properties value.
+     */
+    OperationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.appconfiguration.fluent.models.OperationDefinitionInner object.

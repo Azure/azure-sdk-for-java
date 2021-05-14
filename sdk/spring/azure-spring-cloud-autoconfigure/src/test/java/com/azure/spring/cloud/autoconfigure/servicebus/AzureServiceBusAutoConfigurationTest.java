@@ -3,11 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
-import com.microsoft.azure.servicebus.IMessage;
 import org.junit.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -59,13 +59,13 @@ public class AzureServiceBusAutoConfigurationTest {
 
     @Test
     public void testWithoutServiceBusSDKInClasspath() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(IMessage.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusReceivedMessage.class))
                           .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProperties.class));
     }
 
     @Test(expected = NoSuchBeanDefinitionException.class)
     public void testAzureServiceBusPropertiesValidation() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(IMessage.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusReceivedMessage.class))
                           .run(context -> context.getBean(AzureServiceBusProperties.class));
     }
 
