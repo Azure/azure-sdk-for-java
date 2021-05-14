@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30184?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30184?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "733c6096-2a58-4def-aac1-7d1aba5d4f3c",
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet341875c663?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet341875c663?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c9b9d48d-8698-4369-a713-e60307804240",
@@ -49,7 +49,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T080206Z:71fcd371-43ea-4568-8dde-8f375b496e2c",
       "Expires" : "-1",
       "Content-Length" : "1316",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/64b8ee94-51a0-457f-b234-7bcb0ac76bab?api-version=2020-08-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/64b8ee94-51a0-457f-b234-7bcb0ac76bab?api-version=2020-11-01",
       "x-ms-request-id" : "64b8ee94-51a0-457f-b234-7bcb0ac76bab",
       "Body" : "{\r\n  \"name\": \"vnet341875c663\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet341875c663\",\r\n  \"etag\": \"W/\\\"debbbb4b-11a7-4862-979e-8122ea3af89b\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"ab82c16b-149b-4afa-9455-ea38f48c2fc2\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet341875c663/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"debbbb4b-11a7-4862-979e-8122ea3af89b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/28\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
       "x-ms-client-request-id" : "c9b9d48d-8698-4369-a713-e60307804240",
@@ -87,7 +87,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/64b8ee94-51a0-457f-b234-7bcb0ac76bab?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/64b8ee94-51a0-457f-b234-7bcb0ac76bab?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "42472391-5f7b-40d2-a799-052ae7cee6fd"
@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet341875c663?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet341875c663?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f3ed04e8-ead2-40e3-a9e5-462a5489aa1b"
@@ -144,7 +144,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7609668482e?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7609668482e?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d889c8d0-b49d-4015-8329-3033cad30bfe",
@@ -166,7 +166,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T080213Z:783752e7-259f-4e76-ba4d-b0f40200d35f",
       "Expires" : "-1",
       "Content-Length" : "1671",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/d756c7ad-83a0-4875-b32d-4613686ce0be?api-version=2020-08-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/d756c7ad-83a0-4875-b32d-4613686ce0be?api-version=2020-11-01",
       "x-ms-request-id" : "d756c7ad-83a0-4875-b32d-4613686ce0be",
       "Body" : "{\r\n  \"name\": \"nic7609668482e\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7609668482e\",\r\n  \"etag\": \"W/\\\"84714f48-6513-428e-b606-93a442ce8e2d\\\"\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"dbcbe96f-fab8-46a2-be05-8872a63637f3\",\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"primary\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7609668482e/ipConfigurations/primary\",\r\n        \"etag\": \"W/\\\"84714f48-6513-428e-b606-93a442ce8e2d\\\"\",\r\n        \"type\": \"Microsoft.Network/networkInterfaces/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAddress\": \"10.0.0.4\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet341875c663/subnets/subnet1\"\r\n          },\r\n          \"primary\": true,\r\n          \"privateIPAddressVersion\": \"IPv4\"\r\n        }\r\n      }\r\n    ],\r\n    \"dnsSettings\": {\r\n      \"dnsServers\": [],\r\n      \"appliedDnsServers\": [],\r\n      \"internalDomainNameSuffix\": \"npayfk21ct3evfcv3i2pjdbpyc.jx.internal.cloudapp.net\"\r\n    },\r\n    \"enableAcceleratedNetworking\": false,\r\n    \"enableIPForwarding\": false,\r\n    \"hostedWorkloads\": [],\r\n    \"tapConfigurations\": [],\r\n    \"nicType\": \"Standard\"\r\n  },\r\n  \"type\": \"Microsoft.Network/networkInterfaces\"\r\n}",
       "x-ms-client-request-id" : "d889c8d0-b49d-4015-8329-3033cad30bfe",
@@ -625,7 +625,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30184?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30184?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4f1cfd34-3498-4177-9a22-1f24412e66f5",
@@ -680,7 +680,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet97178e43f9?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet97178e43f9?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "90d0ffdb-98e7-4981-9da1-e43bb60d710e",
@@ -702,7 +702,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T080710Z:0fe3882d-6ca1-4288-85cc-0e759e039273",
       "Expires" : "-1",
       "Content-Length" : "1316",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/9c5c5436-f04e-4260-a700-de4d4cce8a1f?api-version=2020-08-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/9c5c5436-f04e-4260-a700-de4d4cce8a1f?api-version=2020-11-01",
       "x-ms-request-id" : "9c5c5436-f04e-4260-a700-de4d4cce8a1f",
       "Body" : "{\r\n  \"name\": \"vnet97178e43f9\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet97178e43f9\",\r\n  \"etag\": \"W/\\\"f8e69bef-5a1b-4233-8305-dcb963600b72\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"8101ceb2-193e-4f52-be18-17d95ccc5298\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet97178e43f9/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"f8e69bef-5a1b-4233-8305-dcb963600b72\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/28\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
       "x-ms-client-request-id" : "90d0ffdb-98e7-4981-9da1-e43bb60d710e",
@@ -711,7 +711,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/9c5c5436-f04e-4260-a700-de4d4cce8a1f?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/9c5c5436-f04e-4260-a700-de4d4cce8a1f?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "24f1a088-0a80-4e0e-b320-95d998370ea6"
@@ -739,7 +739,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet97178e43f9?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet97178e43f9?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "57906b90-5b8c-44af-abf1-67e0dd0b3712"
@@ -768,7 +768,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7642678009e?api-version=2020-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7642678009e?api-version=2020-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b643bd93-ccd5-4f50-bea9-94c9c789af5a",
@@ -790,7 +790,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T080720Z:a312f1f2-f111-4507-b14e-2df30ea5e892",
       "Expires" : "-1",
       "Content-Length" : "1671",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/814ca61c-3741-437d-a3bc-e75dabcac160?api-version=2020-08-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/814ca61c-3741-437d-a3bc-e75dabcac160?api-version=2020-11-01",
       "x-ms-request-id" : "814ca61c-3741-437d-a3bc-e75dabcac160",
       "Body" : "{\r\n  \"name\": \"nic7642678009e\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7642678009e\",\r\n  \"etag\": \"W/\\\"48f9bd52-27a9-4594-9654-518849494281\\\"\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"361fbd7e-866a-4cfe-953b-0f618fc027f5\",\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"primary\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/networkInterfaces/nic7642678009e/ipConfigurations/primary\",\r\n        \"etag\": \"W/\\\"48f9bd52-27a9-4594-9654-518849494281\\\"\",\r\n        \"type\": \"Microsoft.Network/networkInterfaces/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAddress\": \"10.0.0.4\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30184/providers/Microsoft.Network/virtualNetworks/vnet97178e43f9/subnets/subnet1\"\r\n          },\r\n          \"primary\": true,\r\n          \"privateIPAddressVersion\": \"IPv4\"\r\n        }\r\n      }\r\n    ],\r\n    \"dnsSettings\": {\r\n      \"dnsServers\": [],\r\n      \"appliedDnsServers\": [],\r\n      \"internalDomainNameSuffix\": \"wlhadaj4dfje5pqyc5mvztcsta.jx.internal.cloudapp.net\"\r\n    },\r\n    \"enableAcceleratedNetworking\": false,\r\n    \"enableIPForwarding\": false,\r\n    \"hostedWorkloads\": [],\r\n    \"tapConfigurations\": [],\r\n    \"nicType\": \"Standard\"\r\n  },\r\n  \"type\": \"Microsoft.Network/networkInterfaces\"\r\n}",
       "x-ms-client-request-id" : "b643bd93-ccd5-4f50-bea9-94c9c789af5a",
@@ -997,7 +997,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30184?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30184?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7e09b5ed-f112-4a40-ab17-536cdf3d160f",

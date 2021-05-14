@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+//import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
@@ -149,7 +150,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-01-01";
+        this.apiVersion = "2021-01-01";
 //        this.operations = new OperationsClientImpl(this);
         this.subscriptions = new SubscriptionsClientImpl(this);
         this.tenants = new TenantsClientImpl(this);

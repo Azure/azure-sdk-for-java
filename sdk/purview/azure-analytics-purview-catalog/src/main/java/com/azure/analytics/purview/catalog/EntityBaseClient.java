@@ -748,7 +748,7 @@ public final class EntityBaseClient {
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createOrUpdateByGuid(String guid, String name) {
+    public DynamicRequest partialUpdateEntityAttributeByGuid(String guid, String name) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}")
                 .setPathParam("Endpoint", endpoint)
@@ -1280,7 +1280,7 @@ public final class EntityBaseClient {
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createOrUpdateByUniqueAttribute(String typeName) {
+    public DynamicRequest partialUpdateEntityByUniqueAttributes(String typeName) {
         return new DynamicRequest(serializer, httpPipeline)
                 .setUrl("{Endpoint}/api/atlas/v2/entity/uniqueAttribute/type/{typeName}")
                 .setPathParam("Endpoint", endpoint)

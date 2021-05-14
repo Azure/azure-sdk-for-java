@@ -985,7 +985,7 @@ class FileSystemAPITest extends APISpec {
         fc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
         fc2.create()
         fc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-        fc2.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, null, null, null).getStatusCode() == 202
+        fc2.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, null, null, null, null).getStatusCode() == 202
         dc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
         dc2.create()
         dc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200

@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
-import com.azure.cosmos.models.CosmosParameterizedQuery
+import com.azure.cosmos.models.{CosmosParameterizedQuery, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import org.apache.spark.broadcast.Broadcast
@@ -34,7 +34,23 @@ private case class ItemsScan(session: SparkSession,
 
   override def description(): String = {
     s"""Cosmos ItemsScan: ${containerConfig.database}.${containerConfig.container}
-       | - Cosmos Query: ${cosmosQuery.toSqlQuerySpec.toPrettyString}""".stripMargin
+       | - Cosmos Query: ${toPrettyString(cosmosQuery.toSqlQuerySpec)}""".stripMargin
+  }
+
+  private[this] def toPrettyString(query: SqlQuerySpec) = {
+    //scalastyle:off magic.number
+    val sb = new StringBuilder()
+    //scalastyle:on magic.number
+    sb.append(query.getQueryText)
+    query.getParameters.forEach(
+      (p: SqlParameter) => sb
+        .append(CosmosConstants.SystemProperties.LineSeparator)
+        .append(" > param: ")
+        .append(p.getName)
+        .append(" = ")
+        .append(p.getValue(classOf[Any])))
+
+    sb.toString
   }
 
   /**

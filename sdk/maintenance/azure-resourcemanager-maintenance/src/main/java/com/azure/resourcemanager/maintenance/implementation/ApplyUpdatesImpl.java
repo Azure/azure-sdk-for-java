@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.maintenance.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -202,6 +203,16 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<ApplyUpdate> list() {
+        PagedIterable<ApplyUpdateInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ApplyUpdate> list(Context context) {
+        PagedIterable<ApplyUpdateInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
     }
 
     private ApplyUpdatesClient serviceClient() {

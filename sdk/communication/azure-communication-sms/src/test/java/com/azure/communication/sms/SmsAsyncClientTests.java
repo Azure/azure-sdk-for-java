@@ -197,22 +197,6 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void repeatability(HttpClient httpClient) {
-        // Arrange
-        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        asyncClient = setupAsyncClient(builder, "repeatability");
-
-        StepVerifier.create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE))
-            .assertNext(requestResponse -> {
-                String bodyRequest = new String(requestResponse.getRequest().getBody().blockLast().array());
-                assertTrue(bodyRequest.contains("repeatabilityRequestId"));
-                assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsToNullNumber(HttpClient httpClient) {
         // Arrange
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
@@ -235,6 +219,26 @@ public class SmsAsyncClientTests extends SmsTestBase {
         String from = null;
         Mono<SmsSendResult> response = asyncClient.send(from, TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void checkForRepeatabilityOptions(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "checkForRepeatabilityOptions");
+
+        StepVerifier.create(
+            asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE)
+            .flatMap(requestResponse -> {
+                return requestResponse.getRequest().getBody().last();
+            })
+        ).assertNext(bodyBuff -> {
+            String bodyRequest = new String(bodyBuff.array());
+            assertTrue(bodyRequest.contains("repeatabilityRequestId"));
+            assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
+        })
+        .verifyComplete();
     }
 
     private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {
