@@ -15,8 +15,7 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Base64;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
@@ -141,7 +140,9 @@ public class KeyVaultKeyStoreTest {
     @Test
     public void testEngineDeleteEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        assertTrue(keystore.engineContainsAlias(certificateName));
         keystore.engineDeleteEntry(certificateName);
+        assertFalse(keystore.engineContainsAlias(certificateName));
     }
 
     @Test
