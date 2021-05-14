@@ -1,6 +1,49 @@
 # Release History
 
-## 12.0.0-beta.7 (Unreleased)
+## 12.0.0-beta.7 (2021-05-15)
+
+### New Features
+
+- Added `getAccessPolicy()` and `setAccessPolicy()` to `TableClient` and `TableAsyncClient`.
+- Added `getProperties()`, `setProperties()` and `getStatistics()` to `TableServiceClient` and `TableServiceAsyncClient`.
+- Added the following models:
+    - `TableAccessPolicy`
+    - `TableServiceCorsRule`
+    - `TableServiceGeoReplication`
+    - `TableServiceGeoReplicationStatus`
+    - `TableServiceLogging`
+    - `TableServiceMetrics`
+    - `TableServiceProperties`
+    - `TableServiceRetentionPolicy`
+    - `TableServiceStatistics`
+    - `TableSignedIdentifier`
+
+### Breaking Changes
+
+- Renamed `create()` and `delete()` methods to `createTable()` and `deleteTable()` on `TableClient` and `TableAsyncClient`. Also made `createTable()` and its variants return a `TableItem`.
+- Removed `deleteEntity(String partitionKey, String rowKey, String eTag)` and added `deleteEntity(TableEntity tableEntity)` in both `TableClient` and `TableAsyncClient`.
+- Made it so that when deleting a table or entity that does not exist, the resulting `404` error gets swallowed instead of thrown.
+- Removed public APIs supporting the use of `TableEntity` subclasses.
+- Made the following classes `final`:
+    - `TableEntity`
+    - `TableItem`
+    - `TableClient`
+    - `TableServiceClient`
+    - `TableServiceAsyncClient`
+    - `TableClientBuilder`
+    - `TableServiceClientBuilder`.
+- Removed method overloads that used `timeout`, except in the maximal overload for a method (the `withResponse` variant).
+- Ensured that all timeout usages are client-side and not server-side.
+- Made `createTable()` and `createTableIfNotExists()` in `TableServiceClient` and `TableServiceAsyncClient` return a `TableClient` and `TableAsyncClient` respectively.
+- Made select in `ListEntitiesOptions` a `List` of `Strings` instead of a single `String`. Did the same for select in `getEntity()` and `getEntityWithResponse()` in `TableClient` and `TableAsyncClient`.
+- Replaced `retryOptions(RequestRetryOptions)` with `retryPolicy(RetryPolicy)` in `TableClientBuilder` and `TableServiceClientBuilder`.
+- Removed `TableSharedKeyCredential` in favor of using Azure Core's `AzureNamedKeyCredential`.
+- Replaced `TableSharedKeyCredentialPolicy` with `AzureNamedKeyCredentialPolicy`.
+- Renamed `UpdateMode` to `TableEntityUpdateMode`.
+- Renamed `TablesServiceVersion` to `TableServiceVersion`.
+- Renamed `getTableUrl()` and `getApiVersion()` to `getTableEndpoint()` and `getServiceVersion()` respectively, in `TableClient` and `TableAsyncClient`.
+- Renamed `getServiceUrl()` and `getApiVersion()` to `getServiceEndpoint()` and `getServiceVersion()` respectively, in `TableClient` and `TableAsyncClient`.
+- Renamed `addProperties()` to `setProperties()` in `TableEntity`. Also made `setProperties()` replace the contents of properties map with those of the argument, instead of adding them to the existing properties.
 
 ### Bug Fixes
 
