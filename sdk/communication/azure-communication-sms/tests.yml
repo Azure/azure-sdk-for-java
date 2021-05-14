@@ -31,7 +31,7 @@ stages:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
-          goals: post-integration-test
+          goals: jacoco:report
 
       - task: PublishCodeCoverageResults@1
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
