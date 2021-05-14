@@ -9,7 +9,11 @@ stages:
           - $(sub-config-azure-cloud-test-resources)
           - $(sub-config-communication-services-cloud-test-resources-common)
           - $(sub-config-communication-services-cloud-test-resources-java)
-    Clouds: Public
+      Int:
+        SubscriptionConfigurations:
+          - $(sub-config-communication-int-test-resources-common)
+          - $(sub-config-communication-int-test-resources-java)
+    Clouds: Public, Int
     Artifacts:
       - name: azure-communication-phonenumbers
         groupId: com.azure
