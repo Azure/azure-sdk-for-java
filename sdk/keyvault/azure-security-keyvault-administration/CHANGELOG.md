@@ -4,7 +4,13 @@
 
 ### New features
 
-- Added support for creating, updating and deleting custom role definitions.
+- Added support for creating, retrieving, updating and deleting custom role definitions.
+
+### Breaking Changes
+
+- Added the public `KeyVaultAdministrationException`, which will be thrown in place of an exception with the same name in the `implementation` package.
+
+#### Behavioral Changes
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.16.0`
