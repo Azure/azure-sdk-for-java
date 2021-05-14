@@ -3,15 +3,15 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
-import com.azure.storage.common.policy.RequestRetryPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -92,8 +92,7 @@ public class TablesClientBuilderTest {
     @Test
     public void nullCredentialThrowsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((AzureSasCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((TablesSharedKeyCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((TokenCredential) null));
+        assertThrows(NullPointerException.class, () -> new TableClientBuilder().credential((AzureNamedKeyCredential) null));
     }
 
     @Test
@@ -176,7 +175,7 @@ public class TablesClientBuilderTest {
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            if (pipeline.getPolicy(i).getClass() == RequestRetryPolicy.class) {
+            if (pipeline.getPolicy(i).getClass() == RetryPolicy.class) {
                 retryPolicyPosition = i;
             }
 

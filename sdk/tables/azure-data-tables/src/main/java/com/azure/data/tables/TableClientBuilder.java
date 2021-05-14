@@ -3,14 +3,15 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,7 +20,6 @@ import com.azure.data.tables.implementation.TablesJacksonSerializer;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,17 +40,16 @@ public final class TableClientBuilder {
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private String tableName;
     private Configuration configuration;
-    private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private String endpoint;
     private HttpLogOptions httpLogOptions;
     private ClientOptions clientOptions;
     private HttpPipeline httpPipeline;
-    private TablesSharedKeyCredential tablesSharedKeyCredential;
+    private AzureNamedKeyCredential azureNamedKeyCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
     private TableServiceVersion version;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RetryPolicy retryPolicy;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableClient} and
@@ -83,8 +82,8 @@ public final class TableClientBuilder {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, endpoint, retryOptions,
-            httpLogOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            azureNamedKeyCredential, azureSasCredential, sasToken, endpoint, retryPolicy, httpLogOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER);
     }
@@ -117,7 +116,7 @@ public final class TableClientBuilder {
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-            this.credential(new TablesSharedKeyCredential(authSettings.getAccount().getName(),
+            this.credential(new AzureNamedKeyCredential(authSettings.getAccount().getName(),
                 authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
@@ -160,10 +159,6 @@ public final class TableClientBuilder {
      * @return The updated {@link TableClientBuilder}.
      */
     public TableClientBuilder pipeline(HttpPipeline pipeline) {
-        if (this.httpPipeline != null && pipeline == null) {
-            logger.warning("'pipeline' is being set to 'null' when it was previously configured.");
-        }
-
         this.httpPipeline = pipeline;
 
         return this;
@@ -205,8 +200,7 @@ public final class TableClientBuilder {
         }
 
         this.sasToken = sasToken;
-        this.tablesSharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.azureNamedKeyCredential = null;
 
         return this;
     }
@@ -231,42 +225,20 @@ public final class TableClientBuilder {
     }
 
     /**
-     * Sets the {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential {@link TablesSharedKeyCredential} used to authorize requests sent to the service.
-     *
-     * @return The updated {@link TableClientBuilder}.
-     *
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    public TableClientBuilder credential(TablesSharedKeyCredential credential) {
-        if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
-        }
-
-        this.tablesSharedKeyCredential = credential;
-        this.tokenCredential = null;
-        this.sasToken = null;
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
-     *
-     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     * @param credential {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
      * @return The updated {@link TableClientBuilder}.
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public TableClientBuilder credential(TokenCredential credential) {
+    public TableClientBuilder credential(AzureNamedKeyCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
-        this.tokenCredential = credential;
-        this.tablesSharedKeyCredential = null;
+        this.azureNamedKeyCredential = credential;
         this.sasToken = null;
 
         return this;
@@ -297,14 +269,8 @@ public final class TableClientBuilder {
      * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
      *
      * @return The updated {@link TableClientBuilder}.
-     *
-     * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
     public TableClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        if (logOptions == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'logOptions' cannot be null."));
-        }
-
         this.httpLogOptions = logOptions;
 
         return this;
@@ -354,20 +320,16 @@ public final class TableClientBuilder {
     }
 
     /**
-     * Sets the request retry options for all the requests made through the client.
+     * Sets the request retry policy for all the requests made through the client.
      *
-     * @param retryOptions {@link RequestRetryOptions}.
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy {@link RetryPolicy}.
      *
      * @return The updated {@link TableClientBuilder}.
-     *
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
-    public TableClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        if (retryOptions == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'retryOptions' cannot be null."));
-        }
-
-        this.retryOptions = retryOptions;
+    public TableClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
 
         return this;
     }
