@@ -38,7 +38,7 @@ stages:
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: sdk/communication/azure-communication-sms/target/site/jacoco/jacoco.xml
-          reportDirectory: sdk/communication/azure-communication-sms/target/site/jacoco-aggregate/
+          reportDirectory: sdk/communication/target/site/jacoco-aggregate/
           failIfCoverageEmpty: true
     EnvVars:
       SKIP_LIVE_TEST: TRUE
