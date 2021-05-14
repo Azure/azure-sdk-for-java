@@ -41,9 +41,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Custom serializer for serializing types with wrapped properties. For example, a property with annotation {@code
- * @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to {@code
- * {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
+ * Custom serializer for serializing types with wrapped properties. For example, a property with annotation
+ *
+ * {@code @JsonProperty(value = "properties.name")} will be mapped from a top level "name" property in the POJO model to
+ * {@code {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
     private static final long serialVersionUID = -6130180289951110573L;
