@@ -115,7 +115,7 @@ public final class EventGridPublisherClientImpl {
      * The interface defining all the services for EventGridPublisherClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("https://{topicHostname}")
+    @Host("{topicHostname}")
     @ServiceInterface(name = "EventGridPublisherCl")
     private interface EventGridPublisherClientService {
         @Post("")
