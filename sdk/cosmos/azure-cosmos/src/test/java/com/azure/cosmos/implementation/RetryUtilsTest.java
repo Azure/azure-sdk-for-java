@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseValidator;
 import io.reactivex.subscribers.TestSubscriber;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -40,6 +40,7 @@ public class RetryUtilsTest {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void before_RetryUtilsTest() throws Exception {
         retryPolicy = Mockito.mock(IRetryPolicy.class);
+        Mockito.doReturn(new RetryContext()).when(retryPolicy).getRetryContext();
         request =  mockDocumentServiceRequest(clientContext);
         callbackMethod = Mockito.mock(Function.class);
         inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
@@ -55,7 +56,7 @@ public class RetryUtilsTest {
     public void toRetryWithAlternateFuncWithNoRetry() {
         Function<Throwable, Mono<StoreResponse>> onErrorFunc = RetryUtils.toRetryWithAlternateFunc(callbackMethod,
                 retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request, addressSelector);
-        Mockito.when(retryPolicy.shouldRetry(Matchers.any())).thenReturn(Mono.just(ShouldRetryResult.noRetry()));
+        Mockito.when(retryPolicy.shouldRetry(ArgumentMatchers.any())).thenReturn(Mono.just(ShouldRetryResult.noRetry()));
         Mono<StoreResponse> response = onErrorFunc.apply(new GoneException());
         validateFailure(response, TIMEOUT, GoneException.class);
     }
@@ -71,13 +72,13 @@ public class RetryUtilsTest {
                 retryPolicy, null, minBackoffForInBackoffCallback, request, addressSelector);
 
         toggleMockFuncBtwFailureSuccess(callbackMethod);
-        Mockito.when(retryPolicy.shouldRetry(Matchers.any()))
+        Mockito.when(retryPolicy.shouldRetry(ArgumentMatchers.any()))
                 .thenReturn(Mono.just(ShouldRetryResult.retryAfter(BACK_OFF_DURATION)));
         Mono<StoreResponse> response = onErrorFunc.apply(new GoneException());
         StoreResponseValidator validator = StoreResponseValidator.create().withStatus(storeResponse.getStatus())
                 .withContent(storeResponse.getResponseBody()).build();
         validateSuccess(response, validator, TIMEOUT);
-        Mockito.verify(callbackMethod, Mockito.times(4)).apply(Matchers.any());
+        Mockito.verify(callbackMethod, Mockito.times(4)).apply(ArgumentMatchers.any());
     }
 
     /**
@@ -89,15 +90,15 @@ public class RetryUtilsTest {
     public void toRetryWithAlternateFuncTestingMethodTwo() {
         Function<Throwable, Mono<StoreResponse>> onErrorFunc = RetryUtils.toRetryWithAlternateFunc(callbackMethod,
                 retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request, addressSelector);
-        Mockito.when(callbackMethod.apply(Matchers.any())).thenReturn(Mono.error(new GoneException()));
+        Mockito.when(callbackMethod.apply(ArgumentMatchers.any())).thenReturn(Mono.error(new GoneException()));
         toggleMockFuncBtwFailureSuccess(inBackoffAlternateCallbackMethod);
-        Mockito.when(retryPolicy.shouldRetry(Matchers.any()))
+        Mockito.when(retryPolicy.shouldRetry(ArgumentMatchers.any()))
                 .thenReturn(Mono.just(ShouldRetryResult.retryAfter(BACK_OFF_DURATION)));
         Mono<StoreResponse> response = onErrorFunc.apply(new GoneException());
         StoreResponseValidator validator = StoreResponseValidator.create().withStatus(storeResponse.getStatus())
                 .withContent(storeResponse.getResponseBody()).build();
         validateSuccess(response, validator, TIMEOUT);
-        Mockito.verify(inBackoffAlternateCallbackMethod, Mockito.times(4)).apply(Matchers.any());
+        Mockito.verify(inBackoffAlternateCallbackMethod, Mockito.times(4)).apply(ArgumentMatchers.any());
     }
 
     private void validateFailure(Mono<StoreResponse> single, long timeout, Class<? extends Throwable> class1) {
@@ -125,7 +126,7 @@ public class RetryUtilsTest {
 
     private void toggleMockFuncBtwFailureSuccess(
             Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> method) {
-        Mockito.when(method.apply(Matchers.any())).thenAnswer(new Answer<Mono<StoreResponse>>() {
+        Mockito.when(method.apply(ArgumentMatchers.any())).thenAnswer(new Answer<Mono<StoreResponse>>() {
 
             private int count = 0;
 

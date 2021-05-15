@@ -198,6 +198,15 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
         return this;
     }
 
+    /**
+     * Returns the current polling duration for this {@link PollerFlux} instance.
+     *
+     * @return The current polling duration.
+     */
+    public Duration getPollInterval() {
+        return this.pollInterval;
+    }
+
     @Override
     public void subscribe(CoreSubscriber<? super AsyncPollResponse<T, U>> actual) {
         this.oneTimeActivationMono

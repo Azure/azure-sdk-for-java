@@ -39,13 +39,13 @@ public final class AzureBlobStorageImplBuilder {
     }
 
     /*
-     * The URL of the service account, container, or blob that is the targe of
+     * The URL of the service account, container, or blob that is the target of
      * the desired operation.
      */
     private String url;
 
     /**
-     * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
+     * Sets The URL of the service account, container, or blob that is the target of the desired operation.
      *
      * @param url the url value.
      * @return the AzureBlobStorageImplBuilder.
@@ -208,7 +208,7 @@ public final class AzureBlobStorageImplBuilder {
      */
     public AzureBlobStorageImpl buildClient() {
         if (version == null) {
-            this.version = "2020-06-12";
+            this.version = "2020-08-04";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

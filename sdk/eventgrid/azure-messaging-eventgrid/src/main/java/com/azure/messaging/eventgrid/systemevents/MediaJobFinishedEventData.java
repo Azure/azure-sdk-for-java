@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Job finished event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobFinished event.
+ * Job finished event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobFinished event.
  */
 @Fluent
 public final class MediaJobFinishedEventData extends MediaJobStateChangeEventData {

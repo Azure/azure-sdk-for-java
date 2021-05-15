@@ -16,6 +16,9 @@ stages:
         - name: azure-security-keyvault-secrets
           groupId: com.azure
           safeName: azuresecuritykeyvaultsecrets
+        - name: azure-security-test-keyvault-jca
+          groupId: com.azure
+          safeName: azuresecuritytestkeyvaultjca
       EnvVars:
         ARM_CLIENTID: $(aad-azure-sdk-test-client-id)
         ARM_CLIENTKEY: $(aad-azure-sdk-test-client-secret)

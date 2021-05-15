@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Encoder connect event data. Schema of the data property of an EventGridEvent for an
+ * Encoder connect event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventEncoderConnected event.
  */
 @Immutable

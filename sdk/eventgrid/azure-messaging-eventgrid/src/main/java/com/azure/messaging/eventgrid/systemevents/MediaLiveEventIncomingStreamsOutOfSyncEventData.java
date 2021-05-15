@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for an
+ * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
  */
 @Immutable

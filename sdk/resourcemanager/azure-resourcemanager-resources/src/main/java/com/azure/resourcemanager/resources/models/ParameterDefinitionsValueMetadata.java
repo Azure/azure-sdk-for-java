@@ -31,6 +31,22 @@ public final class ParameterDefinitionsValueMetadata {
     private String description;
 
     /*
+     * Used when assigning the policy definition through the portal. Provides a
+     * context aware list of values for the user to choose from.
+     */
+    @JsonProperty(value = "strongType")
+    private String strongType;
+
+    /*
+     * Set to true to have Azure portal create role assignments on the resource
+     * ID or resource scope value of this parameter during policy assignment.
+     * This property is useful in case you wish to assign permissions outside
+     * the assignment scope.
+     */
+    @JsonProperty(value = "assignPermissions")
+    private Boolean assignPermissions;
+
+    /*
      * General metadata for the parameter.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -72,6 +88,52 @@ public final class ParameterDefinitionsValueMetadata {
      */
     public ParameterDefinitionsValueMetadata withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the strongType property: Used when assigning the policy definition through the portal. Provides a context
+     * aware list of values for the user to choose from.
+     *
+     * @return the strongType value.
+     */
+    public String strongType() {
+        return this.strongType;
+    }
+
+    /**
+     * Set the strongType property: Used when assigning the policy definition through the portal. Provides a context
+     * aware list of values for the user to choose from.
+     *
+     * @param strongType the strongType value to set.
+     * @return the ParameterDefinitionsValueMetadata object itself.
+     */
+    public ParameterDefinitionsValueMetadata withStrongType(String strongType) {
+        this.strongType = strongType;
+        return this;
+    }
+
+    /**
+     * Get the assignPermissions property: Set to true to have Azure portal create role assignments on the resource ID
+     * or resource scope value of this parameter during policy assignment. This property is useful in case you wish to
+     * assign permissions outside the assignment scope.
+     *
+     * @return the assignPermissions value.
+     */
+    public Boolean assignPermissions() {
+        return this.assignPermissions;
+    }
+
+    /**
+     * Set the assignPermissions property: Set to true to have Azure portal create role assignments on the resource ID
+     * or resource scope value of this parameter during policy assignment. This property is useful in case you wish to
+     * assign permissions outside the assignment scope.
+     *
+     * @param assignPermissions the assignPermissions value to set.
+     * @return the ParameterDefinitionsValueMetadata object itself.
+     */
+    public ParameterDefinitionsValueMetadata withAssignPermissions(Boolean assignPermissions) {
+        this.assignPermissions = assignPermissions;
         return this;
     }
 

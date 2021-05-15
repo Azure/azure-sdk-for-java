@@ -341,7 +341,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 targetRange,
                 feedRange,
                 collectionRid,
-                () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
+                createRetryPolicyFunc,
                 resourceType,
                 correlatedActivityId,
                 initialPageSize,

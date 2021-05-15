@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for an
+ * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
  */
 @Immutable

@@ -47,6 +47,13 @@ public class HybridConnectionLimitsInner extends ProxyOnlyResource {
         return this.maximum;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HybridConnectionLimitsInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

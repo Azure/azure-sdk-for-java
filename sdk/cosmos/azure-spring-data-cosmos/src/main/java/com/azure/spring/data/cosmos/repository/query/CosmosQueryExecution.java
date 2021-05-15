@@ -160,4 +160,48 @@ public interface CosmosQueryExecution {
             return operations.paginationQuery(query, type, container);
         }
     }
+
+    /**
+     * sliceQuery operation implementation to execute a sliceQuery query
+     */
+    final class SliceExecution implements CosmosQueryExecution {
+        private final CosmosOperations operations;
+        private final Pageable pageable;
+
+        public SliceExecution(CosmosOperations operations, Pageable pageable) {
+            this.operations = operations;
+            this.pageable = pageable;
+        }
+
+        @Override
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
+            if (pageable.getPageNumber() != 0
+                && !(pageable instanceof CosmosPageRequest)) {
+                throw new IllegalStateException("Not the first page but Pageable is not a valid "
+                    + "CosmosPageRequest, requestContinuation is required for non first page request");
+            }
+
+            query.with(pageable);
+
+            return operations.sliceQuery(query, type, container);
+        }
+    }
+
+    /**
+     * count operation implementation to execute a count query
+     */
+    final class CountExecution implements CosmosQueryExecution {
+
+        private final CosmosOperations operations;
+
+        public CountExecution(CosmosOperations operations) {
+            this.operations = operations;
+        }
+
+        @Override
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
+            return operations.count(query, container);
+        }
+    }
+
 }

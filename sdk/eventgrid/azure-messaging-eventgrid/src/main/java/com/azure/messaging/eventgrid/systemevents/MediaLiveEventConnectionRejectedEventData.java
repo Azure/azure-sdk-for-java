@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for an
+ * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventConnectionRejected event.
  */
 @Immutable

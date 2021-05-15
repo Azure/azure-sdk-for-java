@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.Map;
 
 /**
- * Job scheduled event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobScheduled event.
+ * Job scheduled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobScheduled event.
  */
 @Immutable
 public final class MediaJobScheduledEventData extends MediaJobStateChangeEventData {

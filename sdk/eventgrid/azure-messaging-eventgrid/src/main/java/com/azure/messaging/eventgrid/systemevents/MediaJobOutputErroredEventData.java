@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.Map;
 
 /**
- * Job output error event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobOutputErrored
+ * Job output error event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobOutputErrored
  * event.
  */
 @Immutable

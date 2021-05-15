@@ -11,6 +11,11 @@ azure:
       graph:
         scopes:
           - https://graph.microsoft.com/User.Read
-      webapiB:
+      webapiB:         # When authorization-grant-type is null, on behalf of flow is used by default
+        authorization-grant-type: on-behalf-of
         scopes:
           - <Web-API-B-app-id-url>/WebApiB.ExampleScope
+      webapiC:
+        authorization-grant-type: client_credentials
+        scopes:
+          - <Web-API-C-app-id-url>/.default

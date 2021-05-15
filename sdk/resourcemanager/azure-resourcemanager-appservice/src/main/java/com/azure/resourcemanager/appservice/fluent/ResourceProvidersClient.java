@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.appservice.fluent.models.AppserviceGithubTokenInner;
 import com.azure.resourcemanager.appservice.fluent.models.BillingMeterInner;
 import com.azure.resourcemanager.appservice.fluent.models.DeploymentLocationsInner;
 import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
@@ -30,6 +31,65 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
 public interface ResourceProvidersClient {
+    /**
+     * Description for Exchange code for GitHub access token for AppService CLI.
+     *
+     * @param code Code string to exchange for Github Access token.
+     * @param state State string used for verification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return github access token for Appservice CLI github integration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<AppserviceGithubTokenInner>> generateGithubAccessTokenForAppserviceCliAsyncWithResponseAsync(
+        String code, String state);
+
+    /**
+     * Description for Exchange code for GitHub access token for AppService CLI.
+     *
+     * @param code Code string to exchange for Github Access token.
+     * @param state State string used for verification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return github access token for Appservice CLI github integration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AppserviceGithubTokenInner> generateGithubAccessTokenForAppserviceCliAsyncAsync(String code, String state);
+
+    /**
+     * Description for Exchange code for GitHub access token for AppService CLI.
+     *
+     * @param code Code string to exchange for Github Access token.
+     * @param state State string used for verification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return github access token for Appservice CLI github integration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AppserviceGithubTokenInner generateGithubAccessTokenForAppserviceCliAsync(String code, String state);
+
+    /**
+     * Description for Exchange code for GitHub access token for AppService CLI.
+     *
+     * @param code Code string to exchange for Github Access token.
+     * @param state State string used for verification.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return github access token for Appservice CLI github integration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AppserviceGithubTokenInner> generateGithubAccessTokenForAppserviceCliAsyncWithResponse(
+        String code, String state, Context context);
+
     /**
      * Description for Gets publishing user.
      *
@@ -79,7 +139,7 @@ public interface ResourceProvidersClient {
     /**
      * Description for Updates publishing user.
      *
-     * @param userDetails User credentials used for publishing activity.
+     * @param userDetails Details of publishing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -92,7 +152,7 @@ public interface ResourceProvidersClient {
     /**
      * Description for Updates publishing user.
      *
-     * @param userDetails User credentials used for publishing activity.
+     * @param userDetails Details of publishing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -105,7 +165,7 @@ public interface ResourceProvidersClient {
     /**
      * Description for Updates publishing user.
      *
-     * @param userDetails User credentials used for publishing activity.
+     * @param userDetails Details of publishing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -118,7 +178,7 @@ public interface ResourceProvidersClient {
     /**
      * Description for Updates publishing user.
      *
-     * @param userDetails User credentials used for publishing activity.
+     * @param userDetails Details of publishing user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -221,7 +281,7 @@ public interface ResourceProvidersClient {
      * Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
-     * @param requestMessage The source control OAuth token.
+     * @param requestMessage Source control token information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -236,7 +296,7 @@ public interface ResourceProvidersClient {
      * Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
-     * @param requestMessage The source control OAuth token.
+     * @param requestMessage Source control token information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -250,7 +310,7 @@ public interface ResourceProvidersClient {
      * Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
-     * @param requestMessage The source control OAuth token.
+     * @param requestMessage Source control token information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -264,7 +324,7 @@ public interface ResourceProvidersClient {
      * Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
-     * @param requestMessage The source control OAuth token.
+     * @param requestMessage Source control token information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -304,6 +364,17 @@ public interface ResourceProvidersClient {
     /**
      * Description for Gets a list of meters for a given location.
      *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Billing Meters.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingMeterInner> list();
+
+    /**
+     * Description for Gets a list of meters for a given location.
+     *
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
      * @param context The context to associate with this operation.
@@ -315,17 +386,6 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingMeterInner> list(String billingLocation, String osType, Context context);
-
-    /**
-     * Description for Gets a list of meters for a given location.
-     *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Billing Meters.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingMeterInner> list();
 
     /**
      * Description for Check if a resource name is available.
@@ -488,6 +548,17 @@ public interface ResourceProvidersClient {
     /**
      * Description for Get a list of available geographical regions.
      *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of geographical regions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GeoRegionInner> listGeoRegions();
+
+    /**
+     * Description for Get a list of available geographical regions.
+     *
      * @param sku Name of SKU used to filter the regions.
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
      *     support Linux workers.
@@ -509,17 +580,6 @@ public interface ResourceProvidersClient {
         Boolean xenonWorkersEnabled,
         Boolean linuxDynamicWorkersEnabled,
         Context context);
-
-    /**
-     * Description for Get a list of available geographical regions.
-     *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of geographical regions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GeoRegionInner> listGeoRegions();
 
     /**
      * Description for List all apps that are assigned to a hostname.
@@ -548,6 +608,17 @@ public interface ResourceProvidersClient {
     /**
      * Description for List all apps that are assigned to a hostname.
      *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname();
+
+    /**
+     * Description for List all apps that are assigned to a hostname.
+     *
      * @param name Name of the object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,17 +629,6 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(String name, Context context);
-
-    /**
-     * Description for List all apps that are assigned to a hostname.
-     *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of identifiers.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname();
 
     /**
      * Description for List all premier add-on offers.
@@ -655,7 +715,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
-     * @param parameters The required set of inputs to validate a VNET.
+     * @param parameters VNET information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -670,7 +730,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
-     * @param parameters The required set of inputs to validate a VNET.
+     * @param parameters VNET information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -684,7 +744,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
-     * @param parameters The required set of inputs to validate a VNET.
+     * @param parameters VNET information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -698,7 +758,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
-     * @param parameters The required set of inputs to validate a VNET.
+     * @param parameters VNET information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -714,8 +774,7 @@ public interface ResourceProvidersClient {
      * Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -729,8 +788,7 @@ public interface ResourceProvidersClient {
      * Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -744,8 +802,7 @@ public interface ResourceProvidersClient {
      * Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -758,8 +815,7 @@ public interface ResourceProvidersClient {
      * Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -775,7 +831,7 @@ public interface ResourceProvidersClient {
      * Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param validateRequest Resource validation request content.
+     * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -790,7 +846,7 @@ public interface ResourceProvidersClient {
      * Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param validateRequest Resource validation request content.
+     * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -804,7 +860,7 @@ public interface ResourceProvidersClient {
      * Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param validateRequest Resource validation request content.
+     * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -818,7 +874,7 @@ public interface ResourceProvidersClient {
      * Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param validateRequest Resource validation request content.
+     * @param validateRequest Request with the resources to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -834,8 +890,7 @@ public interface ResourceProvidersClient {
      * Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -850,8 +905,7 @@ public interface ResourceProvidersClient {
      * Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -865,8 +919,7 @@ public interface ResourceProvidersClient {
      * Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -879,8 +932,7 @@ public interface ResourceProvidersClient {
      * Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object with a list of the resources that need to be moved and the resource group they
-     *     should be moved to.
+     * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

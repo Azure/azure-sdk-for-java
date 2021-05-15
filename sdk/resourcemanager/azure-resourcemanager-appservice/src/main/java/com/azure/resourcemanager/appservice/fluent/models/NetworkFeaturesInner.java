@@ -78,6 +78,13 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
         return this.hybridConnectionsV2;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public NetworkFeaturesInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
