@@ -6,8 +6,6 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event. */
@@ -79,29 +77,22 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     }
 
     /**
-     * Get the {@link Duration} of recordingDuration property: The recording duration.
+     * Get the recordingDurationMs property: The recording duration in milliseconds.
      *
-     * @return the recordingDuration value.
+     * @return the recordingDurationMs value.
      */
-    public Duration getRecordingDuration() {
-        if (this.recordingDurationMs != null) {
-            return Duration.ofMillis(this.recordingDurationMs);
-        }
-        return null;
+    public Long getRecordingDurationMs() {
+        return this.recordingDurationMs;
     }
 
     /**
-     * Set the recordingDuration property: The recording duration.
+     * Set the recordingDurationMs property: The recording duration in milliseconds.
      *
-     * @param recordingDuration the recordingDuration value to set.
+     * @param recordingDurationMs the recordingDurationMs value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
-    public AcsRecordingFileStatusUpdatedEventData setRecordingDuration(Duration recordingDuration) {
-        if (recordingDuration != null) {
-            this.recordingDurationMs = recordingDuration.toMillis();
-        } else {
-            this.recordingDurationMs = null;
-        }
+    public AcsRecordingFileStatusUpdatedEventData setRecordingDurationMs(Long recordingDurationMs) {
+        this.recordingDurationMs = recordingDurationMs;
         return this;
     }
 

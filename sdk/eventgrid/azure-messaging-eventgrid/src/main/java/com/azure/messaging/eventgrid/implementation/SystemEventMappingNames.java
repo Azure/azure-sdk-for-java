@@ -78,6 +78,9 @@ import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsO
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisExportRdbCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisImportRdbCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisPatchingCompletedEventData;
@@ -97,9 +100,11 @@ import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAv
 import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
 import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
@@ -131,107 +136,105 @@ import java.util.Map;
  * deserialize system events by their known string.
  */
 public final class SystemEventMappingNames {
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageDeleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event. */
     public static final String ACS_CHAT_MESSAGE_DELETED = "Microsoft.Communication.ChatMessageDeleted";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageDeletedInThread event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread event.
      */
     public static final String ACS_CHAT_MESSAGE_DELETED_IN_THREAD =
             "Microsoft.Communication.ChatMessageDeletedInThread";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageEdited event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEdited event. */
     public static final String ACS_CHAT_MESSAGE_EDITED = "Microsoft.Communication.ChatMessageEdited";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageEditedInThread event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread event.
      */
     public static final String ACS_CHAT_MESSAGE_EDITED_IN_THREAD = "Microsoft.Communication.ChatMessageEditedInThread";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageReceived event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceived event. */
     public static final String ACS_CHAT_MESSAGE_RECEIVED = "Microsoft.Communication.ChatMessageReceived";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageReceivedInThread
-     * event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread event.
      */
     public static final String ACS_CHAT_MESSAGE_RECEIVED_IN_THREAD =
             "Microsoft.Communication.ChatMessageReceivedInThread";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadParticipantAdded event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadParticipantAdded event.
      */
     public static final String ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD =
             "Microsoft.Communication.ChatThreadParticipantAdded";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an
+     * Schema of the Data property of an EventGridEvent for a
      * Microsoft.Communication.ChatParticipantAddedToThreadWithUser event.
      */
     public static final String ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
             "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadParticipantRemoved
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadParticipantRemoved
      * event.
      */
     public static final String ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD =
             "Microsoft.Communication.ChatThreadParticipantRemoved";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an
+     * Schema of the Data property of an EventGridEvent for a
      * Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser event.
      */
     public static final String ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER =
             "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadCreated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreated event. */
     public static final String ACS_CHAT_THREAD_CREATED = "Microsoft.Communication.ChatThreadCreated";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadCreatedWithUser event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser event.
      */
     public static final String ACS_CHAT_THREAD_CREATED_WITH_USER = "Microsoft.Communication.ChatThreadCreatedWithUser";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadDeleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadDeleted event. */
     public static final String ACS_CHAT_THREAD_DELETED = "Microsoft.Communication.ChatThreadDeleted";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadPropertiesUpdated
-     * event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated event.
      */
     public static final String ACS_CHAT_THREAD_PROPERTIES_UPDATED =
             "Microsoft.Communication.ChatThreadPropertiesUpdated";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an
-     * Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
+     * event.
      */
     public static final String ACS_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER =
             "Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatThreadWithUserDeleted event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadWithUserDeleted event.
      */
     public static final String ACS_CHAT_THREAD_WITH_USER_DELETED = "Microsoft.Communication.ChatThreadWithUserDeleted";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.RecordingFileStatusUpdated event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
      */
     public static final String ACS_RECORDING_FILE_STATUS_UPDATED = "Microsoft.Communication.RecordingFileStatusUpdated";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.SMSDeliveryReportReceived event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
      */
     public static final String ACS_SMS_DELIVERY_REPORT_RECEIVED = "Microsoft.Communication.SMSDeliveryReportReceived";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.SMSReceived event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSReceived event. */
     public static final String ACS_SMS_RECEIVED = "Microsoft.Communication.SMSReceived";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.AppConfiguration.KeyValueDeleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted event. */
     public static final String APP_CONFIGURATION_KEY_VALUE_DELETED = "Microsoft.AppConfiguration.KeyValueDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.AppConfiguration.KeyValueModified event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueModified event. */
     public static final String APP_CONFIGURATION_KEY_VALUE_MODIFIED = "Microsoft.AppConfiguration.KeyValueModified";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event. */
@@ -246,7 +249,7 @@ public final class SystemEventMappingNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImagePushed event. */
     public static final String CONTAINER_REGISTRY_IMAGE_PUSHED = "Microsoft.ContainerRegistry.ImagePushed";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.EventHub.CaptureFileCreated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
 
     /** Event data for Microsoft.Devices.DeviceConnected event. */
@@ -264,64 +267,60 @@ public final class SystemEventMappingNames {
     /** Event data for Microsoft.Devices.DeviceTelemetry event. */
     public static final String IOT_HUB_DEVICE_TELEMETRY = "Microsoft.Devices.DeviceTelemetry";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.VaultAccessPolicyChanged event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.VaultAccessPolicyChanged event. */
     public static final String KEY_VAULT_ACCESS_POLICY_CHANGED = "Microsoft.KeyVault.VaultAccessPolicyChanged";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.CertificateExpired event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateExpired event. */
     public static final String KEY_VAULT_CERTIFICATE_EXPIRED = "Microsoft.KeyVault.CertificateExpired";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.CertificateNearExpiry event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateNearExpiry event. */
     public static final String KEY_VAULT_CERTIFICATE_NEAR_EXPIRY = "Microsoft.KeyVault.CertificateNearExpiry";
 
-    /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.CertificateNewVersionCreated event.
-     */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateNewVersionCreated event. */
     public static final String KEY_VAULT_CERTIFICATE_NEW_VERSION_CREATED =
             "Microsoft.KeyVault.CertificateNewVersionCreated";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.KeyExpired event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyExpired event. */
     public static final String KEY_VAULT_KEY_EXPIRED = "Microsoft.KeyVault.KeyExpired";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.KeyNearExpiry event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyNearExpiry event. */
     public static final String KEY_VAULT_KEY_NEAR_EXPIRY = "Microsoft.KeyVault.KeyNearExpiry";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.KeyNewVersionCreated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyNewVersionCreated event. */
     public static final String KEY_VAULT_KEY_NEW_VERSION_CREATED = "Microsoft.KeyVault.KeyNewVersionCreated";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.SecretExpired event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.SecretExpired event. */
     public static final String KEY_VAULT_SECRET_EXPIRED = "Microsoft.KeyVault.SecretExpired";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.SecretNearExpiry event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.SecretNearExpiry event. */
     public static final String KEY_VAULT_SECRET_NEAR_EXPIRY = "Microsoft.KeyVault.SecretNearExpiry";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.KeyVault.SecretNewVersionCreated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.SecretNewVersionCreated event. */
     public static final String KEY_VAULT_SECRET_NEW_VERSION_CREATED = "Microsoft.KeyVault.SecretNewVersionCreated";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.MachineLearningServices.DatasetDriftDetected
+     * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.DatasetDriftDetected
      * event.
      */
     public static final String MACHINE_LEARNING_SERVICES_DATASET_DRIFT_DETECTED =
             "Microsoft.MachineLearningServices.DatasetDriftDetected";
 
-    /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.MachineLearningServices.ModelDeployed event.
-     */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelDeployed event. */
     public static final String MACHINE_LEARNING_SERVICES_MODEL_DEPLOYED =
             "Microsoft.MachineLearningServices.ModelDeployed";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.MachineLearningServices.ModelRegistered event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelRegistered event.
      */
     public static final String MACHINE_LEARNING_SERVICES_MODEL_REGISTERED =
             "Microsoft.MachineLearningServices.ModelRegistered";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.MachineLearningServices.RunCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunCompleted event. */
     public static final String MACHINE_LEARNING_SERVICES_RUN_COMPLETED =
             "Microsoft.MachineLearningServices.RunCompleted";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.MachineLearningServices.RunStatusChanged event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunStatusChanged event.
      */
     public static final String MACHINE_LEARNING_SERVICES_RUN_STATUS_CHANGED =
             "Microsoft.MachineLearningServices.RunStatusChanged";
@@ -336,55 +335,55 @@ public final class SystemEventMappingNames {
     public static final String MAPS_GEOFENCE_RESULT = "Microsoft.Maps.GeofenceResult";
 
     /**
-     * Job canceled event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobCanceled
+     * Job canceled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceled
      * event.
      */
     public static final String MEDIA_JOB_CANCELED = "Microsoft.Media.JobCanceled";
 
     /**
-     * Job canceling event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobCanceling
+     * Job canceling event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceling
      * event.
      */
     public static final String MEDIA_JOB_CANCELING = "Microsoft.Media.JobCanceling";
 
     /**
-     * Job error state event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobErrored
+     * Job error state event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobErrored
      * event.
      */
     public static final String MEDIA_JOB_ERRORED = "Microsoft.Media.JobErrored";
 
     /**
-     * Job finished event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobFinished
+     * Job finished event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobFinished
      * event.
      */
     public static final String MEDIA_JOB_FINISHED = "Microsoft.Media.JobFinished";
 
     /**
-     * Job output canceled event data. Schema of the data property of an EventGridEvent for an
+     * Job output canceled event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.JobOutputCanceled event.
      */
     public static final String MEDIA_JOB_OUTPUT_CANCELED = "Microsoft.Media.JobOutputCanceled";
 
     /**
-     * Job output canceling event data. Schema of the data property of an EventGridEvent for an
+     * Job output canceling event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.JobOutputCanceling event.
      */
     public static final String MEDIA_JOB_OUTPUT_CANCELING = "Microsoft.Media.JobOutputCanceling";
 
     /**
-     * Job output error event data. Schema of the data property of an EventGridEvent for an
+     * Job output error event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.JobOutputErrored event.
      */
     public static final String MEDIA_JOB_OUTPUT_ERRORED = "Microsoft.Media.JobOutputErrored";
 
     /**
-     * Job output finished event data. Schema of the data property of an EventGridEvent for an
+     * Job output finished event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.JobOutputFinished event.
      */
     public static final String MEDIA_JOB_OUTPUT_FINISHED = "Microsoft.Media.JobOutputFinished";
 
     /**
-     * Job output processing event data. Schema of the data property of an EventGridEvent for an
+     * Job output processing event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.JobOutputProcessing event.
      */
     public static final String MEDIA_JOB_OUTPUT_PROCESSING = "Microsoft.Media.JobOutputProcessing";
@@ -396,7 +395,7 @@ public final class SystemEventMappingNames {
     public static final String MEDIA_JOB_OUTPUT_PROGRESS = "Microsoft.Media.JobOutputProgress";
 
     /**
-     * Job output scheduled event data. Schema of the data property of an EventGridEvent for an
+     * Job output scheduled event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.JobOutputScheduled event.
      */
     public static final String MEDIA_JOB_OUTPUT_SCHEDULED = "Microsoft.Media.JobOutputScheduled";
@@ -405,13 +404,13 @@ public final class SystemEventMappingNames {
     public static final String MEDIA_JOB_OUTPUT_STATE_CHANGE = "Microsoft.Media.JobOutputStateChange";
 
     /**
-     * Job processing event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobProcessing
+     * Job processing event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobProcessing
      * event.
      */
     public static final String MEDIA_JOB_PROCESSING = "Microsoft.Media.JobProcessing";
 
     /**
-     * Job scheduled event data. Schema of the data property of an EventGridEvent for an Microsoft.Media.JobScheduled
+     * Job scheduled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobScheduled
      * event.
      */
     public static final String MEDIA_JOB_SCHEDULED = "Microsoft.Media.JobScheduled";
@@ -420,13 +419,13 @@ public final class SystemEventMappingNames {
     public static final String MEDIA_JOB_STATE_CHANGE = "Microsoft.Media.JobStateChange";
 
     /**
-     * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for an
+     * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventConnectionRejected event.
      */
     public static final String MEDIA_LIVE_EVENT_CONNECTION_REJECTED = "Microsoft.Media.LiveEventConnectionRejected";
 
     /**
-     * Encoder connect event data. Schema of the data property of an EventGridEvent for an
+     * Encoder connect event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventEncoderConnected event.
      */
     public static final String MEDIA_LIVE_EVENT_ENCODER_CONNECTED = "Microsoft.Media.LiveEventEncoderConnected";
@@ -438,60 +437,69 @@ public final class SystemEventMappingNames {
     public static final String MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED = "Microsoft.Media.LiveEventEncoderDisconnected";
 
     /**
-     * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for an
+     * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED =
             "Microsoft.Media.LiveEventIncomingDataChunkDropped";
 
     /**
-     * Encoder connect event data. Schema of the data property of an EventGridEvent for an
+     * Encoder connect event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamReceived event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED =
             "Microsoft.Media.LiveEventIncomingStreamReceived";
 
     /**
-     * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for an
+     * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC =
             "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
 
     /**
-     * Incoming video stream out of synch event data. Schema of the data property of an EventGridEvent for an
+     * Incoming video stream out of synch event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC =
             "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
 
     /**
-     * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for an
+     * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIngestHeartbeat event.
      */
     public static final String MEDIA_LIVE_EVENT_INGEST_HEARTBEAT = "Microsoft.Media.LiveEventIngestHeartbeat";
 
     /**
-     * Ingest track discontinuity detected event data. Schema of the data property of an EventGridEvent for an
+     * Ingest track discontinuity detected event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
      */
     public static final String MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED =
             "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Cache.ExportRDBCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateChanged event. */
+    public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateCreated event. */
+    public static final String POLICY_INSIGHTS_POLICY_STATE_CREATED = "Microsoft.PolicyInsights.PolicyStateCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateDeleted event. */
+    public static final String POLICY_INSIGHTS_POLICY_STATE_DELETED = "Microsoft.PolicyInsights.PolicyStateDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ExportRDBCompleted event. */
     public static final String REDIS_EXPORT_RDB_COMPLETED = "Microsoft.Cache.ExportRDBCompleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Cache.ImportRDBCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ImportRDBCompleted event. */
     public static final String REDIS_IMPORT_RDB_COMPLETED = "Microsoft.Cache.ImportRDBCompleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Cache.PatchingCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Cache.PatchingCompleted event. */
     public static final String REDIS_PATCHING_COMPLETED = "Microsoft.Cache.PatchingCompleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Cache.ScalingCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ScalingCompleted event. */
     public static final String REDIS_SCALING_COMPLETED = "Microsoft.Cache.ScalingCompleted";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Resources.ResourceActionCancel event. This is
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionCancel event. This is
      * raised when a resource action operation is canceled.
      */
     public static final String RESOURCE_ACTION_CANCEL = "Microsoft.Resources.ResourceActionCancel";
@@ -509,7 +517,7 @@ public final class SystemEventMappingNames {
     public static final String RESOURCE_ACTION_SUCCESS = "Microsoft.Resources.ResourceActionSuccess";
 
     /**
-     * Schema of the Data property of an EventGridEvent for an Microsoft.Resources.ResourceDeleteCancel event. This is
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteCancel event. This is
      * raised when a resource delete operation is canceled.
      */
     public static final String RESOURCE_DELETE_CANCEL = "Microsoft.Resources.ResourceDeleteCancel";
@@ -567,10 +575,10 @@ public final class SystemEventMappingNames {
 
     /**
      * Schema of the Data property of an EventGridEvent for a
-     * Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListenersEvent event.
+     * Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
      */
     public static final String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENERS =
-            "Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListenersEvent";
+            "Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.SignalRService.ClientConnectionConnected event.
@@ -585,25 +593,31 @@ public final class SystemEventMappingNames {
     public static final String SIGNAL_RSERVICE_CLIENT_CONNECTION_DISCONNECTED =
             "Microsoft.SignalRService.ClientConnectionDisconnected";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobCreated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.AsyncOperationInitiated event. */
+    public static final String STORAGE_ASYNC_OPERATION_INITIATED = "Microsoft.Storage.AsyncOperationInitiated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobCreated event. */
     public static final String STORAGE_BLOB_CREATED = "Microsoft.Storage.BlobCreated";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobDeleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobDeleted event. */
     public static final String STORAGE_BLOB_DELETED = "Microsoft.Storage.BlobDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobRenamed event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobRenamed event. */
     public static final String STORAGE_BLOB_RENAMED = "Microsoft.Storage.BlobRenamed";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.DirectoryCreated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobTierChanged event. */
+    public static final String STORAGE_BLOB_TIER_CHANGED = "Microsoft.Storage.BlobTierChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.DirectoryCreated event. */
     public static final String STORAGE_DIRECTORY_CREATED = "Microsoft.Storage.DirectoryCreated";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.DirectoryDeleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.DirectoryDeleted event. */
     public static final String STORAGE_DIRECTORY_DELETED = "Microsoft.Storage.DirectoryDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.DirectoryRenamed event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.DirectoryRenamed event. */
     public static final String STORAGE_DIRECTORY_RENAMED = "Microsoft.Storage.DirectoryRenamed";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.LifecyclePolicyCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.LifecyclePolicyCompleted event. */
     public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionDeletedEvent event. */
@@ -612,43 +626,43 @@ public final class SystemEventMappingNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent event. */
     public static final String SUBSCRIPTION_VALIDATION = "Microsoft.EventGrid.SubscriptionValidationEvent";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.AppServicePlanUpdated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.AppServicePlanUpdated event. */
     public static final String WEB_APP_SERVICE_PLAN_UPDATED = "Microsoft.Web.AppServicePlanUpdated";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.AppUpdated event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.AppUpdated event. */
     public static final String WEB_APP_UPDATED = "Microsoft.Web.AppUpdated";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.BackupOperationCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.BackupOperationCompleted event. */
     public static final String WEB_BACKUP_OPERATION_COMPLETED = "Microsoft.Web.BackupOperationCompleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.BackupOperationFailed event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.BackupOperationFailed event. */
     public static final String WEB_BACKUP_OPERATION_FAILED = "Microsoft.Web.BackupOperationFailed";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.BackupOperationStarted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.BackupOperationStarted event. */
     public static final String WEB_BACKUP_OPERATION_STARTED = "Microsoft.Web.BackupOperationStarted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.RestoreOperationCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.RestoreOperationCompleted event. */
     public static final String WEB_RESTORE_OPERATION_COMPLETED = "Microsoft.Web.RestoreOperationCompleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.RestoreOperationFailed event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.RestoreOperationFailed event. */
     public static final String WEB_RESTORE_OPERATION_FAILED = "Microsoft.Web.RestoreOperationFailed";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.RestoreOperationStarted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.RestoreOperationStarted event. */
     public static final String WEB_RESTORE_OPERATION_STARTED = "Microsoft.Web.RestoreOperationStarted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.SlotSwapCompleted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.SlotSwapCompleted event. */
     public static final String WEB_SLOT_SWAP_COMPLETED = "Microsoft.Web.SlotSwapCompleted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.SlotSwapFailed event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.SlotSwapFailed event. */
     public static final String WEB_SLOT_SWAP_FAILED = "Microsoft.Web.SlotSwapFailed";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.SlotSwapStarted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.SlotSwapStarted event. */
     public static final String WEB_SLOT_SWAP_STARTED = "Microsoft.Web.SlotSwapStarted";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.SlotSwapWithPreviewCancelled event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.SlotSwapWithPreviewCancelled event. */
     public static final String WEB_SLOT_SWAP_WITH_PREVIEW_CANCELLED = "Microsoft.Web.SlotSwapWithPreviewCancelled";
 
-    /** Schema of the Data property of an EventGridEvent for an Microsoft.Web.SlotSwapWithPreviewStarted event. */
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Web.SlotSwapWithPreviewStarted event. */
     public static final String WEB_SLOT_SWAP_WITH_PREVIEW_STARTED = "Microsoft.Web.SlotSwapWithPreviewStarted";
 
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS =
@@ -747,6 +761,9 @@ public final class SystemEventMappingNames {
                     put(
                             MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
                             MediaLiveEventTrackDiscontinuityDetectedEventData.class);
+                    put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
+                    put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
+                    put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
                     put(REDIS_EXPORT_RDB_COMPLETED, RedisExportRdbCompletedEventData.class);
                     put(REDIS_IMPORT_RDB_COMPLETED, RedisImportRdbCompletedEventData.class);
                     put(REDIS_PATCHING_COMPLETED, RedisPatchingCompletedEventData.class);
@@ -778,9 +795,11 @@ public final class SystemEventMappingNames {
                     put(
                             SIGNAL_RSERVICE_CLIENT_CONNECTION_DISCONNECTED,
                             SignalRServiceClientConnectionDisconnectedEventData.class);
+                    put(STORAGE_ASYNC_OPERATION_INITIATED, StorageAsyncOperationInitiatedEventData.class);
                     put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
                     put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
                     put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
+                    put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
                     put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
                     put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
                     put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);

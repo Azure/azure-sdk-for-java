@@ -31,7 +31,7 @@ its `eventType` string is added as a constant and a mapping to the event data mo
 `SystemEventMappings` file.
 
 ```yaml
-use: '@autorest/java@4.0.22'
+use: '@autorest/java@4.0.24'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client
