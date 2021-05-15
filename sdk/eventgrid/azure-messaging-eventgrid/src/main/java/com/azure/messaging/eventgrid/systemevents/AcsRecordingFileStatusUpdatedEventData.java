@@ -91,12 +91,12 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     }
 
     /**
-     * Set the recordingDurationMs property: The recording duration.
+     * Set the recordingDuration property: The recording duration.
      *
      * @param recordingDuration the recordingDuration value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
-    public AcsRecordingFileStatusUpdatedEventData setRecordingDurationMs(Duration recordingDuration) {
+    public AcsRecordingFileStatusUpdatedEventData setRecordingDuration(Duration recordingDuration) {
         if (recordingDuration != null) {
             this.recordingDurationMs = recordingDuration.toMillis();
         } else {
