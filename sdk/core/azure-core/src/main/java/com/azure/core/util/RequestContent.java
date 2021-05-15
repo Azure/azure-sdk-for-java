@@ -10,10 +10,12 @@ import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,6 +41,13 @@ public interface RequestContent {
      * @param requestOutbound The outbound where the request will be written.
      */
     void writeTo(RequestOutbound requestOutbound);
+
+    /**
+     * Converts the {@link RequestContent} into a {@code Flux<ByteBuffer>} for use in reactive streams.
+     *
+     * @return The {@link RequestContent} as a {@code Flux<ByteBuffer>}.
+     */
+    Flux<ByteBuffer> asFluxByteBuffer();
 
     /**
      * Gets the length of the {@link RequestContent} if it is able to be calculated.

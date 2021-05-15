@@ -7,6 +7,7 @@ import com.azure.core.util.RequestContent;
 import com.azure.core.util.RequestOutbound;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -39,6 +40,11 @@ public final class SerializableContent implements RequestContent {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    @Override
+    public Flux<ByteBuffer> asFluxByteBuffer() {
+        return Flux.defer(() -> objectSerializer.serializeToBytesAsync(serializable).map(ByteBuffer::wrap));
     }
 
     @Override

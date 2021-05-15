@@ -6,6 +6,7 @@ package com.azure.core.implementation.util;
 import com.azure.core.util.RequestContent;
 import com.azure.core.util.RequestOutbound;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -35,6 +36,12 @@ public final class ByteBufferContent implements RequestContent {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    @Override
+    public Flux<ByteBuffer> asFluxByteBuffer() {
+        // Duplicate the ByteBuffer so that each invocation of this method uses a fully readable ByteBuffer.
+        return Flux.defer(() -> Flux.just(byteBuffer.duplicate()));
     }
 
     @Override
