@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -88,10 +89,16 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             if ((subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
                      subStatusCode == SubStatusCodes.COMPLETING_SPLIT ||
                      subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
-                return collectionCache.resolveByNameAsync(null, collectionLink, null)
-                           .flatMap(collection -> this.partitionKeyRangeCache
-                                                      .forceRefresh(null, collection.getResourceId())
-                                                      .then(Mono.just(true)));
+                return collectionCache
+                       .resolveByNameAsync(null, collectionLink, null)
+                       .flatMap(collection -> this.partitionKeyRangeCache
+                                                  .tryGetOverlappingRangesAsync(null /*metaDataDiagnosticsContext*/,
+                                                                                collection.getResourceId(),
+                                                                                FeedRangeEpkImpl.forFullRange()
+                                                                                    .getRange(),
+                                                                                true,
+                                                                                null /*properties*/)
+                                                  .then(Mono.just(true)));
             }
 
             if (subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE) {

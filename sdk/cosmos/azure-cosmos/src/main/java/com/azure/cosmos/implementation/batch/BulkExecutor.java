@@ -264,23 +264,18 @@ public final class BulkExecutor<TContext> {
 
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
             // add it in the mainSink.
-            if (cosmosException.getStatusCode() == HttpResponseStatus.GONE.code()) {
 
-                return itemBulkOperation.getRetryPolicy()
-                    .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
-                    .flatMap(shouldRetryGone -> {
-                        if (shouldRetryGone) {
-                            mainSink.next(itemOperation);
-                            return Mono.empty();
-                        } else {
-                            return retryOtherExceptions(itemOperation, exception, groupSink, cosmosException,
-                                                        itemBulkOperation);
-                        }
-                    });
-            } else {
-                return retryOtherExceptions(itemOperation, exception, groupSink, cosmosException,
-                                            itemBulkOperation);
-            }
+            return itemBulkOperation.getRetryPolicy()
+                       .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
+                       .flatMap(shouldRetryGone -> {
+                           if (shouldRetryGone) {
+                               mainSink.next(itemOperation);
+                               return Mono.empty();
+                           } else {
+                               return retryOtherExceptions(itemOperation, exception, groupSink, cosmosException,
+                                                           itemBulkOperation);
+                           }
+                       });
         }
 
         return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, this.batchContext));

@@ -246,20 +246,4 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                     }, 1).collectList();
         });
     }
-
-    /**
-     * Force refreshes the partition range cache
-     * @param metadataDiagnosticsContext the metadata diagnostics context
-     * @param collectionRId the collectionRid
-     * @return a void Mono
-     */
-    public Mono<Void> forceRefresh(MetadataDiagnosticsContext metadataDiagnosticsContext, String collectionRId) {
-        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs =
-            this.tryLookupAsync(metadataDiagnosticsContext, collectionRId, null, null);
-        return routingMapObs.flatMap(routingMapValueHolder -> this.tryLookupAsync(metadataDiagnosticsContext,
-                                                                                  collectionRId,
-                                                                                  routingMapValueHolder.v,
-                                                                                  null)
-                                                                  .then());
-    }
 }
