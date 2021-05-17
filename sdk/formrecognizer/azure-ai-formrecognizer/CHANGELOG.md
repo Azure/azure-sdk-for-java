@@ -125,9 +125,10 @@ respectively
 - Renamed model `OperationResult` to `FormRecognizerOperationResult`
 - Changed param ordering for methods `beginRecognizeCustomForms` and `beginRecognizeCustomFormsFromUrl`
 
-### Key Bug Fixes
-- Fixed `getFields()` to preserve service side ordering of fields.
-
+### Bug Fixes
+- When using a security policy with `SecurityManager` turns on, it no longer throws the access denied error on 
+  `java.lang.reflect.ReflectPermission`. More information on https://github.com/Azure/azure-sdk-for-java/issues/17368
+  
 ## 1.0.0-beta.4 (2020-07-07)
 ### Breaking Changes
 - `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See

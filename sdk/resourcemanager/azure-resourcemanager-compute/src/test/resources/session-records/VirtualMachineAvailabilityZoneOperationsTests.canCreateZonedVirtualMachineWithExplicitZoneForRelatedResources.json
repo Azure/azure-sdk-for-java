@@ -137,17 +137,17 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T075829Z:f9fc0aa5-fac4-41a9-9e0b-47a65f0bf58b",
       "Expires" : "-1",
       "Content-Length" : "273",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/DiskOperations/b7bace88-9d7c-442e-82d3-98d6e66d88be?api-version=2020-12-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/DiskOperations/b7bace88-9d7c-442e-82d3-98d6e66d88be?api-version=2021-03-01",
       "x-ms-request-id" : "b7bace88-9d7c-442e-82d3-98d6e66d88be",
       "Body" : "{\r\n  \"name\": \"dsk959860\",\r\n  \"location\": \"eastus2\",\r\n  \"tags\": {},\r\n  \"zones\": [\r\n    \"1\"\r\n  ],\r\n  \"properties\": {\r\n    \"creationData\": {\r\n      \"createOption\": \"Empty\"\r\n    },\r\n    \"diskSizeGB\": 100,\r\n    \"provisioningState\": \"Updating\",\r\n    \"isArmResource\": true\r\n  }\r\n}",
       "x-ms-client-request-id" : "4faa6b60-41af-40a0-925e-08a1f0e58d6f",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/DiskOperations/b7bace88-9d7c-442e-82d3-98d6e66d88be?monitor=true&api-version=2020-12-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/DiskOperations/b7bace88-9d7c-442e-82d3-98d6e66d88be?monitor=true&api-version=2021-03-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/DiskOperations/b7bace88-9d7c-442e-82d3-98d6e66d88be?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/DiskOperations/b7bace88-9d7c-442e-82d3-98d6e66d88be?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "15d1adb1-92e6-4a0e-9ba7-4b6865f6b552"
@@ -350,7 +350,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62514/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62514/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fe02e3e3-85ee-4669-8985-537beafab4e1",
@@ -372,7 +372,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T075851Z:d6fc6551-79ca-415e-a97e-a1b6574e46b9",
       "Expires" : "-1",
       "Content-Length" : "2068",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/f4845204-4e1f-49ba-8e59-a81b8de82868?api-version=2020-12-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/f4845204-4e1f-49ba-8e59-a81b8de82868?api-version=2021-03-01",
       "x-ms-request-id" : "f4845204-4e1f-49ba-8e59-a81b8de82868",
       "Body" : "{\r\n  \"name\": \"javavm\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62514/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"eastus2\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"vmId\": \"68ddd6a2-4819-4ce1-8602-da8a6fee2393\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_D2a_v4\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"Canonical\",\r\n        \"offer\": \"UbuntuServer\",\r\n        \"sku\": \"16.04.0-LTS\",\r\n        \"version\": \"latest\",\r\n        \"exactVersion\": \"16.04.202102020\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Linux\",\r\n        \"createOption\": \"FromImage\",\r\n        \"caching\": \"ReadWrite\",\r\n        \"managedDisk\": {\r\n          \"storageAccountType\": \"Standard_LRS\"\r\n        },\r\n        \"diskSizeGB\": 30\r\n      },\r\n      \"dataDisks\": [\r\n        {\r\n          \"lun\": 0,\r\n          \"name\": \"dsk959860\",\r\n          \"createOption\": \"Attach\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\",\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62514/providers/Microsoft.Compute/disks/dsk959860\"\r\n          },\r\n          \"diskSizeGB\": 100,\r\n          \"toBeDetached\": false\r\n        }\r\n      ]\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"Foo12\",\r\n      \"linuxConfiguration\": {\r\n        \"disablePasswordAuthentication\": false,\r\n        \"provisionVMAgent\": true,\r\n        \"patchSettings\": {\r\n          \"patchMode\": \"ImageDefault\"\r\n        }\r\n      },\r\n      \"secrets\": [],\r\n      \"allowExtensionOperations\": true,\r\n      \"requireGuestProvisionSignal\": true\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62514/providers/Microsoft.Network/networkInterfaces/nic50118f7c82e\",\"properties\":{\"primary\":true}}]},\r\n    \"provisioningState\": \"Creating\"\r\n  },\r\n  \"zones\": [\r\n    \"1\"\r\n  ]\r\n}",
       "x-ms-client-request-id" : "fe02e3e3-85ee-4669-8985-537beafab4e1",
@@ -381,7 +381,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/f4845204-4e1f-49ba-8e59-a81b8de82868?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/f4845204-4e1f-49ba-8e59-a81b8de82868?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8e3f0003-7132-48cf-8fc9-f2992493d76b"
@@ -409,7 +409,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/f4845204-4e1f-49ba-8e59-a81b8de82868?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus2/operations/f4845204-4e1f-49ba-8e59-a81b8de82868?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3931e7f0-3866-4868-a09b-53f3e04194db"
@@ -437,7 +437,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62514/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62514/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "117f3ff0-3ce3-4e72-9f92-14eb479a3410"

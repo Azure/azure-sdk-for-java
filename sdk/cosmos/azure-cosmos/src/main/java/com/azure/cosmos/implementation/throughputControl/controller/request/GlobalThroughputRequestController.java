@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.throughputControl.controller.request;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +16,7 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
 
     public GlobalThroughputRequestController(double initialScheduledThroughput) {
         this.scheduledThroughput = new AtomicReference<>(initialScheduledThroughput);
-        this.requestThrottler = new ThroughputRequestThrottler(this.scheduledThroughput.get());
+        this.requestThrottler = new ThroughputRequestThrottler(this.scheduledThroughput.get(), StringUtils.EMPTY);
     }
 
     @Override

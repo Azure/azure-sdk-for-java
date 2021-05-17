@@ -15,7 +15,7 @@ public final class RegionalReplicationStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionalReplicationStatus.class);
 
     /*
-     * The region to which the gallery Image Version is being replicated to.
+     * The region to which the gallery image version is being replicated to.
      */
     @JsonProperty(value = "region", access = JsonProperty.Access.WRITE_ONLY)
     private String region;
@@ -39,7 +39,7 @@ public final class RegionalReplicationStatus {
     private Integer progress;
 
     /**
-     * Get the region property: The region to which the gallery Image Version is being replicated to.
+     * Get the region property: The region to which the gallery image version is being replicated to.
      *
      * @return the region value.
      */
