@@ -252,8 +252,8 @@ public class WebAppsTests extends AppServiceTest {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-                .withAccessFromIpAddressRange(300, "167.220.0.0/16")
-                .withAccessFromIpAddress(400, "167.220.0.1")
+                .withAccessFromIpAddressRange("167.220.0.0/16", 300)
+                .withAccessFromIpAddress("167.220.0.1", 400)
                 .withAccessRule(new IpSecurityRestriction()
                     .withAction("Allow")
                     .withPriority(500)
@@ -272,7 +272,7 @@ public class WebAppsTests extends AppServiceTest {
             .withoutIpAddressAccess("167.220.0.1")
             .withoutIpAddressRangeAccess("167.220.0.0/16")
             .withoutAccessRule(serviceTagRule)
-            .withAccessFromIpAddressRange(300, "167.220.0.0/24")
+            .withAccessFromIpAddressRange("167.220.0.0/24", 300)
             .apply();
 
         Assertions.assertEquals(1 + 1, webApp1.ipSecurityRules().size());

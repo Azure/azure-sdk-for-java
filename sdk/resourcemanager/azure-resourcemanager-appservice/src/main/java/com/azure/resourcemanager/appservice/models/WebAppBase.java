@@ -891,33 +891,33 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             /**
              * Specifies that access to the web app from the specific virtual network subnet should be allowed.
              *
-             * @param priority the priority of the rule
              * @param subnetId the virtual network subnet id
+             * @param priority the priority of the rule
              * @return the next stage of the definition
              */
-            WithCreate<FluentT> withAccessFromNetworkSubnet(int priority, String subnetId);
+            WithCreate<FluentT> withAccessFromNetworkSubnet(String subnetId, int priority);
 
             /**
              * Specifies that access to the web app from the specific ip address should be allowed.
              *
              * Allowing any specific access will add a Deny Any rule with least priority.
              *
-             * @param priority the priority of the rule
              * @param ipAddress the ip address
+             * @param priority the priority of the rule
              * @return the next stage of the definition
              */
-            WithCreate<FluentT> withAccessFromIpAddress(int priority, String ipAddress);
+            WithCreate<FluentT> withAccessFromIpAddress(String ipAddress, int priority);
 
             /**
              * Specifies that access to the web app from the specific ip range should be allowed.
              *
              * Allowing any specific access will add a Deny Any rule with least priority.
              *
-             * @param priority the priority of the rule
              * @param ipAddressCidr the ip address range expressed in cidr format
+             * @param priority the priority of the rule
              * @return the next stage of the definition
              */
-            WithCreate<FluentT> withAccessFromIpAddressRange(int priority, String ipAddressCidr);
+            WithCreate<FluentT> withAccessFromIpAddressRange(String ipAddressCidr, int priority);
 
             /**
              * Specifies the ip security rule.
@@ -1571,33 +1571,33 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              *
              * Allowing any specific access will add a Deny Any rule with least priority.
              *
-             * @param priority the priority of the rule
              * @param subnetId the virtual network subnet id
+             * @param priority the priority of the rule
              * @return the next stage of the update
              */
-            Update<FluentT> withAccessFromNetworkSubnet(int priority, String subnetId);
+            Update<FluentT> withAccessFromNetworkSubnet(String subnetId, int priority);
 
             /**
              * Specifies that access to the web app from the specific ip address should be allowed.
              *
              * Allowing any specific access will add a Deny Any rule with least priority.
              *
-             * @param priority the priority of the rule
              * @param ipAddress the ip address
+             * @param priority the priority of the rule
              * @return the next stage of the update
              */
-            Update<FluentT> withAccessFromIpAddress(int priority, String ipAddress);
+            Update<FluentT> withAccessFromIpAddress(String ipAddress, int priority);
 
             /**
              * Specifies that access to the web app from the specific ip range should be allowed.
              *
              * Allowing any specific access will add a Deny Any rule with least priority.
              *
-             * @param priority the priority of the rule
              * @param ipAddressCidr the ip address range expressed in cidr format
+             * @param priority the priority of the rule
              * @return the next stage of the update
              */
-            Update<FluentT> withAccessFromIpAddressRange(int priority, String ipAddressCidr);
+            Update<FluentT> withAccessFromIpAddressRange(String ipAddressCidr, int priority);
 
             /**
              * Specifies that the ip security rule.

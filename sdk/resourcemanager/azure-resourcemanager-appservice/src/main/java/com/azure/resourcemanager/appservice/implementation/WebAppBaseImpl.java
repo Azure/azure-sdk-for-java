@@ -1756,7 +1756,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     @SuppressWarnings("unchecked")
-    public FluentImplT withAccessFromNetworkSubnet(int priority, String subnetId) {
+    public FluentImplT withAccessFromNetworkSubnet(String subnetId, int priority) {
         this.ensureIpSecurityRestrictions();
         this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
             .withAction(IP_RESTRICTION_ACTION_ALLOW)
@@ -1767,14 +1767,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
-    public FluentImplT withAccessFromIpAddress(int priority, String ipAddress) {
+    public FluentImplT withAccessFromIpAddress(String ipAddress, int priority) {
         String ipAddressCidr = ipAddress.contains("/") ? ipAddress : ipAddress + "/32";
-        return withAccessFromIpAddressRange(priority, ipAddressCidr);
+        return withAccessFromIpAddressRange(ipAddressCidr, priority);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public FluentImplT withAccessFromIpAddressRange(int priority, String ipAddressCidr) {
+    public FluentImplT withAccessFromIpAddressRange(String ipAddressCidr, int priority) {
         this.ensureIpSecurityRestrictions();
         this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
             .withAction(IP_RESTRICTION_ACTION_ALLOW)
