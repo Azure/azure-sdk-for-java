@@ -1,4 +1,8 @@
 trigger: none
+parameters:
+  - name: CloudConfig
+    type: object
+    default: {}
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
