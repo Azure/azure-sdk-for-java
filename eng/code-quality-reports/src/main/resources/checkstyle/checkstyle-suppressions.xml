@@ -147,6 +147,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress IO exception for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.storage.common.StorageInputStream.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.storage.blob.BlobInputStream.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.storage.file.datalake.DataLakeFileInputStream.java"/>

@@ -188,9 +188,7 @@ public abstract class StorageInputStream extends InputStream {
      * @param offset The start point of data to be acquired.
      * @return The bytebuffer which store one chunk size of data.
      */
-    protected Mono<ByteBuffer> executeRead(int readLength, long offset) {
-        throw new RuntimeException("com.azure.storage.common.StorageInputStream.executeRead() not implemented.");
-    }
+    protected abstract Mono<ByteBuffer> executeRead(int readLength, long offset);
 
     /**
      * Marks the current position in this input stream. A subsequent call to the reset method repositions this stream at
