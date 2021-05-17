@@ -1,7 +1,7 @@
 trigger: none
 
 stages:
-- ${{ if and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq(cloud.key, 'Public'))}}:
+- ${{ if and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11')) }}:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       CloudConfig:
