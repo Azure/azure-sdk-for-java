@@ -334,7 +334,6 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
     if 'sdk' in file_path_list and 'spring-2-3' in file_path_list:
         find_alias_key = True
 
-    dep_project_id_path = False
     for dependency in dependencies:
         dependency_identifier, dependency_identifier_path = create_artifact_identifier_spring(file_path, dependency)
         if not dependency_identifier in artifact_identifier_to_source_version:
@@ -345,7 +344,6 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
             continue
 
         if dependency_identifier_path and not dependency_identifier_path in dependency_mapping:
-            dep_project_id_path = True
             dependency_mapping[dependency_identifier_path] = []
         else:
             if not dependency_identifier in dependency_mapping:
@@ -359,7 +357,11 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
         else:
             project_dependencies_mapping[project_identifier].append(dependency_identifier)
 
-        if dep_project_id_path:
+        print(dependency_identifier_path in dependency_mapping.keys(),
+              dependency_identifier in dependency_mapping.keys(),
+              project_identifier, project_identifier_path,
+              dependency_identifier, dependency_identifier_path)
+        if dependency_identifier_path and dependency_identifier_path in dependency_mapping.keys():
             dependency_mapping[dependency_identifier_path].append(project_identifier_path)
         else:
             dependency_mapping[dependency_identifier].append(project_identifier)
