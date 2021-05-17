@@ -55,6 +55,7 @@ Name | Description | Required | Default
 ---|---|---|---
  spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
  spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
+ spring.cloud.azure.cloud-name | Name of Azure Cloud | No | azure |
  spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes |
  spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for checkpoint message successfully consumed | Yes
 

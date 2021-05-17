@@ -27,6 +27,16 @@ Azure Event Hubs is a big data streaming platform and event ingestion service. I
 
 ## Examples
 Please refer to this [sample project][sample] illustrating how to use Spring Cloud Event Hubs.
+### Set Azure Cloud Environment
+
+To set the cloud environemnt, you can add the following property in the application.yml. By default, the cloud is configured with Azure.
+```yaml
+spring:
+  cloud:
+    azure:
+      cloud-name: your-azure-cloud-name
+# Support values are azure, azurechina, azureusgovernment and azuregermany.
+```
 
 ## Troubleshooting
 ### Enable client logging

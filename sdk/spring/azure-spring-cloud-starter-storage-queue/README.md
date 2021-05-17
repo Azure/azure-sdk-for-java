@@ -28,6 +28,16 @@ Azure Queue Storage is a service for storing large numbers of messages. You acce
 
 ## Examples
 Please refer to this [sample project][sample] illustrating how to use Spring cloud Starter Storage Queue.
+### Set Azure Cloud Environment
+
+To set the cloud environemnt, you can add the following property in the application.yml. By default, the cloud is configured with Azure.
+```yaml
+spring:
+  cloud:
+    azure:
+      cloud-name: your-azure-cloud-name
+# Support values are azure, azurechina, azureusgovernment and azuregermany.
+```
 
 ## Troubleshooting
 ### Enable client logging

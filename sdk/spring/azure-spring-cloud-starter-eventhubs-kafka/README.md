@@ -24,6 +24,16 @@ Event Hubs provides a Kafka endpoint that can be used by your existing Kafka bas
 
 ## Examples
 Please refer to this [sample project][sample] illustrating how to use this starter.
+### Set Azure Cloud Environment
+
+To set the cloud environemnt, you can add the following property in the application.yml. By default, the cloud is configured with Azure.
+```yaml
+spring:
+  cloud:
+    azure:
+      cloud-name: your-azure-cloud-name
+# Support values are azure, azurechina, azureusgovernment and azuregermany.
+```
 
 ## Troubleshooting
 ### Enable client logging

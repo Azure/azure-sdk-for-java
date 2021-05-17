@@ -26,6 +26,18 @@ Azure Cache for Redis offers Redis as a managed service. It provides secure and 
 
 ## Examples
 Please refer to this [sample project][sample] illustrating how to use this starter.
+
+### Set Azure Cloud Environment
+
+To set the cloud environemnt, you can add the following property in the application.yml. By default, the cloud is configured with Azure.
+```yaml
+spring:
+  cloud:
+    azure:
+      cloud-name: your-azure-cloud-name
+# Support values are azure, azurechina, azureusgovernment and azuregermany.
+```
+
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.

@@ -23,6 +23,16 @@ This package helps developers to finish the auto-configuration of Azure Context.
 Azure contexts represent your active subscription to run commands against, and the authentication information needed to connect to an Azure cloud. With Azure contexts, Azure Spring Cloud services doesn't need to reauthenticate your account each time you switch subscriptions.
 ## Examples
 
+### Set Azure Cloud Environment
+
+To set the cloud environemnt, you can add the following property in the application.yml. By default, the cloud is configured with Azure.
+```yaml
+spring:
+  cloud:
+    azure:
+      cloud-name: your-azure-cloud-name
+# Support values are azure, azurechina, azureusgovernment and azuregermany.
+```
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.

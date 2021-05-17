@@ -47,6 +47,7 @@ Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.credential-file-path | Location of azure credential file | Yes |
 spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
+spring.cloud.azure.cloud-name | Name of Azure Cloud | No | azure |
 spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
 spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes |
 
