@@ -114,7 +114,6 @@ jobs:
         displayName: 'Run tests: $(Agent.JobName)'
         inputs:
           mavenPomFile: pom.xml
-          options: '-Djacoco.skip=false'
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env:
           AZURE_TEST_MODE: ${{ parameters.TestMode }}
