@@ -117,6 +117,18 @@
             <include>com/azure/communication/sms/*.class</include>
           </includes>
         </configuration>
+        <executions>
+          <execution>
+            <id>coverage-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/../jacoco.exec.</dataFile>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -192,6 +204,7 @@
         <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
       </properties>
     </profile>
+    <!--
     <profile>
       <id>sms-coverage</id>
       <build>
@@ -199,7 +212,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.5</version>
             <configuration>
               <includes>
                 <include>com/azure/communication/sms/*.class</include>
@@ -221,5 +234,6 @@
         </plugins>
       </build>
     </profile>
+    -->
   </profiles>
 </project>
