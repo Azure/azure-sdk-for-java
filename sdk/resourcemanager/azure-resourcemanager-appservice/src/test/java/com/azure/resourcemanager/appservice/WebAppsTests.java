@@ -252,7 +252,6 @@ public class WebAppsTests extends AppServiceTest {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-                .withAccessFromSelectedNetworks()
                 .withAccessFromIpAddressRange(300, "167.220.0.0/16")
                 .withAccessFromIpAddress(400, "167.220.0.1")
                 .withAccessRule(new IpSecurityRestriction()

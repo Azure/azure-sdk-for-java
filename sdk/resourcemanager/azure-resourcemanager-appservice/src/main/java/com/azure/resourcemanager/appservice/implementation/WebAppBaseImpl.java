@@ -118,6 +118,9 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     protected static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
     protected static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
 
+    protected static final String IP_RESTRICTION_ACTION_ALLOW = "Allow";
+    protected static final String IP_RESTRICTION_ACTION_DENY = "Deny";
+
     private static final Map<AzureEnvironment, String> DNS_MAP =
         new HashMap<AzureEnvironment, String>() {
             {
@@ -1743,34 +1746,11 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         }
     }
 
-    protected static final String IP_RESTRICTION_ACTION_ALLOW = "Allow";
-    protected static final String IP_RESTRICTION_ACTION_DENY = "Deny";
-
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAccessFromAllNetworks() {
         this.ensureIpSecurityRestrictions();
         this.siteConfig.withIpSecurityRestrictions(new ArrayList<>());
-        this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
-            .withName("Allow all")
-            .withDescription("Allow all access")
-            .withAction(IP_RESTRICTION_ACTION_ALLOW)
-            .withPriority(1)
-            .withIpAddress("Any"));
-        return (FluentImplT) this;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public FluentImplT withAccessFromSelectedNetworks() {
-        this.ensureIpSecurityRestrictions();
-        this.siteConfig.withIpSecurityRestrictions(new ArrayList<>());
-        this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
-            .withName("Deny all")
-            .withDescription("Deny all access")
-            .withAction(IP_RESTRICTION_ACTION_DENY)
-            .withPriority(2147483647)
-            .withIpAddress("Any"));
         return (FluentImplT) this;
     }
 

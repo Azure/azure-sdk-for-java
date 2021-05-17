@@ -889,17 +889,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
         /** The stage of web app definition allowing to configure network access settings. */
         interface WithNetworkAccess<FluentT> {
             /**
-             * Specifies that by default access to web app should be denied from all networks except from those
-             * networks specified via {@link WithNetworkAccess#withAccessFromNetworkSubnet(int, String)},
-             * {@link WithNetworkAccess#withAccessFromIpAddress(int, String)},
-             * {@link WithNetworkAccess#withAccessFromIpAddressRange(int, String)}
-             * and {@link WithNetworkAccess#withAccessRule(IpSecurityRestriction)}.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate<FluentT> withAccessFromSelectedNetworks();
-
-            /**
              * Specifies that access to the web app from the specific virtual network subnet should be allowed.
              *
              * @param priority the priority of the rule
@@ -911,6 +900,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             /**
              * Specifies that access to the web app from the specific ip address should be allowed.
              *
+             * Allowing any specific access will add a Deny Any rule with least priority.
+             *
              * @param priority the priority of the rule
              * @param ipAddress the ip address
              * @return the next stage of the definition
@@ -920,6 +911,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             /**
              * Specifies that access to the web app from the specific ip range should be allowed.
              *
+             * Allowing any specific access will add a Deny Any rule with least priority.
+             *
              * @param priority the priority of the rule
              * @param ipAddressCidr the ip address range expressed in cidr format
              * @return the next stage of the definition
@@ -928,6 +921,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
             /**
              * Specifies the ip security rule.
+             *
+             * Allowing any specific access will add a Deny Any rule with least priority.
              *
              * @param ipSecurityRule the ip security rule
              * @return the next stage of the definition
@@ -1565,25 +1560,16 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
         /** The stage of storage account update allowing to configure network access. */
         interface WithNetworkAccess<FluentT> {
             /**
-             * Specifies that by default access to storage account should be allowed from all networks.
+             * Specifies that access to web app should be allowed from all networks.
              *
              * @return the next stage of the update
              */
             Update<FluentT> withAccessFromAllNetworks();
 
             /**
-             * Specifies that by default access to web app should be denied from all networks except from those
-             * networks specified via {@link DefinitionStages.WithNetworkAccess#withAccessFromNetworkSubnet(int, String)},
-             * {@link DefinitionStages.WithNetworkAccess#withAccessFromIpAddress(int, String)},
-             * {@link DefinitionStages.WithNetworkAccess#withAccessFromIpAddressRange(int, String)}
-             * and {@link DefinitionStages.WithNetworkAccess#withAccessRule(IpSecurityRestriction)}.
-             *
-             * @return the next stage of the update
-             */
-            Update<FluentT> withAccessFromSelectedNetworks();
-
-            /**
              * Specifies that access to the web app from the specific virtual network subnet should be allowed.
+             *
+             * Allowing any specific access will add a Deny Any rule with least priority.
              *
              * @param priority the priority of the rule
              * @param subnetId the virtual network subnet id
@@ -1594,6 +1580,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             /**
              * Specifies that access to the web app from the specific ip address should be allowed.
              *
+             * Allowing any specific access will add a Deny Any rule with least priority.
+             *
              * @param priority the priority of the rule
              * @param ipAddress the ip address
              * @return the next stage of the update
@@ -1603,6 +1591,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             /**
              * Specifies that access to the web app from the specific ip range should be allowed.
              *
+             * Allowing any specific access will add a Deny Any rule with least priority.
+             *
              * @param priority the priority of the rule
              * @param ipAddressCidr the ip address range expressed in cidr format
              * @return the next stage of the update
@@ -1611,6 +1601,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
             /**
              * Specifies that the ip security rule.
+             *
+             * Allowing any specific access will add a Deny Any rule with least priority.
              *
              * @param ipSecurityRule the ip security rule
              * @return the next stage of the update
