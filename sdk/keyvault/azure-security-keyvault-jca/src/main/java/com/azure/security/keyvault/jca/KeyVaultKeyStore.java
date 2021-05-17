@@ -161,20 +161,20 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Certificate engineGetCertificate(String alias) {
-        Certificate certificate;
+        Certificate certificate = null;
         if (certificates.containsKey(alias)) {
             certificate = certificates.get(alias);
         } else {
-            certificate = keyVaultClient.getCertificate(alias);
-            if (certificate != null) {
-                certificates.put(alias, certificate);
-                if (aliases == null) {
-                    aliases = keyVaultClient.getAliases();
+            if (aliases == null) {
+                aliases = keyVaultClient.getAliases();
+            }
+            if (aliases.contains(alias)) {
+                certificate = keyVaultClient.getCertificate(alias);
+                if (certificate != null) {
+                    certificates.put(alias, certificate);
                 }
-                if (!aliases.contains(alias)) {
-                    aliases.add(alias);
-                }
-            } else {
+            }
+            if (certificate == null) {
                 try {
                     certificate = DEFAULT_KEY_STORE.getCertificate(alias);
                 } catch (KeyStoreException e) {
