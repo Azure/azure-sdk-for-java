@@ -12,6 +12,9 @@ import com.azure.data.tables.models.TableErrorCode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * sync code snippets for the Tables service
  */
@@ -66,7 +69,7 @@ public class TableServiceClientCodeSnippets {
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq OfficeSupplies");
 
         try {
-            PagedIterable<TableItem> tablePagedIterable = tableServiceClient.listTables(options);
+            PagedIterable<TableItem> tablePagedIterable = tableServiceClient.listTables(options, null, null);
         } catch (TableServiceException e) {
             System.err.println("Table Query Unsuccessful. Error: " + e);
         }
@@ -109,7 +112,7 @@ public class TableServiceClientCodeSnippets {
             TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
             //supplying the eTag means the eTags must match to delete
-            tableClient.deleteEntity(partitionKey, rowKey, entity.getETag());
+            tableClient.deleteEntity(entity);
         } catch (TableServiceException e) {
             if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Delete Entity Unsuccessful. Entity not found.");
@@ -180,11 +183,15 @@ public class TableServiceClientCodeSnippets {
             .tableName("OfficeSupplies")
             .buildClient();
 
+        List<String> propertiesToSelect = new ArrayList<>();
+        propertiesToSelect.add("Seller");
+        propertiesToSelect.add("Price");
+
         ListEntitiesOptions options = new ListEntitiesOptions()
             .setFilter("Product eq markers")
-            .setSelect("Seller, Price");
+            .setSelect(propertiesToSelect);
         try {
-            PagedIterable<TableEntity> tableEntities = tableClient.listEntities(options);
+            PagedIterable<TableEntity> tableEntities = tableClient.listEntities(options, null, null);
         } catch (TableServiceException e) {
             System.err.println("Query Table Entities Unsuccessful. Error: " + e);
         }

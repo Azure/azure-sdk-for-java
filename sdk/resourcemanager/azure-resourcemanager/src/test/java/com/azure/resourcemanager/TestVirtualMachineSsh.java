@@ -49,7 +49,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
                 .withExistingPrimaryPublicIPAddress(pip)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("testuser")
-                .withRootPassword("12NewPA$$w0rd!")
+                .withRootPassword(ResourceManagerTestBase.password())
                 .withSsh(sshKey)
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();

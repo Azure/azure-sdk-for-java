@@ -16,10 +16,10 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.tables.implementation.StorageAuthenticationSettings;
+import com.azure.data.tables.implementation.StorageConnectionString;
+import com.azure.data.tables.implementation.StorageEndpoint;
 import com.azure.data.tables.implementation.TablesJacksonSerializer;
-import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
-import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
-import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 
 import java.net.MalformedURLException;
 import java.net.URL;
