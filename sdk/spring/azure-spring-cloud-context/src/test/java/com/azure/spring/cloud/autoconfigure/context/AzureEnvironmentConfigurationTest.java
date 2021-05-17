@@ -36,7 +36,7 @@ public class AzureEnvironmentConfigurationTest {
     public void testWithAnotherEnvironment() {
         this.contextRunner
             .withUserConfiguration(TestConfigurationWithProperty.class)
-            .withPropertyValues(AZURE_PROPERTY_PREFIX + "environment=AzureChina")
+            .withPropertyValues(AZURE_PROPERTY_PREFIX + "cloud_name=AzureChina")
             .run(context -> {
                 assertThat(context).hasSingleBean(EnvironmentProvider.class);
                 assertThat(context.getBean(EnvironmentProvider.class).getAzureEnvironment())

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
 
     @Test
-    public void testPropertyBinder() {
+    public void testPropertyBinderWithoutDefaultValue() {
 
         final String prefix = "azure.activedirectory.";
 
@@ -36,6 +36,21 @@ public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
         assertEquals("fake-secret", builder.getPropertyValue(prefix, "client-secret"));
         assertEquals("fake-tenant-id", builder.getPropertyValue(prefix, "tenant-id"));
         assertEquals("fake-cert-path", builder.getPropertyValue(prefix, "client-certificate-path"));
+    }
+
+    @Test
+    public void testPropertyBinderWithDefaultValue() {
+        final String prefix = "spring.cloud.azure.";
+
+        final Properties properties = new PropertiesBuilder()
+            .prefix(prefix)
+            .property("cloud-name", AzureCloud.AzureChina)
+            .build();
+
+        final TestSpringCredentialBuilder builder = new TestSpringCredentialBuilder()
+            .environment(buildEnvironment(properties));
+
+        assertEquals(AzureCloud.AzureChina, builder.getPropertyValue(AzureCloud.class, prefix, "cloud-name", AzureCloud.Azure));
     }
 
     @Test

@@ -5,7 +5,7 @@ package com.azure.spring.identity;
 
 
 /**
- * Enum to define all Azure environments: Azure, Azure China...
+ * Enum to define the authority host uri for all Azure Cloud environments: Azure, Azure China...
  */
 public enum AzureCloud {
 

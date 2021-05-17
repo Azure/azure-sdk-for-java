@@ -8,6 +8,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.identity.AzureCloud;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -61,11 +62,22 @@ public class AzureContextAutoConfigurationTest {
                 assertThat(context.getBean(AzureProperties.class).getResourceGroup()).isEqualTo("rg1");
                 assertThat(context.getBean(AzureProperties.class).getRegion()).isEqualTo("region1");
                 assertThat(context.getBean(AzureProperties.class).getSubscriptionId()).isEqualTo("sub1");
-                assertThat(context.getBean(AzureProperties.class).getCloudName()).isEqualTo(AzureEnvironment.AZURE);
+                assertThat(context.getBean(AzureProperties.class).getCloudName()).isEqualTo(AzureCloud.Azure);
             });
     }
 
-    // TODO test other environment
+    @Test
+    public void testAzureCloudConfiguration() {
+        this.contextRunner
+            .withPropertyValues(
+                AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                AZURE_PROPERTY_PREFIX + "subscriptionId=sub1",
+                AZURE_PROPERTY_PREFIX + "cloud-name=AzureChina")
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureProperties.class);
+                assertThat(context.getBean(AzureProperties.class).getCloudName()).isEqualTo(AzureCloud.AzureChina);
+            });
+    }
 
     @Test
     public void testAutoConfigureEnabled() {
