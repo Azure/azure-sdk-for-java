@@ -76,6 +76,7 @@
             <plugin>
               <groupId>org.moditect</groupId>
               <artifactId>moditect-maven-plugin</artifactId>
+              <version>1.0.0.RC1</version>  <!-- {x-version-update;org.moditect:moditect-maven-plugin;external_dependency} -->
               <executions>
                 <execution>
                   <id>add-module-infos</id>
