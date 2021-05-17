@@ -1,7 +1,12 @@
 # Release History
 
 ## 3.5.0-beta.1 (Unreleased)
+### New Features
+- Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.
 
+### Key Bug Fixes
+- Fix the issue [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036) where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer.
+- Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
 
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
