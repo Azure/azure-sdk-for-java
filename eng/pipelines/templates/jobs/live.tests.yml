@@ -10,7 +10,7 @@ parameters:
   TimeoutInMinutes: 60
   TestMode: 'RECORD'
   TestStepMavenInputs: {
-      "options": '$(DefaultOptions) -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+      "options": '$(DefaultOptions) -Dmaven.javadoc.skip=true -Djacoco.skip=false -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
   }
   TestResultsFiles: ''
   CloudConfig: {}
