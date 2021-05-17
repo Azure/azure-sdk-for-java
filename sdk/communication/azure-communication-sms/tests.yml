@@ -1,7 +1,6 @@
 trigger: none
 
 stages:
-- ${{ if and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11')) }}:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       CloudConfig:
@@ -21,11 +20,12 @@ stages:
           safeName: azurecommunicationsms
       ServiceDirectory: communication
       PostSteps:
-        - task: PublishCodeCoverageResults@1
-          inputs:
-            codeCoverageTool: JaCoCo
-            summaryFileLocation: sdk/communication/azure-communication-sms/target/site/jacoco/jacoco.xml
-            reportDirectory: sdk/communication/azure-communication-sms/target/site/jacoco/
-            failIfCoverageEmpty: true
+        - ${{ if and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11')) }}:
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: JaCoCo
+              summaryFileLocation: sdk/communication/azure-communication-sms/target/site/jacoco/jacoco.xml
+              reportDirectory: sdk/communication/azure-communication-sms/target/site/jacoco/
+              failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
