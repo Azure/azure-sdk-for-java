@@ -155,11 +155,13 @@ public final class UrlBuilder {
      * @return The provided query parameter name and encoded value to query string for the final URL.
      */
     public UrlBuilder appendQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
-        if (query.containsKey(queryParameterName)) {
-            query.get(queryParameterName).add(queryParameterEncodedValue);
-        } else {
-            setQueryParameter(queryParameterName, queryParameterEncodedValue);
-        }
+        query.compute(queryParameterName, (key, value) -> {
+            if (value == null) {
+                return new ArrayList<String>(Arrays.asList(queryParameterEncodedValue));
+            }
+            value.add(queryParameterEncodedValue);
+            return value;
+        });
         return this;
     }
 
