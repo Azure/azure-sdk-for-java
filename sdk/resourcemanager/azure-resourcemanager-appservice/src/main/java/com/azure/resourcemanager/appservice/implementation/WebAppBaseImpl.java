@@ -551,7 +551,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public List<IpSecurityRestriction> ipSecurityRules() {
-        if (siteConfig == null) {
+        if (this.siteConfig == null || this.siteConfig.ipSecurityRestrictions() == null) {
             return Collections.emptyList();
         }
         return Collections.unmodifiableList(siteConfig.ipSecurityRestrictions());
