@@ -59,6 +59,11 @@ stages:
             Selection: sparse
             GenerateVMJobs: true
       PostSteps:
+          - task: PowerShell@2
+            displayName: 'Run Stress Scenarios'
+            inputs:
+              targetType: 'filePath'
+              filePath: sdk/storage/azure-storage-perf
           - task: Maven@3
             displayName: 'Run Stress Scenarios'
             inputs:
@@ -70,7 +75,7 @@ stages:
                 jdkArchitectureOption: 'x64'
                 goals: verify
             env:
-                STORAGE_CONNECTION_STRING: $(AZURE_STORAGE_BLOB_CONNECTION_STRING)
+                STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
