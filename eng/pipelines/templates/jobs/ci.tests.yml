@@ -104,7 +104,7 @@ jobs:
         displayName: 'Generate Aggregate Pom for From Source Build'
         inputs:
           scriptPath: eng/scripts/generate_from_source_pom.py
-          arguments: '--project-list $(ProjectList) --project-list-path $(ProjectListBak)'
+          arguments: '--project-list $(ProjectList) --project-list-path $(ProjectListBak) --service-directory ${parameters.ServiceDirectory}'
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - task: Maven@3

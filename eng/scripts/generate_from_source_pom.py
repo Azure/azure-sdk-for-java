@@ -54,6 +54,11 @@ pom_file_end = '''  </modules>
 
 maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
 
+unique_combination = [
+    ['spring', 'spring-2-3', 'spring-2-4'],
+    ['spring-cloud-test', 'spring-cloud-test-2', 'spring-cloud-test-3']
+]
+
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str):
     project_list_identifiers = project_list.split(',')
@@ -105,12 +110,14 @@ def create_from_source_pom(project_list: str):
         fromSourcePom.write(pom_file_end)
 
 # Function that creates the aggregate POM.
-def create_from_source_pom_spring(project_list: str, project_list_path: str):
-    print(project_list)
-    print(project_list_path)
+def create_from_source_pom_spring(project_list: str, project_list_path: str, service_directory: str):
+    print("service_directory", service_directory)
+    print("project_list", project_list)
+    print("project_list_path", project_list_path)
     project_list_identifiers = project_list.split(',')
     project_list_path_identifiers = []
-    if project_list_path:
+    if project_list_path and not 'not-specified' in project_list_path:
+        # only spring modules
         project_list_path_identifiers = project_list_path.split(',')
         for idx, path_identifier in enumerate(project_list_path_identifiers):
             project_list_path_identifiers[idx] = path_identifier[1:]
@@ -118,7 +125,20 @@ def create_from_source_pom_spring(project_list: str, project_list_path: str):
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_source_version = load_client_artifact_identifiers()
 
-    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings_spring(project_list_identifiers, project_list_path_identifiers, artifact_identifier_to_source_version)
+    # init multi service directory exclusivity, only one combination call be available.
+    exclusive_service_directory = {}
+    for group in unique_combination:
+        if service_directory in group:
+            service_name_index = group.index(service_directory)
+            exclusive_service_directory[service_directory] = False
+            for idx, exclusive_name in enumerate(group):
+                if idx != service_name_index:
+                    exclusive_service_directory[exclusive_name] = True
+        else:
+            for exclusive_name in group:
+                exclusive_service_directory[exclusive_name] = True
+
+    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings_spring(project_list_identifiers, project_list_path_identifiers, artifact_identifier_to_source_version, service_directory, exclusive_service_directory)
 
     dependent_modules = []
 
@@ -198,23 +218,41 @@ def create_dependency_and_path_mappings(project_list_identifiers: list, artifact
     return project_dependencies_mapping, dependency_mapping, module_path_mapping
 
 # Function which creates project dependencies mapping, dependencies to dependent projects mapping, and project to module relative path mapping.
-def create_dependency_and_path_mappings_spring(project_list_identifiers: list, project_list_path_identifiers: list, artifact_identifier_to_source_version: dict):
+def create_dependency_and_path_mappings_spring(project_list_identifiers: list, project_list_path_identifiers: list,
+                                               artifact_identifier_to_source_version: dict,
+                                               service_directory:str, exclusive_service_directory:dict):
+    # {current-project: [all dependencies list], }
     project_dependencies_mapping = {}
+    # {‘azure-aad-starter’: [aad-sample, aad-test], }
     dependency_mapping = {}
+    # {artfactid: project path, }
     module_path_mapping = {}
 
     for root, _, files in os.walk(root_path):
         for file_name in files:
             file_path = root + os.sep + file_name
-            file_path_list = file_path.split(os.sep)
-            # if not ('sdk' in file_path_list and ('spring' in file_path_list or 'spring-2-3' in file_path_list)):
-            #     continue
+            if is_exclusive_service_directory(exclusive_service_directory, file_path):
+                continue
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
                 add_project_to_dependency_and_module_mappings_spring(file_path, project_dependencies_mapping, project_list_identifiers, project_list_path_identifiers, artifact_identifier_to_source_version, dependency_mapping, module_path_mapping)
 
     return project_dependencies_mapping, dependency_mapping, module_path_mapping
+
+
+def is_exclusive_service_directory(exclusive_service_directory:dict, file_path:str):
+    file_path_list = file_path.split(os.sep)
+    if 'sdk' in file_path_list:
+        for group in unique_combination:
+            sdk_index = file_path_list.index('sdk')
+            if len(file_path_list) > sdk_index and file_path_list[sdk_index + 1] in group:
+                service_name = file_path_list[sdk_index + 1]
+                if service_name in exclusive_service_directory.keys():
+                    return exclusive_service_directory[service_name]
+
+    return False
+
 
 # Function that constructs the project dependencies map and adds to dependency to project map and project to module relative path map for a track 2 project.
 def add_project_to_dependency_and_module_mappings(file_path: str, project_dependencies_mapping: dict, project_list_identifiers: list, artifact_identifier_to_source_version: dict, dependency_mapping: dict, module_path_mapping: dict):
@@ -272,7 +310,12 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
     if (not project_identifier in project_list_identifiers or not project_identifier_path in project_list_path_identifiers) and not is_track_two_pom(tree_root):
         return
 
-    module_path_mapping[project_identifier_path] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
+    project_id_path = False
+    if project_identifier_path:
+        project_id_path = True
+        module_path_mapping[project_identifier_path] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
+    else:
+        module_path_mapping[project_identifier] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
 
     dependencies = tree_root.iter(maven_xml_namespace + 'dependency')
 
@@ -280,14 +323,18 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
     if dependencies is None:
         return
 
-    if not project_identifier_path in project_dependencies_mapping:
+    if project_identifier_path and not project_identifier_path in project_dependencies_mapping:
         project_dependencies_mapping[project_identifier_path] = []
+    else:
+        if not project_identifier in project_dependencies_mapping:
+            project_dependencies_mapping[project_identifier] = []
 
     find_alias_key = False
-    file_path_list = file_path.split(os.sep);
+    file_path_list = file_path.split(os.sep)
     if 'sdk' in file_path_list and 'spring-2-3' in file_path_list:
         find_alias_key = True
 
+    dep_project_id_path = False
     for dependency in dependencies:
         dependency_identifier, dependency_identifier_path = create_artifact_identifier_spring(file_path, dependency)
         if not dependency_identifier in artifact_identifier_to_source_version:
@@ -297,11 +344,25 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
         if is_different_version(find_alias_key, artifact_identifier_to_source_version, dependency_identifier, dependency_version):
             continue
 
-        if not dependency_identifier_path in dependency_mapping:
+        if dependency_identifier_path and not dependency_identifier_path in dependency_mapping:
+            dep_project_id_path = True
             dependency_mapping[dependency_identifier_path] = []
+        else:
+            if not dependency_identifier in dependency_mapping:
+                dependency_mapping[dependency_identifier] = []
 
-        project_dependencies_mapping[project_identifier_path].append(dependency_identifier_path)
-        dependency_mapping[dependency_identifier_path].append(project_identifier_path)
+        if project_id_path:
+            if project_identifier_path and dependency_identifier_path:
+                project_dependencies_mapping[project_identifier_path].append(dependency_identifier_path)
+            else:
+                project_dependencies_mapping[project_identifier_path].append(dependency_identifier)
+        else:
+            project_dependencies_mapping[project_identifier].append(dependency_identifier)
+
+        if dep_project_id_path:
+            dependency_mapping[dependency_identifier_path].append(project_identifier_path)
+        else:
+            dependency_mapping[dependency_identifier].append(project_identifier)
 
 
 # Function which check the version effectiveness
@@ -309,7 +370,8 @@ def is_different_version(find_alias_key: bool, artifact_identifier_to_source_ver
     alias_key = None
     if find_alias_key:
         for key in artifact_identifier_to_source_version.keys():
-            if not alias_key and dependency_identifier in key and len(dependency_identifier) < len(key):
+            find_key = '_' + dependency_identifier
+            if not alias_key and find_key in key and len(find_key) < len(key.split(';')[0]):
                 alias_key = key
                 break
 
@@ -371,7 +433,7 @@ def create_artifact_identifier_spring(file_path: str, element: ET.Element):
     file_path_list = file_path.split(os.sep);
     if 'sdk' in file_path_list and ('spring' in file_path_list or 'spring-2-3' in file_path_list):
         if not 'com.azure.spring' == group_id.text:
-            return None, None
+            return group_id.text + ':' + element_find(element, 'artifactId').text, None
 
         if 'spring' in file_path_list:
             if '-sample' in artifact_id_text:
@@ -403,15 +465,13 @@ def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '-pl', type=str)
     parser.add_argument('--project-list-path', '-plp', type=str, required=False, default=None)
+    parser.add_argument('--service-directory', '-sd', type=str, required=False, default=None)
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    if args.project_list_path and not 'not-specified' == args.project_list_path:
-        # please note these two values have been swapped.
-        create_from_source_pom_spring(args.project_list_path, args.project_list)
-    else:
-        create_from_source_pom(args.project_list)
+    # please note these two values have been swapped.
+    create_from_source_pom_spring(args.project_list_path, args.project_list, args.service_directory)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')
