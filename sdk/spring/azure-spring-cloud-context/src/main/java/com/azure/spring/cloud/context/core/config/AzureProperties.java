@@ -5,7 +5,7 @@ package com.azure.spring.cloud.context.core.config;
 
 
 import com.azure.spring.cloud.context.core.api.CredentialSupplier;
-import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
+import com.azure.spring.identity.AzureCloud;
 import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
@@ -30,7 +30,7 @@ public class AzureProperties implements CredentialSupplier {
 
     private String resourceGroup;
 
-    private AzureEnvironments environment = AzureEnvironments.Azure;
+    private AzureCloud cloudName = AzureCloud.Azure;
 
     private String region;
 
@@ -85,12 +85,12 @@ public class AzureProperties implements CredentialSupplier {
         this.resourceGroup = resourceGroup;
     }
 
-    public AzureEnvironments getEnvironment() {
-        return environment;
+    public AzureCloud getCloudName() {
+        return cloudName;
     }
 
-    public void setEnvironment(AzureEnvironments environment) {
-        this.environment = environment;
+    public void setCloudName(AzureCloud cloudName) {
+        this.cloudName = cloudName;
     }
 
     public String getRegion() {

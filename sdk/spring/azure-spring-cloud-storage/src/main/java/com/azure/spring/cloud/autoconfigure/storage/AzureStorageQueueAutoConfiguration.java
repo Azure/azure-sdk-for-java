@@ -58,7 +58,7 @@ public class AzureStorageQueueAutoConfiguration {
 
         final AzureEnvironment azureEnvironment = Optional.ofNullable(environmentProvider)
                                                           .orElse(new DefaultEnvironmentProvider())
-                                                          .getEnvironment();
+                                                          .getAzureEnvironment();
 
 
         final String connectionString = new StorageConnectionStringProvider(accountName, accessKey, azureEnvironment)

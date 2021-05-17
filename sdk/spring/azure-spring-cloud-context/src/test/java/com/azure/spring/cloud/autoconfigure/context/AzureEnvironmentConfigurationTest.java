@@ -28,7 +28,7 @@ public class AzureEnvironmentConfigurationTest {
     public void testAutoConfigure() {
         this.contextRunner.run(context -> {
             assertThat(context).hasSingleBean(EnvironmentProvider.class);
-            assertThat(context.getBean(EnvironmentProvider.class).getEnvironment()).isEqualTo(AzureEnvironment.AZURE);
+            assertThat(context.getBean(EnvironmentProvider.class).getAzureEnvironment()).isEqualTo(AzureEnvironment.AZURE);
         });
     }
 
@@ -39,7 +39,7 @@ public class AzureEnvironmentConfigurationTest {
             .withPropertyValues(AZURE_PROPERTY_PREFIX + "environment=AzureChina")
             .run(context -> {
                 assertThat(context).hasSingleBean(EnvironmentProvider.class);
-                assertThat(context.getBean(EnvironmentProvider.class).getEnvironment())
+                assertThat(context.getBean(EnvironmentProvider.class).getAzureEnvironment())
                     .isEqualTo(AzureEnvironment.AZURE_CHINA);
             });
     }

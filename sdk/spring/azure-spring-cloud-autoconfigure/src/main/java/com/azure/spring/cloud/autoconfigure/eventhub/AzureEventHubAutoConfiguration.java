@@ -117,7 +117,7 @@ public class AzureEventHubAutoConfiguration {
         final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
         final String storageConnectionString = getStorageConnectionString(properties,
             storageAccountManager,
-            environmentProvider == null ? null : environmentProvider.getEnvironment());
+            environmentProvider == null ? null : environmentProvider.getAzureEnvironment());
 
         TelemetryCollector.getInstance()
                           .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(eventHubConnectionString));

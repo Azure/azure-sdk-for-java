@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.context.core.api;
 
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.identity.AzureCloud;
 
 /**
  * Interface to provide the {@link AzureEnvironment}
@@ -12,6 +13,8 @@ import com.azure.core.management.AzureEnvironment;
  */
 public interface EnvironmentProvider {
 
-    AzureEnvironment getEnvironment();
+    AzureEnvironment getAzureEnvironment();
+
+    AzureCloud getAzureCloud();
 
 }

@@ -8,6 +8,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
+import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -53,9 +54,9 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AzureProfile azureProfile(AzureProperties azureProperties) {
+    public AzureProfile azureProfile(AzureProperties azureProperties, EnvironmentProvider environmentProvider) {
         return new AzureProfile(azureProperties.getTenantId(), azureProperties.getSubscriptionId(),
-            azureProperties.getEnvironment().getAzureEnvironment());
+            environmentProvider.getAzureEnvironment());
     }
 
     @Bean

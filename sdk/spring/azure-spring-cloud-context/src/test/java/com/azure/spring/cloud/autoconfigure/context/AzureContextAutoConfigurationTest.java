@@ -61,10 +61,11 @@ public class AzureContextAutoConfigurationTest {
                 assertThat(context.getBean(AzureProperties.class).getResourceGroup()).isEqualTo("rg1");
                 assertThat(context.getBean(AzureProperties.class).getRegion()).isEqualTo("region1");
                 assertThat(context.getBean(AzureProperties.class).getSubscriptionId()).isEqualTo("sub1");
-                assertThat(context.getBean(AzureProperties.class).getEnvironment().getAzureEnvironment())
-                    .isEqualTo(AzureEnvironment.AZURE);
+                assertThat(context.getBean(AzureProperties.class).getCloudName()).isEqualTo(AzureEnvironment.AZURE);
             });
     }
+
+    // TODO test other environment
 
     @Test
     public void testAutoConfigureEnabled() {
