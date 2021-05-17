@@ -15,7 +15,6 @@ steps:
 - pwsh: |
     Write-Host "##vso[task.setvariable variable=SpringProjectPathList;]"
     Write-Host "##vso[task.setvariable variable=ProjectListBak;]not-specified"
-    Write-Host "##vso[task.setvariable variable=ServiceDirectoryName;]$($parameters.ServiceDirectory)"
   displayName: Initialize spring project path list variable
 
 # These artifacts are the principal outputs of the build. We source
