@@ -78,6 +78,9 @@ import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsO
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisExportRdbCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisImportRdbCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisPatchingCompletedEventData;
@@ -524,6 +527,11 @@ public final class SystemEventNames {
     public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED = "Microsoft.SignalRService.ClientConnectionConnected";
     public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED = "Microsoft.SignalRService.ClientConnectionDisconnected";
 
+    // Policy Insights
+    public static final String POLICY_INSIGHTS_POLICY_STATE_CREATED = "Microsoft.PolicyInsights.PolicyStateCreated";
+    public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
+    public static final String POLICY_INSIGHTS_POLICY_STATE_DELETED = "Microsoft.PolicyInsights.PolicyStateDeleted";
+
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
             // AppConfiguration events.
@@ -676,6 +684,11 @@ public final class SystemEventNames {
             // Signal R Service
             put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED, SignalRServiceClientConnectionConnectedEventData.class);
             put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED, SignalRServiceClientConnectionDisconnectedEventData.class);
+
+            // Policy Insights
+            put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
+            put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
+            put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
         }
     };
 

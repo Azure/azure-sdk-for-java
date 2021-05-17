@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/idDocument/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/idDocument/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c3ed980c-d93f-4c79-977f-6d8b05f0098d",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6e48363a-61ad-4a10-ba0f-e9168bf55b63",
       "Content-Type" : "application/pdf"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "4",
+      "content-length" : "161",
+      "x-envoy-upstream-service-time" : "2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "325d45c1-f56e-4cf5-a199-704522392677",
+      "apim-request-id" : "45ed3274-842c-41b6-9c75-afc41f3139cf",
       "retry-after" : "0",
-      "Content-Length" : "161",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"BadArgument\",\"innerError\":{\"requestId\":\"325d45c1-f56e-4cf5-a199-704522392677\"},\"message\":\"Bad or unrecognizable request JSON or binary file.\"}}",
-      "Date" : "Mon, 29 Mar 2021 20:07:38 GMT",
+      "Body" : "{\"error\":{\"code\":\"BadArgument\",\"innerError\":{\"requestId\":\"45ed3274-842c-41b6-9c75-afc41f3139cf\"},\"message\":\"Bad or unrecognizable request JSON or binary file.\"}}",
+      "Date" : "Tue, 11 May 2021 21:13:33 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

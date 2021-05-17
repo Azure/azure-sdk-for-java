@@ -12,6 +12,7 @@ import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -44,6 +45,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Ignore
+import spock.lang.IgnoreIf
 import spock.lang.Requires
 import spock.lang.Retry
 import spock.lang.Unroll
@@ -477,6 +479,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive"() {
         when:
         def response = fc.setAccessControlRecursive(pathAccessControlEntries)
@@ -487,6 +490,7 @@ class FileAPITest extends APISpec {
         response.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive"() {
         when:
         def response = fc.updateAccessControlRecursive(pathAccessControlEntries)
@@ -497,6 +501,7 @@ class FileAPITest extends APISpec {
         response.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive"() {
         setup:
         def removeAccessControlEntries = PathRemoveAccessControlEntry.parseList("mask," +
@@ -711,7 +716,7 @@ class FileAPITest extends APISpec {
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
             .setContentLanguage(properties.getContentLanguage())
-            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)))
 
         fc.setHttpHeaders(headers)
 
@@ -722,8 +727,8 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
         def putHeaders = new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
@@ -740,9 +745,9 @@ class FileAPITest extends APISpec {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
-        null         | null               | null            | null            | null                                                                                     | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                             | contentType
+        null         | null               | null            | null            | null                                                                                   | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
     @Unroll
@@ -907,8 +912,8 @@ class FileAPITest extends APISpec {
 
     def "Read all null"() {
         setup:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         def stream = new ByteArrayOutputStream()
@@ -917,7 +922,7 @@ class FileAPITest extends APISpec {
         def headers = response.getHeaders()
 
         then:
-        body == defaultData
+        body == data.defaultData
         headers.toMap().keySet().stream().noneMatch({ it.startsWith("x-ms-meta-") })
         headers.getValue("Content-Length") != null
         headers.getValue("Content-Type") != null
@@ -974,8 +979,8 @@ class FileAPITest extends APISpec {
         setup:
         def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
 
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         def range = new FileRange(2, 5L)
@@ -993,8 +998,8 @@ class FileAPITest extends APISpec {
 
     def "Read min"() {
         setup:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -1002,15 +1007,15 @@ class FileAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == defaultData.array()
+        result == data.defaultBytes
     }
 
     @Unroll
     def "Read range"() {
         setup:
         def range = (count == null) ? new FileRange(offset) : new FileRange(offset, count)
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
 
         when:
@@ -1023,9 +1028,9 @@ class FileAPITest extends APISpec {
 
         where:
         offset | count || expectedData
-        0      | null  || defaultText
-        0      | 5L    || defaultText.substring(0, 5)
-        3      | 2L    || defaultText.substring(3, 3 + 2)
+        0      | null  || data.defaultText
+        0      | 5L    || data.defaultText.substring(0, 5)
+        3      | 2L    || data.defaultText.substring(3, 3 + 2)
     }
 
     @Unroll
@@ -1084,15 +1089,15 @@ class FileAPITest extends APISpec {
 
     def "Read md5"() {
         setup:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         def response = fc.readWithResponse(new ByteArrayOutputStream(), new FileRange(0, 3), null, null, true, null, null)
         def contentMD5 = response.getHeaders().getValue("content-md5").getBytes()
 
         then:
-        contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes()))
+        contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes()))
     }
 
     def "Read error"() {
@@ -1112,8 +1117,8 @@ class FileAPITest extends APISpec {
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         // Default overwrite is false so this should fail
@@ -1133,14 +1138,14 @@ class FileAPITest extends APISpec {
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         fc.readToFile(testFile.getPath(), true)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -1152,14 +1157,14 @@ class FileAPITest extends APISpec {
         if (testFile.exists()) {
             assert testFile.delete()
         }
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         fc.readToFile(testFile.getPath())
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -1171,8 +1176,8 @@ class FileAPITest extends APISpec {
         if (testFile.exists()) {
             assert testFile.delete()
         }
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         Set<OpenOption> openOptions = new HashSet<>()
@@ -1182,7 +1187,7 @@ class FileAPITest extends APISpec {
         fc.readToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -1194,8 +1199,8 @@ class FileAPITest extends APISpec {
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         when:
         Set<OpenOption> openOptions = new HashSet<>()
@@ -1206,7 +1211,7 @@ class FileAPITest extends APISpec {
         fc.readToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -1332,7 +1337,7 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Download file range"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
@@ -1354,18 +1359,18 @@ class FileAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                         | _
-        new FileRange(0, defaultDataSize)             | _ // Exact count
-        new FileRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
-        new FileRange(3, 2)                           | _ // Narrow range in middle
-        new FileRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
-        new FileRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+        range                                              | _
+        new FileRange(0, data.defaultDataSize)             | _ // Exact count
+        new FileRange(1, data.defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new FileRange(3, 2)                                | _ // Narrow range in middle
+        new FileRange(0, data.defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new FileRange(0, 10 * 1024)                        | _ // Count much larger than remaining data
     }
 
     @Unroll
     def "Download file range fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
@@ -1373,7 +1378,7 @@ class FileAPITest extends APISpec {
         }
 
         when:
-        fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(defaultDataSize + 1), null, null, null, false,
+        fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(data.defaultDataSize + 1), null, null, null, false,
             null, null, null)
 
         then:
@@ -1386,7 +1391,7 @@ class FileAPITest extends APISpec {
 
     def "Download file count null"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
@@ -1397,7 +1402,7 @@ class FileAPITest extends APISpec {
         fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(0), null, null, null, false, null, null, null)
 
         then:
-        compareFiles(file, outFile, 0, defaultDataSize)
+        compareFiles(file, outFile, 0, data.defaultDataSize)
 
         cleanup:
         outFile.delete()
@@ -1444,7 +1449,7 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Download file AC fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         fc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
@@ -1513,7 +1518,7 @@ class FileAPITest extends APISpec {
          * so that the download is able to get an ETag before it is changed.
          */
         StepVerifier.create(fac.readToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false, null)
-            .doOnSubscribe({ fac.upload(defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+            .doOnSubscribe({ fac.upload(data.defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine
@@ -1790,7 +1795,7 @@ class FileAPITest extends APISpec {
 
     def "Append data min"() {
         when:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
 
         then:
         notThrown(DataLakeStorageException)
@@ -1798,7 +1803,7 @@ class FileAPITest extends APISpec {
 
     def "Append data"() {
         setup:
-        def response = fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, null, null, null)
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, null, null, null, null)
         def headers = response.getHeaders()
 
         expect:
@@ -1813,8 +1818,8 @@ class FileAPITest extends APISpec {
         setup:
         fc = fsc.getFileClient(generatePathName())
         fc.create()
-        def md5 = MessageDigest.getInstance("MD5").digest(defaultText.getBytes())
-        def response = fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, md5, null, null, null)
+        def md5 = MessageDigest.getInstance("MD5").digest(data.defaultText.getBytes())
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, md5, null, null, null)
         def headers = response.getHeaders()
 
         expect:
@@ -1828,16 +1833,16 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Append data illegal arguments"() {
         when:
-        fc.append(is == null ? null : is.get(), 0, dataSize)
+        fc.append(is == null ? null : is, 0, dataSize)
 
         then:
         thrown(exceptionType)
 
         where:
-        is                 | dataSize            || exceptionType
-        null               | defaultDataSize     || NullPointerException
-        defaultInputStream | defaultDataSize + 1 || UnexpectedLengthException
-        defaultInputStream | defaultDataSize - 1 || UnexpectedLengthException
+        is                      | dataSize                 || exceptionType
+        null                    | data.defaultDataSize     || NullPointerException
+        data.defaultInputStream | data.defaultDataSize + 1 || UnexpectedLengthException
+        data.defaultInputStream | data.defaultDataSize - 1 || UnexpectedLengthException
     }
 
     def "Append data empty body"() {
@@ -1865,7 +1870,7 @@ class FileAPITest extends APISpec {
         def leaseID = setupPathLeaseCondition(fc, receivedLeaseID)
 
         expect:
-        fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, leaseID, null, null).getStatusCode() == 202
+        fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, null, leaseID, null, null).getStatusCode() == 202
     }
 
     def "Append data lease fail"() {
@@ -1873,7 +1878,7 @@ class FileAPITest extends APISpec {
         setupPathLeaseCondition(fc, receivedLeaseID)
 
         when:
-        fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, garbageLeaseID, null, null)
+        fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, null, garbageLeaseID, null, null)
 
         then:
         def e = thrown(DataLakeStorageException)
@@ -1885,7 +1890,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, null, null, null)
+        fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, null, null, null, null)
 
         then:
         def e = thrown(DataLakeStorageException)
@@ -1901,19 +1906,19 @@ class FileAPITest extends APISpec {
         )
 
         when:
-        clientWithFailure.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        clientWithFailure.append(data.defaultInputStream, 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         then:
         def os = new ByteArrayOutputStream()
         fc.read(os)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
     def "Flush data min"() {
         when:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         then:
         notThrown(DataLakeStorageException)
@@ -1923,8 +1928,8 @@ class FileAPITest extends APISpec {
         when:
         fc = fsc.getFileClient(generatePathName())
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flushWithResponse(defaultDataSize, false, true, null, null, null, null)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
+        fc.flushWithResponse(data.defaultDataSize, false, true, null, null, null, null)
 
         then:
         notThrown(DataLakeStorageException)
@@ -1934,8 +1939,8 @@ class FileAPITest extends APISpec {
         when:
         fc = fsc.getFileClient(generatePathName())
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flushWithResponse(defaultDataSize, true, false, null, null, null, null)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
+        fc.flushWithResponse(data.defaultDataSize, true, false, null, null, null, null)
 
         then:
         notThrown(DataLakeStorageException)
@@ -1945,7 +1950,7 @@ class FileAPITest extends APISpec {
         when:
         fc = fsc.getFileClient(generatePathName())
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
         fc.flushWithResponse(4, false, false, null, null, null, null)
 
         then:
@@ -1957,7 +1962,7 @@ class FileAPITest extends APISpec {
         setup:
         fc = fsc.getFileClient(generatePathName())
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
         def headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -1965,7 +1970,7 @@ class FileAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        fc.flushWithResponse(defaultDataSize, false, false, headers, null, null, null)
+        fc.flushWithResponse(data.defaultDataSize, false, false, headers, null, null, null)
         def response = fc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -1986,7 +1991,7 @@ class FileAPITest extends APISpec {
         setup:
         fc = fsc.getFileClient(generatePathName())
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
 
         match = setupPathMatchCondition(fc, match)
         leaseID = setupPathLeaseCondition(fc, leaseID)
@@ -1999,7 +2004,7 @@ class FileAPITest extends APISpec {
 
 
         expect:
-        fc.flushWithResponse(defaultDataSize, false, false, null, drc, null, null).getStatusCode() == 200
+        fc.flushWithResponse(data.defaultDataSize, false, false, null, drc, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -2016,7 +2021,7 @@ class FileAPITest extends APISpec {
         setup:
         fc = fsc.getFileClient(generatePathName())
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
         noneMatch = setupPathMatchCondition(fc, noneMatch)
         setupPathLeaseCondition(fc, leaseID)
         def drc = new DataLakeRequestConditions()
@@ -2027,7 +2032,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        fc.flushWithResponse(defaultDataSize, false, false, null, drc, null, null)
+        fc.flushWithResponse(data.defaultDataSize, false, false, null, drc, null, null)
         then:
         thrown(DataLakeStorageException)
 
@@ -2053,11 +2058,11 @@ class FileAPITest extends APISpec {
 
     def "Flush data overwrite"() {
         when:
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
-        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         // Attempt to write data without overwrite enabled
-        fc.flush(defaultDataSize, true)
+        fc.flush(data.defaultDataSize, true)
 
         then:
         thrown(DataLakeStorageException)
@@ -2203,7 +2208,7 @@ class FileAPITest extends APISpec {
 
         @Override
         void reportProgress(long bytesTransferred) {
-            this.reportedByteCount += bytesTransferred
+            this.reportedByteCount = bytesTransferred
         }
 
         long getReportedByteCount() {
@@ -2228,9 +2233,8 @@ class FileAPITest extends APISpec {
         StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
             null, null, null))
             .verifyComplete()
-
-        // Check if the reported size is equal to or greater than the file size in case there are retries.
-        uploadReporter.getReportedByteCount() >= size
+        
+        uploadReporter.getReportedByteCount() == size
 
         cleanup:
         file.delete()
@@ -2564,9 +2568,9 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
 
         when:
-        def data = getRandomByteArray(dataSize)
-        def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
-        def uploadOperation = fac.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), new PathHttpHeaders()
+        def randomData = getRandomByteArray(dataSize)
+        def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(randomData) : null
+        def uploadOperation = fac.uploadWithResponse(Flux.just(ByteBuffer.wrap(randomData)), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -2585,11 +2589,11 @@ class FileAPITest extends APISpec {
 
         where:
         // Depending on the size of the stream either a single append will be called or multiple.
-        dataSize         | cacheControl | contentDisposition | contentEncoding | contentLanguage | validateContentMD5 | contentType
-        defaultDataSize  | null         | null               | null            | null            | true               | null
-        defaultDataSize  | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
-        6 * Constants.MB | null         | null               | null            | null            | false              | null
-        6 * Constants.MB | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
+        dataSize              | cacheControl | contentDisposition | contentEncoding | contentLanguage | validateContentMD5 | contentType
+        data.defaultDataSize  | null         | null               | null            | null            | true               | null
+        data.defaultDataSize  | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
+        6 * Constants.MB      | null         | null               | null            | null            | false              | null
+        6 * Constants.MB      | "control"    | "disposition"      | "encoding"      | "language"      | true               | "type"
     }
 
     @Unroll
@@ -2842,10 +2846,10 @@ class FileAPITest extends APISpec {
     def "Buffered upload default no overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.upload(defaultFlux, null).block()
+        fac.upload(data.defaultFlux, null).block()
 
         expect:
-        StepVerifier.create(fac.upload(defaultFlux, null))
+        StepVerifier.create(fac.upload(data.defaultFlux, null))
             .verifyError(IllegalArgumentException)
     }
 
@@ -2952,6 +2956,7 @@ class FileAPITest extends APISpec {
         return queryData
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query min"() {
@@ -2998,6 +3003,7 @@ class FileAPITest extends APISpec {
         4000      | _ // 125 KB
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query csv serialization separator"() {
@@ -3074,6 +3080,7 @@ class FileAPITest extends APISpec {
         '\n'            | '\\'            | false          || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query csv serialization escape and field quote"() {
         setup:
@@ -3114,6 +3121,7 @@ class FileAPITest extends APISpec {
     }
 
     /* Note: Input delimited tested everywhere else. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query Input json"() {
@@ -3193,6 +3201,7 @@ class FileAPITest extends APISpec {
         osData == expectedData
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query Input csv Output json"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3233,6 +3242,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
@@ -3274,6 +3284,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
@@ -3311,6 +3322,7 @@ class FileAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
@@ -3350,6 +3362,7 @@ class FileAPITest extends APISpec {
         receiver.numErrors > 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3380,6 +3393,7 @@ class FileAPITest extends APISpec {
         thrown(Exceptions.ReactiveException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query progress receiver"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3422,6 +3436,7 @@ class FileAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @LiveOnly // Large amount of data.
     def "Query multiple records with progress receiver"() {
         setup:
@@ -3473,6 +3488,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query input output IA"() {
         setup:
@@ -3507,6 +3523,7 @@ class FileAPITest extends APISpec {
         false   | true     || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query arrow input IA"() {
         setup:
         def inSer = new FileQueryArrowSerialization()
@@ -3552,6 +3569,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Query error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -3569,6 +3587,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query AC"() {
         setup:
@@ -3610,6 +3629,7 @@ class FileAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query AC fail"() {
         setup:
@@ -3647,6 +3667,7 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Schedule deletion"() {
         given:
@@ -3668,6 +3689,7 @@ class FileAPITest extends APISpec {
         null                                                                                    | false
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Schedule deletion time"() {
         given:
         OffsetDateTime now = namer.getUtcNow()
@@ -3732,7 +3754,7 @@ class FileAPITest extends APISpec {
 
     def "Upload input stream overwrite fails"() {
         when:
-        fc.upload(defaultInputStream.get(), defaultDataSize)
+        fc.upload(data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(DataLakeStorageException)
@@ -3794,17 +3816,17 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Upload incorrect size"() {
         when:
-        fc.upload(defaultInputStream.get(), dataSize, true)
+        fc.upload(data.defaultInputStream, dataSize, true)
 
         then:
         thrown(IllegalStateException)
 
         where:
-        dataSize            | threshold
-        defaultDataSize + 1 | null
-        defaultDataSize - 1 | null
-        defaultDataSize + 1 | 1 // Test the chunked case as well
-        defaultDataSize - 1 | 1
+        dataSize                 | threshold
+        data.defaultDataSize + 1 | null
+        data.defaultDataSize - 1 | null
+        data.defaultDataSize + 1 | 1 // Test the chunked case as well
+        data.defaultDataSize - 1 | 1
     }
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
@@ -3836,7 +3858,7 @@ class FileAPITest extends APISpec {
 
     def "Upload return value"() {
         expect:
-        fc.uploadWithResponse(new FileParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
+        fc.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream, data.defaultDataSize), null, null)
             .getValue().getETag() != null
     }
 
@@ -3855,6 +3877,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
