@@ -63,7 +63,7 @@ stages:
             displayName: 'Run Stress Scenarios'
             inputs:
               targetType: 'filePath'
-              filePath: sdk/storage/azure-storage-perf
+              filePath: sdk/storage/azure-storage-perf/memory-stress-scenarios.ps1
           - task: Maven@3
             displayName: 'Run Stress Scenarios'
             inputs:
