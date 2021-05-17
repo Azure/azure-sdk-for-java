@@ -584,7 +584,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .retryWhen(Retry.max(40).filter(throwable -> {
                     try {
                         log.warn("Retrying...");
-                        Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+                        // Splits are taking longer, so increasing sleep time between retries
+                        Thread.sleep(60 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                     } catch (InterruptedException e) {
                         throw new RuntimeException("Interrupted exception", e);
                     }

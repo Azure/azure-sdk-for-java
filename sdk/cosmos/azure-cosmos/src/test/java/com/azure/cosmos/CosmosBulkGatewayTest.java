@@ -79,8 +79,8 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
         bulkProcessingOptions.setMaxMicroBatchSize(100);
         bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
 
-        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = container
-                                                                                  .processBulkOperations(cosmosItemOperationFlux1, bulkProcessingOptions);
+        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux =
+            container.processBulkOperations(cosmosItemOperationFlux1, bulkProcessingOptions);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
@@ -151,7 +151,7 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
             }).blockLast();
 
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
-
+        container.delete().block();
     }
 
     @NotNull
