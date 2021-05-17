@@ -241,8 +241,8 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
         String vnlName = generateRandomResourceName("vnl", 10);
         String pdzgName = "default";
-        String pdzcName = generateRandomResourceName("pdzcName", 10);
-        String pdzcName2 = generateRandomResourceName("pdzcName", 10);
+        String pdzcName = generateRandomResourceName("pdzcName", 20);
+        String pdzcName2 = generateRandomResourceName("pdzcName", 20);
 
         String vmName = generateRandomResourceName("vm", 10);
 

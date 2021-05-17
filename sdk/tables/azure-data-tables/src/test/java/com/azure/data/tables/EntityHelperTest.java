@@ -3,19 +3,12 @@
 package com.azure.data.tables;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.models.TableEntity;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class EntityHelperTest {
     private final ClientLogger logger = new ClientLogger(EntityHelperTest.class);
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     public void testConvertToSubclass() {
         byte[] bytes = new byte[]{1, 2, 3};
         boolean b = true;
@@ -39,7 +32,7 @@ public class EntityHelperTest {
         props.put("EnumField", color);
 
         TableEntity entity = new TableEntity("abc", "def");
-        entity.addProperties(props);
+        entity.setProperties(props);
 
         SampleEntity result = EntityHelper.convertToSubclass(entity, SampleEntity.class, logger);
         Assertions.assertEquals(bytes, result.getByteField());
@@ -87,5 +80,5 @@ public class EntityHelperTest {
         Assertions.assertEquals(entity.getProperties().get("LongField"), l);
         Assertions.assertEquals(entity.getProperties().get("StringField"), s);
         Assertions.assertEquals(entity.getProperties().get("EnumField"), color);
-    }
+    }*/
 }

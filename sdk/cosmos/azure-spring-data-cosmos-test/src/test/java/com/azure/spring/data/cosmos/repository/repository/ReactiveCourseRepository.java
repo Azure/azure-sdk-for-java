@@ -30,7 +30,7 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
      * @return Course list
      */
     Flux<Course> findByNameAndDepartmentAllIgnoreCase(String name, String department);
-    
+
     /**
      * Find Course list by (name and department) or (name2 and department2)
      * @param name name
@@ -62,5 +62,10 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
 
     @Query(value = "select count(c.id) as num_ids, c.department from c group by c.department")
     Flux<ObjectNode> getCoursesGroupByDepartment();
+
+    Mono<Long> countByName(String name);
+
+    @Query(value = "select value count(1) from c where c.name = @name")
+    Mono<Long> countByQuery(@Param("name") String name);
 
 }

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/94eefbf894eefbf81d6932965980cc30c1b3495eb2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3781e6f0-0e2c-40c8-b7c4-4aeca6881e2f"
+    },
+    "Response" : {
+      "content-length" : "278",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "081e2ac4-501a-006b-56eb-414d45000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:081e2ac4-501a-006b-56eb-414d45000000\nTime:2021-05-05T20:19:38.0769990Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "x-ms-client-request-id" : "3781e6f0-0e2c-40c8-b7c4-4aeca6881e2f",
+      "Date" : "Wed, 05 May 2021 20:19:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=94eefbf8&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cb470c29-274c-4ca1-9954-ecb7b820d2b1"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "8b0656e5-b01a-0001-4aeb-41956d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>94eefbf8</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "cb470c29-274c-4ca1-9954-ecb7b820d2b1",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "94eefbf894eefbf81d6932965980cc30c1b3495eb2" ]
+}

@@ -123,7 +123,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orLX")
+                .withRootPassword(password())
                 .withBootDiagnostics()
                 .create();
 

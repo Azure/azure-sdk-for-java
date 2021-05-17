@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -36,22 +37,22 @@ class LargeFileTest extends APISpec{
         fileName = generatePathName()
         fc = fsc.getFileClient(fileName)
         fcPayloadDropping = getFileClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new PayloadDroppingPolicy(),
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.dataLakeAccount.credential)
         )
         fcAsyncPayloadDropping = getFileAsyncClient(
-            primaryCredential,
+            env.dataLakeAccount.credential,
             fc.getFileUrl(),
             new PayloadDroppingPolicy(),
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.dataLakeAccount.credential)
         )
 
         fc.create()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test sends payload over the wire
     def "Append Large Block Real"() {
@@ -65,7 +66,7 @@ class LargeFileTest extends APISpec{
         notThrown(DataLakeStorageException)
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("IS mark/reset")
     // This test does not send large payload over the wire
     def "Append Large Block"() {
@@ -81,7 +82,7 @@ class LargeFileTest extends APISpec{
         appendPayloadSizes[0] == maxBlockSize
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     // This test does not send large payload over the wire
     def "Append Large Block Async"() {
         given:
@@ -96,7 +97,7 @@ class LargeFileTest extends APISpec{
         appendPayloadSizes[0] == maxBlockSize
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Allocates too much memory for current CI machines") // TODO (rickle-msft): Enable when test resources can allocate 8GB
     // This test does not send large payload over the wire
     def "Upload Large Data Async"() {
@@ -111,7 +112,7 @@ class LargeFileTest extends APISpec{
         count.get() == 2
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Allocates too much memory for current CI machines") // TODO (rickle-msft): Enable when test resources can allocate 8GB
     // This test does not send large payload over the wire
     def "Append Large File"() {
@@ -133,7 +134,7 @@ class LargeFileTest extends APISpec{
         count.get() == 2
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test sends payload over the wire
     def "Append Large File Real"() {
@@ -155,7 +156,7 @@ class LargeFileTest extends APISpec{
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     // This test does not send large payload over the wire
     def "Should honor default single upload threshold"() {
         given:

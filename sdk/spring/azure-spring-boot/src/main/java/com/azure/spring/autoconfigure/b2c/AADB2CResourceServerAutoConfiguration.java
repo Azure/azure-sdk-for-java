@@ -13,10 +13,12 @@ import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -31,12 +33,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Automatic configuration class of AADB2CResourceServer
+ * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebApiMode} condition, configure the
+ * necessary beans for AAD B2C resource server beans, and import {@link AADB2COAuth2ClientConfiguration} class for AAD
+ * B2C OAuth2 client support.
  */
 @Configuration
-@ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = { "tenant-id" })
+@ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
+@Conditional(AADB2CConditions.CommonCondition.class)
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 @EnableConfigurationProperties(AADB2CProperties.class)
+@Import(AADB2COAuth2ClientConfiguration.class)
 public class AADB2CResourceServerAutoConfiguration {
 
     private final AADB2CProperties properties;
@@ -48,14 +54,14 @@ public class AADB2CResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AADTrustedIssuerRepository trustedIssuerRepository() {
-        return new AADTrustedIssuerRepository(properties.getTenantId());
+        return new AADB2CTrustedIssuerRepository(properties);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
-        AADTrustedIssuerRepository trustedIssuerRepository) {
-        return new AADIssuerJWSKeySelector(trustedIssuerRepository, properties.getJwtConnectTimeout(),
+        AADTrustedIssuerRepository aadTrustedIssuerRepository) {
+        return new AADIssuerJWSKeySelector(aadTrustedIssuerRepository, properties.getJwtConnectTimeout(),
             properties.getJwtReadTimeout(), properties.getJwtSizeLimit());
     }
 
@@ -69,20 +75,22 @@ public class AADB2CResourceServerAutoConfiguration {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor) {
+    @ConditionalOnMissingBean
+    public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
+                                 AADTrustedIssuerRepository trustedIssuerRepository) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
-        if (!StringUtils.isEmpty(properties.getAppIdUri())) {
+        if (StringUtils.hasText(properties.getAppIdUri())) {
             validAudiences.add(properties.getAppIdUri());
         }
-        if (!StringUtils.isEmpty(properties.getClientId())) {
+        if (StringUtils.hasText(properties.getClientId())) {
             validAudiences.add(properties.getClientId());
         }
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtIssuerValidator());
+        validators.add(new AADJwtIssuerValidator(trustedIssuerRepository));
         validators.add(new JwtTimestampValidator());
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return decoder;

@@ -103,7 +103,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
         String testId = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
-        String password = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("Abc.123", 12);
+        String password = ResourceManagerTestBase.password();
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
 

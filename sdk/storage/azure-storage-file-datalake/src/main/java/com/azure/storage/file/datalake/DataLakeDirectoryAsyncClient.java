@@ -24,6 +24,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -606,6 +607,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
+            .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()))
             .endpoint(StorageImplUtils.appendToUrlPath(blobUrl, pathName).toString());
     }
 }

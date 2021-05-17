@@ -42,27 +42,35 @@ stages:
       TimeoutInMinutes: 240
       Location: canadacentral
       Clouds: 'Preview'
+      TestStepMavenInputs:
+        options: '$(DefaultOptions) -T 1C -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=(.*)-general/$1-storage
       MatrixConfigs:
-        - Name: Storage_live_test
-          Path: sdk/storage/platform-matrix.json
-          Selection: sparse
-          GenerateVMJobs: true
+        - ${{ if contains(variables['Build.DefinitionName'], 'tests-weekly') }}:
+          - Name: Storage_all_versions_live_test
+            Path: sdk/storage/platform-matrix-all-versions.json
+            Selection: sparse
+            GenerateVMJobs: true
+        - ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+          - Name: Storage_live_test
+            Path: sdk/storage/platform-matrix.json
+            Selection: sparse
+            GenerateVMJobs: true
       PostSteps:
-        - task: Maven@3
-          displayName: 'Run Stress Scenarios'
-          inputs:
-              mavenPomFile: sdk/storage/azure-storage-perf/pom.xml
-              options: '$(DefaultOptions) -Dstorage-stress-scenarios'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaTestVersion)
-              jdkArchitectureOption: 'x64'
-              goals: verify
-          env:
-              STORAGE_CONNECTION_STRING: $(AZURE_STORAGE_BLOB_CONNECTION_STRING)
+          - task: Maven@3
+            displayName: 'Run Stress Scenarios'
+            inputs:
+                mavenPomFile: sdk/storage/azure-storage-perf/pom.xml
+                options: '$(DefaultOptions) -Dstorage-stress-scenarios'
+                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                javaHomeOption: 'JDKVersion'
+                jdkVersionOption: $(JavaTestVersion)
+                jdkArchitectureOption: 'x64'
+                goals: verify
+            env:
+                STORAGE_CONNECTION_STRING: $(AZURE_STORAGE_BLOB_CONNECTION_STRING)
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)

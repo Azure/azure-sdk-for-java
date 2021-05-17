@@ -103,7 +103,7 @@ class HelperTest extends APISpec {
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
         def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null)
-        def sas = implUtil.generateSas(primaryCredential, Context.NONE)
+        def sas = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 

@@ -36,6 +36,12 @@ public class GalleryUpdate extends UpdateResourceDefinition {
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryPropertiesProvisioningState provisioningState;
 
+    /*
+     * Profile for gallery sharing to subscription or tenant
+     */
+    @JsonProperty(value = "properties.sharingProfile")
+    private SharingProfile sharingProfile;
+
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
      *
@@ -85,6 +91,26 @@ public class GalleryUpdate extends UpdateResourceDefinition {
         return this.provisioningState;
     }
 
+    /**
+     * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
+     *
+     * @return the sharingProfile value.
+     */
+    public SharingProfile sharingProfile() {
+        return this.sharingProfile;
+    }
+
+    /**
+     * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
+     *
+     * @param sharingProfile the sharingProfile value to set.
+     * @return the GalleryUpdate object itself.
+     */
+    public GalleryUpdate withSharingProfile(SharingProfile sharingProfile) {
+        this.sharingProfile = sharingProfile;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public GalleryUpdate withTags(Map<String, String> tags) {
@@ -102,6 +128,9 @@ public class GalleryUpdate extends UpdateResourceDefinition {
         super.validate();
         if (identifier() != null) {
             identifier().validate();
+        }
+        if (sharingProfile() != null) {
+            sharingProfile().validate();
         }
     }
 }
