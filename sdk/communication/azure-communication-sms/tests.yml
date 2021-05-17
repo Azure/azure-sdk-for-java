@@ -1,8 +1,4 @@
 trigger: none
-parameters:
-  - name: CloudConfig
-    type: object
-    default: {}
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -28,7 +24,9 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              Write-Debug ('${{ parameters.CloudConfig }}' | Format-Table | Out-String)
+              Write-Output 'variables['Agent.OS']'
+              Write-Output '${{ variables['Agent.OS'] }}'
+              Write-Output ${{ variables['Agent.OS'] }}
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
           inputs:
