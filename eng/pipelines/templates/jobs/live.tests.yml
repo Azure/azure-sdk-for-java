@@ -9,7 +9,9 @@ parameters:
   PostSteps: []
   TimeoutInMinutes: 60
   TestMode: 'RECORD'
-  TestStepMavenInputs: {}
+  TestStepMavenInputs: {
+      "options": '$(DefaultOptions) -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+  }
   TestResultsFiles: ''
   CloudConfig: {}
   ArmTemplateParameters: '@{}'
