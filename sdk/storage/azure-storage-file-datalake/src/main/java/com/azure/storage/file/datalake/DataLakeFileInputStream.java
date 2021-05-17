@@ -9,6 +9,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathProperties;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -55,29 +56,11 @@ public final class DataLakeFileInputStream extends StorageInputStream {
         this.properties = pathProperties;
     }
 
-    /**
-     * Dispatches a read operation of N bytes.
-     *
-     * @param readLength An <code>int</code> which represents the number of bytes to read.
-     * @throws IOException If an I/O error occurs.
-     */
     @Override
-    protected ByteBuffer dispatchRead(int readLength, long offset) throws IOException {
-        try {
-            ByteBuffer currentBuffer = this.fileClient.readWithResponse(new FileRange(offset,
-                (long) readLength), null, this.accessCondition, false)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
-                .block();
-
-            this.bufferSize = readLength;
-            this.bufferStartOffset = offset;
-            return currentBuffer;
-        } catch (final DataLakeStorageException e) {
-            this.streamFaulted = true;
-            this.lastError = new IOException(e);
-
-            throw this.lastError;
-        }
+    protected Mono<ByteBuffer> executeRead(int readLength, long offset) {
+        return this.fileClient.readWithResponse(
+            new FileRange(offset, (long) readLength), null, this.accessCondition, false)
+            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap));
     }
 
     /**

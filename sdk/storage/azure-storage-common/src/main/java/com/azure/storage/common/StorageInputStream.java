@@ -3,8 +3,11 @@
 
 package com.azure.storage.common;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -149,12 +152,45 @@ public abstract class StorageInputStream extends InputStream {
     /**
      * Dispatches a read operation of N bytes.
      *
+     * Subclasses are intended to implement one of this method or {@link StorageInputStream#executeRead(int, long)},
+     * but not both. This method is responsible for reading from a Storage resource as well as updating stream state
+     * and transitioning from async back to sync. Its default implementation calls
+     * {@link StorageInputStream#executeRead(int, long)} and updates stream state accordingly.
+     *
      * @param readLength An <code>int</code> which represents the number of bytes to read.
      * @param offset The start point of data to be acquired.
      * @return The bytebuffer which store one chunk size of data.
      * @throws IOException If an I/O error occurs.
      */
-    protected abstract ByteBuffer dispatchRead(int readLength, long offset) throws IOException;
+    protected ByteBuffer dispatchRead(int readLength, long offset) throws IOException {
+        try {
+            ByteBuffer currentBuffer = executeRead(readLength, offset).block();
+
+            this.bufferSize = readLength;
+            this.bufferStartOffset = offset;
+            return currentBuffer;
+        } catch (final HttpResponseException e) {
+            this.streamFaulted = true;
+            this.lastError = new IOException(e);
+
+            throw this.lastError;
+        }
+    }
+
+    /**
+     * Executes a read call and returns content in a byte buffer.
+     *
+     * Subclasses are intended to implement one of {@link StorageInputStream#dispatchRead(int, long)} or this method,
+     * but not both. This method is responsible for asynchronously making a low-level client read and returning the
+     * content. Its default implementation throws a runtime exception.
+     *
+     * @param readLength An <code>int</code> which represents the number of bytes to read.
+     * @param offset The start point of data to be acquired.
+     * @return The bytebuffer which store one chunk size of data.
+     */
+    protected Mono<ByteBuffer> executeRead(int readLength, long offset) {
+        throw new RuntimeException("com.azure.storage.common.StorageInputStream.executeRead() not implemented.");
+    }
 
     /**
      * Marks the current position in this input stream. A subsequent call to the reset method repositions this stream at

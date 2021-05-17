@@ -9,6 +9,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageInputStream;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareStorageException;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -50,27 +51,10 @@ public class StorageFileInputStream extends StorageInputStream {
         this.shareFileAsyncClient = shareFileAsyncClient;
     }
 
-    /**
-     * Dispatches a read operation of N bytes.
-     *
-     * @param readLength An <code>int</code> which represents the number of bytes to read.
-     */
     @Override
-    protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) {
-        try {
-            ByteBuffer currentBuffer = this.shareFileAsyncClient
-                .downloadWithResponse(new ShareFileRange(offset, offset + readLength - 1), false)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                    .map(ByteBuffer::wrap))
-                .block();
-
-            this.bufferSize = readLength;
-            this.bufferStartOffset = offset;
-            return currentBuffer;
-        } catch (final ShareStorageException e) {
-            this.streamFaulted = true;
-            this.lastError = new IOException(e);
-            throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
-        }
+    protected Mono<ByteBuffer> executeRead(int readLength, long offset) {
+        return this.shareFileAsyncClient.downloadWithResponse(
+            new ShareFileRange(offset, offset + readLength - 1), false)
+            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap));
     }
 }
