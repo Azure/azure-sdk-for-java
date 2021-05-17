@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
-  <version>2.3.1</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-starter-data-gremlin;current} -->
+  <version>3.0.1-beta.1</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-starter-data-gremlin;current} -->
 
   <name>Azure Spring Boot Starter for Azure Spring Data Gremlin</name>
   <description>Spring Boot Starter for Spring Data Gremlin</description>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.2.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot;current} -->
+      <version>3.2.1-beta.1</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.spring.data.gremlin</groupId>
