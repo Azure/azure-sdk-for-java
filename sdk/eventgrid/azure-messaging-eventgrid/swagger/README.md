@@ -143,6 +143,7 @@ public class EventGridCustomization extends Customization {
         "    }\n" +
         "\n" +
         "    private SystemEventMappingNames() {\n" +
+        "         // No instances allowed" +
         "    }";
 
     @Override
