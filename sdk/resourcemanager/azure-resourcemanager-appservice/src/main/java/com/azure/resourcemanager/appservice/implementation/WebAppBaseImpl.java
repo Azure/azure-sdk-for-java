@@ -1799,7 +1799,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.siteConfig.withIpSecurityRestrictions(this.siteConfig.ipSecurityRestrictions().stream()
                 .filter(r -> !(IP_RESTRICTION_ACTION_ALLOW.equalsIgnoreCase(r.action())
                     && IpFilterTag.DEFAULT == r.tag()
-                    && subnetId.equals(r.vnetSubnetResourceId())))
+                    && subnetId.equalsIgnoreCase(r.vnetSubnetResourceId())))
                 .collect(Collectors.toList())
             );
         }
