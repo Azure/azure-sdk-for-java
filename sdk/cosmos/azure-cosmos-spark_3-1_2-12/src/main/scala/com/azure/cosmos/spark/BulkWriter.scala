@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.PartitionKey
@@ -84,7 +85,9 @@ class BulkWriter(container: CosmosAsyncContainer,
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getOperationListener().get
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-      bulkOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple)
+      ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
+        .getCosmosBulkProcessingOptionAccessor()
+        .setOperationContext(bulkOptions, operationContextAndListenerTuple)
     }
   }
 

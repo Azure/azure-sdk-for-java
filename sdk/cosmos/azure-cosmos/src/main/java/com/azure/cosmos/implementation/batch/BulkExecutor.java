@@ -15,6 +15,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -101,7 +102,9 @@ public final class BulkExecutor<TContext> {
         maxMicroBatchConcurrency = bulkOptions.getMaxMicroBatchConcurrency();
         maxMicroBatchInterval = bulkOptions.getMaxMicroBatchInterval();
         batchContext = bulkOptions.getBatchContext();
-        operationListener = bulkOptions.getOperationContextAndListenerTuple();
+        operationListener = ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
+            .getCosmosBulkProcessingOptionAccessor()
+            .getOperationContext(bulkOptions);
 
         // Initialize sink for handling gone error.
         mainSourceCompleted = new AtomicBoolean(false);

@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
@@ -82,16 +83,6 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
-    // TODO moderakh hide
-    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
-        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
-    }
-
-    // TODO moderakh hide
-    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
-        return this.operationContextAndListenerTuple;
-    }
-    
     /**
      * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
@@ -331,5 +322,34 @@ public class CosmosItemRequestOptions {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
+    }
+
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.setCosmosItemRequestOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor() {
+
+                @Override
+                public void setOperationContext(CosmosItemRequestOptions itemRequestOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    itemRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions itemRequestOptions) {
+                    return itemRequestOptions.getOperationContextAndListenerTuple();
+                }
+            });
     }
 }

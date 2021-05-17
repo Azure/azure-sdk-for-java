@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -103,6 +105,66 @@ public class ImplementationBridgeHelpers {
         public interface CosmosQueryRequestOptionsAccessor {
             void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
+        }
+    }
+
+    public static final class CosmosItemRequestOptionsHelper {
+        private static CosmosItemRequestOptionsAccessor accessor;
+
+        private CosmosItemRequestOptionsHelper() {}
+        static {
+            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+        }
+
+        public static void setCosmosItemRequestOptionsAccessor(final CosmosItemRequestOptionsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosItemRequestOptionsAccessor getCosmosItemRequestOptionsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosItemRequestOptionsAccessor {
+            void setOperationContext(CosmosItemRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
+            OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions queryRequestOptions);
+        }
+    }
+
+    public static final class CosmosBulkProcessingOptionsHelper {
+        private static CosmosBulkProcessingOptionAccessor accessor;
+
+        private CosmosBulkProcessingOptionsHelper() {}
+        static {
+            ensureClassLoaded(CosmosQueryRequestOptionsHelper.class);
+        }
+
+        public static void setCosmosBulkProcessingOptionAccessor(final CosmosBulkProcessingOptionAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosBulkProcessingOptionAccessor getCosmosBulkProcessingOptionAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosQueryRequestOptionsHelper accessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosBulkProcessingOptionAccessor {
+            void setOperationContext(BulkProcessingOptions bulkProcessingOptions, OperationContextAndListenerTuple operationContext);
+            OperationContextAndListenerTuple getOperationContext(BulkProcessingOptions bulkProcessingOptions);
         }
     }
 

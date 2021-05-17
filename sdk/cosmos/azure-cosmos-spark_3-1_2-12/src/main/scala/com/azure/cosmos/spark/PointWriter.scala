@@ -159,7 +159,9 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getOperationListener().get
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-      options.setOperationContextAndListenerTuple(operationContextAndListenerTuple)
+      ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper
+        .getCosmosItemRequestOptionsAccessor()
+        .setOperationContext(options, operationContextAndListenerTuple)
     }
   }
 

@@ -3,8 +3,10 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
@@ -101,13 +103,32 @@ public final class BulkProcessingOptions<TContext> {
         return batchContext;
     }
 
-    // TODO moderakh hide
-    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
     }
 
-    // TODO moderakh hide
-    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper.setCosmosBulkProcessingOptionAccessor(
+            new ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper.CosmosBulkProcessingOptionAccessor() {
+
+                @Override
+                public void setOperationContext(BulkProcessingOptions bulkProcessingOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    bulkProcessingOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(BulkProcessingOptions bulkProcessingOptions) {
+                    return bulkProcessingOptions.getOperationContextAndListenerTuple();
+                }
+            });
     }
 }
