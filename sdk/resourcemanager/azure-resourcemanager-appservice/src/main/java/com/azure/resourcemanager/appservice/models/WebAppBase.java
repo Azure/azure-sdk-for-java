@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -128,6 +129,9 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /** @return the Windows app framework and version if this is a Windows web app. */
     String windowsFxVersion();
+
+    /** @return the list of ip security rules. */
+    List<IpSecurityRestriction> ipSecurityRules();
 
     /** @return the diagnostic logs configuration */
     WebAppDiagnosticLogs diagnosticLogsConfig();
@@ -853,7 +857,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
                 withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
-        /** The stage of the web app update allowing to add User Assigned (External) Managed Service Identities. */
+        /** The stage of the web app definition allowing to add User Assigned (External) Managed Service Identities. */
         interface WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT> extends WithCreate<FluentT> {
             /**
              * Specifies the definition of a not-yet-created user assigned identity to be associated with the web app.
@@ -877,9 +881,58 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * Specifies that an user assigned identity associated with the web app should be removed.
              *
              * @param identityId ARM resource id of the identity
-             * @return the next stage of the virtual machine update
+             * @return the next stage of the definition
              */
             Update<FluentT> withoutUserAssignedManagedServiceIdentity(String identityId);
+        }
+
+        /** The stage of web app definition allowing to configure network access settings. */
+        interface WithNetworkAccess<FluentT> {
+            /**
+             * Specifies that by default access to web app should be denied from all networks except from those
+             * networks specified via {@link WithNetworkAccess#withAccessFromNetworkSubnet(int, String)},
+             * {@link WithNetworkAccess#withAccessFromIpAddress(int, String)},
+             * {@link WithNetworkAccess#withAccessFromIpAddressRange(int, String)}
+             * and {@link WithNetworkAccess#withAccessRule(IpSecurityRestriction)}.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate<FluentT> withAccessFromSelectedNetworks();
+
+            /**
+             * Specifies that access to the web app from the specific virtual network subnet should be allowed.
+             *
+             * @param priority the priority of the rule
+             * @param subnetId the virtual network subnet id
+             * @return the next stage of the definition
+             */
+            WithCreate<FluentT> withAccessFromNetworkSubnet(int priority, String subnetId);
+
+            /**
+             * Specifies that access to the web app from the specific ip address should be allowed.
+             *
+             * @param priority the priority of the rule
+             * @param ipAddress the ip address
+             * @return the next stage of the definition
+             */
+            WithCreate<FluentT> withAccessFromIpAddress(int priority, String ipAddress);
+
+            /**
+             * Specifies that access to the web app from the specific ip range should be allowed.
+             *
+             * @param priority the priority of the rule
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             * @return the next stage of the definition
+             */
+            WithCreate<FluentT> withAccessFromIpAddressRange(int priority, String ipAddressCidr);
+
+            /**
+             * Specifies the ip security rule.
+             *
+             * @param ipSecurityRule the ip security rule
+             * @return the next stage of the definition
+             */
+            WithCreate<FluentT> withAccessRule(IpSecurityRestriction ipSecurityRule);
         }
 
         /**
@@ -902,7 +955,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
                 WithHostNameSslBinding<FluentT>,
                 WithAuthentication<FluentT>,
                 WithDiagnosticLogging<FluentT>,
-                WithManagedServiceIdentity<FluentT> {
+                WithManagedServiceIdentity<FluentT>,
+                WithNetworkAccess<FluentT> {
         }
     }
 
@@ -1507,6 +1561,94 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              */
             Update<FluentT> withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
+
+        /** The stage of storage account update allowing to configure network access. */
+        interface WithNetworkAccess<FluentT> {
+            /**
+             * Specifies that by default access to storage account should be allowed from all networks.
+             *
+             * @return the next stage of the update
+             */
+            Update<FluentT> withAccessFromAllNetworks();
+
+            /**
+             * Specifies that by default access to web app should be denied from all networks except from those
+             * networks specified via {@link DefinitionStages.WithNetworkAccess#withAccessFromNetworkSubnet(int, String)},
+             * {@link DefinitionStages.WithNetworkAccess#withAccessFromIpAddress(int, String)},
+             * {@link DefinitionStages.WithNetworkAccess#withAccessFromIpAddressRange(int, String)}
+             * and {@link DefinitionStages.WithNetworkAccess#withAccessRule(IpSecurityRestriction)}.
+             *
+             * @return the next stage of the update
+             */
+            Update<FluentT> withAccessFromSelectedNetworks();
+
+            /**
+             * Specifies that access to the web app from the specific virtual network subnet should be allowed.
+             *
+             * @param priority the priority of the rule
+             * @param subnetId the virtual network subnet id
+             * @return the next stage of the update
+             */
+            Update<FluentT> withAccessFromNetworkSubnet(int priority, String subnetId);
+
+            /**
+             * Specifies that access to the web app from the specific ip address should be allowed.
+             *
+             * @param priority the priority of the rule
+             * @param ipAddress the ip address
+             * @return the next stage of the update
+             */
+            Update<FluentT> withAccessFromIpAddress(int priority, String ipAddress);
+
+            /**
+             * Specifies that access to the web app from the specific ip range should be allowed.
+             *
+             * @param priority the priority of the rule
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             * @return the next stage of the update
+             */
+            Update<FluentT> withAccessFromIpAddressRange(int priority, String ipAddressCidr);
+
+            /**
+             * Specifies that the ip security rule.
+             *
+             * @param ipSecurityRule the ip security rule
+             * @return the next stage of the update
+             */
+            Update<FluentT> withAccessRule(IpSecurityRestriction ipSecurityRule);
+
+            /**
+             * Specifies that previously allowed access from specific virtual network subnet should be removed.
+             *
+             * @param subnetId the virtual network subnet id
+             * @return the next stage of the update
+             */
+            Update<FluentT> withoutNetworkSubnetAccess(String subnetId);
+
+            /**
+             * Specifies that previously allowed access from specific ip address should be removed.
+             *
+             * @param ipAddress the ip address
+             * @return the next stage of the update
+             */
+            Update<FluentT> withoutIpAddressAccess(String ipAddress);
+
+            /**
+             * Specifies that the access rule should be removed.
+             *
+             * @param ipSecurityRule the ip security rule
+             * @return the next stage of the update
+             */
+            Update<FluentT> withoutAccessRule(IpSecurityRestriction ipSecurityRule);
+
+            /**
+             * Specifies that previously allowed access from specific ip range should be removed.
+             *
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             * @return the next stage of the update
+             */
+            Update<FluentT> withoutIpAddressRangeAccess(String ipAddressCidr);
+        }
     }
 
     /**
@@ -1530,6 +1672,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             UpdateStages.WithDiagnosticLogging<FluentT>,
             UpdateStages.WithManagedServiceIdentity<FluentT>,
             UpdateStages.WithSystemAssignedIdentityBasedAccess<FluentT>,
-            UpdateStages.WithUserAssignedManagedServiceIdentityBasedAccess<FluentT> {
+            UpdateStages.WithUserAssignedManagedServiceIdentityBasedAccess<FluentT>,
+            UpdateStages.WithNetworkAccess<FluentT> {
     }
 }
