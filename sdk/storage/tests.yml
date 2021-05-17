@@ -66,9 +66,9 @@ stages:
               filePath: sdk/storage/azure-storage-perf/memory-stress-scenarios.ps1
             env:
               ${{ if eq(variables['JavaTestVersion'], '1.11') }}:
-                PATH: $(JAVA_HOME_11_X64)/bin;$(PATH)
+                JAVA_HOME: $(JAVA_HOME_11_X64)
               ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
-                PATH: $(JAVA_HOME_8_X64)/bin;$(PATH)
+                JAVA_HOME: $(JAVA_HOME_8_X64)
           - task: Maven@3
             displayName: 'Run Stress Scenarios'
             inputs:
