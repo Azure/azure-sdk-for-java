@@ -10,6 +10,7 @@
 ### Breaking Changes
 - Removed `batch` keyword from the model names, `AnalyzeBatchActionsResult`, `AnalyzeBatchActionsOperationDetail`, 
   `AnalyzeBatchActionOptions` and the related method names, such as renamed `beginAnalyzeBatchActions` to `beginAnalyzeActions`.
+- Renamed the static final String type `TEXT_ELEMENTS_V8` to `TEXT_ELEMENT_V8` in the `StringIndexType` class.
 
 ### Key Bug Fixed
 - Fixed `NullPointerException` for passing value `null` to options tasks in the `TextAnalyticsActions`.
