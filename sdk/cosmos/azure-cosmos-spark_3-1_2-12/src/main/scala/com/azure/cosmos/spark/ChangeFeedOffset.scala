@@ -60,7 +60,7 @@ private object ChangeFeedOffset {
         None
       }
 
-      ChangeFeedOffset(parsedNode.get(StatePropertyName).asText, Option.empty)
+      ChangeFeedOffset(parsedNode.get(StatePropertyName).asText, inputPartitions)
     } else {
       val message = s"Unable to deserialize offset '$json'."
       throw new IllegalArgumentException(message)

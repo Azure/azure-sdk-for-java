@@ -31,7 +31,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                  diagnosticsConfig: DiagnosticsConfig)
   extends AsyncItemWriter {
 
-  private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
   // TODO: moderakh add a mocking unit test for Bulk where CosmosClient is mocked to simulator failure/retry scenario
   log.logInfo("BulkWriter instantiated ....")
