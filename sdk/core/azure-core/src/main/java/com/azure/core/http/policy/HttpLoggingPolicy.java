@@ -308,9 +308,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param url URL where the request is being sent.
      * @return A URL with query parameters redacted based on configurations in this policy.
      */
+<<<<<<< HEAD
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
         return UrlBuilder.parse(url)
             .setQuery(getAllowedQueryString(url.getQuery(), allowedQueryParameterNames))
+=======
+    private String getRedactedUrl(URL url) {
+        UrlBuilder builder = UrlBuilder.parse(url);
+        String allowedQueryString = getAllowedQueryString(url.getQuery());
+        builder.clearQuery();
+        return builder.setQuery(allowedQueryString)
+>>>>>>> a405586053 (Update url builder set to no longer clear all.)
             .toString();
     }
 

@@ -179,6 +179,19 @@ public final class UrlBuilder {
     }
 
     /**
+     * Clear the query that will be used to build the final URL.
+     *
+     * @param query The query that will be used to build the final URL.
+     * @return This UrlBuilder so that multiple setters can be chained together.
+     */
+    public UrlBuilder clearQuery() {
+        if (query != null && !query.isEmpty()) {
+            query.clear();
+        }
+        return this;
+    }
+
+    /**
      * Get the query that has been assigned to this UrlBuilder.
      *
      * @return the query that has been assigned to this UrlBuilder.
