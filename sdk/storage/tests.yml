@@ -69,6 +69,7 @@ stages:
                 JAVA_HOME: $(JAVA_HOME_11_X64)
               ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
                 JAVA_HOME: $(JAVA_HOME_8_X64)
+              STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
           - task: Maven@3
             displayName: 'Run Stress Scenarios'
             inputs:
