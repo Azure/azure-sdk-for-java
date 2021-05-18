@@ -15,6 +15,7 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Base64;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -87,13 +88,13 @@ public class KeyVaultKeyStoreTest {
         } catch (CertificateException e) {
             throw new ProviderException(e);
         }
-        keystore.engineSetCertificateEntry("setcert", certificate);
+        keystore.engineSetCertificateEntry("myalais", certificate);
         assertNotNull(keystore.engineGetCertificateAlias(certificate));
     }
 
     @Test
     public void testEngineGetCertificateChain() {
-        assertNotNull(keystore.engineGetCertificateChain(certificateName));
+        assertTrue(keystore.engineGetCertificateChain(certificateName).length > 0);
     }
 
     @Test
@@ -121,14 +122,8 @@ public class KeyVaultKeyStoreTest {
 
 
     @Test
-    public void testEngineSetKeyEntry() {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        keystore.engineSetKeyEntry(certificateName, null, null);
-    }
-
-    @Test
     public void testEngineAliases() {
-        assertTrue(keystore.engineAliases().hasMoreElements());
+        assertEquals(keystore.engineAliases().nextElement(), certificateName);
     }
 
 
