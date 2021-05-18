@@ -59,12 +59,6 @@
       <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-    </dependency>
   </dependencies>
 
   <build>

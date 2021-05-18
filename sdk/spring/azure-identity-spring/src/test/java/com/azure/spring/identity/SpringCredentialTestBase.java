@@ -18,7 +18,7 @@ public class SpringCredentialTestBase {
         return environment;
     }
 
-    static class PropertiesBuilder<T> {
+    static class PropertiesBuilder {
 
         private final Properties properties = new Properties();
         private String prefix = "";
@@ -30,7 +30,7 @@ public class SpringCredentialTestBase {
             return this;
         }
 
-        public PropertiesBuilder property(String key, T value) {
+        public PropertiesBuilder property(String key, Object value) {
             properties.put(prefix + key, value);
             return this;
         }
