@@ -15,13 +15,12 @@ steps:
 
   - pwsh: |
       $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
-      $javaPaths = $paths | ForEach-Object { "$_ + '/**/*.java'" }
-      $jsonPaths = $paths | ForEach-Object { "$_ + '/**/*.json'" }
-      $command = "git sparse-checkout set eng '**/*.xml' '**/*.md' '**/test-resources.json' $javaPaths $jsonPaths"
+      $command = "git sparse-checkout set eng '**/*.xml' '**/*.md' '**/test-resources.json' $paths"
       if (!$${{ parameters.CheckoutRecordings }}) {
-        $command += '/**/session-records/*/.json'
-        $command += '/**/test-recordings/*/.json'
+        $command += " '!/**/session-records/*/.json'"
+        $command += " '!/**/test-recordings/*/.json'"
       }
+      Write-Host $command
       Invoke-Expression -Command $command
       Write-Host "Set sparse checkout paths to:"
       Get-Content .git/info/sparse-checkout
