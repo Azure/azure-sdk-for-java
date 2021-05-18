@@ -94,14 +94,14 @@ public class KeyVaultProperties {
         /**
          * To configure refresh certificate when get untrusted certificate.
          */
-        private String certificateRefreshWhenHaveUnTrustCertificate;
+        private String refreshCertificatesWhenHaveUnTrustCertificate;
 
-        public String getCertificateRefreshWhenHaveUnTrustCertificate() {
-            return certificateRefreshWhenHaveUnTrustCertificate;
+        public String getRefreshCertificatesWhenHaveUnTrustCertificate() {
+            return refreshCertificatesWhenHaveUnTrustCertificate;
         }
 
-        public void setCertificateRefreshWhenHaveUnTrustCertificate(String certificateRefreshWhenHaveUnTrustCertificate) {
-            this.certificateRefreshWhenHaveUnTrustCertificate = certificateRefreshWhenHaveUnTrustCertificate;
+        public void setRefreshCertificatesWhenHaveUnTrustCertificate(String refreshCertificatesWhenHaveUnTrustCertificate) {
+            this.refreshCertificatesWhenHaveUnTrustCertificate = refreshCertificatesWhenHaveUnTrustCertificate;
         }
 
         /**

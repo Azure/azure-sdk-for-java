@@ -57,46 +57,23 @@ public class KeyVaultCertificatesInfoTest {
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
+        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
     }
 
     @Test
     public void testGetKeyStore() throws Exception {
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        keyStore.load(parameter);
+        KeyStore keyStore = PropertyConvertorUtils.getKeyStore();
         assertNotNull(keyStore.getCertificate("myalias"));
         assertTrue(keyStore.containsAlias("myalias"));
-        X509Certificate certificate;
-
-        try {
-            byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
-        } catch (CertificateException e) {
-            throw new ProviderException(e);
-        }
+        X509Certificate certificate = getTestCertificate();
 
         keyStore.setCertificateEntry("setcert", certificate);
         assertNotNull(keyStore.getCertificateAlias(certificate), "setcert");
     }
 
-    @Test
-    public void testStartRefreshKeyStore() throws Exception {
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "15000");
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        keyStore.load(parameter);
+    private X509Certificate getTestCertificate() {
         X509Certificate certificate;
+
         try {
             byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -104,6 +81,17 @@ public class KeyVaultCertificatesInfoTest {
         } catch (CertificateException e) {
             throw new ProviderException(e);
         }
+        return certificate;
+    }
+
+
+
+    @Test
+    public void testStartRefreshKeyStore() throws Exception {
+        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "15000");
+        KeyStore keyStore = PropertyConvertorUtils.getKeyStore();
+        X509Certificate certificate = getTestCertificate();
+
         assertNotNull(keyStore.getCertificate("myalias"));
         keyStore.deleteEntry("myalias");
         keyStore.setCertificateEntry("myalias", certificate);
@@ -113,27 +101,13 @@ public class KeyVaultCertificatesInfoTest {
 
     @Test
     public void testRefreshKeyStore() throws Exception {
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        keyStore.load(parameter);
-        X509Certificate certificate;
-        try {
-            byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
-        } catch (CertificateException e) {
-            throw new ProviderException(e);
-        }
+        KeyStore keyStore = PropertyConvertorUtils.getKeyStore();
+        X509Certificate certificate = getTestCertificate();
         assertNotNull(keyStore.getCertificate("myalias"));
         keyStore.deleteEntry("myalias");
         keyStore.setCertificateEntry("myalias", certificate);
         Thread.sleep(1000);
-        KeyVaultCertificatesInfo.refreshCertsInfo();
+        KeyVaultCertificates.refreshCertsInfo();
         assertNull(keyStore.getCertificateAlias(certificate));
     }
 }

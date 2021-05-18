@@ -23,47 +23,59 @@ public class KeyVaultCertificateInfoTest {
 
     private Certificate certificate = mock(Certificate.class);
 
+    private KeyVaultCertificates keyVaultCertificates;
+
     @BeforeEach
-    public void setEnv() {
+    public void beforeEach() {
         List<String> aliases = new ArrayList<>();
         aliases.add("myalias");
         when(keyVaultClient.getAliases()).thenReturn(aliases);
         when(keyVaultClient.getKey("myalias", null)).thenReturn(key);
         when(keyVaultClient.getCertificate("myalias")).thenReturn(certificate);
+        keyVaultCertificates = new KeyVaultCertificates(0, keyVaultClient);
     }
 
     @Test
     public void testGetAliases() {
-        KeyVaultCertificatesInfo keyVaultCertificatesInfo = new KeyVaultCertificatesInfo();
-        Assertions.assertTrue(keyVaultCertificatesInfo.getAliases(keyVaultClient).contains("myalias"));
+        Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
     }
 
     @Test
     public void testGetKey() {
-        KeyVaultCertificatesInfo keyVaultCertificatesInfo = new KeyVaultCertificatesInfo();
-        Assertions.assertTrue(keyVaultCertificatesInfo.getCertificateKeys(keyVaultClient).containsValue(key));
+        Assertions.assertTrue(keyVaultCertificates.getCertificateKeys().containsValue(key));
     }
 
     @Test
     public void testGetCertificate() {
-        KeyVaultCertificatesInfo keyVaultCertificatesInfo = new KeyVaultCertificatesInfo();
-        Assertions.assertTrue(keyVaultCertificatesInfo.getCertificates(keyVaultClient).containsValue(certificate));
+        Assertions.assertTrue(keyVaultCertificates.getCertificates().containsValue(certificate));
     }
 
     @Test
     public void testGetAliasByCertInTime() {
-        KeyVaultCertificatesInfo keyVaultCertificatesInfo = new KeyVaultCertificatesInfo();
-        Assertions.assertEquals(keyVaultCertificatesInfo.getAliasByCertInTime(certificate, keyVaultClient), "myalias");
+        Assertions.assertEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
         when(keyVaultClient.getAliases()).thenReturn(null);
-        Assertions.assertNotEquals(keyVaultCertificatesInfo.getAliasByCertInTime(certificate, keyVaultClient), "myalias");
+        Assertions.assertNotEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
     }
 
     @Test
     public void testDeleteAlias() {
-        KeyVaultCertificatesInfo keyVaultCertificatesInfo = new KeyVaultCertificatesInfo();
-        Assertions.assertTrue(keyVaultCertificatesInfo.getAliases(keyVaultClient).contains("myalias"));
-        keyVaultCertificatesInfo.deleteEntry("myalias");
-        Assertions.assertFalse(keyVaultCertificatesInfo.getAliases(keyVaultClient).contains("myalias"));
+        Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
+        keyVaultCertificates.deleteEntry("myalias");
+        Assertions.assertFalse(keyVaultCertificates.getAliases().contains("myalias"));
+    }
+
+    @Test
+    public void testCertificatesNeedRefresh() throws InterruptedException {
+        keyVaultCertificates = new KeyVaultCertificates(1000, keyVaultClient);
+        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
+        keyVaultCertificates.getAliases();
+        Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
+        KeyVaultCertificates.refreshCertsInfo();
+        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
+        keyVaultCertificates.getAliases();
+        Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
+        Thread.sleep(2000);
+        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
     }
 
 }

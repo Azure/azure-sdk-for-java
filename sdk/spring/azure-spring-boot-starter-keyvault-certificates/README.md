@@ -316,10 +316,25 @@ spring:
           useInsecureTrustManager: true
 ```
 
+You can also enable the application to obtain the latest version of the certificate on the portal
+when the inbound certificate is not recognized by using the configuration below.
+
+```yaml
+azure:
+  keyvault:
+    jca:
+      refresh-certificates-when-have-un-trust-certificate: true
+```
+
 Note: If you enable the function of obtaining the latest certificate, your server will be vulnerable
 to attack, because every untrusted certificate will cause the server to send a re-acquire certificate request.
 
-### Refresh certificate which changed on portal
+You can also manually refresh the certificate by calling this method:
+```java
+KeyVaultCertificates.refreshCertsInfo();
+```
+
+### Refresh certificate
 
 This starter allows you to refresh automatically when the certificate on the portal is modified,
 add the following configuration.
