@@ -48,6 +48,7 @@ import com.azure.resourcemanager.iothub.fluent.models.TestAllRoutesResultInner;
 import com.azure.resourcemanager.iothub.fluent.models.TestRouteResultInner;
 import com.azure.resourcemanager.iothub.models.EndpointHealthDataListResult;
 import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
+import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupBodyDescription;
 import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupsListResult;
 import com.azure.resourcemanager.iothub.models.ExportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.ImportDevicesRequest;
@@ -255,6 +256,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             @PathParam("resourceName") String resourceName,
             @PathParam("eventHubEndpointName") String eventHubEndpointName,
             @PathParam("name") String name,
+            @BodyParam("application/json") EventHubConsumerGroupBodyDescription consumerGroupBody,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -2595,6 +2597,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
+     * @param consumerGroupBody The consumer group to add.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2602,7 +2605,11 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2628,6 +2635,12 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (consumerGroupBody == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter consumerGroupBody is required and cannot be null."));
+        } else {
+            consumerGroupBody.validate();
         }
         final String accept = "application/json";
         return FluxUtil
@@ -2642,6 +2655,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                             resourceName,
                             eventHubEndpointName,
                             name,
+                            consumerGroupBody,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2654,6 +2668,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
+     * @param consumerGroupBody The consumer group to add.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -2662,7 +2677,12 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2689,6 +2709,12 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        if (consumerGroupBody == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter consumerGroupBody is required and cannot be null."));
+        } else {
+            consumerGroupBody.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2700,6 +2726,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                 resourceName,
                 eventHubEndpointName,
                 name,
+                consumerGroupBody,
                 accept,
                 context);
     }
@@ -2711,6 +2738,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
+     * @param consumerGroupBody The consumer group to add.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2718,8 +2746,13 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupAsync(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
-        return createEventHubConsumerGroupWithResponseAsync(resourceGroupName, resourceName, eventHubEndpointName, name)
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody) {
+        return createEventHubConsumerGroupWithResponseAsync(
+                resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody)
             .flatMap(
                 (Response<EventHubConsumerGroupInfoInner> res) -> {
                     if (res.getValue() != null) {
@@ -2737,6 +2770,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
+     * @param consumerGroupBody The consumer group to add.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2744,8 +2778,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubConsumerGroupInfoInner createEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
-        return createEventHubConsumerGroupAsync(resourceGroupName, resourceName, eventHubEndpointName, name).block();
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody) {
+        return createEventHubConsumerGroupAsync(
+                resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody)
+            .block();
     }
 
     /**
@@ -2755,6 +2795,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
+     * @param consumerGroupBody The consumer group to add.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -2763,9 +2804,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody,
+        Context context) {
         return createEventHubConsumerGroupWithResponseAsync(
-                resourceGroupName, resourceName, eventHubEndpointName, name, context)
+                resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody, context)
             .block();
     }
 
