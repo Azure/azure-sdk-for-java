@@ -186,17 +186,18 @@ additional questions or comments.
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 
-[package]: TODO://link-to-published-package
+[package]: https://aka.ms/ava/sdk/client/java
+[samples]: https://aka.ms/video-analyzer-sample
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/videoanalyzer
 
-[source]: TODO://link-to-published-source
-
-[doc_direct_methods]: TODO://link
-[doc_product]: TODO://link
-[doc_pipeline]: TODO://link
-[iot_device_connection_string]: TODO://link
+[doc_direct_methods]: https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/direct-methods
+[doc_pipelines]: https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/pipeline
+[doc_product]: https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/overview
+[iot_device_connection_string]: https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/get-started-detect-motion-emit-events#obtain-your-iot-hub-connection-string
 
 [iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fvideoanalyzer%2Fazure-media-videoanalyzer-edge%2FREADME.png)
 
