@@ -1,8 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.messaging.eventhubs.perf.models.EventHubsOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
+import com.microsoft.azure.eventhubs.BatchOptions;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventDataBatch;
@@ -112,7 +116,7 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
         }
     }
 
-    EventDataBatch createBatch(EventHubClient client) {
+    EventDataBatch createBatch(EventHubClient client, int numberOfMessages) {
         final EventDataBatch batch;
         try {
             batch = client.createBatch();
@@ -120,8 +124,15 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
             throw new RuntimeException("Unable to create EventDataBatch.", e);
         }
 
-        for (int i = 0; i < events.size(); i++) {
-            final EventData event = events.get(i);
+        addEvents(batch, numberOfMessages);
+
+        return batch;
+    }
+
+    void addEvents(EventDataBatch batch, int numberOfMessages) {
+        for (int i = 0; i < numberOfMessages; i++) {
+            final int index = events.size() % numberOfMessages;
+            final EventData event = events.get(index);
 
             try {
                 if (!batch.tryAdd(event)) {
@@ -132,8 +143,10 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
                 throw new RuntimeException("Event was too large for a single batch.", e);
             }
         }
+    }
 
-        return batch;
+    ScheduledExecutorService getScheduler() {
+        return scheduler;
     }
 
     @Override

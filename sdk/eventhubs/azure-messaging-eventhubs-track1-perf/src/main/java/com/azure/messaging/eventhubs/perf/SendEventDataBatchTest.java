@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.messaging.eventhubs.perf.models.EventHubsOptions;
@@ -23,7 +26,7 @@ public class SendEventDataBatchTest extends ServiceTest {
     public void run() {
         client = createEventHubClient();
 
-        final EventDataBatch batch = createBatch(client);
+        final EventDataBatch batch = createBatch(client, options.getCount());
         try {
             client.sendSync(batch);
         } catch (EventHubException e) {
@@ -35,7 +38,7 @@ public class SendEventDataBatchTest extends ServiceTest {
     public Mono<Void> runAsync() {
         return Mono.fromCompletionStage(clientFuture
             .thenComposeAsync(client -> {
-                final EventDataBatch batch = createBatch(client);
+                final EventDataBatch batch = createBatch(client, options.getCount());
                 return client.send(batch);
             }));
     }
