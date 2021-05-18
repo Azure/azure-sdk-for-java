@@ -204,15 +204,6 @@ public class EventHubClientBuilder {
         return tokenCredential;
     }
 
-    private TokenCredential getTokenCredential(AzureNamedKeyCredential credential) {
-        return new EventHubSharedKeyCredential(credential.getAzureNamedKey().getName(),
-                credential.getAzureNamedKey().getKey(), ClientConstants.TOKEN_VALIDITY);
-    }
-
-    private TokenCredential getTokenCredential(AzureSasCredential credential) {
-        return new EventHubSharedKeyCredential(credential.getSignature());
-    }
-
     /**
      * Sets the client options.
      *
@@ -380,7 +371,9 @@ public class EventHubClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
-        this.credentials = getTokenCredential(Objects.requireNonNull(credential, "'credential' cannot be null."));
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new EventHubSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ClientConstants.TOKEN_VALIDITY);
 
         return this;
     }
@@ -414,7 +407,8 @@ public class EventHubClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
-        this.credentials = getTokenCredential(Objects.requireNonNull(credential, "'credential' cannot be null."));
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new EventHubSharedKeyCredential(credential.getSignature());
 
         return this;
     }
@@ -563,7 +557,7 @@ public class EventHubClientBuilder {
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubProducerAsyncClient buildAsyncProducerClient() {
+    public EventHubProducerClient buildAsyncProducerClient() {
         return buildAsyncClient().createProducer();
     }
 
