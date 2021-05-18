@@ -20,14 +20,8 @@ stages:
           safeName: azurecommunicationsms
       ServiceDirectory: communication
       PostSteps:
-        - task: PowerShell@2
-          inputs:
-            targetType: 'inline'
-            script: |
-                $(variables).GetEnumerator() | foreach {
-                    Write-Output $_.Name
-                    Write-Output $_.Value
-                }
+        - pwsh: |
+          echo ${{ variables['Agent.OS' }}
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
           inputs:
