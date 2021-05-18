@@ -450,11 +450,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-data-gremlin</artifactId>
-      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-data-gremlin;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
       <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
