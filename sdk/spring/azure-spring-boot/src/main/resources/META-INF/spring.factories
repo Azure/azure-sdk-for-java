@@ -10,8 +10,6 @@ com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosHealthConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosRepositoriesAutoConfiguration,\
-com.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration,\
-com.azure.spring.autoconfigure.gremlin.GremlinRepositoriesAutoConfiguration,\
 com.azure.spring.autoconfigure.jms.NonPremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.jms.PremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageAutoConfiguration,\
