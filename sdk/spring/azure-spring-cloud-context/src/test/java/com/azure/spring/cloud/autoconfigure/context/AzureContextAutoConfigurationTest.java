@@ -23,8 +23,7 @@ public class AzureContextAutoConfigurationTest {
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureContextAutoConfiguration.class))
-        .withPropertyValues(AZURE_PROPERTY_PREFIX + "resourceGroup=default-rg") // enable the auto-configuration
-        ;
+        .withPropertyValues(AZURE_PROPERTY_PREFIX + "resourceGroup=default-rg"); // enable the auto-configuration
 
     @Test
     public void testAzureDisabled() {
