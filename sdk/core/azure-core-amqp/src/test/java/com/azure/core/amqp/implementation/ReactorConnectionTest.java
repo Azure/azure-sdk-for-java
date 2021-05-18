@@ -252,7 +252,7 @@ class ReactorConnectionTest {
     }
 
     @Test
-    void doesNotCreateSessionWhenConnectionInactive() {
+    void createSessionWhenConnectionInactive() {
         // Arrange
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(connectionProtonJ);
@@ -269,7 +269,7 @@ class ReactorConnectionTest {
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
-                assertFalse(((AmqpException) error).isTransient());
+                assertTrue(((AmqpException) error).isTransient());
             })
             .verify();
     }

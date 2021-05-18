@@ -50,7 +50,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
  * broker and receive the associated response.
  */
-public class RequestResponseChannel implements Disposable {
+public class RequestResponseChannel implements AsyncAutoCloseable {
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final AtomicBoolean hasError = new AtomicBoolean();
@@ -155,7 +155,7 @@ public class RequestResponseChannel implements Disposable {
                 handleError(error, "Error in ReceiveLinkHandler.");
                 onTerminalState("ReceiveLinkHandler");
             }, () -> {
-                disposeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
                 onTerminalState("ReceiveLinkHandler");
             }),
 
@@ -165,13 +165,13 @@ public class RequestResponseChannel implements Disposable {
                 handleError(error, "Error in SendLinkHandler.");
                 onTerminalState("SendLinkHandler");
             }, () -> {
-                disposeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
                 onTerminalState("SendLinkHandler");
             }),
 
             amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
-                return disposeAsync(" Shutdown signal received.");
+                return closeAsync(" Shutdown signal received.");
             }).subscribe()
         );
         //@formatter:on
@@ -198,13 +198,12 @@ public class RequestResponseChannel implements Disposable {
         return endpointStates.asFlux();
     }
 
-    @Override
     public void dispose() {
-        disposeAsync("Dispose called.");
-            //.block(retryOptions.getTryTimeout());
+        closeAsync()
+            .block(retryOptions.getTryTimeout());
     }
 
-    Mono<Void> disposeAsync(String message) {
+    public Mono<Void> closeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
             return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());
         }
@@ -226,7 +225,6 @@ public class RequestResponseChannel implements Disposable {
         }).publishOn(Schedulers.boundedElastic()).then(closeMono.asMono());
     }
 
-    @Override
     public boolean isDisposed() {
         return isDisposed.get();
     }
@@ -366,7 +364,7 @@ public class RequestResponseChannel implements Disposable {
         unconfirmedSends.forEach((key, value) -> value.error(error));
         unconfirmedSends.clear();
 
-        disposeAsync("Disposing channel due to error.").subscribe();
+        closeAsync("Disposing channel due to error.").subscribe();
     }
 
     private void onTerminalState(String handlerName) {
