@@ -20,13 +20,8 @@ stages:
           safeName: azurecommunicationsms
       ServiceDirectory: communication
       PostSteps:
-        - task: PowerShell@2
-          inputs:
-            targetType: 'inline'
-            script: |
-              Write-Host ${{ variables['Agent.OS'] }}
         - task: PublishCodeCoverageResults@1
-          condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
+          condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq(variables['CurrentCloud'], 'Public'))
           inputs:
             codeCoverageTool: JaCoCo
             summaryFileLocation: sdk/communication/azure-communication-sms/target/site/jacoco/jacoco.xml
