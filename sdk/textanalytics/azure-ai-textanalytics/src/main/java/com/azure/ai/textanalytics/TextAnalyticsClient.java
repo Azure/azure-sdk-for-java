@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -1039,7 +1039,7 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-String-AnalyzeBatchActionsOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions}
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -1049,22 +1049,21 @@ public final class TextAnalyticsClient {
      * inputs.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeActionsOptions options} that may be passed when
      * analyzing a collection of actions.
      *
      * @return A {@link SyncPoller} that polls the analyze a collection of actions operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
-     * {@link AnalyzeBatchActionsResult}.
+     * {@link AnalyzeActionsResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
-        beginAnalyzeBatchActions(Iterable<String> documents, TextAnalyticsActions actions, String language,
-            AnalyzeBatchActionsOptions options) {
-        return client.analyzeBatchActionsAsyncClient.beginAnalyzeBatchActionsIterable(
+    public SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> beginAnalyzeActions(
+        Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeActionsOptions options) {
+        return client.analyzeActionsAsyncClient.beginAnalyzeActionsIterable(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                 textDocumentInput.setLanguage(language);
@@ -1079,29 +1078,29 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeBatchActions#Iterable-TextAnalyticsActions-AnalyzeBatchActionsOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-AnalyzeActionsOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * @param actions The {@link TextAnalyticsActions actions} that contains all actions to be executed.
      * An action is one task of execution, such as a single task of 'Key Phrases Extraction' on the given document
      * inputs.
-     * @param options The additional configurable {@link AnalyzeBatchActionsOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeActionsOptions options} that may be passed when
      * analyzing a collection of actions.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the analyze a collection of actions operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
-     * {@link AnalyzeBatchActionsResult}.
+     * {@link AnalyzeActionsResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>>
-        beginAnalyzeBatchActions(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
-            AnalyzeBatchActionsOptions options, Context context) {
-        return client.analyzeBatchActionsAsyncClient.beginAnalyzeBatchActionsIterable(documents, actions, options, context)
-                   .getSyncPoller();
+    public SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> beginAnalyzeActions(
+        Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
+        Context context) {
+        return client.analyzeActionsAsyncClient.beginAnalyzeActionsIterable(documents, actions, options, context)
+            .getSyncPoller();
     }
 }

@@ -15,14 +15,14 @@ import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TablesMultipartSerializer;
 import com.azure.data.tables.implementation.models.BatchChangeSet;
 import com.azure.data.tables.implementation.models.BatchOperation;
-import com.azure.data.tables.implementation.models.BatchSubmitBatchResponse;
-import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.implementation.models.BatchRequestBody;
 import com.azure.data.tables.implementation.models.BatchSubRequest;
+import com.azure.data.tables.implementation.models.BatchSubmitBatchResponse;
 import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableServiceErrorException;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableServiceException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +68,7 @@ public final class TableAsyncBatch {
         this.operationClient = new TableClientBuilder()
             .tableName(client.getTableName())
             .endpoint(client.getImplementation().getUrl())
-            .serviceVersion(client.getApiVersion())
+            .serviceVersion(client.getServiceVersion())
             .pipeline(BuilderHelper.buildNullClientPipeline())
             .buildAsyncClient();
     }
@@ -108,7 +108,7 @@ public final class TableAsyncBatch {
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch upsertEntity(TableEntity entity) {
-        return upsertEntity(entity, UpdateMode.MERGE);
+        return upsertEntity(entity, TableEntityUpdateMode.MERGE);
     }
 
     /**
@@ -132,7 +132,7 @@ public final class TableAsyncBatch {
      * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
-    public TableAsyncBatch upsertEntity(TableEntity entity, UpdateMode updateMode) {
+    public TableAsyncBatch upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         validate(entity);
         addOperation(new BatchOperation.UpsertEntity(entity, updateMode));
 
@@ -152,7 +152,7 @@ public final class TableAsyncBatch {
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
     public TableAsyncBatch updateEntity(TableEntity entity) {
-        return updateEntity(entity, UpdateMode.MERGE);
+        return updateEntity(entity, TableEntityUpdateMode.MERGE);
     }
 
     /**
@@ -172,7 +172,7 @@ public final class TableAsyncBatch {
      * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
-    public TableAsyncBatch updateEntity(TableEntity entity, UpdateMode updateMode) {
+    public TableAsyncBatch updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         return updateEntity(entity, updateMode, false);
     }
 
@@ -195,7 +195,7 @@ public final class TableAsyncBatch {
      * operation with the same row key has already been added to the batch.
      * @throws IllegalStateException If this method is called after the batch has been submitted.
      */
-    public TableAsyncBatch updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+    public TableAsyncBatch updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
         validate(entity);
         addOperation(new BatchOperation.UpdateEntity(entity, updateMode, ifUnchanged));
 
@@ -253,7 +253,7 @@ public final class TableAsyncBatch {
      * @return A reactive result containing a list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -269,7 +269,7 @@ public final class TableAsyncBatch {
      * contain a list of sub-responses for each operation in the batch.
      *
      * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceErrorException if any operation within the batch fails. See the documentation for the client
+     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
      * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -350,12 +350,12 @@ public final class TableAsyncBatch {
             String message = "An operation within the batch failed, the transaction has been rolled back.";
 
             if (failedOperation != null) {
-                message += " The failed operation was: " + failedOperation.toString();
+                message += " The failed operation was: " + failedOperation;
             } else if (errorMessage != null) {
                 message += " " + errorMessage;
             }
 
-            return monoError(logger, new TableServiceErrorException(message, null, toTableServiceError(error)));
+            return monoError(logger, new TableServiceException(message, null, toTableServiceError(error)));
         } else {
             return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }

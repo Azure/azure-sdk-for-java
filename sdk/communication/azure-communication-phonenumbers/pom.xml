@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
 
   <name>Microsoft Azure client phone numbers library for communication</name>
   <description>
@@ -49,8 +49,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.72</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.66</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
@@ -58,12 +58,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.3</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -110,13 +110,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -205,6 +205,20 @@
         <property>
           <name>env.TEST_PACKAGES_ENABLED</name>
           <value>chat</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+    <profile>
+      <id>disable-coverage-if-phonenumbers</id>
+      <activation>
+        <property>
+          <name>env.COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST</name>
+          <value>true</value>
         </property>
       </activation>
       <properties>

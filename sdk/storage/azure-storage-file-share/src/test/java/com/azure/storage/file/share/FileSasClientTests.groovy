@@ -28,11 +28,11 @@ class FileSasClientTests extends APISpec {
     private String data
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
+        shareName = namer.getRandomName(60)
 
-        primaryFileServiceClient = fileServiceBuilderHelper(interceptorManager).buildClient()
-        primaryShareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
-        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
+        primaryShareClient = shareBuilderHelper(shareName).buildClient()
+        primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
 
         data = "test"
         primaryShareClient.create()
@@ -40,12 +40,9 @@ class FileSasClientTests extends APISpec {
     }
 
     ShareServiceSasSignatureValues generateValues(ShareFileSasPermission permission) {
-        return new ShareServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        return new ShareServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
             .setCacheControl("cache")
             .setContentDisposition("disposition")
             .setContentEncoding("encoding")
@@ -65,7 +62,7 @@ class FileSasClientTests extends APISpec {
 
         when:
         def sas = primaryFileClient.generateSas(sasValues)
-        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
+        def client = fileBuilderHelper(shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient()
@@ -92,7 +89,7 @@ class FileSasClientTests extends APISpec {
         when:
         def sas = primaryFileClient.generateSas(sasValues)
 
-        def client = fileBuilderHelper(interceptorManager, shareName, filePath)
+        def client = fileBuilderHelper(shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient()
@@ -114,7 +111,7 @@ class FileSasClientTests extends APISpec {
         ShareSignedIdentifier identifier = new ShareSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new ShareAccessPolicy().setPermissions("rcwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))
 
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
@@ -129,13 +126,13 @@ class FileSasClientTests extends APISpec {
             .setDeletePermission(true)
             .setListPermission(true)
 
-        OffsetDateTime expiryTime = getUTCNow().plusDays(1)
+        OffsetDateTime expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new ShareServiceSasSignatureValues(identifier.getId())
         def sasWithId = primaryShareClient.generateSas(sasValues)
 
-        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+        ShareClient client1 = shareBuilderHelper(primaryShareClient.getShareName())
             .endpoint(primaryShareClient.getShareUrl())
             .sasToken(sasWithId)
             .buildClient()
@@ -145,7 +142,7 @@ class FileSasClientTests extends APISpec {
 
         sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
         def sasWithPermissions = primaryShareClient.generateSas(sasValues)
-        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+        def client2 = shareBuilderHelper(primaryShareClient.getShareName())
             .endpoint(primaryFileClient.getFileUrl())
             .sasToken(sasWithPermissions)
             .buildClient()
@@ -169,12 +166,12 @@ class FileSasClientTests extends APISpec {
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryFileServiceClient.generateAccountSas(sasValues)
-        def scBuilder = fileServiceBuilderHelper(interceptorManager)
+        def scBuilder = fileServiceBuilderHelper()
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
             .sasToken(sas)
         def sc = scBuilder.buildClient()

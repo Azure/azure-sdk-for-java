@@ -25,8 +25,19 @@ In order to try the authorization action with this sample with minimum effort, [
 ## Advanced features
 
 ### Support access control by id token in web application 
-If you want to use `id_token` for authorization, we can use `appRoles` feature of AAD to generate id_token's `roles` claim and then create `GrantedAuthority` from `roles` to implement access control. 
-Note the `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+If you want to use `id_token` for authorization, the `appRoles` feature of AAD is supported which is presented in id_token's `roles` claim. By following below configurations, `GrantedAuthority` can be generated from `roles` claim. 
+
+Note:
+ - The `roles` claim generated from `appRoles` is decorated with prefix `APPROLE_`.
+ - When using `appRoles` as `roles` claim, please avoid configuring group attribute as `roles` at the same time. The latter will override the claim to contain group information instead of `appRoles`. Below configuration in manifest should be avoided:
+    ```
+    "optionalClaims": {
+        "idtoken": [{
+            "name": "groups",
+            "additionalProperties": ["emit_as_roles"]
+        }]
+    }
+    ```
 
 Follow the guide to 
 [add app roles in your application](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
@@ -68,7 +79,9 @@ azure:
     client-secret: <client-secret>
     tenant-id: <tenant-id>
     user-group:
-      allowed-groups: group1, group2
+      allowed-group-names: group1,group2
+      allowed-group-ids: <group1-id>,<group2-id>
+      enable-full-list: false  
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:
@@ -82,6 +95,8 @@ azure:
 #        scopes:
 #          - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
       
+# enable-full-list is used to control whether to list all group id, default is false
+
 # It's suggested the logged in user should at least belong to one of the above groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 ```

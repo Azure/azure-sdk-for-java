@@ -1,8 +1,17 @@
 # Release History
 
-## 3.4.0-beta.1 (Unreleased)
+## 3.5.0-beta.1 (Unreleased)
+### New Features
+- Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.
+- Enable property azure.activedirectory.redirect-uri-template. ([#21116](https://github.com/Azure/azure-sdk-for-java/issues/21116))
+
 ### Key Bug Fixes
-- Fix bug of Keyvault refresh Timer task blocking application termination.
+- Fix the issue [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036) where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer.
+- Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
+
+## 3.4.0 (2021-04-19)
+### Key Bug Fixes
+- Fix bug of Keyvault refresh Timer task blocking application termination. ([#20014](https://github.com/Azure/azure-sdk-for-java/pull/20014))
 - Fix bug that user-name-attribute cannot be configured. ([#20209](https://github.com/Azure/azure-sdk-for-java/issues/20209))
 
 ## 3.3.0 (2021-03-22)

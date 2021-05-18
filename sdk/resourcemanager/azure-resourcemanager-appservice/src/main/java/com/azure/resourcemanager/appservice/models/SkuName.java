@@ -31,8 +31,17 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Isolated for SkuName. */
     public static final SkuName ISOLATED = fromString("Isolated");
 
+    /** Static value IsolatedV2 for SkuName. */
+    public static final SkuName ISOLATED_V2 = fromString("IsolatedV2");
+
     /** Static value PremiumV2 for SkuName. */
     public static final SkuName PREMIUM_V2 = fromString("PremiumV2");
+
+    /** Static value PremiumV3 for SkuName. */
+    public static final SkuName PREMIUM_V3 = fromString("PremiumV3");
+
+    /** Static value PremiumContainer for SkuName. */
+    public static final SkuName PREMIUM_CONTAINER = fromString("PremiumContainer");
 
     /** Static value ElasticPremium for SkuName. */
     public static final SkuName ELASTIC_PREMIUM = fromString("ElasticPremium");

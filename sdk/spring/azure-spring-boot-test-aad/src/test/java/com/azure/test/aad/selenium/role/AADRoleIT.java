@@ -4,9 +4,10 @@
 package com.azure.test.aad.selenium.role;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +25,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADRoleIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADRoleIT.class);
@@ -37,16 +39,16 @@ public class AADRoleIT {
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
-        Assert.assertTrue(httpResponse.contains("home"));
+        Assertions.assertTrue(httpResponse.contains("home"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group1");
-        Assert.assertTrue(httpResponse.contains("group1"));
+        Assertions.assertTrue(httpResponse.contains("group1"));
         httpResponse = aadSeleniumITHelper.httpGet("api/user");
-        Assert.assertTrue(httpResponse.contains("user"));
+        Assertions.assertTrue(httpResponse.contains("user"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
-        Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+        Assertions.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
     }
 
-    @After
+    @AfterAll
     public void destroy() {
         aadSeleniumITHelper.destroy();
     }

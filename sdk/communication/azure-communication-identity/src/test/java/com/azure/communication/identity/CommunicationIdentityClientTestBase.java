@@ -39,7 +39,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         .get("COMMUNICATION_SERVICE_ACCESS_KEY", ACCESSKEYENCODED);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
+        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
 
     private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
         .get("TEST_PACKAGES_ENABLED", "all");

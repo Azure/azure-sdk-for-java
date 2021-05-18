@@ -22,7 +22,10 @@ public enum BuiltInAuthenticationProvider {
     MICROSOFT_ACCOUNT("MicrosoftAccount"),
 
     /** Enum value Twitter. */
-    TWITTER("Twitter");
+    TWITTER("Twitter"),
+
+    /** Enum value Github. */
+    GITHUB("Github");
 
     /** The actual serialized value for a BuiltInAuthenticationProvider instance. */
     private final String value;

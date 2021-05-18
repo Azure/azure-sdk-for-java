@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.function.Supplier;
 
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
@@ -41,6 +42,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
+    private final AtomicBoolean linkHasNoCredits = new AtomicBoolean();
     private final Object creditsAdded = new Object();
 
     private final AtomicReference<CoreSubscriber<? super Message>> downstream = new AtomicReference<>();
@@ -163,28 +165,48 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             currentLink = next;
             currentLinkName = next.getLinkName();
 
-            // For a new link, add the prefetch as credits.
-            next.setEmptyCreditListener(this::getCreditsToAdd);
+            // Empty credit listener is invoked when there are no credits left on the underlying link.
+            next.setEmptyCreditListener(() -> {
+                final int credits;
+                synchronized (creditsAdded) {
+                    credits = getCreditsToAdd();
+
+                    // This means that considering the downstream request and current size of the message queue, we
+                    // have enough messages to satisfy them.
+                    // Thus, there are no credits on the link AND we are not going to add anymore.
+                    // We'll wait until the next time downstream calls request(long) to get more events.
+                    if (credits < 1) {
+                        linkHasNoCredits.compareAndSet(false, true);
+                    } else {
+                        logger.info("linkName[{}] entityPath[{}] credits[{}] Link is empty. Adding more credits.",
+                            linkName, entityPath, credits);
+                    }
+                }
+
+                return credits;
+            });
 
             currentLinkSubscriptions = Disposables.composite(
+                // For a new link, add the prefetch as credits.
                 next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next()
                     .flatMap(state -> {
                         // If there was already a subscriber downstream who made a request, see if that is more than
                         // the prefetch. If it is, then add the difference. (ie. if they requested 500, but our
                         // prefetch is 100, we'll add 500 credits rather than 100.
-                        final int creditsToAdd = getCreditsToAdd();
-                        final int total = Math.max(prefetch, creditsToAdd);
+                        final Mono<Void> operation;
+                        synchronized (creditsAdded) {
+                            final int creditsToAdd = getCreditsToAdd();
+                            final int total = Math.max(prefetch, creditsToAdd);
 
-                        logger.verbose("linkName[{}] prefetch[{}] creditsToAdd[{}] Adding initial credits.",
-                            linkName, prefetch, creditsToAdd);
+                            logger.verbose("linkName[{}] prefetch[{}] creditsToAdd[{}] Adding initial credits.",
+                                linkName, prefetch, creditsToAdd);
+                            operation = next.addCredits(total);
+                        }
 
-                        return next.addCredits(total);
+                        return operation;
                     })
-                    .onErrorResume(IllegalStateException.class, error -> {
-                        logger.info("linkName[{}] was already closed. Could not add credits.", linkName);
-                        return Mono.empty();
-                    })
-                    .subscribe(),
+                    .subscribe(noop -> {
+                    }, error -> logger.info("linkName[{}] was already closed. Could not add credits.", linkName)),
                 next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
@@ -356,26 +378,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         Operators.addCap(REQUESTED, this, request);
 
-        synchronized (creditsAdded) {
-            final AmqpReceiveLink link = currentLink;
-            final int credits = getCreditsToAdd();
-
-            logger.verbose("linkName[{}] entityPath[{}] request[{}] credits[{}] Backpressure request from downstream.",
-                currentLinkName, entityPath, request, credits);
-
-            if (link != null) {
-                link.addCredits(credits)
-                    .onErrorResume(IllegalStateException.class, error -> {
-                        logger.info("linkName[{}] was already closed. Could not add credits.", link.getLinkName());
-                        return Mono.empty();
-                    })
-                    .subscribe();
-            } else {
-                logger.verbose("entityPath[{}] credits[{}] totalRequest[{}] totalSent[{}] totalCredits[{}] "
-                        + "There is no link to add credits to, yet.", entityPath, credits);
-            }
-        }
-
+        addCreditsToLink("Backpressure request from downstream. Request: " + request);
         drain();
     }
 
@@ -482,7 +485,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 try {
                     subscriber.onNext(message);
                 } catch (Exception e) {
-                    logger.error("Exception occurred while handling downstream onNext operation.", e);
+                    logger.error("linkName[{}] entityPath[{}] Exception occurred while handling downstream onNext "
+                        + "operation.", currentLinkName, entityPath, e);
                     throw logger.logExceptionAsError(Exceptions.propagate(
                         Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 }
@@ -495,6 +499,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             if (requestedMessages != Long.MAX_VALUE) {
                 numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
             }
+        }
+
+        if (numberRequested > 0L && isEmpty) {
+            addCreditsToLink("Adding more credits in drain loop.");
         }
     }
 
@@ -517,22 +525,72 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         return true;
     }
 
-    private int getCreditsToAdd() {
+    /**
+     * Consolidates all credits calculation when checking to see if more should be added. This is invoked in
+     * {@link #drainQueue()} and {@link #request(long)}.
+     *
+     * Calculates if there are enough credits to satisfy the downstream subscriber. If there is not AND the link has no
+     * more credits, we will add them onto the link.
+     *
+     * In the case that the link has some credits, but _not_ enough to satisfy the request, when the link is empty, it
+     * will call {@link AmqpReceiveLink#setEmptyCreditListener(Supplier)} to get how much is remaining.
+     *
+     * @param message Additional message for context.
+     */
+    private void addCreditsToLink(String message) {
         synchronized (creditsAdded) {
-            final CoreSubscriber<? super Message> subscriber = downstream.get();
-            final long request = REQUESTED.get(this);
+            final AmqpReceiveLink link = currentLink;
+            final int credits = getCreditsToAdd();
 
-            final int credits;
-            if (subscriber == null || request == 0) {
-                credits = 0;
-            } else if (request == Long.MAX_VALUE) {
-                credits = 1;
-            } else {
-                credits = Long.valueOf(request).intValue();
+            if (link == null) {
+                logger.verbose("entityPath[{}] creditsToAdd[{}] There is no link to add credits to.",
+                    entityPath, credits);
+                return;
             }
 
-            return credits;
+            final String linkName = link.getLinkName();
+
+            if (credits < 1) {
+                logger.verbose("linkName[{}] entityPath[{}] creditsToAdd[{}] There are no additional credits to add.",
+                    linkName, entityPath, credits);
+                return;
+            }
+
+            if (linkHasNoCredits.compareAndSet(true, false)) {
+                logger.info("linkName[{}] entityPath[{}] creditsToAdd[{}] There are no more credits on link."
+                        + " Adding more. {}", linkName, entityPath, credits, message);
+
+                link.addCredits(credits).subscribe(noop -> {
+                }, error -> {
+                    logger.info("linkName[{}] entityPath[{}] was already closed. Could not add credits.",
+                        linkName, entityPath);
+                    linkHasNoCredits.compareAndSet(false, true);
+                });
+            }
         }
+    }
+
+    /**
+     * Gets the number of credits to add based on {@link #requested} and how many messages are still in queue.
+     * If {@link #requested} is {@link Long#MAX_VALUE}, then we add credits 1 by 1. Similar to Track 1's behaviour.
+     *
+     * @return The number of credits to add.
+     */
+    private int getCreditsToAdd() {
+        final CoreSubscriber<? super Message> subscriber = downstream.get();
+        final long request = REQUESTED.get(this);
+
+        final int credits;
+        if (subscriber == null || request == 0) {
+            credits = 0;
+        } else if (request == Long.MAX_VALUE) {
+            credits = 1;
+        } else {
+            final int remaining = Long.valueOf(request).intValue() - messageQueue.size();
+            credits = Math.max(remaining, 0);
+        }
+
+        return credits;
     }
 
     private void disposeReceiver(AmqpReceiveLink link) {

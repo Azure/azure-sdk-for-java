@@ -38,13 +38,13 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     }
 
     /*
-     * The URL of the service account, container, or blob that is the targe of
+     * The URL of the service account, container, or blob that is the target of
      * the desired operation.
      */
     private String url;
 
     /**
-     * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
+     * Sets The URL of the service account, container, or blob that is the target of the desired operation.
      *
      * @param url the url value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
@@ -242,7 +242,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
             this.resource = "filesystem";
         }
         if (version == null) {
-            this.version = "2020-02-10";
+            this.version = "2020-06-12";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
