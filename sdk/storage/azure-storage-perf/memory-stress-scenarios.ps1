@@ -4,5 +4,20 @@ $PerfJarPath = Get-ChildItem -Path (Join-Path -Path $TargetDirPath -ChildPath "*
 
 Invoke-Expression "& '$JavaPath' -version"
 
-Invoke-Expression "& '$JavaPath' -Xms500m -Xmx500m -jar '$PerfJarPath' uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
-Invoke-Expression "& '$JavaPath' -Xms500m -Xmx500m -jar '$PerfJarPath' uploadblob --warmup 0 --duration 1 --size 1048576000"
+function Run-Scenario {
+    param (
+        [Parameter(Mandatory=$true, Position=0)]
+        [string] $HeapSize,
+        [Parameter(Mandatory=$true, Position=1)]
+        [string] $Scenario
+    )
+    Write-Host "Executing '$Scenario' with '$HeapSize' heap"
+    Invoke-Expression "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize -jar '$PerfJarPath' $Scenario"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Scenario failed, exiting"
+        exit 1
+    }
+}
+
+Run-Scenario "700m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "700m" "uploadblob --warmup 0 --duration 1 --size 1048576000"
