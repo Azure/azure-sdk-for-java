@@ -57,15 +57,16 @@ public final class RetryUtil {
      *
      * @param source The publisher to apply the retry policy to.
      * @param retryOptions A {@link AmqpRetryOptions}.
-     * @param timeoutSource A boolean value indicating whether to timeout {@param source} and retry when it times out.
-     *                       Default value is false.
+     * @param allowsLongOperation A boolean value indicating whether to allow the {@param source} to run long time
+     *  and not to timeout it. If it's false, a {@link TimeoutException} will be thrown if the {@param source} doesn't
+     *  complete before the {@code getTryTimeout()} of {@param retryOptions}.
      *
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage,
-                                        boolean timeoutSource) {
-        if (timeoutSource) {
+                                        boolean allowsLongOperation) {
+        if (!allowsLongOperation) {
             source = source.timeout(retryOptions.getTryTimeout());
         }
         return source.retryWhen(createRetry(retryOptions))
@@ -81,7 +82,7 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return withRetry(source, retryOptions, timeoutMessage, true);
+        return withRetry(source, retryOptions, timeoutMessage, false);
     }
 
     /**
