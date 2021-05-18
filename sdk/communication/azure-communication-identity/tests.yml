@@ -19,5 +19,13 @@ stages:
         groupId: com.azure
         safeName: azurecommunicationidentity
     ServiceDirectory: communication
+    PostSteps:
+      - task: PublishCodeCoverageResults@1
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq(variables['CurrentCloud'], 'Public'))
+        inputs:
+          codeCoverageTool: JaCoCo
+          summaryFileLocation: sdk/communication/azure-communication-identity/target/site/jacoco/jacoco.xml
+          reportDirectory: sdk/communication/azure-communication-identity/target/site/jacoco/
+          failIfCoverageEmpty: true
     EnvVars:
       SKIP_LIVE_TEST: TRUE
