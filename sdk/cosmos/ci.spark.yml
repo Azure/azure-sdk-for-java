@@ -1,7 +1,7 @@
 trigger: none
 
 variables:
-  - template: ../../../eng/pipelines/templates/variables/globals.yml
+  - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
     value: ''
 
@@ -13,3 +13,4 @@ stages:
         CosmosKey: $(spark-databricks-cosmos-key)
         DatabricksEndpoint: $(spark-databricks-endpoint)
         DatabricksToken: $(spark-databricks-token)
+        SparkVersion: 'azure-cosmos-spark_3-1_2-12'

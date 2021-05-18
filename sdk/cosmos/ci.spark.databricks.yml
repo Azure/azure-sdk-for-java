@@ -7,7 +7,8 @@ parameters:
     type: string
   - name: DatabricksToken
     type: string
-
+  - name: SparkVersion
+    type: string
 
 stages:
   - stage:
@@ -26,7 +27,7 @@ stages:
         inputs:
           mavenPOMFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12'
+          options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:$(SparkVersion)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
@@ -58,10 +59,10 @@ stages:
       - task: Bash@3
         displayName: Importing Jars
         inputs:
-          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-jar-install.sh
-          arguments: 'oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target'
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/$(SparkVersion)/test-databricks/databricks-jar-install.sh
+          arguments: 'oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/$(SparkVersion)/target'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
-          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-notebooks-install.sh
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/$(SparkVersion)/test-databricks/databricks-notebooks-install.sh
           arguments: oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
