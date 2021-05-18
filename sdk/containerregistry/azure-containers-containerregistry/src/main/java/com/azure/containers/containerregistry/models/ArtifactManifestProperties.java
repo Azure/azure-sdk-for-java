@@ -101,6 +101,10 @@ public final class ArtifactManifestProperties {
     static {
         ArtifactManifestPropertiesHelper.setAccessor(new ArtifactManifestPropertiesHelper.ArtifactManifestPropertiesAccessor() {
             @Override
+            public void setRegistryLoginServer(ArtifactManifestProperties manifestProperties, String registryLoginServer) {
+                manifestProperties.setRegistryLoginServer(registryLoginServer);
+            }
+
             public void setRepositoryName(ArtifactManifestProperties manifestProperties, String repositoryName) {
                 manifestProperties.setRepositoryName(repositoryName);
             }
@@ -184,6 +188,11 @@ public final class ArtifactManifestProperties {
 
     private ArtifactManifestProperties setlastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
+        return this;
+    }
+
+    private ArtifactManifestProperties setRegistryLoginServer(String registryLoginServer) {
+        this.registryLoginServer = registryLoginServer;
         return this;
     }
 

@@ -25,6 +25,7 @@ public final class ArtifactManifestPropertiesHelper {
      */
     public interface ArtifactManifestPropertiesAccessor {
         void setRepositoryName(ArtifactManifestProperties manifestProperties, String repositoryName);
+        void setRegistryLoginServer(ArtifactManifestProperties manifestProperties, String registryLoginServer);
         void setDigest(ArtifactManifestProperties manifestProperties, String digest);
         void setManifestReferences(ArtifactManifestProperties manifestProperties, List<ArtifactManifestReference> manifestReferences);
         void setCpuArchitecture(ArtifactManifestProperties manifestProperties, ArtifactArchitecture architecture);
@@ -42,6 +43,10 @@ public final class ArtifactManifestPropertiesHelper {
      */
     public static void setAccessor(final ArtifactManifestPropertiesAccessor manifestPropertiesAccessor) {
         accessor = manifestPropertiesAccessor;
+    }
+
+    public static void setRegistryLoginServer(ArtifactManifestProperties manifestProperties, String registryLoginServer) {
+        accessor.setRegistryLoginServer(manifestProperties, registryLoginServer);
     }
 
     public static void setRepositoryName(ArtifactManifestProperties manifestProperties, String repositoryName) {
