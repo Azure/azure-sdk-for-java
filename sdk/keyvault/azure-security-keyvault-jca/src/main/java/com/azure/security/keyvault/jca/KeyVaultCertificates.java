@@ -112,8 +112,8 @@ public class KeyVaultCertificates {
      * @return certificate' alias if exist.
      */
     String refreshAndGetAliasByCertificate(Certificate certificate) {
-        refreshCertificates();
         refreshCertsInfo();
+        refreshCertificates();
         return getCertificates().entrySet()
                                 .stream()
                                 .filter(entry -> certificate.equals(entry.getValue()))
