@@ -132,8 +132,6 @@ public class ReadmeSamples {
 
     /**
      * Update phone number capabilities
-     *
-     * @return the updated acquired phone number
      */
     public void updatePhoneNumberCapabilities() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
