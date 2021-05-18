@@ -22,9 +22,9 @@ stages:
       PostSteps:
         - task: PowerShell@2
           inputs:
-          targetType: 'inline'
-          script: |
-            Write-Host ${{ variables['Agent.OS'] }}
+            targetType: 'inline'
+            script: |
+              Write-Host ${{ variables['Agent.OS'] }}
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
           inputs:
