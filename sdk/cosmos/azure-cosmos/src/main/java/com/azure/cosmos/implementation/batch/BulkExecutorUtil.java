@@ -55,6 +55,7 @@ final class BulkExecutorUtil {
 
             BulkOperationRetryPolicy bulkRetryPolicy = new BulkOperationRetryPolicy(
                 docClientWrapper.getCollectionCache(),
+                docClientWrapper.getPartitionKeyRangeCache(),
                 BridgeInternal.getLink(container),
                 resourceThrottleRetryPolicy);
             itemBulkOperation.setRetryPolicy(bulkRetryPolicy);
