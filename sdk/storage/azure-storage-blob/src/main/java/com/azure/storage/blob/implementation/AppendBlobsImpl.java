@@ -64,8 +64,8 @@ public final class AppendBlobsImpl {
     @ServiceInterface(name = "AzureBlobStorageAppe")
     public interface AppendBlobsService {
         @Put("/{containerName}/{blob}")
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsCreateResponse> create(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-blob-type") String blobType,
@@ -101,10 +101,9 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsAppendBlockResponse> appendBlock(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -132,10 +131,9 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -169,10 +167,9 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsSealResponse> seal(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,

@@ -70,8 +70,8 @@ public final class BlockBlobsImpl {
     @ServiceInterface(name = "AzureBlobStorageBloc")
     public interface BlockBlobsService {
         @Put("/{containerName}/{blob}")
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsUploadResponse> upload(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-blob-type") String blobType,
@@ -110,10 +110,9 @@ public final class BlockBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrl(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @HeaderParam("x-ms-blob-type") String blobType,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -154,10 +153,9 @@ public final class BlockBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsStageBlockResponse> stageBlock(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -179,10 +177,9 @@ public final class BlockBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -209,10 +206,9 @@ public final class BlockBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsCommitBlockListResponse> commitBlockList(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -249,10 +245,9 @@ public final class BlockBlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlockBlobsGetBlockListResponse> getBlockList(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,

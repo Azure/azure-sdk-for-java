@@ -72,8 +72,8 @@ public final class PageBlobsImpl {
     @ServiceInterface(name = "AzureBlobStoragePage")
     public interface PageBlobsService {
         @Put("/{containerName}/{blob}")
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsCreateResponse> create(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-blob-type") String blobType,
@@ -112,10 +112,9 @@ public final class PageBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsUploadPagesResponse> uploadPages(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-page-write") String pageWrite,
                 @PathParam("containerName") String containerName,
@@ -146,10 +145,9 @@ public final class PageBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsClearPagesResponse> clearPages(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-page-write") String pageWrite,
                 @PathParam("containerName") String containerName,
@@ -177,10 +175,9 @@ public final class PageBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-page-write") String pageWrite,
                 @PathParam("containerName") String containerName,
@@ -216,10 +213,9 @@ public final class PageBlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsGetPageRangesResponse> getPageRanges(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -239,10 +235,9 @@ public final class PageBlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -264,10 +259,9 @@ public final class PageBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsResizeResponse> resize(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -290,10 +284,9 @@ public final class PageBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -313,10 +306,9 @@ public final class PageBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsCopyIncrementalResponse> copyIncremental(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,

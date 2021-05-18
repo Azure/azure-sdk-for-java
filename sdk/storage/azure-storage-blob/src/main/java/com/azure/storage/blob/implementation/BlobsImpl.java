@@ -98,8 +98,8 @@ public final class BlobsImpl {
     @ServiceInterface(name = "AzureBlobStorageBlob")
     public interface BlobsService {
         @Get("/{containerName}/{blob}")
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         @ExpectedResponses({200, 206})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<StreamResponse> download(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -126,10 +126,9 @@ public final class BlobsImpl {
 
         @Head("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsGetPropertiesResponse> getProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
                 @QueryParam("snapshot") String snapshot,
@@ -151,10 +150,9 @@ public final class BlobsImpl {
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsDeleteResponse> delete(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
                 @QueryParam("snapshot") String snapshot,
@@ -250,10 +248,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsUndeleteResponse> undelete(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -265,10 +262,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetExpiryResponse> setExpiry(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -280,10 +276,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetHttpHeadersResponse> setHttpHeaders(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -347,10 +342,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetMetadataResponse> setMetadata(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -373,10 +367,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsAcquireLeaseResponse> acquireLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
@@ -396,10 +389,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsReleaseLeaseResponse> releaseLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
@@ -418,11 +410,10 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsRenewLeaseResponse> renewLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
@@ -442,10 +433,9 @@ public final class BlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsChangeLeaseResponse> changeLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
@@ -465,10 +455,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsBreakLeaseResponse> breakLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
@@ -487,10 +476,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsCreateSnapshotResponse> createSnapshot(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -513,10 +501,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
                 @QueryParam("timeout") Integer timeout,
@@ -547,10 +534,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsCopyFromURLResponse> copyFromURL(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @HeaderParam("x-ms-requires-sync") String xMsRequiresSync,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -580,10 +566,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
                 @PathParam("containerName") String containerName,
@@ -598,10 +583,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetTierResponse> setTier(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -619,10 +603,9 @@ public final class BlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsGetAccountInfoResponse> getAccountInfo(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -633,10 +616,9 @@ public final class BlobsImpl {
 
         @Post("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<StreamResponse> query(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -659,10 +641,9 @@ public final class BlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsGetTagsResponse> getTags(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -678,10 +659,9 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetTagsResponse> setTags(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,

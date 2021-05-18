@@ -80,8 +80,8 @@ public final class ContainersImpl {
     @ServiceInterface(name = "AzureBlobStorageCont")
     public interface ContainersService {
         @Put("/{containerName}")
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersCreateResponse> create(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -98,10 +98,9 @@ public final class ContainersImpl {
 
         @Get("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersGetPropertiesResponse> getProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
@@ -113,10 +112,9 @@ public final class ContainersImpl {
 
         @Delete("/{containerName}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersDeleteResponse> delete(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @PathParam("containerName") String containerName,
                 @QueryParam("timeout") Integer timeout,
@@ -130,10 +128,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersSetMetadataResponse> setMetadata(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -148,10 +145,9 @@ public final class ContainersImpl {
 
         @Get("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersGetAccessPolicyResponse> getAccessPolicy(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -164,10 +160,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -184,10 +179,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersRestoreResponse> restore(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -201,10 +195,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersRenameResponse> rename(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -218,10 +211,9 @@ public final class ContainersImpl {
 
         @Post("/{containerName}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<StreamResponse> submitBatch(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -236,10 +228,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersAcquireLeaseResponse> acquireLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -256,10 +247,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersReleaseLeaseResponse> releaseLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -275,10 +265,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersRenewLeaseResponse> renewLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -294,10 +283,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersBreakLeaseResponse> breakLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -313,10 +301,9 @@ public final class ContainersImpl {
 
         @Put("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersChangeLeaseResponse> changeLease(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("restype") String restype,
                 @HeaderParam("x-ms-lease-action") String action,
@@ -333,10 +320,9 @@ public final class ContainersImpl {
 
         @Get("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersListBlobFlatSegmentResponse> listBlobFlatSegment(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -352,10 +338,9 @@ public final class ContainersImpl {
 
         @Get("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersListBlobHierarchySegmentResponse> listBlobHierarchySegment(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
@@ -372,10 +357,9 @@ public final class ContainersImpl {
 
         @Get("/{containerName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ContainersGetAccountInfoResponse> getAccountInfo(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,

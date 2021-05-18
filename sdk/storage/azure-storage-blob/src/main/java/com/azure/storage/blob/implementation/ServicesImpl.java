@@ -69,8 +69,8 @@ public final class ServicesImpl {
     @ServiceInterface(name = "AzureBlobStorageServ")
     public interface ServicesService {
         @Put("/")
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -84,10 +84,9 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
@@ -98,10 +97,9 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ServicesGetStatisticsResponse> getStatistics(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
@@ -112,10 +110,9 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegment(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix,
                 @QueryParam("marker") String marker,
@@ -129,10 +126,9 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
@@ -144,10 +140,9 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ServicesGetAccountInfoResponse> getAccountInfo(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-version") String version,
@@ -156,10 +151,9 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<StreamResponse> submitBatch(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Content-Type") String multipartContentType,
@@ -172,10 +166,9 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<ServicesFilterBlobsResponse> filterBlobs(
-                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-                        @HostParam("url")
-                        String url,
+                @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
