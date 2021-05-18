@@ -38,6 +38,7 @@ public final class EncryptionKeyWrapMetadata {
     /**
      * Creates a new instance of key wrap metadata based on an existing instance.
      *
+     * @param type Type of the metadata.
      * @param name Name of the metadata.
      * @param value Value of the metadata.
      */
