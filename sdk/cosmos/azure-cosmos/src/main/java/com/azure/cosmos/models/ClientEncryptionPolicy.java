@@ -83,7 +83,7 @@ public final class ClientEncryptionPolicy {
      * Version of the client encryption policy definition.
      * @return policyFormatVersion
      */
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getPolicyFormatVersion() {
         return policyFormatVersion;
     }
