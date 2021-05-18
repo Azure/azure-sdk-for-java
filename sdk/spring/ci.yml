@@ -32,9 +32,6 @@ extends:
       - name: azure-identity-spring
         groupId: com.azure.spring
         safeName: azureidentityspring
-      - name: azure-spring-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringdatagremlin
       - name: azure-spring-boot
         groupId: com.azure.spring
         safeName: azurespringboot
@@ -53,10 +50,6 @@ extends:
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure.spring
         safeName: azurespringbootstartercosmos
-        skipUpdatePackageJson: true
-      - name: azure-spring-boot-starter-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringbootstarterdatagremlin
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-keyvault-certificates
         groupId: com.azure.spring
@@ -154,8 +147,6 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-data-gremlin
-        groupId: com.azure.spring
       - name: azure-spring-boot-sample-keyvault-secrets
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-mediaservices
@@ -167,10 +158,6 @@ extends:
       - name: azure-spring-boot-sample-servicebus-jms-topic
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-storage-resource
-        groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin
-        groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.azure.spring
       - name: spring-cloud-azure-appconfiguration-convert-sample-complete
         groupId: com.azure.spring

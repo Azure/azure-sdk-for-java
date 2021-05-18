@@ -21,7 +21,11 @@ public final class VirtualMachineSizeInner {
     private String name;
 
     /*
-     * The number of cores supported by the virtual machine size.
+     * The number of cores supported by the virtual machine size. For
+     * Constrained vCPU capable VM sizes, this number represents the total
+     * vCPUs of quota that the VM uses. For accurate vCPU count, please refer
+     * to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
+     * https://docs.microsoft.com/rest/api/compute/resourceskus/list
      */
     @JsonProperty(value = "numberOfCores")
     private Integer numberOfCores;
@@ -72,7 +76,10 @@ public final class VirtualMachineSizeInner {
     }
 
     /**
-     * Get the numberOfCores property: The number of cores supported by the virtual machine size.
+     * Get the numberOfCores property: The number of cores supported by the virtual machine size. For Constrained vCPU
+     * capable VM sizes, this number represents the total vCPUs of quota that the VM uses. For accurate vCPU count,
+     * please refer to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
+     * https://docs.microsoft.com/rest/api/compute/resourceskus/list.
      *
      * @return the numberOfCores value.
      */
@@ -81,7 +88,10 @@ public final class VirtualMachineSizeInner {
     }
 
     /**
-     * Set the numberOfCores property: The number of cores supported by the virtual machine size.
+     * Set the numberOfCores property: The number of cores supported by the virtual machine size. For Constrained vCPU
+     * capable VM sizes, this number represents the total vCPUs of quota that the VM uses. For accurate vCPU count,
+     * please refer to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
+     * https://docs.microsoft.com/rest/api/compute/resourceskus/list.
      *
      * @param numberOfCores the numberOfCores value to set.
      * @return the VirtualMachineSizeInner object itself.
