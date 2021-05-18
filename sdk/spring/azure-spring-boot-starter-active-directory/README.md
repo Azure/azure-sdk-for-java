@@ -573,9 +573,9 @@ In [Resource server visiting other resource server] scenario(For better descript
 
 #### Support setting redirect-uri-template.
 
-This starter supports Reset Redirection Endpoint(authorization server to return responses containing authorization credentials to the client via the resource owner user-agent). Developers can customize the redirect-uri.
+Developers can customize the redirect-uri.
 
-![what-is-redirect-uri](resource/what-is-redirect-uri.png)
+![redirect-uri](resource/redirect-uri.png)
 
 * Step 1: Add `redirect-uri-template` properties in application.yml.
     ```yaml
@@ -586,14 +586,13 @@ This starter supports Reset Redirection Endpoint(authorization server to return 
 
 * Step 2: Update the configuration of the azure cloud platform in the portal.
 
-We need to configure the same redirect-uri as application.yml:
+    We need to configure the same redirect-uri as application.yml:
 
-![web-application-config-redirect-uri](resource/web-application-config-redirect-uri.png)
-
+    ![web-application-config-redirect-uri](resource/web-application-config-redirect-uri.png)
 
 * Step 3: Write your Java code:
 
-After we set redirect-uri-template, we need to update `SecurityConfigurerAdapter`:
+    After we set redirect-uri-template, we need to update `SecurityConfigurerAdapter`:
 
 ```java
 @EnableWebSecurity
@@ -606,7 +605,7 @@ public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapte
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.oauth2Login()
-                .loginProcessingUrl("/{your-path-prefix}")
+                .loginProcessingUrl("/{your-redirect-uri}")
                 .and()
             .authorizeRequests()
                 .anyRequest().authenticated();
