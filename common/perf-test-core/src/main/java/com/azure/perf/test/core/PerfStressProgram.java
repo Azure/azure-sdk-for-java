@@ -249,7 +249,7 @@ public class PerfStressProgram {
                 completedOperations[index]++;
                 lastCompletionNanoTimes[index] = System.nanoTime() - startNanoTime;
             })
-            .takeWhile(i -> System.nanoTime() < endNanoTime)
+            .takeWhile(i -> System.nanoTime() < endNanoTime || completedOperations[index] == 0)
             .then();
     }
 

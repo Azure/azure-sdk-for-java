@@ -19,5 +19,5 @@ function Run-Scenario {
     }
 }
 
-#Run-Scenario "100m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "700m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "700m" "uploadblob --warmup 0 --duration 1 --size 1048576000"
