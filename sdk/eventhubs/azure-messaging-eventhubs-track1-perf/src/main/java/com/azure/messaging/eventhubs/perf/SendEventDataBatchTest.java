@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.messaging.eventhubs.perf.models.EventHubsOptions;
 import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.EventHubException;
 import reactor.core.publisher.Mono;

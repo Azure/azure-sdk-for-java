@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.messaging.eventhubs.perf.models.OwnershipInformation;
 import com.microsoft.azure.eventprocessorhost.BaseLease;
 import com.microsoft.azure.eventprocessorhost.CompleteLease;
 import com.microsoft.azure.eventprocessorhost.ILeaseManager;

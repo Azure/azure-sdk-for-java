@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.messaging.eventhubs.perf.models.EventHubsOptions;
-import com.azure.messaging.eventhubs.perf.models.OwnershipInformation;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.EventHubClient;

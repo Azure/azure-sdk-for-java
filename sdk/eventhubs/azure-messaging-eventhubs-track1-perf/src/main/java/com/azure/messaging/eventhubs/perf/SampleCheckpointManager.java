@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.messaging.eventhubs.perf.models.OwnershipInformation;
 import com.microsoft.azure.eventprocessorhost.Checkpoint;
 import com.microsoft.azure.eventprocessorhost.CompleteLease;
 import com.microsoft.azure.eventprocessorhost.ICheckpointManager;

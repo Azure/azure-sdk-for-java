@@ -3,10 +3,8 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.messaging.eventhubs.perf.models.EventHubsOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import com.microsoft.azure.eventhubs.BatchOptions;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventDataBatch;
@@ -15,11 +13,12 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -47,13 +46,28 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
         super(options);
 
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
+        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         byte[] eventBytes;
         try {
-            eventBytes = randomInputStream.readAllBytes();
+            int bytesRead;
+            final byte[] data = new byte[4096];
+
+            while ((bytesRead = randomInputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, bytesRead);
+            }
+
+            eventBytes = buffer.toByteArray();
         } catch (IOException e) {
             System.err.println("Unable to read input bytes." + e);
             final int size = Long.valueOf(options.getSize()).intValue();
-            eventBytes = "a".repeat(size).getBytes(StandardCharsets.UTF_8);
+            eventBytes = new byte[size];
+            Arrays.fill(eventBytes, Integer.valueOf(95).byteValue());
+        } finally {
+            try {
+                buffer.close();
+            } catch (IOException e) {
+                System.err.println("Unable to close bytebuffer. Error:" + e);
+            }
         }
 
         final ArrayList<EventData> eventsList = new ArrayList<>();
@@ -83,7 +97,10 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
         try {
             return EventHubClient.createFromConnectionString(builder.toString(), scheduler);
         } catch (IOException e) {
-            return CompletableFuture.failedFuture(new UncheckedIOException("Unable to create EventHubClient.", e));
+            final CompletableFuture<EventHubClient> future = new CompletableFuture<>();
+            future.completeExceptionally(new UncheckedIOException("Unable to create EventHubClient.", e));
+
+            return future;
         }
     }
 
