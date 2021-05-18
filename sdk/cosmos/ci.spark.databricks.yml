@@ -65,4 +65,4 @@ stages:
         displayName: Importing and executing notebooks
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/$(SparkVersion)/test-databricks/databricks-notebooks-install.sh
-          arguments: oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
+          arguments: oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/$(SparkVersion)/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
