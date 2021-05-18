@@ -33,9 +33,9 @@ public final class BlobServiceProperties {
      * a summary of request statistics grouped by API in hour or minute
      * aggregates for blobs
      */
-    @JsonProperty(value = "MinuteMetrics")
     private BlobMetrics minuteMetrics;
 
+    @JsonProperty(value = "MinuteMetrics")
     private static final class CorsWrapper {
         @JacksonXmlProperty(localName = "CorsRule")
         private final List<BlobCorsRule> items;
@@ -64,8 +64,9 @@ public final class BlobServiceProperties {
      * the retention policy which determines how long the associated data
      * should persist
      */
-    @JsonProperty(value = "DeleteRetentionPolicy")
     private BlobRetentionPolicy deleteRetentionPolicy;
+
+    @JsonProperty(value = "DeleteRetentionPolicy")
 
     /*
      * The properties that enable an account to host a static website

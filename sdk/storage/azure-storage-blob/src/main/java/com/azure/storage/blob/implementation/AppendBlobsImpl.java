@@ -24,6 +24,7 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockResponse;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateResponse;
 import com.azure.storage.blob.implementation.models.AppendBlobsSealResponse;
+import com.azure.storage.blob.implementation.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -63,8 +64,8 @@ public final class AppendBlobsImpl {
     @ServiceInterface(name = "AzureBlobStorageAppe")
     public interface AppendBlobsService {
         @Put("/{containerName}/{blob}")
-        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @ExpectedResponses({201})
         Mono<AppendBlobsCreateResponse> create(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-blob-type") String blobType,
@@ -92,14 +93,18 @@ public final class AppendBlobsImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-tags") String blobTagsString,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsAppendBlockResponse> appendBlock(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -127,9 +132,10 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -163,9 +169,10 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<AppendBlobsSealResponse> seal(
-                @HostParam("url") String url,
+                @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+                        @HostParam("url")
+                        String url,
                 @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -208,6 +215,9 @@ public final class AppendBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScope Parameter group.
@@ -232,6 +242,9 @@ public final class AppendBlobsImpl {
             String ifTags,
             String requestId,
             String blobTagsString,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScope,
@@ -293,6 +306,8 @@ public final class AppendBlobsImpl {
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.create(
                 this.client.getUrl(),
                 blobType,
@@ -320,6 +335,9 @@ public final class AppendBlobsImpl {
                 this.client.getVersion(),
                 requestId,
                 blobTagsString,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
                 accept,
                 context);
     }

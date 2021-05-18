@@ -9,13 +9,14 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
+import org.slf4j.Logger;
 
 /**
  * Customization class for Blob Storage.
  */
 public class BlobStorageCustomization extends Customization {
     @Override
-    public void customize(LibraryCustomization customization) {
+    public void customize(LibraryCustomization customization, Logger logger) {
 
         PackageCustomization impl = customization.getPackage("com.azure.storage.blob.implementation");
 
