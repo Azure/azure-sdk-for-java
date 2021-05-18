@@ -13,10 +13,10 @@ public class UnknownIdentifierTests {
     @Test
     public void constructWithNullOrEmptyIdShouldThrow() {
         assertThrows(IllegalArgumentException.class, () ->
-            new UnknownIdentifier(null), "Should throw on null id");
+            new UnknownIdentifier(null), "The initialization parameter [id] cannot be null");
 
         assertThrows(IllegalArgumentException.class, () ->
-            new UnknownIdentifier(""), "Should throw on empty id");
+            new UnknownIdentifier(""), "The initialization parameter [id] cannot be empty");
     }
 
     @Test
