@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core.implementation.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -33,8 +34,8 @@ public final class DigitalTwinsStringSerializer extends StdSerializer<String> {
 
     private boolean isValidJson(String jsonInString ) {
         try {
-            mapper.readTree(jsonInString);
-            return true;
+            JsonNode node = mapper.readTree(jsonInString);
+            return node.isContainerNode() || node.isTextual();
         } catch (IOException e) {
             return false;
         }
