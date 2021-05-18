@@ -110,7 +110,7 @@ To suggest a new feature or changes that could be made, file an issue the same w
 
 You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
-trigger   test.
+trigger    test.
 
 <!-- LINKS -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot/src
