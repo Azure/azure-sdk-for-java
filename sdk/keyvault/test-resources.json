@@ -277,18 +277,9 @@
       if ($tries -gt 120) {
         throw 'Timed out waiting for creation of certificate $certificateName in vault $vaultName'
       }
-    } while ($operation.Status -ne 'completed'),
-
-    $cert = Get-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName
-    $secret = Get-AzKeyVaultSecret -VaultName $vaultName -Name $cert.Name -AsPlainText
-    $secretByte = [Convert]::FromBase64String($secret)
-    $x509Cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($secretByte,'','Exportable,PersistKeySet')
-    $type = [System.Security.Cryptography.X509Certificates.X509ContentType]::Cert
-    $pfxFileByte = $x509Cert.Export($type, $password)
-    $certb64 = [System.Convert]::ToBase64String($pfxFileByte)
+    } while ($operation.Status -ne 'completed')
 
     $DeploymentScriptOutputs['certThumbprint'] = $newCert.Thumbprint
-    $DeploymentScriptOutputs['cert64'] = $certb64.ToString()
     $newCert | Out-String
     ",
     "cleanupPreference": "OnSuccess",
@@ -320,10 +311,6 @@
     "AZURE_KEYVAULT_CERTIFICATE_NAME": {
       "type": "string",
       "value": "[parameters('certificateName')]"
-    },
-    "CERTIFICATE_CONTENT": {
-      "type": "string",
-      "value": "[parameters('cert64')]"
     }
   }
 }
