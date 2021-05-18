@@ -53,6 +53,26 @@ public final class RetryUtil {
     }
 
     /**
+     * Given a {@link Flux} will apply the retry policy to it when the operation times out or throws a transient error.
+     *
+     * @param source The publisher to apply the retry policy to.
+     * @param retryOptions A {@link AmqpRetryOptions}.
+     * @param timeoutSource A boolean value indicating whether to timeout {@param source} and retry when it times out.
+     *                       Default value is false.
+     *
+     * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
+     *     Otherwise, propagates a {@link TimeoutException}.
+     */
+    public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage,
+                                        boolean timeoutSource) {
+        if (timeoutSource) {
+            source = source.timeout(retryOptions.getTryTimeout());
+        }
+        return source.retryWhen(createRetry(retryOptions))
+            .doOnError(error -> LOGGER.error(timeoutMessage, error));
+    }
+
+    /**
      * Given a {@link Flux} will apply the retry policy to it when the operation times out.
      *
      * @param source The publisher to apply the retry policy to.
@@ -61,9 +81,7 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return source.timeout(retryOptions.getTryTimeout())
-            .retryWhen(createRetry(retryOptions))
-            .doOnError(error -> LOGGER.error(timeoutMessage, error));
+        return withRetry(source, retryOptions, timeoutMessage, true);
     }
 
     /**
@@ -96,7 +114,6 @@ public final class RetryUtil {
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
         }
-
         return retrySpec.jitter(JITTER_FACTOR)
             .maxBackoff(options.getMaxDelay())
             .filter(error -> error instanceof TimeoutException
