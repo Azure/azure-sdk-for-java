@@ -20,7 +20,12 @@ stages:
           safeName: azurecommunicationsms
       ServiceDirectory: communication
       PostSteps:
-        - script: echo ${{ variables['Agent.OS'] }}
+        - bash: echo ${{ variables['Agent.OS'] }}
+        - task: PowerShell@2
+          inputs:
+          targetType: 'inline'
+          script: |
+            Write-Host ${{ variables['Agent.OS'] }}
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
           inputs:
