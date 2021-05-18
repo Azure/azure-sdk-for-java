@@ -3,10 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.identity.AzureCloud;
 import org.junit.Test;
@@ -24,11 +22,13 @@ public class AzureContextAutoConfigurationTest {
     private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureContextAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureContextAutoConfiguration.class))
+        .withPropertyValues(AZURE_PROPERTY_PREFIX + "resourceGroup=default-rg") // enable the auto-configuration
+        ;
 
     @Test
     public void testAzureDisabled() {
-        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
+        new ApplicationContextRunner().run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class AzureContextAutoConfigurationTest {
 
     @Test(expected = IllegalStateException.class)
     public void testLocationRequiredWhenAutoCreateResources() {
-        this.contextRunner.withPropertyValues(AZURE_PROPERTY_PREFIX + "resourceGroup=group1")
+        this.contextRunner
             .withPropertyValues(AZURE_PROPERTY_PREFIX + "auto-create-resources=true")
             .run(context -> context.getBean(AzureProperties.class));
     }
@@ -70,9 +70,8 @@ public class AzureContextAutoConfigurationTest {
     public void testAzureCloudConfiguration() {
         this.contextRunner
             .withPropertyValues(
-                AZURE_PROPERTY_PREFIX + "resource-group=rg1",
-                AZURE_PROPERTY_PREFIX + "subscriptionId=sub1",
                 AZURE_PROPERTY_PREFIX + "cloud-name=AzureChina")
+            .withUserConfiguration(TestConfigurationWithResourceManager.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureProperties.class);
                 assertThat(context.getBean(AzureProperties.class).getCloudName()).isEqualTo(AzureCloud.AzureChina);
@@ -81,7 +80,7 @@ public class AzureContextAutoConfigurationTest {
 
     @Test
     public void testAutoConfigureEnabled() {
-        this.contextRunner.withPropertyValues(AZURE_PROPERTY_PREFIX + "resource-group=rg1")
+        this.contextRunner
             .withUserConfiguration(TestConfigurationWithResourceManager.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureProperties.class);
@@ -95,11 +94,6 @@ public class AzureContextAutoConfigurationTest {
         @Bean
         AzureResourceManager azureResourceManager() {
             return mock(AzureResourceManager.class);
-        }
-
-        @Bean
-        CredentialsProvider credentialsProvider() {
-            return mock(CredentialsProvider.class);
         }
 
     }
