@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
-import java.time.Duration
 import java.util.concurrent.TimeoutException
 
 class DownloadResponseTest extends APISpec {
@@ -27,7 +26,7 @@ class DownloadResponseTest extends APISpec {
 
     def setup() {
         bu = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu.upload(defaultInputStream.get(), defaultText.length())
+        bu.upload(data.defaultInputStream, data.defaultText.length())
     }
 
     /*
@@ -39,7 +38,7 @@ class DownloadResponseTest extends APISpec {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == defaultData.array()
+        outputStream.toByteArray() == data.defaultBytes
     }
 
     def "Network call no etag returned"() {
@@ -59,14 +58,14 @@ class DownloadResponseTest extends APISpec {
                 })
             }
         }
-        def bsc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
+        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
         def cc = bsc.getBlobContainerClient(containerName)
         def bu = cc.getBlobClient(bu.getBlobName()).getBlockBlobClient()
 
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == defaultData.array()
+        outputStream.toByteArray() == data.defaultBytes
     }
 
     @Unroll
@@ -188,11 +187,13 @@ class DownloadResponseTest extends APISpec {
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
-        expect:
-        StepVerifier.withVirtualTime({ flux.setOptions(options).getter(info)
-            .flatMapMany({ it.getValue() }) })
+        when:
+        def bufferMono = flux.setOptions(options).getter(info)
+            .flatMapMany({ it.getValue() })
+
+        then:
+        StepVerifier.create(bufferMono)
             .expectSubscription()
-            .thenAwait(Duration.ofSeconds((retryCount + 1) * 61))
             .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
 
         where:

@@ -4,16 +4,15 @@
 
 package com.azure.resourcemanager.hdinsight.implementation;
 
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.models.HostInfoInner;
 import com.azure.resourcemanager.hdinsight.models.HostInfo;
 
 public final class HostInfoImpl implements HostInfo {
     private HostInfoInner innerObject;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    HostInfoImpl(HostInfoInner innerObject, HDInsightManager serviceManager) {
+    HostInfoImpl(HostInfoInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,7 +33,7 @@ public final class HostInfoImpl implements HostInfo {
         return this.innerObject;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 }

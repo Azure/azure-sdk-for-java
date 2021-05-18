@@ -590,8 +590,6 @@ class CosmosCatalog
         None
       }
     }
-
-    // TODO: add support for other container properties, indexing policy?
   }
 
   private object CosmosThroughputProperties {

@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.PolicyAssignment;
@@ -24,6 +25,7 @@ public class PolicyTests extends ResourceManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDPolicyDefinition() throws Exception {
         String policyName = generateRandomResourceName("policy", 15);
         String displayName = generateRandomResourceName("mypolicy", 15);
@@ -59,6 +61,7 @@ public class PolicyTests extends ResourceManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDPolicyAssignment() throws Exception {
         String policyName = generateRandomResourceName("policy", 15);
         String displayName = generateRandomResourceName("mypolicy", 15);

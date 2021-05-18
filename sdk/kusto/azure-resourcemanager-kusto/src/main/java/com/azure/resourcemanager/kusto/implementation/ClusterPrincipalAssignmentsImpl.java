@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.ClusterPrincipalAssignmentsClient;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterPrincipalAssignmentInner;
@@ -24,9 +23,10 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
 
     private final ClusterPrincipalAssignmentsClient innerClient;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public ClusterPrincipalAssignmentsImpl(ClusterPrincipalAssignmentsClient innerClient, KustoManager serviceManager) {
+    public ClusterPrincipalAssignmentsImpl(
+        ClusterPrincipalAssignmentsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -101,14 +101,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public PagedIterable<ClusterPrincipalAssignment> list(String resourceGroupName, String clusterName) {
         PagedIterable<ClusterPrincipalAssignmentInner> inner =
             this.serviceClient().list(resourceGroupName, clusterName);
-        return inner.mapPage(inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClusterPrincipalAssignment> list(
         String resourceGroupName, String clusterName, Context context) {
         PagedIterable<ClusterPrincipalAssignmentInner> inner =
             this.serviceClient().list(resourceGroupName, clusterName, context);
-        return inner.mapPage(inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public ClusterPrincipalAssignment getById(String id) {
@@ -231,7 +231,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         return this.innerClient;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 

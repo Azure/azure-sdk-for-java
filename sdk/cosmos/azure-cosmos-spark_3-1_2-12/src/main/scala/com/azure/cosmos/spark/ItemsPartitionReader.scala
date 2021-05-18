@@ -3,15 +3,20 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, OperationListenerFactory, SparkTaskContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
+
+import java.util.UUID
 
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
@@ -22,10 +27,10 @@ private case class ItemsPartitionReader
   feedRange: NormalizedRange,
   readSchema: StructType,
   cosmosQuery: CosmosParameterizedQuery,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot]
+  diagnosticsContext: DiagnosticsContext,
+  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  diagnosticsConfig: DiagnosticsConfig
 )
-// TODO: moderakh query need to change to SqlSpecQuery
-// requires making a serializable wrapper on top of SqlQuerySpec
   extends PartitionReader[InternalRow] with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
@@ -40,6 +45,28 @@ private case class ItemsPartitionReader
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
 
   private val queryOptions = new CosmosQueryRequestOptions()
+
+  initializeDiagnosticsIfConfigured
+
+  private def initializeDiagnosticsIfConfigured(): Unit = {
+    if (diagnosticsConfig.mode.isDefined) {
+      val taskContext = TaskContext.get
+      assert(taskContext != null)
+
+      val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+        taskContext.stageId(),
+        taskContext.partitionId(),
+        feedRange.toString + " " + cosmosQuery.toSqlQuerySpec.getQueryText)
+
+      val listener: OperationListener =
+        OperationListenerFactory.getOperationListener(diagnosticsConfig.mode.get)
+
+      val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
+      ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor.setOperationContext(queryOptions, operationContextAndListenerTuple)
+    }
+  }
+
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
   private lazy val iterator = cosmosAsyncContainer.queryItems(

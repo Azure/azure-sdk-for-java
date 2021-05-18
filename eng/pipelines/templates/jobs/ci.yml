@@ -139,9 +139,15 @@ jobs:
       vmImage: MMSUbuntu18.04
 
     steps:
-      - pwsh: |
-          $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
-        displayName: "Verify versions in POM files"
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+
+      - task: PowerShell@2
+        displayName: 'Verify versions in POM files'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/versioning/pom_file_version_scanner.ps1
+          arguments: -Debug:$$(IsDebug)
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -168,6 +174,10 @@ jobs:
           ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
             Directory: sdk/${{ parameters.ServiceDirectory }}
           CheckLinkGuidance: $true
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
       # Use BasePathLength of 38 instead of the default 49 as some GA'd files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
@@ -201,7 +211,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

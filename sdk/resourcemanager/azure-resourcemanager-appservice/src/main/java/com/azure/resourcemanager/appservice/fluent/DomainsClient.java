@@ -176,7 +176,7 @@ public interface DomainsClient
     /**
      * Description for Get domain name recommendations based on keywords.
      *
-     * @param parameters Domain recommendation search parameters.
+     * @param parameters Search parameters for domain name recommendations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -189,7 +189,7 @@ public interface DomainsClient
     /**
      * Description for Get domain name recommendations based on keywords.
      *
-     * @param parameters Domain recommendation search parameters.
+     * @param parameters Search parameters for domain name recommendations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -202,7 +202,7 @@ public interface DomainsClient
     /**
      * Description for Get domain name recommendations based on keywords.
      *
-     * @param parameters Domain recommendation search parameters.
+     * @param parameters Search parameters for domain name recommendations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -316,7 +316,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain Information about a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -332,7 +332,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain Information about a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -348,7 +348,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain Information about a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -364,7 +364,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain Information about a domain.
+     * @param domain Domain registration information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -381,7 +381,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain Information about a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -396,7 +396,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain Information about a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -411,7 +411,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain Information about a domain.
+     * @param domain Domain registration information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -505,7 +505,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain ARM resource for a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -521,7 +521,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain ARM resource for a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -536,7 +536,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain ARM resource for a domain.
+     * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -551,7 +551,7 @@ public interface DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
-     * @param domain ARM resource for a domain.
+     * @param domain Domain registration information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -674,12 +674,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -695,12 +695,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -716,12 +716,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -737,12 +737,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -822,12 +822,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -843,12 +843,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -864,12 +864,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -885,12 +885,12 @@ public interface DomainsClient
 
     /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifer.
+     * identifier.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
-     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

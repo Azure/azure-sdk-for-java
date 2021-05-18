@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.RecordingFileStatusUpdated event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event. */
 @Fluent
 public final class AcsRecordingFileStatusUpdatedEventData {
     /*
@@ -79,7 +79,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     }
 
     /**
-     * Get the {@link Duration} of recordingDuration property: The recording duration.
+     * Get the recordingDuration property: The recording duration.
      *
      * @return the recordingDuration value.
      */

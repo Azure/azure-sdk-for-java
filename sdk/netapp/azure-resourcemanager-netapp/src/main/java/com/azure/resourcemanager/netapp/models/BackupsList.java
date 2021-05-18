@@ -4,22 +4,52 @@
 
 package com.azure.resourcemanager.netapp.models;
 
-import com.azure.resourcemanager.netapp.fluent.models.BackupsListInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An immutable client-side representation of BackupsList. */
-public interface BackupsList {
+/** List of Backups. */
+@Fluent
+public final class BackupsList {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupsList.class);
+
+    /*
+     * A list of Backups
+     */
+    @JsonProperty(value = "value")
+    private List<BackupInner> value;
+
     /**
-     * Gets the value property: A list of Backups.
+     * Get the value property: A list of Backups.
      *
      * @return the value value.
      */
-    List<Backup> value();
+    public List<BackupInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.netapp.fluent.models.BackupsListInner object.
+     * Set the value property: A list of Backups.
      *
-     * @return the inner object.
+     * @param value the value value to set.
+     * @return the BackupsList object itself.
      */
-    BackupsListInner innerModel();
+    public BackupsList withValue(List<BackupInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
 }
