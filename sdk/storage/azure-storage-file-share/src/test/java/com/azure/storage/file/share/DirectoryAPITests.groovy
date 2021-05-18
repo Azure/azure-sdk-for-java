@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
@@ -22,7 +23,7 @@ class DirectoryAPITests extends APISpec {
     String directoryPath
     String shareName
     static Map<String, String> testMetadata
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
@@ -37,7 +38,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -49,7 +50,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -64,7 +65,7 @@ class DirectoryAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, directoryPath, shareSnapshotInfo.getSnapshot())
-        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getDirectoryUrl() == snapshotEndpoint
@@ -462,6 +463,7 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryDirectoryClient.create()
@@ -486,6 +488,7 @@ class DirectoryAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryDirectoryClient.create()

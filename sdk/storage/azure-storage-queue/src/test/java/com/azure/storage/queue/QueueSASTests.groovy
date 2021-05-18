@@ -96,7 +96,7 @@ class QueueSASTests extends APISpec {
         serviceSASSignatureValues.getQueueName() == queueName
     }
 
-    def " QueueSAS enqueue dequeue with permissions"() {
+    def "QueueSAS enqueue dequeue with permissions"() {
         setup:
         queueClient.create()
         SendMessageResult resp = queueClient.sendMessage("test")
@@ -110,7 +110,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -155,7 +155,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -208,7 +208,7 @@ class QueueSASTests extends APISpec {
         sleepIfLive(30000)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasIdentifier = new QueueServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setQueueName(queueClient.getQueueName())
@@ -244,7 +244,7 @@ class QueueSASTests extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new AccountSasSignatureValues()
             .setServices(service.toString())
             .setResourceTypes(resourceType.toString())
@@ -283,7 +283,7 @@ class QueueSASTests extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new AccountSasSignatureValues()
             .setServices(service.toString())
             .setResourceTypes(resourceType.toString())
@@ -324,7 +324,7 @@ class QueueSASTests extends APISpec {
             .setResourceTypes(resourceType.toString())
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
 
         def queueName = namer.getRandomName(60)
@@ -357,11 +357,9 @@ class QueueSASTests extends APISpec {
         queueClient.create()
 
         when:
-        new QueueClientBuilder()
+        instrument(new QueueClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -369,11 +367,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueClientBuilder()
+        instrument(new QueueClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -381,10 +377,8 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new QueueClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -392,11 +386,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueServiceClientBuilder()
+        instrument(new QueueServiceClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -404,11 +396,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueServiceClientBuilder()
+        instrument(new QueueServiceClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -416,10 +406,8 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueServiceClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new QueueServiceClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 

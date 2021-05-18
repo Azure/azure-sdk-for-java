@@ -7,6 +7,7 @@ package com.azure.resourcemanager.maintenance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,6 +35,13 @@ public class ConfigurationAssignmentInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.resourceId")
     private String resourceId;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the location property: Location of the resource.
@@ -93,6 +101,15 @@ public class ConfigurationAssignmentInner extends ProxyResource {
     public ConfigurationAssignmentInner withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

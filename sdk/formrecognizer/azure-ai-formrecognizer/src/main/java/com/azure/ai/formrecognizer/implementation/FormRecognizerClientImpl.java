@@ -176,7 +176,7 @@ public final class FormRecognizerClientImpl {
      */
     @Host("{endpoint}/formrecognizer/{ApiVersion}")
     @ServiceInterface(name = "FormRecognizerClient")
-    private interface FormRecognizerClientService {
+    public interface FormRecognizerClientService {
         @Post("/custom/models")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

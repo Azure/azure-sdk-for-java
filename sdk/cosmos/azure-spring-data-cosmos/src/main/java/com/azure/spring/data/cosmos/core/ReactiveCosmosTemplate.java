@@ -594,7 +594,20 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public Mono<Long> count(CosmosQuery query, String containerName) {
-        return getCountValue(query, containerName);
+        final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
+        return getCountValue(querySpec, containerName);
+    }
+
+    /**
+     * Count
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @return Mono with count or error
+     */
+    @Override
+    public Mono<Long> count(SqlQuerySpec querySpec, String containerName) {
+        return getCountValue(querySpec, containerName);
     }
 
     @Override
@@ -633,8 +646,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                       CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
     }
 
-    private Mono<Long> getCountValue(CosmosQuery query, String containerName) {
-        final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
+    private Mono<Long> getCountValue(SqlQuerySpec querySpec, String containerName) {
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);

@@ -23,12 +23,12 @@ import java.util.List;
  * Code samples for the README.md
  */
 public class ReadmeSamples {
-    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().buildClient();
+    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().endpoint("<YOUR_END_POINT>").sasToken("<YOUR_SAS_TOKEN>").buildClient();
     private BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
-    private String blobUrl = "https://account.core.windows.net/containerName/blobName";
-    private String blobUrl2 = "https://account.core.windows.net/containerName/blobName2";
-    private String blobUrlWithSnapshot = "https://account.core.windows.net/containerName/blobName?snapshot=<DateTime>";
-    private String blobUrlWithLease = "https://account.core.windows.net/containerName/blobNameWithLease";
+    private String blobUrl = String.format("https://%s.blob.core.windows.net/containerName/blobName", "<YOUR_STORAGE_ACCOUNT>");
+    private String blobUrl2 = String.format("https://%s.blob.core.windows.net/containerName/blobName2", "<YOUR_STORAGE_ACCOUNT>");
+    private String blobUrlWithSnapshot = String.format("https://%s.blob.core.windows.net/containerName/blobName?snapshot=<DateTime>", "<YOUR_STORAGE_ACCOUNT>");
+    private String blobUrlWithLease = String.format("https://%s.blob.core.windows.net/containerName/blobNameWithLease", "<YOUR_STORAGE_ACCOUNT>");
     private List<String> blobUrls = Arrays.asList(blobUrl, blobUrl2, blobUrlWithSnapshot, blobUrlWithLease);
 
     public void createHttpClient() {
