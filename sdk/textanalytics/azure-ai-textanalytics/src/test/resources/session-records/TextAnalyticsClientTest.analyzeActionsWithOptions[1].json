@@ -1,0 +1,164 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "04393215-abe8-4973-8bc2-1d7687a7886d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "43",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://centralustiers.cognitiveservices.azure.com/text/analytics/v3.1-preview.4/analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "5557cfa2-aa4a-4cb2-a695-ac9ca2db0fc2",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Sat, 01 May 2021 05:00:00 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "55aa67e4-ac3f-4774-b787-b672212f9326"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "188",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "2bad0aa0-a2e9-451e-886d-188474ea883c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"3590ccb2-5ace-47f7-91e0-d1687f0eee6c\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\",\"createdDateTime\":\"2021-05-01T05:00:00Z\",\"expirationDateTime\":\"2021-05-02T05:00:00Z\",\"status\":\"running\",\"errors\":[],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\"},\"completed\":0,\"failed\":0,\"inProgress\":3,\"total\":3}}",
+      "Date" : "Sat, 01 May 2021 05:00:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "df39f7fa-262b-42a7-9fc9-6d1c1e57f043"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "197",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "47ec147c-2017-4de7-b5e9-60eec2dde566",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"3590ccb2-5ace-47f7-91e0-d1687f0eee6c\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\",\"createdDateTime\":\"2021-05-01T05:00:00Z\",\"expirationDateTime\":\"2021-05-02T05:00:00Z\",\"status\":\"running\",\"errors\":[],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\"},\"completed\":0,\"failed\":0,\"inProgress\":3,\"total\":3}}",
+      "Date" : "Sat, 01 May 2021 05:00:10 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c4e824e4-dece-4960-a02c-d04ac2aa6da9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "260",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e10faea4-16b8-4dd4-8a56-10d85ea738c8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"3590ccb2-5ace-47f7-91e0-d1687f0eee6c\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\",\"createdDateTime\":\"2021-05-01T05:00:00Z\",\"expirationDateTime\":\"2021-05-02T05:00:00Z\",\"status\":\"running\",\"errors\":[],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\"},\"completed\":2,\"failed\":0,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle last week.\",\"id\":\"0\",\"entities\":[],\"warnings\":[]},{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}],\"keyPhraseExtractionTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Sat, 01 May 2021 05:00:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "56aca5aa-9337-4076-96d8-8bac290d73e8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "199",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "6229b4e0-44de-40eb-9232-500f43ee8d82",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"3590ccb2-5ace-47f7-91e0-d1687f0eee6c\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\",\"createdDateTime\":\"2021-05-01T05:00:00Z\",\"expirationDateTime\":\"2021-05-02T05:00:00Z\",\"status\":\"running\",\"errors\":[],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\"},\"completed\":2,\"failed\":0,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle last week.\",\"id\":\"0\",\"entities\":[],\"warnings\":[]},{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}],\"keyPhraseExtractionTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Sat, 01 May 2021 05:00:21 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fb7afc1c-0de6-4485-a933-7b930d10a9b1"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "248",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "44196db2-98ef-4103-820c-bbe5cbfd5009",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"3590ccb2-5ace-47f7-91e0-d1687f0eee6c\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\",\"createdDateTime\":\"2021-05-01T05:00:00Z\",\"expirationDateTime\":\"2021-05-02T05:00:00Z\",\"status\":\"running\",\"errors\":[],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\"},\"completed\":2,\"failed\":0,\"inProgress\":1,\"total\":3,\"entityRecognitionPiiTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle last week.\",\"id\":\"0\",\"entities\":[],\"warnings\":[]},{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}],\"keyPhraseExtractionTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Sat, 01 May 2021 05:00:26 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "47d4483c-6b56-4d6c-bc74-8360f17d89a9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "286",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "d88d1044-d76c-4192-b4ed-53e7ba775bd5",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"3590ccb2-5ace-47f7-91e0-d1687f0eee6c\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\",\"createdDateTime\":\"2021-05-01T05:00:00Z\",\"expirationDateTime\":\"2021-05-02T05:00:00Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\"},\"completed\":3,\"failed\":0,\"inProgress\":0,\"total\":3,\"entityRecognitionTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":0.99},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.96},{\"text\":\"859\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":28,\"length\":3,\"confidenceScore\":0.8},{\"text\":\"98\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":32,\"length\":2,\"confidenceScore\":0.8},{\"text\":\"0987\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":35,\"length\":4,\"confidenceScore\":0.8},{\"text\":\"API\",\"category\":\"Skill\",\"offset\":61,\"length\":3,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}],\"entityRecognitionPiiTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle last week.\",\"id\":\"0\",\"entities\":[],\"warnings\":[]},{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}],\"keyPhraseExtractionTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Sat, 01 May 2021 05:00:32 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//analyze/jobs/3590ccb2-5ace-47f7-91e0-d1687f0eee6c?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "58237220-f4f5-4eb4-b325-4d6c16bee77e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "229",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "ab16f80c-aaa3-4eab-a992-045f4b6f3660",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"displayName\":\"Test1\",\"jobId\":\"3590ccb2-5ace-47f7-91e0-d1687f0eee6c\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\",\"createdDateTime\":\"2021-05-01T05:00:00Z\",\"expirationDateTime\":\"2021-05-02T05:00:00Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"details\":{\"name\":\"Test1\",\"lastUpdateDateTime\":\"2021-05-01T05:00:01Z\"},\"completed\":3,\"failed\":0,\"inProgress\":0,\"total\":3,\"entityRecognitionTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":0.99},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.96},{\"text\":\"859\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":28,\"length\":3,\"confidenceScore\":0.8},{\"text\":\"98\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":32,\"length\":2,\"confidenceScore\":0.8},{\"text\":\"0987\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":35,\"length\":4,\"confidenceScore\":0.8},{\"text\":\"API\",\"category\":\"Skill\",\"offset\":61,\"length\":3,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}],\"entityRecognitionPiiTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle last week.\",\"id\":\"0\",\"entities\":[],\"warnings\":[]},{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}],\"keyPhraseExtractionTasks\":[{\"lastUpdateDateTime\":\"2021-05-01T05:00:01.5186204Z\",\"name\":\"Test1\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\",\"week\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"ssn\",\"awesome API's\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}}]}}",
+      "Date" : "Sat, 01 May 2021 05:00:32 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

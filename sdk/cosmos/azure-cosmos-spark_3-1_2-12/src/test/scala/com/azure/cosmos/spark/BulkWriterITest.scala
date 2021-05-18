@@ -25,7 +25,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
   "Bulk Writer" can "upsert item" in  {
     val container = getContainer
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 5, bulkEnabled = true, Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
     val bulkWriter = new BulkWriter(container, writeConfig)
 

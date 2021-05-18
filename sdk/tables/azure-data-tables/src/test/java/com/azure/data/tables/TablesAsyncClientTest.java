@@ -15,9 +15,10 @@ import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableServiceErrorException;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableServiceException;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -25,14 +26,12 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -83,7 +82,7 @@ public class TablesAsyncClientTest extends TestBase {
         }
 
         tableClient = builder.buildAsyncClient();
-        tableClient.create().block(TIMEOUT);
+        tableClient.createTable().block(TIMEOUT);
     }
 
     @Test
@@ -110,7 +109,8 @@ public class TablesAsyncClientTest extends TestBase {
         final TableAsyncClient tableClient2 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(tableClient2.create())
+        StepVerifier.create(tableClient2.createTable())
+            .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify();
     }
@@ -140,7 +140,7 @@ public class TablesAsyncClientTest extends TestBase {
         final int expectedStatusCode = 204;
 
         // Act & Assert
-        StepVerifier.create(tableClient2.createWithResponse())
+        StepVerifier.create(tableClient2.createTableWithResponse())
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })
@@ -226,7 +226,8 @@ public class TablesAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     void createEntitySubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -270,12 +271,22 @@ public class TablesAsyncClientTest extends TestBase {
             })
             .expectComplete()
             .verify();
-    }
+    }*/
 
     @Test
     void deleteTableAsync() {
         // Act & Assert
-        StepVerifier.create(tableClient.delete())
+        StepVerifier.create(tableClient.deleteTable())
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingTableAsync() {
+        // Act & Assert
+        tableClient.deleteTable().block();
+
+        StepVerifier.create(tableClient.deleteTable())
             .expectComplete()
             .verify();
     }
@@ -286,10 +297,24 @@ public class TablesAsyncClientTest extends TestBase {
         final int expectedStatusCode = 204;
 
         // Act & Assert
-        StepVerifier.create(tableClient.deleteWithResponse())
+        StepVerifier.create(tableClient.deleteTableWithResponse())
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingTableWithResponseAsync() {
+        // Arrange
+        final int expectedStatusCode = 404;
+
+        // Act & Assert
+        tableClient.deleteTableWithResponse().block();
+
+        StepVerifier.create(tableClient.deleteTableWithResponse())
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -305,6 +330,18 @@ public class TablesAsyncClientTest extends TestBase {
         final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(TIMEOUT);
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
+
+        // Act & Assert
+        StepVerifier.create(tableClient.deleteEntity(partitionKeyValue, rowKeyValue))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingEntityAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
 
         // Act & Assert
         StepVerifier.create(tableClient.deleteEntity(partitionKeyValue, rowKeyValue))
@@ -330,6 +367,20 @@ public class TablesAsyncClientTest extends TestBase {
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
             })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void deleteNonExistingEntityWithResponseAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final int expectedStatusCode = 404;
+
+        // Act & Assert
+        StepVerifier.create(tableClient.deleteEntityWithResponse(partitionKeyValue, rowKeyValue, null))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -397,9 +448,11 @@ public class TablesAsyncClientTest extends TestBase {
         tableEntity.addProperty("Test", "Value");
         final int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
+        List<String> propertyList = new ArrayList<>();
+        propertyList.add("Test");
 
         // Act & Assert
-        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, "Test"))
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, propertyList))
             .assertNext(response -> {
                 final TableEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
@@ -415,7 +468,8 @@ public class TablesAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     void getEntityWithResponseSubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -442,7 +496,7 @@ public class TablesAsyncClientTest extends TestBase {
         props.put("EnumField", color);
 
         TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
-        tableEntity.addProperties(props);
+        tableEntity.setProperties(props);
 
         int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
@@ -472,25 +526,25 @@ public class TablesAsyncClientTest extends TestBase {
             })
             .expectComplete()
             .verify();
-    }
+    }*/
 
     @Test
     void updateEntityWithResponseReplaceAsync() {
-        updateEntityWithResponseAsync(UpdateMode.REPLACE);
+        updateEntityWithResponseAsync(TableEntityUpdateMode.REPLACE);
     }
 
     @Test
     void updateEntityWithResponseMergeAsync() {
-        updateEntityWithResponseAsync(UpdateMode.MERGE);
+        updateEntityWithResponseAsync(TableEntityUpdateMode.MERGE);
     }
 
     /**
-     * In the case of {@link UpdateMode#MERGE}, we expect both properties to exist.
-     * In the case of {@link UpdateMode#REPLACE}, we only expect {@code newPropertyKey} to exist.
+     * In the case of {@link TableEntityUpdateMode#MERGE}, we expect both properties to exist.
+     * In the case of {@link TableEntityUpdateMode#REPLACE}, we only expect {@code newPropertyKey} to exist.
      */
-    void updateEntityWithResponseAsync(UpdateMode mode) {
+    void updateEntityWithResponseAsync(TableEntityUpdateMode mode) {
         // Arrange
-        final boolean expectOldProperty = mode == UpdateMode.MERGE;
+        final boolean expectOldProperty = mode == TableEntityUpdateMode.MERGE;
         final String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
         final int expectedStatusCode = 204;
@@ -508,29 +562,23 @@ public class TablesAsyncClientTest extends TestBase {
         createdEntity.addProperty(newPropertyKey, "valueB");
 
         // Act & Assert
-        if (mode == UpdateMode.MERGE && tableClient.getTableUrl().contains("cosmos.azure.com")) {
-            // This scenario is currently broken when using the CosmosDB Table API
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .expectError(TableServiceErrorException.class)
-                .verify();
-        } else {
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
-                .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
-                .expectComplete()
-                .verify();
+        StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
 
-            // Assert and verify that the new properties are in there.
-            StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
-                .assertNext(entity -> {
-                    final Map<String, Object> properties = entity.getProperties();
-                    assertTrue(properties.containsKey(newPropertyKey));
-                    assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
-                })
-                .verifyComplete();
-        }
+        // Assert and verify that the new properties are in there.
+        StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
+            .assertNext(entity -> {
+                final Map<String, Object> properties = entity.getProperties();
+                assertTrue(properties.containsKey(newPropertyKey));
+                assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
+            })
+            .verifyComplete();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     void updateEntityWithResponseSubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
@@ -543,7 +591,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
-        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, UpdateMode.REPLACE, true))
+        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, TableEntityUpdateMode.REPLACE, true))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
@@ -555,7 +603,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals("UpdatedValue", properties.get("SubclassProperty"));
             })
             .verifyComplete();
-    }
+    }*/
 
     @Test
     @Tag("ListEntities")
@@ -607,8 +655,10 @@ public class TablesAsyncClientTest extends TestBase {
         final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue)
             .addProperty("propertyC", "valueC")
             .addProperty("propertyD", "valueD");
+        List<String> propertyList = new ArrayList<>();
+        propertyList.add("propertyC");
         ListEntitiesOptions options = new ListEntitiesOptions()
-            .setSelect("propertyC");
+            .setSelect(propertyList);
         tableClient.createEntity(entity).block(TIMEOUT);
 
         // Act & Assert
@@ -644,7 +694,8 @@ public class TablesAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Test
+    // Will not be supporting subclasses of TableEntity for the time being.
+    /*@Test
     @Tag("ListEntities")
     void listEntitiesSubclassAsync() {
         // Arrange
@@ -660,7 +711,7 @@ public class TablesAsyncClientTest extends TestBase {
             .thenConsumeWhile(x -> true)
             .expectComplete()
             .verify();
-    }
+    }*/
 
     @Test
     @Tag("Batch")
@@ -736,10 +787,10 @@ public class TablesAsyncClientTest extends TestBase {
         TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
         batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValueCreate))
             .upsertEntity(new TableEntity(partitionKeyValue, rowKeyValueUpsertInsert))
-            .upsertEntity(toUpsertMerge, UpdateMode.MERGE)
-            .upsertEntity(toUpsertReplace, UpdateMode.REPLACE)
-            .updateEntity(toUpdateMerge, UpdateMode.MERGE)
-            .updateEntity(toUpdateReplace, UpdateMode.REPLACE)
+            .upsertEntity(toUpsertMerge, TableEntityUpdateMode.MERGE)
+            .upsertEntity(toUpsertReplace, TableEntityUpdateMode.REPLACE)
+            .updateEntity(toUpdateMerge, TableEntityUpdateMode.MERGE)
+            .updateEntity(toUpdateReplace, TableEntityUpdateMode.REPLACE)
             .deleteEntity(rowKeyValueDelete);
 
         // Act & Assert
@@ -770,7 +821,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(batch.submitTransactionWithResponse())
-            .expectErrorMatches(e -> e instanceof TableServiceErrorException
+            .expectErrorMatches(e -> e instanceof TableServiceException
                 && e.getMessage().contains("An operation within the batch failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")

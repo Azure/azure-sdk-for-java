@@ -51,7 +51,9 @@ mvn spring-boot:run
 ### Access the Web API
 We could use Postman to simulate a Web APP to send a request to a Web API.
 
-**NOTE**: The `aud` in access token should be the current Web API.
+**NOTE**: 
+1. You can use [resource server password credentials] to get access token.
+1. The `aud` in access token should be the current Web API.
 
 ```http request
 GET /file HTTP/1.1
@@ -75,3 +77,4 @@ Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
 [Expose scoped permission to web api]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
 [Resource Server]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server
 [Resource Server Obo]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
+[resource server password credentials]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth-ropc

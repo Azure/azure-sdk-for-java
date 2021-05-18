@@ -77,7 +77,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withBootDiagnostics()
                 .create();
 
@@ -130,7 +130,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withBootDiagnostics(creatableStorageAccount)
                 .create();
 
@@ -189,7 +189,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withBootDiagnostics(storageAccount)
                 .create();
 
@@ -239,7 +239,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withBootDiagnostics()
                 .create();
 
@@ -294,7 +294,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
                 .create();
@@ -372,7 +372,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
                 .withExistingStorageAccount(
@@ -437,7 +437,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withBootDiagnostics(
                     creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage

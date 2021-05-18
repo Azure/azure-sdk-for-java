@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import java.util.Map;
 
-/** Job output error event data. */
+/**
+ * Job output error event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobOutputErrored
+ * event.
+ */
 @Immutable
 public final class MediaJobOutputErroredEventData extends MediaJobOutputStateChangeEventData {
     /** {@inheritDoc} */

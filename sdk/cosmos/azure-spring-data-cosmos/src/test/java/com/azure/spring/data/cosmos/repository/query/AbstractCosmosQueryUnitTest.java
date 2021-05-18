@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,9 @@ public class AbstractCosmosQueryUnitTest {
     @Mock
     CosmosQueryMethod method;
 
+    @Mock
+    CosmosParameterAccessor accessor;
+
     @Test
     public void testShouldUseMultiEntityExecutionIfMethodIsCollectionQuery() {
         when(method.isCollectionQuery()).thenReturn(true);
@@ -32,6 +36,15 @@ public class AbstractCosmosQueryUnitTest {
         TestCosmosQuery cosmosQuery = new TestCosmosQuery(method, null);
         CosmosQueryExecution execution = cosmosQuery.getExecution(null, null);
         Assert.isInstanceOf(CosmosQueryExecution.SingleEntityExecution.class, execution);
+    }
+
+    @Test
+    public void testShouldUseSliceExecutionIfMethodIsSliceQuery() {
+        when(method.isSliceQuery()).thenReturn(true);
+        when(accessor.getPageable()).thenReturn(CosmosPageRequest.of(0, 10));
+        TestCosmosQuery cosmosQuery = new TestCosmosQuery(method, null);
+        CosmosQueryExecution execution = cosmosQuery.getExecution(accessor, null);
+        Assert.isInstanceOf(CosmosQueryExecution.SliceExecution.class, execution);
     }
 
     private class TestCosmosQuery extends AbstractCosmosQuery {
@@ -52,6 +65,11 @@ public class AbstractCosmosQueryUnitTest {
 
         @Override
         protected boolean isExistsQuery() {
+            return false;
+        }
+
+        @Override
+        protected boolean isCountQuery() {
             return false;
         }
 

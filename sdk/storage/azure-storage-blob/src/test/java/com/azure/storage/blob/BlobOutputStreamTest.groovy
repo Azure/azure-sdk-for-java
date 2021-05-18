@@ -6,6 +6,7 @@ import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -13,7 +14,7 @@ import spock.lang.Unroll
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "BlockBlob output stream"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -29,7 +30,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "BlockBlob output stream default no overwrite"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -47,7 +48,7 @@ class BlobOutputStreamTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "BlockBlob output stream default no overwrite interrupted"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
@@ -69,21 +70,21 @@ class BlobOutputStreamTest extends APISpec {
         ((BlobStorageException) e.getCause()).getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "BlockBlob output stream overwrite"() {
         setup:
-        def data = getRandomByteArray(10 * Constants.MB)
+        def randomData = getRandomByteArray(10 * Constants.MB)
         def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def outputStream = blockBlobClient.getBlobOutputStream(true)
-        outputStream.write(data)
+        outputStream.write(randomData)
         outputStream.close()
 
         then:
-        blockBlobClient.getProperties().getBlobSize() == data.length
-        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+        blockBlobClient.getProperties().getBlobSize() == randomData.length
+        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == randomData
     }
 
     @Unroll
@@ -118,7 +119,7 @@ class BlobOutputStreamTest extends APISpec {
         new IOException()                          || IOException
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "BlockBlob output stream buffer reuse"() {
         setup:
         def data = getRandomByteArray(10 * Constants.KB)
@@ -139,7 +140,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "PageBlob output stream"() {
         setup:
         def data = getRandomByteArray(16 * Constants.MB - 512)
@@ -157,7 +158,7 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     // Test is failing, need to investigate.
-    @Requires({ liveMode() })
+    @LiveOnly
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)

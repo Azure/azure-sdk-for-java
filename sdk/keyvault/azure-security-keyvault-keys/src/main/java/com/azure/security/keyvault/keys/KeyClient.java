@@ -322,69 +322,6 @@ public final class KeyClient {
     }
 
     /**
-     * Exports the latest version of a key from the key vault. The export key operation may be used to import any key
-     * from the Azure Key Vault as long as it is marked as exportable and its release policy is satisfied.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#String-String}
-     *
-     * @param name The name of the key to be exported.
-     * @param environment The target environment assertion.
-     * @return The {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name} or {@code environment} are {@code null}.
-     */
-    public KeyVaultKey exportKey(String name, String environment) {
-        return client.exportKey(name, environment).block();
-    }
-
-    /**
-     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
-     * as long as it is marked as exportable and its release policy is satisfied.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#String-String-String}
-     *
-     * @param name The name of the key to be exported.
-     * @param version The key version.
-     * @param environment The target environment assertion.
-     * @return The {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
-     * {@code null}.
-     */
-    public KeyVaultKey exportKey(String name, String version, String environment) {
-        return client.exportKey(name, version, environment).block();
-    }
-
-    /**
-     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
-     * as long as it is marked as exportable and its release policy is satisfied.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#String-String-String-Context}
-     *
-     * @param name The name of the key to be exported.
-     * @param version The key version.
-     * @param environment The target environment assertion.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
-     * {@code null}.
-     */
-    public Response<KeyVaultKey> exportKeyWithResponse(String name, String version, String environment,
-                                                       Context context) {
-        return client.exportKeyWithResponse(name, version, environment, context).block();
-    }
-
-    /**
      * Gets the public part of the specified key and key version. The get key operation is applicable to all key types
      * and it requires the {@code keys/get} permission.
      *
