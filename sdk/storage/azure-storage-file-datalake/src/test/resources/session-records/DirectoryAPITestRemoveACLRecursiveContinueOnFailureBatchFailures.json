@@ -440,7 +440,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&mode=remove&forceFlag=true&maxRecords=2&sv=2020-08-04&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&mode=remove&forceFlag=true&maxRecords=2&sv=2020-10-02&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -463,7 +463,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBbni%2B6U7bGaxNUBGO0BGOcBL2thc29ib2xjYW5hZGFobnMBMDFENzQxQzhFOTY5NTAxNS83MWMyNWNiYjA3MWMyNWNiYjdmYjcwNTkzOTM3ZGU5MjIzNzhiNGI3YmI3NAEwMUQ3NDFEODk2RTRCMkM0LzcxYzI1Y2JiMjcxYzI1Y2JiN2ZiMTgwNzNhYWVlOTBjMGFjNmY0NjU5OTI5LzcxYzI1Y2JiMzcxYzI1Y2JiN2ZiOTUxMjBlNzM2M2U1ZDMxYjU0OTlmYTdmLzcxYzI1Y2JiNDcxYzI1Y2JiN2ZiMTIwNzg5NDQxODMwZjYwYzM0YjFiODk5FgAAAA%3D%3D&mode=remove&forceFlag=true&maxRecords=2&sv=2020-08-04&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBbni%2B6U7bGaxNUBGO0BGOcBL2thc29ib2xjYW5hZGFobnMBMDFENzQxQzhFOTY5NTAxNS83MWMyNWNiYjA3MWMyNWNiYjdmYjcwNTkzOTM3ZGU5MjIzNzhiNGI3YmI3NAEwMUQ3NDFEODk2RTRCMkM0LzcxYzI1Y2JiMjcxYzI1Y2JiN2ZiMTgwNzNhYWVlOTBjMGFjNmY0NjU5OTI5LzcxYzI1Y2JiMzcxYzI1Y2JiN2ZiOTUxMjBlNzM2M2U1ZDMxYjU0OTlmYTdmLzcxYzI1Y2JiNDcxYzI1Y2JiN2ZiMTIwNzg5NDQxODMwZjYwYzM0YjFiODk5FgAAAA%3D%3D&mode=remove&forceFlag=true&maxRecords=2&sv=2020-10-02&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -486,7 +486,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBbz3%2BavqbTNzRsYwAEYugEva2Fzb2JvbGNhbmFkYWhucwEwMUQ3NDFDOEU5Njk1MDE1LzcxYzI1Y2JiMDcxYzI1Y2JiN2ZiNzA1OTM5MzdkZTkyMjM3OGI0YjdiYjc0ATAxRDc0MUQ4OTZFNEIyQzQvNzFjMjVjYmIyNzFjMjVjYmI3ZmIxODA3M2FhZWU5MGMwYWM2ZjQ2NTk5MjkvNzFjMjVjYmI2NzFjMjVjYmI3ZmIwMjI0MzY3M2YzODdkZDQ5ZjQwYzA4NzYWAAAA&mode=remove&forceFlag=true&maxRecords=2&sv=2020-08-04&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBbz3%2BavqbTNzRsYwAEYugEva2Fzb2JvbGNhbmFkYWhucwEwMUQ3NDFDOEU5Njk1MDE1LzcxYzI1Y2JiMDcxYzI1Y2JiN2ZiNzA1OTM5MzdkZTkyMjM3OGI0YjdiYjc0ATAxRDc0MUQ4OTZFNEIyQzQvNzFjMjVjYmIyNzFjMjVjYmI3ZmIxODA3M2FhZWU5MGMwYWM2ZjQ2NTk5MjkvNzFjMjVjYmI2NzFjMjVjYmI3ZmIwMjI0MzY3M2YzODdkZDQ5ZjQwYzA4NzYWAAAA&mode=remove&forceFlag=true&maxRecords=2&sv=2020-10-02&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -509,7 +509,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBaY4sLNz7mElgwY7QEY5wEva2Fzb2JvbGNhbmFkYWhucwEwMUQ3NDFDOEU5Njk1MDE1LzcxYzI1Y2JiMDcxYzI1Y2JiN2ZiNzA1OTM5MzdkZTkyMjM3OGI0YjdiYjc0ATAxRDc0MUQ4OTZFNEIyQzQvNzFjMjVjYmIyNzFjMjVjYmI3ZmIxODA3M2FhZWU5MGMwYWM2ZjQ2NTk5MjkvNzFjMjVjYmI2NzFjMjVjYmI3ZmIwMjI0MzY3M2YzODdkZDQ5ZjQwYzA4NzYvNzFjMjVjYmIxMTcxYzI1Y2JiN2ZiNjYwMTEyOTlhMjE2NGQ1YWU0ZmNkOWEWAAAA&mode=remove&forceFlag=true&maxRecords=2&sv=2020-08-04&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBaY4sLNz7mElgwY7QEY5wEva2Fzb2JvbGNhbmFkYWhucwEwMUQ3NDFDOEU5Njk1MDE1LzcxYzI1Y2JiMDcxYzI1Y2JiN2ZiNzA1OTM5MzdkZTkyMjM3OGI0YjdiYjc0ATAxRDc0MUQ4OTZFNEIyQzQvNzFjMjVjYmIyNzFjMjVjYmI3ZmIxODA3M2FhZWU5MGMwYWM2ZjQ2NTk5MjkvNzFjMjVjYmI2NzFjMjVjYmI3ZmIwMjI0MzY3M2YzODdkZDQ5ZjQwYzA4NzYvNzFjMjVjYmIxMTcxYzI1Y2JiN2ZiNjYwMTEyOTlhMjE2NGQ1YWU0ZmNkOWEWAAAA&mode=remove&forceFlag=true&maxRecords=2&sv=2020-10-02&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -532,7 +532,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBbBq4y93I6%2B1YABGO0BGOcBL2thc29ib2xjYW5hZGFobnMBMDFENzQxQzhFOTY5NTAxNS83MWMyNWNiYjA3MWMyNWNiYjdmYjcwNTkzOTM3ZGU5MjIzNzhiNGI3YmI3NAEwMUQ3NDFEODk2RTRCMkM0LzcxYzI1Y2JiMjcxYzI1Y2JiN2ZiMTgwNzNhYWVlOTBjMGFjNmY0NjU5OTI5LzcxYzI1Y2JiNjcxYzI1Y2JiN2ZiMDIyNDM2NzNmMzg3ZGQ0OWY0MGMwODc2LzcxYzI1Y2JiODcxYzI1Y2JiN2ZiMDgxOTYzNjNiYjlkNDIxYjE0NjJmODAyFgAAAA%3D%3D&mode=remove&forceFlag=true&maxRecords=2&sv=2020-08-04&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/71c25cbb071c25cbb7fb70593937de922378b4b7bb74/71c25cbb271c25cbb7fb18073aaee90c0ac6f4659929?action=setAccessControlRecursive&continuation=VBbBq4y93I6%2B1YABGO0BGOcBL2thc29ib2xjYW5hZGFobnMBMDFENzQxQzhFOTY5NTAxNS83MWMyNWNiYjA3MWMyNWNiYjdmYjcwNTkzOTM3ZGU5MjIzNzhiNGI3YmI3NAEwMUQ3NDFEODk2RTRCMkM0LzcxYzI1Y2JiMjcxYzI1Y2JiN2ZiMTgwNzNhYWVlOTBjMGFjNmY0NjU5OTI5LzcxYzI1Y2JiNjcxYzI1Y2JiN2ZiMDIyNDM2NzNmMzg3ZGQ0OWY0MGMwODc2LzcxYzI1Y2JiODcxYzI1Y2JiN2ZiMDgxOTYzNjNiYjlkNDIxYjE0NjJmODAyFgAAAA%3D%3D&mode=remove&forceFlag=true&maxRecords=2&sv=2020-10-02&se=2021-05-05T19%3A00%3A56Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A56Z&ske=2021-05-05T19%3A00%3A56Z&sks=b&skv=2020-08-04&suoid=4727c5b4-2b93-42a2-ae0f-a3207a74b1c2&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
