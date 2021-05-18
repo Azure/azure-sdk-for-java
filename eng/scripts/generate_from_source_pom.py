@@ -117,10 +117,11 @@ def create_from_source_pom_spring(project_list: str, project_list_path: str, ser
     project_list_identifiers = project_list.split(',')
     project_list_path_identifiers = []
     if project_list_path and not 'not-specified' in project_list_path:
-        # only spring modules
         project_list_path_identifiers = project_list_path.split(',')
         for idx, path_identifier in enumerate(project_list_path_identifiers):
-            project_list_path_identifiers[idx] = path_identifier[1:]
+            # only spring modules
+            if './' in path_identifier and not ':' in path_identifier:
+                project_list_path_identifiers[idx] = path_identifier[1:]
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_source_version = load_client_artifact_identifiers()
@@ -136,7 +137,7 @@ def create_from_source_pom_spring(project_list: str, project_list_path: str, ser
                     exclusive_service_directory[exclusive_name] = True
         else:
             for exclusive_name in group:
-                exclusive_service_directory[exclusive_name] = True
+                exclusive_service_directory[exclusive_name] = False
 
     project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings_spring(project_list_identifiers, project_list_path_identifiers, artifact_identifier_to_source_version, service_directory, exclusive_service_directory)
 
@@ -364,7 +365,10 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
         if dependency_identifier_path and dependency_identifier_path in dependency_mapping.keys():
             dependency_mapping[dependency_identifier_path].append(project_identifier_path)
         else:
-            dependency_mapping[dependency_identifier].append(project_identifier)
+            if project_identifier_path:
+                dependency_mapping[dependency_identifier].append(project_identifier_path)
+            else:
+                dependency_mapping[dependency_identifier].append(project_identifier)
 
 
 # Function which check the version effectiveness
