@@ -43,7 +43,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.read.inferSchema.enabled" -> "false"
     )
 
-    val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 2
     df.schema.equals(
@@ -58,7 +58,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.changeFeed.mode" -> "Incremental"
     )
 
-    val dfExplicit = spark.read.format("cosmos.changeFeed").options(cfgExplicit).load()
+    val dfExplicit = spark.read.format("cosmos.oltp.changeFeed").options(cfgExplicit).load()
     val rowsArrayExplicit = dfExplicit.collect()
     rowsArrayExplicit should have size 2
     dfExplicit.schema.equals(
@@ -95,7 +95,7 @@ class SparkE2EChangeFeedITest
       StructField("isAlive", BooleanType)
     ))
 
-    val df = spark.read.schema(customSchema).format("cosmos.changeFeed").options(cfg).load()
+    val df = spark.read.schema(customSchema).format("cosmos.oltp.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 2
     df.schema.equals(customSchema) shouldEqual true
@@ -125,7 +125,7 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.changeFeed.startFrom" -> "NOW"
     )
 
-    val df = spark.read.format("cosmos.changeFeed").options(cfg).load()
+    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
     rowsArray should have size 0
     df.schema.equals(
@@ -178,7 +178,7 @@ class SparkE2EChangeFeedITest
 
       val changeFeedDF = spark
         .readStream
-        .format("cosmos.changeFeed")
+        .format("cosmos.oltp.changeFeed")
         .options(readCfg)
         .load()
       val microBatchQuery = changeFeedDF

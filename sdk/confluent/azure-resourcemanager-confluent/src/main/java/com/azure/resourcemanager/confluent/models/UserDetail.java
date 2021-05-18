@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscriber detail. */
 @Fluent
-public class UserDetail {
+public final class UserDetail {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserDetail.class);
 
     /*
@@ -29,7 +29,7 @@ public class UserDetail {
     /*
      * Email address
      */
-    @JsonProperty(value = "emailAddress")
+    @JsonProperty(value = "emailAddress", required = true)
     private String emailAddress;
 
     /**
@@ -98,5 +98,10 @@ public class UserDetail {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (emailAddress() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property emailAddress in model UserDetail"));
+        }
     }
 }

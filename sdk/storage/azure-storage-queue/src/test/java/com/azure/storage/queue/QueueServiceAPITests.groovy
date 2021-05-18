@@ -12,6 +12,7 @@ import com.azure.storage.queue.models.QueueRetentionPolicy
 import com.azure.storage.queue.models.QueueServiceProperties
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import com.azure.storage.queue.models.QueueStorageException
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 class QueueServiceAPITests extends APISpec {
@@ -175,6 +176,7 @@ class QueueServiceAPITests extends APISpec {
         !primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()), null, null).iterator().hasNext()
     }
 
+    @ResourceLock("ServiceProperties")
     def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceClient.getProperties()

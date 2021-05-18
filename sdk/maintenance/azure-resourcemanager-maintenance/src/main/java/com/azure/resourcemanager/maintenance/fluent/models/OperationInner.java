@@ -39,6 +39,12 @@ public final class OperationInner {
     @JsonProperty(value = "properties")
     private Object properties;
 
+    /*
+     * Indicates whether the operation is a data action
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
+
     /**
      * Get the name property: Name of the operation.
      *
@@ -116,6 +122,26 @@ public final class OperationInner {
      */
     public OperationInner withProperties(Object properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
         return this;
     }
 

@@ -9,9 +9,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     List<User> getUsersByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     List<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    @Query("select value count(1) from c where c.firstName = @firstName")
+    long getNumberOfUsersWithFirstName(@Param("firstName") String firstName);
 }

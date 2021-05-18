@@ -97,20 +97,20 @@ public class ContainerRegistryCredentialPolicyTests {
         policy.process(this.callContext, this.nextPolicy).block();
 
         // Make sure no call being done to the authorize request.
-        verify(spyPolicy, times(0)).authorizeRequest(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
+        verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
 
         when(nextPolicy.process()).thenReturn(Mono.just(unauthorizedHttpResponseWithoutHeader));
         policy.process(this.callContext, this.nextPolicy).block();
 
         // Make sure no call being done to the authorize request.
-        verify(spyPolicy, times(0)).authorizeRequest(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
+        verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
     }
 
     @Test
     public void requestAddBearerTokenToRequest() {
         ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
-        Boolean onChallenge = spyPolicy.onChallenge(this.callContext, this.unauthorizedHttpResponse).block();
+        Boolean onChallenge = spyPolicy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponse).block();
 
         // Validate that the onChallenge ran successfully.
         assertTrue(onChallenge);
@@ -122,7 +122,7 @@ public class ContainerRegistryCredentialPolicyTests {
 
         // Validate that the token creation was called with the correct arguments.
         ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
-        verify(spyPolicy).authorizeRequest(any(HttpPipelineCallContext.class), argument.capture());
+        verify(spyPolicy).setAuthorizationHeader(any(HttpPipelineCallContext.class), argument.capture());
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
         assertEquals(SERVICENAME, requestContext.getServiceName());

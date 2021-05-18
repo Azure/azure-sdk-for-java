@@ -11,6 +11,7 @@ import com.azure.storage.queue.models.QueueRetentionPolicy
 import com.azure.storage.queue.models.QueueServiceProperties
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import reactor.test.StepVerifier
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 class QueueServiceAsyncAPITests extends APISpec {
@@ -162,6 +163,7 @@ class QueueServiceAsyncAPITests extends APISpec {
             .verifyComplete()
     }
 
+    @ResourceLock("ServiceProperties")
     def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceAsyncClient.getProperties().block()

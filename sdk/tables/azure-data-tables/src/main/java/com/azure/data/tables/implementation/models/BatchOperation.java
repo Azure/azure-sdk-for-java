@@ -6,7 +6,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.data.tables.TableAsyncClient;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 import reactor.core.publisher.Mono;
 
 public interface BatchOperation {
@@ -40,9 +40,9 @@ public interface BatchOperation {
 
     class UpsertEntity implements BatchOperation {
         private final TableEntity entity;
-        private final UpdateMode updateMode;
+        private final TableEntityUpdateMode updateMode;
 
-        public UpsertEntity(TableEntity entity, UpdateMode updateMode) {
+        public UpsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
             this.entity = entity;
             this.updateMode = updateMode;
         }
@@ -51,7 +51,7 @@ public interface BatchOperation {
             return entity;
         }
 
-        public UpdateMode getUpdateMode() {
+        public TableEntityUpdateMode getUpdateMode() {
             return updateMode;
         }
 
@@ -72,10 +72,10 @@ public interface BatchOperation {
 
     class UpdateEntity implements BatchOperation {
         private final TableEntity entity;
-        private final UpdateMode updateMode;
+        private final TableEntityUpdateMode updateMode;
         private final boolean ifUnchanged;
 
-        public UpdateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+        public UpdateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
             this.entity = entity;
             this.updateMode = updateMode;
             this.ifUnchanged = ifUnchanged;
@@ -85,7 +85,7 @@ public interface BatchOperation {
             return entity;
         }
 
-        public UpdateMode getUpdateMode() {
+        public TableEntityUpdateMode getUpdateMode() {
             return updateMode;
         }
 

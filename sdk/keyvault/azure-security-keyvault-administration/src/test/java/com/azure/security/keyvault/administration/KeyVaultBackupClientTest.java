@@ -106,15 +106,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         SyncPoller<KeyVaultRestoreOperation, Void> selectiveRestorePoller =
             client.beginSelectiveRestore("testKey", backupFolderUrl, sasToken);
 
-        PollResponse<KeyVaultRestoreOperation> response = selectiveRestorePoller.poll();
-
-        assertNotNull(response);
-        assertEquals(LongRunningOperationStatus.IN_PROGRESS, response.getStatus());
-        assertNotNull(response.getValue());
-
         selectiveRestorePoller.waitForCompletion();
 
-        response = selectiveRestorePoller.poll();
+        PollResponse<KeyVaultRestoreOperation> response = selectiveRestorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }
