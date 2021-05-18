@@ -3,6 +3,7 @@
 ## 3.5.0-beta.1 (Unreleased)
 ### New Features
 - Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.
+- Enable property azure.activedirectory.redirect-uri-template. ([#21116](https://github.com/Azure/azure-sdk-for-java/issues/21116))
 
 ### Key Bug Fixes
 - Fix the issue [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036) where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer.
