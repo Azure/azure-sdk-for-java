@@ -150,12 +150,7 @@ public abstract class StorageInputStream extends InputStream {
     }
 
     /**
-     * Dispatches a read operation of N bytes.
-     *
-     * Subclasses are intended to implement one of this method or {@link StorageInputStream#executeRead(int, long)},
-     * but not both. This method is responsible for reading from a Storage resource as well as updating stream state
-     * and transitioning from async back to sync. Its default implementation calls
-     * {@link StorageInputStream#executeRead(int, long)} and updates stream state accordingly.
+     * Dispatches a read operation of N bytes and updates stream state accordingly.
      *
      * @param readLength An <code>int</code> which represents the number of bytes to read.
      * @param offset The start point of data to be acquired.
@@ -180,13 +175,14 @@ public abstract class StorageInputStream extends InputStream {
     /**
      * Executes a read call and returns content in a byte buffer.
      *
-     * Subclasses are intended to implement one of {@link StorageInputStream#dispatchRead(int, long)} or this method,
-     * but not both. This method is responsible for asynchronously making a low-level client read and returning the
-     * content. Its default implementation throws a runtime exception.
+     * This method is responsible for asynchronously making a low-level client read and returning the downloaded
+     * content. If more control is needed over how read operations are organized,
+     * {@link StorageInputStream#dispatchRead(int, long)} should be overridden.
      *
      * @param readLength An <code>int</code> which represents the number of bytes to read.
      * @param offset The start point of data to be acquired.
      * @return The bytebuffer which store one chunk size of data.
+     * @throws HttpResponseException If an I/O error occurs.
      */
     protected abstract Mono<ByteBuffer> executeRead(int readLength, long offset);
 

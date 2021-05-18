@@ -64,10 +64,7 @@ public final class DataLakeFileInputStream extends StorageInputStream {
     }
 
     /**
-     * Gets the file properties.
-     * <p>
-     * If no data has been read from the stream, a network call is made to get properties. Otherwise, the file
-     * properties obtained from the download are stored.
+     * Gets the file properties as fetched upon download.
      *
      * @return {@link PathProperties}
      */
