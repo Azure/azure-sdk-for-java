@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.messaging.eventhubs.perf.models.EventHubsOptions;
+import com.azure.messaging.eventhubs.perf.models.OwnershipInformation;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.EventHubClient;
@@ -23,8 +24,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 public class EventProcessorClientTest extends ServiceTest {
-    private final ILeaseManager leaseManager = new SampleLeaseManager();
-    private final ICheckpointManager checkpointManager = new SampleCheckpointManager();
+    private final ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap = new ConcurrentHashMap<>();
+    private final ICheckpointManager checkpointManager = new SampleCheckpointManager(partitionOwnershipMap);
+    private final ILeaseManager leaseManager = new SampleLeaseManager(partitionOwnershipMap);
     private final SampleEventProcessorFactory processorFactory;
     private final ConcurrentHashMap<String, CountDownLatch> eventsToReceive = new ConcurrentHashMap<>();
 

@@ -16,7 +16,11 @@ public class SampleCheckpointManager implements ICheckpointManager {
     /**
      * Ownership map. Key: Partition Value: Ownership.
      */
-    private final ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap;
+
+    public SampleCheckpointManager(ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap) {
+        this.partitionOwnershipMap = partitionOwnershipMap;
+    }
 
     @Override
     public CompletableFuture<Boolean> checkpointStoreExists() {
@@ -31,11 +35,8 @@ public class SampleCheckpointManager implements ICheckpointManager {
     @Override
     public CompletableFuture<Void> deleteCheckpointStore() {
         return CompletableFuture.runAsync(() -> {
-            partitionOwnershipMap.keySet().forEach(key -> {
-                partitionOwnershipMap.computeIfPresent(key, (existing, value) -> {
-                    value.setCheckpoint(new Checkpoint(key));
-                    return value;
-                });
+            partitionOwnershipMap.forEach((key, value) -> {
+                value.setCheckpoint(null);
             });
         });
     }
@@ -50,11 +51,19 @@ public class SampleCheckpointManager implements ICheckpointManager {
 
     @Override
     public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds) {
-        return CompletableFuture.allOf(partitionIds.stream()
-            .map(id -> CompletableFuture.completedFuture(
-                partitionOwnershipMap.computeIfAbsent(id,
-                    key -> new OwnershipInformation().setCheckpoint(new Checkpoint(id)))))
-            .toArray(CompletableFuture<?>[]::new));
+        return CompletableFuture.runAsync(() -> {
+            for (String partitionId : partitionIds) {
+                partitionOwnershipMap.compute(partitionId, (key, existing) -> {
+                    if (existing == null) {
+                        existing = new OwnershipInformation().setCheckpoint(new Checkpoint(key));
+                    } else if (existing.getCheckpoint() == null) {
+                        existing.setCheckpoint(new Checkpoint(key));
+                    }
+
+                    return existing;
+                });
+            }
+        });
     }
 
     @Override
@@ -83,8 +92,7 @@ public class SampleCheckpointManager implements ICheckpointManager {
     @Override
     public CompletableFuture<Void> deleteCheckpoint(String partitionId) {
         return CompletableFuture.runAsync(() -> {
-            partitionOwnershipMap.computeIfPresent(partitionId,
-                (key, existing) -> existing.setCheckpoint(new Checkpoint(partitionId)));
+            partitionOwnershipMap.computeIfPresent(partitionId, (key, existing) -> existing.setCheckpoint(null));
         });
     }
 }
