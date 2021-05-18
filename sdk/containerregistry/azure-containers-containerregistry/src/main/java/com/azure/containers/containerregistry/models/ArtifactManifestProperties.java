@@ -17,7 +17,7 @@ import java.util.List;
  */
 @JsonFlatten
 @Fluent
-public class ArtifactManifestProperties {
+public final class ArtifactManifestProperties {
     /*
      * Registry login server name.  This is likely to be similar to
      * {registry-name}.azurecr.io

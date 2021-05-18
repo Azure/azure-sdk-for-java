@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 /** Tag attributes. */
 @JsonFlatten
 @Fluent
-public class ArtifactTagProperties {
+public final class ArtifactTagProperties {
     /*
      * Registry login server name.  This is likely to be similar to
      * {registry-name}.azurecr.io
