@@ -72,18 +72,6 @@ stages:
               ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
                 JAVA_HOME: $(JAVA_HOME_8_X64)
               STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
-          - task: Maven@3
-            displayName: 'Run Stress Scenarios'
-            inputs:
-                mavenPomFile: sdk/storage/azure-storage-perf/pom.xml
-                options: '$(DefaultOptions) -Dstorage-stress-scenarios'
-                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-                javaHomeOption: 'JDKVersion'
-                jdkVersionOption: $(JavaTestVersion)
-                jdkArchitectureOption: 'x64'
-                goals: verify
-            env:
-                STORAGE_CONNECTION_STRING: $(PRIMARY_STORAGE_CONNECTION_STRING)
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
