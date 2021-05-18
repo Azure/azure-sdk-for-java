@@ -496,7 +496,6 @@ springboot_2_3_pl.pragmatists:JUnitParams;1.1.1
 springboot_2_3_org.objenesis:objenesis;3.1
 springboot_2_3_cglib:cglib-nodep;3.2.7
 springboot_2_3_com.alibaba:fastjson;1.2.61
-springboot_2_3_com.github.cverges.expect4j:expect4j;1.6
 springboot_2_3_com.github.docker-java:docker-java;3.2.1
 springboot_2_3_com.github.tomakehurst:wiremock-standalone;2.24.1
 springboot_2_3_com.jcraft:jsch;0.1.54

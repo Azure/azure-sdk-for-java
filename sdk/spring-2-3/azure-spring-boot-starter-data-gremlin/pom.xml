@@ -37,7 +37,7 @@
     <dependency>
       <groupId>com.microsoft.spring.data.gremlin</groupId>
       <artifactId>spring-data-gremlin</artifactId>
-      <version>2.3.0</version> <!-- {x-version-update;springboot_2_3_com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
+      <version>2.3.0</version> <!-- {x-version-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -57,7 +57,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-core:[2.12.1]</include> <!-- {x-include-update;springboot_2_3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.3.0]</include> <!-- {x-include-update;springboot_2_3_com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
+                <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.3.0]</include> <!-- {x-include-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.10.RELEASE]</include> <!-- {x-include-update;springboot_2_3_org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.3.10.RELEASE]</include> <!-- {x-include-update;springboot_2_3_org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>
