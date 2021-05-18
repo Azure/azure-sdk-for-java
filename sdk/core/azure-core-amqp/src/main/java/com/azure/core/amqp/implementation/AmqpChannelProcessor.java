@@ -298,7 +298,9 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     private void close(T channel) {
-        if (channel instanceof AutoCloseable) {
+        if (channel instanceof AsyncAutoCloseable) {
+            ((AsyncAutoCloseable) channel).closeAsync().subscribe();
+        } else if (channel instanceof AutoCloseable) {
             try {
                 ((AutoCloseable) channel).close();
             } catch (Exception error) {
