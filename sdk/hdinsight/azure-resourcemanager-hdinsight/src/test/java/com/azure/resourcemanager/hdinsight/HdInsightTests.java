@@ -143,7 +143,6 @@ public class HdInsightTests extends TestBase {
                                 .withKey(storageAccountKey)
                                 .withContainer(containerName)
                                 .withIsDefault(true)
-
                         ))
                     ))
                 .create();
