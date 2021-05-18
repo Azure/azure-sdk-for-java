@@ -111,9 +111,6 @@ def create_from_source_pom(project_list: str):
 
 # Function that creates the aggregate POM.
 def create_from_source_pom_spring(project_list: str, project_list_path: str, service_directory: str):
-    print("service_directory", service_directory)
-    print("project_list", project_list)
-    print("project_list_path", project_list_path)
     project_list_identifiers = project_list.split(',')
     project_list_path_identifiers = []
     if project_list_path and not 'not-specified' in project_list_path:
@@ -358,10 +355,6 @@ def add_project_to_dependency_and_module_mappings_spring(file_path: str, project
         else:
             project_dependencies_mapping[project_identifier].append(dependency_identifier)
 
-        print(dependency_identifier_path in dependency_mapping.keys(),
-              dependency_identifier in dependency_mapping.keys(),
-              project_identifier, project_identifier_path,
-              dependency_identifier, dependency_identifier_path)
         if dependency_identifier_path and dependency_identifier_path in dependency_mapping.keys():
             dependency_mapping[dependency_identifier_path].append(project_identifier_path)
         else:
