@@ -120,15 +120,16 @@ public class JavaType extends JavaDeclaration implements JavaFile {
      * Add a java property to the class.
      * A property consists of a private field and private getter and setters.
      *
-     * @param access Access level of property.
+     * @param getterAccess Access level of property getter.
+     * @param setterAccess Access level of property setter.
      * @param type   Property type.
      * @param name   Property name.
      * @return The {@link JavaProperty} object added.
      */
-    public JavaProperty property(Access access, String type, String name) {
-        JavaProperty javaProperty = new JavaProperty(access, name, type)
-            .setter(access, "Set " + name + " property.")
-            .getter(access, "Get the " + name + " property.");
+    public JavaProperty property(Access fieldAccess, Access getterAccess, Access setterAccess, String type, String name, String description) {
+        JavaProperty javaProperty = new JavaProperty(fieldAccess, name, type)
+            .setter(setterAccess, description == null ? "Set " + name + " property." : "Set ".concat(description))
+            .getter(getterAccess, description == null ? "Get the " + name + " property." : "Get ".concat(description));
         this.properties.add(javaProperty);
         return javaProperty;
     }
@@ -234,6 +235,8 @@ public class JavaType extends JavaDeclaration implements JavaFile {
         for (JavaScope javaScope : this.scopes) {
             javaScope.generateCode(codeWriter);
         }
+
+        codeWriter.addNewLine();
 
         this.constructors.sort(Comparator.comparing(JavaConstructor::getName));
         for (JavaConstructor javaConstructor : this.constructors) {

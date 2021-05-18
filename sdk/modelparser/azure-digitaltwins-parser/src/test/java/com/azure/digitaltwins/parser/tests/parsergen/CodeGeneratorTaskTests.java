@@ -9,14 +9,12 @@ import com.azure.digitaltwins.parser.implementation.parsergen.CodeGeneratorTask;
 import com.azure.digitaltwins.parser.implementation.parsergen.MetamodelDigest;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 public class CodeGeneratorTaskTests extends GeneratedCodeCompareBase {
     private static final String TEST_SUB_DIRECTORY = "CodeGeneratorTask";
     private static final String EXPECTED_FILE_DIRECTORY = "Expected";
 
     @Test
-    public void generateAggregateContextClass() throws IOException {
+    public void generateAggregateContextClass() throws Exception {
         final String testSubDirectory = "CodeGeneratorTaskLibrary";
         cleanUpGeneratedCodes(testSubDirectory);
 

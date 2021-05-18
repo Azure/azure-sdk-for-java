@@ -105,14 +105,11 @@ public class NameFormatter {
         return Character.toLowerCase(name.charAt(0)) + name.substring(1);
     }
 
-    private static String camelCaseToUnderScoreUpperCase(String camelCase) {
+    public static String camelCaseToUnderScoreUpperCase(String camelCase) {
         StringBuilder result = new StringBuilder();
         boolean prevUpperCase = false;
         for (int i = 0; i < camelCase.length(); i++) {
             char c = camelCase.charAt(i);
-            if (!Character.isLetter(c)) {
-                return camelCase;
-            }
 
             if (Character.isUpperCase(c)) {
                 if (prevUpperCase) {

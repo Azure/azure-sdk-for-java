@@ -25,6 +25,10 @@ public class DtdlStrings {
     public static final String DEFINING_CLASS = "definingClass";
     public static final String DESCENDANT_CONTROLS = "descendantControls";
     public static final String DICTIONARY_KEY = "dictionaryKey";
+    public static final String DTDL_DATATYPE_LANG_STRING = "langString";
+    public static final String DTDL_DATATYPE_INTEGER = "integer";
+    public static final String DTDL_DATATYPE_STRING = "string";
+    public static final String DTDL_DATATYPE_BOOLEAN = "boolean";
     public static final String DTDL_VERSION = "dtdlVersion";
     public static final String DTDL_VERSIONS = "dtdlVersions";
     public static final String DTDL_VERSIONS_ALLOWING_LOCAL_TERMS = "dtdlVersionsAllowingLocalTerms";

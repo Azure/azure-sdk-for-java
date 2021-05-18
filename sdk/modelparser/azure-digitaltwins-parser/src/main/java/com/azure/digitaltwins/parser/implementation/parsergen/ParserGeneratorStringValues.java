@@ -17,22 +17,22 @@ public final class ParserGeneratorStringValues {
     /**
      * Name to use for the identifier property on a material class.
      */
-    public static final String IDENTIFIER_NAME = "Id";
+    public static final String IDENTIFIER_NAME = "id";
 
     /**
      * Name to use for the defining parent property on a material class.
      */
-    public static final String DEFINING_PARENT_NAME = "ChildOf";
+    public static final String DEFINING_PARENT_NAME = "childOf";
 
     /**
      * Name to use for the defining partition property on a material class.
      */
-    public static final String DEFINING_PARTITION_NAME = "DefinedIn";
+    public static final String DEFINING_PARTITION_NAME = "definedIn";
 
     /**
      * Name of the internal property in obverse classes that holds the DTDL version in which an instance of the class is defined.
      */
-    public static final String DTDL_VERSION_PROPERTY_NAME = "DtdlVersion";
+    public static final String DTDL_VERSION_PROPERTY_NAME = "dtdlVersion";
 
     /**
      * Name of the SupplementalTypes property to generate in augmentable obverse classes.
@@ -90,14 +90,24 @@ public final class ParserGeneratorStringValues {
     public static final String SHADDOW_PROPERTY_PREFIX = "original";
 
     /**
-     * The type of boolean values in the java language.
+     * The type of boolean primitive values in the java language.
      */
     public static final String OBVERSE_TYPE_BOOLEAN = "boolean";
 
     /**
-     * The type of integer values in the java language.
+     * The type of boolean object values in the java language.
+     */
+    public static final String OBVERSE_TYPE_OBJECT_BOOLEAN = "Boolean";
+
+    /**
+     * The type of integer primitive values in the java language.
      */
     public static final String OBVERSE_TYPE_INTEGER = "int";
+
+    /**
+     * The type of integer object values in the java language.
+     */
+    public static final String OBVERSE_TYPE_OBJECT_INTEGER = "Integer";
 
     /**
      * The type of string values in the java language.

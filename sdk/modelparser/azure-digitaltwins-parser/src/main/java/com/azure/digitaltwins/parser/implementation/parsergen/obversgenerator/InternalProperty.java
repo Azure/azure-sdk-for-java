@@ -4,11 +4,11 @@
 package com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
 import com.azure.digitaltwins.parser.implementation.codegen.Access;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaScope;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaSwitch;
 import com.azure.digitaltwins.parser.implementation.codegen.JavaSorted;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaSwitch;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaScope;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
 import com.azure.digitaltwins.parser.implementation.parsergen.MaterialPropertyDigest;
 
 import java.util.HashMap;
@@ -103,7 +103,7 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void addEqualsLine(JavaSorted sorted) {
-        // TODO: implement.
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -111,7 +111,7 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void addHashLine(JavaSorted sorted) {
-        // TODO: implement.
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -119,7 +119,15 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void addMembers(List<Integer> dtdlVersions, JavaClass obverseClass, boolean classIsAugmentable) {
-        // TODO: implement
+        if (!this.getPropertyDigest().isInherited()) {
+            obverseClass.property(
+                Access.PRIVATE,
+                Access.PUBLIC,
+                Access.PRIVATE,
+                this.getPropertyType(),
+                this.getObversePropertyName(),
+                this.description);
+        }
     }
 
     /**
@@ -127,8 +135,7 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public JavaScope iterate(JavaScope outerScope, String varName) {
-        // TODO: implement.
-        return null;
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -144,6 +151,7 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void setValue(int dtdlVersion, JavaScope scope, String infoVar) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -151,6 +159,7 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void initMissingPropertyVariable(int dtdlVersion, JavaScope scope) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -164,6 +173,7 @@ public class InternalProperty extends MaterialProperty {
         boolean classIsPartition,
         String valueCountVar,
         String definedInVar) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -171,6 +181,7 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void addCheckForRequiredProperty(int dtdlVersion, JavaScope scope) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -184,6 +195,7 @@ public class InternalProperty extends MaterialProperty {
         String outlineByPartitionVar,
         String outlineIfIdentifiedVar,
         String contextIdsVar) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -191,6 +203,7 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void addObjectPropertiesToArray(JavaScope scope, String arrayVariable, String referenceVariable) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
     }
 
     /**
@@ -198,52 +211,19 @@ public class InternalProperty extends MaterialProperty {
      */
     @Override
     public void addLiteralPropertiesToArray(JavaScope scope, String arrayVariable) {
-    }
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void addCaseToTrySetObjectPropertySwitch(JavaSwitch switchOnProperty, String valueVar, String keyVar) {
-    }
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void addRestrictions(JavaScope checkRestrictionsMethodBody, int dtdlVersion, String typeName, boolean classIsAugmentable) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addGroupExemplification(
-        int dtdlVersion,
-        JavaScope exemplifyMethodBody,
-        String infoVar,
-        String configuratorVar,
-        String exemplifierVar,
-        String descendantRestrictionsVar,
-        String keyVar,
-        String segVar) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addIndividualExemplification(
-        int dtdlVersion,
-        JavaScope exemplifyMethodBody,
-        String typeName,
-        String className,
-        String kindProperty,
-        String infoVar,
-        String configuratorVar,
-        String exemplifierVar,
-        String descendantRestrictionsVar,
-        String keyVar,
-        List<DescendantControl> descendantControls) {
-    }
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));    }
 }

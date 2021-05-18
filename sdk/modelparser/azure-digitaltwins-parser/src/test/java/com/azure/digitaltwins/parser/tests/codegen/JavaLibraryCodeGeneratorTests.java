@@ -5,7 +5,18 @@ package com.azure.digitaltwins.parser.tests.codegen;
 
 import com.azure.digitaltwins.parser.FileHelpers;
 import com.azure.digitaltwins.parser.GeneratedCodeCompareBase;
-import com.azure.digitaltwins.parser.implementation.codegen.*;
+import com.azure.digitaltwins.parser.implementation.codegen.Access;
+import com.azure.digitaltwins.parser.implementation.codegen.Multiplicity;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaScope;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
+import com.azure.digitaltwins.parser.implementation.codegen.Novelty;
+import com.azure.digitaltwins.parser.implementation.codegen.Mutability;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaMethod;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaConstructor;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaTry;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaLibrary;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaInterface;
+import com.azure.digitaltwins.parser.implementation.codegen.JavaEnum;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -107,8 +118,8 @@ public class JavaLibraryCodeGeneratorTests extends GeneratedCodeCompareBase {
 
         javaConstructor.body(constructorBody);
 
-        javaClass.property(Access.PUBLIC, "String", "propertyNumberOne");
-        javaClass.property(Access.PROTECTED, "int", "propertyNumberTwo");
+        javaClass.property(Access.PUBLIC, Access.PUBLIC, Access.PUBLIC, "String", "propertyNumberOne", null);
+        javaClass.property(Access.PROTECTED, Access.PROTECTED, Access.PROTECTED, "int", "propertyNumberTwo", null);
 
 
         JavaMethod method1 = javaClass.method(Access.PUBLIC, Novelty.NORMAL, javaClass.getType(), "getCurrentObject", Multiplicity.INSTANCE);
