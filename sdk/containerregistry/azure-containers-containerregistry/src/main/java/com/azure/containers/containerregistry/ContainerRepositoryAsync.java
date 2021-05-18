@@ -28,8 +28,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +49,6 @@ public final class ContainerRepositoryAsync {
     private final String endpoint;
     private final String apiVersion;
     private final HttpPipeline httpPipeline;
-    private final String fullyQualifiedName;
 
     private final ClientLogger logger = new ClientLogger(ContainerRepositoryAsync.class);
 
@@ -77,16 +74,6 @@ public final class ContainerRepositoryAsync {
         this.serviceClient = registryImpl.getContainerRegistries();
         this.apiVersion = version;
         this.httpPipeline = httpPipeline;
-
-        try {
-            URL endpointUrl = new URL(endpoint);
-            this.fullyQualifiedName = endpointUrl.getHost() + "/" + this.repositoryName;
-        } catch (MalformedURLException ex) {
-            // This will not happen.
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
-        }
-
-
     }
 
     /**
@@ -103,15 +90,6 @@ public final class ContainerRepositoryAsync {
      */
     public String getRegistryEndpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Gets the fully qualified name for the current instance.
-     * @return Fully qualified name of the current instance.
-     * */
-    public String getFullyQualifiedName() {
-
-        return this.fullyQualifiedName;
     }
 
     /**

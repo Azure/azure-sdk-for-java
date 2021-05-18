@@ -166,19 +166,19 @@ for (String repositoryName : client.listRepositoryNames()) {
 
 <!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L124-L149 -->
 ```Java
-TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+nCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
-ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
-    .endpoint(endpoint)
-    .credential(defaultCredential)
-    .buildAsyncClient();
+ainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
+.endpoint(endpoint)
+.credential(defaultCredential)
+.buildAsyncClient();
 
-final int imagesCountToKeep = 3;
-client.listRepositoryNames()
-    .map(repositoryName -> client.getRepository(repositoryName))
-    .flatMap(repository -> repository.listManifests(
-        ManifestOrderBy.LAST_UPDATED_ON_DESCENDING))
-    .skip(imagesCountToKeep).subscribe(imageManifest -> {
+l int imagesCountToKeep = 3;
+nt.listRepositoryNames()
+.map(repositoryName -> client.getRepository(repositoryName))
+.flatMap(repository -> repository.listManifests(
+    ManifestOrderBy.LAST_UPDATED_ON_DESCENDING))
+.skip(imagesCountToKeep).subscribe(imageManifest -> {
     System.out.printf(String.format("Deleting image with digest %s.%n", imageManifest.getDigest()));
     System.out.printf("    This image has the following tags: ");
 

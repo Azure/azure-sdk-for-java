@@ -58,14 +58,6 @@ public final class ContainerRepository {
     }
 
     /**
-     * Gets the fully qualified name for the current instance.
-     * @return Fully qualified name of the current instance.
-     * */
-    public String getFullyQualifiedName() {
-        return this.asyncClient.getFullyQualifiedName();
-    }
-
-    /**
      * Delete the repository in the Azure Container Registry for the given {@link #getName() repository}.
      *
      * <p><strong>Code Samples</strong></p>

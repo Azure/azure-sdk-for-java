@@ -134,19 +134,19 @@ public class ReadmeSamples {
             .flatMap(repository -> repository.listManifests(
                 ManifestOrderBy.LAST_UPDATED_ON_DESCENDING))
             .skip(imagesCountToKeep).subscribe(imageManifest -> {
-            System.out.printf(String.format("Deleting image with digest %s.%n", imageManifest.getDigest()));
-            System.out.printf("    This image has the following tags: ");
+                System.out.printf(String.format("Deleting image with digest %s.%n", imageManifest.getDigest()));
+                System.out.printf("    This image has the following tags: ");
 
-            for (String tagName : imageManifest.getTags()) {
-                System.out.printf("        %s:%s", imageManifest.getRepositoryName(), tagName);
-            }
+                for (String tagName : imageManifest.getTags()) {
+                    System.out.printf("        %s:%s", imageManifest.getRepositoryName(), tagName);
+                }
 
-            client.getArtifact(
-                imageManifest.getRepositoryName(),
-                imageManifest.getDigest()).delete().subscribe();
-        }, error -> {
-            System.out.println("Failed to delete older images.");
-        });
+                client.getArtifact(
+                    imageManifest.getRepositoryName(),
+                    imageManifest.getDigest()).delete().subscribe();
+            }, error -> {
+                System.out.println("Failed to delete older images.");
+            });
     }
 
     private String tag = "tag";

@@ -26,11 +26,9 @@ import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
-import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.TAG_UNKNOWN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryClientsTestBase {
 
@@ -220,11 +218,6 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         if (getTestMode() != TestMode.PLAYBACK) {
             assertEquals(HELLO_WORLD_REPOSITORY_NAME, asyncClient.getName());
             assertEquals(HELLO_WORLD_REPOSITORY_NAME, client.getName());
-
-            assertTrue(asyncClient.getFullyQualifiedName().startsWith(REGISTRY_NAME));
-            assertTrue(asyncClient.getFullyQualifiedName().endsWith(HELLO_WORLD_REPOSITORY_NAME));
-            assertTrue(client.getFullyQualifiedName().startsWith(REGISTRY_NAME));
-            assertTrue(client.getFullyQualifiedName().endsWith(HELLO_WORLD_REPOSITORY_NAME));
 
             assertEquals(REGISTRY_ENDPOINT, asyncClient.getRegistryEndpoint());
             assertEquals(REGISTRY_ENDPOINT, client.getRegistryEndpoint());
