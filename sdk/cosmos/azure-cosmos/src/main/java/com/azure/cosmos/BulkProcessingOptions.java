@@ -120,13 +120,13 @@ public final class BulkProcessingOptions<TContext> {
             new ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper.CosmosBulkProcessingOptionAccessor() {
 
                 @Override
-                public void setOperationContext(BulkProcessingOptions bulkProcessingOptions,
-                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                public <T> void setOperationContext(BulkProcessingOptions<T> bulkProcessingOptions,
+                                                    OperationContextAndListenerTuple operationContextAndListenerTuple) {
                     bulkProcessingOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
                 }
 
                 @Override
-                public OperationContextAndListenerTuple getOperationContext(BulkProcessingOptions bulkProcessingOptions) {
+                public <T> OperationContextAndListenerTuple getOperationContext(BulkProcessingOptions<T> bulkProcessingOptions) {
                     return bulkProcessingOptions.getOperationContextAndListenerTuple();
                 }
             });

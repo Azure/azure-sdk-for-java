@@ -164,8 +164,8 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosBulkProcessingOptionAccessor {
-            void setOperationContext(BulkProcessingOptions bulkProcessingOptions, OperationContextAndListenerTuple operationContext);
-            OperationContextAndListenerTuple getOperationContext(BulkProcessingOptions bulkProcessingOptions);
+            <T> void setOperationContext(BulkProcessingOptions<T> bulkProcessingOptions, OperationContextAndListenerTuple operationContext);
+            <T> OperationContextAndListenerTuple getOperationContext(BulkProcessingOptions<T> bulkProcessingOptions);
         }
     }
 
