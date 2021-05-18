@@ -19,34 +19,18 @@ public class StringSerializerUnitTests {
     private static DigitalTwinsStringSerializer serializer = new DigitalTwinsStringSerializer(String.class, new ObjectMapper());
 
     @ParameterizedTest
-    @CsvSource({
-        "1234                   , \"1234\"",
-        "false                  , \"false\"",
-        "true                   , \"true\"",
-        "1234 room              , \"1234 room\""
-    })
-    public void serializePrimitiveTokens(String input, String expected) throws IOException {
-        String result  = serializeTheToken(input);
-        Assertions.assertEquals(expected, result);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "{ \"a\" : 2 }          , { \"a\" : 2 }",
-        "{ \"a\" : false }      , { \"a\" : false }",
-        "{ \"a\" : \"false\" }  , { \"a\" : \"false\" }",
-        "{ \"a\" : \"some text\" }  , { \"a\" : \"some text\" }",
-    })
-    public void serializeJsonObjectTokens(String input, String expected) throws IOException {
-        String result  = serializeTheToken(input);
-        Assertions.assertEquals(expected, result);
-    }
-
-    @ParameterizedTest
     @CsvSource(value = {
-        "[ 3, 2 ]          | [ 3, 2 ]",
+        "1234                       | \"1234\"",
+        "false                      | \"false\"",
+        "true                       | \"true\"",
+        "1234 room                  | \"1234 room\"",
+        "{ \"a\" : 2 }              | { \"a\" : 2 }",
+        "{ \"a\" : false }          | { \"a\" : false }",
+        "{ \"a\" : \"false\" }      | { \"a\" : \"false\" }",
+        "{ \"a\" : \"some text\" }  | { \"a\" : \"some text\" }",
+        "[ 3, 2 ]                   | [ 3, 2 ]"
     }, delimiter = '|')
-    public void serializeJsonArrayTokens(String input, String expected) throws IOException {
+    public void serializeStringTokens(String input, String expected) throws IOException {
         String result  = serializeTheToken(input);
         Assertions.assertEquals(expected, result);
     }
