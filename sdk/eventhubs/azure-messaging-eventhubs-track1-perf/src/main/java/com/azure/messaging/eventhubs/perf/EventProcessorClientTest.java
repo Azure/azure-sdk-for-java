@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class EventProcessorClientTest extends ServiceTest {
@@ -75,31 +76,44 @@ public class EventProcessorClientTest extends ServiceTest {
     @Override
     public void run() {
         eventProcessorHost.registerEventProcessorFactory(processorFactory);
-        eventsToReceive.forEach((key, value) -> {
+
+        try {
+            eventsToReceive.forEach((key, value) -> {
+                try {
+                    value.wait();
+                } catch (InterruptedException e) {
+                    System.err.printf("Could not wait on countdown for partitionId: %s. Error: %s%n", key, e);
+                }
+            });
+        } finally {
             try {
-                value.wait();
-            } catch (InterruptedException e) {
-                System.err.printf("Could not wait on countdown for partitionId: %s. Error: %s%n", key, e);
+                eventProcessorHost.unregisterEventProcessor().get();
+            } catch (InterruptedException | ExecutionException e) {
+                System.err.printf("Could not unregister partition processor. Error: %s%n", e);
             }
-        });
+        }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromRunnable(() -> run());
+        final CompletableFuture<Void> execution = CompletableFuture.runAsync(() -> {
+            eventProcessorHost.registerEventProcessorFactory(processorFactory);
+            eventsToReceive.forEach((key, value) -> {
+                try {
+                    value.wait();
+                } catch (InterruptedException e) {
+                    System.err.printf("Could not wait on countdown for partitionId: %s. Error: %s%n", key, e);
+                }
+            });
+        }).handleAsync((empty, error) -> {
+            eventProcessorHost.unregisterEventProcessor();
+            return empty;
+        });
+
+        return Mono.fromCompletionStage(execution);
     }
 
-    @Override
-    public Mono<Void> cleanupAsync() {
-        if (eventProcessorHost != null) {
-            return Mono.whenDelayError(Mono.fromCompletionStage(
-                eventProcessorHost.unregisterEventProcessor()),
-                super.cleanupAsync());
-        }
-        return super.cleanupAsync();
-    }
-
-    Mono<Void> sendMessages(EventHubClient client, String partitionId) {
+    private Mono<Void> sendMessages(EventHubClient client, String partitionId) {
         CompletableFuture<PartitionSender> createSenderFuture;
         try {
             createSenderFuture = client.createPartitionSender(partitionId);
