@@ -105,7 +105,7 @@ public class ReadmeSamples {
         SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> poller = phoneNumberClient
             .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE);
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
-        String searchId;
+        String searchId = "";
 
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
