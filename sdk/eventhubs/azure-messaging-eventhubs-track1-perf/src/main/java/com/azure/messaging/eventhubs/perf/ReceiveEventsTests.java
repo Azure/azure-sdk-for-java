@@ -35,7 +35,6 @@ public class ReceiveEventsTests extends ServiceTest {
         Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
 
-
         if (receiver == null) {
             try {
                 client = createEventHubClient();

@@ -8,6 +8,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Gets partition information.
+ */
 public class GetPartitionInformationTest extends ServiceTest {
     /**
      * Creates an instance of performance test.
