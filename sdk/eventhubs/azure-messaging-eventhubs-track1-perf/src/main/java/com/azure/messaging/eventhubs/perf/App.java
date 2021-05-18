@@ -20,6 +20,7 @@ public class App {
             ReceiveEventsTests.class,
             SendEventDataTest.class,
             SendEventDataBatchTest.class,
+            GetPartitionInformationTest.class,
         };
 
         PerfStressProgram.run(testClasses, args);

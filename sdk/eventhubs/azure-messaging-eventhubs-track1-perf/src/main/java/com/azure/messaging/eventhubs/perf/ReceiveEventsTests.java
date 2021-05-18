@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Semaphore;
 
 /**
  * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
@@ -36,20 +35,15 @@ public class ReceiveEventsTests extends ServiceTest {
         Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
 
-        client = createEventHubClient();
 
-        try {
-            receiver = client.createReceiverSync(options.getConsumerGroup(),
-                options.getPartitionId(), EventPosition.fromStartOfStream());
-        } catch (EventHubException e) {
-            throw new RuntimeException("Unable to create PartitionReceiver.", e);
-        }
-
-        final Semaphore semaphore = new Semaphore(1);
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Unable to acquire initial semaphore.", e);
+        if (receiver == null) {
+            try {
+                client = createEventHubClient();
+                receiver = client.createReceiverSync(options.getConsumerGroup(),
+                    options.getPartitionId(), EventPosition.fromStartOfStream());
+            } catch (EventHubException e) {
+                throw new RuntimeException("Unable to create PartitionReceiver.", e);
+            }
         }
 
         final Iterable<EventData> events;
@@ -64,13 +58,21 @@ public class ReceiveEventsTests extends ServiceTest {
 
     @Override
     public Mono<Void> runAsync() {
+        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
+        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
 
-        clientFuture = createEventHubClientAsync();
-        try {
-            receiverAsync = client.createReceiver(options.getConsumerGroup(),
-                options.getPartitionId(), EventPosition.fromStartOfStream());
-        } catch (EventHubException e) {
-            return Mono.error(new RuntimeException("Unable to create PartitionReceiver future.", e));
+        if (receiverAsync == null) {
+            clientFuture = createEventHubClientAsync();
+            receiverAsync = clientFuture.thenComposeAsync(client -> {
+                try {
+                    return client.createReceiver(options.getConsumerGroup(),
+                        options.getPartitionId(), EventPosition.fromStartOfStream());
+                } catch (EventHubException e) {
+                    final CompletableFuture<PartitionReceiver> future = new CompletableFuture<>();
+                    future.completeExceptionally(new RuntimeException("Unable to create PartitionReceiver", e));
+                    return future;
+                }
+            });
         }
 
         return Mono.fromCompletionStage(

@@ -24,6 +24,10 @@ public class SendEventDataTest extends ServiceTest {
 
     @Override
     public void run() {
+        if (client == null) {
+            client = createEventHubClient();
+        }
+
         for (int i = 0; i < events.size(); i++) {
             final EventData event = events.get(i);
 
@@ -37,6 +41,10 @@ public class SendEventDataTest extends ServiceTest {
 
     @Override
     public Mono<Void> runAsync() {
+        if (clientFuture == null) {
+            clientFuture = createEventHubClientAsync();
+        }
+
         return Mono.fromCompletionStage(clientFuture.thenComposeAsync(client -> {
             final CompletableFuture<?>[] completableFutures = events.stream()
                 .map(client::send)

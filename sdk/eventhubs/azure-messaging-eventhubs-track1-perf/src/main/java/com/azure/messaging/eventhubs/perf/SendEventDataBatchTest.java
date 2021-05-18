@@ -23,7 +23,9 @@ public class SendEventDataBatchTest extends ServiceTest {
 
     @Override
     public void run() {
-        client = createEventHubClient();
+        if (client == null) {
+            client = createEventHubClient();
+        }
 
         final EventDataBatch batch = createBatch(client, options.getCount());
         try {
@@ -35,6 +37,10 @@ public class SendEventDataBatchTest extends ServiceTest {
 
     @Override
     public Mono<Void> runAsync() {
+        if (clientFuture == null) {
+            clientFuture = createEventHubClientAsync();
+        }
+
         return Mono.fromCompletionStage(clientFuture
             .thenComposeAsync(client -> {
                 final EventDataBatch batch = createBatch(client, options.getCount());

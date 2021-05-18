@@ -104,7 +104,8 @@ public class EventProcessorClientTest extends ServiceTest {
         try {
             createSenderFuture = client.createPartitionSender(partitionId);
         } catch (EventHubException e) {
-            createSenderFuture = CompletableFuture.failedFuture(
+            createSenderFuture = new CompletableFuture<>();
+            createSenderFuture.completeExceptionally(
                 new RuntimeException("Unable to create partition sender: " + partitionId, e));
         }
 
