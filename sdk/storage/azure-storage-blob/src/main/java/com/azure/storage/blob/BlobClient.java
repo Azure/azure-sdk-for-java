@@ -26,13 +26,22 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
@@ -366,5 +375,22 @@ public class BlobClient extends BlobClientBase {
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
+    }
+
+    private static String CONN = "DefaultEndpointsProtocol=https;AccountName=kasoboltest;AccountKey=KpxM9LrNFBlIxAdjUdQZ5N6AxT9geKdYV2sMZssnmjQ0tdSXx3QrFm91tQgo91c+4f+ywFeKFyRDTA64x5uvKA==;EndpointSuffix=core.windows.net";
+
+    public static void main(String[] args) throws IOException {
+        BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder()
+            .connectionString(CONN)
+            .buildAsyncClient();
+        BlobContainerAsyncClient container = blobServiceAsyncClient.getBlobContainerAsyncClient("testasynchang");
+
+        //container.create().block();
+
+        BlobAsyncClient blobAsyncClient = container.getBlobAsyncClient(UUID.randomUUID().toString());
+        Path path = Paths.get("C:\\tmp\\10gb\\10GB-blob-upload-stackoverflow.dmp");
+        AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, StandardOpenOption.READ);
+        Flux<ByteBuffer> byteBufferFlux = FluxUtil.readFile(channel);
+        blobAsyncClient.upload(byteBufferFlux, null).block();
     }
 }
