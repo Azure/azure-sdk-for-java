@@ -4,5 +4,5 @@ $PerfJarPath = Get-ChildItem -Path (Join-Path -Path $TargetDirPath -ChildPath "*
 
 Invoke-Expression "& '$JavaPath' -version"
 
-Invoke-Expression "& '$JavaPath' -Xms100m -Xmx100m -jar '$PerfJarPath' uploadoutputstream --warmup 0 --duration 120 --size 1048576000 --sync"
-#Invoke-Expression "& '$JavaPath' -Xms500m -Xmx500m -jar '$PerfJarPath' uploadblob --warmup 0 --duration 120 --size 1048576000"
+Invoke-Expression "& '$JavaPath' -Xms500m -Xmx500m -jar '$PerfJarPath' uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
+Invoke-Expression "& '$JavaPath' -Xms500m -Xmx500m -jar '$PerfJarPath' uploadblob --warmup 0 --duration 1 --size 1048576000"
