@@ -41,7 +41,7 @@ stages:
         - name: azure-storage-perf
           groupId: com.azure
       TestMode: 'LIVE'
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 60
       Location: canadacentral
       Clouds: 'Preview'
       TestStepMavenInputs:
