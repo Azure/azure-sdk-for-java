@@ -99,9 +99,9 @@ public final class ServiceBusMessageBatch {
                 tracerProvider)
                 : serviceBusMessage;
 
-        final int size;
+        final AtomicInteger size = new AtomicInteger();
         try {
-            size = getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty());
+            size.set(getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty()));
         } catch (BufferOverflowException exception) {
             final RuntimeException ex = new ServiceBusException(
                     new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
@@ -111,8 +111,8 @@ public final class ServiceBusMessageBatch {
             throw logger.logExceptionAsWarning(ex);
         }
 
-        if (this.sizeInBytes.addAndGet(size) > this.maxMessageSize) {
-            this.sizeInBytes.addAndGet(-1 * size);
+        if (this.sizeInBytes.addAndGet(size.get()) > this.maxMessageSize) {
+            this.sizeInBytes.addAndGet(-1 * size.get());
             return false;
         }
 
