@@ -110,7 +110,7 @@ public class KeyVaultProperties {
          */
         private String disableHostnameVerification;
         /**
-         * To enable auto refresh certificate, set certificatesRefreshInterval as refresh interval.
+         * To enable auto refresh certificate, set certificatesRefreshInterval as refresh interval. The unit of time is milliseconds.
          */
         private long certificatesRefreshInterval;
 

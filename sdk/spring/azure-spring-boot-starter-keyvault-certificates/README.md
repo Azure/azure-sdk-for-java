@@ -336,8 +336,8 @@ KeyVaultCertificates.refreshCertsInfo();
 
 ### Refresh certificate
 
-This starter allows you to refresh automatically when the certificate on the portal is modified,
-add the following configuration.
+This starter allows you to refresh automatically when the certificate on the KeyVault is modified,
+add the following configuration. The unit of time is milliseconds.
 ```yaml
 azure:
   keyvault:
