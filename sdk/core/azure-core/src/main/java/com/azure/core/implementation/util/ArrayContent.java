@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.RequestContent;
 import com.azure.core.util.RequestOutbound;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,7 +31,7 @@ public final class ArrayContent implements RequestContent {
      * @param length The length of the content.
      */
     public ArrayContent(byte[] content, int offset, int length) {
-        this.content = content;
+        this.content = CoreUtils.clone(content);
         this.offset = offset;
         this.length = length;
     }

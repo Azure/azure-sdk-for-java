@@ -19,6 +19,7 @@ public final class ByteBufferContent implements RequestContent {
     private final ClientLogger logger = new ClientLogger(ByteBufferContent.class);
 
     private final ByteBuffer byteBuffer;
+    private final long length;
 
     /**
      * Creates a new instance of {@link ByteBufferContent}.
@@ -27,6 +28,7 @@ public final class ByteBufferContent implements RequestContent {
      */
     public ByteBufferContent(ByteBuffer byteBuffer) {
         this.byteBuffer = byteBuffer;
+        this.length = byteBuffer.remaining();
     }
 
     @Override
@@ -46,6 +48,6 @@ public final class ByteBufferContent implements RequestContent {
 
     @Override
     public Long getLength() {
-        return (long) byteBuffer.remaining();
+        return length;
     }
 }

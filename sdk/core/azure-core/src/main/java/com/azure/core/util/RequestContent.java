@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,6 +64,7 @@ public interface RequestContent {
      *
      * @param bytes The bytes that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code bytes} is null.
      */
     static RequestContent create(byte[] bytes) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
@@ -76,6 +78,7 @@ public interface RequestContent {
      * @param offset Offset in the bytes where the data will begin.
      * @param length Length of the data.
      * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code bytes} is null.
      */
     static RequestContent create(byte[] bytes, int offset, int length) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
@@ -84,11 +87,16 @@ public interface RequestContent {
 
     /**
      * Creates a {@link RequestContent} that uses {@link String} as its data.
+     * <p>
+     * The passed {@link String} is converted using {@link StandardCharsets#UTF_8}, if another character set is required
+     * use {@link #create(byte[])} and pass {@link String#getBytes(Charset)} using the required character set.
      *
      * @param content The string that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code content} is null.
      */
     static RequestContent create(String content) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
         return create(content.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -97,8 +105,10 @@ public interface RequestContent {
      *
      * @param content The {@link BinaryData} that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code content} is null.
      */
     static RequestContent create(BinaryData content) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
         return new ByteBufferContent(content.toByteBuffer());
     }
 
@@ -107,8 +117,11 @@ public interface RequestContent {
      *
      * @param file The {@link Path} that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws UncheckedIOException If the size of the {@code file} cannot be determined.
      */
     static RequestContent create(Path file) {
+        Objects.requireNonNull(file, "'file' cannot be null.");
         try {
             return create(file, 0, Files.size(file));
         } catch (IOException e) {
@@ -123,8 +136,10 @@ public interface RequestContent {
      * @param offset Offset in the {@link Path} where the data will begin.
      * @param length Length of the data.
      * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code file} is null.
      */
     static RequestContent create(Path file, long offset, long length) {
+        Objects.requireNonNull(file, "'file' cannot be null.");
         return new FileContent(file, offset, length);
     }
 
@@ -146,8 +161,10 @@ public interface RequestContent {
      * @param serializable An {@link Object} that will be serialized to be the {@link RequestContent} data.
      * @param serializer The {@link ObjectSerializer} that will serialize the {@link Object}.
      * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code serializer} is null.
      */
     static RequestContent create(Object serializable, ObjectSerializer serializer) {
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         return new SerializableContent(serializable, serializer);
     }
 }
