@@ -386,7 +386,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccount.DefinitionStages.WithCreate withInfrastructureEncryption() {
+    public StorageAccountImpl withInfrastructureEncryption() {
         this.encryptionHelper.withInfrastructureEncryption();
         return this;
     }
@@ -422,13 +422,13 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccount.DefinitionStages.WithCreate withTableEncryption() {
+    public StorageAccountImpl withTableEncryption() {
         this.encryptionHelper.withTableEncryption();
         return this;
     }
 
     @Override
-    public StorageAccount.DefinitionStages.WithCreate withQueueEncryption() {
+    public StorageAccountImpl withQueueEncryption() {
         this.encryptionHelper.withQueueEncryption();
         return this;
     }
