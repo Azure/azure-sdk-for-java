@@ -381,9 +381,9 @@ springboot_2_3_com.microsoft.azure:azure-client-runtime;1.7.3
 springboot_2_3_com.microsoft.azure:azure-core;0.9.8
 springboot_2_3_com.microsoft.azure:azure-cosmos;3.7.3
 springboot_2_3_com.microsoft.azure:azure-keyvault-cryptography;1.2.2
-springboot_2_3_com.microsoft.azure:azure-media;0.9.8
+# springboot_2_3_com.microsoft.azure:azure-media;0.9.8
 springboot_2_3_com.microsoft.azure:azure-servicebus;3.4.0
-springboot_2_3_com.microsoft.azure:azure-servicebus-jms;0.0.7
+# springboot_2_3_com.microsoft.azure:azure-servicebus-jms;0.0.7
 springboot_2_3_com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 springboot_2_3_com.microsoft.rest:client-runtime;1.7.4
 springboot_2_3_com.microsoft.rest.v2:client-runtime;2.1.1
