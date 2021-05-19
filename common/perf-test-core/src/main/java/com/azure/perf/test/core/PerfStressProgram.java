@@ -221,6 +221,9 @@ public class PerfStressProgram {
         System.out.println("=== Results ===");
 
         int totalOperations = getCompletedOperations();
+        if (totalOperations == 0) {
+            throw new IllegalStateException("Zero operations has been completed");
+        }
         double operationsPerSecond = getOperationsPerSecond();
         double secondsPerOperation = 1 / operationsPerSecond;
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
@@ -249,7 +252,7 @@ public class PerfStressProgram {
                 completedOperations[index]++;
                 lastCompletionNanoTimes[index] = System.nanoTime() - startNanoTime;
             })
-            .take(Duration.ofNanos(endNanoTime - startNanoTime))
+            .takeWhile(i -> System.nanoTime() < endNanoTime)
             .then();
     }
 
