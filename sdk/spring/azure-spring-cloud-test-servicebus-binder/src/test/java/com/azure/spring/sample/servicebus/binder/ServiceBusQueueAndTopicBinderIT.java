@@ -17,9 +17,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = { ServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
     ServiceBusQueueAndTopicBinderIT.TestTopicConfig.class })
@@ -41,6 +45,8 @@ public class ServiceBusQueueAndTopicBinderIT {
     @EnableAutoConfiguration
     public static class TestQueueConfig {
 
+        public static CountDownLatch latch = new CountDownLatch(2);
+
         @Bean
         public Sinks.Many<Message<String>> manyQueue() {
             return Sinks.many().unicast().onBackpressureBuffer();
@@ -59,12 +65,15 @@ public class ServiceBusQueueAndTopicBinderIT {
                 LOGGER.info("New message received: '{}'", message);
                 Assertions.assertEquals(message.getPayload(), ServiceBusQueueAndTopicBinderIT.message);
                 count.addAndGet(1);
+                latch.countDown();
             };
         }
     }
 
     @EnableAutoConfiguration
     public static class TestTopicConfig {
+
+        public static CountDownLatch latch = new CountDownLatch(1);
 
         @Bean
         public Sinks.Many<Message<String>> manyTopic() {
@@ -81,23 +90,28 @@ public class ServiceBusQueueAndTopicBinderIT {
         @Bean
         public Consumer<Message<String>> topicConsume() {
             return message -> {
+                try {
+                    TestQueueConfig.latch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 LOGGER.info("New message received: '{}'", message);
                 Assertions.assertEquals(message.getPayload(), ServiceBusQueueAndTopicBinderIT.message);
                 count.addAndGet(1);
+                this.latch.countDown();
             };
         }
     }
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
-        Thread.sleep(1500);
         GenericMessage<String> genericMessage = new GenericMessage<>(message);
         manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
-        Thread.sleep(5000);
-        Assertions.assertEquals(1, count.get());
-        Thread.sleep(1500);
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
-        Thread.sleep(5000);
+        TestQueueConfig.latch.await(3, TimeUnit.SECONDS);
+        Assertions.assertEquals(1, count.get());
+        TestQueueConfig.latch.countDown();
+        assertThat(TestTopicConfig.latch.await(5, TimeUnit.SECONDS)).isTrue();
         Assertions.assertEquals(2, count.get());
     }
 
