@@ -14,6 +14,12 @@
 ### Key Bug Fixed
 - Fixed `NullPointerException` for passing value `null` to options tasks in the `TextAnalyticsActions`.
 
+## 5.0.6 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
+
 ## 5.1.0-beta.6 (2021-04-06)
 ### Breaking Changes
 - Removed the input parameter `Context` from non-max-overload healthcare synchronous API, `beginAnalyzeHealthcareEntities()`.
