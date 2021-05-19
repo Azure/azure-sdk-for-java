@@ -1968,7 +1968,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
 
     // Healthcare LRO
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1987,7 +1986,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         }, 10);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2018,7 +2016,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesEmojiUnicodeCodePoint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2046,7 +2043,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2072,7 +2068,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
@@ -2099,7 +2094,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2126,7 +2120,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
@@ -2154,7 +2147,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesDiacriticsNfc(HttpClient httpClient,
@@ -2182,7 +2174,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesDiacriticsNfd(HttpClient httpClient,
@@ -2210,7 +2201,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2237,7 +2227,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2291,7 +2280,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2319,7 +2307,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     // Healthcare LRO - Cancellation
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2390,40 +2377,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify());
-    }
-
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        analyzeBatchActionsAllFailedRunner(
-            (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
-                    client.beginAnalyzeActions(documents, tasks,
-                        new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
-
-                validateAnalyzeBatchActionsResultList(false, false,
-                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(asList(
-                            getExpectedRecognizeEntitiesActionResult(true, TIME_NOW, null,
-                                getActionError(INVALID_REQUEST, ENTITY_TASK, "0")))),
-                        IterableStream.of(asList(
-                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
-                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
-                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
-                                getActionError(INVALID_REQUEST, PII_TASK, "1")))),
-                        IterableStream.of(asList(
-                            getExpectedExtractKeyPhrasesActionResult(true, TIME_NOW, null,
-                                getActionError(INVALID_REQUEST, KEY_PHRASES_TASK, "0")))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()))),
-                    result.toStream().collect(Collectors.toList()));
-            }
-        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
