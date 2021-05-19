@@ -106,6 +106,10 @@ class AnalyzeActionsAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
     private final TextAnalyticsClientImpl service;
+    private static final Pattern PATTERN;
+    static {
+        PATTERN = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
+    }
 
     AnalyzeActionsAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
@@ -196,11 +200,8 @@ class AnalyzeActionsAsyncClient {
                         }
                         final EntitiesTask entitiesTask = new EntitiesTask();
                         entitiesTask.setParameters(
-                            // TODO: currently, service does not set their default values for model version, we
-                            // temporally set the default value to 'latest' until service correct it.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntitiesTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                                 .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType())));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
@@ -213,10 +214,7 @@ class AnalyzeActionsAsyncClient {
                         final PiiTask piiTask = new PiiTask();
                         piiTask.setParameters(
                             new PiiTaskParameters()
-                                // TODO: currently, service does not set their default values for model version, we
-                                // temporally set the default value to 'latest' until service correct it.
-                                // https://github.com/Azure/azure-sdk-for-java/issues/17625
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
@@ -233,11 +231,8 @@ class AnalyzeActionsAsyncClient {
                         }
                         final KeyPhrasesTask keyPhrasesTask = new KeyPhrasesTask();
                         keyPhrasesTask.setParameters(
-                            // TODO: currently, service does not set their default values for model version, we
-                            // temporally set the default value to 'latest' until service correct it.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new KeyPhrasesTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                         );
                         return keyPhrasesTask;
                     }).collect(Collectors.toList()))
@@ -249,11 +244,8 @@ class AnalyzeActionsAsyncClient {
                         }
                         final EntityLinkingTask entityLinkingTask = new EntityLinkingTask();
                         entityLinkingTask.setParameters(
-                            // TODO: currently, service does not set their default values for model version, we
-                            // temporally set the default value to 'latest' until service correct it.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new EntityLinkingTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                         );
                         return entityLinkingTask;
                     }).collect(Collectors.toList()))
@@ -265,11 +257,8 @@ class AnalyzeActionsAsyncClient {
                         }
                         final SentimentAnalysisTask sentimentAnalysisTask = new SentimentAnalysisTask();
                         sentimentAnalysisTask.setParameters(
-                            // TODO: currently, service does not set their default values for model version, we
-                            // temporally set the default value to 'latest' until service correct it.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
                             new SentimentAnalysisTaskParameters()
-                                .setModelVersion(getNotNullModelVersion(action.getModelVersion()))
+                                .setModelVersion(action.getModelVersion())
                         );
                         return sentimentAnalysisTask;
                     }).collect(Collectors.toList()));
@@ -568,18 +557,13 @@ class AnalyzeActionsAsyncClient {
         return options == null ? new AnalyzeActionsOptions() : options;
     }
 
-    private String getNotNullModelVersion(String modelVersion) {
-        return modelVersion == null ? "latest" : modelVersion;
-    }
-
     private String[] parseActionErrorTarget(String targetReference) {
         if (CoreUtils.isNullOrEmpty(targetReference)) {
             throw logger.logExceptionAsError(new RuntimeException(
                 "Expected an error with a target field referencing an action but did not get one"));
         }
         // action could be failed and the target reference is "#/tasks/keyPhraseExtractionTasks/0";
-        final Pattern pattern = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
-        final Matcher matcher = pattern.matcher(targetReference);
+        final Matcher matcher = PATTERN.matcher(targetReference);
         String[] taskNameIdPair = new String[2];
         while (matcher.find()) {
             taskNameIdPair[0] = matcher.group(1);

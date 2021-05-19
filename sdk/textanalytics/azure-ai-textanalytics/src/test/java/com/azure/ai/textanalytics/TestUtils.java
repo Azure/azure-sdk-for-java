@@ -293,7 +293,7 @@ final class TestUtils {
      */
     static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntities() {
         PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
-            "********* employee with ssn *********** is using our awesome API's.", null);
+            "********* ******** with ssn *********** is using our awesome API's.", null);
         PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList2()),
             "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.", null);
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
@@ -312,7 +312,7 @@ final class TestUtils {
      */
     static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntitiesForDomainFilter() {
         PiiEntityCollection piiEntityCollection = new PiiEntityCollection(
-            new IterableStream<>(getPiiEntitiesList1()),
+            new IterableStream<>(getPiiEntitiesList1ForDomainFilter()),
             "********* employee with ssn *********** is using our awesome API's.", null);
         PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(
             new IterableStream<>(Arrays.asList(getPiiEntitiesList2().get(0), getPiiEntitiesList2().get(1), getPiiEntitiesList2().get(2))),
@@ -336,16 +336,24 @@ final class TestUtils {
         PiiEntityPropertiesHelper.setText(piiEntity0, "Microsoft");
         PiiEntityPropertiesHelper.setCategory(piiEntity0, PiiEntityCategory.ORGANIZATION);
         PiiEntityPropertiesHelper.setSubcategory(piiEntity0, null);
-        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity0, 1.0);
         PiiEntityPropertiesHelper.setOffset(piiEntity0, 0);
 
         final PiiEntity piiEntity1 = new PiiEntity();
-        PiiEntityPropertiesHelper.setText(piiEntity1, "859-98-0987");
-        PiiEntityPropertiesHelper.setCategory(piiEntity1, PiiEntityCategory.USSOCIAL_SECURITY_NUMBER);
+        PiiEntityPropertiesHelper.setText(piiEntity1, "employee");
+        PiiEntityPropertiesHelper.setCategory(piiEntity1, PiiEntityCategory.fromString("PersonType"));
         PiiEntityPropertiesHelper.setSubcategory(piiEntity1, null);
-        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity1, 0.65);
-        PiiEntityPropertiesHelper.setOffset(piiEntity1, 28);
-        return asList(piiEntity0, piiEntity1);
+        PiiEntityPropertiesHelper.setOffset(piiEntity1, 10);
+
+        final PiiEntity piiEntity2 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity2, "859-98-0987");
+        PiiEntityPropertiesHelper.setCategory(piiEntity2, PiiEntityCategory.USSOCIAL_SECURITY_NUMBER);
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity2, null);
+        PiiEntityPropertiesHelper.setOffset(piiEntity2, 28);
+        return asList(piiEntity0, piiEntity1, piiEntity2);
+    }
+
+    static List<PiiEntity> getPiiEntitiesList1ForDomainFilter() {
+        return Arrays.asList(getPiiEntitiesList1().get(0), getPiiEntitiesList1().get(2));
     }
 
     /**
@@ -382,7 +390,7 @@ final class TestUtils {
      */
     static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntitiesForCategoriesFilter() {
         PiiEntityCollection piiEntityCollection = new PiiEntityCollection(
-            new IterableStream<>(asList(getPiiEntitiesList1().get(1))),
+            new IterableStream<>(asList(getPiiEntitiesList1().get(2))),
             "Microsoft employee with ssn *********** is using our awesome API's.", null);
         PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(
             new IterableStream<>(asList(getPiiEntitiesList2().get(1))),
@@ -899,14 +907,20 @@ final class TestUtils {
      * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
      */
     static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollection() {
+        final PiiEntity piiEntity0 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity0, "last week");
+        PiiEntityPropertiesHelper.setCategory(piiEntity0, PiiEntityCategory.fromString("DateTime"));
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity0, "DateRange");
+        PiiEntityPropertiesHelper.setOffset(piiEntity0, 34);
+
         return new RecognizePiiEntitiesResultCollection(
             asList(
                 new RecognizePiiEntitiesResult("0", new TextDocumentStatistics(44, 1), null,
-                    new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
-                        "I had a wonderful trip to Seattle last week.", null)),
+                    new PiiEntityCollection(new IterableStream<>(Arrays.asList(piiEntity0)),
+                        "I had a wonderful trip to Seattle *********.", null)),
                 new RecognizePiiEntitiesResult("1", new TextDocumentStatistics(67, 1), null,
                     new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
-                        "********* employee with ssn *********** is using our awesome API's.", null))),
+                        "********* ******** with ssn *********** is using our awesome API's.", null))),
             "2020-07-01",
             new TextDocumentBatchStatistics(2, 2, 0, 2)
         );
@@ -1046,7 +1060,7 @@ final class TestUtils {
         for (int i = startIndex; i < startIndex + documentCount; i++) {
             recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(Integer.toString(i), null, null,
                 new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
-                    "********* employee with ssn *********** is using our awesome API's.", null)));
+                    "********* ******** with ssn *********** is using our awesome API's.", null)));
         }
         return new RecognizePiiEntitiesResultCollection(recognizePiiEntitiesResults, "2020-07-01",
             new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount)

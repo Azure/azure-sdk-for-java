@@ -1,16 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.textanalytics.util;
+package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentiment;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Unit tests for Target relation's reference parse
  */
 public class ReferencePointerParseTest {
-
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @AfterEach
-    void teardown() {
-        Mockito.framework().clearInlineMocks();
-    }
-
     private static final String INVALID_POINTER_EXCEPTION = "'%s' is not a valid assessment pointer.";
     private static final String INVALID_DOCUMENT_INDEX_EXCEPTION = "Invalid document index '%s' in '%s'.";
     private static final String INVALID_SENTENCE_INDEX_EXCEPTION = "Invalid sentence index '%s' in '%s'.";

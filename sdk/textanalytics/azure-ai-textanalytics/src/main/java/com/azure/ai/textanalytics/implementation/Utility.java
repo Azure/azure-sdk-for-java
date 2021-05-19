@@ -108,10 +108,19 @@ import java.util.stream.Collectors;
  * Utility method class.
  */
 public final class Utility {
-    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    private static final int NEUTRAL_SCORE_ZERO = 0;
     // default time interval for polling
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+
+    private static final int NEUTRAL_SCORE_ZERO = 0;
+    private static final String DOCUMENT_SENTENCES_ASSESSMENTS_REG_EXP =
+        "#/documents/(\\d+)/sentences/(\\d+)/assessments/(\\d+)";
+    private static final Pattern PATTERN;
+
+    static {
+        PATTERN = Pattern.compile(DOCUMENT_SENTENCES_ASSESSMENTS_REG_EXP);
+    }
 
     private Utility() {
     }
@@ -874,9 +883,7 @@ public final class Utility {
         // The pattern always start with character '#', the assessment index will existing in specified sentence, which
         // is under specified document.
         // example: #/documents/0/sentences/0/assessments/0
-        final String patternRegex = "#/documents/(\\d+)/sentences/(\\d+)/assessments/(\\d+)";
-        final Pattern pattern = Pattern.compile(patternRegex);
-        final Matcher matcher = pattern.matcher(assessmentPointer);
+        final Matcher matcher = PATTERN.matcher(assessmentPointer);
         final boolean isMatched = matcher.find();
 
         // The first index represents the document index, second one represents the sentence index,
@@ -884,10 +891,9 @@ public final class Utility {
         final int[] result = new int[3];
 
         if (isMatched) {
-            String[] segments = assessmentPointer.split("/");
-            result[0] = Integer.parseInt(segments[2]);
-            result[1] = Integer.parseInt(segments[4]);
-            result[2] = Integer.parseInt(segments[6]);
+            result[0] = Integer.parseInt(matcher.group(1));
+            result[1] = Integer.parseInt(matcher.group(2));
+            result[2] = Integer.parseInt(matcher.group(3));
         } else {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 String.format("'%s' is not a valid assessment pointer.", assessmentPointer)));

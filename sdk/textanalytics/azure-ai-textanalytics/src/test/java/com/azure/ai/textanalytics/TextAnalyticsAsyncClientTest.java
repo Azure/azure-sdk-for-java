@@ -85,6 +85,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizePiiEntiti
 import static com.azure.ai.textanalytics.TestUtils.getExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
+import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1ForDomainFilter;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResultCollection;
@@ -588,7 +589,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("service bug: employee should not be redacted. https://github.com/Azure/azure-sdk-for-java/issues/21642")
     public void recognizePiiEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizePiiSingleDocumentRunner(document ->
@@ -849,7 +849,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizePiiDomainFilterRunner((document, options) ->
             StepVerifier.create(client.recognizePiiEntities(document, "en", options))
-                .assertNext(response -> validatePiiEntities(getPiiEntitiesList1(),
+                .assertNext(response -> validatePiiEntities(getPiiEntitiesList1ForDomainFilter(),
                     response.stream().collect(Collectors.toList())))
                 .verifyComplete());
     }
@@ -892,6 +892,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19568")
     public void recognizePiiEntityWithCategoriesFilterFromOtherResult(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
@@ -909,7 +910,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                                 }
                             }));
                             validatePiiEntitiesResultCollection(false,
-                                getExpectedBatchPiiEntities(), resultCollection);
+                                getExpectedBatchPiiEntitiesForCategoriesFilter(), resultCollection);
                         })
                     .verifyComplete();
 
@@ -2394,37 +2395,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeActionsPartialCompleted(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        analyzeBatchActionsPartialCompletedRunner(
-            (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
-                    client.beginAnalyzeActions(documents, tasks,
-                        new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
-                validateAnalyzeBatchActionsResultList(false, false,
-                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(asList(
-                            getExpectedRecognizePiiEntitiesActionResult(true, TIME_NOW, null,
-                                getActionError(INVALID_REQUEST, PII_TASK, "0")),
-                            getExpectedRecognizePiiEntitiesActionResult(
-                                false, TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
-                        IterableStream.of(asList(
-                            getExpectedExtractKeyPhrasesActionResult(
-                                false, TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()))),
-                    result.toStream().collect(Collectors.toList()));
-            }
-        );
-    }
-
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21191")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsAllFailed(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchActionsAllFailedRunner(
@@ -2458,6 +2428,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/19568")
     public void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
@@ -2473,12 +2444,36 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
-                        // TODO: Organization "Microsoft" should be displayed since it is not a SSN.
-                        // Replace getExpectedBatchPiiEntitiesForCategoriesFilter() to getExpectedBatchPiiEntities()
-                        // instead when the issue resolved.
-                        // Issue: https://github.com/Azure/azure-sdk-for-java/issues/19568
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
-                            false, TIME_NOW, getExpectedBatchPiiEntities(), null))),
+                            false, TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()))),
+                    result.toStream().collect(Collectors.toList()));
+            }
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://msazure.visualstudio.com/Cognitive%20Services/_workitems/edit/9956158")
+    public void analyzePiiEntityRecognitionWithDomainFilters(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzePiiEntityRecognitionWithDomainFiltersRunner(
+            (documents, tasks) -> {
+                SyncPoller<AnalyzeActionsOperationDetail, PagedFlux<AnalyzeActionsResult>> syncPoller =
+                    client.beginAnalyzeActions(documents, tasks,
+                        new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+                syncPoller = setPollInterval(syncPoller);
+                syncPoller.waitForCompletion();
+                PagedFlux<AnalyzeActionsResult> result = syncPoller.getFinalResult();
+
+                validateAnalyzeBatchActionsResultList(false, false,
+                    Arrays.asList(getExpectedAnalyzeBatchActionsResult(
+                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
+                            false, TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()))),
