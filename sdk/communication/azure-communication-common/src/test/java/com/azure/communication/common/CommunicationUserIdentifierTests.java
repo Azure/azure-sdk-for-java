@@ -20,7 +20,7 @@ public class CommunicationUserIdentifierTests {
     }
 
     @Test
-    public void compareEqualUnknownIdentifiers() {
+    public void compareEqualUserIdentifiers() {
         CommunicationUserIdentifier identifier1 =  new CommunicationUserIdentifier(id);
         CommunicationUserIdentifier identifier2 =  new CommunicationUserIdentifier(id);
 
@@ -29,7 +29,7 @@ public class CommunicationUserIdentifierTests {
     }
 
     @Test
-    public void compareWithNonUnknownIdentifier() {
+    public void compareWithNonUserIdentifier() {
         CommunicationUserIdentifier identifier1 =  new CommunicationUserIdentifier(id);
         Object identifier2 =  new Object();
 
