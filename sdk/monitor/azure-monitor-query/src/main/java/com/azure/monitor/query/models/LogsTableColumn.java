@@ -4,15 +4,16 @@
 package com.azure.monitor.query.models;
 
 /**
- *
+ * Represents a column in {@link LogsTable}.
  */
 public final class LogsTableColumn {
     private final String columnName;
     private final ColumnDataType columnType;
 
     /**
-     * @param columnName
-     * @param columnType
+     * Creates a column in {@link LogsTable}.
+     * @param columnName The name of the column.
+     * @param columnType The data type of the value in this column.
      */
     public LogsTableColumn(String columnName, ColumnDataType columnType) {
         this.columnName = columnName;
@@ -20,14 +21,16 @@ public final class LogsTableColumn {
     }
 
     /**
-     * @return
+     * Returns the name of the column.
+     * @return the name of the column.
      */
     public String getColumnName() {
         return columnName;
     }
 
     /**
-     * @return
+     * Returns the data type of the value in this column.
+     * @return the data type of the value in this column.
      */
     public ColumnDataType getColumnType() {
         return columnType;

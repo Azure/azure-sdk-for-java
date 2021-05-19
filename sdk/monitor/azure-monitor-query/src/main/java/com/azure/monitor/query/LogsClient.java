@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.monitor.query.base.LogsBaseClient;
 import com.azure.monitor.query.models.LogsQueryBatch;
 import com.azure.monitor.query.models.LogsQueryBatchResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
@@ -18,23 +17,27 @@ import com.azure.monitor.query.models.QueryTimeSpan;
 import java.util.List;
 
 /**
- *
+ * The synchronous client for querying Azure Monitor logs.
  */
 @ServiceClient(builder = LogsClientBuilder.class)
 public final class LogsClient {
 
     private final LogsAsyncClient asyncClient;
 
+    /**
+     * Constructor that has the async client to make sync over async service calls.
+     * @param asyncClient The asynchronous client.
+     */
     LogsClient(LogsAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 
     /**
-     * @param workspaceId
-     * @param query
-     * @param timeSpan
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * @param workspaceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeSpan The time period for which the logs should be looked up.
+     * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsQueryResult queryLogs(String workspaceId, String query, QueryTimeSpan timeSpan) {
@@ -42,10 +45,10 @@ public final class LogsClient {
     }
 
     /**
-     * @param options
-     * @param context
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * @param options The query options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsQueryResult> queryLogsWithResponse(LogsQueryOptions options, Context context) {
@@ -53,11 +56,11 @@ public final class LogsClient {
     }
 
     /**
-     * @param workspaceId
-     * @param queries
-     * @param timeSpan
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given batch of queries in the specified workspaceId.
+     * @param workspaceId The workspaceId where the batch of queries should be executed.
+     * @param queries A batch of Kusto queries.
+     * @param timeSpan The time period for which the logs should be looked up.
+     * @return A collection of query results corresponding to the input batch of queries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsQueryBatchResultCollection queryLogsBatch(String workspaceId, List<String> queries, QueryTimeSpan timeSpan) {
@@ -65,10 +68,10 @@ public final class LogsClient {
     }
 
     /**
-     * @param logsQueryBatch
-     * @param context
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given batch of queries.
+     * @param logsQueryBatch {@link LogsQueryBatch} containing a batch of queries.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A collection of query results corresponding to the input batch of queries.@return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsQueryBatchResultCollection> queryLogsBatchWithResponse(LogsQueryBatch logsQueryBatch, Context context) {

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- *
+ * The metrics result of a query.
  */
 @Immutable
 public final class Metrics {
@@ -19,11 +19,12 @@ public final class Metrics {
     private final List<MetricsTimeSeriesElement> timeSeries;
 
     /**
-     * @param id
-     * @param type
-     * @param unit
-     * @param metricsName
-     * @param timeseries
+     * Creates an instance of the result data of a query.
+     * @param id The metrics id.
+     * @param type The resource type of the metrics resource.
+     * @param unit The metrics unit.
+     * @param metricsName The name of the metrics.
+     * @param timeseries The time series returned when the query is performed.
      */
     public Metrics(String id, String type, MetricsUnit unit,
                    String metricsName, List<MetricsTimeSeriesElement> timeseries) {
@@ -36,35 +37,40 @@ public final class Metrics {
 
 
     /**
-     * @return
+     * Returns the name of the metrics.
+     * @return the name of the metrics.
      */
     public String getMetricsName() {
         return metricsName;
     }
 
     /**
-     * @return
+     * Returns the metrics id.
+     * @return the metrics id.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @return
+     * Returns the resource type of the metric resource.
+     * @return the resource type of the metric resource.
      */
     public String getType() {
         return type;
     }
 
     /**
-     * @return
+     * Returns the metrics unit of the metrics.
+     * @return the unit of the metrics.
      */
     public MetricsUnit getUnit() {
         return unit;
     }
 
     /**
-     * @return
+     * Returns the time series returned when a data query is performed.
+     * @return the time series returned when a data query is performed.
      */
     public List<MetricsTimeSeriesElement> getTimeSeries() {
         return timeSeries;

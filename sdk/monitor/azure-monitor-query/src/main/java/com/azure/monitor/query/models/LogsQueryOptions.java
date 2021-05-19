@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- *
+ * The options type to configure the logs query
  */
 @Fluent
 public final class LogsQueryOptions {
@@ -26,9 +26,10 @@ public final class LogsQueryOptions {
     private List<String> qualifiedWorkspaceNames;
 
     /**
-     * @param workspaceId
-     * @param query
-     * @param timeSpan
+     * Creates an instance of {@link LogsQueryOptions} with required params.
+     * @param workspaceId The workspaceId  on which the query is executed.
+     * @param query The Kusto query.
+     * @param timeSpan The time period for which the logs should be queried.
      */
     public LogsQueryOptions(String workspaceId, String query, QueryTimeSpan timeSpan) {
         this.workspaceId = workspaceId;
@@ -37,16 +38,17 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the server timeout for this query.
+     * @return The server timeout duration.
      */
     public Duration getServerTimeout() {
         return serverTimeout;
     }
 
     /**
-     * @param serverTimeout
-     *
-     * @return
+     * Sets the server timeout for this query.
+     * @param serverTimeout The server timeout duration.
+     * @return The updated options instance.
      */
     public LogsQueryOptions setServerTimeout(Duration serverTimeout) {
         this.serverTimeout = serverTimeout;
@@ -54,16 +56,17 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the flag that indicates if the query should return rendering details.
+     * @return The flag that indicates if the query should return rendering details.
      */
     public boolean isIncludeRendering() {
         return includeRendering;
     }
 
     /**
-     * @param includeRendering
-     *
-     * @return
+     * Sets the flag that indicates if the query should return rendering details.
+     * @param includeRendering The flag that indicates if the query should return rendering details.
+     * @return The updated options instance.
      */
     public LogsQueryOptions setIncludeRendering(boolean includeRendering) {
         this.includeRendering = includeRendering;
@@ -71,16 +74,17 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the flag that indicates if the query should include statistics.
+     * @return the flag that indicates if the query should include statistics.
      */
     public boolean isIncludeStatistics() {
         return includeStatistics;
     }
 
     /**
-     * @param includeStatistics
-     *
-     * @return
+     * Sets the flag that indicates if the query should include statistics.
+     * @param includeStatistics the flag that indicates if the query should include statistics.
+     * @return The updated options instance.
      */
     public LogsQueryOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
@@ -88,15 +92,17 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the list of workspace names on which this query is executed.
+     * @return The list of workspace names on which this query is executed.
      */
     public List<String> getWorkspaceNames() {
         return workspaceNames;
     }
 
     /**
-     * @param workspaceNames
-     * @return
+     * Sets the list of workspace names on which this query is executed.
+     * @param workspaceNames The list of workspace names on which this query is executed.
+     * @return The updated options instance.
      */
     public LogsQueryOptions setWorkspaceNames(List<String> workspaceNames) {
         this.workspaceNames = workspaceNames;
@@ -104,15 +110,17 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the list of workspace ids on which this query is executed.
+     * @return The list of workspace ids on which this query is executed.
      */
     public List<String> getWorkspaceIds() {
         return workspaceIds;
     }
 
     /**
-     * @param workspaceIds
-     * @return
+     * Sets the list of workspace ids on which this query is executed.
+     * @param workspaceIds the list of workspace ids on which this query is executed.
+     * @return The updated options instance.
      */
     public LogsQueryOptions setWorkspaceIds(List<String> workspaceIds) {
         this.workspaceIds = workspaceIds;
@@ -120,15 +128,17 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the list of Azure resource ids on which this query is executed.
+     * @return the list of Azure resource ids on which this query is executed.
      */
     public List<String> getAzureResourceIds() {
         return azureResourceIds;
     }
 
     /**
-     * @param azureResourceIds
-     * @return
+     * Sets the list of Azure resource ids on which this query is executed.
+     * @param azureResourceIds the list of Azure resource ids on which this query is executed.
+     * @return The updated options instance.
      */
     public LogsQueryOptions setAzureResourceIds(List<String> azureResourceIds) {
         this.azureResourceIds = azureResourceIds;
@@ -136,15 +146,17 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the list of qualified workspace names on which this query is executed.
+     * @return the list of qualified workspace names on which this query is executed.
      */
     public List<String> getQualifiedWorkspaceNames() {
         return qualifiedWorkspaceNames;
     }
 
     /**
-     * @param qualifiedWorkspaceNames
-     * @return
+     * Sets the list of qualified workspace names on which this query is executed.
+     * @param qualifiedWorkspaceNames the list of qualified workspace names on which this query is executed.
+     * @return The updated options instance.
      */
     public LogsQueryOptions setQualifiedWorkspaceNames(List<String> qualifiedWorkspaceNames) {
         this.qualifiedWorkspaceNames = qualifiedWorkspaceNames;
@@ -152,21 +164,24 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the workspace id on which this query is executed.
+     * @return the workspace id on which this query is executed.
      */
     public String getWorkspaceId() {
         return workspaceId;
     }
 
     /**
-     * @return
+     * Returns the Kusto query.
+     * @return the Kusto query.
      */
     public String getQuery() {
         return query;
     }
 
     /**
-     * @return
+     * Returns the timespan for this query.
+     * @return the timespan for this query.
      */
     public QueryTimeSpan getTimeSpan() {
         return timeSpan;

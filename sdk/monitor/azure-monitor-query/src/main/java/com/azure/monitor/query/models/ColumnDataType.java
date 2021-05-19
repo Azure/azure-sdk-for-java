@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- *
+ * The column data type of the table returned as a result of a logs query.
  */
 public final class ColumnDataType extends ExpandableStringEnum<ColumnDataType> {
     /** Static value bool for ColumnDataType. */
@@ -35,7 +35,6 @@ public final class ColumnDataType extends ExpandableStringEnum<ColumnDataType> {
 
     /**
      * Creates or finds a ColumnDataType from its string representation.
-     *
      * @param name a name to look for.
      * @return the corresponding ColumnDataType.
      */

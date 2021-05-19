@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- *
+ * The synchronous client for querying Azure Monitor metrics.
  */
 @ServiceClient(builder = MetricsClientBuilder.class)
 public final class MetricsClient {
@@ -29,12 +29,11 @@ public final class MetricsClient {
     }
 
 
-
     /**
-     * @param resourceUri
-     * @param metricsNames
-     *
-     * @return
+     * Returns all the Azure Monitor metrics requested for the resource.
+     * @param resourceUri The resource URI for which the metrics is requested.
+     * @param metricsNames The names of the metrics to query.
+     * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsQueryResult queryMetrics(String resourceUri, List<String> metricsNames) {
@@ -42,12 +41,12 @@ public final class MetricsClient {
     }
 
     /**
-     * @param resourceUri
-     * @param metricsNames
-     * @param options
-     * @param context
-     *
-     * @return
+     * Returns all the Azure Monitor metrics requested for the resource.
+     * @param resourceUri The resource URI for which the metrics is requested.
+     * @param metricsNames The names of the metrics to query.
+     * @param options Options to filter the query.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsQueryResult> queryMetricsWithResponse(String resourceUri, List<String> metricsNames,
@@ -57,10 +56,10 @@ public final class MetricsClient {
 
 
     /**
-     * @param resourceUri
-     * @param startTime
-     *
-     * @return
+     * Lists all the metrics namespaces created for the resource URI.
+     * @param resourceUri The resource URI for which the metrics namespaces are listed.
+     * @param startTime The returned list of metrics namespaces are created after the specified start time.
+     * @return List of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricsNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime) {
@@ -68,11 +67,11 @@ public final class MetricsClient {
     }
 
     /**
-     * @param resourceUri
-     * @param startTime
-     * @param context
-     *
-     * @return
+     * Lists all the metrics namespaces created for the resource URI.
+     * @param resourceUri The resource URI for which the metrics namespaces are listed.
+     * @param startTime The returned list of metrics namespaces are created after the specified start time.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return List of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricsNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime,
@@ -81,10 +80,10 @@ public final class MetricsClient {
     }
 
     /**
-     * @param resourceUri
-     * @param metricsNamespace
-     *
-     * @return
+     * Lists all the metrics definitions created for the resource URI.
+     * @param resourceUri The resource URI for which the metrics definitions are listed.
+     * @param metricsNamespace The metrics namespace to which the listed metrics definitions belong.
+     * @return List of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedIterable<MetricsDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace) {
@@ -92,11 +91,11 @@ public final class MetricsClient {
     }
 
     /**
-     * @param resourceUri
-     * @param metricsNamespace
-     * @param context
-     *
-     * @return
+     * Lists all the metrics definitions created for the resource URI.
+     * @param resourceUri The resource URI for which the metrics definitions are listed.
+     * @param metricsNamespace The metrics namespace to which the listed metrics definitions belong.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return List of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedIterable<MetricsDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace,

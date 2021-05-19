@@ -8,21 +8,23 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- *
+ * The collection wrapper to hold all results of a batch of logs queries.
  */
 @Immutable
 public final class LogsQueryBatchResultCollection {
     private final List<LogsQueryBatchResult> batchResults;
 
     /**
-     * @param batchResults
+     * Creates an instance of {@link LogsQueryBatchResultCollection} to hold all results of a batch of logs queries.
+     * @param batchResults The results of a batch of logs queries.
      */
     public LogsQueryBatchResultCollection(List<LogsQueryBatchResult> batchResults) {
         this.batchResults = batchResults;
     }
 
     /**
-     * @return
+     * Returns the results of a batch of logs queries.
+     * @return The results of a batch of logs queries.
      */
     public List<LogsQueryBatchResult> getBatchResults() {
         return batchResults;

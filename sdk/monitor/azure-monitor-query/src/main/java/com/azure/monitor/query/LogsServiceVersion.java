@@ -6,7 +6,7 @@ package com.azure.monitor.query;
 import com.azure.core.util.ServiceVersion;
 
 /**
- *
+ * The service version of the Logs service that can be queried to retrieved Azure Monitor logs.
  */
 public enum LogsServiceVersion implements ServiceVersion {
     V_1("v1");
@@ -14,14 +14,16 @@ public enum LogsServiceVersion implements ServiceVersion {
     String version;
 
     /**
-     * @param version
+     * The service version.
+     * @param version The service version.
      */
     LogsServiceVersion(String version) {
         this.version = version;
     }
 
     /**
-     * @return
+     * Returns the latest supported service version by this library.
+     * @return The latest supported service version by this library.
      */
     public static LogsServiceVersion getLatest() {
         return V_1;

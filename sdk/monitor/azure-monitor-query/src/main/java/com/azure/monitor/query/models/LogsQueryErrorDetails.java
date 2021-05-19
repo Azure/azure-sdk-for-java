@@ -6,7 +6,7 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- *
+ * The error details of a failed log query.
  */
 @Immutable
 public final class LogsQueryErrorDetails {
@@ -15,9 +15,10 @@ public final class LogsQueryErrorDetails {
     private final String target;
 
     /**
-     * @param message
-     * @param code
-     * @param target
+     * Creates an instance of {@link LogsQueryErrorDetails} with the failure code and target.
+     * @param message The error message.
+     * @param code The error code indicating the reason for the error.
+     * @param target Indicates which property in the request is responsible for the error.
      */
     public LogsQueryErrorDetails(String message, String code, String target) {
 
@@ -27,21 +28,24 @@ public final class LogsQueryErrorDetails {
     }
 
     /**
-     * @return
+     * Returns the error message.
+     * @return The error message.
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     * @return
+     * Returns the error code indicating the reason for the error
+     * @return The error code indicating the reason for the error
      */
     public String getCode() {
         return code;
     }
 
     /**
-     * @return
+     * Indicates which property in the request is responsible for the error.
+     * @return The property in the request that is responsible for the error.
      */
     public String getTarget() {
         return target;

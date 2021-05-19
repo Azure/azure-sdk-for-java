@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * A fluent class to create a batch of logs queries.
  */
 @Fluent
 public final class LogsQueryBatch {
@@ -17,11 +17,11 @@ public final class LogsQueryBatch {
     private final List<LogsQueryOptions> queries = new ArrayList<>();
 
     /**
-     * @param workspaceId
-     * @param query
-     * @param timeSpan
-     *
-     * @return
+     * Adds a new logs query to the batch.
+     * @param workspaceId The workspaceId on which the query is executed.
+     * @param query The Kusto query.
+     * @param timeSpan The time period for which the logs should be queried.
+     * @return The updated {@link LogsQueryBatch}.
      */
     public LogsQueryBatch addQuery(String workspaceId, String query, QueryTimeSpan timeSpan) {
         queries.add(new LogsQueryOptions(workspaceId, query, timeSpan));
@@ -29,9 +29,9 @@ public final class LogsQueryBatch {
     }
 
     /**
-     * @param logsQueryOptions
-     *
-     * @return
+     * Adds a new logs query to the batch.
+     * @param logsQueryOptions The logs query options
+     * @return The updated {@link LogsQueryBatch}
      */
     public LogsQueryBatch addQuery(LogsQueryOptions logsQueryOptions) {
         queries.add(logsQueryOptions);
@@ -39,7 +39,8 @@ public final class LogsQueryBatch {
     }
 
     /**
-     * @return
+     * Returns all queries added to this batch.
+     * @return A list of queries in this batch.
      */
     public List<LogsQueryOptions> getQueries() {
         return this.queries;

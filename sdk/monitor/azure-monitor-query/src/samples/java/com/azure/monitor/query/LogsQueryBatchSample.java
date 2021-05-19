@@ -17,29 +17,30 @@ import com.azure.monitor.query.models.LogsTableRow;
 import java.util.List;
 
 /**
- *
+ * A sample to demonstrate querying for logs from Azure Monitor using a batch of Kusto queries.
  */
 public class LogsQueryBatchSample {
     /**
-     * @param args
+     * The main method to execute the sample.
+     * @param args Ignored args.
      */
     public static void main(String[] args) {
         ClientSecretCredential tokenCredential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_ID"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_SECRET"))
-            .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
-            .build();
+                .clientId(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_ID"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_SECRET"))
+                .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
+                .build();
 
         LogsClient logsClient = new LogsClientBuilder()
-            .credential(tokenCredential)
-            .buildClient();
+                .credential(tokenCredential)
+                .buildClient();
 
         LogsQueryBatch logsQueryBatch = new LogsQueryBatch()
-            .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null)
-            .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
+                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null)
+                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
 
         LogsQueryBatchResultCollection batchResultCollection = logsClient
-            .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
+                .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
 
         List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();
 
@@ -51,7 +52,7 @@ public class LogsQueryBatchSample {
                 for (LogsTableRow row : table.getTableRows()) {
                     System.out.println("Row index " + row.getRowIndex());
                     row.getTableRow()
-                        .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
+                            .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
                 }
             }
         }

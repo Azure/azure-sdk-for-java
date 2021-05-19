@@ -14,25 +14,27 @@ import com.azure.monitor.query.models.LogsTableRow;
 import java.util.Optional;
 
 /**
- *
+ * A sample to demonstrate querying for logs from Azure Monitor using a Kusto query
  */
 public class LogsQuerySample {
+
     /**
-     * @param args
+     * The main method to execute the sample.
+     * @param args Ignored args.
      */
     public static void main(String[] args) {
         ClientSecretCredential tokenCredential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_ID"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_SECRET"))
-            .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
-            .build();
+                .clientId(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_ID"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_SECRET"))
+                .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
+                .build();
 
         LogsClient logsClient = new LogsClientBuilder()
-            .credential(tokenCredential)
-            .buildClient();
+                .credential(tokenCredential)
+                .buildClient();
 
         LogsQueryResult queryResults = logsClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
-            null);
+                null);
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
         // Sample to iterate over all cells in the table
@@ -46,7 +48,7 @@ public class LogsQuerySample {
         for (LogsTable table : queryResults.getLogsTables()) {
             for (LogsTableRow row : table.getTableRows()) {
                 row.getTableRow()
-                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
+                        .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
             }
         }
 

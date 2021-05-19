@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
+ * Represents a row in a {@link LogsTable} of a logs query.
  */
 @Immutable
 public final class LogsTableRow {
@@ -17,8 +17,9 @@ public final class LogsTableRow {
     private final List<LogsTableCell> tableRow;
 
     /**
-     * @param rowIndex
-     * @param tableRow
+     * Creates a row in a {@link LogsTable} of a logs query.
+     * @param rowIndex The row index.
+     * @param tableRow The collection of values in the row.
      */
     public LogsTableRow(int rowIndex, List<LogsTableCell> tableRow) {
         this.rowIndex = rowIndex;
@@ -26,23 +27,27 @@ public final class LogsTableRow {
     }
 
     /**
-     * @return
+     * Returns the row index of this row.
+     * @return the row index of this row.
      */
     public int getRowIndex() {
         return rowIndex;
     }
 
     /**
-     * @return
+     * Returns the collection of values in this row.
+     * @return the collection of values in this row.
      */
     public List<LogsTableCell> getTableRow() {
         return tableRow;
     }
 
     /**
-     * @param columnName
+     * Returns the value associated with the given column name. If the column name is not found
+     * {@link Optional#isPresent()} evaluates to {@code false}.
+     * @param columnName the column name for which the value is returned.
      *
-     * @return
+     * @return The value associated with the given column name.
      */
     public Optional<LogsTableCell> getColumnValue(String columnName) {
         return tableRow.stream()

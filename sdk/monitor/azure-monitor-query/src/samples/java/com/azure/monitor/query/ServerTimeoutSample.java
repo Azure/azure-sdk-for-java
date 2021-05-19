@@ -16,11 +16,14 @@ import com.azure.monitor.query.models.LogsTableRow;
 import java.time.Duration;
 
 /**
- *
+ * A sample to demonstrate querying for logs from Azure Monitor using a complex Kusto query that requires extended
+ * time on the server to complete query execution. This sample shows how to set the timeout on the server.
  */
 public class ServerTimeoutSample {
+
     /**
-     * @param args
+     * The main method to execute the sample.
+     * @param args Ignored args.
      */
     public static void main(String[] args) {
 

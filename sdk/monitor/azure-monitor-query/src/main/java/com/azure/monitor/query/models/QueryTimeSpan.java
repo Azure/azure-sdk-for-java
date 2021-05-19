@@ -7,9 +7,10 @@ import com.azure.core.annotation.Immutable;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
- *
+ * Represents the time interval for which a query is performed. The interval is represented as ISO 8601 format.
  */
 @Immutable
 public final class QueryTimeSpan {
@@ -19,35 +20,38 @@ public final class QueryTimeSpan {
     private final OffsetDateTime endTime;
 
     /**
-     * @param duration
+     * Creates an instance of {@link QueryTimeSpan} using the provided duration.
+     * @param duration the duration for this query time span.
      */
     public QueryTimeSpan(Duration duration) {
-        this.queryDuration = duration;
+        this.queryDuration = Objects.requireNonNull(duration, "'duration' cannot be null");
         this.endDuration = null;
         this.startTime = null;
         this.endTime = null;
     }
 
     /**
-     * @param startTime
-     * @param endTime
+     * Creates an instance of {@link QueryTimeSpan} using the start and end {@link OffsetDateTime OffsetDateTimes}.
+     * @param startTime The start time of the interval.
+     * @param endTime The end time of the interval.
      */
     public QueryTimeSpan(OffsetDateTime startTime, OffsetDateTime endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = Objects.requireNonNull(startTime, "'startTime' cannot be null");
+        this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
         this.queryDuration = null;
         this.endDuration = null;
     }
 
     /**
-     * @param startTime
-     * @param durationFromStartTime
+     * Creates an instance of {@link QueryTimeSpan} using the start and end duration of the interval.
+     * @param startTime The start time of the interval.
+     * @param durationFromStartTime The end duration of the interval.
      */
     public QueryTimeSpan(OffsetDateTime startTime, Duration durationFromStartTime) {
         this.queryDuration = null;
         this.endTime = null;
-        this.startTime = startTime;
-        this.endDuration = durationFromStartTime;
+        this.startTime = Objects.requireNonNull(startTime, "'startTime' cannot be null");
+        this.endDuration = Objects.requireNonNull(durationFromStartTime, "'duration' cannot be null");
     }
 
     @Override

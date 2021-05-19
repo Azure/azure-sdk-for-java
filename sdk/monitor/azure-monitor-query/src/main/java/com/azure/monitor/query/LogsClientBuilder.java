@@ -12,25 +12,23 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.monitor.query.base.LogsBaseClient;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.log.implementation.AzureLogAnalyticsImplBuilder;
 
 /**
- *
+ * Fluent builder for creating instances of {@link LogsClient} and {@link LogsAsyncClient}.
  */
 @ServiceClientBuilder(serviceClients = {LogsClient.class, LogsAsyncClient.class})
 public final class LogsClientBuilder {
-
+    private final ClientLogger logger = new ClientLogger(LogsClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private ClientOptions clientOptions;
-    private MetricsServiceVersion serviceVersion;
+    private LogsServiceVersion serviceVersion;
 
     /**
      * Sets the log query endpoint.
      * @param endpoint the host value.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder endpoint(String endpoint) {
         innerLogBuilder.host(endpoint);
@@ -40,8 +38,7 @@ public final class LogsClientBuilder {
     /**
      * Sets The HTTP pipeline to send requests through.
      * @param pipeline the pipeline value.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder pipeline(HttpPipeline pipeline) {
         innerLogBuilder.pipeline(pipeline);
@@ -51,8 +48,7 @@ public final class LogsClientBuilder {
     /**
      * Sets The HTTP client used to send the request.
      * @param httpClient the httpClient value.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder httpClient(HttpClient httpClient) {
         innerLogBuilder.httpClient(httpClient);
@@ -62,8 +58,7 @@ public final class LogsClientBuilder {
     /**
      * Sets The configuration store that is used during construction of the service client.
      * @param configuration the configuration value.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder configuration(Configuration configuration) {
         innerLogBuilder.configuration(configuration);
@@ -73,8 +68,7 @@ public final class LogsClientBuilder {
     /**
      * Sets The logging configuration for HTTP requests and responses.
      * @param httpLogOptions the httpLogOptions value.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerLogBuilder.httpLogOptions(httpLogOptions);
@@ -84,8 +78,7 @@ public final class LogsClientBuilder {
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * @param retryPolicy the retryPolicy value.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         innerLogBuilder.retryPolicy(retryPolicy);
@@ -95,8 +88,7 @@ public final class LogsClientBuilder {
     /**
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerLogBuilder.addPolicy(customPolicy);
@@ -106,8 +98,7 @@ public final class LogsClientBuilder {
     /**
      * Sets The TokenCredential used for authentication.
      * @param tokenCredential the tokenCredential value.
-     *
-     * @return the LogsClientBuilder.
+     * @return the {@link LogsClientBuilder}.
      */
     public LogsClientBuilder credential(TokenCredential tokenCredential) {
         innerLogBuilder.credential(tokenCredential);
@@ -115,9 +106,9 @@ public final class LogsClientBuilder {
     }
 
     /**
-     * @param clientOptions
-     *
-     * @return
+     * Set the {@link ClientOptions} used for creating the client.
+     * @param clientOptions The {@link ClientOptions}.
+     * @return the {@link LogsClientBuilder}
      */
     public LogsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -125,49 +116,29 @@ public final class LogsClientBuilder {
     }
 
     /**
-     * @param serviceVersion
-     *
-     * @return
+     * The service version to use when creating the client.
+     * @param serviceVersion The {@link LogsServiceVersion}.
+     * @return the {@link LogsClientBuilder}
      */
-    public LogsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
+    public LogsClientBuilder serviceVersion(LogsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
 
     /**
-     * @return
+     * Creates a synchronous client with the configured options in this builder.
+     * @return A synchronous {@link LogsClient}.
      */
     public LogsClient buildClient() {
         return new LogsClient(buildAsyncClient());
     }
 
     /**
-     * @return
+     * Creates an asynchronous client with the configured options in this builder.
+     * @return An asynchronous {@link LogsAsyncClient}.
      */
     public LogsAsyncClient buildAsyncClient() {
+        logger.info("Using service version " + this.serviceVersion);
         return new LogsAsyncClient(innerLogBuilder.buildClient());
     }
-
-
-    /**
-     * @return
-     */
-    public LogsBaseClientBuilder base() {
-        return new LogsBaseClientBuilder();
-    }
-
-    public final class LogsBaseClientBuilder {
-        private ObjectSerializer serializer;
-
-        public LogsBaseClientBuilder serializer(ObjectSerializer serializer) {
-            this.serializer = serializer;
-            return this;
-        }
-
-        public LogsBaseClient buildBaseClient() {
-            return new LogsBaseClient();
-        }
-    }
-
-
 }

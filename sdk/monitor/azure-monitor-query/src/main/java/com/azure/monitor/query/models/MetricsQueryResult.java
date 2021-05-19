@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- *
+ * The response to a metrics query.
  */
 @Immutable
 public final class MetricsQueryResult {
@@ -22,12 +22,14 @@ public final class MetricsQueryResult {
     private final List<Metrics> metrics;
 
     /**
-     * @param cost
-     * @param timeSpan
-     * @param interval
-     * @param namespace
-     * @param resourceRegion
-     * @param metrics
+     * Creates an instance of the response to a metrics query.
+     * @param cost the integer value representing the cost of the query, for data case.
+     * @param timeSpan the timespan for which the data was retrieved. Its value consists of two
+     * datetimes concatenated, separated by '/'.
+     * @param interval the interval (window size) for which the metric data was returned in.
+     * @param namespace the namespace of the metrics been queried.
+     * @param resourceRegion the region of the resource been queried for metrics.
+     * @param metrics the value of the collection.
      */
     public MetricsQueryResult(Integer cost, String timeSpan, Duration interval, String namespace, String resourceRegion, List<Metrics> metrics) {
         this.cost = cost;
@@ -39,42 +41,50 @@ public final class MetricsQueryResult {
     }
 
     /**
-     * @return
+     * Returns the integer value representing the cost of the query, for data case.
+     * @return the integer value representing the cost of the query, for data case.
      */
     public Integer getCost() {
         return cost;
     }
 
     /**
-     * @return
+     * Returns the timespan for which the data was retrieved. Its value consists of two
+     * datetimes concatenated, separated by '/'.
+     * @return the timespan for which the data was retrieved. Its value consists of two
+     * datetimes concatenated, separated by '/'.
      */
     public String getTimeSpan() {
         return timeSpan;
     }
 
     /**
-     * @return
+     * Returns the interval (window size) for which the metric data was returned in.
+     * @return the interval (window size) for which the metric data was returned in.
      */
     public Duration getInterval() {
         return interval;
     }
 
     /**
-     * @return
+     * Returns the namespace of the metrics been queried
+     * @return the namespace of the metrics been queried
      */
     public String getNamespace() {
         return namespace;
     }
 
     /**
-     * @return
+     * Returns the region of the resource been queried for metrics.
+     * @return the region of the resource been queried for metrics.
      */
     public String getResourceRegion() {
         return resourceRegion;
     }
 
     /**
-     * @return
+     * Returns the value of the collection.
+     * @return the value of the collection.
      */
     public List<Metrics> getMetrics() {
         return metrics;

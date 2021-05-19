@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.monitor.query.base.LogsBaseClient;
 import com.azure.monitor.query.log.implementation.AzureLogAnalyticsImpl;
 import com.azure.monitor.query.log.implementation.models.BatchRequest;
 import com.azure.monitor.query.log.implementation.models.BatchResponse;
@@ -42,7 +41,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- *
+ * The asynchronous client for querying Azure Monitor logs.
  */
 @ServiceClient(builder = LogsClientBuilder.class, isAsync = true)
 public final class LogsAsyncClient {
@@ -50,29 +49,30 @@ public final class LogsAsyncClient {
     private final AzureLogAnalyticsImpl innerClient;
 
     /**
-     * @param innerClient
+     * Constructor that has the inner generated client to make the service call.
+     * @param innerClient The inner generated client.
      */
     LogsAsyncClient(AzureLogAnalyticsImpl innerClient) {
         this.innerClient = innerClient;
     }
 
     /**
-     * @param workspaceId
-     * @param query
-     * @param timeSpan
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * @param workspaceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeSpan The time period for which the logs should be looked up.
+     * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogsQueryResult> queryLogs(String workspaceId, String query, QueryTimeSpan timeSpan) {
         return queryLogsWithResponse(new LogsQueryOptions(workspaceId, query, timeSpan))
-            .map(Response::getValue);
+                .map(Response::getValue);
     }
 
     /**
-     * @param options
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * @param options The query options.
+     * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogsQueryResult>> queryLogsWithResponse(LogsQueryOptions options) {
@@ -80,11 +80,11 @@ public final class LogsAsyncClient {
     }
 
     /**
-     * @param workspaceId
-     * @param queries
-     * @param timeSpan
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given batch of queries in the specified workspaceId.
+     * @param workspaceId The workspaceId where the batch of queries should be executed.
+     * @param queries A batch of Kusto queries.
+     * @param timeSpan The time period for which the logs should be looked up.
+     * @return A collection of query results corresponding to the input batch of queries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogsQueryBatchResultCollection> queryLogsBatch(String workspaceId, List<String> queries,
@@ -95,9 +95,9 @@ public final class LogsAsyncClient {
     }
 
     /**
-     * @param logsQueryBatch
-     *
-     * @return
+     * Returns all the Azure Monitor logs matching the given batch of queries.
+     * @param logsQueryBatch {@link LogsQueryBatch} containing a batch of queries.
+     * @return A collection of query results corresponding to the input batch of queries.@return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogsQueryBatchResultCollection>> queryLogsBatchWithResponse(LogsQueryBatch logsQueryBatch) {
@@ -109,26 +109,26 @@ public final class LogsAsyncClient {
         AtomicInteger id = new AtomicInteger();
 
         List<LogQueryRequest> requests = logsQueryBatch.getQueries()
-            .stream()
-            .map(query -> {
-                QueryBody body = new QueryBody(query.getQuery())
-                    .setWorkspaces(query.getWorkspaceNames())
-                    .setAzureResourceIds(query.getAzureResourceIds())
-                    .setQualifiedNames(query.getQualifiedWorkspaceNames())
-                    .setWorkspaceIds(query.getWorkspaceIds());
+                .stream()
+                .map(query -> {
+                    QueryBody body = new QueryBody(query.getQuery())
+                            .setWorkspaces(query.getWorkspaceNames())
+                            .setAzureResourceIds(query.getAzureResourceIds())
+                            .setQualifiedNames(query.getQualifiedWorkspaceNames())
+                            .setWorkspaceIds(query.getWorkspaceIds());
 
-                return new LogQueryRequest()
-                    .setId(String.valueOf(id.incrementAndGet()))
-                    .setBody(body)
-                    .setWorkspace(query.getWorkspaceId())
-                    .setPath("/query")
-                    .setMethod("POST");
-            })
-            .collect(Collectors.toList());
+                    return new LogQueryRequest()
+                            .setId(String.valueOf(id.incrementAndGet()))
+                            .setBody(body)
+                            .setWorkspace(query.getWorkspaceId())
+                            .setPath("/query")
+                            .setMethod("POST");
+                })
+                .collect(Collectors.toList());
         batchRequest.setRequests(requests);
 
         return innerClient.getQueries().batchWithResponseAsync(batchRequest, context)
-            .map(this::convertToLogQueryBatchResult);
+                .map(this::convertToLogQueryBatchResult);
     }
 
     private Response<LogsQueryBatchResultCollection> convertToLogQueryBatchResult(Response<BatchResponse> response) {
@@ -138,8 +138,8 @@ public final class LogsAsyncClient {
         BatchResponse batchResponse = response.getValue();
         for (LogQueryResponse singleQueryResponse : batchResponse.getResponses()) {
             LogsQueryBatchResult logsQueryBatchResult = new LogsQueryBatchResult(singleQueryResponse.getId(),
-                singleQueryResponse.getStatus(), getLogsQueryResult(singleQueryResponse.getBody()),
-                mapLogsQueryBatchError(singleQueryResponse.getBody().getErrors()));
+                    singleQueryResponse.getStatus(), getLogsQueryResult(singleQueryResponse.getBody()),
+                    mapLogsQueryBatchError(singleQueryResponse.getBody().getErrors()));
             batchResults.add(logsQueryBatchResult);
         }
         batchResults.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
@@ -180,19 +180,19 @@ public final class LogsAsyncClient {
             queryBody.setTimespan(options.getTimeSpan().toString());
         }
         return innerClient
-            .getQueries()
-            .executeWithResponseAsync(options.getWorkspaceId(),
-                queryBody,
-                preferHeader,
-                context)
-            .map(this::convertToLogQueryResult);
+                .getQueries()
+                .executeWithResponseAsync(options.getWorkspaceId(),
+                        queryBody,
+                        preferHeader,
+                        context)
+                .map(this::convertToLogQueryResult);
     }
 
     private Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {
         QueryResults queryResults = response.getValue();
         LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), logsQueryResult);
+                response.getHeaders(), logsQueryResult);
     }
 
     private LogsQueryResult getLogsQueryResult(QueryResults queryResults) {
@@ -217,7 +217,7 @@ public final class LogsAsyncClient {
                 tableRows.add(tableRow);
                 for (int j = 0; j < row.size(); j++) {
                     LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
-                        ColumnDataType.fromString(table.getColumns().get(j).getType()), j, i, row.get(j));
+                            ColumnDataType.fromString(table.getColumns().get(j).getType()), j, i, row.get(j));
                     tableCells.add(cell);
                     tableRow.getTableRow().add(cell);
                 }

@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- *
+ * The model class to configure the metrics query options.
  */
 @Fluent
 public final class MetricsQueryOptions {
@@ -22,16 +22,18 @@ public final class MetricsQueryOptions {
     private String metricsNamespace;
 
     /**
-     * @return
+     * Returns the timespan for which the metrics data is queried.
+     * @return the timespan for which the metrics data is queried.
      */
     public String getTimespan() {
         return timespan;
     }
 
     /**
-     * @param timespan
+     * Sets the timespan for which the metrics data is queried.
+     * @param timespan the timespan for which the metrics data is queried.
      *
-     * @return
+     * @return The updated options instance
      */
     public MetricsQueryOptions setTimespan(String timespan) {
         this.timespan = timespan;
@@ -39,16 +41,18 @@ public final class MetricsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the interval (window size) for which the metric data was returned in.
+     * @return The interval (window size) for which the metric data was returned in.
      */
     public Duration getInterval() {
         return interval;
     }
 
     /**
-     * @param interval
+     * Sets the interval (window size) for which the metric data was returned in.
+     * @param interval The interval (window size) for which the metric data was returned in.
      *
-     * @return
+     * @return The updated options instance
      */
     public MetricsQueryOptions setInterval(Duration interval) {
         this.interval = interval;
@@ -56,14 +60,17 @@ public final class MetricsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the list of aggregations that should be applied to the metrics data.
+     * @return the list of aggregations that should be applied to the metrics data.
      */
     public List<AggregationType> getAggregation() {
         return aggregation;
     }
 
     /**
-     * @param aggregation
+     * Sets the list of aggregations that should be applied to the metrics data.
+     * @param aggregation the list of aggregations that should be applied to the metrics data.
+     * @return The updated options instance
      */
     public MetricsQueryOptions setAggregation(List<AggregationType> aggregation) {
         this.aggregation = aggregation;
@@ -71,16 +78,18 @@ public final class MetricsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the number of top metrics values to query.
+     * @return the number of top metrics values to query.
      */
     public Integer getTop() {
         return top;
     }
 
     /**
-     * @param top
+     * Sets the number of top metrics values to query.
+     * @param top the number of top metrics values to query.
      *
-     * @return
+     * @return The updated options instance
      */
     public MetricsQueryOptions setTop(Integer top) {
         this.top = top;
@@ -88,16 +97,18 @@ public final class MetricsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the order in which the query results should be ordered.
+     * @return the order in which the query results should be ordered.
      */
     public String getOrderby() {
         return orderby;
     }
 
     /**
-     * @param orderby
+     * Sets the order in which the query results should be ordered.
+     * @param orderby the order in which the query results should be ordered.
      *
-     * @return
+     * @return The updated options instance
      */
     public MetricsQueryOptions setOrderby(String orderby) {
         this.orderby = orderby;
@@ -105,16 +116,18 @@ public final class MetricsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the filter to be applied to the query. The filter users OData format.
+     * @return the filter to be applied to the query. The filter users OData format.
      */
     public String getFilter() {
         return filter;
     }
 
     /**
-     * @param filter
+     * Sets the filter to be applied to the query. The filter users OData format.
+     * @param filter the filter to be applied to the query. The filter users OData format.
      *
-     * @return
+     * @return The updated options instance
      */
     public MetricsQueryOptions setFilter(String filter) {
         this.filter = filter;
@@ -122,16 +135,18 @@ public final class MetricsQueryOptions {
     }
 
     /**
-     * @return
+     * Returns the namespace of the metrics been queried
+     * @return the namespace of the metrics been queried
      */
     public String getMetricsNamespace() {
         return metricsNamespace;
     }
 
     /**
-     * @param metricsNamespace
+     * Sets the namespace of the metrics been queried
+     * @param metricsNamespace the namespace of the metrics been queried
      *
-     * @return
+     * @return The updated options instance
      */
     public MetricsQueryOptions setMetricsNamespace(String metricsNamespace) {
         this.metricsNamespace = metricsNamespace;

@@ -12,28 +12,30 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.metrics.implementation.MonitorManagementClientImplBuilder;
 import com.azure.monitor.query.metricsdefinitions.implementation.MetricsDefinitionsClientImplBuilder;
 import com.azure.monitor.query.metricsnamespaces.implementation.MetricsNamespacesClientImplBuilder;
 
 /**
- *
+ * Fluent builder for creating instances of {@link MetricsClient} and {@link MetricsAsyncClient}.
  */
 @ServiceClientBuilder(serviceClients = {MetricsClient.class, MetricsAsyncClient.class})
 public final class MetricsClientBuilder {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
     private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
-        new MetricsDefinitionsClientImplBuilder();
+            new MetricsDefinitionsClientImplBuilder();
     private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder =
-        new MetricsNamespacesClientImplBuilder();
+            new MetricsNamespacesClientImplBuilder();
+    private final ClientLogger logger = new ClientLogger(MetricsClientBuilder.class);
     private ClientOptions clientOptions;
     private MetricsServiceVersion serviceVersion;
+
 
     /**
      * Sets the metrics query endpoint.
      * @param endpoint the host value.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder endpoint(String endpoint) {
@@ -46,7 +48,6 @@ public final class MetricsClientBuilder {
     /**
      * Sets The HTTP pipeline to send requests through.
      * @param pipeline the pipeline value.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder pipeline(HttpPipeline pipeline) {
@@ -59,7 +60,6 @@ public final class MetricsClientBuilder {
     /**
      * Sets The HTTP client used to send the request.
      * @param httpClient the httpClient value.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder httpClient(HttpClient httpClient) {
@@ -72,7 +72,6 @@ public final class MetricsClientBuilder {
     /**
      * Sets The configuration store that is used during construction of the service client.
      * @param configuration the configuration value.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder configuration(Configuration configuration) {
@@ -85,7 +84,6 @@ public final class MetricsClientBuilder {
     /**
      * Sets The logging configuration for HTTP requests and responses.
      * @param httpLogOptions the httpLogOptions value.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -98,7 +96,6 @@ public final class MetricsClientBuilder {
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * @param retryPolicy the retryPolicy value.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
@@ -111,7 +108,6 @@ public final class MetricsClientBuilder {
     /**
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -124,7 +120,6 @@ public final class MetricsClientBuilder {
     /**
      * Sets The TokenCredential used for authentication.
      * @param tokenCredential the tokenCredential value.
-     *
      * @return the MetricsClientBuilder.
      */
     public MetricsClientBuilder credential(TokenCredential tokenCredential) {
@@ -135,9 +130,9 @@ public final class MetricsClientBuilder {
     }
 
     /**
-     * @param clientOptions
-     *
-     * @return
+     * Set the {@link ClientOptions} used for creating the client.
+     * @param clientOptions The {@link ClientOptions}.
+     * @return the {@link MetricsClientBuilder}
      */
     public MetricsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -145,9 +140,9 @@ public final class MetricsClientBuilder {
     }
 
     /**
-     * @param serviceVersion
-     *
-     * @return
+     * The service version to use when creating the client.
+     * @param serviceVersion The {@link MetricsServiceVersion}.
+     * @return the {@link MetricsClientBuilder}
      */
     public MetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
@@ -155,18 +150,21 @@ public final class MetricsClientBuilder {
     }
 
     /**
-     * @return
+     * Creates a synchronous client with the configured options in this builder.
+     * @return A synchronous {@link MetricsClient}.
      */
     public MetricsClient buildClient() {
         return new MetricsClient(buildAsyncClient());
     }
 
     /**
-     * @return
+     * Creates an asynchronous client with the configured options in this builder.
+     * @return An asynchronous {@link MetricsAsyncClient}.
      */
     public MetricsAsyncClient buildAsyncClient() {
+        logger.info("Using service version " + this.serviceVersion);
         return new MetricsAsyncClient(innerMetricsBuilder.buildClient(),
-            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
+                innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
     }
 
 }
