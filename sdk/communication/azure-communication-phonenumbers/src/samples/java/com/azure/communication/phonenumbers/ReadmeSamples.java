@@ -16,9 +16,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
@@ -102,21 +100,16 @@ public class ReadmeSamples {
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
 
-        SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> poller = phoneNumberClient
-            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE);
-        PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
-        String searchId = "";
+        PhoneNumberSearchResult searchResult = phoneNumberClient
+            .beginSearchAvailablePhoneNumbers("US", PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE)
+            .getFinalResult();
 
-        if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
-            PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            searchId = searchResult.getSearchId();
-            System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());
-            System.out.println("Search expires by: " + searchResult.getSearchExpiresBy());
-            System.out.println("Phone number costs:" + searchResult.getCost().getAmount());
-        }
+        System.out.println("Searched phone numbers: " + searchResult.getPhoneNumbers());
+        System.out.println("Search expires by: " + searchResult.getSearchExpiresBy());
+        System.out.println("Phone number costs:" + searchResult.getCost().getAmount());
 
         PollResponse<PhoneNumberOperation> purchaseResponse =
-            phoneNumberClient.beginPurchasePhoneNumbers(searchId, Context.NONE).waitForCompletion();
+            phoneNumberClient.beginPurchasePhoneNumbers(searchResult.getSearchId(), Context.NONE).waitForCompletion();
         System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
     }
 
@@ -132,21 +125,19 @@ public class ReadmeSamples {
 
     /**
      * Update phone number capabilities
+     *
+     * @return the updated acquired phone number
      */
-    public void updatePhoneNumberCapabilities() {
+    public PurchasedPhoneNumber updatePhoneNumberCapabilities() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PurchasedPhoneNumber phoneNumber = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilities, Context.NONE).getFinalResult();
 
-        SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> poller = phoneNumberClient.beginUpdatePhoneNumberCapabilities("+18001234567", capabilities, Context.NONE);
-        PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
-
-        if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
-            PurchasedPhoneNumber phoneNumber = poller.getFinalResult();
-            System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
-            System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound
-        }
+        System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
+        System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound
+        return phoneNumber;
     }
 }
