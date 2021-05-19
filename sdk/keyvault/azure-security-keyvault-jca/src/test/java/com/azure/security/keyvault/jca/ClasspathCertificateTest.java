@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.security.Key;
@@ -41,15 +40,6 @@ public class ClasspathCertificateTest {
         classpathCertificates = new ClasspathCertificates();
         classpathCertificates.setCertificateEntry("myalias", certificate);
         classpathCertificates.removeAlias("myalias");
-        Assertions.assertFalse(classpathCertificates.getAliases().contains("myalias"));
-    }
-
-    @Test
-    @Disabled("TODO: we need to override engineSetKeyEntry in KeyVaultKeyStore?")
-    public void testRemoveKeys() {
-        classpathCertificates = new ClasspathCertificates();
-        classpathCertificates.setCertificateEntry("myalias", certificate);
-        classpathCertificates.removeCertificateKey("myalias");
         Assertions.assertFalse(classpathCertificates.getAliases().contains("myalias"));
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class KeyVaultCertificateInfoTest {
+public class KeyVaultCertificatesTest {
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
@@ -71,7 +71,7 @@ public class KeyVaultCertificateInfoTest {
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
         Thread.sleep(10);
-        KeyVaultCertificates.refreshCertsInfo();
+        KeyVaultCertificates.updateLastForceRefreshTime();
         Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
