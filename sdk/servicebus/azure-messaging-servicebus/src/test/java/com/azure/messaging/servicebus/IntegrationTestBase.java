@@ -119,8 +119,12 @@ public abstract class IntegrationTestBase extends TestBase {
         return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
-    public String getConnectionString() {
-        return TestUtils.getConnectionString();
+    public static String getConnectionString() {
+        return TestUtils.getConnectionString(false);
+    }
+
+    public static String getConnectionString(boolean withSas) {
+        return TestUtils.getConnectionString(withSas);
     }
 
     public String getFullyQualifiedDomainName() {

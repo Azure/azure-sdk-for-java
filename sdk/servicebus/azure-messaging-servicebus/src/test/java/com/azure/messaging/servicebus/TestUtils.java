@@ -79,7 +79,10 @@ public class TestUtils {
      *
      * @return The namespace connection string.
      */
-    public static String getConnectionString() {
+    public static String getConnectionString(boolean withSas) {
+        if (withSas) {
+            return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING_WITH_SAS");
+        }
         return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     }
 
