@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Gets partition information.
  */
-public class GetPartitionInformationTest extends ServiceTest {
+public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     /**
      * Creates an instance of performance test.
      *
@@ -28,7 +28,7 @@ public class GetPartitionInformationTest extends ServiceTest {
     @Override
     public void run() {
         if (client == null) {
-            client = createEventHubClient();
+            client = createEventHubClient(options);
         }
 
         PartitionRuntimeInformation information;
@@ -44,7 +44,7 @@ public class GetPartitionInformationTest extends ServiceTest {
     @Override
     public Mono<Void> runAsync() {
         if (clientFuture == null) {
-            clientFuture = createEventHubClientAsync();
+            clientFuture = createEventHubClientAsync(options);
         }
 
         if (options.getPartitionId() == null) {

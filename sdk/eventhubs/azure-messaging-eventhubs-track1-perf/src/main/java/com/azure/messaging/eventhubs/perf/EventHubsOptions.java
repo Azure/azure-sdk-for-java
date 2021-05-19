@@ -30,7 +30,7 @@ public class EventHubsOptions extends PerfStressOptions {
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
     private String consumerGroup;
 
-    @Parameter(names = {"-p", "--partitionId"}, description = "Partition to send events to or receive from.")
+    @Parameter(names = {"--partitionId"}, description = "Partition to send events to or receive from.")
     private String partitionId;
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
@@ -30,7 +31,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 /**
  * Base class that tests Event Hubs.
  */
-abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
+abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     private final ScheduledExecutorService scheduler;
 
     protected final List<EventData> events;
@@ -42,7 +43,7 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
      *
      * @param options the options configured for the test.
      */
-    ServiceTest(EventHubsOptions options) {
+    ServiceTest(TOptions options) {
         super(options);
 
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
@@ -86,7 +87,7 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
      *
      * @return A Mono that completes with an {@link EventHubClient}.
      */
-    CompletableFuture<EventHubClient> createEventHubClientAsync() {
+    CompletableFuture<EventHubClient> createEventHubClientAsync(EventHubsOptions options) {
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
             .setEventHubName(options.getEventHubName());
 
@@ -104,7 +105,7 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
         }
     }
 
-    ConnectionStringBuilder getConnectionStringBuilder() {
+    ConnectionStringBuilder getConnectionStringBuilder(EventHubsOptions options) {
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
             .setEventHubName(options.getEventHubName());
 
@@ -120,8 +121,8 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
      *
      * @return An {@link EventHubClient}.
      */
-    EventHubClient createEventHubClient() {
-        final ConnectionStringBuilder builder = getConnectionStringBuilder();
+    EventHubClient createEventHubClient(EventHubsOptions options) {
+        final ConnectionStringBuilder builder = getConnectionStringBuilder(options);
 
         try {
             return EventHubClient.createFromConnectionStringSync(builder.toString(),

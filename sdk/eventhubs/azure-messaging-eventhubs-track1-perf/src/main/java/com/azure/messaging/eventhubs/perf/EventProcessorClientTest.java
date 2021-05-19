@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
-public class EventProcessorClientTest extends ServiceTest {
+public class EventProcessorClientTest extends ServiceTest<EventHubsOptions> {
     private SampleEventProcessorFactory processorFactory;
     private ConcurrentHashMap<String, CountDownLatch> eventsToReceive;
 
@@ -40,7 +40,7 @@ public class EventProcessorClientTest extends ServiceTest {
         processorFactory = new SampleEventProcessorFactory(eventsToReceive);
 
         return Mono.usingWhen(
-            Mono.fromCompletionStage(createEventHubClientAsync()),
+            Mono.fromCompletionStage(createEventHubClientAsync(options)),
             client -> {
                 return Mono.fromCompletionStage(client.getRuntimeInformation())
                     .flatMap(runtimeInformation -> {
@@ -60,6 +60,7 @@ public class EventProcessorClientTest extends ServiceTest {
 
     @Override
     public void run() {
+        runAsync().block();
     }
 
     @Override
@@ -68,7 +69,7 @@ public class EventProcessorClientTest extends ServiceTest {
             final ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap = new ConcurrentHashMap<>();
             final ICheckpointManager checkpointManager = new SampleCheckpointManager(partitionOwnershipMap);
             final ILeaseManager leaseManager = new SampleLeaseManager(partitionOwnershipMap);
-            final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
+            final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder(options);
             final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
                 EventProcessorHost.EventProcessorHostBuilder.newBuilder(
                     connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())

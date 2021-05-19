@@ -10,21 +10,21 @@ import reactor.core.publisher.Mono;
 /**
  * Sends an event data batch with {@link EventHubsOptions#getCount()} number of events in the batch.
  */
-public class SendEventDataBatchTest extends ServiceTest {
+public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
 
     /**
      * Creates an instance of performance test.
      *
      * @param options the options configured for the test.
      */
-    SendEventDataBatchTest(EventHubsOptions options) {
+    public SendEventDataBatchTest(EventHubsOptions options) {
         super(options);
     }
 
     @Override
     public void run() {
         if (client == null) {
-            client = createEventHubClient();
+            client = createEventHubClient(options);
         }
 
         final EventDataBatch batch = createBatch(client, options.getCount());
@@ -38,7 +38,7 @@ public class SendEventDataBatchTest extends ServiceTest {
     @Override
     public Mono<Void> runAsync() {
         if (clientFuture == null) {
-            clientFuture = createEventHubClientAsync();
+            clientFuture = createEventHubClientAsync(options);
         }
 
         return Mono.fromCompletionStage(clientFuture

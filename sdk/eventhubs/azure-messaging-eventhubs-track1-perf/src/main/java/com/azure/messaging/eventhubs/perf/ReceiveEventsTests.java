@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
  * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
  * receive.
  */
-public class ReceiveEventsTests extends ServiceTest {
+public class ReceiveEventsTests extends ServiceTest<EventHubsOptions> {
     private PartitionReceiver receiver;
     private CompletableFuture<PartitionReceiver> receiverAsync;
 
@@ -26,7 +26,7 @@ public class ReceiveEventsTests extends ServiceTest {
      *
      * @param options the options configured for the test.
      */
-    ReceiveEventsTests(EventHubsOptions options) {
+    public ReceiveEventsTests(EventHubsOptions options) {
         super(options);
     }
 
@@ -37,7 +37,7 @@ public class ReceiveEventsTests extends ServiceTest {
 
         if (receiver == null) {
             try {
-                client = createEventHubClient();
+                client = createEventHubClient(options);
                 receiver = client.createReceiverSync(options.getConsumerGroup(),
                     options.getPartitionId(), EventPosition.fromStartOfStream());
             } catch (EventHubException e) {
@@ -61,7 +61,7 @@ public class ReceiveEventsTests extends ServiceTest {
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
 
         if (receiverAsync == null) {
-            clientFuture = createEventHubClientAsync();
+            clientFuture = createEventHubClientAsync(options);
             receiverAsync = clientFuture.thenComposeAsync(client -> {
                 try {
                     return client.createReceiver(options.getConsumerGroup(),
