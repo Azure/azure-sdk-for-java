@@ -8,7 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.ByteArrayInputStream;
+import java.security.KeyStore;
 import java.security.ProviderException;
+import java.security.Security;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -156,4 +159,27 @@ public class KeyVaultKeyStoreTest {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineStore(null, null);
     }
+
+    @Test
+    public void testRefreshEngineGetCertificate() throws Exception {
+        System.setProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate", "true");
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
+        KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
+        Certificate certificate = ks.getCertificate("myalias");
+        ks.deleteEntry("myalias");
+        Thread.sleep(10);
+        assertEquals(ks.getCertificateAlias(certificate), "myalias");
+    }
+
+    @Test
+    public void testNotRefreshEngineGetCertificate() throws Exception {
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
+        KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
+        Certificate certificate = ks.getCertificate("myalias");
+        ks.deleteEntry("myalias");
+        assertNull(ks.getCertificateAlias(certificate));
+    }
+
 }
