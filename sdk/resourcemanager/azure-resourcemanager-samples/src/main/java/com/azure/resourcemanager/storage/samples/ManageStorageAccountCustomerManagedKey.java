@@ -25,7 +25,7 @@ import com.azure.security.keyvault.keys.models.KeyType;
  * - Update key vault with access policy for managed service identity of storage account
  * - Update storage account to enable encryption with customer-managed key
  *
- * Reference http://aka.ms/storagecmkconfiguration
+ * {@see http://aka.ms/storagecmkconfiguration}
  */
 public final class ManageStorageAccountCustomerManagedKey {
 
@@ -70,6 +70,9 @@ public final class ManageStorageAccountCustomerManagedKey {
             StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
+                .withInfrastructureEncryption()
+                .withTableEncryption()
+                .withQueueEncryption()
                 .withSystemAssignedManagedServiceIdentity()
                 .create();
 
