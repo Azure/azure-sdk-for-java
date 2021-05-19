@@ -1,9 +1,10 @@
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
+    variables:
       ArtifactName: ''
       ArtifactSafeName: ''
+    parameters:
       CloudConfig:
         Public:
           SubscriptionConfigurations:
@@ -16,17 +17,17 @@ stages:
             - $(sub-config-communication-int-test-resources-java)
       Clouds: Public, Int
       Artifacts:
-        - name: ${{ parameters.ArtifactName }}
+        - name: ${{ variables.ArtifactName }}
           groupId: com.azure
-          safeName: ${{ parameters.ArtifactSafeName }}
+          safeName: ${{ variables.ArtifactSafeName }}
       ServiceDirectory: communication
       PostSteps:
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq(variables['CurrentCloud'], 'Public'))
           inputs:
             codeCoverageTool: JaCoCo
-            summaryFileLocation: sdk/communication/'${{ parameters.ArtifactName }}'/target/site/jacoco/jacoco.xml
-            reportDirectory: sdk/communication/'${{ parameters.ArtifactName }}'/target/site/jacoco/
+            summaryFileLocation: sdk/communication/'${{ variables.ArtifactName }}'/target/site/jacoco/jacoco.xml
+            reportDirectory: sdk/communication/'${{ variables.ArtifactName }}'/target/site/jacoco/
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
