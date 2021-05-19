@@ -98,7 +98,7 @@ public final class AmqpPropagationFormatUtil {
      */
     private static SpanContext fromDiagnosticId(String traceparent) {
         if (traceparent == null || traceparent.length() < 55 || !traceparent.startsWith(VERSION)) {
-            return SpanContext.create(
+            return SpanContext.createFromRemoteParent(
                 TraceId.getInvalid(),
                 SpanId.getInvalid(),
                 TraceFlags.getDefault(),
@@ -112,7 +112,7 @@ public final class AmqpPropagationFormatUtil {
 
         TraceFlags traceFlags = TraceFlags.fromHex(traceparent, TRACE_OPTION_OFFSET);
 
-        return SpanContext.create(
+        return SpanContext.createFromRemoteParent(
             traceId,
             spanId,
             traceFlags,
