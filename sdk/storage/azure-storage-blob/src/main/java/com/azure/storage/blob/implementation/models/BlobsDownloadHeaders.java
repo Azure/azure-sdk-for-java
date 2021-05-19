@@ -83,6 +83,12 @@ public final class BlobsDownloadHeaders {
     private BlobType xMsBlobType;
 
     /*
+     * The x-ms-immutability-policy-mode property.
+     */
+    @JsonProperty(value = "x-ms-immutability-policy-mode")
+    private String xMsImmutabilityPolicyMode;
+
+    /*
      * The Content-Encoding property.
      */
     @JsonProperty(value = "Content-Encoding")
@@ -143,6 +149,12 @@ public final class BlobsDownloadHeaders {
     private String xMsCopySource;
 
     /*
+     * The x-ms-immutability-policy-until-date property.
+     */
+    @JsonProperty(value = "x-ms-immutability-policy-until-date")
+    private DateTimeRfc1123 xMsImmutabilityPolicyUntilDate;
+
+    /*
      * The x-ms-content-crc64 property.
      */
     @JsonProperty(value = "x-ms-content-crc64")
@@ -177,6 +189,12 @@ public final class BlobsDownloadHeaders {
      */
     @HeaderCollection("x-ms-meta-")
     private Map<String, String> xMsMeta;
+
+    /*
+     * The x-ms-legal-hold property.
+     */
+    @JsonProperty(value = "x-ms-legal-hold")
+    private Boolean xMsLegalHold;
 
     /*
      * The Date property.
@@ -470,6 +488,26 @@ public final class BlobsDownloadHeaders {
     }
 
     /**
+     * Get the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     *
+     * @return the xMsImmutabilityPolicyMode value.
+     */
+    public String getXMsImmutabilityPolicyMode() {
+        return this.xMsImmutabilityPolicyMode;
+    }
+
+    /**
+     * Set the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     *
+     * @param xMsImmutabilityPolicyMode the xMsImmutabilityPolicyMode value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    public BlobsDownloadHeaders setXMsImmutabilityPolicyMode(String xMsImmutabilityPolicyMode) {
+        this.xMsImmutabilityPolicyMode = xMsImmutabilityPolicyMode;
+        return this;
+    }
+
+    /**
      * Get the contentEncoding property: The Content-Encoding property.
      *
      * @return the contentEncoding value.
@@ -677,6 +715,33 @@ public final class BlobsDownloadHeaders {
     }
 
     /**
+     * Get the xMsImmutabilityPolicyUntilDate property: The x-ms-immutability-policy-until-date property.
+     *
+     * @return the xMsImmutabilityPolicyUntilDate value.
+     */
+    public OffsetDateTime getXMsImmutabilityPolicyUntilDate() {
+        if (this.xMsImmutabilityPolicyUntilDate == null) {
+            return null;
+        }
+        return this.xMsImmutabilityPolicyUntilDate.getDateTime();
+    }
+
+    /**
+     * Set the xMsImmutabilityPolicyUntilDate property: The x-ms-immutability-policy-until-date property.
+     *
+     * @param xMsImmutabilityPolicyUntilDate the xMsImmutabilityPolicyUntilDate value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    public BlobsDownloadHeaders setXMsImmutabilityPolicyUntilDate(OffsetDateTime xMsImmutabilityPolicyUntilDate) {
+        if (xMsImmutabilityPolicyUntilDate == null) {
+            this.xMsImmutabilityPolicyUntilDate = null;
+        } else {
+            this.xMsImmutabilityPolicyUntilDate = new DateTimeRfc1123(xMsImmutabilityPolicyUntilDate);
+        }
+        return this;
+    }
+
+    /**
      * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
      *
      * @return the xMsContentCrc64 value.
@@ -793,6 +858,26 @@ public final class BlobsDownloadHeaders {
      */
     public BlobsDownloadHeaders setXMsMeta(Map<String, String> xMsMeta) {
         this.xMsMeta = xMsMeta;
+        return this;
+    }
+
+    /**
+     * Get the xMsLegalHold property: The x-ms-legal-hold property.
+     *
+     * @return the xMsLegalHold value.
+     */
+    public Boolean isXMsLegalHold() {
+        return this.xMsLegalHold;
+    }
+
+    /**
+     * Set the xMsLegalHold property: The x-ms-legal-hold property.
+     *
+     * @param xMsLegalHold the xMsLegalHold value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    public BlobsDownloadHeaders setXMsLegalHold(Boolean xMsLegalHold) {
+        this.xMsLegalHold = xMsLegalHold;
         return this;
     }
 

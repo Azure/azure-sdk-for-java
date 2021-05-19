@@ -251,7 +251,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             options.getSize(), null, null, options.getMetadata(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
-            options.getSequenceNumber(), null, tagsToString(options.getTags()), options.getHeaders(),
+            options.getSequenceNumber(), null, tagsToString(options.getTags()), null, null, null, options.getHeaders(),
             getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {

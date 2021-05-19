@@ -28,6 +28,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
+import com.azure.storage.blob.implementation.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsAcquireLeaseResponse;
@@ -35,6 +36,7 @@ import com.azure.storage.blob.implementation.models.BlobsBreakLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsChangeLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotResponse;
+import com.azure.storage.blob.implementation.models.BlobsDeleteImmutabilityPolicyResponse;
 import com.azure.storage.blob.implementation.models.BlobsDeleteResponse;
 import com.azure.storage.blob.implementation.models.BlobsGetAccessControlResponse;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoResponse;
@@ -46,6 +48,8 @@ import com.azure.storage.blob.implementation.models.BlobsRenewLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetAccessControlResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetExpiryResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetHttpHeadersResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetLegalHoldResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetMetadataResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTagsResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTierResponse;
@@ -298,6 +302,46 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicy(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{containerName}/{blob}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicy(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{containerName}/{blob}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<BlobsSetLegalHoldResponse> setLegalHold(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-legal-hold") boolean legalHold,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{containerName}/{blob}")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
@@ -482,6 +526,9 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-tags") String blobTagsString,
                 @HeaderParam("x-ms-seal-blob") Boolean sealBlob,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -511,6 +558,9 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-tags") String blobTagsString,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1343,6 +1393,98 @@ public final class BlobsImpl {
     }
 
     /**
+     * The Set Immutability Policy operation sets the immutability policy on the blob.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicyWithResponseAsync(
+            Integer timeout,
+            String requestId,
+            OffsetDateTime ifUnmodifiedSince,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Context context) {
+        final String comp = "immutabilityPolicies";
+        final String accept = "application/xml";
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+        return service.setImmutabilityPolicy(
+                this.client.getUrl(),
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                ifUnmodifiedSinceConverted,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                accept,
+                context);
+    }
+
+    /**
+     * The Delete Immutability Policy operation deletes the immutability policy on the blob.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
+            Integer timeout, String requestId, Context context) {
+        final String comp = "immutabilityPolicies";
+        final String accept = "application/xml";
+        return service.deleteImmutabilityPolicy(
+                this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * The Set Legal Hold operation sets a legal hold on the blob.
+     *
+     * @param legalHold Specified if a legal hold should be set on the blob.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsSetLegalHoldResponse> setLegalHoldWithResponseAsync(
+            boolean legalHold, Integer timeout, String requestId, Context context) {
+        final String comp = "legalhold";
+        final String accept = "application/xml";
+        return service.setLegalHold(
+                this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId, legalHold, accept, context);
+    }
+
+    /**
      * The Set Blob Metadata operation sets user-defined metadata for the specified blob as one or more name-value
      * pairs.
      *
@@ -1907,6 +2049,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
      * @param sealBlob Overrides the sealed state of the destination blob. Service version 2019-12-12 and newer.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -1936,6 +2081,9 @@ public final class BlobsImpl {
             String requestId,
             String blobTagsString,
             Boolean sealBlob,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
             Context context) {
         final String accept = "application/xml";
         DateTimeRfc1123 sourceIfModifiedSinceConverted =
@@ -1946,6 +2094,8 @@ public final class BlobsImpl {
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.startCopyFromURL(
                 this.client.getUrl(),
                 containerName,
@@ -1970,6 +2120,9 @@ public final class BlobsImpl {
                 requestId,
                 blobTagsString,
                 sealBlob,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
                 accept,
                 context);
     }
@@ -2011,6 +2164,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -2038,6 +2194,9 @@ public final class BlobsImpl {
             String requestId,
             byte[] sourceContentMD5,
             String blobTagsString,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
             Context context) {
         final String xMsRequiresSync = "true";
         final String accept = "application/xml";
@@ -2050,6 +2209,8 @@ public final class BlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.copyFromURL(
                 this.client.getUrl(),
                 xMsRequiresSync,
@@ -2073,6 +2234,9 @@ public final class BlobsImpl {
                 requestId,
                 sourceContentMD5Converted,
                 blobTagsString,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
                 accept,
                 context);
     }
