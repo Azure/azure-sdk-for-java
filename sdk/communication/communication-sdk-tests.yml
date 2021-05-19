@@ -13,13 +13,14 @@ stages:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java)
       Clouds: Public, Int
+      ServiceDirectory: communication
       PostSteps:
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq(variables['CurrentCloud'], 'Public'))
           inputs:
             codeCoverageTool: JaCoCo
-            summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco/jacoco.xml
-            reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco/
+            summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/${{ AdditionalParameters.ArtifactName }}/target/site/jacoco/jacoco.xml
+            reportDirectory: sdk/${{ parameters.ServiceDirectory }}/${{ AdditionalParameters.ArtifactName }}/target/site/jacoco/
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE

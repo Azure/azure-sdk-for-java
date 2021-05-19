@@ -7,4 +7,5 @@ stages:
         - name: 'azure-communication-sms'
           groupId: com.azure
           safeName: 'azurecommunicationsms'
-      ServiceDirectory: communication/azure-communication-sms
+      AdditionalParameters:
+        ArtifactName: azure-communication-sms
