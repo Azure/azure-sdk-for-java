@@ -19,8 +19,8 @@ stages:
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq(variables['CurrentCloud'], 'Public'))
           inputs:
             codeCoverageTool: JaCoCo
-            summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/${{ AdditionalParameters.ArtifactName }}/target/site/jacoco/jacoco.xml
-            reportDirectory: sdk/${{ parameters.ServiceDirectory }}/${{ AdditionalParameters.ArtifactName }}/target/site/jacoco/
+            summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/${{ parameters.Artifacts[0].name }}/target/site/jacoco/jacoco.xml
+            reportDirectory: sdk/${{ parameters.ServiceDirectory }}/${{ parameters.Artifacts[0].name }}/target/site/jacoco/
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
