@@ -16,6 +16,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.PrivateKeyDetails;
 import org.apache.http.ssl.PrivateKeyStrategy;
 import org.apache.http.ssl.SSLContexts;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -36,6 +37,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class ServerSocketTest {
+
+    KeyStore ks;
+
+    KeyManagerFactory kmf;
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        /*
+         * Add JCA provider.
+         */
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
+
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
+
+        /**
+         *  - Create an Azure Key Vault specific instance of a KeyStore.
+         *  - Set the KeyManagerFactory to use that KeyStore.
+         */
+        ks = PropertyConvertorUtils.getKeyVaultKeyStore();
+        kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        kmf.init(ks, "".toCharArray());
+    }
 
 
     private void startSocket(SSLServerSocket serverSocket) {
@@ -64,29 +93,11 @@ public class ServerSocketTest {
     public void testServerSocket() throws Exception {
 
         /*
-         * Add JCA provider.
-         */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.addProvider(provider);
-
-        /*
          * Setup server side.
          *
-         *  - Create an Azure Key Vault specific instance of a KeyStore.
-         *  - Set the KeyManagerFactory to use that KeyStore.
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
-        KeyStore ks = PropertyConvertorUtils.getKeyStore();
-
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(ks, "".toCharArray());
 
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(kmf.getKeyManagers(), null, null);
@@ -100,8 +111,6 @@ public class ServerSocketTest {
          *
          * - Create an SSL context.
          * - Set SSL context to trust any certificate.
-         * - Create SSL connection factory.
-         * - Set hostname verifier to trust any hostname.
          */
 
         SSLContext sslContext = SSLContexts
@@ -109,33 +118,10 @@ public class ServerSocketTest {
             .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
             .build();
 
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContext, (hostname, session) -> true);
-
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("https", sslConnectionSocketFactory)
-                .build());
-
         /*
          * And now execute the test.
          */
-        String result = null;
-
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8765");
-            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-                int status = response.getStatusLine().getStatusCode();
-                String result1 = null;
-                if (status == 204) {
-                    result1 = "Success";
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        String result = sendRequest(sslContext, "8765");
 
         /*
          * And verify all went well.
@@ -152,29 +138,11 @@ public class ServerSocketTest {
     public void testServerSocketWithSelfSignedClientTrust() throws Exception {
 
         /*
-         * Add JCA provider.
-         */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.addProvider(provider);
-
-        /*
          * Setup server side.
          *
-         *  - Create an Azure Key Vault specific instance of a KeyStore.
-         *  - Set the KeyManagerFactory to use that KeyStore.
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
-        KeyStore ks = PropertyConvertorUtils.getKeyStore();
-
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(ks, "".toCharArray());
 
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(kmf.getKeyManagers(), null, null);
@@ -187,8 +155,6 @@ public class ServerSocketTest {
         /*
          * Setup client side
          *
-         * - Create an SSL context.
-         * - Set SSL context to trust any certificate.
          * - Create SSL connection factory.
          * - Set hostname verifier to trust any hostname.
          */
@@ -198,33 +164,10 @@ public class ServerSocketTest {
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
             .build();
 
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContext, (hostname, session) -> true);
-
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("https", sslConnectionSocketFactory)
-                .build());
-
         /*
          * And now execute the test.
          */
-        String result = null;
-
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8766");
-            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-                int status = response.getStatusLine().getStatusCode();
-                String result1 = null;
-                if (status == 204) {
-                    result1 = "Success";
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        String result = sendRequest(sslContext, "8766");
 
         /*
          * And verify all went well.
@@ -241,29 +184,11 @@ public class ServerSocketTest {
     public void testServerSocketWithDefaultTrustManager() throws Exception {
 
         /*
-         * Add JCA provider.
-         */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.addProvider(provider);
-
-        /*
          * Setup server side.
          *
-         *  - Create an Azure Key Vault specific instance of a KeyStore.
-         *  - Set the KeyManagerFactory to use that KeyStore.
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
-        KeyStore ks = PropertyConvertorUtils.getKeyStore();
-
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(ks, "".toCharArray());
 
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(ks);
@@ -282,8 +207,6 @@ public class ServerSocketTest {
          *
          * - Create an SSL context.
          * - Set SSL context to trust any certificate.
-         * - Create SSL connection factory.
-         * - Set hostname verifier to trust any hostname.
          */
 
         SSLContext sslContext = SSLContexts
@@ -292,33 +215,10 @@ public class ServerSocketTest {
             .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
             .build();
 
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContext, (hostname, session) -> true);
-
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("https", sslConnectionSocketFactory)
-                .build());
-
         /*
          * And now execute the test.
          */
-        String result = null;
-
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8768");
-            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-                int status = response.getStatusLine().getStatusCode();
-                String result1 = null;
-                if (status == 204) {
-                    result1 = "Success";
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        String result = sendRequest(sslContext, "8768");
 
         /*
          * And verify all went well.
@@ -335,31 +235,14 @@ public class ServerSocketTest {
     @Test
     public void testServerSocketWithKeyVaultTrustManager() throws Exception {
 
-        /*
-         * Add JCA provider.
-         */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.addProvider(provider);
         Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
 
         /*
          * Setup server side.
          *
-         *  - Create an Azure Key Vault specific instance of a KeyStore.
-         *  - Set the KeyManagerFactory to use that KeyStore.
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
-        KeyStore ks = PropertyConvertorUtils.getKeyStore();
-
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(ks, "".toCharArray());
 
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(ks);
@@ -378,8 +261,6 @@ public class ServerSocketTest {
          *
          * - Create an SSL context.
          * - Set SSL context to trust any certificate.
-         * - Create SSL connection factory.
-         * - Set hostname verifier to trust any hostname.
          */
 
         SSLContext sslContext = SSLContexts
@@ -388,6 +269,23 @@ public class ServerSocketTest {
             .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
             .build();
 
+        /*
+         * And now execute the test.
+         */
+        String result = sendRequest(sslContext, "8767");
+
+        /*
+         * And verify all went well.
+         */
+        assertEquals("Success", result);
+    }
+
+    private String sendRequest(SSLContext sslContext, String port) {
+
+        /**
+         * - Create SSL connection factory.
+         * - Set hostname verifier to trust any hostname.
+         */
         SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
             sslContext, (hostname, session) -> true);
 
@@ -396,13 +294,11 @@ public class ServerSocketTest {
                 .register("https", sslConnectionSocketFactory)
                 .build());
 
-        /*
-         * And now execute the test.
-         */
+
         String result = null;
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8767");
+            HttpGet httpGet = new HttpGet("https://localhost:" + port);
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
@@ -415,12 +311,9 @@ public class ServerSocketTest {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-
-        /*
-         * And verify all went well.
-         */
-        assertEquals("Success", result);
+        return result;
     }
+
 
     private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
         @Override
