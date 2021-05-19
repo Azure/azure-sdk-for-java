@@ -50,7 +50,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.azure.messaging.eventhubs.perf.App
+                    com.azure.messaging.eventhubs.perf.App.App
                   </mainClass>
                 </manifest>
               </archive>
