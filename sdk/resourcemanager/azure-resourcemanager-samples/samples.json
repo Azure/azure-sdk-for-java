@@ -827,7 +827,7 @@
       "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/storage/samples/ManageStorageAccountCustomerManagedKey.java",
       "githubPath": "Azure-Samples/storage-java-manage-storage-accounts-customer-managed-key",
-      "description": "Getting started on managing storage accounts with customer managed key using Java"
+      "description": "Getting started on managing storage accounts with customer-managed key using Java"
     }
   ]
 }

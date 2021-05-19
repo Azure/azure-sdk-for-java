@@ -18,16 +18,16 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.security.keyvault.keys.models.KeyType;
 
 /**
- * Azure Storage sample for managing storage accounts with customer managed key.
+ * Azure Storage sample for managing storage accounts with customer-managed key.
  * - Create a key vault with purge protection enabled
  * - Create a RSA key
  * - Create a storage account with system assigned managed service identity
  * - Update key vault with access policy for managed service identity of storage account
- * - Update storage account to enable encryption with customer managed key
+ * - Update storage account to enable encryption with customer-managed key
  *
  * Reference http://aka.ms/storagecmkconfiguration
  */
-public class ManageStorageAccountCustomerManagedKey {
+public final class ManageStorageAccountCustomerManagedKey {
 
     /**
      * Main function which runs the actual sample.
@@ -84,11 +84,9 @@ public class ManageStorageAccountCustomerManagedKey {
                 .apply();
 
             //============================================================
-            // Enable customer managed key in storage account
+            // Enable customer-managed key in storage account
 
             storageAccount.update()
-                .withBlobEncryption()
-                .withFileEncryption()
                 .withEncryptionKeyFromKeyVault(vault.vaultUri(), "sakey", null)
                 .apply();
 
