@@ -2,6 +2,9 @@ trigger: none
 
 stages:
   - template: ../communication-sdk-tests.yml
-    variables:
-      ArtifactName: 'azure-communication-sms'
-      ArtifactSafeName: 'azurecommunicationsms'
+    parameters:
+      Artifacts:
+        - name: 'azure-communication-sms'
+          groupId: com.azure
+          safeName: 'azurecommunicationsms'
+      ServiceDirectory: communication/azure-communication-sms
