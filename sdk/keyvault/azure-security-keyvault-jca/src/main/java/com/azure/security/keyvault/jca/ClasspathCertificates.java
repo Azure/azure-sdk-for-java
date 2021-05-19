@@ -11,51 +11,51 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Store side load certificates information.
+ * Store certificates loaded from classpath.
  */
-public class ClasspathCertificates {
+public class ClasspathCertificates implements AzureCertificate {
 
     /**
-     * Stores the side load aliases.
+     * Store certificates' alias.
      */
     private final List<String> aliases = new ArrayList<>();
 
     /**
-     * Stores the sideLoad certificates by alias.
+     * Stores the certificates by alias.
      */
     private final Map<String, Certificate> certificates = new HashMap<>();
 
     /**
      * Stores the certificate keys by alias.
      */
-    private final HashMap<String, Key> certificateKeys = new HashMap<>();
+    private final Map<String, Key> certificateKeys = new HashMap<>();
 
     /**
-     * Get side load certificates' aliases.
-     * @return certificates' alias
+     * Get certificate aliases.
+     * @return certificate aliases
      */
     public List<String> getAliases() {
         return aliases;
     }
 
     /**
-     * Get side load certificates.
-     * @return side load certificatess
+     * Get certificates.
+     * @return certificates
      */
     public Map<String, Certificate> getCertificates() {
         return certificates;
     }
 
     /**
-     * Get side load certificate keys.
-     * @return side load certificate keys
+     * Get certificate keys.
+     * @return certificate keys
      */
-    public HashMap<String, Key> getCertificateKeys() {
+    public Map<String, Key> getCertificateKeys() {
         return certificateKeys;
     }
 
     /**
-     * Remove side load alias if exist.
+     * Remove alias if exist.
      * @param alias certificate alias
      */
     public void removeAlias(String alias) {
@@ -63,7 +63,7 @@ public class ClasspathCertificates {
     }
 
     /**
-     * Remove certificate in side load if exist.
+     * Remove certificate if exist.
      * @param alias certificate alias
      */
     public void removeCertificate(String alias) {
@@ -71,15 +71,7 @@ public class ClasspathCertificates {
     }
 
     /**
-     * Remove certificate key in side load if exist.
-     * @param alias certificate alias
-     */
-    public void removeCertificateKey(String alias) {
-        certificateKeys.remove(alias);
-    }
-
-    /**
-     * Add certificates to side load.
+     * Add certificate.
      * @param alias certificate alias
      * @param certificate certificate
      */
@@ -89,4 +81,15 @@ public class ClasspathCertificates {
             certificates.put(alias, certificate);
         }
     }
+
+    /**
+     * Delete certificate info by alias if exits
+     * @param alias certificate alias
+     */
+    public void deleteEntry(String alias) {
+        aliases.remove(alias);
+        certificates.remove(alias);
+        certificateKeys.remove(alias);
+    }
+
 }

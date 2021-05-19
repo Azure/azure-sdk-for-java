@@ -5,6 +5,7 @@ package com.azure.security.keyvault.jca;
 
 import java.security.Key;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +15,14 @@ import java.util.Collections;
 import java.util.Objects;
 
 /**
- * Store certificates information.
+ * Store certificates loaded from KeyVault.
  */
-public class KeyVaultCertificates {
+public class KeyVaultCertificates implements AzureCertificate {
 
     /**
      * Stores the list of aliases.
      */
-    private List<String> aliases;
+    private List<String> aliases = new ArrayList<>();
 
     /**
      * Stores the certificates by alias.
@@ -31,7 +32,7 @@ public class KeyVaultCertificates {
     /**
      * Stores the certificate keys by alias.
      */
-    private final HashMap<String, Key> certificateKeys = new HashMap<>();
+    private final Map<String, Key> certificateKeys = new HashMap<>();
 
     /**
      * Stores the last time refresh certificates and alias
@@ -39,9 +40,9 @@ public class KeyVaultCertificates {
     private Date lastRefreshTime;
 
     /**
-     * Stores the overall refresh time.
+     * Stores the last force refresh time.
      */
-    private static volatile Date overallRefreshTime = new Date();
+    private static volatile Date lastForceRefreshTime = new Date();
 
     private KeyVaultClient keyVaultClient;
 
@@ -57,7 +58,7 @@ public class KeyVaultCertificates {
     }
 
     boolean certificatesNeedRefresh() {
-        if (lastRefreshTime == null || overallRefreshTime.after(lastRefreshTime)) {
+        if (lastRefreshTime == null || lastForceRefreshTime.after(lastRefreshTime)) {
             return true;
         }
         if (refreshInterval > 0) {
@@ -66,17 +67,29 @@ public class KeyVaultCertificates {
         return false;
     }
 
-    List<String> getAliases() {
+    /**
+     * Get certificate aliases.
+     * @return certificate aliases
+     */
+    public List<String> getAliases() {
         refreshCertificatesIfNeeded();
         return aliases;
     }
 
-    Map<String, Certificate> getCertificates() {
+    /**
+     * Get certificates.
+     * @return certificates
+     */
+    public Map<String, Certificate> getCertificates() {
         refreshCertificatesIfNeeded();
         return certificates;
     }
 
-    Map<String, Key> getCertificateKeys() {
+    /**
+     * Get certificates.
+     * @return certificate keys
+     */
+    public Map<String, Key> getCertificateKeys() {
         refreshCertificatesIfNeeded();
         return certificateKeys;
     }
@@ -112,8 +125,7 @@ public class KeyVaultCertificates {
      * @return certificate' alias if exist.
      */
     String refreshAndGetAliasByCertificate(Certificate certificate) {
-        refreshCertsInfo();
-        refreshCertificates();
+        updateLastForceRefreshTime();
         return getCertificates().entrySet()
                                 .stream()
                                 .filter(entry -> certificate.equals(entry.getValue()))
@@ -127,7 +139,7 @@ public class KeyVaultCertificates {
      * Delete certificate info by alias if exits
      * @param alias deleted certificate
      */
-    void deleteEntry(String alias) {
+    public void deleteEntry(String alias) {
         if (aliases != null) {
             aliases.remove(alias);
         }
@@ -138,8 +150,8 @@ public class KeyVaultCertificates {
     /**
      * Overall refresh certificates' info
      */
-    public static void refreshCertsInfo() {
-        overallRefreshTime = new Date();
+    public static void updateLastForceRefreshTime() {
+        lastForceRefreshTime = new Date();
     }
 
 }
