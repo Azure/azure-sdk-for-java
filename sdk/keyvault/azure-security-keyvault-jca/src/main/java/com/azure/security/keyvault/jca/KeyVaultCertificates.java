@@ -124,7 +124,7 @@ public class KeyVaultCertificates {
     }
 
     /**
-     * delete certificate info by alias if exits
+     * Delete certificate info by alias if exits
      * @param alias deleted certificate
      */
     void deleteEntry(String alias) {
@@ -136,7 +136,7 @@ public class KeyVaultCertificates {
     }
 
     /**
-     * overall refresh certificates' info
+     * Overall refresh certificates' info
      */
     public static void refreshCertsInfo() {
         overallRefreshTime = new Date();
