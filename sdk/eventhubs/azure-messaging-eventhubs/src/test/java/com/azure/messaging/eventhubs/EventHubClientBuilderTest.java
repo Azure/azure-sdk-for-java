@@ -176,19 +176,13 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
             .buildAsyncProducerClient();
-        asyncProducerClient.send(testData);
-
-        EventHubConsumerAsyncClient asyncConsumerClient = new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
-        StepVerifier.create(asyncConsumerClient.receive())
-                .assertNext(consumer -> Assertions.assertEquals(consumer.getData().getBody(), TEST_CONTENTS.getBytes(UTF_8)))
+        try {
+            StepVerifier.create(asyncProducerClient.send(testData))
                 .verifyComplete();
+        } finally {
+            asyncProducerClient.close();
+        }
 
-        asyncProducerClient.close();
-        asyncConsumerClient.close();
     }
 
 
@@ -205,19 +199,12 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureSasCredential(sharedAccessSignature))
             .buildAsyncProducerClient();
-        asyncProducerClient.send(testData);
-
-        EventHubConsumerAsyncClient asyncConsumerClient = new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureSasCredential(sharedAccessSignature))
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
-        StepVerifier.create(asyncConsumerClient.receive())
-            .assertNext(consumer -> Assertions.assertEquals(consumer.getData().getBody(), TEST_CONTENTS.getBytes(UTF_8)))
-            .verifyComplete();
-
-        asyncProducerClient.close();
-        asyncConsumerClient.close();
+        try {
+            StepVerifier.create(asyncProducerClient.send(testData))
+                .verifyComplete();
+        } finally {
+            asyncProducerClient.close();
+        }
     }
 
     @Test

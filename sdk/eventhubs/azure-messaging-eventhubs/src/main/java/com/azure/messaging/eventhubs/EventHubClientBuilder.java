@@ -557,7 +557,7 @@ public class EventHubClientBuilder {
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubProducerClient buildAsyncProducerClient() {
+    public EventHubProducerAsyncClient buildAsyncProducerClient() {
         return buildAsyncClient().createProducer();
     }
 
