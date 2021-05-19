@@ -19,10 +19,9 @@ import com.azure.security.keyvault.keys.models.KeyType;
 
 /**
  * Azure Storage sample for managing storage accounts with customer-managed key.
- * - Create a key vault with purge protection enabled
- * - Create a RSA key
  * - Create a storage account with system assigned managed service identity
- * - Update key vault with access policy for managed service identity of storage account
+ * - Create a key vault with purge protection enabled and access policy for managed service identity of storage account
+ * - Create a RSA key
  * - Update storage account to enable encryption with customer-managed key
  *
  * {@see http://aka.ms/storagecmkconfiguration}
@@ -44,32 +43,11 @@ public final class ManageStorageAccountCustomerManagedKey {
 
         try {
             //============================================================
-            // Create a key vault with purge protection enabled
-
-            Vault vault = azureResourceManager.vaults().define(vaultName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .defineAccessPolicy()
-                    .forServicePrincipal(clientId)
-                    .allowKeyAllPermissions()
-                    .attach()
-                .withPurgeProtectionEnabled()
-                .create();
-
-            //============================================================
-            // Create a key for storage account, RSA 2048, 3072 or 4096.
-
-            vault.keys().define("sakey")
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(2048)
-                .create();
-
-            //============================================================
             // Create a storage account with system assigned managed service identity
 
             StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
                 .withRegion(region)
-                .withExistingResourceGroup(rgName)
+                .withNewResourceGroup(rgName)
                 .withInfrastructureEncryption()
                 .withTableEncryption()
                 .withQueueEncryption()
@@ -77,14 +55,29 @@ public final class ManageStorageAccountCustomerManagedKey {
                 .create();
 
             //============================================================
-            // Allow access to key vault for storage account msi
+            // Create a key vault with purge protection enabled and access policy for managed service identity of storage account
 
-            vault.update()
-                .defineAccessPolicy()
+            Vault vault = azureResourceManager.vaults().define(vaultName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .defineAccessPolicy()   // access policy for this sample client to generate key
+                    .forServicePrincipal(clientId)
+                    .allowKeyAllPermissions()
+                    .attach()
+                .defineAccessPolicy()   // access policy for storage account managed service identity
                     .forObjectId(storageAccount.systemAssignedManagedServiceIdentityPrincipalId())
                     .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
                     .attach()
-                .apply();
+                .withPurgeProtectionEnabled()
+                .create();
+
+            //============================================================
+            // Create a key for storage account, RSA 2048, 3072 or 4096
+
+            vault.keys().define("sakey")
+                .withKeyTypeToCreate(KeyType.RSA)
+                .withKeySize(2048)
+                .create();
 
             //============================================================
             // Enable customer-managed key in storage account
