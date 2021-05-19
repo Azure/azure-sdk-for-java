@@ -3,7 +3,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.credential.TokenCredential;
@@ -54,10 +53,9 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
         ContainerRepositoryAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.repository.deleteRepository
         client.delete().subscribe(response -> {
-            System.out.printf(
-                "Tag Count: %1d, Artifact Count: %2d",
-                response.getDeletedTags(),
-                response.getDeletedManifests());
+            System.out.printf("Successfully initiated delete of the repository.");
+        }, error -> {
+            System.out.println("Failed to initiate a delete of the repository.");
         });
         // END: com.azure.containers.containerregistry.async.repository.deleteRepository
     }
@@ -66,11 +64,9 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
         ContainerRepositoryAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.repository.deleteRepositoryWithResponse
         client.deleteWithResponse().subscribe(response -> {
-            final DeleteRepositoryResult result = response.getValue();
-            System.out.printf(
-                "Tag Count: %1d, Artifact Count: %2d",
-                result.getDeletedTags(),
-                result.getDeletedManifests());
+            System.out.printf("Successfully initiated delete of the repository.");
+        }, error -> {
+            System.out.println("Failed to initiate a delete of the repository.");
         });
         // END: com.azure.containers.containerregistry.async.repository.deleteRepositoryWithResponse
     }
@@ -96,20 +92,20 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
     }
 
 
-    public void setPropertiesCodeSnippet() {
+    public void updatePropertiesCodeSnippet() {
         ContainerRepositoryAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.repository.setProperties
+        // BEGIN: com.azure.containers.containerregistry.async.repository.updateProperties
         RepositoryProperties properties = getRepositoryProperties();
-        client.setProperties(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.repository.setProperties
+        client.updateProperties(properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.repository.updateProperties
     }
 
-    public void setPropertiesWithResponseCodeSnippet() {
+    public void updatePropertiesWithResponseCodeSnippet() {
         ContainerRepositoryAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.repository.setPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.async.repository.updatePropertiesWithResponse
         RepositoryProperties properties = getRepositoryProperties();
-        client.setPropertiesWithResponse(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.repository.setPropertiesWithResponse
+        client.updatePropertiesWithResponse(properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.repository.updatePropertiesWithResponse
     }
 
     public void listManifestsCodeSnippet() {
@@ -148,7 +144,7 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private String getTagOrDigest() {
+    private String getDigest() {
         return null;
     }
 
@@ -158,15 +154,6 @@ public class ContainerAsyncRepositoryJavaDocSnippets {
      * @return {@code null}
      */
     private String getTag() {
-        return null;
-    }
-
-    /**
-     * Implementation not provided for this method.
-     *
-     * @return {@code null}
-     */
-    private String getDigest() {
         return null;
     }
 

@@ -17,7 +17,7 @@ Use the client library for Azure Container Registry to:
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-- [App Configuration Store][app_config_store]
+- [Container Registry Create][container_registry_create_cli]
 
 ### Include the Package
 
@@ -35,6 +35,8 @@ Use the client library for Azure Container Registry to:
 
 The [Azure Identity library][identity] provides easy Azure Active Directory support for authentication.
 Note all the below samples assume you have an endpoint, which is the URL including the name of the login server and the `https://` prefix.
+More information at [Azure Container Registry portal][container_registry_create_portal]
+
 <!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L29-L33 -->
 ```Java
     ContainerRegistryClient client = new ContainerRegistryClientBuilder()
@@ -59,16 +61,16 @@ For more information on using AAD with Azure Container Registry, please see the 
 If the builder is instantiated without any credentials, the SDK creates the service client for the anonymous pull mode.
 The user must use this setting on a registry that has been enabled for anonymous pull.
 In this mode, the user can only call listRepositoryNames method and its overload. All the other calls will fail. 
-For more information please read [Anonymous Pull Access](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-faq#how-do-i-enable-anonymous-pull-access)
+For more information please read [Anonymous Pull Access](https://docs.microsoft.com/azure/container-registry/container-registry-faq#how-do-i-enable-anonymous-pull-access)
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L80-L82 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L70-L72 -->
 ```Java
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
     .buildClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L86-L88 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L76-L78 -->
 ```Java
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
@@ -86,17 +88,17 @@ For more information please see [Container Registry Concepts](https://docs.micro
 ### Sync examples
 
 - [List repository names](#samples)
-- [Delete images](#samples)
-- [Set artifact properties](#samples)
 - [List tags with anonymous access](#samples)
+- [Set artifact properties](#samples)
+- [Delete images](#samples)
 - [Delete repository with anonymous access throws](#samples)
 
 ### Async examples
 
 - [List repository names asynchronously](#samples)
-- [Delete images asynchronously](#samples)
-- [Set artifact properties asynchronously](#samples)
 - [List tags with anonymous access asynchronously](#samples)
+- [Set artifact properties asynchronously](#samples)
+- [Delete images asynchronously](#samples)
 - [Delete repository with anonymous access asynchronously throws](#samples)
 
 ### List repository names
@@ -114,22 +116,47 @@ ContainerRegistryClient client = new ContainerRegistryClientBuilder()
 client.listRepositoryNames().forEach(repository -> System.out.println(repository));
 ```
 
-### List repository names asynchronously
+### List tags with anonymous access
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L54-L60 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L137-L148 -->
 ```Java
-DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
+ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .credential(credential)
-    .buildAsyncClient();
+    .buildClient();
 
-client.listRepositoryNames().subscribe(repository -> System.out.println(repository));
+RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
+PagedIterable<ArtifactTagProperties> tags = image.listTags();
+
+System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
+
+for (ArtifactTagProperties tag : tags) {
+    System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), repositoryName, tag.getName()));
+}
+```
+
+### Set artifact properties
+
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L116-L129 -->
+```Java
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+
+ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+    .endpoint(endpoint)
+    .credential(defaultCredential)
+    .buildClient();
+
+RegistryArtifact image = client.getArtifact(repositoryName, digest);
+
+image.updateTagProperties(
+    tag,
+    new ArtifactTagProperties()
+        .setWriteEnabled(false)
+        .setDeleteEnabled(false));
 ```
 
 ### Delete Images
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L92-L120 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L82-L110 -->
 ```Java
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
@@ -162,122 +189,8 @@ for (String repositoryName : client.listRepositoryNames()) {
 }
 ```
 
-### Delete images asynchronously
-
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L124-L149 -->
-```Java
-nCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-
-ainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
-.endpoint(endpoint)
-.credential(defaultCredential)
-.buildAsyncClient();
-
-l int imagesCountToKeep = 3;
-nt.listRepositoryNames()
-.map(repositoryName -> client.getRepository(repositoryName))
-.flatMap(repository -> repository.listManifests(
-    ManifestOrderBy.LAST_UPDATED_ON_DESCENDING))
-.skip(imagesCountToKeep).subscribe(imageManifest -> {
-    System.out.printf(String.format("Deleting image with digest %s.%n", imageManifest.getDigest()));
-    System.out.printf("    This image has the following tags: ");
-
-    for (String tagName : imageManifest.getTags()) {
-        System.out.printf("        %s:%s", imageManifest.getRepositoryName(), tagName);
-    }
-
-    client.getArtifact(
-        imageManifest.getRepositoryName(),
-        imageManifest.getDigest()).delete().subscribe();
-}, error -> {
-    System.out.println("Failed to delete older images.");
-});
-```
-
-### Set artifact properties
-
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L155-L168 -->
-```Java
-TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-
-ContainerRegistryClient client = new ContainerRegistryClientBuilder()
-    .endpoint(endpoint)
-    .credential(defaultCredential)
-    .buildClient();
-
-RegistryArtifact image = client.getArtifact(repositoryName, tagOrDigest);
-
-image.setTagProperties(
-    tag,
-    new ArtifactTagProperties()
-        .setWriteEnabled(false)
-        .setDeleteEnabled(false));
-```
-
-### Set artifact properties asynchronously
-
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L172-L187 -->
-```Java
-TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-
-ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
-    .endpoint(endpoint)
-    .credential(defaultCredential)
-    .buildAsyncClient();
-
-RegistryArtifactAsync image = client.getArtifact(repositoryName, tagOrDigest);
-
-image.setTagProperties(tag, new ArtifactTagProperties()
-    .setWriteEnabled(false)
-    .setDeleteEnabled(false)).subscribe(artifactTagProperties -> {
-        System.out.println("Tag properties are now read-only");
-    }, error -> {
-        System.out.println("Failed to make the tag properties read-only.");
-    });
-```
-
-### List tags with anonymous access
-
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L195-L206 -->
-```Java
-ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
-    .endpoint(endpoint)
-    .buildClient();
-
-RegistryArtifact image = anonymousClient.getArtifact(repositoryName, tagOrDigest);
-PagedIterable<ArtifactTagProperties> tags = image.listTags();
-
-System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
-
-for (ArtifactTagProperties tag : tags) {
-    System.out.printf(String.format("%s/%s:%s", anonymousClient.getName(), repositoryName, tag.getName()));
-}
-```
-
-### List tags with anonymous access asynchronously
-
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L210-L225 -->
-```Java
-final String endpoint = getEndpoint();
-final String repositoryName = getRepositoryName();
-
-ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
-    .endpoint(endpoint)
-    .buildAsyncClient();
-
-RegistryArtifactAsync image = anonymousClient.getArtifact(repositoryName, tagOrDigest);
-
-System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
-
-image.listTags().subscribe(tag -> {
-    System.out.printf(String.format("%s/%s:%s", anonymousClient.getName(), repositoryName, tag.getName()));
-}, error -> {
-    System.out.println("There was an error while trying to list tags" + error);
-});
-```
-
 ### Delete repository with anonymous access throws 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L229-L241 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L152-L164 -->
 ```Java
 final String endpoint = getEndpoint();
 final String repositoryName = getRepositoryName();
@@ -294,30 +207,12 @@ try {
 }
 ```
 
-### Delete repository with anonymous access asynchronously
-
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L245-L256 -->
-```Java
-final String endpoint = getEndpoint();
-final String repositoryName = getRepositoryName();
-
-ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
-    .endpoint(endpoint)
-    .buildAsyncClient();
-
-anonymousClient.deleteRepository(repositoryName).subscribe(deleteRepositoryResult -> {
-    System.out.println("Unexpected Success: Delete is not allowed on anonymous access");
-}, error -> {
-    System.out.println("Expected exception: Delete is not allowed on anonymous access");
-});
-```
-
 ## Troubleshooting
 
 All container registry service operations will throw a
 [HttpResponseException][HttpResponseException] on failure.
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L66-L76 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L56-L66 -->
 ```Java
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
@@ -352,7 +247,8 @@ additional questions or comments.
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/containerregistry/azure-containers-containerregistry/src
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[azure_subscription]: https://azure.microsoft.com/free
 [package]: https://search.maven.org/artifact/com.azure/azure-containers-containerregisty
 [api_documentation]: https://aka.ms/java-docs
 [rest_docs]: https://docs.microsoft.com/rest/api/containerregistry/

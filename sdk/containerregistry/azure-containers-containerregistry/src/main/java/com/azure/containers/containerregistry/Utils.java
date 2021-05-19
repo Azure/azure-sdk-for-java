@@ -34,6 +34,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ final class Utils {
     private static final Pattern CONTINUATIONLINK_PATTERN;
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+    private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
+    private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
@@ -75,12 +78,24 @@ final class Utils {
     /**
      * This method parses the response to get the continuation token used to make the next pagination call.
      * The continuation token is returned by the service in the form of a header and not as a nextLink field.
+     *
+     * <p>
+     *      Per the Docker v2 HTTP API spec, the Link header is an RFC5988
+     *      compliant rel='next' with URL to next result set, if available.
+     *      See: https://docs.docker.com/registry/spec/api/
+     *
+     *      The URI reference can be obtained from link-value as follows:
+     *        Link       = "Link" ":" #link-value
+     *        link-value = "<" URI-Reference ">" * (";" link-param )
+     *      See: https://tools.ietf.org/html/rfc5988#section-5
+     * </p>
      * @param listResponse response that is parsed.
      * @param mapperFunction the function that maps the rest api response into the public model exposed by the client.
      * @param <T> The model type returned by the rest client.
      * @param <R> The model type returned by the public client.
      * @return paged response with the correct continuation token.
      */
+
     static <T, R> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<R> listResponse, Function<List<R>, List<T>> mapperFunction) {
         Objects.requireNonNull(mapperFunction);
 
@@ -111,56 +126,6 @@ final class Utils {
         );
     }
 
-//    /**
-//     * We want both the list artifacts call and the get artifact call share the same model.
-//     * which the swagger does not.
-//     * As a result we need to ensure that the we can map one implementation to the other.
-//     * Also, we want to customize the type of one of the fields to ensure minimum models are exposed.
-//     * @param propsImpl implementation model for this type.
-//     * @return public model for propsImpl
-//     */
-//    static ArtifactManifestProperties mapProperties(com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties propsImpl, String repositoryName) {
-//        if (propsImpl == null) {
-//            return null;
-//        }
-//
-//        return new ArtifactManifestProperties(
-//            propsImpl.getRepositoryName(),
-//            propsImpl.getDigest(),
-//            propsImpl.getWriteableProperties().isCanDelete(),
-//            propsImpl.getWriteableProperties().isCanWrite(),
-//            propsImpl.getWriteableProperties().isCanRead(),
-//            propsImpl.getWriteableProperties().isCanList(),
-//            propsImpl.getManifestReferences(),
-//            propsImpl.getArchitecture(),
-//            propsImpl.getOperatingSystem(),
-//            propsImpl.getCreatedOn(),
-//            propsImpl.getLastUpdatedOn(),
-//            propsImpl.getTags(),
-//            propsImpl.getSize());
-//    }
-
-
-//    static List<ArtifactManifestProperties> getRegistryArtifacts(List<ManifestAttributesManifestReferences> artifacts, String repositoryName) {
-//        if (artifacts == null) {
-//            return null;
-//        }
-//
-//        return artifacts.stream()
-//            .map(artifact -> new ArtifactManifestProperties(
-//                repositoryName,
-//                artifact.getDigest(),
-//                null,
-//                null,
-//                artifact.getArchitecture(),
-//                artifact.getOperatingSystem(),
-//                null,
-//                null,
-//                null,
-//                null
-//            )).collect(Collectors.toList());
-//    }
-
     /**
      * This method converts the API response codes into well known exceptions.
      * @param exception The exception returned by the rest client.
@@ -189,27 +154,6 @@ final class Utils {
             default:
                 return new HttpResponseException(errorDetail, errorsException.getResponse(), exception);
         }
-    }
-
-    /**
-     * This method maps a given response to another based on the mapper function.
-     * @param response response that is parsed.
-     * @param mapFunction the function that maps the rest api response into the public model exposed by the client.
-     * @param <T> The model type returned by the rest client.
-     * @param <R> The model type returned by the public client.
-     * @return paged response with the correct continuation token.
-     */
-    static <T, R> Response<R> mapResponse(Response<T> response, Function<T, R> mapFunction) {
-        if (response == null || mapFunction == null) {
-            return null;
-        }
-
-        return new ResponseBase<String, R>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            mapFunction.apply(response.getValue()),
-            null);
     }
 
     /**
@@ -293,5 +237,20 @@ final class Utils {
         }
 
         return clonedPolicy;
+    }
+
+    static Mono<Response<Void>> deleteResponseToSuccess(Response<Void> responseT) {
+        if (responseT.getStatusCode() != HTTP_STATUS_CODE_NOT_FOUND) {
+            return Mono.just(responseT);
+        }
+
+        Response<Void> successResponse = new ResponseBase<String, Void>(
+            responseT.getRequest(),
+            HTTP_STATUS_CODE_ACCEPTED,
+            responseT.getHeaders(),
+            null,
+            null);
+
+        return Mono.just(successResponse);
     }
 }

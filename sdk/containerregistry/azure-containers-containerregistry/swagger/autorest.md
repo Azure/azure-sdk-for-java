@@ -29,7 +29,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/7d61610b5b54f21de3c95b64c341c7bde385c994/specification/containerregistry/data-plane/Azure.ContainerRegistry/preview/2019-08-15-preview/containerregistry.json
+input-file: containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
@@ -40,7 +40,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: DeleteRepositoryResult,ManifestOrderBy,TagOrderBy,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestReference,RepositoryProperties,ArtifactTagProperties,ArtifactManifestProperties
+custom-types: ManifestOrderBy,TagOrderBy,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestReference,RepositoryProperties
 custom-types-subpackage: models
 ```
 

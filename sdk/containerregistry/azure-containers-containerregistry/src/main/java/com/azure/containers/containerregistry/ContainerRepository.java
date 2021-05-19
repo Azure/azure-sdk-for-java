@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.annotation.ReturnType;
@@ -17,11 +16,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
- * This class provides a client that contains all the operations for repositories in Azure Container Registry.
- * Operations allowed by the client are listing, retrieving, deleting, setting writeable properties.
+ * This class provides a helper type that contains all the operations for repositories in Azure Container Registry.
+ * Operations allowed by this type are listing, retrieving, deleting, setting writeable properties.
  * These operations are supported on the repository and the respective tags and manifests in it.
  *
- * <p><strong>Instantiating Container Repository Client</strong></p>
+ * <p><strong>Instantiating Container Repository helper type.</strong></p>
  *
  * {@codesnippet com.azure.containers.containerregistry.repository.instantiation}
  *
@@ -32,8 +31,9 @@ import com.azure.core.util.Context;
 public final class ContainerRepository {
     private final ContainerRepositoryAsync asyncClient;
 
+
     /**
-     * Creates a ContainerRepositoryAsyncClient that sends requests to the given repository in the container registry service at {@code endpoint}.
+     * Creates a {@link ContainerRepositoryAsync} that sends requests to the given repository in the container registry service at {@code endpoint}.
      * Each service call goes through the {@code pipeline}.
      * @param asyncClient The async client for the given repository.
      */
@@ -67,14 +67,13 @@ public final class ContainerRepository {
      * {@codesnippet com.azure.containers.containerregistry.repository.deleteRepositoryWithResponse}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the result of the repository delete operation. It returns the count of the tags and
      * artifacts that are deleted as part of the repository delete.
+     * @return A void response for completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteRepositoryResult> deleteWithResponse(Context context) {
+    public Response<Void> deleteWithResponse(Context context) {
         return this.asyncClient.deleteWithResponse(context).block();
     }
 
@@ -87,14 +86,12 @@ public final class ContainerRepository {
      *
      * {@codesnippet com.azure.containers.containerregistry.repository.deleteRepository}
      *
-     * @return It returns the count of the tags and artifacts that are deleted as part of the repository delete.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteRepositoryResult delete() {
-        return this.deleteWithResponse(Context.NONE).getValue();
+    public void delete() {
+        this.deleteWithResponse(Context.NONE);
     }
 
     /**
@@ -137,13 +134,15 @@ public final class ContainerRepository {
     }
 
     /**
-     * Get an instance of registry artifact class.
+     * Creates a new instance of {@link RegistryArtifact} object for the specified artifact.
      *
-     * @param tagOrDigest Tag or digest associated with the artifact.
-     * @return repository client.
+     * @param digest Either a tag or digest that uniquely identifies the artifact.
+     * @return A new {@link RegistryArtifact} object for the desired repository.
+     * @throws NullPointerException if 'digest' is null.
+     * @throws IllegalArgumentException if 'digest' is empty.
      */
-    public RegistryArtifact getArtifact(String tagOrDigest) {
-        return new RegistryArtifact(this.asyncClient.getArtifact(tagOrDigest));
+    public RegistryArtifact getArtifact(String digest) {
+        return new RegistryArtifact(this.asyncClient.getArtifact(digest));
     }
 
     /**
@@ -181,6 +180,30 @@ public final class ContainerRepository {
      *
      * <p>Retrieve all artifacts associated with the given repository from the most recently updated to the last.</p>
      *
+     * {@codesnippet com.azure.containers.containerregistry.repository.listManifestsWithOptionsNoContext}.
+     *
+     * @param orderBy the order in which the artifacts are returned by the service.
+     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ArtifactManifestProperties> listManifests(ManifestOrderBy orderBy) {
+        return this.listManifests(orderBy, Context.NONE);
+    }
+
+    /**
+     * Fetches all the artifacts associated with the given {@link #getName() repository }.
+     *
+     * <p> The method supports options to select the order in which the artifacts are returned by the service.
+     * Currently the service supports an ascending or descending order for the last updated time for the artifacts.
+     * No assumptions on the order can be made if no options are provided by the service.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all artifacts associated with the given repository from the most recently updated to the last.</p>
+     *
      * {@codesnippet com.azure.containers.containerregistry.repository.listManifestsWithOptions}.
      *
      * @param orderBy the order in which the artifacts are returned by the service.
@@ -202,18 +225,19 @@ public final class ContainerRepository {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.repository.setPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.repository.updatePropertiesWithResponse}.
      *
-     * @param value {@link RepositoryProperties repository properties} that need to be updated for the repository.
+     * @param repositoryProperties {@link RepositoryProperties repository properties} that need to be updated for the repository.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response with the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the 'value' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RepositoryProperties> setPropertiesWithResponse(RepositoryProperties value, Context context) {
-        return this.asyncClient.setPropertiesWithResponse(value, context).block();
+    public Response<RepositoryProperties> updatePropertiesWithResponse(RepositoryProperties repositoryProperties, Context context) {
+        return this.asyncClient.updatePropertiesWithResponse(repositoryProperties, context).block();
     }
 
     /**
@@ -224,16 +248,17 @@ public final class ContainerRepository {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.repository.setProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.repository.updateProperties}.
      *
-     * @param value {@link RepositoryProperties repository properties} that need to be updated for the repository.
+     * @param repositoryProperties {@link RepositoryProperties repository properties} that need to be updated for the repository.
      * @return The updated {@link RepositoryProperties properties }
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the 'value' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RepositoryProperties setProperties(RepositoryProperties value) {
-        return this.setPropertiesWithResponse(value, Context.NONE).getValue();
+    public RepositoryProperties updateProperties(RepositoryProperties repositoryProperties) {
+        return this.updatePropertiesWithResponse(repositoryProperties, Context.NONE).getValue();
     }
 }

@@ -16,26 +16,28 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.SLEEP_TIME_IN_MILLISECONDS;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.monoDelay;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
     private RegistryArtifactAsync asyncClient;
     private RegistryArtifact client;
     private String recordFileName;
-    private String tagOrDigest;
-    private boolean resetManifestProperties;
-    private boolean resetTagProperties;
+    private String digest;
+    private boolean reupdateManifestProperties;
+    private boolean reupdateTagProperties;
 
     @BeforeEach
     void beforeEach() {
@@ -56,35 +58,35 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
             return;
         }
 
-        if (resetManifestProperties) {
-            client = getRegistryArtifactClient(new NettyAsyncHttpClientBuilder().build(), tagOrDigest);
-            client.setManifestProperties(defaultManifestProperties);
+        if (reupdateManifestProperties) {
+            client = getRegistryArtifactClient(new NettyAsyncHttpClientBuilder().build(), digest);
+            client.updateManifestProperties(defaultManifestProperties);
         }
 
-        if (resetTagProperties) {
-            client = getRegistryArtifactClient(new NettyAsyncHttpClientBuilder().build(), tagOrDigest);
-            client.setTagProperties(tagOrDigest, defaultTagProperties);
+        if (reupdateTagProperties) {
+            client = getRegistryArtifactClient(new NettyAsyncHttpClientBuilder().build(), digest);
+            client.updateTagProperties(digest, defaultTagProperties);
         }
     }
 
-    private RegistryArtifactAsync getRegistryArtifactAsyncClient(String tagOrDigest) {
-        return getRegistryArtifactAsyncClient(new LocalHttpClient(recordFileName), tagOrDigest);
+    private RegistryArtifactAsync getRegistryArtifactAsyncClient(String digest) {
+        return getRegistryArtifactAsyncClient(new LocalHttpClient(recordFileName), digest);
     }
 
-    private RegistryArtifactAsync getRegistryArtifactAsyncClient(HttpClient httpClient, String tagOrDigest) {
+    private RegistryArtifactAsync getRegistryArtifactAsyncClient(HttpClient httpClient, String digest) {
         return getContainerRegistryBuilder(httpClient)
             .buildAsyncClient()
-            .getArtifact(ALPINE_REPOSITORY_NAME, tagOrDigest);
+            .getArtifact(ALPINE_REPOSITORY_NAME, digest);
     }
 
-    private RegistryArtifact getRegistryArtifactClient(HttpClient httpClient, String tagOrDigest) {
+    private RegistryArtifact getRegistryArtifactClient(HttpClient httpClient, String digest) {
         return getContainerRegistryBuilder(httpClient)
             .buildClient()
-            .getArtifact(ALPINE_REPOSITORY_NAME, tagOrDigest);
+            .getArtifact(ALPINE_REPOSITORY_NAME, digest);
     }
 
-    private RegistryArtifact getRegistryArtifactClient(String tagOrDigest) {
-        return getRegistryArtifactClient(new LocalHttpClient(recordFileName), tagOrDigest);
+    private RegistryArtifact getRegistryArtifactClient(String digest) {
+        return getRegistryArtifactClient(new LocalHttpClient(recordFileName), digest);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -96,10 +98,12 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         asyncClient = getRegistryArtifactAsyncClient(httpClient, digest);
 
         Mono<Boolean> delete = asyncClient.delete()
-            .then(monoDelay())
+            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
             .then(asyncClient.getManifestProperties()
                 .flatMap(res -> Mono.just(false))
-                .onErrorResume(res -> Mono.just(true)));
+                .onErrorResume(res -> asyncClient.delete()
+                    .then(Mono.just(true))
+                    .onErrorResume(err -> Mono.just(false))));
 
         StepVerifier.create(delete)
             .assertNext(res -> assertTrue(res))
@@ -113,60 +117,92 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
 
         Mono<Boolean> delete = asyncClient.deleteTag(V3_TAG_NAME)
-            .then(monoDelay())
+            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
             .then(asyncClient.getTagProperties(V3_TAG_NAME)
                 .flatMap(res -> Mono.just(false))
-                .onErrorResume(res -> Mono.just(true)));
+                .onErrorResume(res -> asyncClient.deleteTag(V3_TAG_NAME)
+                        .then(Mono.just(true))
+                        .onErrorResume(err -> Mono.just(false))));
 
         StepVerifier.create(delete)
             .assertNext(res -> assertTrue(res))
             .verifyComplete();
+
+        StepVerifier.create(asyncClient.deleteTag(null))
+            .expectError(NullPointerException.class)
+            .verify();
+
+        StepVerifier.create(asyncClient.deleteTag(""))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+
+        StepVerifier.create(asyncClient.deleteTagWithResponse(null))
+            .expectError(NullPointerException.class)
+            .verify();
+
+        assertThrows(NullPointerException.class, () -> client.deleteTag(null));
+        assertThrows(IllegalArgumentException.class, () -> client.deleteTag(""));
+        assertThrows(NullPointerException.class, () -> client.deleteTagWithResponse(null, Context.NONE));
+        assertThrows(IllegalArgumentException.class, () -> client.deleteTagWithResponse("", Context.NONE));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void setManifestProperties(HttpClient httpClient) {
+    public void updateManifestProperties(HttpClient httpClient) {
         client = getRegistryArtifactClient(httpClient, V1_TAG_NAME);
         asyncClient = getRegistryArtifactAsyncClient(httpClient, V1_TAG_NAME);
 
-        resetManifestProperties = true;
-        tagOrDigest = V1_TAG_NAME;
+        reupdateManifestProperties = true;
+        digest = V1_TAG_NAME;
 
-        StepVerifier.create(asyncClient.setManifestProperties(manifestWriteableProperties))
+        StepVerifier.create(asyncClient.updateManifestProperties(manifestWriteableProperties))
             .assertNext(res -> validateManifestContentProperties(res))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.setManifestPropertiesWithResponse(manifestWriteableProperties))
+        StepVerifier.create(asyncClient.updateManifestPropertiesWithResponse(manifestWriteableProperties))
             .assertNext(res -> validateManifestContentProperties(res.getValue()))
             .verifyComplete();
 
-        validateManifestContentProperties(client.setManifestProperties(manifestWriteableProperties));
+        validateManifestContentProperties(client.updateManifestProperties(manifestWriteableProperties));
 
-        validateManifestContentProperties(client.setManifestPropertiesWithResponse(manifestWriteableProperties, Context.NONE)
+        validateManifestContentProperties(client.updateManifestPropertiesWithResponse(manifestWriteableProperties, Context.NONE)
             .getValue());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void setTagProperties(HttpClient httpClient) {
+    public void updateTagProperties(HttpClient httpClient) {
         client = getRegistryArtifactClient(httpClient, V2_TAG_NAME);
         asyncClient = getRegistryArtifactAsyncClient(httpClient, V2_TAG_NAME);
 
-        tagOrDigest = V2_TAG_NAME;
-        resetTagProperties = true;
+        digest = V2_TAG_NAME;
+        reupdateTagProperties = true;
 
-        StepVerifier.create(asyncClient.setTagProperties(V2_TAG_NAME, tagWriteableProperties))
+        StepVerifier.create(asyncClient.updateTagProperties(V2_TAG_NAME, tagWriteableProperties))
             .assertNext(res -> validateTagContentProperties(res))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.setTagPropertiesWithResponse(V2_TAG_NAME, tagWriteableProperties))
+        StepVerifier.create(asyncClient.updateTagPropertiesWithResponse(V2_TAG_NAME, tagWriteableProperties))
             .assertNext(res -> validateTagContentProperties(res.getValue()))
             .verifyComplete();
 
-        validateTagContentProperties(client.setTagProperties(V2_TAG_NAME, tagWriteableProperties));
+        validateTagContentProperties(client.updateTagProperties(V2_TAG_NAME, tagWriteableProperties));
 
-        validateTagContentProperties(client.setTagPropertiesWithResponse(V2_TAG_NAME, tagWriteableProperties, Context.NONE)
+        validateTagContentProperties(client.updateTagPropertiesWithResponse(V2_TAG_NAME, tagWriteableProperties, Context.NONE)
             .getValue());
+
+        StepVerifier.create(asyncClient.updateTagProperties(null, tagWriteableProperties))
+            .verifyError(NullPointerException.class);
+
+        StepVerifier.create(asyncClient.updateTagPropertiesWithResponse("", tagWriteableProperties))
+            .verifyError(IllegalArgumentException.class);
+
+        StepVerifier.create(asyncClient.updateTagProperties(LATEST_TAG_NAME, null))
+            .verifyError(NullPointerException.class);
+
+        assertThrows(NullPointerException.class, () -> client.updateTagProperties(null, tagWriteableProperties));
+        assertThrows(IllegalArgumentException.class, () -> client.updateTagProperties("", tagWriteableProperties));
+        assertThrows(NullPointerException.class, () -> client.updateTagProperties(LATEST_TAG_NAME, null));
     }
 
     @Test

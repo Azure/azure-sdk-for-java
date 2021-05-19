@@ -55,8 +55,10 @@ public class TestUtils {
     public static final String ANONYMOUS_REGISTRY_NAME;
     public static final String LOGIN_SERVER_SUFFIX;
     public static final String REGISTRY_ENDPOINT_PLAYBACK;
+    public static final String REGISTRY_NAME_PLAYBACK;
     public static final String QUARANTINE_STATE;
     public static final String QUARANTINE_DETAILS;
+    public static final int HTTP_STATUS_CODE_202;
 
     static {
         CONFIGURATION = Configuration.getGlobalConfiguration().clone();
@@ -88,9 +90,11 @@ public class TestUtils {
         ANONYMOUS_REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_NAME");
         ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
         LOGIN_SERVER_SUFFIX = "azurecr.io";
-        REGISTRY_ENDPOINT_PLAYBACK = "https://playbackregistry.azurecr.io";
+        REGISTRY_ENDPOINT_PLAYBACK = "https://pallavitcontainerregistry.azurecr.io";
+        REGISTRY_NAME_PLAYBACK = "pallavitcontainerregistry";
         QUARANTINE_STATE = "quarantine_state";
         QUARANTINE_DETAILS = "quaratine_details";
+        HTTP_STATUS_CODE_202 = 202;
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -114,18 +118,6 @@ public class TestUtils {
             t = t2;
         }
         return true;
-    }
-
-    static Mono<Void> monoDelay() {
-        return Mono.defer(() -> {
-            try {
-                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return Mono.empty();
-        });
     }
 
     static TokenCredential getCredential(TestMode testMode) {

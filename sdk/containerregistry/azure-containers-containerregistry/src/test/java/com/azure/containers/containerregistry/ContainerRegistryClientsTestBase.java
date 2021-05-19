@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestReference;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -102,7 +101,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
             .credential(credential);
 
-         // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+           // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         return builder;
     }
 
@@ -120,21 +119,6 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getChildArtifacts(artifacts).get(0);
     }
 
-    void validateDeletedRepositoryResponse(DeleteRepositoryResult response) {
-        assertNotNull(response);
-        assertNotNull(response.getDeletedTags());
-        assertNotNull(response.getDeletedManifests());
-    }
-
-    void validateDeletedRepositoryResponse(Response<DeleteRepositoryResult> response) {
-        validateResponse(response);
-
-        DeleteRepositoryResult result = response.getValue();
-        assertNotNull(result);
-        assertNotNull(result.getDeletedTags());
-        assertNotNull(result.getDeletedManifests());
-    }
-
     void validateProperties(RepositoryProperties properties) {
         assertNotNull(properties);
         assertEquals(HELLO_WORLD_REPOSITORY_NAME, properties.getName());
@@ -146,7 +130,8 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(properties.isListEnabled());
         assertNotNull(properties.isReadEnabled());
         assertNotNull(properties.isWriteEnabled());
-
+        assertNotNull(properties.isTeleportEnabled());
+        assertNotNull(properties.getRegistryLoginServer());
     }
 
     void validateProperties(Response<RepositoryProperties> response) {
@@ -217,10 +202,12 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     void validateManifestProperties(ArtifactManifestProperties props, boolean hasTag, boolean isChild) {
         assertNotNull(props);
+        assertNotNull(props.getRepositoryName());
+        assertNotNull(props.getRegistryLoginServer());
         assertNotNull(props.getDigest());
         assertNotNull(props.getLastUpdatedOn());
         assertNotNull(props.getCreatedOn());
-        assertNotNull(props.getSize());
+        assertNotNull(props.getSizeInBytes());
         assertNotNull(props.isDeleteEnabled());
         assertNotNull(props.isListEnabled());
         assertNotNull(props.isReadEnabled());
@@ -266,6 +253,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(props.isReadEnabled());
         assertNotNull(props.isWriteEnabled());
         assertNotNull(props.getDigest());
+        assertNotNull(props.getRegistryLoginServer());
         assertEquals(tagName, props.getName());
         assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepositoryName());
         assertNotNull(props.getCreatedOn());

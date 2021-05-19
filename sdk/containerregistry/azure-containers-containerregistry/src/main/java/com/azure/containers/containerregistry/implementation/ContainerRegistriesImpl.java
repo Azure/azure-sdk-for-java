@@ -5,6 +5,8 @@
 package com.azure.containers.containerregistry.implementation;
 
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsResponse;
@@ -18,9 +20,6 @@ import com.azure.containers.containerregistry.implementation.models.ManifestWrit
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
-import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -102,7 +101,7 @@ public final class ContainerRegistriesImpl {
                 Context context);
 
         @Delete("/v2/{name}/manifests/{reference}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({202, 404})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<Void>> deleteManifest(
                 @HostParam("url") String url,
@@ -131,9 +130,9 @@ public final class ContainerRegistriesImpl {
                 Context context);
 
         @Delete("/acr/v1/{name}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({202, 404})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<DeleteRepositoryResult>> deleteRepository(
+        Mono<Response<Void>> deleteRepository(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @HeaderParam("Accept") String accept,
@@ -184,7 +183,7 @@ public final class ContainerRegistriesImpl {
                 Context context);
 
         @Delete("/acr/v1/{name}/_tags/{reference}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({202, 404})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<Void>> deleteTag(
                 @HostParam("url") String url,
@@ -723,10 +722,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponseAsync(String name) {
+    public Mono<Response<Void>> deleteRepositoryWithResponseAsync(String name) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteRepository(this.client.getUrl(), name, accept, context));
     }
@@ -739,10 +738,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponseAsync(String name, Context context) {
+    public Mono<Response<Void>> deleteRepositoryWithResponseAsync(String name, Context context) {
         final String accept = "application/json";
         return service.deleteRepository(this.client.getUrl(), name, accept, context);
     }
@@ -754,19 +753,11 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteRepositoryResult> deleteRepositoryAsync(String name) {
-        return deleteRepositoryWithResponseAsync(name)
-                .flatMap(
-                        (Response<DeleteRepositoryResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Void> deleteRepositoryAsync(String name) {
+        return deleteRepositoryWithResponseAsync(name).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -777,19 +768,11 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteRepositoryResult> deleteRepositoryAsync(String name, Context context) {
-        return deleteRepositoryWithResponseAsync(name, context)
-                .flatMap(
-                        (Response<DeleteRepositoryResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Void> deleteRepositoryAsync(String name, Context context) {
+        return deleteRepositoryWithResponseAsync(name, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**

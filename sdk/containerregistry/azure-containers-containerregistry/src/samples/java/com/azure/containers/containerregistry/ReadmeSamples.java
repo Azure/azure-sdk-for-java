@@ -50,16 +50,6 @@ public class ReadmeSamples {
         client.listRepositoryNames().forEach(repository -> System.out.println(repository));
     }
 
-    public void listRepositoryNamesAsyncSample() {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
-
-        client.listRepositoryNames().subscribe(repository -> System.out.println(repository));
-    }
-
     private final String repositoryName = "repository";
 
     public void getPropertiesThrows() {
@@ -120,35 +110,6 @@ public class ReadmeSamples {
         }
     }
 
-    public void deleteImagesAsync() {
-        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-
-        ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
-            .endpoint(endpoint)
-            .credential(defaultCredential)
-            .buildAsyncClient();
-
-        final int imagesCountToKeep = 3;
-        client.listRepositoryNames()
-            .map(repositoryName -> client.getRepository(repositoryName))
-            .flatMap(repository -> repository.listManifests(
-                ManifestOrderBy.LAST_UPDATED_ON_DESCENDING))
-            .skip(imagesCountToKeep).subscribe(imageManifest -> {
-                System.out.printf(String.format("Deleting image with digest %s.%n", imageManifest.getDigest()));
-                System.out.printf("    This image has the following tags: ");
-
-                for (String tagName : imageManifest.getTags()) {
-                    System.out.printf("        %s:%s", imageManifest.getRepositoryName(), tagName);
-                }
-
-                client.getArtifact(
-                    imageManifest.getRepositoryName(),
-                    imageManifest.getDigest()).delete().subscribe();
-            }, error -> {
-                System.out.println("Failed to delete older images.");
-            });
-    }
-
     private String tag = "tag";
 
     public void setArtifactProperties() {
@@ -159,70 +120,32 @@ public class ReadmeSamples {
             .credential(defaultCredential)
             .buildClient();
 
-        RegistryArtifact image = client.getArtifact(repositoryName, tagOrDigest);
+        RegistryArtifact image = client.getArtifact(repositoryName, digest);
 
-        image.setTagProperties(
+        image.updateTagProperties(
             tag,
             new ArtifactTagProperties()
                 .setWriteEnabled(false)
                 .setDeleteEnabled(false));
     }
 
-    public void setArtifactPropertiesAsync() {
-        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-
-        ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
-            .endpoint(endpoint)
-            .credential(defaultCredential)
-            .buildAsyncClient();
-
-        RegistryArtifactAsync image = client.getArtifact(repositoryName, tagOrDigest);
-
-        image.setTagProperties(tag, new ArtifactTagProperties()
-            .setWriteEnabled(false)
-            .setDeleteEnabled(false)).subscribe(artifactTagProperties -> {
-                System.out.println("Tag properties are now read-only");
-            }, error -> {
-                System.out.println("Failed to make the tag properties read-only.");
-            });
-    }
-
     private final String architecture = "architecture";
     private final String os = "os";
-    private final String tagOrDigest = "tagOrDigest";
+    private final String digest = "digest";
 
     public void listTags() {
         ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .buildClient();
 
-        RegistryArtifact image = anonymousClient.getArtifact(repositoryName, tagOrDigest);
+        RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
         PagedIterable<ArtifactTagProperties> tags = image.listTags();
 
         System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
 
         for (ArtifactTagProperties tag : tags) {
-            System.out.printf(String.format("%s/%s:%s", anonymousClient.getName(), repositoryName, tag.getName()));
+            System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), repositoryName, tag.getName()));
         }
-    }
-
-    public void listTagsAsync() {
-        final String endpoint = getEndpoint();
-        final String repositoryName = getRepositoryName();
-
-        ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
-            .endpoint(endpoint)
-            .buildAsyncClient();
-
-        RegistryArtifactAsync image = anonymousClient.getArtifact(repositoryName, tagOrDigest);
-
-        System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
-
-        image.listTags().subscribe(tag -> {
-            System.out.printf(String.format("%s/%s:%s", anonymousClient.getName(), repositoryName, tag.getName()));
-        }, error -> {
-            System.out.println("There was an error while trying to list tags" + error);
-        });
     }
 
     public void anonymousClientThrows() {
@@ -239,21 +162,6 @@ public class ReadmeSamples {
         } catch (Exception ex) {
             System.out.println("Expected exception: Delete is not allowed on anonymous access");
         }
-    }
-
-    public void anonymousAsyncClientThrows() {
-        final String endpoint = getEndpoint();
-        final String repositoryName = getRepositoryName();
-
-        ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
-            .endpoint(endpoint)
-            .buildAsyncClient();
-
-        anonymousClient.deleteRepository(repositoryName).subscribe(deleteRepositoryResult -> {
-            System.out.println("Unexpected Success: Delete is not allowed on anonymous access");
-        }, error -> {
-            System.out.println("Expected exception: Delete is not allowed on anonymous access");
-        });
     }
 
     private static String getEndpoint() {

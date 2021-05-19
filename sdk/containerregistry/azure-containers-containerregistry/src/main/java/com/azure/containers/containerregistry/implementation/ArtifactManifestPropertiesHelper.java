@@ -31,7 +31,7 @@ public final class ArtifactManifestPropertiesHelper {
         void setCpuArchitecture(ArtifactManifestProperties manifestProperties, ArtifactArchitecture architecture);
         void setOperatingSystem(ArtifactManifestProperties manifestProperties, ArtifactOperatingSystem operatingSystem);
         void setTags(ArtifactManifestProperties manifestProperties, List<String> tags);
-        void setSize(ArtifactManifestProperties manifestProperties, Long size);
+        void setSizeInBytes(ArtifactManifestProperties manifestProperties, Long sizeInBytes);
         void setCreatedOn(ArtifactManifestProperties manifestProperties, OffsetDateTime  createdOn);
         void setlastUpdatedOn(ArtifactManifestProperties manifestProperties, OffsetDateTime lastUpdatedOn);
     }
@@ -81,7 +81,7 @@ public final class ArtifactManifestPropertiesHelper {
         accessor.setTags(manifestProperties, tags);
     }
 
-    public static void setSize(ArtifactManifestProperties manifestProperties, Long size) {
-        accessor.setSize(manifestProperties, size);
+    public static void setSizeInBytes(ArtifactManifestProperties manifestProperties, Long sizeInBytes) {
+        accessor.setSizeInBytes(manifestProperties, sizeInBytes);
     }
 }

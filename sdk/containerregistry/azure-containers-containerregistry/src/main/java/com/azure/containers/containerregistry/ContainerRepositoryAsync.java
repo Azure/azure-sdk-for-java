@@ -10,8 +10,6 @@ import com.azure.containers.containerregistry.implementation.ContainerRegistryIm
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.annotation.ReturnType;
@@ -65,7 +63,11 @@ public final class ContainerRepositoryAsync {
      */
     ContainerRepositoryAsync(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
         if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null"));
+            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null."));
+        }
+
+        if (repositoryName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }
 
         ContainerRegistryImpl registryImpl = new ContainerRegistryImplBuilder()
@@ -115,17 +117,17 @@ public final class ContainerRepositoryAsync {
      * @return A REST response containing the result of the repository delete operation. It returns the count of the tags and
      * artifacts that are deleted as part of the repository delete.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteRepositoryResult>> deleteWithResponse() {
+    public Mono<Response<Void>> deleteWithResponse() {
         return withContext(context -> deleteWithResponse(context));
     }
 
-    Mono<Response<DeleteRepositoryResult>> deleteWithResponse(Context context) {
+    Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
             return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context)
+                .flatMap(Utils::deleteResponseToSuccess)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -143,22 +145,23 @@ public final class ContainerRepositoryAsync {
      *
      * @return It returns the count of the tags and artifacts that are deleted as part of the repository delete.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteRepositoryResult> delete() {
+    public Mono<Void> delete() {
         return this.deleteWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Get an instance of registry artifact class.
+     * Creates a new instance of {@link RegistryArtifactAsync} object for the specified artifact.
      *
-     * @param tagOrDigest Tag or digest associated with the artifact.
-     * @return repository client.
+     * @param digest Either a tag or digest that uniquely identifies the artifact.
+     * @return A new {@link RegistryArtifactAsync} object for the desired repository.
+     * @throws NullPointerException if 'Digest' is null.
+     * @throws IllegalArgumentException if 'Digest' is empty.
      */
-    public RegistryArtifactAsync getArtifact(String tagOrDigest) {
-        return new RegistryArtifactAsync(repositoryName, tagOrDigest, httpPipeline, endpoint, apiVersion);
+    public RegistryArtifactAsync getArtifact(String digest) {
+        return new RegistryArtifactAsync(repositoryName, digest, httpPipeline, endpoint, apiVersion);
     }
 
     /**
@@ -260,7 +263,7 @@ public final class ContainerRepositoryAsync {
             ArtifactManifestPropertiesHelper.setOperatingSystem(manifestProperties, value.getOperatingSystem());
             ArtifactManifestPropertiesHelper.setCreatedOn(manifestProperties, value.getCreatedOn());
             ArtifactManifestPropertiesHelper.setlastUpdatedOn(manifestProperties, value.getLastUpdatedOn());
-            ArtifactManifestPropertiesHelper.setSize(manifestProperties, value.getSize());
+            ArtifactManifestPropertiesHelper.setSizeInBytes(manifestProperties, value.getSize());
             ArtifactManifestPropertiesHelper.setTags(manifestProperties, value.getTags());
             return manifestProperties;
         }).collect(Collectors.toList());
@@ -287,9 +290,6 @@ public final class ContainerRepositoryAsync {
 
     Mono<Response<RepositoryProperties>> getPropertiesWithResponse(Context context) {
         try {
-            if (context == null) {
-                return monoError(logger, new NullPointerException("'context' cannot be null."));
-            }
             return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
@@ -324,20 +324,21 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.setPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.async.repository.updatePropertiesWithResponse}.
      *
      * @param value {@link RepositoryProperties repository properties} that need to be updated for the repository.
      * @return The updated {@link RepositoryProperties repository properties }.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if 'value' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> setPropertiesWithResponse(RepositoryProperties value) {
-        return withContext(context -> this.setPropertiesWithResponse(value, context));
+    public Mono<Response<RepositoryProperties>> updatePropertiesWithResponse(RepositoryProperties value) {
+        return withContext(context -> this.updatePropertiesWithResponse(value, context));
     }
 
-    Mono<Response<RepositoryProperties>> setPropertiesWithResponse(RepositoryProperties value, Context context) {
+    Mono<Response<RepositoryProperties>> updatePropertiesWithResponse(RepositoryProperties value, Context context) {
         try {
             if (value == null) {
                 return monoError(logger, new NullPointerException("'value' cannot be null."));
@@ -365,16 +366,17 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.setProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.async.repository.updateProperties}.
      *
      * @param value {@link RepositoryProperties writeable properties} that need to be updated for the repository.
      * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the 'value' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> setProperties(RepositoryProperties value) {
-        return this.setPropertiesWithResponse(value).flatMap(FluxUtil::toMono);
+    public Mono<RepositoryProperties> updateProperties(RepositoryProperties value) {
+        return this.updatePropertiesWithResponse(value).flatMap(FluxUtil::toMono);
     }
 }

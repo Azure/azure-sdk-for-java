@@ -138,38 +138,38 @@ public class RegistryArtifactAsyncJavaDocSnippets {
         // END: com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions
     }
 
-    public void setTagPropertiesCodeSnippet() {
+    public void updateTagPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.setTagProperties
+        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateTagProperties
         ArtifactTagProperties properties = getTagProperties();
         String tag = getTag();
-        client.setTagProperties(tag, properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.setTagProperties
+        client.updateTagProperties(tag, properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.registryartifact.updateTagProperties
     }
 
-    public void setTagPropertiesWithResponseCodeSnippet() {
+    public void updateTagPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.setTagPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse
         ArtifactTagProperties properties = getTagProperties();
         String tag = getTag();
-        client.setTagPropertiesWithResponse(tag, properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.setTagPropertiesWithResponse
+        client.updateTagPropertiesWithResponse(tag, properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse
     }
 
-    public void setManifestPropertiesCodeSnippet() {
+    public void updateManifestPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.setManifestProperties
+        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateManifestProperties
         ArtifactManifestProperties properties = getArtifactManifestProperties();
-        client.setManifestProperties(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.setManifestProperties
+        client.updateManifestProperties(properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.registryartifact.updateManifestProperties
     }
 
-    public void setManifestPropertiesWithResponseCodeSnippet() {
+    public void updateManifestPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.setManifestPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateManifestPropertiesWithResponse
         ArtifactManifestProperties properties = getArtifactManifestProperties();
-        client.setManifestPropertiesWithResponse(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.setManifestPropertiesWithResponse
+        client.updateManifestPropertiesWithResponse(properties).subscribe();
+        // END: com.azure.containers.containerregistry.async.registryartifact.updateManifestPropertiesWithResponse
     }
 
     /**
@@ -195,7 +195,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private String getTagOrDigest() {
+    private String getDigest() {
         return null;
     }
 
@@ -205,15 +205,6 @@ public class RegistryArtifactAsyncJavaDocSnippets {
      * @return {@code null}
      */
     private String getTag() {
-        return null;
-    }
-
-    /**
-     * Implementation not provided for this method.
-     *
-     * @return {@code null}
-     */
-    private String getDigest() {
         return null;
     }
 

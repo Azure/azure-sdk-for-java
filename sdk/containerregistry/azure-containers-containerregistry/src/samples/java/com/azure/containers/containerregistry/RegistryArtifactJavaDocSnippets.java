@@ -123,6 +123,16 @@ public class RegistryArtifactJavaDocSnippets {
         // END: com.azure.containers.containerregistry.registryartifact.listTags
     }
 
+    public void listTagsWithOptionsNoContextCodeSnippet() {
+        RegistryArtifact client = getClient();
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptionsNoContext
+        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10).forEach(pagedResponse -> {
+            pagedResponse.getValue().stream().forEach(
+                tagProperties -> System.out.println(tagProperties.getDigest()));
+        });
+        // END: com.azure.containers.containerregistry.registryartifact.listTagsWithOptionsNoContext
+    }
+
     public void listTagsWithOptionsCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
@@ -132,38 +142,39 @@ public class RegistryArtifactJavaDocSnippets {
         });
         // END: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
     }
-    public void setTagPropertiesCodeSnippet() {
+
+    public void updateTagPropertiesCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.setTagProperties
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.updateTagProperties
         ArtifactTagProperties properties = getArtifactTagProperties();
         String tag = getTag();
-        client.setTagProperties(tag, properties);
-        // END: com.azure.containers.containerregistry.registryartifact.setTagProperties
+        client.updateTagProperties(tag, properties);
+        // END: com.azure.containers.containerregistry.registryartifact.updateTagProperties
     }
 
-    public void setTagPropertiesWithResponseCodeSnippet() {
+    public void updateTagPropertiesWithResponseCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.setTagPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.updateTagPropertiesWithResponse
         ArtifactTagProperties properties = getArtifactTagProperties();
         String tag = getTag();
-        client.setTagPropertiesWithResponse(tag, properties, Context.NONE);
-        // END: com.azure.containers.containerregistry.registryartifact.setTagPropertiesWithResponse
+        client.updateTagPropertiesWithResponse(tag, properties, Context.NONE);
+        // END: com.azure.containers.containerregistry.registryartifact.updateTagPropertiesWithResponse
     }
 
-    public void setManifestPropertiesCodeSnippet() {
+    public void updateManifestPropertiesCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.setManifestProperties
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.updateManifestProperties
         ArtifactManifestProperties properties = getArtifactManifestProperties();
-        client.setManifestProperties(properties);
-        // END: com.azure.containers.containerregistry.registryartifact.setManifestProperties
+        client.updateManifestProperties(properties);
+        // END: com.azure.containers.containerregistry.registryartifact.updateManifestProperties
     }
 
-    public void setManifestPropertiesWithResponseCodeSnippet() {
+    public void updateManifestPropertiesWithResponseCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.setManifestPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.updateManifestPropertiesWithResponse
         ArtifactManifestProperties properties = getArtifactManifestProperties();
-        client.setManifestPropertiesWithResponse(properties, Context.NONE);
-        // END: com.azure.containers.containerregistry.registryartifact.setManifestPropertiesWithResponse
+        client.updateManifestPropertiesWithResponse(properties, Context.NONE);
+        // END: com.azure.containers.containerregistry.registryartifact.updateManifestPropertiesWithResponse
     }
 
     /**
@@ -189,7 +200,7 @@ public class RegistryArtifactJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private String getTagOrDigest() {
+    private String getDigest() {
         return null;
     }
 
@@ -199,15 +210,6 @@ public class RegistryArtifactJavaDocSnippets {
      * @return {@code null}
      */
     private String getTag() {
-        return null;
-    }
-
-    /**
-     * Implementation not provided for this method.
-     *
-     * @return {@code null}
-     */
-    private String getDigest() {
         return null;
     }
 
