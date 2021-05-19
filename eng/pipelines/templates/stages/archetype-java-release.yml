@@ -23,42 +23,50 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
+  - name: EnableSigningStage
+    type: boolean
+    default: true
+  - name: EnableAllDependsOn
+    type: boolean
+    default: true
 
 stages:
+
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
   # where appropriate and also meeting any other signing requirements for particular artifacts,
   # in this case we do GPG signing in order to publish to Maven Central. At the moment signing
   # is protected by an approval check but this may be removed in the future.
-  - stage: Signing
-    dependsOn: ${{parameters.DependsOn}}
-    jobs:
-      - deployment: SignPackage
-        environment: esrp
-        timeoutInMinutes: 20
-        variables:
-          - template: ../variables/globals.yml
-        pool:
-          name: azsdk-pool-mms-ubuntu-1804-general
-          vmImage: MMSUbuntu18.04
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - checkout: none
+  - ${{ if ne(parameters.EnableSigningStage, false) }}:
+    - stage: Signing
+      dependsOn: ${{parameters.DependsOn}}
+      jobs:
+        - deployment: SignPackage
+          environment: esrp
+          timeoutInMinutes: 20
+          variables:
+            - template: ../variables/globals.yml
+          pool:
+            name: azsdk-pool-mms-ubuntu-1804-general
+            vmImage: MMSUbuntu18.04
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - checkout: none
 
-                - download: current
-                  artifact: ${{parameters.ArtifactName}}
-                  timeoutInMinutes: 5
+                  - download: current
+                    artifact: ${{parameters.ArtifactName}}
+                    timeoutInMinutes: 5
 
-                - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
-                  parameters:
-                    Artifacts: ${{parameters.Artifacts}}
-                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                  - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
+                    parameters:
+                      Artifacts: ${{parameters.Artifacts}}
+                      ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
 
-                - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-                  artifact: ${{parameters.ArtifactName}}-signed
-                  displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
-                  timeoutInMinutes: 5
+                  - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                    artifact: ${{parameters.ArtifactName}}-signed
+                    displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
+                    timeoutInMinutes: 5
 
   # We generate two interdepdent stages for each artifact listed in the ci.yml file, creates the release
   # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
@@ -69,74 +77,78 @@ stages:
     - ${{ each artifact in parameters.Artifacts }}:
       - stage: Release_${{artifact.safeName}}
         displayName: 'Release: ${{artifact.name}}'
-        dependsOn: Signing
+        ${{ if ne(parameters.EnableSigningStage, false) }}:
+          dependsOn: Signing
         condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
         jobs:
-          - job: VerifyReleaseVersion
-            displayName: "Verify release version"
-            condition: ne(variables['Skip.VersionVerification'], 'true')
-            variables:
-              - template: ../variables/globals.yml
-            pool:
-              name: azsdk-pool-mms-ubuntu-1804-general
-              vmImage: MMSUbuntu18.04
+          - ${{if ne(artifact.skipVerifyReleaseVersion, 'true')}}:
+            - job: VerifyReleaseVersion
+              displayName: "Verify release version"
+              condition: ne(variables['Skip.VersionVerification'], 'true')
+              variables:
+                - template: ../variables/globals.yml
+              pool:
+                name: azsdk-pool-mms-ubuntu-1804-general
+                vmImage: MMSUbuntu18.04
 
-            steps:
-              - task: UsePythonVersion@0
-                displayName: 'Use Python 3.6'
-                inputs:
-                  versionSpec: '3.6'
+              steps:
+                - task: UsePythonVersion@0
+                  displayName: 'Use Python 3.6'
+                  inputs:
+                    versionSpec: '3.6'
 
-              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-                parameters:
-                  PackageName: "azure-sdk-template"
-                  ServiceDirectory: "template"
-                  TestPipeline: ${{ parameters.TestPipeline }}
-
-              - script: |
-                  python --version
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-                displayName: 'Verify version for release'
-
-              - pwsh: |
-                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                displayName: "Verify no unreleased dependencies"
-
-              - ${{if ne(parameters.SDKType, 'data')}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
                   parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
+                    PackageName: "azure-sdk-template"
+                    ServiceDirectory: "template"
+                    TestPipeline: ${{ parameters.TestPipeline }}
 
+                - script: |
+                    python --version
+                    python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+                  displayName: 'Verify version for release'
 
-          - deployment: TagRepository
-            displayName: "Create release tag"
-            condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-            environment: github
-            dependsOn: VerifyReleaseVersion
-            variables:
-              - template: ../variables/globals.yml
-            pool:
-              name: Azure Pipelines
-              vmImage: vs2017-win2016
-            strategy:
-              runOnce:
-                deploy:
-                  steps:
-                    - checkout: self
-                    - template: /eng/common/pipelines/templates/steps/retain-run.yml
-                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                      parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                        PackageRepository: Maven
-                        ReleaseSha: $(Build.SourceVersion)
+                - pwsh: |
+                    $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                  displayName: "Verify no unreleased dependencies"
+
+                - ${{if ne(parameters.SDKType, 'data')}}:
+                  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                    parameters:
+                      PackageName: ${{artifact.name}}
+                      ServiceName: ${{parameters.ServiceDirectory}}
+                      ForRelease: true
+
+          - ${{if ne(artifact.skipTagRepository, 'true')}}:
+            - deployment: TagRepository
+              displayName: "Create release tag"
+              condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
+              environment: github
+              ${{ if ne(parameters.EnableAllDependsOn, false) }}:
+                dependsOn: VerifyReleaseVersion
+              variables:
+                - template: ../variables/globals.yml
+              pool:
+                name: Azure Pipelines
+                vmImage: vs2017-win2016
+              strategy:
+                runOnce:
+                  deploy:
+                    steps:
+                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                      - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                        parameters:
+                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                          PackageRepository: Maven
+                          ReleaseSha: $(Build.SourceVersion)
           - ${{if ne(artifact.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
               displayName: "Publish to Maven Central"
               condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
               environment: maven
-              dependsOn: TagRepository
+              ${{ if ne(parameters.EnableAllDependsOn, false) }}:
+                dependsOn: TagRepository
               variables:
                 - template: ../variables/globals.yml
               pool:
@@ -177,7 +189,8 @@ stages:
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
-              dependsOn: PublishPackage
+              ${{ if ne(parameters.EnableAllDependsOn, false) }}:
+                dependsOn: PublishPackage
               variables:
                 CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
                 skipComponentGovernanceDetection: true
@@ -215,7 +228,8 @@ stages:
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: githubio
-              dependsOn: PublishPackage
+              ${{ if ne(parameters.EnableAllDependsOn, false) }}:
+                dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
               pool:
@@ -245,7 +259,8 @@ stages:
               displayName: "Update Package Version"
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
               environment: github
-              dependsOn: PublishPackage
+              ${{ if ne(parameters.EnableAllDependsOn, false) }}:
+                dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
               pool:
@@ -281,7 +296,8 @@ stages:
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration
-      dependsOn: Signing
+      ${{ if ne(parameters.EnableSigningStage, false) }}:
+        dependsOn: Signing
       jobs:
       - job: PublishPackages
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
