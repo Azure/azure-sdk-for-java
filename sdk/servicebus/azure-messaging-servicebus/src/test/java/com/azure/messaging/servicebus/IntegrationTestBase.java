@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AsyncAutoCloseable;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -125,6 +126,14 @@ public abstract class IntegrationTestBase extends TestBase {
 
     public static String getConnectionString(boolean withSas) {
         return TestUtils.getConnectionString(withSas);
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties() {
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
     }
 
     public String getFullyQualifiedDomainName() {

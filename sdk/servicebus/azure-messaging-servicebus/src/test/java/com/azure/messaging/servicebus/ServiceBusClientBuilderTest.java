@@ -6,7 +6,11 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -16,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -30,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-class ServiceBusClientBuilderTest {
+class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
     private static final String ENDPOINT_FORMAT = "sb://%s.%s";
@@ -272,6 +277,95 @@ class ServiceBusClientBuilderTest {
         assertThrows(IllegalArgumentException.class,
             () -> new ServiceBusClientBuilder()
                 .connectionString("Endpoint=sb://sb-name.servicebus.windows.net/;EntityPath=sb-name"));
+    }
+
+    @Test
+    public void sendAndReceiveEventByAzureNameKeyCredential() {
+        ConnectionStringProperties properties = getConnectionStringProperties();
+        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String sharedAccessKeyName = properties.getSharedAccessKeyName();;
+        String sharedAccessKey = properties.getSharedAccessKey();
+        String queueName = getQueueName(0);
+
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
+
+        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient();
+        try {
+            StepVerifier.create(senderAsyncClient.sendMessage(testData))
+                .verifyComplete();
+        } finally {
+            senderAsyncClient.close();
+        }
+    }
+
+
+    @Test
+    public void sendAndReceiveEventByAzureSasCredential() {
+        ConnectionStringProperties properties = getConnectionStringProperties(true);
+        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String sharedAccessSignature = properties.getSharedAccessSignature();
+        String queueName = getQueueName(0);
+
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
+
+        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureSasCredential(sharedAccessSignature))
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient();
+        try {
+            StepVerifier.create(senderAsyncClient.sendMessage(testData))
+                .verifyComplete();
+        } finally {
+            senderAsyncClient.close();
+        }
+    }
+
+    @Test
+    public void testConnectionWithAzureNameKeyCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessKeyName = "SharedAccessKeyName test-value";
+        String sharedAccessKey = "SharedAccessKey test-value";
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(null,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential("",
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, (AzureNamedKeyCredential) null));
+
+    }
+
+    @Test
+    public void testConnectionWithAzureSasCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessSignature = "SharedAccessSignature test-value";
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(null, new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential("", new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, (AzureSasCredential) null));
+
     }
 
     private static Stream<Arguments> getProxyConfigurations() {

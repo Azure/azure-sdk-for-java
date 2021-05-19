@@ -19,6 +19,8 @@ import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
@@ -226,6 +228,55 @@ public final class ServiceBusClientBuilder {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the credential for the Service Bus resource.
+     *
+     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param credential {@link TokenCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, AzureNamedKeyCredential credential) {
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the credential for the Service Bus resource.
+     *
+     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param credential {@link TokenCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, AzureSasCredential credential) {
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
