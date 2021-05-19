@@ -13,6 +13,10 @@ steps:
       arguments: '--set-pipeline-variable --project-list ${{ parameters.ProjectList }}'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
+  - template: /eng/common/pipelines/templates/sparse-checkout.yml
+    parameters:
+      Paths: $(CheckoutDirectories)
+
   - pwsh: |
       $paths = ('$(CheckoutDirectories)' | ConvertFrom-Json) -join ' '
       $command = "git sparse-checkout set eng '**/*.xml' '**/*.md' '**/test-resources.json' $paths"

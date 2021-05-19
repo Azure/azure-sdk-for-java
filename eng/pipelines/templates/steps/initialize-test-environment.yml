@@ -45,7 +45,14 @@ steps:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
 
-  - template: checkout-source-dependencies.yml
+  - task: PythonScript@0
+    displayName: 'Generate directories variable for sparse checkout'
+    inputs:
+      scriptPath: 'eng/scripts/generate_from_source_pom.py'
+      arguments: '--set-pipeline-variable --project-list ${{ parameters.ProjectList }}'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - template: /eng/common/pipelines/templates/sparse-checkout.yml
     parameters:
-      ProjectList: $(ProjectList)
-      CheckoutRecordings: ${{ parameters.CheckoutRecordings }}
+      Paths: $(CheckoutDirectories)
+
