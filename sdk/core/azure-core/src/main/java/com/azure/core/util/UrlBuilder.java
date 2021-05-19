@@ -181,7 +181,6 @@ public final class UrlBuilder {
     /**
      * Clear the query that will be used to build the final URL.
      *
-     * @param query The query that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder clearQuery() {
