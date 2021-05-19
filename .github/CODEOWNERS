@@ -55,7 +55,7 @@
 /sdk/eventgrid/                                     @srnagar @yijunxiems
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @srnagar @mssfang @yijunxiems
+/sdk/eventhubs/                                     @conniey @srnagar @yijunxiems
 
 # PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                @samvaity @mssfang

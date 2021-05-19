@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
 
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -170,6 +170,20 @@
         <property>
           <name>env.TEST_PACKAGES_ENABLED</name>
           <value>chat</value>
+        </property>
+      </activation>
+      <properties>
+        <src.dir>src/main</src.dir>
+        <test.dir>src/test</test.dir>
+        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+      </properties>
+    </profile>
+    <profile>
+      <id>disable-coverage-if-sms</id>
+      <activation>
+        <property>
+          <name>env.COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST</name>
+          <value>true</value>
         </property>
       </activation>
       <properties>

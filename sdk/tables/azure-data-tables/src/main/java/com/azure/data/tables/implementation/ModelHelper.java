@@ -116,7 +116,7 @@ public final class ModelHelper {
                 new IllegalStateException("'entityCreator' should not be null."));
         }
 
-        return entityCreator.get().addProperties(properties);
+        return entityCreator.get().setProperties(properties);
     }
 
     /**

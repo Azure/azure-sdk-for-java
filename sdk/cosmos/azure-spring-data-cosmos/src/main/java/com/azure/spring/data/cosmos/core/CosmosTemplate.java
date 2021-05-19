@@ -773,6 +773,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
+    public <T> long count(SqlQuerySpec querySpec, String containerName) {
+        Assert.hasText(containerName, "container name should not be empty");
+
+        final Long count = getCountValue(querySpec, containerName);
+        assert count != null;
+        return count;
+    }
+
+    @Override
     public MappingCosmosConverter getConverter() {
         return this.mappingCosmosConverter;
     }

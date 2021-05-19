@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.TestRouteResultInner;
 import com.azure.resourcemanager.iothub.models.TestResultStatus;
 import com.azure.resourcemanager.iothub.models.TestRouteResult;
@@ -13,9 +12,10 @@ import com.azure.resourcemanager.iothub.models.TestRouteResultDetails;
 public final class TestRouteResultImpl implements TestRouteResult {
     private TestRouteResultInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    TestRouteResultImpl(TestRouteResultInner innerObject, IotHubManager serviceManager) {
+    TestRouteResultImpl(
+        TestRouteResultInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,7 +32,7 @@ public final class TestRouteResultImpl implements TestRouteResult {
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

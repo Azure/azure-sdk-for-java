@@ -47,34 +47,34 @@ class CompositeTest extends APISpec {
         setup:
         def fs = createFS(config)
         def dest = fs.getPath("dest")
-        def resultArr = new byte[defaultDataSize]
+        def resultArr = new byte[data.defaultDataSize]
 
         when:
-        Files.copy(defaultInputStream.get(), dest)
+        Files.copy(data.defaultInputStream, dest)
         fs.provider().newInputStream(dest).read(resultArr)
 
         then:
-        resultArr == defaultData.array()
+        resultArr == data.defaultBytes
 
         when:
         def dest2 = fs.getPath("dest2")
         def outStream = fs.provider().newOutputStream(dest2)
         Files.copy(dest, outStream)
         outStream.close()
-        resultArr = new byte[defaultDataSize]
+        resultArr = new byte[data.defaultDataSize]
         fs.provider().newInputStream(dest2).read(resultArr)
 
         then:
-        resultArr == defaultData.array()
+        resultArr == data.defaultBytes
 
         when:
         def dest3 = fs.getPath("dest3")
         Files.copy(dest, dest3, StandardCopyOption.COPY_ATTRIBUTES)
-        resultArr = new byte[defaultDataSize]
+        resultArr = new byte[data.defaultDataSize]
         fs.provider().newInputStream(dest3).read(resultArr)
 
         then:
-        resultArr == defaultData.array()
+        resultArr == data.defaultBytes
     }
 
     // Bug: https://github.com/Azure/azure-sdk-for-java/issues/20325
