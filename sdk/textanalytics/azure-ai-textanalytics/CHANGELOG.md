@@ -1,13 +1,12 @@
 # Release History
 
-## 5.1.0-beta.7 (Unreleased)
-- We are now targeting the service's v3.1-preview.5 API as the default instead of v3.1-preview.4.
-
+## 5.1.0-beta.7 (2021-05-19)
 ### Features Added
 - Added property `disableServiceLogs` to all endpoints' options bag
 - Added support for `Sentiment Analysis` as an action type for the `beginAnalyzeActions` API.
   
 ### Breaking Changes
+- We are now targeting the service's v3.1-preview.5 API as the default instead of v3.1-preview.4.
 - Removed `batch` keyword from the model names, `AnalyzeBatchActionsResult`, `AnalyzeBatchActionsOperationDetail`, 
   `AnalyzeBatchActionOptions` and the related method names, such as renamed `beginAnalyzeBatchActions` to `beginAnalyzeActions`.
 - Renamed the static final String type `TEXT_ELEMENTS_V8` to `TEXT_ELEMENT_V8` in the `StringIndexType` class.
