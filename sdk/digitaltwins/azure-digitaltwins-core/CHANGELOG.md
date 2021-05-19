@@ -1,5 +1,11 @@
 # Release History
 
+## 1.1.1 (2021-05-19)
+
+### Fixes and improvements
+
+- Address breaking behavior change where previously `null` could be passed down for `context` parameter to synchronous APIs prior to version `1.0.2` but after `1.0.2` that behavior was changed. `null` can again be passed for the `context` parameter and the SDK will behave as was expected before. In these scenarios `Context.NONE` will be used as the default value.
+
 ## 1.1.0 (2021-05-17)
 
 ### Fixes and improvements
