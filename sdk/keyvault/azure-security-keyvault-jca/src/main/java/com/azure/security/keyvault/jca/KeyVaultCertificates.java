@@ -131,7 +131,7 @@ public class KeyVaultCertificates implements AzureCertificate {
                                 .filter(entry -> certificate.equals(entry.getValue()))
                                 .findFirst()
                                 .map(Map.Entry::getKey)
-                                .orElse("");
+                                .orElse(null);
 
     }
 
