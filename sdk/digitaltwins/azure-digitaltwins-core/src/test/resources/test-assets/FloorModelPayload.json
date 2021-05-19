@@ -6,6 +6,16 @@
   "description": "A building story.",
   "contents": [
     {
+      "@type": "Property",
+      "name": "name",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "roomType",
+      "schema": "string"
+    },
+    {
       "@type": "Relationship",
       "name": "contains",
       "target": "ROOM_MODEL_ID",

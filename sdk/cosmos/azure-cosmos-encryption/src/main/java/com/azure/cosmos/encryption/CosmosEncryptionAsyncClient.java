@@ -9,19 +9,19 @@ import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 /**
- * CosmosClient with Encryption support.
+ * CosmosClient with encryption support.
  */
 public class CosmosEncryptionAsyncClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
@@ -61,16 +61,16 @@ public class CosmosEncryptionAsyncClient {
                 cacheKey,
                 null,
                 () -> container.read().
-                    map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()));
+                    map(cosmosContainerResponse -> getClientEncryptionPolicyWithVersionValidation(cosmosContainerResponse)));
         } else {
             return this.clientEncryptionPolicyCacheByContainerId.getAsync(
                 cacheKey,
                 null,
-                () -> container.read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy()))
+                () -> container.read().map(cosmosContainerResponse -> getClientEncryptionPolicyWithVersionValidation(cosmosContainerResponse)))
                 .flatMap(clientEncryptionPolicy -> this.clientEncryptionPolicyCacheByContainerId.getAsync(
                     cacheKey,
                     clientEncryptionPolicy,
-                    () -> container.read().map(cosmosContainerResponse -> cosmosContainerResponse.getProperties().getClientEncryptionPolicy())));
+                    () -> container.read().map(cosmosContainerResponse -> getClientEncryptionPolicyWithVersionValidation(cosmosContainerResponse))));
         }
     }
 
@@ -173,5 +173,15 @@ public class CosmosEncryptionAsyncClient {
      */
     public void close() {
         cosmosAsyncClient.close();
+    }
+
+    private ClientEncryptionPolicy getClientEncryptionPolicyWithVersionValidation(CosmosContainerResponse cosmosContainerResponse) {
+        ClientEncryptionPolicy clientEncryptionPolicy = cosmosContainerResponse.getProperties().getClientEncryptionPolicy();
+        if (clientEncryptionPolicy.getPolicyFormatVersion() > 1) {
+            throw new UnsupportedOperationException("This version of the Encryption library cannot be used with this " +
+                "container. Please upgrade to the latest version of the same.");
+        }
+
+        return clientEncryptionPolicy;
     }
 }

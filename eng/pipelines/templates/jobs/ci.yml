@@ -141,9 +141,13 @@ jobs:
     steps:
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
-      - pwsh: |
-          $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
-        displayName: "Verify versions in POM files"
+      - task: PowerShell@2
+        displayName: 'Verify versions in POM files'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/versioning/pom_file_version_scanner.ps1
+          arguments: -Debug:$$(IsDebug)
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -207,7 +211,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

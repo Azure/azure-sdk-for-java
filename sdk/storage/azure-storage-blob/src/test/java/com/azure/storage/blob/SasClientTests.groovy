@@ -30,6 +30,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Unroll
 import spock.lang.Ignore
 
@@ -45,7 +46,7 @@ class SasClientTests extends APISpec {
     def setup() {
         blobName = generateBlobName()
         sasClient = getBlobClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
-        sasClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
+        sasClient.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
     def "blob sas read permissions"() {
@@ -72,7 +73,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -138,7 +139,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -176,7 +177,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         then:
         validateSasProperties(properties)
@@ -215,7 +216,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
     }
 
@@ -241,6 +242,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "blob sas tags"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -289,6 +291,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "container sas tags"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -431,6 +434,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "account sas tags and filter tags"() {
         setup:
         def service = new AccountSasService()
@@ -559,7 +563,7 @@ class SasClientTests extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
     }
 
     def "account sas blob delete fails"() {

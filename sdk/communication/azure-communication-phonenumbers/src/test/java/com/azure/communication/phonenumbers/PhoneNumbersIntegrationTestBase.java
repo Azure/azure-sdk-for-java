@@ -39,7 +39,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
 
     protected static final String PHONE_NUMBER =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
+        Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
 
     private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
         .get("TEST_PACKAGES_ENABLED", "all");

@@ -608,7 +608,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(expectMsg1)
         queueClient.sendMessage(expectMsg2)
         when:
-        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1), null).iterator()
+        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(10), null).iterator()
         then:
         expectMsg1 == peekMsgIter.next().getMessageText()
         expectMsg2 == peekMsgIter.next().getMessageText()

@@ -182,7 +182,7 @@ public class AADWebAppConfiguration {
             .orElse(AuthorizationGrantType.AUTHORIZATION_CODE);
         result.authorizationGrantType(authorizationGrantType);
 
-        result.redirectUri("{baseUrl}/login/oauth2/code/");
+        result.redirectUri(properties.getRedirectUriTemplate());
         result.userNameAttributeName(properties.getUserNameAttribute());
 
         result.clientId(properties.getClientId());
