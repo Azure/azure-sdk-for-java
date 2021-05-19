@@ -46,9 +46,9 @@ public class PerfStressProgram {
     /**
      * Runs the performance tests passed to be executed.
      *
-     * @throws RuntimeException if the execution fails.
      * @param classes the performance test classes to execute.
      * @param args the command line arguments ro run performance tests with.
+     * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?>[] classes, String[] args) {
         List<Class<?>> classList = new ArrayList<>(Arrays.asList(classes));
@@ -99,9 +99,9 @@ public class PerfStressProgram {
     /**
      * Run the performance test passed to be executed.
      *
-     * @throws RuntimeException if the execution fails.
      * @param testClass the performance test class to execute.
      * @param options the configuration ro run performance test with.
+     * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?> testClass, PerfStressOptions options) {
         System.out.println("=== Options ===");
@@ -174,12 +174,13 @@ public class PerfStressProgram {
     /**
      * Runs the performance tests passed to be executed.
      *
-     * @throws RuntimeException if the execution fails.
      * @param tests the performance tests to be executed.
      * @param sync indicate if synchronous test should be run.
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
+     * @throws RuntimeException if the execution fails.
+     * @throws IllegalStateException if the total completed operations is zero.
      */
     public static void runTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
         completedOperations = new int[parallel];
