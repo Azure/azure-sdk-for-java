@@ -253,7 +253,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
-        if (keyVaultCertificates.getAliases() != null && keyVaultCertificates.getAliases().contains(alias)) {
+        if (classpathCertificates.getAliases().contains(alias)) {
             return;
         }
         engineSetClasspathCertificateEntry(alias, certificate);
