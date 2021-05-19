@@ -7,8 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-videoanalyzer-service</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version><!-- Need not change for every release-->
-
+  <version>1.0.0</version>  <!-- Need not change for every release-->
   <profiles>
     <profile>
       <id>coverage</id>
@@ -46,6 +45,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-media-videoanalyzer-edge</module>
         <module>azure-resourcemanager-videoanalyzer</module>
       </modules>
     </profile>

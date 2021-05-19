@@ -183,6 +183,7 @@ known_content_issues:
   - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/translation/azure-ai-documenttranslator/swagger/README.md', '#3113']
+  - ['sdk/videoanalyzer/azure-media-videoanalyzer-edge/swagger/README.md', '#3113']
   - ['sdk/webpubsub/azure-messaging-webpubsub/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:
