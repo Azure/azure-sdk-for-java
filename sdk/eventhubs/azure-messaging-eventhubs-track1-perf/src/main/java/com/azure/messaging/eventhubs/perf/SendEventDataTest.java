@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Sends a number of {@link EventData} to Event Hub.
  */
-public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
+public class SendEventDataTest extends ServiceTest {
 
     /**
      * Creates an instance of performance test.
@@ -24,11 +24,18 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
     }
 
     @Override
-    public void run() {
-        if (client == null) {
-            client = createEventHubClient(options);
+    public Mono<Void> setupAsync() {
+        if (options.isSync() && client == null) {
+            client = createEventHubClient();
+        } else if (!options.isSync() && clientFuture == null) {
+            clientFuture = createEventHubClientAsync();
         }
 
+        return super.setupAsync();
+    }
+
+    @Override
+    public void run() {
         for (int i = 0; i < events.size(); i++) {
             final EventData event = events.get(i);
 
@@ -42,10 +49,6 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        if (clientFuture == null) {
-            clientFuture = createEventHubClientAsync(options);
-        }
-
         return Mono.fromCompletionStage(clientFuture.thenComposeAsync(client -> {
             final CompletableFuture<?>[] completableFutures = events.stream()
                 .map(client::send)

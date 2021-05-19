@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 /**
  * Sends an event data batch with {@link EventHubsOptions#getCount()} number of events in the batch.
  */
-public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
+public class SendEventDataBatchTest extends ServiceTest {
 
     /**
      * Creates an instance of performance test.
@@ -22,12 +22,19 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
     }
 
     @Override
-    public void run() {
-        if (client == null) {
-            client = createEventHubClient(options);
+    public Mono<Void> setupAsync() {
+        if (options.isSync() && client == null) {
+            client = createEventHubClient();
+        } else if (!options.isSync() && clientFuture == null) {
+            clientFuture = createEventHubClientAsync();
         }
 
-        final EventDataBatch batch = createBatch(client, options.getCount());
+        return super.setupAsync();
+    }
+
+    @Override
+    public void run() {
+        final EventDataBatch batch = createEventDataBatch(client, options.getCount());
         try {
             client.sendSync(batch);
         } catch (EventHubException e) {
@@ -37,13 +44,9 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        if (clientFuture == null) {
-            clientFuture = createEventHubClientAsync(options);
-        }
-
         return Mono.fromCompletionStage(clientFuture
             .thenComposeAsync(client -> {
-                final EventDataBatch batch = createBatch(client, options.getCount());
+                final EventDataBatch batch = createEventDataBatch(client, options.getCount());
                 return client.send(batch);
             }));
     }

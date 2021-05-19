@@ -6,12 +6,13 @@ package com.azure.messaging.eventhubs.perf;
 import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Gets partition information.
  */
-public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
+public class GetPartitionInformationTest extends ServiceTest {
     /**
      * Creates an instance of performance test.
      *
@@ -26,11 +27,18 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     }
 
     @Override
-    public void run() {
-        if (client == null) {
-            client = createEventHubClient(options);
+    public Mono<Void> setupAsync() {
+        if (options.isSync() && client == null) {
+            client = createEventHubClient();
+        } else if (!options.isSync() && clientFuture == null) {
+            clientFuture = createEventHubClientAsync();
         }
 
+        return super.setupAsync();
+    }
+
+    @Override
+    public void run() {
         PartitionRuntimeInformation information;
         try {
             information = client.getPartitionRuntimeInformation(options.getPartitionId()).get();
@@ -43,10 +51,6 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        if (clientFuture == null) {
-            clientFuture = createEventHubClientAsync(options);
-        }
-
         if (options.getPartitionId() == null) {
             throw new RuntimeException("options.getPartitionId() cannot be null");
         }
@@ -57,10 +61,11 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     }
 
     private static void printRuntimeInformation(PartitionRuntimeInformation information) {
-        System.out.printf("Id: %s. Last Seq: %s. Last Offset: %s. Last Enqueued: %s%n",
-            information.getPartitionId(),
-            information.getLastEnqueuedSequenceNumber(),
-            information.getLastEnqueuedOffset(),
-            information.getLastEnqueuedTimeUtc());
+        // System.out.printf("Id: %s. Last Seq: %s. Last Offset: %s. Last Enqueued: %s%n",
+        //     information.getPartitionId(),
+        //     information.getLastEnqueuedSequenceNumber(),
+        //     information.getLastEnqueuedOffset(),
+        //     information.getLastEnqueuedTimeUtc());
+        Objects.requireNonNull(information, "'PartitionRuntimeInformation' cannot be null.");
     }
 }

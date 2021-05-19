@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
@@ -11,6 +10,7 @@ import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import reactor.core.publisher.Mono;
 
@@ -25,14 +25,16 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
 /**
  * Base class that tests Event Hubs.
  */
-abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
+abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
     private final ScheduledExecutorService scheduler;
+    private final int totalNumberOfEventsPerPartition;
 
     protected final List<EventData> events;
     protected CompletableFuture<EventHubClient> clientFuture;
@@ -43,7 +45,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      *
      * @param options the options configured for the test.
      */
-    ServiceTest(TOptions options) {
+    ServiceTest(EventHubsOptions options) {
         super(options);
 
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
@@ -80,32 +82,11 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
 
         this.events = Collections.unmodifiableList(eventsList);
         this.scheduler = Executors.newScheduledThreadPool(DEFAULT_BOUNDED_ELASTIC_SIZE);
+        this.totalNumberOfEventsPerPartition = options.getCount() * options.getIterations() * 100;
+
     }
 
-    /**
-     * Creates a new instance of {@link EventHubClient}.
-     *
-     * @return A Mono that completes with an {@link EventHubClient}.
-     */
-    CompletableFuture<EventHubClient> createEventHubClientAsync(EventHubsOptions options) {
-        final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
-            .setEventHubName(options.getEventHubName());
-
-        if (options.getTransportType() != null) {
-            builder.setTransportType(options.getTransportType());
-        }
-
-        try {
-            return EventHubClient.createFromConnectionString(builder.toString(), scheduler);
-        } catch (IOException e) {
-            final CompletableFuture<EventHubClient> future = new CompletableFuture<>();
-            future.completeExceptionally(new UncheckedIOException("Unable to create EventHubClient.", e));
-
-            return future;
-        }
-    }
-
-    ConnectionStringBuilder getConnectionStringBuilder(EventHubsOptions options) {
+    ConnectionStringBuilder getConnectionStringBuilder() {
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
             .setEventHubName(options.getEventHubName());
 
@@ -116,35 +97,12 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
         return builder;
     }
 
-    /**
-     * Creates a new instance of {@link EventHubClient}.
-     *
-     * @return An {@link EventHubClient}.
-     */
-    EventHubClient createEventHubClient(EventHubsOptions options) {
-        final ConnectionStringBuilder builder = getConnectionStringBuilder(options);
-
-        try {
-            return EventHubClient.createFromConnectionStringSync(builder.toString(),
-                scheduler);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to create EventHubClient.", e);
-        } catch (EventHubException e) {
-            throw new RuntimeException("Unable to create EventHubClient due to EventHubException.", e);
-        }
+    ScheduledExecutorService getScheduler() {
+        return scheduler;
     }
 
-    EventDataBatch createBatch(EventHubClient client, int numberOfMessages) {
-        final EventDataBatch batch;
-        try {
-            batch = client.createBatch();
-        } catch (EventHubException e) {
-            throw new RuntimeException("Unable to create EventDataBatch.", e);
-        }
-
-        addEvents(batch, numberOfMessages);
-
-        return batch;
+    int getTotalNumberOfEventsPerPartition() {
+        return totalNumberOfEventsPerPartition;
     }
 
     void addEvents(EventDataBatch batch, int numberOfMessages) {
@@ -163,8 +121,91 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
         }
     }
 
-    ScheduledExecutorService getScheduler() {
-        return scheduler;
+    /**
+     * Creates a new instance of {@link EventHubClient}.
+     *
+     * @return An {@link EventHubClient}.
+     */
+    EventHubClient createEventHubClient() {
+        final ConnectionStringBuilder builder = getConnectionStringBuilder();
+
+        try {
+            return EventHubClient.createFromConnectionStringSync(builder.toString(),
+                scheduler);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Unable to create EventHubClient.", e);
+        } catch (EventHubException e) {
+            throw new RuntimeException("Unable to create EventHubClient due to EventHubException.", e);
+        }
+    }
+
+    /**
+     * Creates a new instance of {@link EventHubClient}.
+     *
+     * @return A Mono that completes with an {@link EventHubClient}.
+     */
+    CompletableFuture<EventHubClient> createEventHubClientAsync() {
+        final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
+            .setEventHubName(options.getEventHubName());
+
+        if (options.getTransportType() != null) {
+            builder.setTransportType(options.getTransportType());
+        }
+
+        try {
+            return EventHubClient.createFromConnectionString(builder.toString(), scheduler);
+        } catch (IOException e) {
+            final CompletableFuture<EventHubClient> future = new CompletableFuture<>();
+            future.completeExceptionally(new UncheckedIOException("Unable to create EventHubClient.", e));
+
+            return future;
+        }
+    }
+
+    EventDataBatch createEventDataBatch(EventHubClient client, int numberOfMessages) {
+        final EventDataBatch batch;
+        try {
+            batch = client.createBatch();
+        } catch (EventHubException e) {
+            throw new RuntimeException("Unable to create EventDataBatch.", e);
+        }
+
+        addEvents(batch, numberOfMessages);
+
+        return batch;
+    }
+
+    Mono<Void> sendMessages(EventHubClient client, String partitionId, int totalMessagesToSend) {
+        CompletableFuture<PartitionSender> createSenderFuture;
+        try {
+            createSenderFuture = client.createPartitionSender(partitionId);
+        } catch (EventHubException e) {
+            createSenderFuture = new CompletableFuture<>();
+            createSenderFuture.completeExceptionally(
+                new RuntimeException("Unable to create partition sender: " + partitionId, e));
+        }
+
+        return Mono.usingWhen(
+            Mono.fromCompletionStage(createSenderFuture),
+            sender -> {
+                final ArrayList<EventDataBatch> batches = new ArrayList<>();
+                EventDataBatch currentBatch;
+
+                int numberOfMessages = totalMessagesToSend;
+                while (numberOfMessages > 0) {
+                    currentBatch = sender.createBatch();
+                    addEvents(currentBatch, numberOfMessages);
+                    batches.add(currentBatch);
+                    numberOfMessages = numberOfMessages - currentBatch.getSize();
+                }
+
+                final List<Mono<Void>> sends = batches.stream()
+                    .map(batch -> Mono.fromCompletionStage(sender.send(batch)))
+                    .collect(Collectors.toList());
+
+                return Mono.when(sends);
+            },
+            sender -> Mono.fromCompletionStage(sender.close()));
     }
 
     @Override
