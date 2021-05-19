@@ -1,5 +1,5 @@
 # Encryption plugin library for Azure Cosmos DB Java SDK for Java
-The encryption plugin is under development and not ready to be consumed yet.
+The Azure Cosmos Encryption Plugin is used for encrypting data with user provided key before saving  into CosmosDB and decrypting it when reading back from the database.
 
 ## Getting started
 ### Include the package
@@ -16,13 +16,82 @@ The encryption plugin is under development and not ready to be consumed yet.
 
 
 ### Prerequisites
-TODO
+
+- [Java Development Kit (JDK) with version 8 or above][jdk]
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- (Optional) SLF4J is a logging facade.
+- (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
+- (Optional) [Maven][maven]
+
+SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
+
+The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/)
 
 ## Key concepts
-TODO
+
+The Azure Cosmos Encryption Plugin is used for encrypting data with user provided key before saving  into CosmosDB and decrypting it when reading back from the database. Beneath it uses Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API.
+A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items.
+You may read more about databases, containers and items [here](https://docs.microsoft.com/azure/cosmos-db/databases-containers-items).
+A few important properties defined at the level of the container, among them are provisioned throughput and partition key.
 
 ## Examples
-TODO
+The following section provides several code snippets covering some of the most common CosmosDB SQL API tasks, including:
+* [Create Cosmos Encryption Client](#create-cosmos-encryption-client "Create Cosmos Encryption Client")
+* [Create Encryption Database](#create-encryption-database "Create Encryption Database")
+* [Create Encryption Container](#create-encryption-container "Create Encryption Container")
+* [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+
+### Create Cosmos Encryption Client
+```java
+// Create a new CosmosEncryptionAsyncClient
+CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+    .endpoint("<YOUR ENDPOINT HERE>")
+    .key("<YOUR KEY HERE>")
+    .buildAsyncClient();
+CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
+            CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient, new AzureKeyVaultKeyStoreProvider(tokenCredentials));
+```
+
+### Gets Cosmos Encryption Database
+Using cosmos encryption client created in previous example, you can create cosmos encryption database proxy object like this:
+
+```java
+
+// Get a reference to the encryption database
+// This will create a cosmos encryption database proxy object.
+CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(<EXISTING_DATABASE_NAME>)
+
+```
+
+### Create Cosmos Encryption Container
+We need to first create Container with ClientEncryptionPolicy and using cosmos encryption database object created in previous example, you can create cosmos encryption container proxy object like this:
+
+```java
+
+//Create Client Encryption Key
+EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key", "tempmetadata");
+cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key",
+            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).subscribe();
+//Create Encryption Container            
+ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
+includedPath.setClientEncryptionKeyId("key");
+includedPath.setPath("/sensitiveString");
+includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+
+List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+paths.add(includedPath);
+ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+CosmosContainerProperties properties = new CosmosContainerProperties(<CONTAINER_NAME>, "/mypk");
+cosmosAsyncDatabase.createContainer(properties).subscribe();
+
+// Create a reference to the encryption container
+// This will create a cosmos encryption container proxy object.
+cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(<CONTAINER_NAME>)
+```
+
+Also, we have more examples [https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples][samples].
+
 
 ## Troubleshooting
 TODO
