@@ -1,14 +1,9 @@
-parameters:
-- ArtifactName
-  type: string
-  default: ''
-- ArtifactSafeName
-  type: string
-  default: ''
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
+      ArtifactName: ''
+      ArtifactSafeName: ''
       CloudConfig:
         Public:
           SubscriptionConfigurations:
