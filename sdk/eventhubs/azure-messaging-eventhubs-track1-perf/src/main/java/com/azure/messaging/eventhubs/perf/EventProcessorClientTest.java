@@ -19,17 +19,11 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class EventProcessorClientTest extends ServiceTest {
-    private final ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap = new ConcurrentHashMap<>();
-    private final ICheckpointManager checkpointManager = new SampleCheckpointManager(partitionOwnershipMap);
-    private final ILeaseManager leaseManager = new SampleLeaseManager(partitionOwnershipMap);
-    private final SampleEventProcessorFactory processorFactory;
-    private final ConcurrentHashMap<String, CountDownLatch> eventsToReceive = new ConcurrentHashMap<>();
-
-    private EventProcessorHost eventProcessorHost;
+    private SampleEventProcessorFactory processorFactory;
+    private ConcurrentHashMap<String, CountDownLatch> eventsToReceive;
 
     /**
      * Creates an instance of performance test.
@@ -38,21 +32,12 @@ public class EventProcessorClientTest extends ServiceTest {
      */
     public EventProcessorClientTest(EventHubsOptions options) {
         super(options);
-
-        processorFactory = new SampleEventProcessorFactory(eventsToReceive);
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
-        final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
-            EventProcessorHost.EventProcessorHostBuilder.newBuilder(
-                connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
-                .useUserCheckpointAndLeaseManagers(checkpointManager, leaseManager)
-                .useEventHubConnectionString(connectionStringBuilder.toString())
-                .setExecutor(getScheduler());
-
-        eventProcessorHost = builder.build();
+        eventsToReceive = new ConcurrentHashMap<>();
+        processorFactory = new SampleEventProcessorFactory(eventsToReceive);
 
         return Mono.usingWhen(
             Mono.fromCompletionStage(createEventHubClientAsync()),
@@ -75,42 +60,46 @@ public class EventProcessorClientTest extends ServiceTest {
 
     @Override
     public void run() {
-        eventProcessorHost.registerEventProcessorFactory(processorFactory);
-
-        try {
-            eventsToReceive.forEach((key, value) -> {
-                try {
-                    value.wait();
-                } catch (InterruptedException e) {
-                    System.err.printf("Could not wait on countdown for partitionId: %s. Error: %s%n", key, e);
-                }
-            });
-        } finally {
-            try {
-                eventProcessorHost.unregisterEventProcessor().get();
-            } catch (InterruptedException | ExecutionException e) {
-                System.err.printf("Could not unregister partition processor. Error: %s%n", e);
-            }
-        }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        final CompletableFuture<Void> execution = CompletableFuture.runAsync(() -> {
-            eventProcessorHost.registerEventProcessorFactory(processorFactory);
-            eventsToReceive.forEach((key, value) -> {
-                try {
-                    value.wait();
-                } catch (InterruptedException e) {
-                    System.err.printf("Could not wait on countdown for partitionId: %s. Error: %s%n", key, e);
-                }
-            });
-        }).handleAsync((empty, error) -> {
-            eventProcessorHost.unregisterEventProcessor();
-            return empty;
+        Mono<EventProcessorHost> createProcessor = Mono.defer(() -> {
+            final ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap = new ConcurrentHashMap<>();
+            final ICheckpointManager checkpointManager = new SampleCheckpointManager(partitionOwnershipMap);
+            final ILeaseManager leaseManager = new SampleLeaseManager(partitionOwnershipMap);
+            final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
+            final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
+                EventProcessorHost.EventProcessorHostBuilder.newBuilder(
+                    connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
+                    .useUserCheckpointAndLeaseManagers(checkpointManager, leaseManager)
+                    .useEventHubConnectionString(connectionStringBuilder.toString())
+                    .setExecutor(getScheduler());
+
+            final EventProcessorHost processor = builder.build();
+            return Mono.fromCompletionStage(processor.registerEventProcessorFactory(processorFactory))
+                .thenReturn(processor);
         });
 
-        return Mono.fromCompletionStage(execution);
+        return Mono.usingWhen(
+            createProcessor,
+            processor -> {
+                final List<Mono<Void>> waitOperations = eventsToReceive.entrySet()
+                    .stream()
+                    .map(entry -> {
+                        return Mono.<Void>fromRunnable(() -> {
+                            try {
+                                entry.getValue().await();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException("Unable to wait for entry to finish: " + entry.getKey(), e);
+                            }
+                        });
+                    })
+                    .collect(Collectors.toList());
+
+                return Mono.when(waitOperations);
+            },
+            processor -> Mono.fromCompletionStage(processor.unregisterEventProcessor()));
     }
 
     private Mono<Void> sendMessages(EventHubClient client, String partitionId) {
