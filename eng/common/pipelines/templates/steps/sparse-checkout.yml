@@ -20,7 +20,7 @@ steps:
     displayName: 'Sparse checkout repositories'
     inputs:
       targetType: filePath
-      filePath: /eng/common/scripts/sparse-checkout.ps1
+      filePath: eng/common/scripts/sparse-checkout.ps1
       arguments: >
         -Paths '${{ convertToJson(parameters.Paths) }}'
         -Repositories '${{ convertToJson(parameters.Repositories) }}'

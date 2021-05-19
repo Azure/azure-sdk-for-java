@@ -16,6 +16,10 @@ steps:
     parameters:
       Paths:
         - '**/*.xml'
+        - 'sdk/${{ parameters.ServiceDirectory }}'
+        - ${{ if not(parameters.CheckoutRecordings) }}:
+          - '!sdk/**/test-recordings'
+          - '!sdk/**/session-records'
 
   - task: UsePythonVersion@0
     displayName: 'Use Python 3.6'
@@ -49,10 +53,10 @@ steps:
     displayName: 'Generate directories variable for sparse checkout'
     inputs:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
-      arguments: '--set-pipeline-variable --project-list ${{ parameters.ProjectList }}'
+      arguments: '--set-pipeline-variable --project-list $(ProjectList)'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-  - template: /eng/common/pipelines/templates/sparse-checkout.yml
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
     parameters:
+      SkipDefaultCheckout: true
       Paths: $(CheckoutDirectories)
-

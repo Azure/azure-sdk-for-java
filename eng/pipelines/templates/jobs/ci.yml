@@ -47,9 +47,11 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}/**/*.java'
+            - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
             - '**/*.md'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -99,12 +101,13 @@ jobs:
         displayName: 'Generate directories variable for sparse checkout'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable --project-list ${{ parameters.ProjectList }}'
+          arguments: '--set-pipeline-variable --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-      - template: /eng/common/pipelines/templates/sparse-checkout.yml
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
 
       - script: |
           pip install markdown2 BeautifulSoup4
@@ -165,9 +168,11 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}/**/*.java'
+            - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
             - '**/*.md'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
 
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
@@ -188,12 +193,13 @@ jobs:
         displayName: 'Generate directories variable for sparse checkout'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable --project-list ${{ parameters.ProjectList }}'
+          arguments: '--set-pipeline-variable --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-      - template: /eng/common/pipelines/templates/sparse-checkout.yml
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
