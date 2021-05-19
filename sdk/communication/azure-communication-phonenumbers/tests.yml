@@ -1,32 +1,7 @@
 trigger: none
 
 stages:
-- template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-  parameters:
-    CloudConfig:
-      Public:
-        SubscriptionConfigurations:
-          - $(sub-config-azure-cloud-test-resources)
-          - $(sub-config-communication-services-cloud-test-resources-common)
-          - $(sub-config-communication-services-cloud-test-resources-java)
-      Int:
-        SubscriptionConfigurations:
-          - $(sub-config-communication-int-test-resources-common)
-          - $(sub-config-communication-int-test-resources-java)
-    Clouds: Public, Int
-    Artifacts:
-      - name: azure-communication-phonenumbers
-        groupId: com.azure
-        safeName: azurecommunicationphonenumbers
-    ServiceDirectory: communication
-    PostSteps:
-      - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq(variables['CurrentCloud'], 'Public'))
-        inputs:
-          codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/communication/azure-communication-phonenumbers/target/site/jacoco/jacoco.xml
-          reportDirectory: sdk/communication/azure-communication-phonenumbers/target/site/jacoco/
-          failIfCoverageEmpty: true
-    EnvVars:
-      SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
-      SKIP_LIVE_TEST: TRUE
+  - template: /sdk/communication/communication-tests-template.yml
+    parameters:
+      PackageName: azure-communication-phonenumbers
+      SafeName: azurecommunicationphonenumbers
