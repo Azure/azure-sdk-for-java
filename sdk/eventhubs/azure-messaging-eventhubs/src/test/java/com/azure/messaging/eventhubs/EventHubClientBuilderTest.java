@@ -12,6 +12,8 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+
+import java.util.*;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -172,17 +174,19 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
 
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
-        EventHubProducerClient asyncProducerClient = new EventHubClientBuilder()
+        EventHubProducerAsyncClient asyncProducerClient = new EventHubClientBuilder()
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
             .buildAsyncProducerClient();
         try {
-            StepVerifier.create(asyncProducerClient.send(testData))
-                .verifyComplete();
+            asyncProducerClient.createBatch().subscribe(batch -> {
+                batch.getEvents().add(testData);
+                StepVerifier.create(asyncProducerClient.send(batch))
+                    .verifyComplete();
+            });
         } finally {
             asyncProducerClient.close();
         }
-
     }
 
 
@@ -195,13 +199,16 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
 
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
-        EventHubProducerClient asyncProducerClient = new EventHubClientBuilder()
+        EventHubProducerAsyncClient asyncProducerClient = new EventHubClientBuilder()
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureSasCredential(sharedAccessSignature))
             .buildAsyncProducerClient();
         try {
-            StepVerifier.create(asyncProducerClient.send(testData))
-                .verifyComplete();
+            asyncProducerClient.createBatch().subscribe(batch -> {
+                batch.getEvents().add(testData);
+                StepVerifier.create(asyncProducerClient.send(batch))
+                    .verifyComplete();
+            });
         } finally {
             asyncProducerClient.close();
         }
