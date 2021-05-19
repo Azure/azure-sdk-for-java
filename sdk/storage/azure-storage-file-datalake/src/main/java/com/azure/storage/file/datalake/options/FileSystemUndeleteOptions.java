@@ -54,7 +54,9 @@ public final class FileSystemUndeleteOptions {
      * already exists, the undelete operation will result in a 409 (conflict).
      *
      * @return The destination file system name.
+     * @deprecated Destination file system name must match deleted file system name
      */
+    @Deprecated
     public String getDestinationFileSystemName() {
         return destinationFileSystemName;
     }
@@ -68,7 +70,9 @@ public final class FileSystemUndeleteOptions {
      *
      * @param destinationFileSystemName The destination file system name.
      * @return The updated options.
+     * @deprecated Destination file system name must match deleted file system name
      */
+    @Deprecated
     public FileSystemUndeleteOptions setDestinationFileSystemName(String destinationFileSystemName) {
         this.destinationFileSystemName = destinationFileSystemName;
         return this;

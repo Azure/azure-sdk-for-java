@@ -570,6 +570,49 @@ In [Resource server visiting other resource server] scenario(For better descript
         return "Response from WebApiB.";
     }
     ```  
+
+#### Support setting redirect-uri-template.
+
+Developers can customize the redirect-uri.
+
+![redirect-uri](resource/redirect-uri.png)
+
+* Step 1: Add `redirect-uri-template` properties in application.yml.
+    ```yaml
+        azure:
+          activedirectory:
+            redirect-uri-template: --your-redirect-uri-template--
+    ```
+
+* Step 2: Update the configuration of the azure cloud platform in the portal.
+
+    We need to configure the same redirect-uri as application.yml:
+
+    ![web-application-config-redirect-uri](resource/web-application-config-redirect-uri.png)
+
+* Step 3: Write your Java code:
+
+    After we set redirect-uri-template, we need to update `SecurityConfigurerAdapter`:
+
+```java
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
+    /**
+     * Add configuration logic as needed.
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.oauth2Login()
+                .loginProcessingUrl("/{your-redirect-uri}")
+                .and()
+            .authorizeRequests()
+                .anyRequest().authenticated();
+    }
+}
+```
+  
 ## Examples
 
 ### Web application visiting resource servers

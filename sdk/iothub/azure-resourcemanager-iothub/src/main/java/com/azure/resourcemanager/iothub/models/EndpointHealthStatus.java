@@ -16,6 +16,9 @@ public final class EndpointHealthStatus extends ExpandableStringEnum<EndpointHea
     /** Static value healthy for EndpointHealthStatus. */
     public static final EndpointHealthStatus HEALTHY = fromString("healthy");
 
+    /** Static value degraded for EndpointHealthStatus. */
+    public static final EndpointHealthStatus DEGRADED = fromString("degraded");
+
     /** Static value unhealthy for EndpointHealthStatus. */
     public static final EndpointHealthStatus UNHEALTHY = fromString("unhealthy");
 

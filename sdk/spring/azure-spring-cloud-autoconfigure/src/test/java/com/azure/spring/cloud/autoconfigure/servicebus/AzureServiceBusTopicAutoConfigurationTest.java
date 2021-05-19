@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
@@ -13,7 +14,6 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStrin
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
-import com.microsoft.azure.servicebus.TopicClient;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfigurationTest.NAMESPACE_CONNECTION_STRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
@@ -42,7 +43,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
     @Test
     public void testWithoutAzureServiceBusTopicClient() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(TopicClient.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusProcessorClient.class))
                           .run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicOperation.class));
     }
 
@@ -70,10 +71,10 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
     @Test
     public void testConnectionStringProvided() {
-        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
+        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=" + NAMESPACE_CONNECTION_STRING)
                           .withUserConfiguration(AzureServiceBusAutoConfiguration.class)
                           .run(context -> {
-                              assertThat(context.getBean(ServiceBusConnectionStringProvider.class).getConnectionString()).isEqualTo("str1");
+                              assertThat(context.getBean(ServiceBusConnectionStringProvider.class).getConnectionString()).isEqualTo(NAMESPACE_CONNECTION_STRING);
                               assertThat(context).doesNotHaveBean(ServiceBusNamespaceManager.class);
                               assertThat(context).doesNotHaveBean(ServiceBusTopicManager.class);
                               assertThat(context).doesNotHaveBean(ServiceBusTopicSubscriptionManager.class);
@@ -105,7 +106,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
             TestConfigWithMessageConverter.class,
             AzureServiceBusAutoConfiguration.class)
                           .withPropertyValues(
-                              SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1"
+                              SERVICE_BUS_PROPERTY_PREFIX + "connection-string=" + NAMESPACE_CONNECTION_STRING
                           )
                           .run(context -> {
                               assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
@@ -134,7 +135,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
         @Bean
         public ServiceBusConnectionStringProvider serviceBusConnectionStringProvider() {
-            return new ServiceBusConnectionStringProvider("fake");
+            return new ServiceBusConnectionStringProvider(NAMESPACE_CONNECTION_STRING);
         }
 
     }

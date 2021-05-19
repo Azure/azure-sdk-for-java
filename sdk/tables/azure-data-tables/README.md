@@ -15,7 +15,7 @@ best parts of Azure cloud.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0-beta.6</version>
+  <version>12.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -149,19 +149,19 @@ Common uses of the Tables service include:
 #### Authenticate with a connection string
 To use a connection string to authorize your client, call the builder's `connectionString` method with your connection string.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L33-L35 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L36-L38 -->
 ```java
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
     .connectionString("<your-connection-string>")
     .buildClient();
 ```
 
-#### Authenticate with a Shared Key
-To use a Shared Key to authorize your client, create an instance of `TablesSharedKeyCredential` with your account name and access key. Call the builder's `endpoint` method with your account URL and the `credential` method with the `TablesSharedKeyCredential` object you created.
+#### Authenticate with a Named Key
+To use a Named Key to authorize your client, create an instance of `AzureNamedKeyCredential` with your account name and access key. Call the builder's `endpoint` method with your account URL and the `credential` method with the `AzureNamedKeyCredential` object you created.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L42-L46 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L45-L49 -->
 ```java
-TablesSharedKeyCredential credential = new TablesSharedKeyCredential("<your-account-name>", "<account-access-key>");
+AzureNamedKeyCredential credential = new AzureNamedKeyCredential("<your-account-name>", "<account-access-key>");
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
     .endpoint("<your-table-account-url>")
     .credential(credential)
@@ -171,7 +171,7 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 #### Authenticate with a Shared Access Signature (SAS)
 To use a SAS to authorize your client, call the builder's `endpoint` method with your account URL and the `sasToken` method with your SAS.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L53-L56 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L56-L59 -->
 ```java
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
     .endpoint("<your-table-account-url>")
@@ -184,7 +184,7 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 #### Construct a `TableServiceClient`
 Construct a `TableServiceClient` by creating an instance of `TableServiceClientBuilder` and then calling the builder's `buildClient` or `buildAsyncClient` methods.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L63-L65 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L66-L68 -->
 ```java
 TableServiceClient tableServiceClient = new TableServiceClientBuilder()
     .connectionString("<your-connection-string>") // or use any of the other authentication methods
@@ -192,37 +192,37 @@ TableServiceClient tableServiceClient = new TableServiceClientBuilder()
 ```
 
 #### Create a table
-Create a table by calling the `TableServiceClient`'s `createTable` method. An exception will be thrown if a table with the provided name exists.
+Create a table by calling the `TableServiceClient`'s `createTable` method. A `TableClient` will be returned, this client allows to perform operations on the table. An exception will be thrown if a table with the provided name exists.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L73-L73 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L77-L77 -->
 ```java
-tableServiceClient.createTable(tableName);
+TableClient tableClient = tableServiceClient.createTable(tableName);
 ```
 
-Alternatively, you can call the `createTableIfNotExists` method which will create the table only if no such table exists, and does not throw an exception.
+Alternatively, you can call the `createTableIfNotExists` method which will create the table only if no such table exists, and does not throw an exception. A `TableClient` will be returned as well.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L80-L80 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L84-L84 -->
 ```java
-tableServiceClient.createTableIfNotExists(tableName);
+TableClient tableClient = tableServiceClient.createTableIfNotExists(tableName);
 ```
 
 #### List tables
 List or query the set of existing tables by calling the `TableServiceClient`'s `listTables` method, optionally passing in a `ListTablesOptions` instance to filter or limit the query results. See [Supported Query Options][query_options] for details about supported query options.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L87-L92 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L91-L96 -->
 ```java
 ListTablesOptions options = new ListTablesOptions()
     .setFilter(String.format("TableName eq '%s'", tableName));
 
-for (TableItem tableItem : tableServiceClient.listTables(options)) {
+for (TableItem tableItem : tableServiceClient.listTables(options, null, null)) {
     System.out.println(tableItem.getName());
 }
 ```
 
 #### Delete a table
-Delete a table by calling the `TableServiceClient`'s `deleteTable` method. An exception will be thrown if no table with the provided name exists.
+Delete a table by calling the `TableServiceClient`'s `deleteTable` method.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L99-L99 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L103-L103 -->
 ```java
 tableServiceClient.deleteTable(tableName);
 ```
@@ -232,7 +232,7 @@ tableServiceClient.deleteTable(tableName);
 #### Construct a `TableClient`
 Construct a `TableClient` by creating an instance of `TableClientBuilder`, calling the builder's `tableName` method with the name of the table, and then calling its `buildClient` or `buildAsyncClient` methods.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L106-L109 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L110-L113 -->
 ```java
 TableClient tableClient = new TableClientBuilder()
     .connectionString("<your-connection-string>") // or use any of the other authentication methods
@@ -242,7 +242,7 @@ TableClient tableClient = new TableClientBuilder()
 
 Alternatively, a `TableClient` can be retrieved from an existing `TableServiceClient` by calling its `getTableClient` method.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L116-L116 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L120-L120 -->
 ```java
 TableClient tableClient = tableServiceClient.getTableClient(tableName);
 ```
@@ -250,7 +250,7 @@ TableClient tableClient = tableServiceClient.getTableClient(tableName);
 #### Create an entity
 Create a new `TableEntity` instance, providing the partition key and row key of the entity to create, optionally adding properties to the created object. Then pass the object to the `TableClient`'s `createEntity` method. An exception will be thrown if an entity with the provided partition key and row key exists within the table.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L124-L129 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L129-L134 -->
 ```java
 TableEntity entity = new TableEntity(partitionKey, rowKey)
     .addProperty("Product", "Marker Set")
@@ -263,22 +263,26 @@ tableClient.createEntity(entity);
 #### List entities
 List or query the set of entities within the table by calling the `TableClient`'s `listEntities` method, optionally passing in a `ListEntitiesOptions` instance to filter, select, or limit the query results. See [Supported Query Options][query_options] for details about supported query options.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L136-L143 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L141-L152 -->
 ```java
+List<String> propertiesToSelect = new ArrayList<>();
+propertiesToSelect.add("Product");
+propertiesToSelect.add("Price");
+
 ListEntitiesOptions options = new ListEntitiesOptions()
     .setFilter(String.format("PartitionKey eq '%s'", partitionKey))
-    .setSelect("Product, Price");
+    .setSelect(propertiesToSelect);
 
-for (TableEntity entity : tableClient.listEntities(options)) {
+for (TableEntity entity : tableClient.listEntities(options, null, null)) {
     Map<String, Object> properties = entity.getProperties();
     System.out.println(String.format("%s: %.2f", properties.get("Product"), properties.get("Price")));
 }
 ```
 
 #### Delete an entity
-Delete an entity by calling the `TableClient`'s `deleteEntity` method. An exception will be thrown if no entity with the provided partition key and row key exists.
+Delete an entity by calling the `TableClient`'s `deleteEntity` method.
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L150-L150 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L159-L159 -->
 ```java
 tableClient.deleteEntity(partitionKey, rowKey);
 ```
@@ -290,7 +294,7 @@ When you interact with Tables service using the Azure Tables library for Java, e
 
 For example, if you try to create a table that already exists, a `409` error is returned, indicating "Conflict".
 
-<!-- embedme src/samples/java/ReadmeSamples.java#L157-L165 -->
+<!-- embedme src/samples/java/ReadmeSamples.java#L166-L174 -->
 ```java
 // Create the table if it doesn't already exist.
 tableServiceClient.createTableIfNotExists(tableName);
@@ -298,8 +302,8 @@ tableServiceClient.createTableIfNotExists(tableName);
 // Now attempt to create the same table unconditionally.
 try {
     tableServiceClient.createTable(tableName);
-} catch (TableStorageException e) {
-    System.out.println(e.getStatusCode()); // 409
+} catch (TableServiceException e) {
+    System.out.println(e.getResponse().getStatusCode()); // 409
 }
 ```
 
