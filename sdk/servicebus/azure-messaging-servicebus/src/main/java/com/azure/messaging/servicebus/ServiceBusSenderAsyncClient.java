@@ -576,15 +576,15 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return createMessageBatch().flatMap(messageBatch -> {
             System.out.println(this.getClass().getName() + " message count " + OffsetDateTime.now());
-            try{
+            try {
                 StreamSupport.stream(messages.spliterator(), true)
                     .forEach(message -> {
                         if (!messageBatch.tryAddMessage(message)) {
                             throw new UnsupportedOperationException();
                         }
                     });
-            } catch (UnsupportedOperationException e ) {
-                logger.info("Sending batch with size[{}].", messageBatch.getCount());
+            } catch (UnsupportedOperationException e) {
+                // do nothing
             }
             System.out.println(this.getClass().getName() + " message count " + OffsetDateTime.now());
             System.out.println(this.getClass().getName() + " message count " + messageBatch.getMessages().size());
