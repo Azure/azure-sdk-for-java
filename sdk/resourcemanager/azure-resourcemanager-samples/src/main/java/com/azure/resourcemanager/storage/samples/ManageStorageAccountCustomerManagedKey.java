@@ -4,18 +4,26 @@
 package com.azure.resourcemanager.storage.samples;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
+import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
+
+import java.time.Duration;
 
 /**
  * Azure Storage sample for managing storage accounts with customer-managed key.
@@ -23,6 +31,7 @@ import com.azure.security.keyvault.keys.models.KeyType;
  * - Create a key vault with purge protection enabled and access policy for managed service identity of storage account
  * - Create a RSA key
  * - Update storage account to enable encryption with customer-managed key
+ * - Revoke customer-managed key
  *
  * {@see http://aka.ms/storagecmkconfiguration}
  */
@@ -40,6 +49,7 @@ public final class ManageStorageAccountCustomerManagedKey {
         final String storageAccountName = Utils.randomResourceName(azureResourceManager, "sa", 8);
         final String vaultName = Utils.randomResourceName(azureResourceManager, "kv", 8);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 8);
+        final String containerName = "container";
 
         try {
             //============================================================
@@ -71,6 +81,8 @@ public final class ManageStorageAccountCustomerManagedKey {
                 .withPurgeProtectionEnabled()
                 .create();
 
+            Utils.print(vault);
+
             //============================================================
             // Create a key for storage account, RSA 2048, 3072 or 4096
 
@@ -85,6 +97,55 @@ public final class ManageStorageAccountCustomerManagedKey {
             storageAccount.update()
                 .withEncryptionKeyFromKeyVault(vault.vaultUri(), "sakey", null)
                 .apply();
+
+            Utils.print(storageAccount);
+
+            String storageAccountKey = storageAccount.getKeys().iterator().next().value();
+
+            //============================================================
+            // Create a container and upload a blob
+
+            azureResourceManager.storageBlobContainers().defineContainer(containerName)
+                .withExistingBlobService(rgName, storageAccountName)
+                .withPublicAccess(PublicAccess.NONE)
+                .create();
+
+            BlobClient blobClient = new BlobClientBuilder()
+                .connectionString(
+                    ResourceManagerUtils.getStorageConnectionString(
+                        storageAccountName, storageAccountKey,
+                        azureResourceManager.storageAccounts().manager().environment()))
+                .containerName(containerName)
+                .blobName("data.txt")
+                .buildClient();
+            blobClient.upload(BinaryData.fromString("data"));
+
+            //============================================================
+            // Download blob
+
+            BinaryData data = blobClient.downloadContent();
+            System.out.println("blob content: " + data.toString());
+
+            //============================================================
+            // Revoke customer-managed key by removing the access policy to the managed service identity of storage account on key vault
+
+            vault.update()
+                .withoutAccessPolicy(storageAccount.systemAssignedManagedServiceIdentityPrincipalId())
+                .apply();
+
+            //============================================================
+            // Download blob will now fail
+
+            // wait a bit
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+            try {
+                data = blobClient.downloadContent();
+                // line above should throw exception
+                System.out.println("blob content: " + data.toString());
+                return false;
+            } catch (HttpResponseException e) {
+                System.out.println("blob download fails due to: " + e);
+            }
 
         } finally {
             try {
