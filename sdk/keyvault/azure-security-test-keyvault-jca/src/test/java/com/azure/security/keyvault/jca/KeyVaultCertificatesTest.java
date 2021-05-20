@@ -25,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultCertificatesTest {
 
+    private static String certificateName;
+
     /**
      * Stores the CER test certificate (which is valid til 2120).
      */
@@ -58,6 +60,7 @@ public class KeyVaultCertificatesTest {
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test

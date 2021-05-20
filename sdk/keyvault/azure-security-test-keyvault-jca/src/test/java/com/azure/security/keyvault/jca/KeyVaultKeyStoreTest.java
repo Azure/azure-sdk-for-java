@@ -166,10 +166,10 @@ public class KeyVaultKeyStoreTest {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
         KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
-        Certificate certificate = ks.getCertificate("myalias");
-        ks.deleteEntry("myalias");
+        Certificate certificate = ks.getCertificate(certificateName);
+        ks.deleteEntry(certificateName);
         Thread.sleep(10);
-        assertEquals(ks.getCertificateAlias(certificate), "myalias");
+        assertEquals(ks.getCertificateAlias(certificate), certificateName);
     }
 
     @Test
@@ -177,8 +177,8 @@ public class KeyVaultKeyStoreTest {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
         KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
-        Certificate certificate = ks.getCertificate("myalias");
-        ks.deleteEntry("myalias");
+        Certificate certificate = ks.getCertificate(certificateName);
+        ks.deleteEntry(certificateName);
         assertNull(ks.getCertificateAlias(certificate));
     }
 

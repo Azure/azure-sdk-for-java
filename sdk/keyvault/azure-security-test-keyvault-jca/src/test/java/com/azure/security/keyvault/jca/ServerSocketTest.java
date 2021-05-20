@@ -42,6 +42,8 @@ public class ServerSocketTest {
 
     KeyManagerFactory kmf;
 
+    private static String certificateName;
+
     @BeforeEach
     public void beforeEach() throws Exception {
         /*
@@ -64,6 +66,8 @@ public class ServerSocketTest {
         ks = PropertyConvertorUtils.getKeyVaultKeyStore();
         kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
+
+        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
 
@@ -84,42 +88,27 @@ public class ServerSocketTest {
         server.start();
     }
 
-    /**
-     * Test SSLServerSocket without client trust.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
-    public void testServerSocket() throws Exception {
+    public void testHttpsConnectionWithoutClientTrust() throws Exception {
 
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
             .build();
-        serverSocket(8765, sslContext);
+        testHttpsConnection(8765, sslContext);
 
     }
 
-    /**
-     * Test SSLServerSocket with self-signed client trust.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
-    public void testServerSocketWithSelfSignedClientTrust() throws Exception {
+    public void testHttpsConnectionWithSelfSignedClientTrust() throws Exception {
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
             .build();
-        serverSocket(8766, sslContext);
+        testHttpsConnection(8766, sslContext);
 
     }
 
-    /**
-     * Test SSLServerSocket with default trust manager.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
     public void testServerSocketWithDefaultTrustManager() throws Exception {
         serverSocketWithTrustManager(8768);
@@ -140,7 +129,7 @@ public class ServerSocketTest {
     }
 
 
-    private void serverSocket(Integer port, SSLContext sslContext) throws Exception {
+    private void testHttpsConnection(Integer port, SSLContext sslContext) throws Exception {
         /*
          * Setup server side.
          *
@@ -249,7 +238,7 @@ public class ServerSocketTest {
     private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
         @Override
         public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-            return "myalias"; // It should be your certificate alias used in client-side
+            return certificateName; // It should be your certificate alias used in client-side
         }
     }
 
