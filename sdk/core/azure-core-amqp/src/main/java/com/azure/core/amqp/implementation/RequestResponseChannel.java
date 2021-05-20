@@ -203,6 +203,11 @@ public class RequestResponseChannel implements AsyncAutoCloseable {
             .block(retryOptions.getTryTimeout());
     }
 
+    @Override
+    public Mono<Void> closeAsync() {
+        return this.closeAsync("");
+    }
+
     public Mono<Void> closeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
             return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());

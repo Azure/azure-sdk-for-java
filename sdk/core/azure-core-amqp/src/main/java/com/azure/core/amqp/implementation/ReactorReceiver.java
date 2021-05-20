@@ -234,7 +234,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
         return closeAsync("User invoked close operation.", null);
     }
 
-    @Override
     public Mono<Void> closeAsync(String message) {
         return closeAsync(message, null);
     }

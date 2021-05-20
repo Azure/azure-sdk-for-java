@@ -15,9 +15,5 @@ public interface AsyncAutoCloseable {
      *
      * @return A mono representing the close operation.
      */
-    default Mono<Void> closeAsync() {
-        return closeAsync("");
-    }
-
-    Mono<Void> closeAsync(String closeMessage);
+    Mono<Void> closeAsync();
 }
