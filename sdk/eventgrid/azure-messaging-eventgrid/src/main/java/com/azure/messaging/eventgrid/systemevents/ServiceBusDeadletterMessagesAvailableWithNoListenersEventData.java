@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Schema of the Data property of an EventGridEvent for a
- * Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListenersEvent event.
+ * Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
  */
 @Fluent
 public final class ServiceBusDeadletterMessagesAvailableWithNoListenersEventData {

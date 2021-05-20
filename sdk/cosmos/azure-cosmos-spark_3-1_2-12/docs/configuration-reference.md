@@ -29,7 +29,7 @@ Configuration Reference:
 | `spark.cosmos.write.strategy`      | `ItemOverwrite`    | Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert), `ItemAppend` (using create, ignore pre-existing items i.e., Conflicts)  |
 | `spark.cosmos.write.maxRetryCount`      | `10`    | Cosmos DB Write Max Retry Attempts on retriable failures (e.g., connection error, moderakh add more details)   |
 | `spark.cosmos.write.point.maxConcurrency`   | None   | Cosmos DB Item Write Max concurrency. If not specified it will be determined based on the Spark executor VM Size |
-| `spark.cosmos.write.bulk.maxPendingOperations`   | None   | Cosmos DB Item Write Max concurrency. If not specified it will be determined based on the Spark executor VM Size |
+| `spark.cosmos.write.bulk.maxPendingOperations`   | None   | Cosmos DB Item Write bulk mode maximum pending operations. Defines a limit of bulk operations being processed concurrently. If not specified it will be determined based on the Spark executor VM Size. If the volume of data is large for the provisioned throughput on the destination container, this setting can be adjusted by following the estimation of `1000 x Cores` |
 | `spark.cosmos.write.bulk.enabled`      | `true`   | Cosmos DB Item Write bulk enabled |
 
 ### Query Config

@@ -2,10 +2,12 @@ package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.models.*
 import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.Exceptions
 import spock.lang.Requires
 import spock.lang.Retry
@@ -88,6 +90,7 @@ class BlobBaseAPITest extends APISpec {
         return queryData
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query min"() {
@@ -134,6 +137,7 @@ class BlobBaseAPITest extends APISpec {
         4000      | _ // 125 KB
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query csv serialization separator"() {
@@ -210,6 +214,7 @@ class BlobBaseAPITest extends APISpec {
         '\n'            | '\\'            | false          || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query csv serialization escape and field quote"() {
         setup:
@@ -250,6 +255,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     /* Note: Input delimited tested everywhere */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     @Retry(count = 5)
     def "Query Input json"() {
@@ -329,6 +335,7 @@ class BlobBaseAPITest extends APISpec {
         osData == expectedData
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Query Input csv Output json"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -368,6 +375,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query Input json Output csv"() {
         setup:
@@ -408,6 +416,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query Input csv Output arrow"() {
         setup:
@@ -445,6 +454,7 @@ class BlobBaseAPITest extends APISpec {
         Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5)
     def "Query non fatal error"() {
         setup:
@@ -484,6 +494,7 @@ class BlobBaseAPITest extends APISpec {
         receiver.numErrors > 0
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Query fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -512,6 +523,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(Exceptions.ReactiveException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Query progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -554,6 +566,7 @@ class BlobBaseAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @LiveOnly // Large amount of data.
     def "Query multiple records with progress receiver"() {
         setup:
@@ -605,6 +618,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Query snapshot"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -644,6 +658,7 @@ class BlobBaseAPITest extends APISpec {
         osData == downloadedData
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query input output IA"() {
         setup:
@@ -674,6 +689,7 @@ class BlobBaseAPITest extends APISpec {
         false   | true     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Query arrow input IA"() {
         setup:
         def inSer = new BlobQueryArrowSerialization()
@@ -719,6 +735,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Query error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName())
@@ -736,6 +753,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query AC"() {
         setup:
@@ -782,6 +800,7 @@ class BlobBaseAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Query AC fail"() {
         setup:

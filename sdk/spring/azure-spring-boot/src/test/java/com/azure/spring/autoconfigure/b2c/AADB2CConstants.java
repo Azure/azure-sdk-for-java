@@ -28,7 +28,7 @@ public class AADB2CConstants {
     public static final String TEST_CLIENT_SECRET = "fake-client-secret";
     public static final String TEST_APP_ID_URI = "https://fake-tenant.onmicrosoft.com/custom";
 
-    public static final String TEST_KEY_SIGN_UP_OR_IN = "sign-in-or-up";
+    public static final String TEST_KEY_SIGN_UP_OR_IN = "sign-up-or-sign-in";
     public static final String TEST_SIGN_UP_OR_IN_NAME = "fake-sign-in-or-up";
 
     public static final Object TEST_KEY_SIGN_IN = "sign-in";

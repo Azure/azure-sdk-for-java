@@ -32,9 +32,6 @@ public enum FieldValueType {
     /** Enum value selection mark state. */
     SELECTION_MARK_STATE,
 
-    /** Enum value Gender. */
-    GENDER,
-
-    /** Enum value Country. */
-    COUNTRY
+    /** Enum value country region. */
+    COUNTRY_REGION
 }

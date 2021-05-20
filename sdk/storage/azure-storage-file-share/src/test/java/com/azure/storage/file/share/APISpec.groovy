@@ -27,7 +27,6 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 import java.util.function.BiFunction
@@ -52,10 +51,6 @@ class APISpec extends StorageSpec {
     static final String receivedLeaseID = "received"
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
-
-    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
-    def defaultFlux = Flux.just(defaultData)
-    Long defaultDataLength = defaultData.remaining()
 
     /**
      * Setup the File service clients commonly used for the API tests.

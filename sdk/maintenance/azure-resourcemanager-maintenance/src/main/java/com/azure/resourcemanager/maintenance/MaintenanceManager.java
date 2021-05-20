@@ -20,17 +20,23 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.maintenance.fluent.MaintenanceClient;
+import com.azure.resourcemanager.maintenance.fluent.MaintenanceManagementClient;
+import com.azure.resourcemanager.maintenance.implementation.ApplyUpdateForResourceGroupsImpl;
 import com.azure.resourcemanager.maintenance.implementation.ApplyUpdatesImpl;
 import com.azure.resourcemanager.maintenance.implementation.ConfigurationAssignmentsImpl;
-import com.azure.resourcemanager.maintenance.implementation.MaintenanceClientBuilder;
+import com.azure.resourcemanager.maintenance.implementation.MaintenanceConfigurationsForResourceGroupsImpl;
 import com.azure.resourcemanager.maintenance.implementation.MaintenanceConfigurationsImpl;
+import com.azure.resourcemanager.maintenance.implementation.MaintenanceManagementClientBuilder;
 import com.azure.resourcemanager.maintenance.implementation.OperationsImpl;
+import com.azure.resourcemanager.maintenance.implementation.PublicMaintenanceConfigurationsImpl;
 import com.azure.resourcemanager.maintenance.implementation.UpdatesImpl;
+import com.azure.resourcemanager.maintenance.models.ApplyUpdateForResourceGroups;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdates;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignments;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurations;
+import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurationsForResourceGroups;
 import com.azure.resourcemanager.maintenance.models.Operations;
+import com.azure.resourcemanager.maintenance.models.PublicMaintenanceConfigurations;
 import com.azure.resourcemanager.maintenance.models.Updates;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -38,25 +44,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Entry point to MaintenanceManager. Maintenance Client. */
+/** Entry point to MaintenanceManager. Azure Maintenance Management Client. */
 public final class MaintenanceManager {
+    private PublicMaintenanceConfigurations publicMaintenanceConfigurations;
+
     private ApplyUpdates applyUpdates;
 
     private ConfigurationAssignments configurationAssignments;
 
     private MaintenanceConfigurations maintenanceConfigurations;
 
+    private MaintenanceConfigurationsForResourceGroups maintenanceConfigurationsForResourceGroups;
+
+    private ApplyUpdateForResourceGroups applyUpdateForResourceGroups;
+
     private Operations operations;
 
     private Updates updates;
 
-    private final MaintenanceClient clientObject;
+    private final MaintenanceManagementClient clientObject;
 
     private MaintenanceManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new MaintenanceClientBuilder()
+            new MaintenanceManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -174,7 +186,7 @@ public final class MaintenanceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.maintenance")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -213,6 +225,15 @@ public final class MaintenanceManager {
         }
     }
 
+    /** @return Resource collection API of PublicMaintenanceConfigurations. */
+    public PublicMaintenanceConfigurations publicMaintenanceConfigurations() {
+        if (this.publicMaintenanceConfigurations == null) {
+            this.publicMaintenanceConfigurations =
+                new PublicMaintenanceConfigurationsImpl(clientObject.getPublicMaintenanceConfigurations(), this);
+        }
+        return publicMaintenanceConfigurations;
+    }
+
     /** @return Resource collection API of ApplyUpdates. */
     public ApplyUpdates applyUpdates() {
         if (this.applyUpdates == null) {
@@ -239,6 +260,25 @@ public final class MaintenanceManager {
         return maintenanceConfigurations;
     }
 
+    /** @return Resource collection API of MaintenanceConfigurationsForResourceGroups. */
+    public MaintenanceConfigurationsForResourceGroups maintenanceConfigurationsForResourceGroups() {
+        if (this.maintenanceConfigurationsForResourceGroups == null) {
+            this.maintenanceConfigurationsForResourceGroups =
+                new MaintenanceConfigurationsForResourceGroupsImpl(
+                    clientObject.getMaintenanceConfigurationsForResourceGroups(), this);
+        }
+        return maintenanceConfigurationsForResourceGroups;
+    }
+
+    /** @return Resource collection API of ApplyUpdateForResourceGroups. */
+    public ApplyUpdateForResourceGroups applyUpdateForResourceGroups() {
+        if (this.applyUpdateForResourceGroups == null) {
+            this.applyUpdateForResourceGroups =
+                new ApplyUpdateForResourceGroupsImpl(clientObject.getApplyUpdateForResourceGroups(), this);
+        }
+        return applyUpdateForResourceGroups;
+    }
+
     /** @return Resource collection API of Operations. */
     public Operations operations() {
         if (this.operations == null) {
@@ -256,10 +296,10 @@ public final class MaintenanceManager {
     }
 
     /**
-     * @return Wrapped service client MaintenanceClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * @return Wrapped service client MaintenanceManagementClient providing direct access to the underlying
+     *     auto-generated API implementation, based on Azure REST API.
      */
-    public MaintenanceClient serviceClient() {
+    public MaintenanceManagementClient serviceClient() {
         return this.clientObject;
     }
 }

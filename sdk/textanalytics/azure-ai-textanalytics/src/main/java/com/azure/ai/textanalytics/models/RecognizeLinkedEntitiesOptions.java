@@ -43,6 +43,22 @@ public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOp
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs The default value of this property is 'false', except for methods like
+     * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
+     * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
+     * disables input logging and may limit our ability to investigate issues that occur.
+     *
+     * @return the {@link RecognizeLinkedEntitiesOptions} object itself.
+     */
+    @Override
+    public RecognizeLinkedEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of {@code stringIndexType}.
      *
      * @return The value of {@code stringIndexType}.
