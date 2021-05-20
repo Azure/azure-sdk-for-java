@@ -98,12 +98,7 @@ public final class AmqpPropagationFormatUtil {
      */
     private static SpanContext fromDiagnosticId(String traceparent) {
         if (traceparent == null || traceparent.length() < 55 || !traceparent.startsWith(VERSION)) {
-            return SpanContext.createFromRemoteParent(
-                TraceId.getInvalid(),
-                SpanId.getInvalid(),
-                TraceFlags.getDefault(),
-                TraceState.getDefault()
-            );
+            return SpanContext.getInvalid();
         }
 
         String traceId =

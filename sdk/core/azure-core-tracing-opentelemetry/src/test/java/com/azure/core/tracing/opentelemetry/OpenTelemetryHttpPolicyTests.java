@@ -21,8 +21,10 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -84,8 +86,7 @@ public class OpenTelemetryHttpPolicyTests {
         // Assert
         String diagnosticId = response.headers().get("Traceparent");
         assertNotNull(diagnosticId);
-        Context updatedContext = AmqpPropagationFormatUtil.extractContext(diagnosticId, Context.NONE);
-        SpanContext returnedSpanContext = (SpanContext) updatedContext.getData(SPAN_CONTEXT_KEY).get();
+        SpanContext returnedSpanContext = getNonRemoteSpanContext(diagnosticId);
         verifySpanContextAttributes(expectedSpan.getSpanContext(), returnedSpanContext);
         scope.close();
     }
@@ -100,6 +101,13 @@ public class OpenTelemetryHttpPolicyTests {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
         return httpPipeline;
+    }
+
+    private static SpanContext getNonRemoteSpanContext(String diagnosticId) {
+        Context updatedContext = AmqpPropagationFormatUtil.extractContext(diagnosticId, Context.NONE);
+        SpanContext spanContext = (SpanContext) updatedContext.getData(SPAN_CONTEXT_KEY).get();
+        return SpanContext.create(spanContext.getTraceId(), spanContext.getSpanId(),
+            spanContext.getTraceFlags(), spanContext.getTraceState());
     }
 
     private static void verifySpanContextAttributes(SpanContext expectedSpanContext, SpanContext actualSpanContext) {
