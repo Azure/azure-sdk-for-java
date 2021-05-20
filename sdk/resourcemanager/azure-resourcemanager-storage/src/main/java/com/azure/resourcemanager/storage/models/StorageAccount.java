@@ -294,8 +294,10 @@ public interface StorageAccount
             /**
              * Specifies that encryption needs be enabled for blob service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return the next stage of storage account definition
              */
+            @Deprecated
             WithCreate withBlobEncryption();
 
             /**
@@ -310,8 +312,10 @@ public interface StorageAccount
             /**
              * Specifies that encryption needs be enabled for file service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return the next stage of storage account definition
              */
+            @Deprecated
             WithCreate withFileEncryption();
 
             /**
