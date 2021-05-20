@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class HdInsightTests extends TestBase {
+public class HDInsightTests extends TestBase {
 
     private static final Region REGION = Region.US_EAST2;
 
@@ -60,6 +60,7 @@ public class HdInsightTests extends TestBase {
             .create();
 
         try {
+            // @embedmeStart
             // network
             Network network = networkManager.networks().define("vn1")
                 .withRegion(REGION)
@@ -146,6 +147,7 @@ public class HdInsightTests extends TestBase {
                         ))
                     ))
                 .create();
+            // @embedmeEnd
         } finally {
             storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
         }
