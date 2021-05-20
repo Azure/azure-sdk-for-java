@@ -32,4 +32,4 @@ stages:
       EnvVars:
         SKIP_LIVE_TEST: TRUE
       TestStepMavenInputs:
-        options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=${{ not(startsWith(variables["System.StageName"], "Public")) }} -DtrimStackTrace=false -pl $(ProjectList)'
+        options: $(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=${{ not(startsWith(variables['System.StageName'], 'Public')) }} -DtrimStackTrace=false -pl $(ProjectList)
