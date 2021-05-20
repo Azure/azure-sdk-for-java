@@ -49,8 +49,8 @@ public final class ManageStorageAccountCustomerManagedKey {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withInfrastructureEncryption()
-                .withTableEncryption()
-                .withQueueEncryption()
+                .withTableAccountScopedEncryptionKey()
+                .withQueueAccountScopedEncryptionKey()
                 .withSystemAssignedManagedServiceIdentity()
                 .create();
 

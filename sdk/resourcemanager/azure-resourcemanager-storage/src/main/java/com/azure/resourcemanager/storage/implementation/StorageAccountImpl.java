@@ -422,13 +422,13 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl withTableEncryption() {
+    public StorageAccountImpl withTableAccountScopedEncryptionKey() {
         this.encryptionHelper.withTableEncryption();
         return this;
     }
 
     @Override
-    public StorageAccountImpl withQueueEncryption() {
+    public StorageAccountImpl withQueueAccountScopedEncryptionKey() {
         this.encryptionHelper.withQueueEncryption();
         return this;
     }

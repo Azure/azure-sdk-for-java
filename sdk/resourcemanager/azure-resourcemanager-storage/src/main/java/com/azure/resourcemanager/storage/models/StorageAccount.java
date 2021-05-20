@@ -328,24 +328,26 @@ public interface StorageAccount
             WithCreate withoutFileEncryption();
 
             /**
-             * Specifies that customer-managed key can be enabled for table service.
+             * Specifies that table service uses an encryption key that is scoped to the account.
+             * Customer-managed key can then be enabled for table service.
              *
              * Refer to {@link Update#withEncryptionKeyFromKeyVault(String, String, String)} to enable customer-managed
              * key.
              *
              * @return the next stage of storage account definition
              */
-            WithCreate withTableEncryption();
+            WithCreate withTableAccountScopedEncryptionKey();
 
             /**
-             * Specifies that customer-managed key can be enabled for queue service.
+             * Specifies that queue service uses an encryption key that is scoped to the account.
+             * Customer-managed key can then be enabled for queue service.
              *
              * Refer to {@link Update#withEncryptionKeyFromKeyVault(String, String, String)} to enable customer-managed
              * key.
              *
              * @return the next stage of storage account definition
              */
-            WithCreate withQueueEncryption();
+            WithCreate withQueueAccountScopedEncryptionKey();
 
             /**
              * Specifies the KeyVault key to be used as encryption key.
