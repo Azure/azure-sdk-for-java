@@ -331,11 +331,6 @@ azure:
 Note: If you set refresh-certificates-when-have-un-trust-certificate=true, your server will be vulnerable
 to attack, because every untrusted certificate will cause your application to send a re-acquire certificate request.
 
-You can also manually refresh the certificate by calling this method:
-```java
-KeyVaultCertificates.refreshCertsInfo();
-```
-
 ### Refresh certificate periodically
 
 This starter allows you to refresh automatically when the certificate on the KeyVault is modified,
@@ -345,6 +340,13 @@ azure:
   keyvault:
     jca:
        certificates-refresh-interval: 1800000
+```
+
+### Refresh certificate by java code
+
+You can also manually refresh the certificate by calling this method:
+```java
+KeyVaultCertificates.refreshCertsInfo();
 ```
 
 ### Side-loading certificates
