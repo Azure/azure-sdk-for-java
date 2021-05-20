@@ -1,6 +1,6 @@
 #Requires -Version 6.0
 
-$releaseDate = "05/25/2021"
+$releaseDate = "05/20/2021"
 $serviceDirectory = "boms"
 $springtBootBomReleaseVersion = "3.5.0"
 $springtCloudBomReleaseVersion = "2.5.0"
