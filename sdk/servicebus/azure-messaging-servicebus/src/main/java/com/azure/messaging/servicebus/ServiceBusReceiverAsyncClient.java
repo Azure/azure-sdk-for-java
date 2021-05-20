@@ -1185,9 +1185,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
                 logger.verbose(format, next.getEntityPath(), receiverOptions.getReceiveMode(),
                     CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()), "N/A", entityType);
-            })
-            .repeat(),
-            connectionProcessor.getRetryOptions(), "Failed to create receive link " + linkName, false);
+            }),
+            connectionProcessor.getRetryOptions(), "Failed to create receive link " + linkName)
+            .repeat();
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
