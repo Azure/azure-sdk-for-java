@@ -209,6 +209,12 @@ public class PerfStressProgram {
                 throw new RuntimeException(e);
             }
         } else {
+            Schedulers.onHandleError((t, e) -> {
+                System.err.print(t + " threw exception: ");
+                e.printStackTrace();
+                System.exit(1);
+            });
+
             Flux.range(0, parallel)
                 .parallel()
                 .runOn(Schedulers.boundedElastic())
