@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.16.0-beta.1 (Unreleased)
+
+
 ### 4.15.0 (2021-05-12)
 #### New Features
 * Added `backendLatencyInMs` in `CosmosDiagnostics` for `DIRECT` connection mode.

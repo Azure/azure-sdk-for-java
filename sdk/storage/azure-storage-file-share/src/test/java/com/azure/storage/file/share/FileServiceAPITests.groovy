@@ -41,12 +41,16 @@ class FileServiceAPITests extends APISpec {
     static def INVALID_ALLOWED_ORIGIN = Collections.singletonList(new ShareCorsRule().setAllowedOrigins(reallyLongString))
     static def INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"))
 
-    def setup() {
-        shareName = namer.getRandomName(60)
-        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
+    def setupSpec() {
         for (int i = 0; i < 6; i++) {
             TOO_MANY_RULES.add(new ShareCorsRule())
         }
+        TOO_MANY_RULES = Collections.unmodifiableList(TOO_MANY_RULES)
+    }
+
+    def setup() {
+        shareName = namer.getRandomName(60)
+        primaryFileServiceClient = fileServiceBuilderHelper().buildClient()
     }
 
     def "Get file service URL"() {

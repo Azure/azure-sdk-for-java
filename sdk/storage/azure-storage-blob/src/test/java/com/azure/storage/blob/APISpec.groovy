@@ -13,7 +13,6 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
-import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.identity.EnvironmentCredentialBuilder
@@ -45,7 +44,6 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import java.util.function.BiFunction
 import java.util.function.Function
-import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends StorageSpec {
@@ -55,24 +53,6 @@ class APISpec extends StorageSpec {
     BlobContainerClient cc
     BlobContainerClient ccPremium
     BlobContainerAsyncClient ccAsync
-
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    public static final BinaryData defaultBinaryData = BinaryData.fromString(defaultText)
-
-    protected static int defaultDataSize = defaultData.remaining()
-
-    protected static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     /*
     The values below are used to create data-driven tests for access conditions.
