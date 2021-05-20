@@ -195,6 +195,7 @@ class RecognizeEntityAsyncClient {
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(), options.isIncludeStatistics(),
+            options.isServiceLogsDisabled(),
             getNonNullStringIndexType(options.getStringIndexType()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
