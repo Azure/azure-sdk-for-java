@@ -75,9 +75,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private KeyVaultClient keyVaultClient;
 
-    private final boolean refreshCertificatesWhenHaveUnTrustCertificate = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate"))
-        .map(Boolean::parseBoolean)
-        .orElse(false);
+    private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
     /**
      * Constructor.
@@ -108,6 +106,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificates-refresh-interval"))
             .map(Long::valueOf)
             .orElse(0L);
+        refreshCertificatesWhenHaveUnTrustCertificate = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate"))
+            .map(Boolean::parseBoolean)
+            .orElse(false);
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
     }
@@ -243,12 +244,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             }
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
-        sideLoad();
+        loadCertificatesFromClasspath();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
-        sideLoad();
+        loadCertificatesFromClasspath();
     }
 
     @Override
@@ -347,7 +348,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Side-load certificate from classpath.
      */
-    private void sideLoad() {
+    private void loadCertificatesFromClasspath() {
         try {
             String[] filenames = getFilenames("/keyvault");
             if (filenames.length > 0) {

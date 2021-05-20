@@ -11,7 +11,7 @@ import java.security.cert.Certificate;
 
 import static org.mockito.Mockito.mock;
 
-public class ClasspathCertificateTest {
+public class ClasspathCertificatesTest {
 
     private Key key = mock(Key.class);
 

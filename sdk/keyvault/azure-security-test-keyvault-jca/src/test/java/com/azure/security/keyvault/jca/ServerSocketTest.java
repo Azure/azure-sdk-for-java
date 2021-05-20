@@ -92,41 +92,12 @@ public class ServerSocketTest {
     @Test
     public void testServerSocket() throws Exception {
 
-        /*
-         * Setup server side.
-         *
-         *  - Set the SSL context to use the KeyManagerFactory.
-         *  - Create the SSLServerSocket using th SSL context.
-         */
-
-        SSLContext context = SSLContext.getInstance("TLS");
-        context.init(kmf.getKeyManagers(), null, null);
-
-        SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
-
-        startSocket(serverSocket);
-        /*
-         * Setup client side
-         *
-         * - Create an SSL context.
-         * - Set SSL context to trust any certificate.
-         */
-
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
             .build();
+        serverSocket(8765, sslContext);
 
-        /*
-         * And now execute the test.
-         */
-        String result = sendRequest(sslContext, "8765");
-
-        /*
-         * And verify all went well.
-         */
-        assertEquals("Success", result);
     }
 
     /**
@@ -136,43 +107,12 @@ public class ServerSocketTest {
      */
     @Test
     public void testServerSocketWithSelfSignedClientTrust() throws Exception {
-
-        /*
-         * Setup server side.
-         *
-         *  - Set the SSL context to use the KeyManagerFactory.
-         *  - Create the SSLServerSocket using th SSL context.
-         */
-
-        SSLContext context = SSLContext.getInstance("TLS");
-        context.init(kmf.getKeyManagers(), null, null);
-
-        SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8766);
-
-        startSocket(serverSocket);
-
-        /*
-         * Setup client side
-         *
-         * - Create SSL connection factory.
-         * - Set hostname verifier to trust any hostname.
-         */
-
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
             .build();
+        serverSocket(8766, sslContext);
 
-        /*
-         * And now execute the test.
-         */
-        String result = sendRequest(sslContext, "8766");
-
-        /*
-         * And verify all went well.
-         */
-        assertEquals("Success", result);
     }
 
     /**
@@ -182,48 +122,7 @@ public class ServerSocketTest {
      */
     @Test
     public void testServerSocketWithDefaultTrustManager() throws Exception {
-
-        /*
-         * Setup server side.
-         *
-         *  - Set the SSL context to use the KeyManagerFactory.
-         *  - Create the SSLServerSocket using th SSL context.
-         */
-
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        tmf.init(ks);
-
-        SSLContext context = SSLContext.getInstance("TLS");
-        context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
-
-        SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8768);
-        serverSocket.setNeedClientAuth(true);
-
-        startSocket(serverSocket);
-
-        /*
-         * Setup client side
-         *
-         * - Create an SSL context.
-         * - Set SSL context to trust any certificate.
-         */
-
-        SSLContext sslContext = SSLContexts
-            .custom()
-            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-            .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
-            .build();
-
-        /*
-         * And now execute the test.
-         */
-        String result = sendRequest(sslContext, "8768");
-
-        /*
-         * And verify all went well.
-         */
-        assertEquals("Success", result);
+        serverSocketWithTrustManager(8768);
     }
 
 
@@ -236,7 +135,39 @@ public class ServerSocketTest {
     public void testServerSocketWithKeyVaultTrustManager() throws Exception {
 
         Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
+        serverSocketWithTrustManager(8767);
 
+    }
+
+
+    private void serverSocket(Integer port, SSLContext sslContext) throws Exception {
+        /*
+         * Setup server side.
+         *
+         *  - Set the SSL context to use the KeyManagerFactory.
+         *  - Create the SSLServerSocket using th SSL context.
+         */
+
+        SSLContext context = SSLContext.getInstance("TLS");
+        context.init(kmf.getKeyManagers(), null, null);
+
+        SSLServerSocketFactory factory = context.getServerSocketFactory();
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(port);
+
+        startSocket(serverSocket);
+
+        /*
+         * And now execute the test.
+         */
+        String result = sendRequest(sslContext, port);
+
+        /*
+         * And verify all went well.
+         */
+        assertEquals("Success", result);
+    }
+
+    private void serverSocketWithTrustManager(Integer port) throws Exception {
         /*
          * Setup server side.
          *
@@ -251,7 +182,7 @@ public class ServerSocketTest {
         context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8767);
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(port);
         serverSocket.setNeedClientAuth(true);
 
         startSocket(serverSocket);
@@ -272,7 +203,7 @@ public class ServerSocketTest {
         /*
          * And now execute the test.
          */
-        String result = sendRequest(sslContext, "8767");
+        String result = sendRequest(sslContext, port);
 
         /*
          * And verify all went well.
@@ -280,7 +211,7 @@ public class ServerSocketTest {
         assertEquals("Success", result);
     }
 
-    private String sendRequest(SSLContext sslContext, String port) {
+    private String sendRequest(SSLContext sslContext, Integer port) {
 
         /**
          * - Create SSL connection factory.
