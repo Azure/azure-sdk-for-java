@@ -1,6 +1,6 @@
 #Requires -Version 6.0
 
-$releaseDate = "05/25/2021"
+$releaseDate = "05/20/2021"
 $serviceDirectory = "spring"
 $certificatesReleaseVersion = "3.0.0"
 $identityReleaseVersion = "1.5.0"
