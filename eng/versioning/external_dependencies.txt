@@ -32,11 +32,11 @@ com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.6.1
 com.microsoft.azure:azure-servicebus-jms;0.0.7
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
+com.microsoft.azure.sdk.iot:iot-service-client;1.28.0
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;8.4.1.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
-com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
 com.squareup.okhttp3:okhttp;4.8.1
 com.zaxxer:HikariCP;3.4.5
 commons-codec:commons-codec;1.15
@@ -283,8 +283,8 @@ test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.12.2
 cosmos_com.google.guava:guava;25.0-jre
-cosmos_com.microsoft.data.encryption:cryptography;0.2.0.jre8-preview
-cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.0.jre8-preview
+cosmos_com.microsoft.data.encryption:cryptography;0.2.1.jre8-preview
+cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.1.jre8-preview
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
