@@ -47,8 +47,6 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN =
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
-    
-    
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {
