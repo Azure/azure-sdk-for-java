@@ -126,7 +126,7 @@ cosmosEncryptionAsyncContainer.createItem(pojo)
     .subscribe();
 ```
 
-We have a get started sample app available [here][getting_started].
+We have a get started sample app available [here][getting_started_encryption].
 
 
 ## Troubleshooting
@@ -218,7 +218,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[getting_started]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos
+[getting_started]: https://github.com/Azure-Samples/azure-cosmos-java-getting-started
+[getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos
 [quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 [project_reactor_schedulers]: https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html
 
