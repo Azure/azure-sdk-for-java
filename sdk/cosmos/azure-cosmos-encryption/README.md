@@ -201,7 +201,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-cosmos/src
 [encryption_source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-encryption/src
 [cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
 [api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
@@ -209,22 +208,16 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
-[cosmos_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos
 [cosmos_encryption_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos-encryption
-[cosmos_maven_svg]: https://img.shields.io/maven-central/v/com.azure/azure-cosmos.svg
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
-[samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
-[samples_readme]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples/blob/master/README.md
 [troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[getting_started]: https://github.com/Azure-Samples/azure-cosmos-java-getting-started
 [getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos
 [quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
-[project_reactor_schedulers]: https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-encryption%2FREADME.png)
