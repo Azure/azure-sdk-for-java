@@ -46,10 +46,10 @@ public class AzureServiceBusTopicAutoConfigurationTest {
         this.closeable = MockitoAnnotations.openMocks(this);
     }
 
-    @AfterAll
-    public void close() throws Exception {
-        this.closeable.close();
-    }
+//    @AfterAll
+//    public void close() throws Exception {
+//        this.closeable.close();
+//    }
 
     @Test
     public void testAzureServiceBusTopicDisabled() {

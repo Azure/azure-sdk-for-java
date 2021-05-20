@@ -28,8 +28,8 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-@PrepareForTest({DefaultEventHubClientFactory.class})
+@PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
+@PrepareForTest({ DefaultEventHubClientFactory.class })
 public class DefaultEventHubClientFactoryTest {
 
     @Mock
@@ -134,8 +134,8 @@ public class DefaultEventHubClientFactoryTest {
         assertNotNull(client);
         clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor);
 
-        verifyPrivate(clientFactory,times(1)).invoke("createEventProcessorClientInternal", eventHubName, consumerGroup,
-            eventHubProcessor);
+        verifyPrivate(clientFactory, times(1))
+            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor);
     }
 
     @Test
