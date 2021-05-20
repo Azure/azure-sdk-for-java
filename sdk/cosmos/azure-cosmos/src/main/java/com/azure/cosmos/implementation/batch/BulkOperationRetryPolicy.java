@@ -6,16 +6,16 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TransactionalBatchOperationResult;
-import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.RetryContext;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -28,16 +28,19 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
     private static final int MAX_RETRIES = 1;
 
     private final RxCollectionCache collectionCache;
+    private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
     private final ResourceThrottleRetryPolicy resourceThrottleRetryPolicy;
     private int attemptedRetries;
 
     BulkOperationRetryPolicy(
         RxCollectionCache collectionCache,
+        RxPartitionKeyRangeCache partitionKeyRangeCache,
         String resourceFullName,
         ResourceThrottleRetryPolicy resourceThrottleRetryPolicy) {
 
         this.collectionCache = collectionCache;
+        this.partitionKeyRangeCache = partitionKeyRangeCache;
 
         // Similar to PartitionKeyMismatchRetryPolicy constructor.
         collectionLink = Utils.getCollectionName(resourceFullName);
@@ -77,25 +80,35 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
-    boolean shouldRetryForGone(int statusCode, int subStatusCode) {
+    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode) {
+        if (statusCode == StatusCodes.GONE) {
+            if (this.attemptedRetries++ > MAX_RETRIES) {
+                return Mono.just(false);
+            }
 
-        if (statusCode == StatusCodes.GONE
-            && (subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
-                subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE ||
-                subStatusCode == SubStatusCodes.COMPLETING_SPLIT ||
-                subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)
-            && this.attemptedRetries < MAX_RETRIES) {
-
-            this.attemptedRetries++;
+            if ((subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
+                     subStatusCode == SubStatusCodes.COMPLETING_SPLIT ||
+                     subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
+                return collectionCache
+                       .resolveByNameAsync(null, collectionLink, null)
+                       .flatMap(collection -> this.partitionKeyRangeCache
+                                                  .tryGetOverlappingRangesAsync(null /*metaDataDiagnosticsContext*/,
+                                                                                collection.getResourceId(),
+                                                                                FeedRangeEpkImpl.forFullRange()
+                                                                                    .getRange(),
+                                                                                true,
+                                                                                null /*properties*/)
+                                                  .then(Mono.just(true)));
+            }
 
             if (subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE) {
                 refreshCollectionCache();
             }
 
-            return true;
+            return Mono.just(true);
         }
 
-        return false;
+        return Mono.just(false);
     }
 
     /**
