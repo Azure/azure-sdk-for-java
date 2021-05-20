@@ -33,6 +33,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Random;
 
 public class HDInsightTests extends TestBase {
@@ -41,7 +43,7 @@ public class HDInsightTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void clusterTest() {
+    public void clusterTest() throws MalformedURLException {
         StorageManager storageManager = StorageManager
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
@@ -140,7 +142,7 @@ public class HDInsightTests extends TestBase {
                     .withStorageProfile(new StorageProfile()
                         .withStorageaccounts(ImmutableList.of(
                             new StorageAccount()
-                                .withName(storageAccountName + ".blob.core.windows.net")
+                                .withName(new URL(storageAccount.endPoints().primary().blob()).getHost())
                                 .withKey(storageAccountKey)
                                 .withContainer(containerName)
                                 .withIsDefault(true)
