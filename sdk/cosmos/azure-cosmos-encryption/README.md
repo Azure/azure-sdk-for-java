@@ -1,6 +1,9 @@
 # Encryption plugin library for Azure Cosmos DB Java SDK for Java
 The Azure Cosmos Encryption Plugin is used for encrypting data with user provided key before saving into CosmosDB and decrypting it when reading back from the database.
 
+[Source code][encryption_source_code] | [Package (Maven)][cosmos_encryption_maven] | [API reference documentation][encryption_api_documentation] | [Product documentation][cosmos_docs] |
+[Samples][getting_started_encryption]
+
 ## Getting started
 ### Include the package
 
@@ -16,7 +19,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with user provide
 
 Refer to maven central for previous [releases][cosmos_encryption_maven]
 
-Refer to [javadocs][api_encryption_documentation] for more details on the package
+Refer to [javadocs][encryption_api_documentation] for more details on the package
 
 
 ### Prerequisites
@@ -180,7 +183,7 @@ log4j.appender.A1.layout.ConversionPattern=%d %5X{pid} [%t] %-5p %c - %m%n
 ```
 ## Next steps
 
-- Cosmos encryption sample program is [here][samples]
+- Cosmos encryption sample program is [here][getting_started_encryption]
 - Quick start of CosmosDB core java sdk [quickstart][quickstart] - Building a java app to manage CosmosDB SQL API data
 - [Read more about Azure CosmosDB Service][cosmos_docs]
 
@@ -198,12 +201,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-cosmos/src
+[encryption_source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-encryption/src
 [cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
 [api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
-[api_encryption_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos-encryption/latest/index.html
+[encryption_api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos-encryption/latest/index.html
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
 [cosmos_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos
 [cosmos_encryption_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos-encryption

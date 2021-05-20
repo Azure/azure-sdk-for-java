@@ -83,7 +83,7 @@ public class CosmosEncryptionAsyncDatabase {
         EncryptionKeyStoreProvider encryptionKeyStoreProvider =
             this.cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider();
 
-        if (!encryptionKeyStoreProvider.getProviderName().equals(encryptionKeyWrapMetadata.getType())) {
+        if (encryptionKeyStoreProvider.getProviderName() != null && !encryptionKeyStoreProvider.getProviderName().equals(encryptionKeyWrapMetadata.getType())) {
             throw new IllegalArgumentException("The EncryptionKeyWrapMetadata Type value does not match with the " +
                 "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
