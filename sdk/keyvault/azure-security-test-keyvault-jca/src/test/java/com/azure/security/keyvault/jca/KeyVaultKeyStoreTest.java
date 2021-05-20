@@ -14,8 +14,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Enumeration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -83,12 +83,13 @@ public class KeyVaultKeyStoreTest {
 
         try {
             byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            certificate = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            certificate =
+                (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(certificateBytes));
         } catch (CertificateException e) {
             throw new ProviderException(e);
         }
-        keystore.engineSetCertificateEntry("myalais", certificate);
+        keystore.engineSetCertificateEntry("myalias", certificate);
         assertNotNull(keystore.engineGetCertificateAlias(certificate));
     }
 
@@ -123,7 +124,14 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineAliases() {
-        assertEquals(keystore.engineAliases().nextElement(), certificateName);
+        Enumeration<String> allAliases = keystore.engineAliases();
+        boolean flag = false;
+        while (allAliases.hasMoreElements()) {
+            if (allAliases.nextElement().equals(certificateName)) {
+                flag = true;
+            }
+        }
+        assertTrue(flag);
     }
 
 
