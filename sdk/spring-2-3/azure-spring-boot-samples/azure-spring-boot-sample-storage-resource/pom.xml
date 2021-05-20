@@ -14,6 +14,11 @@
   <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-sample-storage-resource;current} -->
   <name>Azure Spring Cloud Sample Storage Resource</name>
 
+  <properties>
+    <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.4-->
+    <reactor-bom.version>2020.0.4</reactor-bom.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

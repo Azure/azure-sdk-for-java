@@ -602,4 +602,6 @@ springboot_2_3_org.mockito:mockito-core;3.3.3
 springboot_2_3_org.revapi:revapi-java;0.20.0
 springboot_2_3_org.revapi:revapi-maven-plugin;0.11.2
 
+# Please note this tag is to override the reactor bom configuration of spring-boot-dependencies 2.3.x dependency,
+# it should be updated synchronously with the upgrade of spring-boot-dependencies 2.3.x.
 springboot_2_3_io.projectreactor:reactor-bom;2020.0.4
