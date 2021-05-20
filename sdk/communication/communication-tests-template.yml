@@ -7,7 +7,7 @@ stages:
     parameters:
       TestStepMavenInputs:
         - ${{ if not(startsWith(variables['System.StageName'], 'Public')) }}:
-          - options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+          options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
       CloudConfig:
         Public:
           SubscriptionConfigurations:
