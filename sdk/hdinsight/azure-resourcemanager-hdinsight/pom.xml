@@ -61,7 +61,7 @@
             <groupId>com.azure</groupId>
             <artifactId>azure-core-test</artifactId>
             <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-          <scope>test</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
@@ -82,7 +82,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
