@@ -575,8 +575,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return createMessageBatch().flatMap(messageBatch -> {
-                StreamSupport.stream(messages.spliterator(), true)
-                    .forEach(message -> messageBatch.tryAddMessage(message));
+            StreamSupport.stream(messages.spliterator(), true)
+                .forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
         });
     }
