@@ -4,17 +4,17 @@
 #### New Features
 * Added type in EncryptionKeyWrapMetadata constructor.
 * Added validation for partition key on encrypted field during Container creation.
-* Exposed policyFormatVersion in ClientEncryptionPolicy
+* Exposed policyFormatVersion in ClientEncryptionPolicy.
 
 ## 1.0.0-beta.4 (2021-05-12)
 #### New Features
-* Adding sync api support for Cosmos encryption.
+* Added sync api support for Cosmos encryption.
 * Increased the encryption string length support from 8000 to max supported by Cosmos.
 
 ## 1.0.0-beta.3 (2021-04-26)
 #### New Features
 * Removed algorithm string from encryptionKeyWrapMetadata.
-* Increased the encryption string length support from 1024 to max 8000.
+* Increased the encryption string length support from 1024 to 8000.
 * Converted MicrosoftDataEncryptionException to CosmosException on ClientEncryptionKey fetch.
 
 ## 1.0.0-beta.2 (2021-04-07)
