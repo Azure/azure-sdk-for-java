@@ -74,6 +74,22 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+QueryRequest queryRequest = new QueryRequest()
+    .withSubscriptions(Collections.singletonList(subscriptionId))
+    .withQuery("Resources | project name, type | limit 5 | order by name asc");
+// table format
+queryRequest.withOptions(new QueryRequestOptions().withResultFormat(ResultFormat.TABLE));
+QueryResponse response = manager.resourceProviders().resources(queryRequest);
+
+
+// object array format
+queryRequest.withOptions(new QueryRequestOptions().withResultFormat(ResultFormat.OBJECT_ARRAY));
+response = manager.resourceProviders().resources(queryRequest);
+
+```
+
+
 ## Troubleshooting
 
 ## Next steps
