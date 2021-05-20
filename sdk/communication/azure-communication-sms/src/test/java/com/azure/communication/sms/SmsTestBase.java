@@ -149,4 +149,7 @@ public class SmsTestBase extends TestBase {
         return content;
     }
 
+    protected boolean shouldEnableSmsTests() {
+        return !Boolean.parseBoolean(SKIP_INT_SMS_TEST);
+    }
 }

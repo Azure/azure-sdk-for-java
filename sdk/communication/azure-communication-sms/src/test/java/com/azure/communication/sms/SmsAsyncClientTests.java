@@ -17,9 +17,16 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class SmsAsyncClientTests extends SmsTestBase {
     private SmsAsyncClient asyncClient;
+
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+        assumeTrue(shouldEnableSmsTests());
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
