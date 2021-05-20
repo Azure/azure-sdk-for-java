@@ -216,12 +216,10 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         addLinks(remoteDependencyData.getProperties(), span.getLinks());
         remoteDependencyData.setName(span.getName());
 
-        Attributes attributes = span.getAttributes();
-
         if (inProc) {
             remoteDependencyData.setType("InProc");
         } else {
-            applySemanticConventions(attributes, remoteDependencyData, span.getKind());
+            applySemanticConventions(span, remoteDependencyData);
         }
 
         remoteDependencyData.setId(span.getSpanId());
@@ -237,7 +235,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
         remoteDependencyData.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
-        setExtraAttributes(telemetryItem, remoteDependencyData.getProperties(), attributes);
+        setExtraAttributes(telemetryItem, remoteDependencyData.getProperties(), span.getAttributes());
 
         // sampling will not be supported in this exporter
         Double samplingPercentage = 100.0;
@@ -246,7 +244,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         exportEvents(span, samplingPercentage, telemetryItems);
     }
 
-    private void applySemanticConventions(Attributes attributes, RemoteDependencyData remoteDependencyData, SpanKind spanKind) {
+    private void applySemanticConventions(SpanData span, RemoteDependencyData remoteDependencyData) {
+        Attributes attributes = span.getAttributes();
         String httpMethod = attributes.get(AttributeKey.stringKey("http.method"));
         if (httpMethod != null) {
             applyHttpClientSpan(attributes, remoteDependencyData);
@@ -263,8 +262,9 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             return;
         }
         String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
-        if (messagingSystem != null) {
-            applyMessagingClientSpan(attributes, remoteDependencyData, messagingSystem, spanKind);
+        // TODO (trask) ideally EventHubs SDK should emit messaging.system attribute
+        if (messagingSystem != null || span.getName().equals("EventHubs.message")) {
+            applyMessagingClientSpan(attributes, remoteDependencyData, messagingSystem, span.getKind());
             return;
         }
     }
